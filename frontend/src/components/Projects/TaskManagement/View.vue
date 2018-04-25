@@ -495,8 +495,7 @@
                     <!-- /// Task Attachmets /// -->
 
                     <attachments
-                            @input="onAddAttachment"
-                            @remove="onRemoveAttachment"
+                            @input="onUpdateAttachments"
                             :disabled="disableAttachments"
                             v-model="editableData.medias"/>
                     <!-- /// End Task Attachments /// -->
@@ -764,7 +763,6 @@ export default {
             'getProjectLabels',
             'patchTask',
             'uploadAttachmentTask',
-            'removeAttachmentTask',
             'patchSubtask',
             'editTaskCost',
         ]),
@@ -828,7 +826,7 @@ export default {
             let total = item.rate * item.quantity * duration;
             return !isNaN(total) ? total : 0;
         },
-        onAddAttachment() {
+        onUpdateAttachments() {
             this.disableAttachments = true;
             let data = {
                 medias: this.editableData.medias,
@@ -856,22 +854,6 @@ export default {
                     }
                 )
             ;
-        },
-        onRemoveAttachment(media) {
-            this.disableAttachments = true;
-
-            this.removeAttachmentTask({
-                taskId: this.$route.params.taskId,
-                mediaId: media.id,
-            }).then(
-                (response) => {
-                    this.disableAttachments = false;
-                    if (response.status === 0) {
-                        this.fileUploadErrorMessage = this.translateText('message.delete_file_failed');
-                        this.showFileUploadFailed = true;
-                    }
-                },
-            );
         },
         translateText(text) {
             return this.translate(text);
