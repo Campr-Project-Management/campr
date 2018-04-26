@@ -40,26 +40,24 @@
 
             <div class="dropdowns">
                 <select-field
-                        v-bind:title="translateText('message.category')"
-                        v-bind:options="projectCategories"
-                        v-model="selectedCategory"
-                        v-bind:currentOption="selectedCategory">
+                        :title="translateText('message.category')"
+                        :options="projectCategories"
+                        v-model="selectedCategory">
                 </select-field>
                 <select-field
-                        v-bind:title="translateText('message.scope')"
-                        v-bind:options="projectScopes"
-                        v-model="selectedScope"
-                        v-bind:currentOption="selectedScope">
+                        :title="translateText('message.scope')"
+                        :options="projectScopes"
+                        v-model="selectedScope">
                 </select-field>
             </div>
 
             <div class="flex flex-space-between actions">
-                <a href="#" v-on:click="previousStep" class="btn-rounded"
-                   v-bind:title="translateText('button.previous_step')">
+                <a href="#" @click="previousStep" class="btn-rounded"
+                   :title="translateText('button.previous_step')">
                     < {{ translateText('button.previous_step') }}
                 </a>
-                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg"
-                   v-bind:title="translateText('button.analyze')">
+                <a href="#" @click="nextStep" class="btn-rounded second-bg"
+                   :title="translateText('button.analyze')">
                     {{ translateText('button.analyze') }} >
                 </a>
             </div>
@@ -205,8 +203,8 @@
                 departmentsInvolved: stepData ? stepData.departmentsInvolved : [0, 0],
                 strategicalMeaning: stepData ? stepData.strategicalMeaning : 'none',
                 risks: stepData ? stepData.risks : 'none',
-                selectedCategory: stepData ? stepData.selectedCategory : '',
-                selectedScope: stepData ? stepData.selectedScope : '',
+                selectedCategory: stepData ? stepData.selectedCategory : {},
+                selectedScope: stepData ? stepData.selectedScope : {},
             };
         },
     };

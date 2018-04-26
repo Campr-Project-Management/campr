@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="create-task page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -170,6 +170,7 @@ import {mapGetters, mapActions} from 'vuex';
 import {createFormData} from '../../../helpers/task';
 import router from '../../../router';
 import _ from 'lodash';
+import moment from 'moment';
 
 export default {
     components: {
@@ -205,25 +206,9 @@ export default {
             ]
         ),
         createTask: function() {
-            let data = {
-                project: this.$route.params.id,
-                name: this.title,
-                type: 2,
-                description: this.description,
-                schedule: this.schedule,
-                internalCosts: this.internalCosts,
-                externalCosts: this.externalCosts,
-                subtasks: this.subtasks,
-                planning: this.planning,
-                medias: this.medias,
-                details: this.details,
-                assignments: this.assignments,
-                statusColor: this.statusColor,
-            };
-
             this
                 .createNewTask({
-                    data: createFormData(data),
+                    data: createFormData(this.formData),
                     projectId: this.$route.params.id,
                 })
                 .then(
@@ -242,27 +227,11 @@ export default {
             ;
         },
         editExistingTask: function() {
-            let data = {
-                project: this.$route.params.id,
-                name: this.title,
-                type: 2,
-                description: this.description,
-                schedule: this.schedule,
-                internalCosts: this.internalCosts,
-                externalCosts: this.externalCosts,
-                subtasks: this.subtasks,
-                planning: this.planning,
-                medias: this.medias,
-                details: this.details,
-                assignments: this.assignments,
-                statusColor: this.statusColor,
-            };
-
             let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
 
             this
                 .editTask({
-                    data: createFormData(data),
+                    data: createFormData(this.formData),
                     taskId: this.$route.params.taskId,
                 })
                 .then(
@@ -411,6 +380,35 @@ export default {
         isEdit() {
             return !!this.$route.params.taskId;
         },
+        formData() {
+            let data = {
+                project: this.$route.params.id,
+                name: this.title,
+                type: 2,
+                description: this.description,
+                schedule: {},
+                internalCosts: this.internalCosts,
+                externalCosts: this.externalCosts,
+                subtasks: this.subtasks,
+                planning: this.planning,
+                medias: this.medias,
+                details: this.details,
+                assignments: this.assignments,
+                statusColor: this.statusColor,
+            };
+
+            if (this.isEdit) {
+                data.schedule.forecastStartDate = this.schedule.forecastStartDate;
+                data.schedule.forecastEndDate = this.schedule.forecastEndDate;
+            } else {
+                data.schedule.baseStartDate = this.schedule.baseStartDate;
+                data.schedule.baseEndDate = this.schedule.baseEndDate;
+                data.schedule.forecastStartDate = this.schedule.baseStartDate;
+                data.schedule.forecastEndDate = this.schedule.baseEndDate;
+            }
+
+            return data;
+        },
     },
     watch: {
         showSaved(value) {
@@ -432,10 +430,10 @@ export default {
             this.title = this.task.name;
             this.description = this.task.content;
             this.schedule = {
-                baseStartDate: this.task.scheduledStartAt ? new Date(this.task.scheduledStartAt) : new Date(),
-                baseEndDate: this.task.scheduledFinishAt ? new Date(this.task.scheduledFinishAt) : new Date(),
-                forecastStartDate: this.task.forecastStartAt ? new Date(this.task.forecastStartAt) : new Date(),
-                forecastEndDate: this.task.forecastFinishAt ? new Date(this.task.forecastFinishAt) : new Date(),
+                baseStartDate: this.task.scheduledStartAt ? moment(this.task.scheduledStartAt).toDate() : null,
+                baseEndDate: this.task.scheduledFinishAt ? moment(this.task.scheduledFinishAt).toDate() : null,
+                forecastStartDate: this.task.forecastStartAt ? moment(this.task.forecastStartAt).toDate() : null,
+                forecastEndDate: this.task.forecastFinishAt ? moment(this.task.forecastFinishAt).toDate() : null,
                 duration: this.task.duration,
             };
 
@@ -543,10 +541,10 @@ export default {
             showSaved: false,
             showFailed: false,
             schedule: {
-                baseStartDate: new Date(),
-                baseEndDate: new Date(),
-                forecastStartDate: new Date(),
-                forecastEndDate: new Date(),
+                baseStartDate: null,
+                baseEndDate: null,
+                forecastStartDate: null,
+                forecastEndDate: null,
                 duration: 0,
             },
             title: '',
@@ -584,7 +582,3 @@ export default {
     },
 };
 </script>
-
-<style scoped lang="scss">
-    @import '../../../css/page-section';
-</style>

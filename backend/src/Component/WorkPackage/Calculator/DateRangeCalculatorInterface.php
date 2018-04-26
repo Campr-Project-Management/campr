@@ -3,13 +3,14 @@
 namespace Component\WorkPackage\Calculator;
 
 use AppBundle\Entity\WorkPackage;
+use Component\Date\DateRangeInterface;
 
 interface DateRangeCalculatorInterface
 {
     /**
      * @param WorkPackage $workPackage
      *
-     * @return \DateTime[]
+     * @return DateRangeInterface
      */
-    public function calculate(WorkPackage $workPackage): array;
+    public function calculate(WorkPackage $workPackage): DateRangeInterface;
 }
