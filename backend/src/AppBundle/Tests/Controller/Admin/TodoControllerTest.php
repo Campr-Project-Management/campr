@@ -57,7 +57,7 @@ class TodoControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The topic field should not be blank', $crawler->html());
         $this->assertContains('The description field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -229,7 +229,7 @@ class TodoControllerTest extends BaseController
         $form['create[description]'] = '';
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The title field should not be blank', $crawler->html());
+        $this->assertContains('The topic field should not be blank', $crawler->html());
         $this->assertContains('The description field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

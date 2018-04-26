@@ -7,8 +7,8 @@ use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Services\WorkPackageRasciSync;
 use Component\Repository\RepositoryInterface;
-use Component\WorkPackage\Calculator\DateRangeCalculatorInterface;
 use Component\WorkPackage\WorkPackageEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class WorkPackageSubscriber implements EventSubscriberInterface
@@ -19,9 +19,9 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $workPackageRasciSync;
 
     /**
-     * @var DateRangeCalculatorInterface
+     * @var EventDispatcherInterface
      */
-    private $phaseActualDatesCalculator;
+    private $eventDispatcher;
 
     /**
      * @var RepositoryInterface
@@ -36,20 +36,20 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * WorkPackageSubscriber constructor.
      *
-     * @param WorkPackageRasciSync         $workPackageRasciSync
-     * @param RepositoryInterface          $workPackageRepository
-     * @param RepositoryInterface          $workPackageStatusRepository
-     * @param DateRangeCalculatorInterface $phaseActualDatesCalculator
+     * @param WorkPackageRasciSync     $workPackageRasciSync
+     * @param RepositoryInterface      $workPackageRepository
+     * @param RepositoryInterface      $workPackageStatusRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         WorkPackageRasciSync $workPackageRasciSync,
         RepositoryInterface $workPackageRepository,
         RepositoryInterface $workPackageStatusRepository,
-        DateRangeCalculatorInterface $phaseActualDatesCalculator
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->workPackageRasciSync = $workPackageRasciSync;
-        $this->phaseActualDatesCalculator = $phaseActualDatesCalculator;
         $this->workPackageRepository = $workPackageRepository;
+        $this->eventDispatcher = $eventDispatcher;
         $this->workPackageStatusRepository = $workPackageStatusRepository;
     }
 
@@ -72,6 +72,8 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $wp = $event->getWorkPackage();
         $this->workPackageRasciSync->sync($wp);
+
+        $this->workPackageRepository->add($wp);
     }
 
     /**
@@ -81,7 +83,15 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $wp = $event->getWorkPackage();
         $this->workPackageRasciSync->sync($wp);
-        $this->updatePhaseActualDates($wp);
+
+        if ($wp->hasPhase()) {
+            $this->eventDispatcher->dispatch(
+                WorkPackageEvents::RECALCULATE_PHASE_DATES,
+                new WorkPackageEvent($wp->getPhase())
+            );
+        }
+
+        $this->workPackageRepository->add($wp);
     }
 
     /**
@@ -93,24 +103,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->recalculateProgress($wp);
         $this->recalculateActualStartAt($wp);
         $this->recalculateActualFinishAt($wp);
-    }
-
-    /**
-     * @param WorkPackage $wp
-     */
-    private function updatePhaseActualDates(WorkPackage $wp)
-    {
-        $phase = $wp->getPhase();
-        if (!$phase) {
-            return;
-        }
-
-        list($startAt, $finishAt) = $this->phaseActualDatesCalculator->calculate($phase);
-
-        $phase->setActualStartAt($startAt);
-        $phase->setActualFinishAt($finishAt);
-
-        $this->workPackageRepository->add($phase);
     }
 
     /**
@@ -181,9 +173,9 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return WorkPackageStatus
+     * @return WorkPackageStatus|null
      */
-    private function getWorkPackageClosedStatus(): WorkPackageStatus
+    private function getWorkPackageClosedStatus()
     {
         /** @var WorkPackageStatus $status */
         foreach ($this->workPackageStatusRepository->findAll() as $status) {

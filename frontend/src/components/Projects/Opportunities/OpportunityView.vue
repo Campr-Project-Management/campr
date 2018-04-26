@@ -369,7 +369,7 @@ export default {
             return this.translate(text);
         },
         moment: function(date) {
-            return moment(date);
+            return moment.utc(date).local();
         },
         transformToString: function(value) {
             return value ? value.toString() : '';
