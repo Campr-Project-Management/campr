@@ -82,7 +82,7 @@
             showForecast() {
                 return this.forecastStartAt > 0 &&
                     this.forecastFinishAt > 0 &&
-                    this.forecastStartDate <= this.forecastFinishAt;
+                    this.forecastStartAt <= this.forecastFinishAt;
             },
             baseStartAt() {
                 return moment(this.task.scheduledStartAt).unix();
@@ -283,6 +283,9 @@
             createToTooltip(el, date, prefix) {
                 let toValue = this.formatDate(date) || 'N/A';
                 if (!this.task.actualFinishAt && prefix === 'Actual') {
+                    toValue = 'N/A';
+                }
+                if (!this.task.forecastFinishAt && prefix === 'Forecast') {
                     toValue = 'N/A';
                 }
                 let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
