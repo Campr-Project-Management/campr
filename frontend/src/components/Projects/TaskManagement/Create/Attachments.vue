@@ -88,7 +88,6 @@
                     inputValue[key] = value;
                 });
 
-                console.info(inputValue);
                 this.$emit('input', inputValue);
             },
             getMediaFile(media) {
@@ -108,10 +107,16 @@
                     }
 
                     let blob = new Blob([response.body], options);
-                    let link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = media.originalName;
-                    link.click();
+                    let a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download = media.originalName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
                 });
             },
         },
