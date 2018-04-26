@@ -1921,6 +1921,8 @@ class ProjectControllerTest extends BaseController
             [
                 [
                     'name' => 'project1',
+                    'forecastStartAt' => '2018-01-01',
+                    'forecastFinishAt' => '2018-01-10',
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
@@ -2983,26 +2985,27 @@ class ProjectControllerTest extends BaseController
         );
 
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('id', $actual, 'Task ID key does not exists');
 
         try {
             // Remove the 2 lines bellow when WP listener is fixed
-            $task = json_decode($response->getContent(), true);
-            $responseContent['id'] = $task['id'];
-            $responseContent['puid'] = $task['puid'];
-            $responseContent['createdAt'] = $task['createdAt'];
+            $responseContent['id'] = $actual['id'];
+            $responseContent['puid'] = $actual['puid'];
+            $responseContent['createdAt'] = $actual['createdAt'];
 
             $this->assertEquals($isResponseSuccessful, 201 === $response->getStatusCode(), 'Response is not successfully');
             $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
             $this->assertEquals(
                 $responseContent,
-                json_decode($response->getContent(), true),
+                $actual,
                 'Response body is unexpected'
             );
         } finally {
             $task = $this
                 ->em
                 ->getRepository(WorkPackage::class)
-                ->find($task['id'])
+                ->find($actual['id'])
             ;
             $this->em->remove($task);
             $this->em->flush();
@@ -3021,6 +3024,8 @@ class ProjectControllerTest extends BaseController
                     'progress' => 0,
                     'type' => 2,
                     'duration' => 0,
+                    'scheduledStartAt' => '01-01-2018',
+                    'scheduledFinishAt' => '10-01-2018',
                 ],
                 true,
                 Response::HTTP_CREATED,
@@ -3062,12 +3067,12 @@ class ProjectControllerTest extends BaseController
                     'name' => 'task',
                     'children' => [],
                     'progress' => 0,
-                    'scheduledStartAt' => null,
-                    'scheduledFinishAt' => null,
-                    'scheduledDurationDays' => 0,
-                    'forecastStartAt' => null,
-                    'forecastFinishAt' => null,
-                    'forecastDurationDays' => 0,
+                    'scheduledStartAt' => '2018-01-01',
+                    'scheduledFinishAt' => '2018-01-10',
+                    'scheduledDurationDays' => 10,
+                    'forecastStartAt' => '2018-01-01',
+                    'forecastFinishAt' => '2018-01-10',
+                    'forecastDurationDays' => 10,
                     'actualStartAt' => null,
                     'actualFinishAt' => null,
                     'actualDurationDays' => 0,
