@@ -202,7 +202,7 @@ export default {
         background: $darkColor;
         color: $lightColor;
         border: none;
-        width: 100%;
+        width: 100% !important;
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
