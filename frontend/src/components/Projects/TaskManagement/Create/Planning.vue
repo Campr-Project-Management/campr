@@ -29,6 +29,9 @@
                             </ul>
                         </scrollbar>
                     </div>
+                    <error at-path="parent" />
+                    <error at-path="milestone" />
+                    <error at-path="phase" />
                 </div>
             </div>
         </div>
@@ -38,8 +41,10 @@
 <script>
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
+import Error from '../../../_common/_messages/Error';
 
 export default {
+    components: {Error},
     props: {
         editPlanning: {},
         maxItems: {
@@ -212,7 +217,7 @@ export default {
         background: $darkColor;
         color: $lightColor;
         border: none;
-        width: 100%;
+        width: 100% !important;
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
