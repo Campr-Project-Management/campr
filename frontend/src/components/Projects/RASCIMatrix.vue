@@ -152,13 +152,6 @@ export default {
             string = string.replace(/\s+/g, '-');
             return string;
         },
-        handleScroll() {
-            if (window.scrollY >= document.getElementsByTagName('header')[0].offsetHeight) {
-                document.getElementsByClassName('rasci-matrix')[0].classList.add('rasci-matrix__fixed');
-            } else {
-                document.getElementsByClassName('rasci-matrix')[0].classList.remove('rasci-matrix__fixed');
-            }
-        },
         openRasciModal(disabled, elementHash) {
             return !disabled && (this.activeElement = elementHash);
         },
@@ -179,11 +172,9 @@ export default {
     },
     created() {
         this.loadRasci();
-        window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('keyup', this.closeRasciModal);
     },
     destroyed() {
-        window.removeEventListener('scroll', this.handleScroll);
         window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
@@ -204,15 +195,11 @@ export default {
     @import '../../css/common';
 
     .rasci-matrix {
+        background: #232D4B;
+        position: sticky;
+        top: 0;
         transition: all 0.2s, ease-in;
-        &.rasci-matrix__fixed {
-            position: fixed;
-            top: 0;
-            z-index: 2;
-            background: #232D4B;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        z-index: 2;
     }
     .rasci-legend {
         .rasci-legend-item {
