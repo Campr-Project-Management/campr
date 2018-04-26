@@ -3,8 +3,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <div class="header flex flex-space-between">
@@ -21,7 +21,7 @@
         </div>
 
         <div class="meetings-list">
-            <scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
