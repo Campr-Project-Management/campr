@@ -1,7 +1,7 @@
 <template>
     <aside>
         <a href="/" class="logo"></a>
-        <scrollbar class="sidebar">
+        <scrollbar class="sidebar customScrollbar">
             <nav>
                 <ul>
                     <li class="active">
@@ -182,10 +182,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../css/_variables';
+    @import '../../css/_mixins';
 
     .sidebar {
-        width: 195px;
+        width: 190px;
         height: 90vh;
+        padding-right: 20px;
     }
 
     ul {
@@ -223,7 +225,7 @@
 
     aside {
         width: 210px;
-        padding: 10px;
+        padding: 10px 0 10px 10px;
         position: fixed;
         left: 0;
         top: 0;
@@ -271,11 +273,12 @@
 
                     &.admin-link {
                         a {
-                            background: red;
+                            background: $secondColor;
                             color: $whiteColor;
+                            @include transition(all, 0.2s, ease);
 
                             &:hover {
-                                background: $dangerDarkColor;
+                                background: $secondDarkColor;
                                 color: $whiteColor;
                             }
                         }
@@ -283,7 +286,7 @@
 
                     .notification-balloon {
                         right: 5px;
-                        top: 8px;
+                        top: 9px;
 
                         @media screen and (max-width: 768px) {
                             top: -1px;
