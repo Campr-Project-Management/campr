@@ -2,31 +2,34 @@
     <div class="project-create-wrapper">
         <div class="page-section project-create step-1">
             <h1>{{ translateText('message.project_create_wizard') }}</h1>
-            <h2>{{ translateText('message.project_create_step1') }}</h2>            
+            <h2>{{ translateText('message.project_create_step1') }}</h2>
 
-            <input-field type="text" v-bind:label="translateText('message.project_name')" v-model="projectName" v-bind:content="projectName" />
-            <input-field type="text" v-bind:label="translateText('message.project_number')" v-model="projectNumber" v-bind:content="projectNumber" />
-            <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*" v-on:change="updateProjectLogo"> 
+            <input-field type="text" :label="translateText('message.project_name')" v-model="projectName"
+                         :content="projectName"/>
+            <input-field type="text" :label="translateText('message.project_number')" v-model="projectNumber"
+                         :content="projectNumber"/>
+            <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*"
+                   @change="updateProjectLogo">
 
             <select-field
-                v-bind:title="translateText('message.select_customer')"
-                v-bind:options="customers"
-                v-model="selectedCompany"
-                v-bind:currentOption="selectedCompany" />
+                    :title="translateText('message.select_customer')"
+                    :options="customers"
+                    v-model="selectedCompany"/>
 
             <select-field
                     :title="translate('message.currency')"
                     :options="currenciesForSelect"
-                    v-model="selectedCurrency" />
+                    v-model="selectedCurrency"/>
 
             <div v-if="!projectLogo">
-                <upload-placeholder />
+                <upload-placeholder/>
             </div>
             <div v-else>
-                <img :src="projectLogo" class="avatar" />
+                <img :src="projectLogo" class="avatar"/>
             </div>
             <div class="flex flex-center">
-                <a class="btn-rounded btn-empty btn-md" v-on:click="openProjectLogoFileSelection">{{ translateText('message.project_logo') }}</a>
+                <a class="btn-rounded btn-empty btn-md" @click="openProjectLogoFileSelection">{{
+                    translateText('message.project_logo') }}</a>
             </div>
             <div class="checkbox-input clearfix">
                 <input id="project-portfolio" type="checkbox" v-model="visiblePortfolio">
@@ -34,26 +37,26 @@
             </div>
             <div v-if="visiblePortfolio">
                 <select-field
-                    v-bind:title="translateText('message.select_portfolio')"
-                    v-bind:options="portfolios"
-                    v-model="selectedPortfolio"
-                    v-bind:currentOption="selectedPortfolio" />
+                        :title="translateText('message.select_portfolio')"
+                        :options="portfolios"
+                        v-model="selectedPortfolio"/>
                 <div class="flex" v-if="visibleAddPortfolioField">
-                    <input-field v-model="portfolioName" v-bind:content="portfolioName" type="text" v-bind:label="translateText('message.add_portfolio')" />
+                    <input-field v-model="portfolioName" :content="portfolioName" type="text"
+                                 :label="translateText('message.add_portfolio')"/>
                     <button
-                        v-on:click="addPortfolio"
-                        :disabled="portfolioLoading"
-                        class="btn-rounded btn-add">
+                            @click="addPortfolio"
+                            :disabled="portfolioLoading"
+                            class="btn-rounded btn-add">
                         {{translateText('label.add')}}
                     </button>
                 </div>
                 <div class="flex flex-direction-reverse">
                     <button
                             v-if="!visibleAddPortfolioField"
-                            v-on:click="showAddPortfolioField"
+                            @click="showAddPortfolioField"
                             :disabled="portfolioLoading"
                             class="btn-rounded btn-right">
-                            {{ translateText('message.add_portfolio') }}
+                        {{ translateText('message.add_portfolio') }}
                     </button>
                 </div>
             </div>
@@ -64,32 +67,32 @@
             </div>
             <div v-if="visibleProgramme">
                 <select-field
-                    v-bind:title="translateText('message.select_programme')"
-                    v-bind:options="programmes"
-                    v-model="selectedProgramme"
-                    v-bind:currentOption="selectedProgramme" />
+                        :title="translateText('message.select_programme')"
+                        :options="programmes"
+                        v-model="selectedProgramme"/>
                 <div class="flex" v-if="visibleAddProgrammeField">
-                    <input-field v-model="programmeName" v-bind:content="programmeName" type="text" v-bind:label="translateText('message.add_programme')" />
+                    <input-field v-model="programmeName" :content="programmeName" type="text"
+                                 :label="translateText('message.add_programme')"/>
                     <button
-                        v-on:click="addProgramme"
-                        :disabled="programmeLoading"
-                        class="btn-rounded btn-add">
+                            @click="addProgramme"
+                            :disabled="programmeLoading"
+                            class="btn-rounded btn-add">
                         {{translateText('label.add')}}
                     </button>
                 </div>
                 <div class="flex flex-direction-reverse">
                     <button
                             v-if="!visibleAddProgrammeField"
-                            v-on:click="showAddProgrammeField"
+                            @click="showAddProgrammeField"
                             :disabled="programmeLoading"
                             class="btn-rounded btn-right">
-                            {{ translateText('message.add_programme') }}
+                        {{ translateText('message.add_programme') }}
                     </button>
-                </div>    
+                </div>
             </div>
 
             <div class="flex flex-direction-reverse actions">
-                <a href="#" v-on:click="nextStep" class="btn-rounded second-bg" v-bind:title="translateText('button.next_step')">
+                <a href="#" @click="nextStep" class="btn-rounded second-bg" :title="translateText('button.next_step')">
                     {{ translateText('button.next_step') }} >
                 </a>
             </div>
@@ -98,158 +101,158 @@
 </template>
 
 <script>
-import InputField from '../_common/_form-components/InputField';
-import SelectField from '../_common/_form-components/SelectField';
-import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
-import {mapActions, mapGetters} from 'vuex';
-import {FIRST_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
+    import InputField from '../_common/_form-components/InputField';
+    import SelectField from '../_common/_form-components/SelectField';
+    import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
+    import {mapActions, mapGetters} from 'vuex';
+    import {FIRST_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
 
-export default {
-    components: {
-        InputField,
-        SelectField,
-        UploadPlaceholder,
-    },
-    methods: {
-        ...mapActions([
-            'createPortfolio',
-            'getPortfolios',
-            'createProgramme',
-            'getProgrammes',
-            'getCustomers',
-            'getCurrencies',
-        ]),
-        translateText(text) {
-            return this.translate(text);
+    export default {
+        components: {
+            InputField,
+            SelectField,
+            UploadPlaceholder,
         },
-        hideAddPortfolioField: function() {
-            this.visibleAddPortfolioField = false;
+        methods: {
+            ...mapActions([
+                'createPortfolio',
+                'getPortfolios',
+                'createProgramme',
+                'getProgrammes',
+                'getCustomers',
+                'getCurrencies',
+            ]),
+            translateText(text) {
+                return this.translate(text);
+            },
+            hideAddPortfolioField: function() {
+                this.visibleAddPortfolioField = false;
+            },
+            showAddPortfolioField: function() {
+                this.visibleAddPortfolioField = true;
+            },
+            hideAddProgrammeField: function() {
+                this.visibleAddProgrammeField = false;
+            },
+            showAddProgrammeField: function() {
+                this.visibleAddProgrammeField = true;
+            },
+            nextStep: function(e) {
+                e.preventDefault();
+                this.saveStepState();
+                this.$router.push({name: 'projects-create-2'});
+            },
+            saveStepState: function() {
+                const stepData = {
+                    'portfolioName': this.portfolioName,
+                    'programmeName': this.programmeName,
+                    'projectName': this.projectName,
+                    'projectNumber': this.projectNumber,
+                    'projectLogo': this.projectLogo,
+                    'visiblePortfolio': this.visiblePortfolio,
+                    'visibleAddPortfolioField': this.visibleAddPortfolioField,
+                    'visibleProgramme': this.visibleProgramme,
+                    'visibleAddProgrammeField': this.visibleAddProgrammeField,
+                    'selectedPortfolio': this.selectedPortfolio,
+                    'selectedProgramme': this.selectedProgramme,
+                    'selectedCompany': this.selectedCompany,
+                    'selectedCurrency': this.selectedCurrency,
+                };
+                localStorage.setItem(FIRST_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
+            },
+            addPortfolio: function() {
+                let data = {
+                    name: this.portfolioName,
+                };
+                this.createPortfolio(data);
+                this.hideAddPortfolioField();
+            },
+            addProgramme: function() {
+                let data = {
+                    name: this.programmeName,
+                };
+                this.createProgramme(data);
+                this.hideAddProgrammeField();
+            },
+            openProjectLogoFileSelection() {
+                document.getElementById('projectLogo').click();
+            },
+            updateProjectLogo(e) {
+                let files = e.target.files || e.dataTransfer.files;
+                if (!files.length) {
+                    return;
+                }
+                let reader = new FileReader();
+                let vm = this;
+                reader.onload = (e) => {
+                    vm.projectLogo = e.target.result;
+                };
+                reader.readAsDataURL(files[0]);
+            },
         },
-        showAddPortfolioField: function() {
-            this.visibleAddPortfolioField = true;
-        },
-        hideAddProgrammeField: function() {
-            this.visibleAddProgrammeField = false;
-        },
-        showAddProgrammeField: function() {
-            this.visibleAddProgrammeField = true;
-        },
-        nextStep: function(e) {
-            e.preventDefault();
-            this.saveStepState();
-            this.$router.push({name: 'projects-create-2'});
-        },
-        saveStepState: function() {
-            const stepData = {
-                'portfolioName': this.portfolioName,
-                'programmeName': this.programmeName,
-                'projectName': this.projectName,
-                'projectNumber': this.projectNumber,
-                'projectLogo': this.projectLogo,
-                'visiblePortfolio': this.visiblePortfolio,
-                'visibleAddPortfolioField': this.visibleAddPortfolioField,
-                'visibleProgramme': this.visibleProgramme,
-                'visibleAddProgrammeField': this.visibleAddProgrammeField,
-                'selectedPortfolio': this.selectedPortfolio,
-                'selectedProgramme': this.selectedProgramme,
-                'selectedCompany': this.selectedCompany,
-                'selectedCurrency': this.selectedCurrency,
-            };
-            localStorage.setItem(FIRST_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
-        },
-        addPortfolio: function() {
-            let data = {
-                name: this.portfolioName,
-            };
-            this.createPortfolio(data);
-            this.hideAddPortfolioField();
-        },
-        addProgramme: function() {
-            let data = {
-                name: this.programmeName,
-            };
-            this.createProgramme(data);
-            this.hideAddProgrammeField();
-        },
-        openProjectLogoFileSelection() {
-            document.getElementById('projectLogo').click();
-        },
-        updateProjectLogo(e) {
-            let files = e.target.files || e.dataTransfer.files;
-            if (!files.length) {
-                return;
-            }
-            let reader = new FileReader();
-            let vm = this;
-            reader.onload = (e) => {
-                vm.projectLogo = e.target.result;
-            };
-            reader.readAsDataURL(files[0]);
-        },
-    },
-    computed: mapGetters({
-        customers: 'customersForSelect',
-        localUser: 'localUser',
-        portfolios: 'portfoliosForSelect',
-        portfolioLoading: 'portfolioLoading',
-        programmes: 'programmesForSelect',
-        programmeLoading: 'programmeLoading',
-        currenciesForSelect: 'currenciesForSelect',
-        currencies: 'currencies',
-    }),
-    created() {
-        this.getPortfolios();
-        this.getProgrammes();
-        this.getCustomers();
+        computed: mapGetters({
+            customers: 'customersForSelect',
+            localUser: 'localUser',
+            portfolios: 'portfoliosForSelect',
+            portfolioLoading: 'portfolioLoading',
+            programmes: 'programmesForSelect',
+            programmeLoading: 'programmeLoading',
+            currenciesForSelect: 'currenciesForSelect',
+            currencies: 'currencies',
+        }),
+        created() {
+            this.getPortfolios();
+            this.getProgrammes();
+            this.getCustomers();
 
-        if (this.currencies.length === 0) {
-            this.getCurrencies();
-        }
-    },
-    watch: {
-        portfolios(value) {
-            let selectedPortfolio = value.filter((item) => item.label === this.portfolioName);
-
-            if (selectedPortfolio.length > 0) {
-                this.selectedPortfolio = selectedPortfolio[0];
-                this.portfolioName = '';
+            if (this.currencies.length === 0) {
+                this.getCurrencies();
             }
         },
-        selectedPortfolio(value) {
-            this.hideAddPortfolioField();
-        },
-        programmes(value) {
-            let selectedProgramme = value.filter((item) => item.label === this.programmeName);
+        watch: {
+            portfolios(value) {
+                let selectedPortfolio = value.filter((item) => item.label === this.portfolioName);
 
-            if (selectedProgramme.length > 0) {
-                this.selectedProgramme = selectedProgramme[0];
-                this.programmeName = '';
-            }
-        },
-        selectedProgramme(value) {
-            this.hideAddProgrammeField();
-        },
-    },
-    data: function() {
-        const stepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
+                if (selectedPortfolio.length > 0) {
+                    this.selectedPortfolio = selectedPortfolio[0];
+                    this.portfolioName = '';
+                }
+            },
+            selectedPortfolio(value) {
+                this.hideAddPortfolioField();
+            },
+            programmes(value) {
+                let selectedProgramme = value.filter((item) => item.label === this.programmeName);
 
-        return {
-            projectName: stepData ? stepData.projectName : '',
-            projectNumber: stepData ? stepData.projectNumber : '',
-            projectLogo: stepData ? stepData.projectLogo : '',
-            visiblePortfolio: stepData ? stepData.visiblePortfolio : false,
-            visibleAddPortfolioField: stepData ? stepData.visibleAddPortfolioField : false,
-            visibleProgramme: stepData ? stepData.visibleProgramme : false,
-            visibleAddProgrammeField: stepData ? stepData.visibleAddProgrammeField : false,
-            portfolioName: stepData ? stepData.portfolioName : '',
-            programmeName: stepData ? stepData.programmeName : '',
-            selectedPortfolio: stepData ? stepData.selectedPortfolio : '',
-            selectedProgramme: stepData ? stepData.selectedProgramme : '',
-            selectedCompany: stepData ? stepData.selectedCompany: '',
-            selectedCurrency: stepData ? stepData.selectedCurrency: '',
-        };
-    },
-};
+                if (selectedProgramme.length > 0) {
+                    this.selectedProgramme = selectedProgramme[0];
+                    this.programmeName = '';
+                }
+            },
+            selectedProgramme(value) {
+                this.hideAddProgrammeField();
+            },
+        },
+        data: function() {
+            const stepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
+
+            return {
+                projectName: stepData ? stepData.projectName : '',
+                projectNumber: stepData ? stepData.projectNumber : '',
+                projectLogo: stepData ? stepData.projectLogo : '',
+                visiblePortfolio: stepData ? stepData.visiblePortfolio : false,
+                visibleAddPortfolioField: stepData ? stepData.visibleAddPortfolioField : false,
+                visibleProgramme: stepData ? stepData.visibleProgramme : false,
+                visibleAddProgrammeField: stepData ? stepData.visibleAddProgrammeField : false,
+                portfolioName: stepData ? stepData.portfolioName : '',
+                programmeName: stepData ? stepData.programmeName : '',
+                selectedPortfolio: stepData ? stepData.selectedPortfolio : {},
+                selectedProgramme: stepData ? stepData.selectedProgramme : {},
+                selectedCompany: stepData ? stepData.selectedCompany : {},
+                selectedCurrency: stepData ? stepData.selectedCurrency : {},
+            };
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -300,5 +303,5 @@ export default {
 
     .btn-add {
         margin-left: 10px;
-    }  
+    }
 </style>
