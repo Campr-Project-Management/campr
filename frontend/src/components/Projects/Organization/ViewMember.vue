@@ -1,7 +1,7 @@
 <template>
     <div class="create-task page-section">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 custom-col-md-6">
                 <!-- /// Header /// -->
                 <div class="header">
                     <div>
@@ -22,29 +22,21 @@
                 </div>
                 <!-- /// End Header /// -->
 
-                <div class="row flex flex-v-center">
-                    <div class="col-md-6">
-                        <!-- /// Member Avatar /// -->
-                        <div class="avatar">
-                            <img :src="member.userAvatar" :alt="member.userFullName">
+                <div class="flex flex-v-center">
+                    <!-- /// Member Avatar /// -->
+                    <div class="avatar" :style="{backgroundImage: 'url(' + member.userAvatar + ')'}"></div>
+                    <!-- /// End Member Avatar /// -->
+
+                    <!-- /// Member Name & Role /// -->
+                    <div class="member-details">
+                        <div class="member-info">
+                            <p>{{ translateText('message.role') }}: <b v-if="member.projectRoleNames && member.projectRoleNames.length > 0" v-for="(role, index) in member.projectRoleNames">{{ translateText(role) }}<span v-if="index < member.projectRoleNames.length - 1">,</span></b><b v-else>-</b></p>
+                            <p>{{ translateText('message.company') }}: <b v-if="member.company">{{ member.company }}</b><b v-else>-</b></p>
+                            <p>{{ translateText('message.department') }}: <b v-if="member.projectDepartmentNames && member.projectDepartmentNames.length > 0" v-for="(department, index) in member.projectDepartmentNames">{{ department }}<span v-if="index < member.projectDepartmentNames.length - 1">,</span></b><b v-else>-</b></p>
+                            <p>{{ translateText('message.subteam') }}: <b v-if="member.subteamNames && member.subteamNames.length > 0" v-for="(subteam, index) in member.subteamNames">{{ subteam }}<span v-if="index < member.subteamNames.length - 1">,</span></b><b v-else></b></p>
                         </div>
-                        <!-- /// End Member Avatar /// -->
                     </div>
-                    
-                    <div class="col-md-6">
-                        <!-- /// Member Name & Role /// -->
-                        <div class="row member-details">
-                            <div class="col-md-12">
-                                <div class="member-info">
-                                    <p>{{ translateText('message.role') }}: <b v-if="member.projectRoleNames && member.projectRoleNames.length > 0" v-for="(role, index) in member.projectRoleNames">{{ translateText(role) }}<span v-if="index < member.projectRoleNames.length - 1">,</span></b><b v-else>-</b></p>
-                                    <p>{{ translateText('message.company') }}: <b v-if="member.company">{{ member.company }}</b><b v-else>-</b></p>
-                                    <p>{{ translateText('message.department') }}: <b v-if="member.projectDepartmentNames && member.projectDepartmentNames.length > 0" v-for="(department, index) in member.projectDepartmentNames">{{ department }}<span v-if="index < member.projectDepartmentNames.length - 1">,</span></b><b v-else>-</b></p>
-                                    <p>{{ translateText('message.subteam') }}: <b v-if="member.subteamNames && member.subteamNames.length > 0" v-for="(subteam, index) in member.subteamNames">{{ subteam }}<span v-if="index < member.subteamNames.length - 1">,</span></b><b v-else></b></p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /// End Member Name & Role /// -->
-                    </div>
+                    <!-- /// End Member Name & Role /// -->
                 </div>
 
                 <hr class="double nomarginbottom">
@@ -235,15 +227,14 @@ export default {
     @import '../../../css/page-section';
 
     .avatar {
-        margin: 0 auto 20px;
+        margin: 0 30px 20px 0;
         display: block;
-        text-align: center;
-
-        img {
-            display: inline-block;
-            height: 225px;
-            @include border-radius(50%);
-        }
+        width: 200px;
+        height: 200px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        @include border-radius(50%);
     }
 
     h3 {
@@ -270,6 +261,7 @@ export default {
                 margin-bottom: 5px;
                 text-transform: uppercase;
                 color: $lightColor;
+                letter-spacing: 0.1em;
 
                 b {
                     color: $lighterColor;

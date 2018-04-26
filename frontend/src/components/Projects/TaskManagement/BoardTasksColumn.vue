@@ -6,7 +6,7 @@
                 <span class="notification-balloon">{{ count }}</span>
             </div>
         </div>
-        <scrollbar class="tasks-scroll" @ps-y-reach-end="onScrollEnd">
+        <scrollbar class="tasks-scroll customScrollbar" @ps-y-reach-end="onScrollEnd">
             <small-task-box
                     :task="task"
                     v-for="(task, index) in tasks"
@@ -139,12 +139,21 @@ export default {
         width: 394px;
         height: calc(100vh - 240px);
         overflow: hidden;
+
+        &:last-child {
+            margin-right: 0;
+        }
     }
 
     .column-header {
         background: $darkColor;
         padding: 20px;
         margin-bottom: 10px;
+
+        > span {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
     }
 
     .tasks-scroll {
@@ -169,11 +178,17 @@ export default {
     }
 </style>
 
-<style lang="scss">
-    .tasks-scroll {
-        .ps__scrollbar-y-rail {
-            visibility: visible;
-            z-index: 100;
+<style lang="scss">    
+    @import '../../../css/_mixins';
+
+    .tasks-scroll.customScrollbar {
+        &.ps--active-y {
+            padding-right: 15px;
+
+            > .ps__scrollbar-y-rail {
+                display: block;
+                @include opacity(1);
+            }
         }
     }
 </style>

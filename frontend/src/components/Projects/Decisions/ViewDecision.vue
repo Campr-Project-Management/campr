@@ -7,8 +7,8 @@
                     <modal v-if="showDeleteModal" @close="showDeleteModal = false">
                         <p class="modal-title">{{ translateText('message.delete_decision') }}</p>
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                            <a href="javascript:void(0)" @click="removeDecision()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                            <a href="javascript:void(0)" @click="removeDecision()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                         </div>
                     </modal>
                     <modal v-if="showRescheduleModal" @close="cancelRescheduleModal()">
@@ -30,8 +30,8 @@
                         <hr class="double">
 
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="cancelRescheduleModal()" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                            <a href="javascript:void(0)" @click="rescheduleDecision()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                            <a href="javascript:void(0)" @click="cancelRescheduleModal()" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleDecision()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                         </div>
                     </modal>
 
@@ -45,9 +45,7 @@
                             <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
                             <h4>{{ translateText('message.created') }}: <b>{{currentDecision.date | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{currentDecision.dueDate | moment('DD.MM.YYYY') }}</b> </h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar">
-                                    <img :src="currentDecision.responsibilityAvatar" :alt="currentDecision.responsibilityFullName"/>
-                                </div>
+                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentDecision.responsibilityAvatar + ')' }"></div>
                                 <div>
                                     {{ translateText('message.responsible') }}:
                                     <b>{{currentDecision.responsibilityFullName}}</b>
@@ -208,20 +206,16 @@ export default {
     @import '../../../css/_variables';
 
     .user-avatar {
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
     }
 
     .entry-body {
