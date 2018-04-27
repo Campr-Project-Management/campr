@@ -2,35 +2,30 @@
     <div>
         <div class="row">
             <div class="col-md-12">
-                <div class="rasci-matrix page-section" ref="rasci-matrix">
+                <div class="rasci-matrix page-section">
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
                             <h1>{{ translateText('message.rasci_matrix') }}</h1>
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="responsible" :disabled="true" 
-                                        v-on:click="openRasciModal(true, null)" />
+                                    <responsibility-select value="responsible" :disabled="true"/>
                                     <span>Responsible</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="accountable" :disabled="true"
-                                        v-on:click="openRasciModal(true, null)"/>
+                                    <responsibility-select value="accountable" :disabled="true"/>
                                     <span>Accountable</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="support" :disabled="true"
-                                        v-on:click="openRasciModal(true, null)"/>
+                                    <responsibility-select value="support" :disabled="true"/>
                                     <span>Support</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="consulted" :disabled="true"
-                                        v-on:click="openRasciModal(true, null)"/>
+                                    <responsibility-select value="consulted" :disabled="true"/>
                                     <span>Consulted</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="informed" :disabled="true"
-                                        v-on:click="openRasciModal(true, null)"/>
+                                    <responsibility-select value="informed" :disabled="true"/>
                                     <span>Informed</span>
                                 </div>
                             </div>
@@ -95,7 +90,7 @@
                                         :value="user.data"
                                         v-bind:activeElem="activeElement"
                                         :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
-                                        @handleClick="openRasciModal(false, generateElementKey(workPackage.name + workPackage.id + userIndex) )"
+                                        @handleClick="openRasciModal(generateElementKey(workPackage.name + workPackage.id + userIndex) )"
                                         @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
                             <td class="rasci-cell last-cell"></td>
@@ -152,15 +147,8 @@ export default {
             string = string.replace(/\s+/g, '-');
             return string;
         },
-        handleScroll() {
-            if (window.scrollY >= document.getElementsByTagName('header')[0].offsetHeight) {
-                document.getElementsByClassName('rasci-matrix')[0].classList.add('rasci-matrix__fixed');
-            } else {
-                document.getElementsByClassName('rasci-matrix')[0].classList.remove('rasci-matrix__fixed');
-            }
-        },
-        openRasciModal(disabled, elementHash) {
-            return !disabled && (this.activeElement = elementHash);
+        openRasciModal(elementHash) {
+            this.activeElement = elementHash;
         },
         closeRasciModal(event) {
             if(event.keyCode == 27) {
@@ -179,11 +167,9 @@ export default {
     },
     created() {
         this.loadRasci();
-        window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('keyup', this.closeRasciModal);
     },
     destroyed() {
-        window.removeEventListener('scroll', this.handleScroll);
         window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
@@ -204,15 +190,11 @@ export default {
     @import '../../css/common';
 
     .rasci-matrix {
+        background: #232D4B;
+        position: sticky;
+        top: 0;
         transition: all 0.2s, ease-in;
-        &.rasci-matrix__fixed {
-            position: fixed;
-            top: 0;
-            z-index: 2;
-            background: #232D4B;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        z-index: 2;
     }
     .rasci-legend {
         .rasci-legend-item {
