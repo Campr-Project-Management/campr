@@ -5,10 +5,10 @@
         <div class="task-slider-holder base" v-if="showBase">
             <input type="text" class="range" ref="base"/>
         </div>
-        <div class="task-slider-holder forecast" v-if="showForecast">
+        <div class="task-slider-holder forecast" v-if="showForecast" v-bind:class="this.forecastExtraClass">
             <input type="text" class="range" ref="forecast"/>
         </div>
-        <div class="task-slider-holder actual" v-if="showActual">
+        <div class="task-slider-holder actual" v-if="showActual" v-bind:class="this.actualExtraClass">
             <input type="text" class="range" ref="actual"/>
         </div>
 
@@ -218,6 +218,11 @@
                 }
 
                 let $el = $(this.$refs.forecast);
+
+                if (this.forecastStartAt > this.baseStartAt) {
+                    this.forecastExtraClass = 'warning';
+                }
+
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -226,6 +231,7 @@
                     to: this.forecastFinishAt,
                     from_fixed: true,
                     to_fixed: true,
+                    extra_classes: (this.forecastStartAt > this.baseStartAt) ? 'irs-warning' : '',
                 };
 
                 $el.ionRangeSlider(options);
@@ -243,6 +249,17 @@
                 }
 
                 let $el = $(this.$refs.actual);
+                if (this.actualStartAt > this.forecastStartAt) {
+                    if (this.actualFinishAt < this.forecastFinishAt) {
+                        console.log('test');
+                        this.actualExtraClass = 'success';
+                    }
+                    console.log(this.actualFinishAt);
+                    if (this.actualFinishAt > this.forecastFinishAt) {
+                        console.log('test1');
+                        this.actualExtraClass = 'danger';
+                    }
+                }
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -301,6 +318,12 @@
 
                 return moment(date).format('DD.MM.YYYY');
             },
+        },
+        data() {
+            return {
+                actualExtraClass: '',
+                forecastExtraClass: '',
+            };
         },
     };
 </script>
