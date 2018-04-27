@@ -19,7 +19,7 @@
                         <b>Task.ID</b>
                         Created on Task.Create.Date.Time by 
                         <div class="user-info">
-                            <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg" :alt="user.name"/>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(http://dev.campr.biz/uploads/avatars/58ae8e1f2c465.jpeg)' }"></div>
                             <p>user.firstName user.lastName</p>
                         </div>
                         <span class="task-subtasks">Subtasks.Completed of Subtasks.Total Completed</span>

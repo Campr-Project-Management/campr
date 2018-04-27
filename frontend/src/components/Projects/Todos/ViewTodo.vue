@@ -6,8 +6,8 @@
                     <modal v-if="showDeleteModal" @close="showDeleteModal = false">
                         <p class="modal-title">{{ translate('message.delete_todo') }}</p>
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('message.no') }}</a>
-                            <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded">{{ translate('message.yes') }}</a>
+                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                            <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
                         </div>
                     </modal>
                     <modal v-if="showRescheduleModal" @close="cancelRescheduleModal">
@@ -29,8 +29,8 @@
                         <hr class="double">
 
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="cancelRescheduleModal" class="btn-rounded btn-empty danger-color danger-border">{{ translate('button.cancel') }}</a>
-                            <a href="javascript:void(0)" @click="rescheduleTodo" class="btn-rounded">{{ translate('button.save') }}</a>
+                            <a href="javascript:void(0)" @click="cancelRescheduleModal" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleTodo" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                         </div>
                     </modal>
                     <!-- /// Header /// -->
@@ -45,9 +45,7 @@
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
                             <h4>{{ translate('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar"> 
-                                    <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
-                                </div>
+                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{todo.responsibilityFullName}}</b>
@@ -221,20 +219,16 @@ export default {
     }
 
     .user-avatar {
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
     }
 
     .entry-body {
