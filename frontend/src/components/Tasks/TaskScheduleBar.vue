@@ -257,7 +257,7 @@
                         this.actualExtraClass = 'danger';
                     }
                 }
-                console.log(this.actualFinishAt);
+
                 let options = {
                     type: 'double',
                     min: this.min,
