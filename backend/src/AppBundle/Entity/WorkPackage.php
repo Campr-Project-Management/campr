@@ -135,6 +135,7 @@ class WorkPackage
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
+     * @Assert\NotBlank()
      */
     private $responsibility;
 
