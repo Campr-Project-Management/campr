@@ -3,8 +3,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -33,16 +33,16 @@
             <hr class="double">
 
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
 
         <modal v-if="showNotificationModal" @close="showNotificationModal = false">
             <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -60,7 +60,7 @@
         </div>
 
         <div class="meetings-list">
-            <scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>

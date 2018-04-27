@@ -69,6 +69,9 @@ export default {
     .percentage-sign {
       align-self: flex-end;
       font-size: 10px; 
+      margin-left: 5px;
+      position: relative;
+      top: 5px;
     }
   }
 

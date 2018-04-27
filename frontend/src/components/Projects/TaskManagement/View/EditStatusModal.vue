@@ -11,11 +11,11 @@
             <a
                     href="javascript:void(0)"
                     @click="onCancel"
-                    class="btn-rounded btn-empty danger-color danger-border">{{ translate('button.cancel') }}</a>
+                    class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
             <a
                     href="javascript:void(0)"
                     @click="onSave"
-                    class="btn-rounded">{{ translate('title.status.edit') }} +</a>
+                    class="btn-rounded btn-auto second-bg">{{ translate('title.status.edit') }} +</a>
         </div>
     </modal>
 </template>
