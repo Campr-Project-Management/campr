@@ -6,12 +6,12 @@
                 <!-- /// Project Opportunities Grid /// -->
                 <div class="ro-grid">
                     <div class="ro-grid-header vertical-axis-header">
-                        <div class="big-header">{{ translateText('message.impact') }}</div>
+                        <div class="big-header">{{ translate('message.impact') }}</div>
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
                     </div> 
                     <div class="ro-grid-items clearfix">
@@ -19,12 +19,12 @@
                     </div>
                     <div class="ro-grid-header horizontal-axis-header">                            
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
-                        <div class="big-header">{{ translateText('message.probability') }}</div>
+                        <div class="big-header">{{ translate('message.probability') }}</div>
                     </div>
                     <div class=""></div>
                 </div>
@@ -35,10 +35,10 @@
             <div class="ro-summary">
                 <div class="text-center flex flex-center">
                     <div class="text-right">
-                        <p>{{ translateText('message.priority') }}:</p>
+                        <p>{{ translate('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
+                        <p><b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -51,17 +51,17 @@
                     <div>
                         <router-link :to="{name: 'project-risks-and-opportunities'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_risks_and_opportunities') }}
+                            {{ translate('message.back_to_risks_and_opportunities') }}
                         </router-link>
-                        <h1 v-if="!isEdit">{{ translateText('message.create_new_opportunity') }}</h1>
-                        <h1 v-else>{{ translateText('message.edit_opportunity') }}</h1>
+                        <h1 v-if="!isEdit">{{ translate('message.create_new_opportunity') }}</h1>
+                        <h1 v-else>{{ translate('message.edit_opportunity') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="form">
                     <!-- /// Opportunity Name /// -->
-                    <input-field type="text" v-bind:label="translateText('placeholder.opportunity_title')" v-model="title" v-bind:content="title" />
+                    <input-field type="text" :label="translate('placeholder.opportunity_title')" v-model="title" :content="title" />
                     <error
                         v-if="validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
@@ -85,7 +85,7 @@
                     <!-- /// Opportunity Impact /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                                :title="translateText('message.impact')"
+                                :title="translate('message.impact')"
                                 minSuffix=" %"
                                 :step="5"
                                 v-model="opportunityImpact"/>
@@ -93,7 +93,7 @@
                             <indicator-icon fill="middle-fill"
                                             v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
                                             :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
-                                            :title="translateText('message.average_impact_opportunity')"></indicator-icon>
+                                            :title="translate('message.average_impact_opportunity')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Opportunity Impact /// -->
@@ -101,7 +101,7 @@
                     <!-- /// Opportunity Probability /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                                :title="translateText('message.probability')"
+                                :title="translate('message.probability')"
                                 minSuffix=" %"
                                 :step="5"
                                 v-model="opportunityProbability"/>
@@ -109,7 +109,7 @@
                             <indicator-icon fill="middle-fill"
                                             v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
                                             :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
-                                            :title="translateText('message.average_probability_opportunity')"></indicator-icon>
+                                            :title="translate('message.average_probability_opportunity')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Opportunity Probability /// -->
@@ -122,22 +122,22 @@
                             <div class="col-md-4">
                                 <money-field
                                         :currency="projectCurrencySymbol"
-                                        :label="translateText('placeholder.potential_savings')"
+                                        :label="translate('placeholder.potential_savings')"
                                         v-model="costSavings" />
                             </div>
                             <div class="col-md-4">
                                 <input-field
                                     type="text"
-                                    v-bind:label="translateText('placeholder.potential_time_savings')"
-                                    v-model="timeSavings" v-bind:content="timeSavings"
+                                    :label="translate('placeholder.potential_time_savings')"
+                                    v-model="timeSavings" :content="timeSavings"
                                 />
                             </div>
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('label.time')"
-                                    v-bind:options="timeLabel"
+                                    :title="translate('label.time')"
+                                    :options="timeLabel"
                                     v-model="details.time"
-                                    v-bind:currentOption="details.time" />
+                                    :currentOption="details.time" />
                                 <error
                                     v-if="validationMessages.timeUnit && validationMessages.timeUnit.length"
                                     v-for="message in validationMessages.timeUnit"
@@ -149,16 +149,16 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.budget') }}: <b>{{ calculatedBudget|money({symbol: projectCurrencySymbol}) }}</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.budget_calculation_opportuntiy')">
+                                    {{ translate('message.budget') }}: <b>{{ budget | money({symbol: projectCurrencySymbol}) }}</b>
+                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translate('message.budget_calculation_opportuntiy')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.time_saved') }}: <b>{{ calculatedTime }}</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.time_calculation_opportunity')">
+                                    {{ translate('message.time_saved') }}: <b>{{ timeSaved | formatNumber }} {{ timeSavedUnit }}</b>
+                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translate('message.time_calculation_opportunity')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
@@ -169,24 +169,24 @@
                         <div class="form-group">
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('label.opportunity_strategy')"
-                                    v-bind:options="opportunityStrategiesForSelect"
+                                    :title="translate('label.opportunity_strategy')"
+                                    :options="opportunityStrategiesForSelect"
                                     v-model="details.strategy"
-                                    v-bind:currentOption="details.strategy" />
+                                    :currentOption="details.strategy" />
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('label.opportunity_status')"
-                                    v-bind:options="opportunityStatusesForSelect"
+                                    :title="translate('label.opportunity_status')"
+                                    :options="opportunityStatusesForSelect"
                                     v-model="details.status"
-                                    v-bind:currentOption="details.status" />
+                                    :currentOption="details.status" />
                             </div>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12">
-                                <member-search singleSelect="false" v-model="memberList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.search_members')"></member-search>
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                     <div class="row" v-for="(measure, index) in measures">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measure.title" v-bind:content="measure.title" />
+                                <input-field type="text" :label="translate('placeholder.measure_title')" v-model="measure.title" :content="measure.title" />
                                 <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                     <error
                                         v-if="validationMessages.measures[index].title.length"
@@ -236,7 +236,7 @@
                                     <money-field
                                             :currency="projectCurrencySymbol"
                                             v-model="measure.cost"
-                                            :label="translateText('placeholder.measure_cost')" />
+                                            :label="translate('placeholder.measure_cost')" />
                                     <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                         <error
                                             v-if="validationMessages.measures[index].cost.length"
@@ -251,7 +251,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12 text-right">
-                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translate('button.add_new_measure') }}</a>
                             </div>
                         </div>
                     </div>
@@ -261,9 +261,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-risks-and-opportunities'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit" @click="saveOpportunity()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
-                        <a v-if="isEdit" @click="editOpportunity()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                        <router-link :to="{name: 'project-risks-and-opportunities'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="saveOpportunity()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
+                        <a v-if="isEdit" @click="editOpportunity()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -312,9 +312,6 @@ export default {
             'editProjectOpportunity',
             'emptyValidationMessages',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         addMeasure: function() {
             let measure = {
                 title: '',
@@ -337,7 +334,6 @@ export default {
                 description: this.description,
                 impact: this.opportunityImpact,
                 probability: this.opportunityProbability,
-                budget: this.calculateBudget(),
                 costSavings: this.costSavings,
                 timeSavings: this.timeSavings,
                 timeUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
@@ -358,19 +354,6 @@ export default {
             let data = this.getFormData();
             data.id = this.$route.params.opportunityId;
             this.editProjectOpportunity(data);
-        },
-        calculateBudget() {
-            let probability = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
-            let costSavings = parseFloat(this.costSavings ? this.costSavings : 0);
-            this.calculatedBudget = (costSavings * (probability / 100)).toFixed(2);
-
-            return this.calculatedBudget;
-        },
-        calculateTime: function() {
-            let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
-            let opportunityVal = parseInt(this.opportunityProbability ? this.opportunityProbability : 0);
-            let timeVal = parseFloat(this.timeSavings ? this.timeSavings : 0);
-            this.calculatedTime = (opportunityVal * timeVal).toFixed(2) + ' ' + unit;
         },
         updateGridView() {
             let index = 0;
@@ -434,6 +417,22 @@ export default {
         ...mapGetters({
             opportunity: 'currentOpportunity',
         }),
+        budget() {
+            let probability = _.toInteger(this.opportunityProbability) / 100;
+            let costSavings = _.toFinite(this.costSavings);
+
+            return (costSavings * probability).toFixed(2);
+        },
+        timeSaved() {
+            // let unit = this.details.time && this.details.time.key ? this.details.time.label : '';
+            let probability = _.toInteger(this.opportunityProbability) / 100;
+            let timeSavings = _.toFinite(this.timeSavings);
+
+            return (timeSavings * probability).toFixed(2);
+        },
+        timeSavedUnit() {
+            return this.details.time && this.details.time.key ? this.details.time.label : '';
+        },
     },
     created() {
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
@@ -455,22 +454,7 @@ export default {
             this.updateGridView();
         },
         opportunityProbability(value) {
-            this.calculateBudget();
-            this.calculateTime();
             this.updateGridView();
-        },
-        costSavings() {
-            this.calculateBudget();
-        },
-        timeSavings() {
-            this.calculateTime();
-        },
-        details: {
-            handler: function(value) {
-                this.calculateBudget();
-                this.calculateTime();
-            },
-            deep: true,
         },
         opportunity(value) {
             this.title = this.opportunity.title;
@@ -480,7 +464,7 @@ export default {
             this.costSavings = this.opportunity.costSavings;
             this.timeSavings = this.opportunity.timeSavings;
             this.details.time = this.opportunity.timeUnit
-                ? {key: this.opportunity.timeUnit, label: this.translateText(this.opportunity.timeUnit)}
+                ? {key: this.opportunity.timeUnit, label: this.translate(this.opportunity.timeUnit)}
                 : null
             ;
             this.details.strategy = this.opportunity.opportunityStrategy
@@ -504,8 +488,6 @@ export default {
     data: function() {
         return {
             priority: null,
-            calculatedBudget: '0.00',
-            calculatedTime: '0.00',
             title: '',
             description: '',
             costSavings: '',
@@ -524,10 +506,10 @@ export default {
             opportunityImpact: 0,
             opportunityProbability: 0,
             timeLabel: [
-                {label: this.translateText('choices.hours'), key: 'choices.hours'},
-                {label: this.translateText('choices.days'), key: 'choices.days'},
-                {label: this.translateText('choices.weeks'), key: 'choices.weeks'},
-                {label: this.translateText('choices.months'), key: 'choices.months'},
+                {label: this.translate('choices.hours'), key: 'choices.hours'},
+                {label: this.translate('choices.days'), key: 'choices.days'},
+                {label: this.translate('choices.weeks'), key: 'choices.weeks'},
+                {label: this.translate('choices.months'), key: 'choices.months'},
             ],
             isEdit: this.$route.params.opportunityId,
             gridData: [
@@ -556,7 +538,6 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
-    @import '../../../css/common';
     @import '../../../css/risks-and-opportunities/create';
 
     .ro-grid-wrapper {
