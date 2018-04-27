@@ -6,12 +6,12 @@
                 <!-- /// Project Opportunities Grid /// -->
                 <div class="ro-grid">
                     <div class="ro-grid-header vertical-axis-header">
-                        <div class="big-header">{{ translateText('message.impact') }}</div>
+                        <div class="big-header">{{ translate('message.impact') }}</div>
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
                     </div> 
                     <div class="ro-grid-items clearfix">
@@ -19,12 +19,12 @@
                     </div>
                     <div class="ro-grid-header horizontal-axis-header">
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
-                        <div class="big-header">{{ translateText('message.probability') }}</div>
+                        <div class="big-header">{{ translate('message.probability') }}</div>
                     </div>
                     <div class=""></div>
                 </div>
@@ -35,10 +35,10 @@
             <div class="ro-summary">
                 <div class="text-center flex flex-center">
                     <div class="text-right">
-                        <p>{{ translateText('message.priority') }}:</p>
+                        <p>{{ translate('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
+                        <p><b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -51,17 +51,17 @@
                     <div>
                         <router-link :to="{name: 'project-risks-and-opportunities'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_risks_and_opportunities') }}
+                            {{ translate('message.back_to_risks_and_opportunities') }}
                         </router-link>
-                        <h1 v-if="!isEdit">{{ translateText('message.create_new_risk') }}</h1>
-                        <h1 v-else>{{ translateText('message.edit_risk') }}</h1>
+                        <h1 v-if="!isEdit">{{ translate('message.create_new_risk') }}</h1>
+                        <h1 v-else>{{ translate('message.edit_risk') }}</h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
 
                 <div class="form">
                     <!-- /// Risk Name /// -->
-                    <input-field type="text" v-bind:label="translateText('placeholder.risk_title')" v-model="title" v-bind:content="title" />
+                    <input-field type="text" :label="translate('placeholder.risk_title')" v-model="title" :content="title" />
                     <error
                         v-if="validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
@@ -84,7 +84,7 @@
                     <!-- /// Risk Impact /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                                :title="translateText('message.impact')"
+                                :title="translate('message.impact')"
                                 minSuffix=" %"
                                 :step="5"
                                 v-model="riskImpact"/>
@@ -92,7 +92,7 @@
                             <indicator-icon fill="middle-fill"
                                             v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
                                             :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
-                                            :title="translateText('message.average_impact_risk')"></indicator-icon>
+                                            :title="translate('message.average_impact_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Impact /// -->
@@ -100,7 +100,7 @@
                     <!-- /// Risk Probability /// -->
                     <div class="range-slider-wrapper">
                         <range-slider
-                                :title="translateText('message.probability')"
+                                :title="translate('message.probability')"
                                 minSuffix=" %"
                                 :step="5"
                                 v-model="riskProbability"/>
@@ -108,7 +108,7 @@
                             <indicator-icon fill="middle-fill"
                                             v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
                                             :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
-                                            :title="translateText('message.average_probability_risk')"></indicator-icon>
+                                            :title="translate('message.average_probability_risk')"></indicator-icon>
                         </div>
                     </div>
                     <!-- /// End Risk Probability /// -->
@@ -121,7 +121,7 @@
                             <div class="col-md-4">
                                 <money-field
                                         v-model.number="cost"
-                                        :label="translateText('placeholder.potential_cost')"
+                                        :label="translate('placeholder.potential_cost')"
                                         :currency="projectCurrencySymbol"/>
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
@@ -134,7 +134,7 @@
                                     type="number"
                                     v-model.number="timeDelay"
                                     :content="timeDelay"
-                                    :label="translateText('placeholder.potential_time_delay')" />
+                                    :label="translate('placeholder.potential_time_delay')" />
                                 <error
                                     v-if="validationMessages.delay && validationMessages.delay.length"
                                     v-for="message in validationMessages.delay"
@@ -142,10 +142,10 @@
                             </div>
                             <div class="col-md-4">
                                 <select-field
-                                    v-bind:title="translateText('label.time')"
-                                    v-bind:options="timeLabel"
+                                    :title="translate('label.time')"
+                                    :options="timeLabel"
                                     v-model="details.time"
-                                    v-bind:currentOption="details.time" />
+                                    :currentOption="details.time" />
                                 <error
                                     v-if="validationMessages.delayUnit && validationMessages.delayUnit.length"
                                     v-for="message in validationMessages.delayUnit"
@@ -157,19 +157,19 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.budget' )}}:
+                                    {{ translate('message.budget' )}}:
                                     <b>{{ potentialCost | money({symbol: projectCurrencySymbol}) }}</b>
                                     <button type="button" class="btn btn-icon"
-                                            v-tooltip.right-start="translateText('message.budget_calculation_risk')">
+                                            v-tooltip.right-start="translate('message.budget_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translateText('message.delay') }}:
+                                    {{ translate('message.delay') }}:
                                     <b>{{ potentialDelay | formatNumber }} {{ timeUnit }}</b>
-                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translateText('message.time_calculation_risk')">
+                                    <button type="button" class="btn btn-icon" v-tooltip.right-start="translate('message.time_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
                                     </button>
                                 </h4>
@@ -180,24 +180,24 @@
                         <div class="form-group">
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('placeholder.risk_strategy')"
-                                    v-bind:options="riskStrategiesForSelect"
+                                    :title="translate('placeholder.risk_strategy')"
+                                    :options="riskStrategiesForSelect"
                                     v-model="details.strategy"
-                                    v-bind:currentOption="details.strategy" />
+                                    :currentOption="details.strategy" />
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder">
-                                    <label class="active">{{ translateText('label.due_date') }}</label>
+                                    <label class="active">{{ translate('label.due_date') }}</label>
                                     <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <select-field 
-                                    v-bind:title="translateText('placeholder.risk_status')"
-                                    v-bind:options="riskStatusesForSelect"
+                                    :title="translate('placeholder.risk_status')"
+                                    :options="riskStatusesForSelect"
                                     v-model="details.status"
-                                    v-bind:currentOption="details.status" />
+                                    :currentOption="details.status" />
                             </div>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12 member-search-container">
-                                <member-search singleSelect="false" v-model="memberList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.search_members')"></member-search>
                             </div>
                         </div>
                     </div>
@@ -217,7 +217,7 @@
                     <div class="row" v-for="(measure, index) in measures">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measure.title" v-bind:content="measure.title" />
+                                <input-field type="text" :label="translate('placeholder.measure_title')" v-model="measure.title" :content="measure.title" />
                                 <span v-if="validationMessages.measures && validationMessages.measures[index]">
                                     <error
                                         v-if="validationMessages.measures[index].title.length"
@@ -262,7 +262,7 @@
                     <div class="row">
                         <div class="form-group last-form-group btn-row">
                             <div class="col-md-12 text-right">
-                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translate('button.add_new_measure') }}</a>
                             </div>
                         </div>
                     </div>
@@ -272,9 +272,9 @@
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-risks-and-opportunities'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit" @click="saveRisk()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
-                        <a v-if="isEdit" @click="editRisk()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                        <router-link :to="{name: 'project-risks-and-opportunities'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <a v-if="!isEdit" @click="saveRisk()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
+                        <a v-if="isEdit" @click="editRisk()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -318,9 +318,6 @@ export default {
             'getProjectRiskAndOpportunitiesStats', 'getRiskStrategies', 'getRiskStatuses',
             'createProjectRisk', 'getProjectRisk', 'editProjectRisk', 'emptyValidationMessages',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         addMeasure: function() {
             let measure = {
                 title: '',
@@ -435,20 +432,20 @@ export default {
             validationMessages: 'validationMessages',
             projectCurrencySymbol: 'projectCurrencySymbol',
         }),
-        probability() {
-            let value = parseFloat(this.riskProbability);
-            return isNaN(value) ? 0 : value;
-        },
         potentialCost: function() {
-            let cost = parseFloat(this.cost);
-            return (this.probability / 100) * (isNaN(cost) ? 0 : cost);
+            let probability = _.toFinite(this.riskProbability) / 100;
+            let cost = _.toFinite(this.cost);
+
+            return (probability * cost).toFixed(2);
         },
         timeUnit() {
             return this.details.time && this.details.time.key ? this.details.time.label : null;
         },
         potentialDelay() {
-            let delay = parseFloat(this.timeDelay);
-            return (this.probability / 100) * (isNaN(delay) ? 0 : delay);
+            let probability = _.toFinite(this.riskProbability) / 100;
+            let delay = _.toFinite(this.timeDelay);
+
+            return (delay * probability).toFixed(2);
         },
     },
     created() {
@@ -489,10 +486,10 @@ export default {
             riskImpact: 0,
             riskProbability: 0,
             timeLabel: [
-                {label: this.translateText('choices.hours'), key: 'choices.hours'},
-                {label: this.translateText('choices.days'), key: 'choices.days'},
-                {label: this.translateText('choices.weeks'), key: 'choices.weeks'},
-                {label: this.translateText('choices.months'), key: 'choices.months'},
+                {label: this.translate('choices.hours'), key: 'choices.hours'},
+                {label: this.translate('choices.days'), key: 'choices.days'},
+                {label: this.translate('choices.weeks'), key: 'choices.weeks'},
+                {label: this.translate('choices.months'), key: 'choices.months'},
             ],
             model: {},
             currentOption: {},
@@ -515,7 +512,7 @@ export default {
             this.cost = this.risk.cost;
             this.timeDelay = this.risk.delay;
             this.details.time = this.risk.delayUnit
-                ? {key: this.risk.delayUnit, label: this.translateText(this.risk.delayUnit)}
+                ? {key: this.risk.delayUnit, label: this.translate(this.risk.delayUnit)}
                 : null
             ;
             this.details.strategy = this.risk.riskStrategy
