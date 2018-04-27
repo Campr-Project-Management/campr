@@ -1,6 +1,6 @@
 <template>
     <div class="row">        
-        <div class="col-md-6 col-md-push-6">
+        <div class="col-lg-5 col-lg-push-7">
             <!-- /// Project Opportunities /// -->
             <div class="ro-grid-wrapper clearfix">
                 <!-- /// Project Opportunities Grid /// -->
@@ -44,7 +44,7 @@
             </div>
             <!-- /// End Project Risks Summary /// -->
         </div>
-        <div class="col-md-6 col-md-pull-6">
+        <div class="col-lg-7 col-lg-pull-5">
             <div class="create-phase page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -539,6 +539,14 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/risks-and-opportunities/create';
+
+    .ro-grid-wrapper {
+        margin-top: 90px;
+
+        @media (max-width: 1199px) {
+            margin-top: 30px;
+        }
+    }
 
     .ro-summary {
         .ro-very-high-priority {

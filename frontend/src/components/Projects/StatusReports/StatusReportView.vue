@@ -4,8 +4,8 @@
             <modal v-if="showEmailModal" @close="showEmailModal = false">
                 <p class="modal-title">{{ translateText('message.email_report') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -95,7 +95,7 @@
                         <h3 class="margintop0">{{ translateText('message.schedule') }}</h3>
                     </div>
                     <div class="col-md-8">
-                        <scrollbar class="table-wrapper">
+                        <scrollbar class="table-wrapper customScrollbar">
                             <table class="table table-small">
                                 <thead>
                                     <tr>
@@ -307,18 +307,17 @@
                             <div class="ro-main ro-main-opportunity" v-if="currentStatusReport.information.risksOpportunitiesStats.opportunities && currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity">
                                 <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title }}</b>
                                 <span class="ro-main-stats">|
+                                    <span class="light-color">{{ translateText('message.priority') }}</span>: 
                                     <b v-bind:class="getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.priority).color">
-                                        {{ translateText('message.priority') }}: {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.priority).name }}
+                                        {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.priority).name }}
                                     </b>|
-                                    {{ translateText('message.potential_savings') }}: {{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.costSavings }}{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.currency }} |
-                                    {{ translateText('message.potential_time_savings') }}: {{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeSavings }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeUnit) }} |
-                                    {{ translateText('message.strategy') }}: {{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStrategyName }} |
-                                    {{ translateText('message.status') }}: {{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStatusName }}
+                                    <span class="light-color">{{ translateText('message.potential_savings') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.costSavings }}{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.currency }}</b> |
+                                    <span class="light-color">{{ translateText('message.potential_time_savings') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeSavings }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeUnit) }}</b> |
+                                    <span class="light-color">{{ translateText('message.strategy') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStrategyName }}</b> |
+                                    <span class="light-color">{{ translateText('message.status') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStatusName }}</b>
                                 </span>
                                 <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar">
-                                        <img :src="currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityAvatar" :alt="currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityFullName"/>
-                                    </div>
+                                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityAvatar + ')' }"></div>
                                     <div>
                                         {{ translateText('message.responsible') }}:
                                         <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityFullName }}</b>
@@ -337,18 +336,17 @@
                             <div class="ro-main ro-main-risk" v-if="currentStatusReport.information.risksOpportunitiesStats.risks && currentStatusReport.information.risksOpportunitiesStats.risks.top_risk">
                                 <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.title }}</b>
                                 <span class="ro-main-stats">|
+                                    <span class="light-color">{{ translateText('message.priority') }}:</span> 
                                     <b v-bind:class="getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.priority).color">
-                                        {{ translateText('message.priority') }}: {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.priority).name }}
-                                    </b>|
-                                    {{ translateText('message.potential_savings') }}: {{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.cost }}{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.currency }} |
-                                    {{ translateText('message.potential_time_savings') }}: {{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delay }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delayUnit) }} |
-                                    {{ translateText('message.strategy') }}: {{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStrategyName }} |
-                                    {{ translateText('message.status') }}: {{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStatusName }}
+                                         {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.priority).name }}
+                                    </b> | 
+                                    <span class="light-color">{{ translateText('message.potential_savings') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.cost }}{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.currency }}</b> |
+                                    <span class="light-color">{{ translateText('message.potential_time_savings') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delay }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delayUnit) }}</b> |
+                                    <span class="light-color">{{ translateText('message.strategy') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStrategyName }}</b> |
+                                    <span class="light-color">{{ translateText('message.status') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStatusName }}</b>
                                 </span>
                                 <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar">
-                                        <img :src="currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityAvatar" :alt="currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityFullName"/>
-                                    </div>
+                                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityAvatar + ')' }"></div>
                                     <div>
                                         {{ translateText('message.responsible') }}:
                                         <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityFullName }}</b>
@@ -740,9 +738,8 @@ function renderTooltip(item) {
         <div class="task-box box">
             <div class="box-header">
                 <div class="user-info flex flex-v-center">
-                    <img class="user-avatar"
-                        src="` + item.responsibilityAvatar + `" alt="` + Vue.translate('table_header_cell.responsible') + item.responsibilityFullName +
-                    `"/>
+                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url('` + item.responsibilityAvatar + `')' }" 
+                    v-tooltip.top-center="` + Vue.translate('table_header_cell.responsible') + item.responsibilityFullName + `"></div>
                     <p>` + item.responsibilityFullName + `</p>
                 </div>
                 <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
@@ -972,6 +969,7 @@ function renderTooltip(item) {
 
             .ro-main-stats {
                 text-transform: uppercase;
+                letter-spacing: 0.1em;
             }
 
             &.ro-main-opportunity {
@@ -1017,20 +1015,16 @@ function renderTooltip(item) {
     }
 
     .user-avatar {
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
     }
 
     .entry-responsible {

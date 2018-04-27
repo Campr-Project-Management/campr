@@ -210,8 +210,8 @@ message:
     last_task: Last Task
     project_phases: Project Phases
     project_milestones: Project Milestones
-    phase_responsible: Phase Responsible:
-    milestone_responsible: Milestone Responsible:
+    phase_responsible: Phase Responsible
+    milestone_responsible: Milestone Responsible
     edit_organization: Edit Organization
     project_roles: Project Roles
     delete_subteam: Delete Subteam

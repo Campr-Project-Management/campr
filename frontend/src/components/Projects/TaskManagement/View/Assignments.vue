@@ -3,11 +3,11 @@
         <!-- /// Task Assignee /// -->
         <h3>{{ translate('message.asignee')}}</h3>
         <div class="row">
-            <div class="col-md-8">
-                <div class="user-avatar flex flex-v-center" v-if="responsibilityUser">
-                    <div><img :src="responsibilityUser.userAvatar" :alt="responsibilityUser.userFullName"/></div>
+            <div class="col-lg-7">
+                <div class="flex flex-v-center" v-if="responsibilityUser">
+                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + responsibilityUser.userAvatar + ')' }"></div>
                     <div>
-                        <b> {{ responsibilityUser.userFullName }}</b><br/>
+                        <b class="uppercase"> {{ responsibilityUser.userFullName }}</b><br/>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: responsibilityUser.user} }"
                                 class="simple-link">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-5">
                 <select-field
                         :title="translate('message.change_assignee')"
                         :options="responsibilityOptions"
@@ -33,10 +33,10 @@
         <h3>{{ translate('label.accountable')}}</h3>
         <div class="row">
             <div class="col-md-8">
-                <div class="user-avatar flex flex-v-center" v-if="accountabilityUser">
-                    <div><img :src="accountabilityUser.userAvatar" :alt="accountabilityUser.userFullName"/></div>
+                <div class="flex flex-v-center" v-if="accountabilityUser">
+                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + accountabilityUser.userAvatar + ')' }"></div>
                     <div>
-                        <b> {{accountabilityUser.userFullName}}</b><br/>
+                        <b class="uppercase"> {{accountabilityUser.userFullName}}</b><br/>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: accountabilityUser.user} }"
                                 class="simple-link">
@@ -60,7 +60,7 @@
 
         <h3>{{ translate('label.select_sci_users')}}</h3>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6">
                 <multi-select-field
                         :title="translate('label.select_support_users')"
                         :options="supportUsersOptions"
@@ -69,7 +69,7 @@
                         @input="onSupportUsersChange"/>
                 <error at-path="supportUsers" />
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6">
                 <multi-select-field
                         :title="translate('label.select_consulted_users')"
                         :options="consultedUsersOptions"
@@ -78,7 +78,7 @@
                         @input="onConsultedUsersChange"/>
                 <error at-path="consultedUsers" />
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-6">
                 <multi-select-field
                         :title="translate('label.select_informed_users')"
                         :options="informedUsersOptions"
