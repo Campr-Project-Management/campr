@@ -17,7 +17,7 @@
             <label :class="{ 'active': isActive }" @click="focusInput()">{{ placeholder }}</label>
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
-        <div class="results team" v-show="hasItems">
+        <div class="results team" v-show="hasItems" :style="{bottom:resultsTeamBottom,top:resultsTeamTop}">
             <scrollbar class="members">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
@@ -93,15 +93,11 @@ export default {
                 let windowInnerHeight = window.innerHeight;
 
                 if (windowInnerHeight - currentElementOffset < 260) {
-                    $(this.$el).find('.results.team').css({
-                        'bottom': '41px',
-                        'top': 'auto',
-                    });
+                    this.resultsTeamBottom = '41px';
+                    this.resultsTeamTop = 'auto';
                 } else {
-                    $(this.$el).find('.results.team').css({
-                        'bottom': 'auto',
-                        'top': '41px',
-                    });
+                    this.resultsTeamBottom = 'auto';
+                    this.resultsTeamTop = '41px';
                 }
             }
         },
@@ -206,6 +202,8 @@ export default {
             minChars: 1,
             selectedUsers: [],
             usersList: [],
+            resultsTeamBottom: '',
+            resultsTeamTop: '',
             focused: false,
         };
     },
