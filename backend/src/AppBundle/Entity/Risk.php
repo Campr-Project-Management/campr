@@ -82,13 +82,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="decimal", precision=9, scale=2, nullable=true)
-     */
-    private $budget;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="delay", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $delay;
@@ -331,30 +324,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getCost()
     {
         return $this->cost;
-    }
-
-    /**
-     * Set budget.
-     *
-     * @param string $budget
-     *
-     * @return Risk
-     */
-    public function setBudget($budget)
-    {
-        $this->budget = $budget;
-
-        return $this;
-    }
-
-    /**
-     * Get budget.
-     *
-     * @return string
-     */
-    public function getBudget()
-    {
-        return $this->budget;
     }
 
     /**
@@ -756,6 +725,21 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getMeasures()
     {
         return $this->measures;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getMeasuresTotalCost()
+    {
+        $cost = 0;
+        foreach ($this->getMeasures() as $measure) {
+            $cost += $measure->getCost();
+        }
+
+        return round($cost, 2);
     }
 
     /**

@@ -1,17 +1,17 @@
 <template>
     <div class="row">
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
-            <p class="modal-title">{{ translateText('message.delete_risk') }}</p>
+            <p class="modal-title">{{ translate('message.delete_risk') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteRisk()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteRisk()" class="btn-rounded">{{ translate('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showEditMeasureModal" @close="showEditMeasureModal = false">
-            <p class="modal-title">{{ translateText('message.edit_measure') }}</p>
+            <p class="modal-title">{{ translate('message.edit_measure') }}</p>
             <div class="form-group">
                 <div class="col-md-12">
-                    <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="selectedMeasure.title" v-bind:content="selectedMeasure.title" />
+                    <input-field type="text" :label="translate('placeholder.measure_title')" v-model="selectedMeasure.title" :content="selectedMeasure.title" />
                     <error
                         v-if="editMeasureValidationMessages.title && editMeasureValidationMessages.title.length"
                         v-for="message in editMeasureValidationMessages.title"
@@ -35,7 +35,11 @@
             <div class="form-group last-form-group">
                 <div class="flex flex-space-between">
                     <div class="col-md-12">
-                        <input-field type="text" v-bind:label="translateText('placeholder.measure_cost')" v-model="selectedMeasure.cost" v-bind:content="selectedMeasure.cost" />
+                        <money-field
+                                :currency="projectCurrencySymbol"
+                                type="text"
+                                :label="translate('placeholder.measure_cost')"
+                                v-model="selectedMeasure.cost"/>
                         <error
                             v-if="editMeasureValidationMessages.cost && editMeasureValidationMessages.cost.length"
                             v-for="message in editMeasureValidationMessages.cost"
@@ -44,8 +48,8 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded">{{ translate('button.save') }}</a>
             </div>
         </modal>
 
@@ -55,12 +59,12 @@
                 <!-- /// Project Opportunities Grid /// -->
                 <div class="ro-grid">
                     <div class="ro-grid-header vertical-axis-header">
-                        <div class="big-header">{{ translateText('message.impact') }}</div>
+                        <div class="big-header">{{ translate('message.impact') }}</div>
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
                     </div>
                     <div class="ro-grid-items clearfix">
@@ -68,12 +72,12 @@
                     </div>
                     <div class="ro-grid-header horizontal-axis-header">
                         <div class="small-headers clearfix">
-                            <div class="small-header">{{ translateText('message.very_low') }}</div>
-                            <div class="small-header">{{ translateText('message.low') }}</div>
-                            <div class="small-header">{{ translateText('message.high') }}</div>
-                            <div class="small-header">{{ translateText('message.very_high') }}</div>
+                            <div class="small-header">{{ translate('message.very_low') }}</div>
+                            <div class="small-header">{{ translate('message.low') }}</div>
+                            <div class="small-header">{{ translate('message.high') }}</div>
+                            <div class="small-header">{{ translate('message.very_high') }}</div>
                         </div>
-                        <div class="big-header">{{ translateText('message.probability') }}</div>
+                        <div class="big-header">{{ translate('message.probability') }}</div>
                     </div>
                     <div class=""></div>
                 </div>
@@ -84,10 +88,10 @@
             <div class="ro-summary">
                 <div class="text-center flex flex-center">
                     <div class="text-right">
-                        <p>{{ translateText('message.priority') }}:</p>
+                        <p>{{ translate('message.priority') }}:</p>
                     </div>
                     <div class="text-left">
-                        <p><b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
+                        <p><b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
                     </div>
                 </div>
             </div>
@@ -100,7 +104,7 @@
                     <div>
                         <router-link :to="{name: 'project-risks-and-opportunities'}" class="small-link">
                             <i class="fa fa-angle-left"></i>
-                            {{ translateText('message.back_to_risks_and_opportunities') }}
+                            {{ translate('message.back_to_risks_and_opportunities') }}
                         </router-link>
                         <h1>{{ risk.title }}</h1>
                     </div>
@@ -116,20 +120,20 @@
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translateText('message.priority') }}: <b v-if="priority" v-bind:class="priority.color">{{ translateText(priority.name) }}</b><b v-else>-</b></p>
-                            <p>{{ translateText('message.strategy') }}: <b>{{ risk.riskStrategyName }}</b></p>
-                            <p>{{ translateText('message.status') }}: <b>{{ risk.statusName }}</b></p>
+                            <p>{{ translate('message.priority') }}: <b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
+                            <p>{{ translate('message.strategy') }}: <b>{{ risk.riskStrategyName }}</b></p>
+                            <p>{{ translate('message.status') }}: <b>{{ risk.statusName }}</b></p>
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: projectCurrencySymbol}) }}</b></p>
-                            <p>{{ translateText('message.time_saved') }}: <b>{{ risk.potentialDelay | formatNumber }} {{ translateText(risk.delayUnit) }}</b></p>
-                            <p>{{ translateText('message.due_date') }}: <b>{{ risk.dueDate | moment('DD.MM.YYYY') }}</b></p>
+                            <p>{{ translate('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: projectCurrencySymbol}) }}</b></p>
+                            <p>{{ translate('message.time_saved') }}: <b>{{ risk.potentialDelay | formatNumber }} {{ translate(risk.delayUnit) }}</b></p>
+                            <p>{{ translate('message.due_date') }}: <b>{{ risk.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
                         <div class="ro-info">
-                            <p>{{ translateText('message.measures') }}: <b v-if="risk.measures">{{ risk.measures.length }}</b></p>
-                            <p>{{ translateText('message.measures_cost') }}: <b v-if="risksOpportunitiesStats.risks">{{ risksOpportunitiesStats.risks.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b></p>
+                            <p>{{ translate('message.measures') }}: <b v-if="risk.measures">{{ risk.measures.length }}</b></p>
+                            <p>{{ translate('message.measures_cost') }}: <b>{{ risk.measuresTotalCost | money({symbol: projectCurrencySymbol}) }}</b></p>
                         </div>
                     </div>
                 </div>
@@ -137,7 +141,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.created_on') }} {{ risk.createdAt | moment('DD.MM.YYYY') }}, {{ risk.createdAt | moment('HH:mm') }} {{ translateText('message.by') }}
+                            {{ translate('message.created_on') }} {{ risk.createdAt | moment('DD.MM.YYYY') }}, {{ risk.createdAt | moment('HH:mm') }} {{ translate('message.by') }}
                             <div class="user-avatar">
                                 <img :src="risk.createdByAvatar" :alt="risk.createdByFullName"/>
                                 <b>{{ risk.createdByFullName }}</b>
@@ -149,7 +153,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.responsible') }}:
+                            {{ translate('message.responsible') }}:
                             <div class="user-avatar">
                                 <img :src="risk.responsibilityAvatar" :alt="risk.responsibilityFullName"/>
                                 <b>{{ risk.responsibilityFullName }}</b>
@@ -171,13 +175,13 @@
                 <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
                             :disabled="true"
-                            :title="translateText('message.impact')"
+                            :title="translate('message.impact')"
                             minSuffix=" %"
                             :value="risk.impact"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                         <indicator-icon fill="middle-fill"
                                         :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
-                                        :title="translateText('message.average_impact_risk')"></indicator-icon>
+                                        :title="translate('message.average_impact_risk')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Impact /// -->
@@ -186,19 +190,19 @@
                 <div class="range-slider-wrapper" v-if="risk">
                     <range-slider
                             :disabled="true"
-                            :title="translateText('message.probability')"
+                            :title="translate('message.probability')"
                             minSuffix=" %"
                             :value="risk.probability"/>
                     <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
                         <indicator-icon fill="middle-fill"
                                         :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
-                                        :title="translateText('message.average_probability_risk')"></indicator-icon>
+                                        :title="translate('message.average_probability_risk')"></indicator-icon>
                     </div>
                 </div>
                 <!-- /// End Probability /// -->
 
                 <!-- /// Measures /// -->
-                <h3 v-if="risk.measures">{{ risk.measures.length }} {{ translateText('message.measures') }}</h3>
+                <h3 v-if="risk.measures">{{ risk.measures.length }} {{ translate('message.measures') }}</h3>
                 <hr>
 
                 <!-- /// Measure /// -->
@@ -212,22 +216,22 @@
                                     <b>{{ measure.responsibilityFullName }}</b>
                                 </div>
                                 <a href="#link-to-member-page" class="simple-link">@{{ measure.responsibilityUsername }}</a>
-                                {{ translateText('message.added_a_measure') }} {{ moment(measure.createdAt).fromNow() }} | {{ translateText('message.edited') }} {{ moment(measure.updatedAt).fromNow() }}
+                                {{ translate('message.added_a_measure') }} {{ moment(measure.createdAt).fromNow() }} | {{ translate('message.edited') }} {{ moment(measure.updatedAt).fromNow() }}
                             </div>
                             <div class="comment-buttons">
-                                <button @click="initEditMeasure(measure)" class="btn btn-rounded second-bg btn-auto btn-md" type="button">{{ translateText('button.edit') }}</button>
-                                <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.comment') }}</button>
+                                <button @click="initEditMeasure(measure)" class="btn btn-rounded second-bg btn-auto btn-md" type="button">{{ translate('button.edit') }}</button>
+                                <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md go-to" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translate('message.comment') }}</button>
                             </div>
                         </div>
                         <div class="comment-body">
                             <b class="title">{{ measure.title }}</b>
-                            <p class="cost">{{ translateText('message.cost') }}: <b>{{ measure.cost | money({symbol: projectCurrencySymbol}) }}</b></p>
+                            <p class="cost">{{ translate('message.cost') }}: <b>{{ measure.cost | money({symbol: projectCurrencySymbol}) }}</b></p>
                             <p v-html="measure.description "></p>
                         </div>
                         <div class="comment-footer" v-if="measure.medias.length > 0">
                             <attach-icon fill="second-fill"></attach-icon>
                             <ul class="comment-attachments">
-                                <li v-for="media in measure.medias"><a href="#" :title="translateText('message.download_attachment')"></a></li>
+                                <li v-for="media in measure.medias"><a href="#" :title="translate('message.download_attachment')"></a></li>
                             </ul>
                         </div>
 
@@ -241,7 +245,7 @@
                                             <b>{{ comment.responsibilityFullName }}</b>
                                         </div>
                                         <a href="#link-to-member-page" class="simple-link">@{{ comment.responsibilityUsername }}</a>
-                                        {{ translateText('message.commented') }} {{ moment(comment.createdAt).fromNow() }}
+                                        {{ translate('message.commented') }} {{ moment(comment.createdAt).fromNow() }}
                                     </div>
                                 </div>
                                 <div class="comment-body">
@@ -250,7 +254,7 @@
                                 <div class="comment-footer" v-if="comment.medias.length > 0">
                                     <attach-icon fill="second-fill"></attach-icon>
                                     <ul class="comment-attachments">
-                                        <li v-for="media in comment.medias"><a href="#" :title="translateText('message.download_attachment')"></a></li>
+                                        <li v-for="media in comment.medias"><a href="#" :title="translate('message.download_attachment')"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -271,8 +275,8 @@
                                     v-for="message in measureCommentValidationMessages.description"
                                     :message="message" />
                                 <div class="footer-buttons flex flex-space-between">
-                                    <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translateText('message.add_comment') }}</button>
-                                    <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translateText('message.close') }}</button>
+                                    <button @click="addMeasureComment(measure.id)" type="button" :data-target="'#measure-'+measure.id+'-new-comment'" :data-parent="'#measure-'+measure.id" aria-expanded="false" class="btn-rounded btn-auto btn-md second-bg">{{ translate('message.add_comment') }}</button>
+                                    <button type="button" :data-target="'#measure-'+measure.id+'-new-comment'" class="btn btn-rounded btn-empty btn-auto btn-md" data-toggle="collapse" :data-parent="'#measure-'+measure.id" aria-expanded="false">{{ translate('message.close') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -286,7 +290,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <input-field type="text" v-bind:label="translateText('placeholder.measure_title')" v-model="measureTitle" v-bind:content="measureTitle" />
+                            <input-field type="text" :label="translate('placeholder.measure_title')" v-model="measureTitle" :content="measureTitle" />
                             <error
                                 v-if="validationMessages.title && validationMessages.title.length"
                                 v-for="message in validationMessages.title"
@@ -322,7 +326,7 @@
                                     :message="message" />
                             </div>
                             <div class="col-md-4 text-right">
-                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translateText('button.add_new_measure') }}</a>
+                                <a @click="addMeasure()" class="btn-rounded btn-auto">{{ translate('button.add_new_measure') }}</a>
                             </div>
                         </div>
                     </div>
@@ -369,9 +373,6 @@ export default {
             'deleteProjectRisk',
             'editMeasure',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         moment: function(date) {
             return moment.utc(date).local();
         },
@@ -407,7 +408,13 @@ export default {
                 cost: this.measureCost,
                 responsibility: this.risk.responsibility,
             };
-            this.createRiskMeasure(data);
+            this.createRiskMeasure(data).then((response) => {
+                if (response.body && response.body.error) {
+                    return;
+                }
+
+                this.loadRisk();
+            });
         },
         deleteRisk: function() {
             this.deleteProjectRisk(this.$route.params.riskId);
@@ -429,10 +436,12 @@ export default {
                         if (response.body && response.body.error) {
                             const {messages} = response.body;
                             this.editMeasureValidationMessages = messages;
+                            return;
                         }
 
                         this.editMeasureValidationMessages = {};
                         this.showEditMeasureModal = false;
+                        this.loadRisk();
                     },
                     () => {
                         this.editMeasureValidationMessages = {};
@@ -491,6 +500,9 @@ export default {
 
             this.priority = priorityNames[type];
         },
+        loadRisk() {
+            this.getProjectRisk(this.$route.params.riskId);
+        },
     },
     computed: {
         ...mapGetters({
@@ -504,7 +516,7 @@ export default {
     created() {
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
         if (this.$route.params.riskId) {
-            this.getProjectRisk(this.$route.params.riskId);
+            this.loadRisk();
         }
     },
     data: function() {
