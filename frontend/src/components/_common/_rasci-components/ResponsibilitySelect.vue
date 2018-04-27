@@ -10,8 +10,7 @@
         active: activeElem === elementKey,
         last: last,
         'second-to-last': secondToLast,
-    }"  @click="handleClick" :key="elementKey"
-        @keydown.esc="closeModal">
+    }"  @click="handleClick" :key="elementKey">
         <li class="rasci-default">
             <span></span>
         </li>
@@ -75,9 +74,6 @@
             },
             onClick(value) {
                 this.$emit('input', value);
-            },
-            closeModal() {
-                console.log('closeModal');
             },
         },
         data() {
