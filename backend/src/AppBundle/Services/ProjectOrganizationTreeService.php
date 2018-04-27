@@ -87,8 +87,23 @@ class ProjectOrganizationTreeService
                 return $subteam->getSubteamMembers()->count() > 0;
             })
             ->map(function (Subteam $subteam) {
+                $manager = $subteam->getSubteamMembers()
+                    ->filter(function (SubteamMember $subteamMember) {
+                        return $subteamMember->getIsLead();
+                    })
+                    ->first()
+                ;
+
+                if (!$manager) {
+                    $manager = $subteam->getSubteamMembers()->first();
+                }
+
+                if (!$manager) {
+                    return [];
+                }
+
                 return $this->extractUserData(
-                    $subteam->getSubteamMembers()->first()->getUser(),
+                    $manager->getUser(),
                     [
                         'titles' => [
                             $this->translator->trans('roles.team_leader', [], 'messages'),
@@ -96,11 +111,24 @@ class ProjectOrganizationTreeService
                         ],
                         'children' => $subteam
                             ->getSubteamMembers()
+//                            ->filter(function (SubteamMember $subteamMember) use ($manager) {
+//                                return $subteamMember->getUser() && $subteamMember->getUser() !== $manager->getUser();
+//                            })
                             ->map(function (SubteamMember $subteamMember) {
-                                return $this->extractUserData($subteamMember->getUser());
+                                return $this->extractUserData(
+                                    $subteamMember->getUser(),
+                                    [
+                                        'titles' => [
+                                            $this->translator->trans('roles.team_member', [], 'messages'),
+                                        ],
+                                    ]
+                                );
                             }),
                     ]
                 );
+            })
+            ->filter(function (array $data) {
+                return count($data) > 0;
             })
             ->getValues()
         ;
