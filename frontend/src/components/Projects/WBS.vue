@@ -577,6 +577,7 @@ export default {
 
                     return this.diagonal(o, o);
                 })
+                .remove()
             ;
 
             nodes.forEach(d => {
