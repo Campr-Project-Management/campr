@@ -97,20 +97,6 @@ class BaseType extends AbstractType
                 ]
             )
             ->add(
-                'budget',
-                TextType::class,
-                [
-                    'required' => true,
-                    'constraints' => [
-                        new NotBlank(
-                            [
-                                'message' => 'not_blank.budget',
-                            ]
-                        ),
-                    ],
-                ]
-            )
-            ->add(
                 'costSavings',
                 TextType::class,
                 [

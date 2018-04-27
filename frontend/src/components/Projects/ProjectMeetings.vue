@@ -84,13 +84,13 @@
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
                                 <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
-                                    <div class="avatars collapse in" id="m1" v-if="meeting.meetingParticipants.length > 0">
+                                    <div class="avatars collapse in" v-if="meeting.meetingParticipants.length > 0">
                                         <div>
-                                            <span v-for="(participant, index) in meeting.meetingParticipants"
+                                            <span v-for="(participant, index) in participants(meeting)"
                                                 :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
-                                            <button type="button" data-toggle="collapse" data-target="#m1" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
+                                            <button type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']"><span v-if="!showMore[meeting.id]" @click="setShowMore(meeting.id, true)" class="more">{{ translateText('message.more') }} +</span><span v-if="showMore[meeting.id]" @click="setShowMore(meeting.id, false)" class="less">{{ translateText('message.less') }} -</span></button>
                                         </div>
                                     </div>
                                 </td>
@@ -257,6 +257,17 @@ export default {
             this.sendMeetingNotifications(this.meetingId);
             this.showNotificationModal = false;
         },
+        participants(meeting) {
+            if (this.showMore[meeting.id]) {
+                return meeting.meetingParticipants;
+            } else {
+                return meeting.meetingParticipants.slice(0, 3);
+            }
+        },
+        setShowMore(meetingId, value) {
+            this.showMore[meetingId] = value;
+            this.$forceUpdate();
+        },
     },
     created() {
         this.getProjectMeetings({
@@ -287,6 +298,7 @@ export default {
             date: null,
             startTime: null,
             endTime: null,
+            showMore: {},
         };
     },
 };
