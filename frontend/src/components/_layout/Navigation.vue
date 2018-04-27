@@ -28,7 +28,7 @@
                 </ul>
             </div>
             <p class="user-message">{{ message.hi }}, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
-            <img class="user-avatar" :src="userAvatar" :alt="user.name"/>
+            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + userAvatar + ')' }"></div>
             <!--TODO: Further implementation of notifications-->
             <!--<a class="notifications" href="">-->
                 <!--<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"-->
@@ -116,75 +116,78 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_common';
-  @import '../../css/_variables';
+    @import '../../css/_common';
+    @import '../../css/_variables';
 
-  svg {
-    stroke: $lightColor;
-  }
-
-  header {
-    height: 80px;
-    border-bottom: 1px solid $darkColor;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    color: $lightColor;
-  }
-
-  .project-title {
-      p {
-        text-transform: uppercase;
-        color: $middleColor;
-        font-size: 8px;
-        line-height: 12px;
-        margin-top: 4px;
-      }
-
-      h4 {
-        text-transform: uppercase;
-        color: $lighterColor;
-        font-size: 14px;
-        margin-top: 0;
-      }
-  }
-
-  .menu-toggler {
-    width: 34px;
-    cursor: pointer;
-    text-align: right;
-    padding-top: 10px;
-  }
-
-  .user-message {
-    text-transform: uppercase;
-    margin: 0 30px 0 0;
-    line-height: 45px;
-    font-size: 12px;
-    letter-spacing: 1.2px;
-  }
-
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: block;
-    margin-right: 20px;
-    object-fit: cover;
-  }
-
-  .notifications {
-    position: relative;
-    display: block;
-    width: 50px;
-    margin-right: 7px;
-    padding-top: 8px;
-
-    .notification-balloon {
-      right: 5px;
-      top: -5px;
-      font-size: 11px;
+    svg {
+        stroke: $lightColor;
     }
-  }
+
+    header {
+        height: 80px;
+        border-bottom: 1px solid $darkColor;
+        padding: 20px 0;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        color: $lightColor;
+    }
+
+    .project-title {
+        p {
+            text-transform: uppercase;
+            color: $middleColor;
+            font-size: 8px;
+            line-height: 12px;
+            margin: 4px 0 10px;
+        }
+
+        h4 {
+            text-transform: uppercase;
+            color: $lighterColor;
+            font-size: 14px;
+            margin-top: 0;
+        }
+    }
+
+    .menu-toggler {
+        width: 34px;
+        cursor: pointer;
+        text-align: right;
+        padding-top: 10px;
+    }
+
+    .user-message {
+        text-transform: uppercase;
+        margin: 0 30px 0 0;
+        line-height: 45px;
+        font-size: 12px;
+        letter-spacing: 1.2px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        display: block;       
+        margin: 0 20px 0 0;
+        top: 0;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
+    }
+
+    .notifications {
+        position: relative;
+        display: block;
+        width: 50px;
+        margin-right: 7px;
+        padding-top: 8px;
+
+        .notification-balloon {
+            right: 5px;
+            top: -5px;
+            font-size: 11px;
+        }
+    }
 </style>

@@ -3,8 +3,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_opportunity') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteOpportunity()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteOpportunity()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showEditMeasureModal" @close="showEditMeasureModal = false">
@@ -44,12 +44,12 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
 
-        <div class="col-md-6 col-md-push-6">
+        <div class="col-lg-5 col-lg-push-7">
             <!-- /// Project Opportunities /// -->
             <div class="ro-grid-wrapper clearfix">
                 <!-- /// Project Opportunities Grid /// -->
@@ -93,7 +93,7 @@
             </div>
             <!-- /// End Project Risks Summary /// -->
         </div>
-        <div class="col-md-6 col-md-pull-6">
+        <div class="col-lg-7 col-lg-pull-5">
             <div class="page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -138,10 +138,8 @@
                     <div class="col-md-12">
                         <div class="status-info">
                             {{ translateText('message.created_on') }} {{ opportunity.createdAt | moment('DD.MM.YYYY') }}, {{ opportunity.createdAt | moment('HH:mm') }} {{ translateText('message.by') }}
-                            <div class="user-avatar">
-                                <img :src="opportunity.createdByAvatar" :alt="opportunity.createdByFullName"/>
-                                <b>{{ opportunity.createdByFullName }}</b>
-                            </div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + opportunity.createdByAvatar + ')' }"></div>
+                            <b>{{ opportunity.createdByFullName }}</b>
                         </div>
                     </div>
                 </div>
@@ -149,11 +147,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.responsible') }}:
-                            <div class="user-avatar">
-                                <img :src="opportunity.responsibilityAvatar" :alt="opportunity.responsibilityFullName"/>
-                                <b>{{ opportunity.responsibilityFullName }}</b>
-                            </div>
+                            {{ translateText('message.responsible') }}:                             
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + opportunity.responsibilityAvatar + ')' }"></div>
+                            <b>{{ opportunity.responsibilityFullName }}</b>
                         </div>
                     </div>
                 </div>
@@ -207,10 +203,8 @@
                     <div class="comment">
                         <div class="comment-header flex flex-space-between flex-v-center">
                             <div>
-                                <div class="user-avatar">
-                                    <img :src="measure.responsibilityAvatar" :alt="measure.responsibilityFullName"/>
-                                    <b>{{ measure.responsibilityFullName }}</b>
-                                </div>
+                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + measure.responsibilityAvatar + ')' }"></div>
+                                <b class="uppercase">{{ measure.responsibilityFullName }}</b>
                                 <a href="#link-to-member-page" class="simple-link">@{{ measure.responsibilityUsername }}</a>
                                 {{ translateText('message.added_a_measure') }} {{ moment(measure.createdAt).fromNow() }} | {{ translateText('message.edited') }} {{ moment(measure.updatedAt).fromNow() }}
                             </div>
@@ -236,10 +230,8 @@
                             <div class="comment" v-for="comment in measure.comments">
                                 <div class="comment-header flex flex-space-between flex-v-center">
                                     <div>
-                                        <div class="user-avatar">
-                                            <img :src="comment.responsibilityAvatar" :alt="comment.responsibilityFullName"/>
-                                            <b>{{ comment.responsibilityFullName }}</b>
-                                        </div>
+                                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + comment.responsibilityAvatar + ')' }"></div>
+                                        <b class="uppercase">{{ comment.responsibilityFullName }}</b>
                                         <a href="#link-to-member-page" class="simple-link">@{{ comment.responsibilityUsername }}</a>
                                         {{ translateText('message.commented') }} {{ moment(comment.createdAt).fromNow() }}
                                     </div>
@@ -587,6 +579,20 @@ export default {
     @import '../../../css/_variables';
     @import '../../../css/_mixins';
     @import '../../../css/risks-and-opportunities/view';
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 5px;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        @include border-radius(50%);
+    }
 
     .ro-summary {
         .ro-very-high-priority {
