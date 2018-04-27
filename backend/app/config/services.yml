@@ -8,7 +8,6 @@ parameters:
             no-reply: "No Reply"
     adapters:
         placeholder.driver.local: "local_adapter"
-        placeholder.driver.dropbox: "dropbox_adapter"
 
 services:
     app.service.base_client:
@@ -262,6 +261,12 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Media }
+
+    app.repository.project:
+        class: AppBundle\Repository\ProjectRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Project }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:

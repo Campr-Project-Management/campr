@@ -11,15 +11,15 @@
                     v-model="editDepartmentManagers" />
             <br />
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded">{{ translateText('button.edit_department') }} +</a>
+                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{ translateText('button.edit_department') }} +</a>
             </div>
         </modal>
         <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
             <p class="modal-title">{{ translateText('message.delete_department') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedDepartment()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedDepartment()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -52,20 +52,20 @@
             />
             <br/>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded">{{ translateText('button.edit_subteam') }} +</a>
+                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{ translateText('button.edit_subteam') }} +</a>
             </div>
         </modal>
         <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
             <p class="modal-title">{{ translateText('message.delete_subteam') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedSubteam()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedSubteam()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="header">
                     <div>
                         <router-link :to="{name: 'project-organization'}" class="small-link">
@@ -84,7 +84,7 @@
 
                 <div v-if="currentTab === 'members'">
                     <div class="team-list">
-                        <scrollbar>
+                        <scrollbar class="customScrollbar">
                             <div class="scroll-wrapper">
                                 <table class="table table-striped table-responsive">
                                     <thead>
@@ -98,7 +98,7 @@
                                     <tbody>
                                         <tr v-for="user in usersCurrentList" :key="user.id">
                                             <td class="avatar text-center">
-                                                <div class="user-avatar-wrapper"><img :src="user.avatar || user.gravatar" /></div>
+                                                <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + (user.avatar || user.gravatar) + ')' }"></div>
                                             </td>
                                             <td>{{ user.firstName + ' ' + user.lastName }}</td>
                                             <td>{{ user.email }}</td>
@@ -111,27 +111,24 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="4">
-                                                <pagination
-                                                    :current-page="usersCurrentPage"
-                                                    :number-of-pages="usersNumberOfPages"
-                                                    v-on:change-page="changeUsersCurrentPage"
-                                                />
-                                            </td>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </scrollbar>
+
+                        <div class="flex flex-direction-reverse flex-v-center">
+                            <pagination
+                                :current-page="usersCurrentPage"
+                                :number-of-pages="usersNumberOfPages"
+                                v-on:change-page="changeUsersCurrentPage"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 <div v-if="currentTab === 'departments'">
                     <!-- /// Departments /// -->
                     <h3>{{ translateText('title.departments') }}</h3>
-                    <scrollbar>
+                    <scrollbar class="customScrollbar">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -149,9 +146,7 @@
 
                                     <td class="avatar">
                                         <div v-for="manager in department.managers">
-                                            <div class="avatar-image" v-tooltip.top-center="manager.userFullName">
-                                                <img v-bind:src="manager.userAvatar"/>
-                                            </div>
+                                            <div class="avatar-image" v-bind:style="{ backgroundImage: 'url(' + manager.userAvatar + ')' }" v-tooltip.top-center="manager.userFullName"></div>
                                         </div>
                                     </td>
                                     <td>{{ department.membersCount }}</td>
@@ -169,7 +164,6 @@
                             <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}" @click="changeDepartmentPage(page)">{{ page }}</span>
                         </div>
                         <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translateText('message.displaying') }} {{ projectDepartments.items.length }} {{ translateText('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
-
                     </div>
                     <!-- /// End Departments /// -->
 
@@ -198,7 +192,7 @@
                 <div v-if="currentTab === 'subteams'">
                     <!-- /// Subteams /// -->
                     <h3>{{ translateText('title.subteams') }}</h3>
-                    <scrollbar>
+                    <scrollbar class="customScrollbar">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -214,9 +208,7 @@
                                     <td>{{ subteam.name }}</td>
                                     <td class="avatar">
                                         <div v-for="member in subteam.subteamMembers">
-                                            <div v-if="member.isLead" class="avatar-image" v-tooltip.top-center="member.userName">
-                                                <img v-bind:src="member.userAvatar"/>
-                                            </div>
+                                            <div v-if="member.isLead" class="avatar-image" v-bind:style="{ backgroundImage: 'url(' + member.userAvatar + ')' }" v-tooltip.top-center="member.userName"></div>
                                         </div>
                                     </td>
                                     <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
@@ -570,29 +562,34 @@ export default {
     }
 
     .tabs {
-        margin-bottom: 0px !important;
-        border-bottom: 1px solid #646EA0;
+        margin: 0;
+        padding: 0;
+        border: none;
 
         li {
-            border-top: 1px solid #646EA0;
-            border-left: 1px solid #646EA0;
             display: inline-block;
-            padding: 0.5em;
-
-            &:last-child {
-                border-right: 1px solid #646EA0;
-            }
+            margin-right: 2px;
 
             button {
-                background: transparent;
+                background-color: rgba($lightColor, 0.25);
                 border: none;
                 outline: none;
                 text-transform: uppercase;
+                letter-spacing: 0.1em;
+                padding: 10px 15px;
+                @include transition(all, 0.2s, ease);
+            }
+
+            &:hover {
+                button {
+                    background-color: rgba($lightColor, 0.5);
+                }
             }
 
             &.active {
                 button {
-                    color: #5FC3A5;
+                    background-color: $secondColor;
+                    color: $darkColor;
                 }
             }
         }
@@ -609,9 +606,17 @@ export default {
         }
 
         .input-holder {
-            margin-bottom: 30px;
+            margin: 30px 0 0;
+
+            &:first-of-type {
+                margin-top: 0;
+            }
         }
 
+        .search {
+            margin-top: 30px;
+        }
+        
         .main-list .member {
             border-top: 1px solid $darkColor;
         }
@@ -652,11 +657,12 @@ export default {
             .avatar-image {
                 display: inline-block;
                 margin: 2px 5px 2px 0;
-
-                img {
-                    width: 30px;
-                    height: 30px;
-                }
+                width: 30px;
+                height: 30px;
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                @include border-radius(50%);
 
                 &:last-child {
                     margin-right: 0;

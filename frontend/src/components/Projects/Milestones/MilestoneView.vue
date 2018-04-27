@@ -4,12 +4,12 @@
             <modal v-if="showDeleteModal" @close="showDeleteModal = false">
                 <p class="modal-title">{{ translateText('message.delete_milestone') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="deleteMilestone()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMilestone()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 custom-col-md-6">
             <div class="view-milestone page-section">
                 <!-- /// Header /// -->
                 <div class="header flex flex-space-between">
@@ -67,7 +67,7 @@
                         <div class="col-md-6">
                             <h3>{{ translateText('label.responsible') }}</h3>
                             <div class="user-info">
-                                <img class="user-avatar" :src="milestone.responsibilityAvatar" alt=""/>
+                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + milestone.responsibilityAvatar + ')' }"></div>
                                 <span class="uppercase">
                                     {{ milestone.responsibilityFullName }}
                                     <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color">
@@ -157,6 +157,20 @@ export default {
 
     .btn-rounded {
         margin-left: 20px;
+    }
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        @include border-radius(50%);
     }
 
     .modal {

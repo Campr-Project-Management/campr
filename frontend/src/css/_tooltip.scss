@@ -2,65 +2,65 @@
 @import '_mixins';
 
 .tooltip {
-  display: none;
-  @include opacity(0);
-  @include transition(opacity, 0.2s, ease-in);
-  pointer-events: none;
-  z-index: 10000;
-  max-width: 220px;
-  text-align: center;
+    display: none;
+    @include opacity(0);
+    @include transition(opacity, 0.2s, ease-in);
+    pointer-events: none;
+    z-index: 10000;
+    max-width: 220px;
+    text-align: center;
 
-  .tooltip-content {
-    background-color: $secondColor;
-    color: $darkColor;
-    font-size: 10px;
-    padding: 10px 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    @include border-radius(3px);
-  }
-
-  &.tooltip-open-transitionend {
-    display: block;
-  }
-
-  &.tooltip-after-open {
-    @include opacity(1);
-  }
-
-  &.tooltip-target-attached-top {
-    padding-bottom: 5px;
-    margin-top: -8px;
-
-    &:after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 5px 5px 0 5px;
-      border-color: $secondColor transparent transparent transparent;
-      bottom: 0;
-      left: 50%;
-      margin-left: -5px;
+    .tooltip-content {
+        background-color: $secondColor;
+        color: $darkColor;
+        font-size: 10px;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        @include border-radius(3px);
     }
-  }
 
-  &.tooltip-target-attached-bottom {
-    padding-top: 5px;
-    margin-top: 8px;
-
-    &:after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 5px 5px 5px;
-      border-color: transparent transparent $secondColor transparent;
-      top: 0;
-      left: 50%;
-      margin-left: -5px;
+    &.tooltip-open-transitionend {
+        display: block;
     }
-  }
+
+    &.tooltip-after-open {
+        @include opacity(1);
+    }
+
+    &.tooltip-target-attached-top {
+        padding-bottom: 5px;
+        margin-top: -8px;
+
+        &:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 5px 0 5px;
+            border-color: $secondColor transparent transparent transparent;
+            bottom: 0;
+            left: 50%;
+            margin-left: -5px;
+        }
+    }
+
+    &.tooltip-target-attached-bottom {
+        padding-top: 5px;
+        margin-top: 8px;
+
+        &:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 5px 5px 5px;
+            border-color: transparent transparent $secondColor transparent;
+            top: 0;
+            left: 50%;
+            margin-left: -5px;
+        }
+    }
 }

@@ -78,7 +78,7 @@ $(function () {
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Yes, delete it!",
-                    cancelButtonText: "No, cancel plx!",
+                    cancelButtonText: "No, cancel please!",
                     closeOnConfirm: false,
                     closeOnCancel: true
                 },

@@ -3,8 +3,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -33,16 +33,16 @@
             <hr class="double">
 
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
 
         <modal v-if="showNotificationModal" @close="showNotificationModal = false">
             <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -60,7 +60,7 @@
         </div>
 
         <div class="meetings-list">
-            <scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -84,13 +84,13 @@
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
                                 <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
-                                    <div class="avatars collapse in" id="m1" v-if="meeting.meetingParticipants.length > 0">
+                                    <div class="avatars collapse in" v-if="meeting.meetingParticipants.length > 0">
                                         <div>
-                                            <span v-for="(participant, index) in meeting.meetingParticipants"
+                                            <span v-for="(participant, index) in participants(meeting)"
                                                 :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
-                                            <button type="button" data-toggle="collapse" data-target="#m1" class="two-state collapsed"><span class="more">{{ translateText('message.more') }} +</span><span class="less">{{ translateText('message.less') }} -</span></button>
+                                            <button type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']"><span v-if="!showMore[meeting.id]" @click="setShowMore(meeting.id, true)" class="more">{{ translateText('message.more') }} +</span><span v-if="showMore[meeting.id]" @click="setShowMore(meeting.id, false)" class="less">{{ translateText('message.less') }} -</span></button>
                                         </div>
                                     </div>
                                 </td>
@@ -257,6 +257,17 @@ export default {
             this.sendMeetingNotifications(this.meetingId);
             this.showNotificationModal = false;
         },
+        participants(meeting) {
+            if (this.showMore[meeting.id]) {
+                return meeting.meetingParticipants;
+            } else {
+                return meeting.meetingParticipants.slice(0, 3);
+            }
+        },
+        setShowMore(meetingId, value) {
+            this.showMore[meetingId] = value;
+            this.$forceUpdate();
+        },
     },
     created() {
         this.getProjectMeetings({
@@ -287,6 +298,7 @@ export default {
             date: null,
             startTime: null,
             endTime: null,
+            showMore: {},
         };
     },
 };

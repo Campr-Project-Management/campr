@@ -9,7 +9,7 @@
             {{ translateText(activeTitle) }}
             <span class="caret"></span>
         </button>
-        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+        <scrollbar v-show="options.length > 0" :style="{height: scrollbarHeight + 5 + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right customScrollbar">
             <ul ref="ul">
                 <li v-for="option in options">
                     <a
@@ -107,56 +107,65 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_variables';
-  @import '../../css/_mixins';
+    @import '../../css/_variables';
+    @import '../../css/_mixins';
 
-  .dropdown {
-      .dropdown-menu {
-          position: absolute;
+    .dropdown {
+        .dropdown-menu {
+            position: absolute;
 
-          ul {
-              list-style: none;
-              margin: 0;
-              padding: 5px;
-          }
-      }
-  }
-
-  .btn-primary {
-    background: $darkColor;
-    color: $lightColor;
-    border: none;
-    width: 200px;
-    text-transform: uppercase;
-    height: 40px;
-    padding: 0 35px 0 20px;
-    font-size: 11px;
-    line-height: 43px;
-    letter-spacing: 0.1em;
-    text-align: left;
-    position: relative;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    @include border-radius(0);
-
-    @media screen and (max-width: 1440px) {
-      width: 120px;
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
     }
 
-    .caret {
-      right: 20px;
-      top: 18px;
-      position: absolute;
+    .btn-primary {
+        background: $darkColor;
+        color: $lightColor;
+        border: none;
+        width: 200px;
+        text-transform: uppercase;
+        height: 40px;
+        padding: 0 35px 0 20px;
+        font-size: 11px;
+        line-height: 43px;
+        letter-spacing: 0.1em;
+        text-align: left;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @include border-radius(0);
+
+        .caret {
+            right: 20px;
+            top: 18px;
+            position: absolute;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+
+        &:hover,
+        &:focus {
+            background: $middleColor;
+            border-color: $darkColor;
+        }
     }
 
-    &:focus {
-      outline: 0;
-    }
-  }
+    .btn-primary.active, .btn-primary:active,
+    .open > .dropdown-toggle.btn-primary {
+        background-color: $middleColor;
+        border-color: $darkColor;
 
-  .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-    background-color: $darkColor;
-    border-color: $darkColor;
-  }
+        &:hover,
+        &:focus {
+            background-color: $middleColor;
+            border-color: $darkColor;
+        }
+    }
 </style>

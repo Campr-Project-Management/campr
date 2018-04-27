@@ -4,8 +4,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translateText('message.delete_task') }}</p>
             <div class="flex flex-space-between">
-                <a @click.preventDefault="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a @click.preventDefault="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a @click.preventDefault="deleteSubtask(showDeleteModal)" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <!-- /// End Delete Subtask Modal /// -->
@@ -34,7 +34,7 @@
             @input="setModals"/>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
 
                <!-- /// Task Title and Label /// -->
                 <div class="header">
@@ -63,10 +63,8 @@
                         <div class="task-status-info">
                             <b>#{{ task.puid }}</b>
                             {{ translateText('message.created_on') }} {{ task.createdAt | moment('DD.MM.YYYY') }} {{ translateText('message.by') }}
-                            <div class="user-avatar">
-                                <img :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
-                                <b>{{ task.responsibilityFullName }}</b>
-                            </div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                            <b class="uppercase">{{ task.responsibilityFullName }}</b>
                             <span class="task-subtasks" v-if="task && task.children && task.children.length">
                                 &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ translateText('message.subtasks') }} {{ translateText('label.completed') }}
                             </span>
@@ -128,9 +126,7 @@
 
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
-                    <div class="user-avatar">
-                        <img :src="currentUserAvatar" :alt="currentUser.fullName"/>
-                    </div>
+                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentUserAvatar + ')' }"></div>
                     <div class="new-comment-body">
                         <editor
                             height="200px"
@@ -146,7 +142,7 @@
                 <!-- /// End New Task Description /// -->
             </div>
 
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <!-- /// Header Buttons /// -->
                 <div class="header-buttons">
                     <button
@@ -201,7 +197,7 @@
                         <div v-else>
                             {{ translateText('message.this_task_has_no_planning') }}
                         </div>
-                        <div>
+                        <div class="buttons">
                             <router-link
                                 v-if="task.phase"
                                 :to="{name: 'project-phases-edit-phase', params: {phaseId: task.phase}}"
@@ -222,55 +218,57 @@
 
                     <!-- /// Task Schedule /// -->
                     <h3>{{ translateText('message.task_schedule') }}</h3>
-                    <scrollbar class="table-wrapper">
-                        <table class="table table-small">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                    <th>{{ translateText('table_header_cell.start') }}</th>
-                                    <th>{{ translateText('table_header_cell.finish') }}</th>
-                                    <th>{{ translateText('table_header_cell.duration') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ translateText('label.base') }}</td>
-                                    <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td>
-                                        {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
-                                    </td>
-                                </tr>
-                                <tr class="column-warning">
-                                    <td>{{ translateText('label.forecast') }}</td>
-                                    <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td>
-                                        {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('label.actual') }}</td>
-                                    <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
-                                    <td v-else>-</td>
-
-                                    <td>
-                                        {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <scrollbar class="customScrollbar">
+                        <div class="scroll-wrapper">
+                            <table class="table table-small">
+                                <thead>
+                                    <tr>
+                                        <th>{{ translateText('table_header_cell.schedule') }}</th>
+                                        <th>{{ translateText('table_header_cell.start') }}</th>
+                                        <th>{{ translateText('table_header_cell.finish') }}</th>
+                                        <th>{{ translateText('table_header_cell.duration') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ translateText('label.base') }}</td>
+                                        <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td>
+                                            {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
+                                        </td>
+                                    </tr>
+                                    <tr class="column-warning">
+                                        <td>{{ translateText('label.forecast') }}</td>
+                                        <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td>
+                                            {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ translateText('label.actual') }}</td>
+                                        <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
+                                        <td v-else>-</td>
+                            
+                                        <td>
+                                            {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </scrollbar>
                     <div v-for="(dependancy, index) in task.dependencies"
                          :key="index"
@@ -300,56 +298,58 @@
 
                     <!-- /// Task Internal Costs /// -->
                     <h3>{{ translateText('message.internal_costs') }}</h3>
-                    <scrollbar class="table-wrapper">
-                        <table class="table table-small">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('table_header_cell.resource') }}</th>
-                                    <th>{{ translateText('label.daily_rate') }}</th>
-                                    <th>{{ translateText('label.qty') }}</th>
-                                    <th>{{ translateText('label.days') }}</th>
-                                    <th>{{ translateText('message.total') }}</th>
-                                    <th>{{ translateText('placeholder.actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(item, index) in editableData.internalCosts" :key="index">
-                                    <td>{{ item.resourceName }}</td>
-                                    <td>{{ item.rate | money }}</td>
-                                    <td>{{ item.quantity | formatNumber }}</td>
-                                    <td>{{ item.duration | formatNumber }}</td>
-                                    <td><b>{{ item.total | money }}</b></td>
-                                    <td>
-                                        <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                        <button
-                                            @click="initDeleteInternalCostModal(item)"
-                                            type="button"
-                                            class="btn-icon">
-                                            <delete-icon fill="danger-fill"></delete-icon>
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
-                                    <td colspan="2"><b>{{ task.internalCostTotal | money }}</b></td>
-                                </tr>
-                                <tr class="column-warning">
-                                    <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b>{{ task.internalForecastCost | money }}</b></td>
-                                    <td>
-                                        <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b>{{ task.internalActualCost | money }}</b></td>
-                                    <td>
-                                        <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <scrollbar class="customScrollbar">
+                        <div class="scroll-wrapper">
+                            <table class="table table-small">
+                                <thead>
+                                    <tr>
+                                        <th>{{ translateText('table_header_cell.resource') }}</th>
+                                        <th>{{ translateText('label.daily_rate') }}</th>
+                                        <th>{{ translateText('label.qty') }}</th>
+                                        <th>{{ translateText('label.days') }}</th>
+                                        <th>{{ translateText('message.total') }}</th>
+                                        <th>{{ translateText('placeholder.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in editableData.internalCosts" :key="index">
+                                        <td>{{ item.resourceName }}</td>
+                                        <td>{{ item.rate | money }}</td>
+                                        <td>{{ item.quantity | formatNumber }}</td>
+                                        <td>{{ item.duration | formatNumber }}</td>
+                                        <td><b>{{ item.total | money }}</b></td>
+                                        <td>
+                                            <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                            <button
+                                                @click="initDeleteInternalCostModal(item)"
+                                                type="button"
+                                                class="btn-icon">
+                                                <delete-icon fill="danger-fill"></delete-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                            
+                                    <tr>
+                                        <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
+                                        <td colspan="2"><b>{{ task.internalCostTotal | money }}</b></td>
+                                    </tr>
+                                    <tr class="column-warning">
+                                        <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
+                                        <td><b>{{ task.internalForecastCost | money }}</b></td>
+                                        <td>
+                                            <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
+                                        <td><b>{{ task.internalActualCost | money }}</b></td>
+                                        <td>
+                                            <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
@@ -368,73 +368,75 @@
 
                     <!-- /// Task External Costs /// -->
                     <h3>{{ translateText('message.external_costs') }}</h3>
-                    <scrollbar class="table-wrapper">
-                        <table class="table table-small">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('placeholder.description') }}</th>
-                                    <th>{{ translateText('label.qty') }}</th>
-                                    <th>{{ translateText('table_header_cell.unit') }}</th>
-                                    <th>{{ translateText('label.external_cost_unit_rate') }}</th>
-                                    <th>{{ translateText('message.capex') }}</th>
-                                    <th>{{ translateText('message.total') }}</th>
-                                    <th>{{ translateText('placeholder.actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(cost, index) in editableData.externalCosts" :key="index">
-                                    <td>{{ cost.name }} </td>
-                                    <td>{{ cost.quantity | formatNumber }}</td>
-                                    <td>{{ cost.unit }}</td>
-                                    <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
-                                    <td>
-                                        <switch-field
-                                                @input="onUpdateCostExpenseType(cost)"
-                                                :true-value="0"
-                                                :false-value="1"
-                                                v-model.number="cost.expenseType" />
-                                    </td>
-                                    <td><b>{{ itemTotal(cost) | formatMoney }}</b></td>
-                                    <td>
-                                        <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
-                                        <button
-                                            data-target="#logistics-delete-modal"
-                                            data-toggle="modal"
-                                            @click="initDeleteExternalCostModal(cost)"
-                                            type="button"
-                                            class="btn-icon">
-                                            <delete-icon fill="danger-fill"></delete-icon>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
-                                    <td colspan="2">{{ task.externalCostCAPEXTotal | money }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
-                                    <td colspan="2">{{ task.externalCostOPEXTotal | money }}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
-                                    <td colspan="2"><b> {{ task.externalCostTotal | money }}</b></td>
-                                </tr>
-                                <tr class="column-warning">
-                                    <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                    <td><b>{{ task.externalForecastCost | money }}</b></td>
-                                    <td>
-                                        <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    </td>
-                                </tr>
-                                <tr class="column-alert">
-                                    <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                    <td><b>{{ task.externalActualCost | money }}</b></td>
-                                    <td>
-                                        <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <scrollbar class="customScrollbar">
+                        <div class="scroll-wrapper">
+                            <table class="table table-small">
+                                <thead>
+                                    <tr>
+                                        <th>{{ translateText('placeholder.description') }}</th>
+                                        <th>{{ translateText('label.qty') }}</th>
+                                        <th>{{ translateText('table_header_cell.unit') }}</th>
+                                        <th>{{ translateText('label.external_cost_unit_rate') }}</th>
+                                        <th>{{ translateText('message.capex') }}</th>
+                                        <th>{{ translateText('message.total') }}</th>
+                                        <th>{{ translateText('placeholder.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(cost, index) in editableData.externalCosts" :key="index">
+                                        <td>{{ cost.name }} </td>
+                                        <td>{{ cost.quantity | formatNumber }}</td>
+                                        <td>{{ cost.unit }}</td>
+                                        <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
+                                        <td>
+                                            <switch-field
+                                                    @input="onUpdateCostExpenseType(cost)"
+                                                    :true-value="0"
+                                                    :false-value="1"
+                                                    v-model.number="cost.expenseType" />
+                                        </td>
+                                        <td><b>{{ itemTotal(cost) | formatMoney }}</b></td>
+                                        <td>
+                                            <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
+                                            <button
+                                                data-target="#logistics-delete-modal"
+                                                data-toggle="modal"
+                                                @click="initDeleteExternalCostModal(cost)"
+                                                type="button"
+                                                class="btn-icon">
+                                                <delete-icon fill="danger-fill"></delete-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
+                                        <td colspan="2">{{ task.externalCostCAPEXTotal | money }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
+                                        <td colspan="2">{{ task.externalCostOPEXTotal | money }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
+                                        <td colspan="2"><b> {{ task.externalCostTotal | money }}</b></td>
+                                    </tr>
+                                    <tr class="column-warning">
+                                        <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
+                                        <td><b>{{ task.externalForecastCost | money }}</b></td>
+                                        <td>
+                                            <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="column-alert">
+                                        <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
+                                        <td><b>{{ task.externalActualCost | money }}</b></td>
+                                        <td>
+                                            <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </scrollbar>
                     <div class="flex flex-space-between flex-v-center margintop20">
                         <div></div>
@@ -1158,10 +1160,6 @@ export default {
     @import '../../../css/_mixins';
     @import '../../../css/common';
 
-    .btn-rounded {
-        margin-left: 10px;
-    }
-
     .page-section {
         .header {
             justify-content: flex-start;
@@ -1189,16 +1187,16 @@ export default {
         margin: 20px 0;
         text-align: right;
 
-        a {
-            margin-left: 20px;
+        .btn-rounded {
+            margin-left: 10px;
         }
     }
 
     .footer-buttons {
         margin: 20px 0 0;
 
-        a {
-            margin: 0 20px 0 0;
+        .btn-rounded {
+            margin: 0 10px 0 0;
         }
     }
 
@@ -1234,20 +1232,17 @@ export default {
     }
 
     .user-avatar {
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 5px 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        @include border-radius(50%);
     }
 
     p {
@@ -1363,6 +1358,16 @@ export default {
         }
     }
 
+    .buttons {
+        .btn-rounded {
+            margin: 0 0 10px 10px;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
     h3 {
         font-size: 16px;
         text-transform: uppercase;
@@ -1438,6 +1443,15 @@ export default {
 
     .task-label-holder {
         margin-bottom: 10px;
+
+        .btn-icon {
+            position: relative;
+            top: 5px;
+
+            svg {
+                width: 100%;
+            }
+        }
 
         &:last-child {
             margin: 0;
