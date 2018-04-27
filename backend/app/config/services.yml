@@ -263,6 +263,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\Media }
 
+    app.repository.project:
+        class: AppBundle\Repository\ProjectRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Project }
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder
