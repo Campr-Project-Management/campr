@@ -1,7 +1,7 @@
 <template>
     <div class="modal-mask modal">
         <div class="modal-wrapper">
-            <div class="modal-container">
+            <scrollbar class="modal-container customScrollbar">
                 <div class="modal-inner">
                     <a href="javascript:void(0)" class="modal-close" @click="$emit('close')">
                         <svg version="1.1" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28.8 28.8">
@@ -13,7 +13,7 @@
                     </a>
                     <slot></slot>
                 </div>
-            </div>
+            </scrollbar>
         </div>
     </div>
 </template>
@@ -48,18 +48,20 @@ export default {
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, .5);
-        display: table;
+        display: block;
         transition: opacity .3s ease;
     }
 
     .modal-wrapper {
-        display: table-cell;
+        display: block;
         vertical-align: middle;
     }
 
     .modal-container {
         width: 60%;
-        margin: 0 auto;
+        max-height: 80vh;
+        margin: 10vh auto 0;
+        overflow: auto;
         padding: 56px 30px;
         background-color: $mainColor;
         border-radius: 2px;

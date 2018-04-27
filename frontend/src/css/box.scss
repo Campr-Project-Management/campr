@@ -1,101 +1,106 @@
 @import '_variables.scss';
 
 .box {
-  font-weight: 300;
-  background: $darkColor;
-  padding: 20px;
-  color: $lighterColor;
-  letter-spacing: 1px;
-  margin: 0 0 30px;
-  position: relative;
-  height: 100%;
-
-  &.border-color-1 {
-    border-bottom: 4px solid $additionalColor1;
-  }
-  &.border-color-2 {
-    border-bottom: 4px solid $additionalColor2;
-  }
-  &.border-color-3 {
-    border-bottom: 4px solid $additionalColor3;
-  }
-  &.border-color-4 {
-    border-bottom: 4px solid $additionalColor4;
-  }
-  &.border-color-5 {
-    border-bottom: 4px solid $additionalColor5;
-  }
-
-  .box-header {
-    border-bottom: 1px solid $middleColor;
-    padding: 0 60px 13px 0;
+    font-weight: 300;
+    background: $darkColor;
+    padding: 20px;
+    color: $lighterColor;
+    letter-spacing: 1px;
     position: relative;
-  }
+    height: 100%;
+
+    &.border-color-1 {
+        border-bottom: 4px solid $additionalColor1;
+    }
+    &.border-color-2 {
+        border-bottom: 4px solid $additionalColor2;
+    }
+    &.border-color-3 {
+        border-bottom: 4px solid $additionalColor3;
+    }
+    &.border-color-4 {
+        border-bottom: 4px solid $additionalColor4;
+    }
+    &.border-color-5 {
+        border-bottom: 4px solid $additionalColor5;
+    }
+
+    .box-header {
+        border-bottom: 1px solid $middleColor;
+        padding: 0 60px 13px 0;
+        position: relative;
+    }
 }
 
 .column {
-  .box {
-    margin-bottom: 10px;
-  }
+    .task-box-wrapper {
+        margin-bottom: 10px;
+
+        &:last-child {
+            .task-box {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
 
 .icons {
-  display: flex;
-
-  .icon-holder {
     display: flex;
-    margin-right: 16px;
-    align-self: flex-end;
 
-    .number {
-      align-self: center;
+    .icon-holder {
+        display: flex;
+        margin-right: 16px;
+        align-self: flex-end;
+
+        .number {
+            align-self: center;
+        }
     }
-  }
 }
 
 table {
-  th {
-    color: $middleColor;
-    text-transform: uppercase;
-    font-weight: 400;
-    width: 100%;
-  }
+    th {
+        color: $middleColor;
+        text-transform: uppercase;
+        font-weight: 400;
+        width: 100%;
+    }
 
-  .odd {
-    background: $mainColor;
-  }
+    .odd {
+        background: $mainColor;
+    }
 
-  .even {
-    background: $fadeColor;
-  }
+    .even {
+        background: $fadeColor;
+    }
 }
 
 .new {
-  position: relative;
+    position: relative;
 
-  .tag {
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    border: 20px solid transparent;
-    border-left-color: $secondColor;
-    border-top-color: $secondColor;
+    .tag {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        border: 20px solid transparent;
+        border-left-color: $secondColor;
+        border-top-color: $secondColor;
 
-    span {
-      position: absolute;
-      font-size: 9px;
-      top: -11px;
-      transform: rotate(-45deg);
-      left: -17px;
-      text-transform: uppercase;
-      color: $secondDarkColor;
-      font-weight: 500;
+        span {
+            position: absolute;
+            font-size: 9px;
+            top: -11px;
+            transform: rotate(-45deg);
+            left: -17px;
+            text-transform: uppercase;
+            color: $secondDarkColor;
+            font-weight: 500;
+        }
     }
-  }
 }
 
 .widget {
-  .box {
-    background-color: $mainColor;
-  }
+    .box {
+        background-color: $mainColor;
+    }
 }
