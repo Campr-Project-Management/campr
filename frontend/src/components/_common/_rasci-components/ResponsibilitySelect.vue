@@ -68,7 +68,9 @@
         },
         methods: {
             handleClick() {
-                this.$emit('handleClick', this.key);
+                if (!this.disabled) {
+                    this.$emit('handleClick', this.key);
+                }
             },
             onClick(value) {
                 this.$emit('input', value);
