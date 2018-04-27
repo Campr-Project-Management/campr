@@ -3,8 +3,8 @@
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
             <p class="modal-title">{{ translate('message.delete_opportunity') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteOpportunity()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteOpportunity()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showEditMeasureModal" @close="showEditMeasureModal = false">
@@ -49,8 +49,8 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
             </div>
         </modal>
 
@@ -142,7 +142,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.created_on') }} {{ opportunity.createdAt | moment('DD.MM.YYYY') }}, {{ opportunity.createdAt | moment('HH:mm') }} {{ translateText('message.by') }}
+                            {{ translate('message.created_on') }} {{ opportunity.createdAt | moment('DD.MM.YYYY') }}, {{ opportunity.createdAt | moment('HH:mm') }} {{ translate('message.by') }}
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + opportunity.createdByAvatar + ')' }"></div>
                             <b>{{ opportunity.createdByFullName }}</b>
                         </div>
@@ -152,7 +152,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="status-info">
-                            {{ translateText('message.responsible') }}:                             
+                            {{ translate('message.responsible') }}:
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + opportunity.responsibilityAvatar + ')' }"></div>
                             <b>{{ opportunity.responsibilityFullName }}</b>
                         </div>
@@ -597,8 +597,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 5px;  
+        display: inline-block;
+        margin: 0 5px;
         position: relative;
         top: -2px;
         background-size: cover;
