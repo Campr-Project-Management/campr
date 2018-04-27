@@ -819,4 +819,19 @@ class ProjectUser
 
         return $subteamNames;
     }
+
+    public function hasRole($role)
+    {
+        if (!$this->projectRoles) {
+            return false;
+        }
+
+        return $this
+            ->projectRoles
+            ->filter(function (ProjectRole $projectRole) use ($role) {
+                return $projectRole->getName() === $role;
+            })
+            ->count() > 0
+        ;
+    }
 }
