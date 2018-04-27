@@ -11,8 +11,8 @@
         <modal v-if="showEmailModal" @close="showEmailModal = false">
             <p class="modal-title">{{ translateText('message.email_report') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -21,25 +21,22 @@
             <table class="table table-striped table-responsive">
                 <thead>
                     <tr>
-                        <th class="date-cell">{{ translateText('table_header_cell.date') }}</th>
-                        <th>{{ translateText('table_header_cell.created_by') }}</th>
+                        <th>{{ translateText('table_header_cell.date') }}</th>  
+                        <th class="text-center">{{ translateText('table_header_cell.created_by') }}</th>                      
                         <th>{{ translateText('table_header_cell.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="report in statusReports.items">
-                        <td class="date-cell">{{ report.createdAt | moment('DD.MM.YYYY') }} @ {{ report.createdAt | moment('H:m') }}</td>
-                        <td>
-                            <div class="avatar" v-tooltip.top-center="report.createdByFullName" :style="{ backgroundImage: 'url('+report.createdByAvatar+')' }"></div>
+                        <td>{{ report.createdAt | moment('DD.MM.YYYY') }} @ {{ report.createdAt | moment('H:m') }}</td>
+                        <td class="small-avatar text-center">
+                            <div class="user-avatar-wrapper" v-tooltip.top-center="report.createdByFullName" :style="{ backgroundImage: 'url('+report.createdByAvatar+')' }"></div>
                         </td>
                         <td>
-                            <div class="text-right">
-                                <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon>
-                                </router-link>
-                                <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
-                                <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
-                                <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
-                            </div>
+                            <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
+                            <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
+                            <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
+                            <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
                         </td>                                
                     </tr>
                 </tbody>

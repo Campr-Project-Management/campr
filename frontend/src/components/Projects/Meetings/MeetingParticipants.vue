@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="overflow-hidden">
-            <scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>

@@ -536,6 +536,11 @@ textarea {
     }
 }
 
+.custom-col-md-6 {
+    width: 100% !important;
+    max-width: 960px !important;
+}
+
 .datetime-picker {
     &.red input {
         background: $dangerColor;
@@ -874,6 +879,7 @@ hr {
     display: inline-block;
     white-space: nowrap;
     padding-bottom: 1em;
+    width: 100%;
 
     .table {
         width: auto;
@@ -1019,13 +1025,32 @@ hr {
     tr {
         th, td {
             &.avatar {
-                padding: 0;
+                padding: 0 30px;
+                box-sizing: content-box;
                 width: 46px;
 
                 .user-avatar-wrapper {
                     width: 46px;
-                    padding: 0 30px;
-                    box-sizing: content-box;
+                    height: 46px;
+                    background-size: cover;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    @include border-radius(50%);
+                }
+            }
+
+            &.small-avatar {
+                padding: 0 30px;
+                box-sizing: content-box;
+                width: 30px;
+
+                .user-avatar-wrapper {
+                    width: 30px;
+                    height: 30px;
+                    background-size: cover;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    @include border-radius(50%);
                 }
             }
 
@@ -1036,19 +1061,22 @@ hr {
             &.cell-auto {
                 width: auto;
             }
+
+            &:first-child {
+                &.avatar,
+                &.small-avatar {
+                    padding: 5px 0 5px 30px;
+                }
+            }
         }
     }
 
-    .avatar img {
-        width: 46px;
-        height: 46px;
-        @include border-radius(50%);
-    }
-
-    .small-avatar img {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
+    > tfoot {
+        > tr {
+            > td {
+                border: none;
+            }
+        }
     }
 }
 
