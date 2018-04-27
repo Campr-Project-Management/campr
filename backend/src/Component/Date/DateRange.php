@@ -48,11 +48,7 @@ class DateRange implements DateRangeInterface
     public function getDurationDays(): int
     {
         $start = $this->getStart();
-        $end = $this->getFinish();
-        if (!$end) {
-            $end = new \DateTime();
-        }
-
+        $end = $this->getFinish() ?? new \DateTime();
         if (!$start || $start > $end) {
             return 0;
         }
