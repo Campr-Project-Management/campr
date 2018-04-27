@@ -122,7 +122,7 @@ class CreateType extends BaseType
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
@@ -180,12 +180,12 @@ class CreateType extends BaseType
                 ],
             ])
             ->add('scheduledStartAt', DateType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
             ->add('scheduledFinishAt', DateType::class, [
-                'required' => false,
+                'required' => true,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
