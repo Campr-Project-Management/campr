@@ -69,9 +69,10 @@ const actions = {
      * Edit project phase
      * @param {function} commit
      * @param {array}    data
+     * @return {object}
      */
     editProjectOpportunity({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_opportunities_edit', {id: data.id}),
                 JSON.stringify(data)
@@ -104,9 +105,10 @@ const actions = {
      * Create opportunity measure
      * @param {function} commit
      * @param {array}    data
+     * @return {object}
      */
     createOpportunityMeasure({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_opportunities_create_measure', {id: data.opportunity}),
                 JSON.stringify(data)
@@ -119,6 +121,8 @@ const actions = {
                     commit(types.ADD_MEASURE_FOR_CURRENT_OPPORTUNITY, {measure});
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                 }
+
+                return response;
             }, (response) => {
             });
     },

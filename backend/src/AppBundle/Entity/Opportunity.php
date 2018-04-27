@@ -82,13 +82,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="budget", type="decimal", precision=25, scale=2, nullable=true)
-     */
-    private $budget;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="time_savings", type="decimal", precision=9, scale=2, nullable=true)
      */
     private $timeSavings;
@@ -321,30 +314,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getCostSavings()
     {
         return $this->costSavings;
-    }
-
-    /**
-     * Set budget.
-     *
-     * @param string $budget
-     *
-     * @return Opportunity
-     */
-    public function setBudget($budget)
-    {
-        $this->budget = $budget;
-
-        return $this;
-    }
-
-    /**
-     * Get budget.
-     *
-     * @return string
-     */
-    public function getBudget()
-    {
-        return $this->budget;
     }
 
     /**
@@ -696,6 +665,21 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getMeasures()
     {
         return $this->measures;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return float
+     */
+    public function getMeasuresTotalCost()
+    {
+        $cost = 0;
+        foreach ($this->getMeasures() as $measure) {
+            $cost += $measure->getCost();
+        }
+
+        return round($cost, 2);
     }
 
     /**
