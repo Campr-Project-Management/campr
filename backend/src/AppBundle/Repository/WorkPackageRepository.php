@@ -890,6 +890,7 @@ class WorkPackageRepository extends BaseRepository
             ->select('MIN(o.scheduledStartAt)')
             ->andWhere('o.type = :type and o.project = :project')
             ->andWhere($expr->isNotNull('o.scheduledStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
@@ -905,9 +906,12 @@ class WorkPackageRepository extends BaseRepository
     public function getProjectScheduledFinishAt(Project $project)
     {
         $createQueryBuilder = function () use ($project) {
-            return $this
-                ->createQueryBuilder('o')
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
+            return $qb
                 ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
                 ->setParameter('type', WorkPackage::TYPE_TASK)
             ;
@@ -949,6 +953,7 @@ class WorkPackageRepository extends BaseRepository
             ->select('MIN(o.actualStartAt)')
             ->andWhere('o.type = :type and o.project = :project')
             ->andWhere($expr->isNotNull('o.actualStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
@@ -964,9 +969,12 @@ class WorkPackageRepository extends BaseRepository
     public function getProjectActualFinishAt(Project $project)
     {
         $createQueryBuilder = function () use ($project) {
-            return $this
-                ->createQueryBuilder('o')
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
+            return $qb
                 ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
                 ->setParameter('type', WorkPackage::TYPE_TASK)
             ;
@@ -1008,6 +1016,7 @@ class WorkPackageRepository extends BaseRepository
             ->select('MIN(o.forecastStartAt)')
             ->andWhere('o.type = :type and o.project = :project')
             ->andWhere($expr->isNotNull('o.forecastStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
@@ -1023,9 +1032,13 @@ class WorkPackageRepository extends BaseRepository
     public function getProjectForecastFinishAt(Project $project)
     {
         $createQueryBuilder = function () use ($project) {
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
             return $this
                 ->createQueryBuilder('o')
                 ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
                 ->setParameter('type', WorkPackage::TYPE_TASK)
             ;
