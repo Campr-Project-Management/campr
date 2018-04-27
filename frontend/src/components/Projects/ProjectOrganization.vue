@@ -8,27 +8,26 @@
                 v-for="message in validationMessages.name"
                 :message="message" />
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
-            <br />
             <div class="members main-list">
                 <div class="member flex member-row"  v-for="item in distributionList">
-                    <img class="member-img" height="60" v-bind:src="item.userAvatar">
-                    <div class="info member-info">
+                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                    <div class="member-info">
                         <p class="title">{{ item.userFullName }}</p>
                         <p class="description">{{ item.projectRoleNames }}</p>
                     </div>
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded">{{ translateText('button.create_distribution') }} +</a>
+                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_distribution') }} +</a>
             </div>
         </modal>
 
         <modal v-if="showDeleteMemberModal" @close="showDeleteMemberModal = false">
             <p class="modal-title">{{ translateText('message.delete_team_member') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteMemberModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMember()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteMemberModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMember()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -49,11 +48,11 @@
                 <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg" @click="showWorkspaceMemberInviteModal = true">
                     {{ translateText('label.invite_workspace_member') }}
                 </a>
-                <a href="javascript:void(0)" class="btn-rounded btn-empty" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
+                <a href="javascript:void(0)" class="btn-rounded btn-empty btn-auto" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
             </div>
         </div>
         <div class="team-list">
-            <scrollbar>
+            <scrollbar class="customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -83,7 +82,7 @@
                         <tbody>
                             <tr v-for="item in projectUsers.items">
                                 <td class="avatar text-center">
-                                    <div class="user-avatar-wrapper"><img :src="item.userAvatar" /></div>
+                                    <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                                 </td>
                                 <td class="text-center switchers">
                                     <switches
@@ -342,9 +341,20 @@ export default {
         width: 600px;
     }
 
-    .actions .search input[type=text] {
-        width: 420px;
-        height: 40px;
+    .actions {
+        .search{
+            width: 420px;
+        }
+
+        .btn-rounded {
+            margin-left: 20px;
+        }
+
+        @media (max-width:1500px) {
+            .search {
+                width: auto;
+            }
+        }
     }
 </style>
 
@@ -367,8 +377,37 @@ export default {
             margin-bottom: 30px;
         }
 
-        .main-list .member {
-            border-top: 1px solid $darkColor;
+        .main-list {
+            margin-bottom: 30px;
+
+            .member {
+                border-top: 1px solid $darkColor;
+
+                .user-avatar {
+                    width: 60px;
+                    height: 60px;
+                    display: inline-block;
+                    margin: 0 30px 0 0;
+                    top: 0;
+                }
+
+                .member-info {
+                    p {
+                        margin: 0;
+                        text-transform: uppercase;                    
+                    }
+
+                    .title {
+                        margin: 10px 0 5px;
+                        letter-spacing: 0.2em;
+                    }
+
+                    .description {
+                        font-size: 0.875em;
+                        letter-spacing: 0.1em;
+                    }
+                }
+            }
         }
 
         .results {
@@ -602,11 +641,6 @@ export default {
         flex: 1;
     }
 
-    .member-info {
-        text-align: center;
-        flex: 6;
-    }
-
     .member-row {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -618,11 +652,6 @@ export default {
 
     .team-list {
         overflow: hidden;
-    }
-
-    .btn-rounded {
-        width: auto;
-        margin: 0 10px;
     }
 
     .btn-small {

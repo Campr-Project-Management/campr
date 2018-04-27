@@ -577,6 +577,7 @@ export default {
 
                     return this.diagonal(o, o);
                 })
+                .remove()
             ;
 
             nodes.forEach(d => {
@@ -720,7 +721,7 @@ export default {
         &.color-status-selector {
             min-height: initial !important;
             width: auto;
-            min-width: 100px;
+            min-width: 115px;
             display: block;
             background-color: #191E37;
 

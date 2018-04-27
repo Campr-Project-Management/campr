@@ -3,8 +3,8 @@
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
             <div class="box-header">
                 <div v-if="task.responsibility" class="user-info flex flex-v-center">
-                    <img class="user-avatar" :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
-                    <p>{{ task.responsibilityFullName }}</p>
+                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                    <p class="user-name">{{ task.responsibilityFullName }}</p>
                 </div>
                 <h2>
                     <router-link
@@ -47,14 +47,12 @@
                     <task-schedule-bar :task="task" title="message.schedule"/>
                     <task-cost-bar :task="task" title="message.cost"/>
                 </div>
-            </div>
+            </div>            
             <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor"
                        :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
-            <scrollbar class="task-content">
+            <scrollbar class="task-content customScrollbar">
                 <div v-html="task.content"></div>
             </scrollbar>
-
-
             <div class="info bottom" v-if="task">
                 <div class="icons">
                     <div class="icon-holder">
@@ -99,12 +97,11 @@
                     </div>
                 </div>
             </div>
-
-            <task-label-bar
-                    v-if="hasLabel()"
-                    :title="task.labelName"
-                    :color="task.labelColor" />
         </div>
+        <task-label-bar
+            v-if="hasLabel()"
+            :title="task.labelName"
+                :color="task.labelColor" />
     </div>
 </template>
 
