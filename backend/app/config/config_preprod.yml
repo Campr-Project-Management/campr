@@ -6,7 +6,7 @@ parameters:
     database_name: campr_preprod
     database_password: campr
     domain: preprod.campr.biz
-    uploads.root_folder: '%kernel.root_dir%/../../../../shared/web/uploads'
+    uploads.root_folder: '/var/www/%domain%/shared/web/uploads'
 
 #framework:
 #    validation:
