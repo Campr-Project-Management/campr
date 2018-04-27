@@ -4,8 +4,8 @@
             <div class="box-header">
                 <div>
                     <div v-if="task.responsibility" class="user-info flex flex-v-center">
-                        <img class="user-avatar" :src="task.responsibilityAvatar" :alt="task.responsibilityFullName"/>
-                        <p>{{ task.responsibilityFullName }}</p>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                        <p class="user-name">{{ task.responsibilityFullName }}</p>
                     </div>
                     <h2>
                         <router-link :to="{name: 'project-task-management-view', params: { id: task.project, taskId: task.id }}">
@@ -41,12 +41,11 @@
                 <p><span>{{ translate('message.status') }}:</span> {{ translate(task.workPackageStatusName) }}</p>
                 <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
             </div>
-
-            <task-label-bar
-                    v-if="hasLabel"
-                    :title="task.labelName"
-                    :color="task.labelColor" />
         </div>
+        <task-label-bar
+          v-if="hasLabel"
+          :title="task.labelName"
+          :color="task.labelColor" />
     </div>
 </template>
 
