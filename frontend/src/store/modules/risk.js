@@ -104,9 +104,10 @@ const actions = {
      * Create risk measure
      * @param {function} commit
      * @param {array}    data
+     * @return {object}
      */
     createRiskMeasure({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_risks_create_measure', {id: data.risk}),
                 JSON.stringify(data)
@@ -119,6 +120,8 @@ const actions = {
                     commit(types.ADD_MEASURE_FOR_CURRENT_RISK, {measure});
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                 }
+
+                return response;
             }, (response) => {
             });
     },
