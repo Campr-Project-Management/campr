@@ -19,6 +19,7 @@ import VTooltip from 'v-tooltip';
 import HumanizeDuration from './plugins/humanize-duration';
 import Numeral from './plugins/numeral';
 import DateFormat from './plugins/date-format';
+import Templating from './plugins/templating';
 import Rbac from './plugins/rbac';
 import Scrollbar from './components/_common/Scrollbar';
 
@@ -30,6 +31,7 @@ Vue.use(Translator);
 Vue.use(HumanizeDuration);
 Vue.use(Numeral);
 Vue.use(DateFormat);
+Vue.use(Templating);
 Vue.component(Scrollbar.name, Scrollbar);
 
 sync(store, router);
