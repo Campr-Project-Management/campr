@@ -113,4 +113,8 @@
         min-height: 160px;
         margin-bottom: 0;
     }
+    label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
