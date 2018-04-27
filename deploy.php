@@ -22,7 +22,6 @@ set('http_user', 'www-data');
 option('provision', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Run provision scripts on the server');
 option('reset-db', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Recreates empty DB on the server');
 option('key', 'k', \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Override private key');
-option('no-frontend-build', 'nfb', \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Skip the Vue frontend build');
 
 // Set environment
 set('use_relative_symlink', false);
@@ -251,9 +250,6 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend_and_ssr', function () {
-    if (input()->getOption('no-frontend-build')) {
-        return;
-    }
     run("echo '>cd {{release_path}}/frontend && yarn install --check-files && yarn run build>cd {{release_path}}/ssr && yarn install --check-files && yarn run build' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
