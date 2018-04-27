@@ -167,10 +167,10 @@ export default {
     },
     created() {
         this.loadRasci();
-        // window.addEventListener('keyup', this.closeRasciModal);
+        window.addEventListener('keyup', this.closeRasciModal);
     },
     destroyed() {
-        // window.removeEventListener('keyup', this.closeRasciModal);
+        window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
         return {
