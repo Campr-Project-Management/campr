@@ -7,10 +7,10 @@
         consulted: value === 'consulted',
         informed: value === 'informed',
         disabled: disabled,
-        active: active,
+        active: activeElem === elementKey,
         last: last,
         'second-to-last': secondToLast,
-    }" @click="!disabled && (active = !active)">
+    }"  @click="handleClick" :key="elementKey">
         <li class="rasci-default">
             <span></span>
         </li>
@@ -55,8 +55,23 @@
                 required: false,
                 default: false,
             },
+            activeElem: {
+                type: String,
+                required: false,
+                default: null,
+            },
+            elementKey: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         methods: {
+            handleClick() {
+                if (!this.disabled) {
+                    this.$emit('handleClick', this.key);
+                }
+            },
             onClick(value) {
                 this.$emit('input', value);
             },
