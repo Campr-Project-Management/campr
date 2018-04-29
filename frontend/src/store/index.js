@@ -5,6 +5,7 @@ import getters from './getters';
 import mutations from './mutations';
 import closeDownAction from './modules/close-down-action';
 import colorStatus from './modules/color_status';
+import projectColorStatus from './modules/project_color_status';
 import cost from './modules/cost';
 import customer from './modules/customer';
 import dashboard from './modules/dashboard';
@@ -77,6 +78,7 @@ export default new Vuex.Store({
     modules: {
         closeDownAction,
         colorStatus,
+        projectColorStatus,
         cost,
         customer,
         dashboard,
