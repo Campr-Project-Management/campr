@@ -53,7 +53,7 @@ class Project implements ProjectInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="project_color_status", type="string", length=255)
+     * @ORM\Column(name="project_color_status", nullable=true, type="string", length=255)
      */
     private $projectColorStatus;
 
