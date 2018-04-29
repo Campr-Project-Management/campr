@@ -90,7 +90,7 @@
                                                 :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
-                                            <button type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']"><span v-if="!showMore[meeting.id]" @click="setShowMore(meeting.id, true)" class="more">{{ translateText('message.more') }} +</span><span v-if="showMore[meeting.id]" @click="setShowMore(meeting.id, false)" class="less">{{ translateText('message.less') }} -</span></button>
+                                            <button type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])"><span v-if="!showMore[meeting.id]" class="more">{{ translateText('message.more') }} +</span><span v-if="showMore[meeting.id]" class="less">{{ translateText('message.less') }} -</span></button>
                                         </div>
                                     </div>
                                 </td>
