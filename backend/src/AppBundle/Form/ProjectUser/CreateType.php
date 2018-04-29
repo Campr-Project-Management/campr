@@ -21,7 +21,7 @@ class CreateType extends BaseCreateType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -52,10 +52,9 @@ class CreateType extends BaseCreateType
                     'translation_domain' => 'messages',
                     'query_builder' => function (EntityRepository $er) use ($project) {
                         $qb = $er->createQueryBuilder('p');
-
                         $qb
                             ->where('p.project = :project')
-                            ->setParameter('project', $project;
+                            ->setParameter('project', $project);
 
                         return $qb;
                     },
@@ -68,7 +67,6 @@ class CreateType extends BaseCreateType
                     'translation_domain' => 'messages',
                     'query_builder' => function (EntityRepository $er) use ($project) {
                         $qb = $er->createQueryBuilder('c');
-
                         $qb
                             ->where('c.project = :project')
                             ->setParameter('project', $project);
@@ -85,7 +83,6 @@ class CreateType extends BaseCreateType
                     'translation_domain' => 'messages',
                     'query_builder' => function (EntityRepository $er) use ($project) {
                         $qb = $er->createQueryBuilder('d');
-
                         $qb
                             ->where('d.project = :project')
                             ->setParameter('project', $project);
@@ -101,7 +98,6 @@ class CreateType extends BaseCreateType
                     'translation_domain' => 'messages',
                     'query_builder' => function (EntityRepository $er) use ($project) {
                         $qb = $er->createQueryBuilder('t');
-
                         $qb
                             ->where('t.project = :project')
                             ->setParameter('project', $project);
