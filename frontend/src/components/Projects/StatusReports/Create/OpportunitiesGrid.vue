@@ -12,11 +12,11 @@
                 <b>{{ value.top_opportunity.title }}</b>
 
                 <span class="ro-main-stats">|
-                    <b
-                            v-if="value.top_opportunity.priorityName"
-                            :class="value.top_opportunity.priorityName">
-                        {{ translate('message.priority') }}: {{ translate(`message.${value.top_opportunity.priorityName}`) }}
-                    </b>|
+                    <template v-if="value.top_opportunity.priorityName">
+                        <b :class="value.top_opportunity.priorityName">
+                            {{ translate('message.priority') }}: {{ translate(`message.${value.top_opportunity.priorityName}`) }}
+                        </b>|
+                    </template>
                     {{ translate('message.potential_savings') }}: {{ value.top_opportunity.potentialCostSavings | money({symbol: currency}) }} |
                     {{ translate('message.potential_time_savings') }}: {{ value.top_opportunity.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }} |
                     {{ translate('message.strategy') }}: {{ translate(value.top_opportunity.opportunityStrategyName) }} |
