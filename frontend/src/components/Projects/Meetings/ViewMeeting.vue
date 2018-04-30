@@ -542,6 +542,8 @@ export default {
                     avatar: item.userAvatar,
                     departments: item.userDepartmentNames,
                     isPresent: item.isPresent,
+                    inDistributionList: item.inDistributionList,
+                    meetingParticipantId: item.id,
                 });
             });
             this.lists = this.distributionLists.filter((item) => {
@@ -578,6 +580,9 @@ export default {
                             fullName: user.firstName + ' ' + user.lastName,
                             avatar: user.avatar ? user.avatar : user.gravatar,
                             departments: projectUser[0].projectDepartmentNames,
+                            isPresent: item.isPresent,
+                            inDistributionList: item.inDistributionList,
+                            meetingParticipantId: item.id,
                         });
                     }
                 });
