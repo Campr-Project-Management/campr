@@ -370,7 +370,7 @@ const routes = [
                 path: 'decisions',
                 component: ProjectDecisions,
                 name: 'project-decisions',
-                meta: {title: 'Decisions'},
+                meta: {title: 'Project Decisions'},
             },
             {
                 path: 'decisions/create-decision',
@@ -394,7 +394,7 @@ const routes = [
                 path: 'status-reports',
                 component: ProjectStatusReports,
                 name: 'project-status-reports',
-                meta: {title: 'Status Report'},
+                meta: {title: 'Project Status Reports'},
             },
             {
                 path: 'status-reports/create-status-report',
