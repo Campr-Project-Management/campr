@@ -202,6 +202,7 @@ message:
     back_to_risks_and_opportunities: Back to Risks & Opportunities
     total_tasks: Total tasks
     project_status: Project Status
+    project_condition: Project Condition
     project_schedule: Project Schedule
     approved_on: Approved On
     project_summary: Project Summary
@@ -1836,6 +1837,11 @@ todo_status:
     finished: Finished
     on_hold: On hold
     discontinued: Discontinued
+
+project_color_status: 
+    on_track: On track
+    warning: Warning
+    critical: Critical
 
 filter:
     clear: Clear filters
