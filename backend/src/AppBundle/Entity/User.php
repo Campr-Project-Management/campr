@@ -1880,19 +1880,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
-     * Returns company id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("company")
-     *
-     * @return string
-     */
-    public function getCompanyId()
-    {
-        return $this->company ? $this->company->getId() : null;
-    }
-
-    /**
      * Returns company name.
      *
      * @Serializer\VirtualProperty()
