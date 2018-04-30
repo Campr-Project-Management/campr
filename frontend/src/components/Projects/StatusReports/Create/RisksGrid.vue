@@ -10,11 +10,11 @@
             <div class="ro-main ro-main-risk" v-if="value && value.top_risk">
                 <b>{{ value.top_risk.title }}</b>
                 <span class="ro-main-stats">|
-                    <b
-                            v-if="value.top_risk.priorityName"
-                            :class="value.top_risk.priorityName">
-                        {{ translate('message.priority') }}: {{ translate(`message.${value.top_risk.priorityName}`) }}
-                    </b>|
+                    <template v-if="value.top_risk.priorityName">
+                        <b :class="value.top_risk.priorityName">
+                            {{ translate('message.priority') }}: {{ translate(`message.${value.top_risk.priorityName}`) }}
+                        </b>|
+                    </template>
                     {{ translate('message.potential_savings') }}: {{ value.top_risk.potentialCost | money({symbol: currency}) }} |
                     {{ translate('message.potential_time_savings') }}: {{ value.top_risk.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
                     {{ translate('message.strategy') }}: {{ translate(value.top_risk.riskStrategyName) }} |
