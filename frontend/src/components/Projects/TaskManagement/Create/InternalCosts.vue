@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
-                            :title="label.resource"
+                            :title="translate('label.cost_item')"
                             :options="resourcesForSelect"
                             :value="{key: item.resource}"
                             @input="onItemUpdate('resource', index, $event)" />
@@ -196,7 +196,6 @@ export default {
                 base_total: this.translate('message.total'),
             },
             label: {
-                resource: this.translate('label.resource'),
                 daily_rate: this.translate('label.daily_rate'),
                 qty: this.translate('label.qty'),
                 days: this.translate('label.days'),
