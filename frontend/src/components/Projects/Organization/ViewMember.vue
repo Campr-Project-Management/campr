@@ -31,7 +31,7 @@
                     <div class="member-details">
                         <div class="member-info">
                             <p>{{ translateText('message.role') }}: <b v-if="member.projectRoleNames && member.projectRoleNames.length > 0" v-for="(role, index) in member.projectRoleNames">{{ translateText(role) }}<span v-if="index < member.projectRoleNames.length - 1">,</span></b><b v-else>-</b></p>
-                            <p>{{ translateText('message.company') }}: <b v-if="project.companyName">{{ project.companyName }}</b><b v-else>-</b></p>
+                            <p>{{ translateText('message.company') }}: <b v-if="member.userCompanyName">{{ member.userCompanyName }}</b><b v-else>-</b></p>
                             <p>{{ translateText('message.department') }}: <b v-if="member.projectDepartmentNames && member.projectDepartmentNames.length > 0" v-for="(department, index) in member.projectDepartmentNames">{{ department }}<span v-if="index < member.projectDepartmentNames.length - 1">,</span></b><b v-else>-</b></p>
                             <p>{{ translateText('message.subteam') }}: <b v-if="member.subteamNames && member.subteamNames.length > 0" v-for="(subteam, index) in member.subteamNames">{{ subteam }}<span v-if="index < member.subteamNames.length - 1">,</span></b><b v-else></b></p>
                         </div>
@@ -155,7 +155,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(['getDistributionLists', 'getProjectUser', 'addToDistribution', 'removeFromDistribution', 'updateProjectUser', 'getProjectById']),
+        ...mapActions(['getDistributionLists', 'getProjectUser', 'addToDistribution', 'removeFromDistribution', 'updateProjectUser']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -202,9 +202,6 @@ export default {
         if (this.$route.params.userId) {
             this.getProjectUser(this.$route.params.userId);
         }
-        if (this.$route.params.projectId) {
-            this.getProjectById(this.$route.params.projectId);
-        }
         this.getDistributionLists({projectId: this.$route.params.id});
     },
     watch: {
@@ -217,7 +214,6 @@ export default {
     computed: {
         ...mapGetters({
             member: 'currentMember',
-            project: 'project',
             distributionLists: 'distributionLists',
         }),
     },

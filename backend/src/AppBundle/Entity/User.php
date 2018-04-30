@@ -404,6 +404,18 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $locale = 'en';
 
     /**
+     * @var Company
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * })
+     */
+    private $company;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -1841,5 +1853,55 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->locale = $locale;
 
         return $this;
+    }
+
+    /**
+     * Set company.
+     *
+     * @param Company $company
+     *
+     * @return Project
+     */
+    public function setCompany(Company $company = null)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company.
+     *
+     * @return Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Returns company id.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("company")
+     *
+     * @return string
+     */
+    public function getCompanyId()
+    {
+        return $this->company ? $this->company->getId() : null;
+    }
+
+    /**
+     * Returns company name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("companyName")
+     *
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->company ? $this->company->getName() : null;
     }
 }
