@@ -391,11 +391,6 @@ class ProjectControllerTest extends BaseController
                         'username' => 'user5',
                         'roles' => ['team-member'],
                     ],
-                    [
-                        'id' => 6,
-                        'username' => 'user6',
-                        'roles' => [],
-                    ],
                 ],
             ],
         ];
