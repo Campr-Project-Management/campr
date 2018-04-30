@@ -19,6 +19,7 @@
         <pagination
             :current-page="activePage"
             :number-of-pages="pages"
+            :value="activePage"
             v-on:change-page="changePage"/>
     </div>
 </template>
