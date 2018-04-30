@@ -437,6 +437,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userCompanyName' => null,
                         ],
                     ],
                     'projectTeams' => [],
@@ -2595,6 +2596,7 @@ class ProjectControllerTest extends BaseController
                     'createdAt' => '',
                     'updatedAt' => null,
                     'userAvatar' => '',
+                    'userCompanyName' => null,
                 ],
             ],
         ];
