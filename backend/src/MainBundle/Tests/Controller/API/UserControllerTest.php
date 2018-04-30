@@ -94,7 +94,6 @@ class UserControllerTest extends BaseController
                     'signUpDetails' => [],
                     'locale' => 'en',
                     'avatar' => null,
-                    'companyName' => null,
                 ],
             ],
         ];
