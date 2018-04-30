@@ -123,7 +123,8 @@ class ProjectOrganizationTreeService
                                         ],
                                     ]
                                 );
-                            }),
+                            })
+                            ->getValues(),
                     ]
                 );
             })
