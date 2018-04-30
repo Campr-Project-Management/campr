@@ -364,6 +364,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 2,
                     'companyName' => 'company2',
+                    'projectColorStatus' => null,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -1929,6 +1930,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 1,
                     'companyName' => 'company1',
+                    'projectColorStatus' => null,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
