@@ -36,7 +36,7 @@
             <!-- /// Show errors modal/// -->
             <modal v-if="showErrorAlert" @close="showErrorAlert = false">
                 <p class="modal-title">{{ translateText('title.project_add_error') }}</p>
-                <dl v-for="field, key in validationMessages">
+                <dl v-for="(field, key) in validationMessages">
                     <dt class="ucwords">{{key}}:</dt>
                     <dd v-for="item in field" >{{item}}</dd>
                 </dl>
@@ -74,13 +74,13 @@ export default {
         Modal,
     },
     computed: {
-        ...mapGetters({
-            modules: 'modules',
-            project: 'project',
-            projectLoading: 'projectLoading',
-            localUser: 'localUser',
-            validationMessages: 'validationMessages',
-        }),
+        ...mapGetters([
+            'modules',
+            'project',
+            'projectLoading',
+            'localUser',
+            'validationMessages',
+        ]),
     },
     created() {
         if (!this.modules || !this.modules.length) {
@@ -107,11 +107,6 @@ export default {
             }
             this.modulesConfiguration = JSON.parse(JSON.stringify(this.modulesConfiguration));
         },
-        showErrorAlert(val) {
-            if (val === false) {
-                this.validationMessages = [];
-            }
-        },
         validationMessages(value) {
             if (_.isObject(value) && _.keys(value) && _.keys(value).length) {
                 this.showErrorAlert = true;
@@ -122,9 +117,6 @@ export default {
         ...mapActions(['createProject', 'getModules']),
         translateText(text) {
             return this.translate(text);
-        },
-        getModuleId(moduleKey) {
-            return moduleKey.replace(/_/g, '-');
         },
         moduleIsRecommended(moduleKey) {
             /* we will have to implement an algoritm for this*/
@@ -193,7 +185,6 @@ export default {
         previousStep: function(e) {
             e.preventDefault();
             this.saveStepState();
-            this.validationMessages = [];
             this.$router.push({name: 'projects-create-2'});
         },
         saveStepState: function() {
@@ -269,13 +260,4 @@ export default {
     .ucwords {
         text-transform: capitalize;
     }
-
-    /*.project-create-wrapper {*/
-        /*.error-modal{*/
-            /*display: none;*/
-            /*&.opened{*/
-                /*display: table;*/
-            /*}*/
-        /*}*/
-    /*}*/
 </style>
