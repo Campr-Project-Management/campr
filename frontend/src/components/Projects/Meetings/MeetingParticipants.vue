@@ -9,6 +9,7 @@
                             <th>{{ translateText('table_header_cell.team_member') }}</th>
                             <th>{{ translateText('table_header_cell.department') }}</th>
                             <th>{{ translateText('table_header_cell.present') }}</th>
+                            <th>{{ translateText('table_header_cell.distribution_list') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -25,8 +26,12 @@
                                 <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
                             </td>
                             <td class="text-center switchers">
-                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
-                                <switches @click.native="addIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
+                                <switches @click.native="updateIsPresent(participant)" :selected="setShowPresent(participant)" v-if="!createMeeting"></switches>
+                                <switches @click.native="addIsPresent(participant)" :selected="setShowPresent(participant)" v-if="createMeeting"></switches>
+                            </td>
+                            <td class="text-center switchers">
+                                <switches @click.native="updateInDistributionList(participant)" :selected="setShowDistributionList(participant)" v-if="!createMeeting"></switches>
+                                <switches @click.native="addInDistributionList(participant)" :selected="setShowDistributionList(participant)" v-if="createMeeting"></switches>
                             </td>
                         </tr>
                         </tbody>
@@ -60,7 +65,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['updateParticipantPresent']),
+        ...mapActions(['updateParticipant']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -69,11 +74,14 @@ export default {
             this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
         },
         updateIsPresent(participant) {
-            this.updateParticipantPresent({
-                meeting: this.$route.params.meetingId,
-                user: participant.id,
-                isPresent: !participant.isPresent,
-            });
+            this.showPresent[participant.id] = !this.showPresent[participant.id];
+
+            const id = participant.meetingParticipantId;
+            const data = {
+                isPresent: this.showPresent[participant.id],
+            };
+
+            this.updateParticipant({id, data});
         },
         addIsPresent(participant) {
             let meetingParticipant = {
@@ -81,11 +89,43 @@ export default {
             };
             this.$emit('input', meetingParticipant);
         },
+        updateInDistributionList(participant) {
+            this.showDistributionList[participant.id] = !this.showDistributionList[participant.id];
+
+            const id = participant.meetingParticipantId;
+            const data = {
+                inDistributionList: this.showDistributionList[participant.id],
+            };
+
+            this.updateParticipant({id, data});
+        },
+        addInDistributionList(participant) {
+            let meetingParticipant = {
+                user: participant.id,
+            };
+            this.$emit('input', meetingParticipant);
+        },
+        setShowPresent(participant) {
+            if (!this.showPresent.hasOwnProperty(participant.id)) {
+                this.showPresent[participant.id] = participant.isPresent;
+            }
+
+            return this.showPresent[participant.id];
+        },
+        setShowDistributionList(participant) {
+            if (!this.showDistributionList.hasOwnProperty(participant.id
+                || this.showDistributionList[participant.id] == 'undefined')) {
+                this.showDistributionList[participant.id] = participant.inDistributionList;
+            }
+
+            return this.showDistributionList[participant.id];
+        },
     },
     data() {
         return {
             participantsActivePage: 1,
-            showPresent: null,
+            showPresent: {},
+            showDistributionList: {},
         };
     },
 };
