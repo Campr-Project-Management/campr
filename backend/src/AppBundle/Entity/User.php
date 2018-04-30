@@ -1882,9 +1882,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * Returns company name.
      *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("companyName")
-     *
      * @return string
      */
     public function getCompanyName()
