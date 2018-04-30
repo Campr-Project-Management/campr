@@ -521,6 +521,19 @@ class ProjectUser
     }
 
     /**
+     * Returns user company name.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userCompanyName")
+     *
+     * @return string
+     */
+    public function getUserCompanyName()
+    {
+        return $this->user ? $this->user->getCompanyName() : null;
+    }
+
+    /**
      * Returns user phone.
      *
      * @Serializer\VirtualProperty()
