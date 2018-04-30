@@ -914,6 +914,8 @@ export default {
                         avatar: item.userAvatar,
                         departments: item.userDepartmentNames,
                         isPresent: item.isPresent,
+                        inDistributionList: item.inDistributionList,
+                        meetingParticipantId: item.id,
                     });
                 });
 
@@ -970,7 +972,7 @@ export default {
                     selectedList.push({'key': item.id, 'label': item.name});
                 });
                 this.details.distributionLists = selectedList;
-            };
+            }
             this.details.category = this.meeting.meetingCategory
                 ? {key: this.meeting.meetingCategory, label: this.meeting.meetingCategoryName}
                 : null
