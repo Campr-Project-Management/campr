@@ -27,7 +27,7 @@
                     <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
-            <modal v-if="rescheduleModal" @close="rescheduleModal = false">
+            <modal v-if="rescheduleModal" @close="rescheduleModal = false" v-bind:hasSpecificClass="true">
                 <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
                 <div class="form-group last-form-group">
                     <div class="col-md-4">
