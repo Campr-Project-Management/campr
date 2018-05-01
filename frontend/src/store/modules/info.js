@@ -2,6 +2,8 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import _ from 'lodash';
 
+export const INFO_VALIDATION_ORIGIN = 'info';
+
 const state = {
     info: null,
     infos: [],
@@ -53,10 +55,12 @@ const actions = {
                     if (response.body && response.body.error) {
                         const {messages} = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages});
+                        commit(types.SET_VALIDATION_ORIGIN, INFO_VALIDATION_ORIGIN);
                     } else {
                         const info = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_INFO, info);
+                        commit(types.SET_VALIDATION_ORIGIN, '');
                         commit(types.ADD_MEETING_INFO, {info});
                     }
 

@@ -33,7 +33,7 @@ const actions = {
                 if (response.body && response.body.error) {
                     const {messages} = response.body;
                     commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    commit(types.SET_VALIDATION_ORIGIN, {TODO_VALIDATION_ORIGIN});
+                    commit(types.SET_VALIDATION_ORIGIN, TODO_VALIDATION_ORIGIN);
                 } else {
                     let todo = response.data;
                     commit(types.ADD_MEETING_TODO, {todo});
