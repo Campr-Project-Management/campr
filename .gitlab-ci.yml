@@ -27,9 +27,9 @@ test:phpunit:
 deploy_qa:
   stage: deploy
   script:
-    - sudo bin/dep deploy qa-local --revision=$CI_COMMIT_SHA -vvv
+    - sudo bin/dep deploy qa-local -vvv
   environment:
-    name: qa/$CI_COMMIT_SHA
+    name: qa/develop
     url: https://qa.campr.biz
   when: manual
   #only:
