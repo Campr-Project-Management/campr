@@ -450,6 +450,10 @@
                                     v-bind:options="infoStatusesForDropdown"
                                     v-model="info.infoStatus"
                                     v-bind:currentOption="info.infoStatus" />
+                                 <error
+                                    v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.infoStatus && validationMessages.infoStatus.length"
+                                    v-for="message in validationMessages.infoStatus"
+                                    :message="message" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
@@ -457,6 +461,10 @@
                                     v-bind:options="infoCategoriesForDropdown"
                                     v-model="info.infoCategory"
                                     v-bind:currentOption="info.infoCategory" />
+                                <error
+                                    v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.infoCategory && validationMessages.infoCategory.length"
+                                    v-for="message in validationMessages.infoCategory"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -887,6 +895,9 @@ export default {
             decisionDescriptionEditor: null,
             todoDescriptionEditor: null,
             infoDescriptionEditor: null,
+            DECISION_VALIDATION_ORIGIN: 'decision',
+            TODO_VALIDATION_ORIGIN: 'todo',
+            INFO_VALIDATION_ORIGIN: 'info',
         };
     },
     watch: {

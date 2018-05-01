@@ -29,8 +29,8 @@ const actions = {
             ).then((response) => {
                 if (response.body && response.body.error) {
                     const {messages} = response.body;
+                    commit(types.SET_VALIDATION_ORIGIN, DECISION_VALIDATION_ORIGIN);
                     commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    commit(types.SET_VALIDATION_ORIGIN, {DECISION_VALIDATION_ORIGIN});
                 } else {
                     let decision = response.data;
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
