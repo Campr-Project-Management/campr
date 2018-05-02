@@ -139,9 +139,10 @@ class RiskControllerTest extends BaseController
             ->setCost(1)
             ->setDelay(1)
             ->setDelayUnit('days')
-            ->setPriority('risk-priority')
             ->setRiskStatus($status)
         ;
+
+        $risk->setPriority('risk-priority');
 
         $this->em->persist($risk);
         $this->em->flush();
