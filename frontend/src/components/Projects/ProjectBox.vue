@@ -14,7 +14,7 @@
                 <div class="info">
                     <p>
                         <span class="title">{{ translateText('message.started_on') }}:</span>
-                        <span class="data">{{ project.createdAt | moment('DD.MM.YYYY') }}</span>
+                        <span class="data">{{ baseDate(project) | moment('DD.MM.YYYY') }}</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.customer') }}:</span>
@@ -91,6 +91,12 @@ export default {
     },
     methods: {
         ...mapActions(['editProject']),
+        baseDate(project) {
+            return project && project.contracts && project.contracts.length
+                ? project.contracts[0].proposedStartDate
+                : '-'
+            ;
+        },
         showEditor: function() {
             this.showNoteEditor = true;
         },
