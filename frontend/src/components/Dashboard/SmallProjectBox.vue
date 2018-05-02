@@ -15,7 +15,7 @@
                 <div class="info">
                     <p>
                         <span class="title">{{ translateText('message.started_on') }}:</span>
-                        <span class="data">{{ project.date | moment('DD.MM.YYYY') }}</span>
+                        <span class="data">{{ baseDate(project) | moment('DD.MM.YYYY') }}</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.customer') }}:</span>
@@ -53,6 +53,12 @@ export default {
     },
     props: ['project'],
     methods: {
+        baseDate(project) {
+            return project && project.contracts && project.contracts.length
+                ? project.contracts[0].proposedStartDate
+                : '-'
+            ;
+        },
         translateText: function(text) {
             return this.translate(text);
         },
