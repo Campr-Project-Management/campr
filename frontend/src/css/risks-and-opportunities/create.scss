@@ -66,7 +66,7 @@
 }
 
 .ro-grid {
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
     padding: 0 30px 67px 67px;
     position: relative;
@@ -86,7 +86,7 @@
     white-space: nowrap;
     position: relative;
     pointer-events: none;
-    @include transition(background-color, 0.2s, ease);
+    @include transition(all, 0.3s, ease);
 
     span {
         display: inline-block;
@@ -133,6 +133,7 @@
             height: calc(100% + 10px);
             border: 10px solid $lighterColor;
             @include border-radius(50%);
+            @include transition(all, 0.3s, ease);
         }
     }
 }

@@ -54,7 +54,7 @@
                 <!-- /// End Project Risks /// -->
 
                 <!-- /// Project Risks Summary /// -->
-                <risk-summary :summaryData="risksOpportunitiesStats.risks"/>
+                <risk-summary :summary="risksOpportunitiesStats.risks"/>
                 <!-- /// End Project Risks Summary /// -->
             </div>
         </div>

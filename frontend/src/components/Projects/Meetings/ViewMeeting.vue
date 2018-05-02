@@ -23,8 +23,8 @@
             <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
                 <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
             <modal v-if="rescheduleModal" @close="rescheduleModal = false">
@@ -52,16 +52,16 @@
                 <hr class="double">
 
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                 </div>
             </modal>
 
             <modal v-if="showNotificationModal" @close="showNotificationModal = false">
                 <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -114,7 +114,7 @@
                 <!-- /// Meeting Agenda /// -->
                 <h3>{{ translateText('message.agenda') }}</h3>
                 <div class="overflow-hidden">
-                    <scrollbar class="table-wrapper">
+                    <scrollbar class="table-wrapper customScrollbar">
                         <div class="scroll-wrapper">
                             <table class="table table-striped table-responsive">
                                 <thead>
@@ -191,9 +191,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar">
-                                <img :src="decision.responsibilityAvatar" :alt="decision.responsibilityFullName"/>
-                            </div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                             <div>
                                 {{ translateText('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -223,9 +221,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar">
-                                <img :src="todo.responsibilityAvatar" :alt="todo.responsibilityFullName"/>
-                            </div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                             <div>
                                 {{ translateText('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -258,9 +254,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar">
-                                <img :src="info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar" :alt="info.responsibilityFullName"/>
-                            </div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
                             <div>
                                 {{ translateText('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -734,20 +728,16 @@ export default {
     } 
 
     .user-avatar {
-        display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        width: 30px;
+        height: 30px;
+        display: inline-block;        
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
     }
 
     p {

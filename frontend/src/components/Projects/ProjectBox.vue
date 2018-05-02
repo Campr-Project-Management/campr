@@ -14,7 +14,7 @@
                 <div class="info">
                     <p>
                         <span class="title">{{ translateText('message.started_on') }}:</span>
-                        <span class="data">{{ project.createdAt | moment('DD.MM.YYYY') }}</span>
+                        <span class="data">{{ baseDate(project) | moment('DD.MM.YYYY') }}</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.customer') }}:</span>
@@ -49,17 +49,21 @@
                 <span class="uppercase">{{ translateText('message.notes') }}</span>
                 <span @click="showEditor()"><pencil-icon></pencil-icon></span>
             </div>
-            <p v-html="project.shortNote"></p>
+            <scrollbar class="note-wrapper customScrollbar">
+                <p v-if="!showNoteEditor" v-html="project.shortNote" class="project-note"></p>
+            </scrollbar>
             <div v-if="showNoteEditor">
                 <editor
                     height="200px"
                     :id="`project-${project.id}`"
                     :toolbar="toolbar"
                     v-model="shortNote" />
-                <button @click="saveNote()" class="btn-rounded btn-auto">{{ translateText('button.save') }}</button>
-                <button @click="showNoteEditor = false" class="btn-rounded btn-auto btn-danger">
-                    {{ translateText('button.cancel') }}
-                </button>
+                <div class="buttons">
+                    <button @click="saveNote()" class="btn-rounded btn-auto btn-md">{{ translateText('button.save') }}</button>
+                    <button @click="showNoteEditor = false" class="btn-rounded btn-auto danger-bg btn-md">
+                        {{ translateText('button.cancel') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -87,6 +91,12 @@ export default {
     },
     methods: {
         ...mapActions(['editProject']),
+        baseDate(project) {
+            return project && project.contracts && project.contracts.length
+                ? project.contracts[0].proposedStartDate
+                : '-'
+            ;
+        },
         showEditor: function() {
             this.showNoteEditor = true;
         },
@@ -159,5 +169,5 @@ export default {
                 }
             }
         }
-    } 
+    }
 </style>

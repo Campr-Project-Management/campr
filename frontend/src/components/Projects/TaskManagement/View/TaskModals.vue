@@ -91,16 +91,16 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditExternalCostModal = false; $emit('input', showEditExternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveExternalCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditExternalCostModal = false; $emit('input', showEditExternalCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveExternalCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
         <modal v-if="showDeleteExternalCostModal" @close="showDeleteExternalCostModal = false; $emit('input', showDeleteExternalCostModal);">
             <p class="modal-title">{{ translateText('message.delete_external_cost') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteExternalCostModal = false; $emit('input', showDeleteExternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteExternalCost()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteExternalCostModal = false; $emit('input', showDeleteExternalCostModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteExternalCost()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showEditExternalForecastCostModal" @close="showEditExternalForecastCostModal = false; $emit('input', showEditExternalForecastCostModal);">
@@ -131,8 +131,8 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditExternalForecastCostModal = false; $emit('input', showEditExternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveExternalForecastCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditExternalForecastCostModal = false; $emit('input', showEditExternalForecastCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveExternalForecastCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
@@ -164,8 +164,8 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditExternalActualCostModal = false; $emit('input', showEditExternalActualCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveExternalActualCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditExternalActualCostModal = false; $emit('input', showEditExternalActualCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveExternalActualCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
@@ -231,16 +231,16 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditInternalCostModal = false; $emit('input', showEditInternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveInternalCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditInternalCostModal = false; $emit('input', showEditInternalCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveInternalCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
         <modal v-if="showDeleteInternalCostModal" @close="showDeleteInternalCostModal = false; $emit('input', showDeleteInternalCostModal);">
             <p class="modal-title">{{ translateText('message.delete_internal_cost') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteInternalCostModal = false; $emit('input', showDeleteInternalCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteInternalCost()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteInternalCostModal = false; $emit('input', showDeleteInternalCostModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteInternalCost()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showEditInternalForecastCostModal" @close="showEditInternalForecastCostModal = false; $emit('input', showEditInternalForecastCostModal);">
@@ -271,8 +271,8 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditInternalForecastCostModal = false; $emit('input', showEditInternalForecastCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveInternalForecastCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditInternalForecastCostModal = false; $emit('input', showEditInternalForecastCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveInternalForecastCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
@@ -304,8 +304,8 @@
                     </div>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditInternalActualCostModal = false; $emit('input', showEditInternalActualCostModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="saveInternalActualCost" class="btn-rounded">{{ translateText('message.yes') }} </a>
+                    <a href="javascript:void(0)" @click="showEditInternalActualCostModal = false; $emit('input', showEditInternalActualCostModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="saveInternalActualCost" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }} </a>
                 </div>
             </div>
         </modal>
@@ -314,8 +314,8 @@
         <modal v-if="showCloseTaskModal" @close="showCloseTaskModal = false; $emit('input', showCloseTaskModal);">
             <p class="modal-title">{{ translateText('message.confirm_close_task') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showCloseTaskModal = false; $emit('input', showCloseTaskModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="closeTask()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showCloseTaskModal = false; $emit('input', showCloseTaskModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="closeTask()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <!-- /// close task Modal /// -->
@@ -323,8 +323,8 @@
         <modal v-if="showOpenTaskModal" @close="showOpenTaskModal = false; $emit('input', showOpenTaskModal);">
             <p class="modal-title">{{ translateText('message.confirm_open_task') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showOpenTaskModal = false; $emit('input', showOpenTaskModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="openTask()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showOpenTaskModal = false; $emit('input', showOpenTaskModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="openTask()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <!-- /// Open task Modal /// -->

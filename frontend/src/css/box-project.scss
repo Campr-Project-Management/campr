@@ -1,6 +1,8 @@
 @import './_variables';
 
 .project-box {
+    padding: 20px;
+
     .box-header {
         border-bottom: 1px solid $middleColor;
         padding-bottom: 15px;
@@ -19,7 +21,7 @@
             top: 0;
             right: 0;
         }
-    } 
+    }
 }
 
 .info {
@@ -88,4 +90,18 @@
 
 .add-note {
     color: $secondColor;
+}
+
+.note-wrapper {
+    max-height: 120px;
+}
+
+.project-note {
+    margin: 0;
+}
+
+.ps--active-y {
+    .project-note {
+        padding-right: 10px;
+    }
 }
