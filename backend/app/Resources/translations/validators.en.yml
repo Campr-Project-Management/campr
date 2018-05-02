@@ -117,10 +117,10 @@ invalid:
         value_exceeds_parent_costs: Adding and extra cost of %cost_actual_value% will exced the total cost of the parent task.
     work_package:
         duration:  Adding and extra duration of %duration% will exceds the total duration of the parent task.
-        scheduled_start_at : Changing the Base Start date to %date% exceds the base start date of it's parent
-        scheduled_finish_at : Changing the Base Finish date to %date% exceds the base end date of it's parent
-        forecast_start_at : Changing the Forecast Start date to %date% exceds the forecast start date of it's parent
-        forecast_finish_at : Changing the Forecast Finish date to %date% exceds the forecast end date of it's parent
+        scheduled_start_at: Changing the Base Start date to %date% exceds the base start date of it's parent %parent%
+        scheduled_finish_at: Changing the Base Finish date to %date% exceds the base end date of it's parent %parent%
+        forecast_start_at: Changing the Forecast Start date to %date% exceds the forecast start date of it's parent %parent%
+        forecast_finish_at: Changing the Forecast Finish date to %date% exceds the forecast end date of it's parent %parent%
 
 format:
     color: 'Invalid color format. Should be a valid RGB color starting with a "#" and followed by 6 characters from a to z and 0 to 9. E.g.: #abc123, #123456, #ffffff'

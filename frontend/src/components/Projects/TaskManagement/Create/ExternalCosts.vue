@@ -85,6 +85,10 @@
                                     :value="item.expenseType"
                                     @input="onItemUpdate(index, 'expenseType', $event)"/>
                             <span class="note no-margin-bottom"><b>{{ message.note }}</b> {{ message.opex_capex_note }}</span>
+                            <error
+                                    v-if="getValidationMessages(index, 'expenseType').length"
+                                    v-for="message in getValidationMessages(index, 'expenseType')"
+                                    :message="message" />
                         </div>
                     </div>
                     <div class="col-md-2">

@@ -10,15 +10,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditObjectiveModal = false; $emit('input', showEditObjectiveModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveObjective()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditObjectiveModal = false; $emit('input', showEditObjectiveModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveObjective()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteObjectiveModal" @close="showDeleteObjectiveModal = false; $emit('input', showDeleteObjectiveModal);">
             <p class="modal-title">{{ translateText('message.delete_objective') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteObjectiveModal = false; $emit('input', showDeleteObjectiveModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteObjective()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteObjectiveModal = false; $emit('input', showDeleteObjectiveModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteObjective()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -50,15 +50,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditAgendaModal = false; $emit('input', showEditAgendaModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveAgenda()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditAgendaModal = false; $emit('input', showEditAgendaModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveAgenda()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteAgendaModal" @close="showDeleteAgendaModal = false; $emit('input', showDeleteAgendaModal);">
             <p class="modal-title">{{ translateText('message.delete_agenda') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteAgendaModal = false; $emit('input', showDeleteAgendaModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteAgenda()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteAgendaModal = false; $emit('input', showDeleteAgendaModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteAgenda()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -88,15 +88,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditDecisionModal = false; $emit('input', showEditDecisionModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveDecision()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditDecisionModal = false; $emit('input', showEditDecisionModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveDecision()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteDecisionModal" @close="showDeleteDecisionModal = false; $emit('input', showDeleteDecisionModal);">
             <p class="modal-title">{{ translateText('message.delete_decision') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteDecisionModal = false; $emit('input', showDeleteDecisionModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeetingDecision()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteDecisionModal = false; $emit('input', showDeleteDecisionModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeetingDecision()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -137,15 +137,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditTodoModal = false; $emit('input', showEditTodoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveTodo()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditTodoModal = false; $emit('input', showEditTodoModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveTodo()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteTodoModal" @close="showDeleteTodoModal = false; $emit('input', showDeleteTodoModal);">
             <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteTodoModal = false; $emit('input', showDeleteTodoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeetingTodo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteTodoModal = false; $emit('input', showDeleteTodoModal);" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeetingTodo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -201,15 +201,15 @@
                 </div>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditInfoModal = false; $emit('input', showEditInfoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="saveInfo()" class="btn-rounded">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showEditInfoModal = false; $emit('input', showEditInfoModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="saveInfo()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteInfoModal" @close="showDeleteInfoModal = false; $emit('input', showDeleteInfoModal);">
             <p class="modal-title">{{ translateText('message.delete_info') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteInfoModal = false; $emit('input', showDeleteInfoModal);" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeetingInfo()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteInfoModal = false; $emit('input', showDeleteInfoModal);" class="btn-rounded">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeetingInfo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
     </div>

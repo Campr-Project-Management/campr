@@ -2,11 +2,8 @@
     <div class="task-box box timeline-tooltip">
         <div class="box-header">
             <div class="user-info flex flex-v-center">
-                <img
-                        class="user-avatar"
-                        :src="item.responsibilityAvatar"
-                        :alt="translate('table_header_cell.responsible') + item.responsibilityFullName"/>
-                <p>{{ item.responsibilityFullName }}</p>
+                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.responsibilityAvatar + ')' }"></div>
+                <div class="user-name">{{ item.responsibilityFullName }}</div>
             </div>
             <h2>
                 <router-link to="" class="simple-link">{{ item.name }}</router-link>
@@ -115,7 +112,7 @@
 
 <style scoped lang="scss">
     @import '../../../css/_variables';
-    @import '../../../css/common';
+    @import '../../../css/_common';
 
     table {
         max-width: 400px;

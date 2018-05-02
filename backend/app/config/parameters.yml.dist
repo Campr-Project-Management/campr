@@ -40,16 +40,19 @@ parameters:
     activation_token_expiration_number: 1
     reset_token_expiration: P1D
     reset_token_expiration_number: 1
-    media_upload_folder: '%kernel.root_dir%/../../web/uploads/media'
+
+    #paths
+    uploads.root_folder: '%kernel.root_dir%/../../web/uploads'
+    media_upload_folder: '%uploads.root_folder%/media'
+    main.team.images_path: '%uploads.root_folder%/teams'
+    main.team.uri_prefix: /uploads/teams
+    main.project.images_path: '%uploads.root_folder%/projects'
+    main.project.uri_prefix: /uploads/projects
+    app.user.avatars_path: '%uploads.root_folder%/avatars'
+    app.user.uri_prefix: /uploads/avatars
     tests_import_folder: '%kernel.root_dir%/../../web/tests/import'
     media_upload_folder_test: '%kernel.root_dir%/../../web/uploads/tests'
-    main.team.uri_prefix: /uploads/teams
-    main.team.images_path: '%kernel.root_dir%/../../web/uploads/teams'
-    main.project.uri_prefix: /uploads/projects
-    main.project.images_path: '%kernel.root_dir%/../../web/uploads/projects'
-    uploads.root_folder: '%kernel.root_dir%/../../web/uploads'
-    app.user.uri_prefix: /uploads/avatars
-    app.user.avatars_path: '%kernel.root_dir%/../../web/uploads/avatars'
+
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
     app.pdf.google_chrome: '/usr/bin/xvfb-run /usr/bin/google-chrome'

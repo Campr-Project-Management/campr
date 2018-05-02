@@ -17,8 +17,8 @@
             <label :class="{ 'active': isActive }" @click="focusInput()">{{ placeholder }}</label>
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
-        <div class="results team" v-show="hasItems">
-            <scrollbar class="members">
+        <div class="results team" v-show="hasItems" :style="{bottom:resultsTeamBottom,top:resultsTeamTop}">
+            <scrollbar class="members customScrollbar">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
                         <input v-if="singleSelect" :id="'mid_' + item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
@@ -93,9 +93,11 @@ export default {
                 let windowInnerHeight = window.innerHeight;
 
                 if (windowInnerHeight - currentElementOffset < 260) {
-                    $(this.$el).find('.results.team').css('top', '-340px');
+                    this.resultsTeamBottom = '41px';
+                    this.resultsTeamTop = 'auto';
                 } else {
-                    $(this.$el).find('.results.team').css('top', '41px');
+                    this.resultsTeamBottom = 'auto';
+                    this.resultsTeamTop = '41px';
                 }
             }
         },
@@ -200,6 +202,8 @@ export default {
             minChars: 1,
             selectedUsers: [],
             usersList: [],
+            resultsTeamBottom: '',
+            resultsTeamTop: '',
             focused: false,
         };
     },
@@ -217,21 +221,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-    @import '../../css/page-section';
-    @import '../../css/_variables';
-    @import '../../css/_mixins.scss';
-
-    .modal .modal-inner {
-        width: 600px;
-    }
-
-    .actions .search input[type=text] {
-        width: 420px;
-        height: 40px;
-    }
-</style>
-
 <style scoped lang="scss">
     @import '../../css/_variables';
     @import '../../css/_mixins';
@@ -247,7 +236,15 @@ export default {
         }
 
         .input-holder {
-            margin-bottom: 30px;
+            margin: 30px 0 0;
+
+            &:first-of-type {
+                margin-top: 0;
+            }
+        }
+
+        .search {
+            margin-top: 30px;
         }
 
         .main-list .member {
@@ -283,8 +280,8 @@ export default {
             margin-top: 0;
 
             .footer {
-                margin: 0 -20px;
-                padding: 17px 20px 0 20px;
+                margin: 0;
+                padding: 17px 15px;
                 border-top: 1px solid $mainColor;
             }
 
@@ -319,8 +316,8 @@ export default {
         }
         .member-search-clear-button {
             position: absolute;
-            right: 0.25em;
-            top: 0.25em;
+            right: 20px;
+            top: 13px;
             font-size: 1.5em;
             color: $dangerColor;
             cursor: pointer;
@@ -338,10 +335,9 @@ export default {
         background: $darkColor;
         top: 40px;
         margin-top: 10px;
-        padding: 0 20px;
         max-height: 400px;
         z-index: 10;
-        box-shadow: 0 0 8px -2px #000;
+        box-shadow: 0 2px 20px -2px $blackColor;
 
         &.no-data {
             width: 100% !important;
@@ -350,8 +346,12 @@ export default {
         }
     }
 
+    .members {
+        padding: 0 15px 0;
+    }
+
     .member {
-        padding: 20px 0;
+        padding: 15px 0;
         border-top: 1px solid $mainColor;
 
         &:first-child {

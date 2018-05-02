@@ -24,7 +24,7 @@ class BaseType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.description',
+                        'message' => 'not_blank.objectives',
                     ]),
                 ],
             ])

@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 custom-col-md-6">
             <div class="create-phase page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">

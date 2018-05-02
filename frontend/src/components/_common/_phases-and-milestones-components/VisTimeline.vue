@@ -308,7 +308,7 @@ export default {
         background-color: transparent;
         @include border-radius(0);
         border: none;
-        @include box-shadow(0, 0, 30px, $darkColor);
+        @include box-shadow(0, 0, 20px, rgba($blackColor, 0.75));
         pointer-events: auto;
         display: inline-block;
 

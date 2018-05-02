@@ -4,6 +4,8 @@ namespace Component\WorkPackage\Calculator;
 
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Repository\WorkPackageRepository;
+use Component\Date\DateRange;
+use Component\Date\DateRangeInterface;
 use Component\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -27,9 +29,9 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
     /**
      * @param WorkPackage $workPackage
      *
-     * @return \DateTime[]
+     * @return DateRangeInterface
      */
-    public function calculate(WorkPackage $workPackage): array
+    public function calculate(WorkPackage $workPackage): DateRangeInterface
     {
         Assert::true($workPackage->isPhase(), 'Task is not a phase');
 
@@ -44,6 +46,6 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
             $finishAt = new \DateTime($finishAt);
         }
 
-        return [$startAt, $finishAt];
+        return new DateRange($startAt, $finishAt);
     }
 }

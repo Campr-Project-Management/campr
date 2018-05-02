@@ -56,7 +56,7 @@
 
         <!-- /// Tasks List /// -->
         <div class="tasks">
-            <scrollbar class="categories-scroll" :suppress-scroll-y="true">
+            <scrollbar class="categories-scroll customScrollbar" :suppress-scroll-y="true">
                 <div class="board-view">
                     {{ tasksByStatus }}
                     <div class="flex" v-if="taskStatuses.length > 0">
