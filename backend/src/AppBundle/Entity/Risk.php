@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\Opportunity\OpportunityPriorityTrait;
+use Component\Model\PriorityAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
 use Component\TimeUnit\TimeUnitAwareInterface;
@@ -17,8 +19,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="risk")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskRepository")
  */
-class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
+class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface
 {
+    use OpportunityPriorityTrait;
+
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
     const PRIORITY_MEDIUM = 2;
@@ -92,13 +96,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
      * @ORM\Column(name="delay_unit", type="string", length=255)
      */
     private $delayUnit;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="priority", type="string", length=255)
-     */
-    private $priority;
 
     /**
      * @var RiskStrategy|null
@@ -348,30 +345,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getDelay()
     {
         return $this->delay;
-    }
-
-    /**
-     * Set priority.
-     *
-     * @param string $priority
-     *
-     * @return Risk
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * Get priority.
-     *
-     * @return string
-     */
-    public function getPriority()
-    {
-        return $this->priority;
     }
 
     /**

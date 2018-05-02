@@ -2,10 +2,10 @@
     <div class="project-status-report page-section">
         <div class="row" v-if="currentStatusReport.information">
             <modal v-if="showEmailModal" @close="showEmailModal = false">
-                <p class="modal-title">{{ translateText('message.email_report') }}</p>
+                <p class="modal-title">{{ translate('message.email_report') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded">{{ translate('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -13,44 +13,44 @@
                 <div class="header">
                     <h1>
                         {{ currentStatusReport.information.project.name }}
-                        <span>{{ translateText('message.week') }} {{ currentStatusReport.information.week }}</span>
+                        <span>{{ translate('message.week') }} {{ currentStatusReport.information.week }}</span>
                     </h1>
                 </div>
 
                 <div class="hero-text">
-                    {{ translateText('message.status_report') }}
+                    {{ translate('message.status_report') }}
                 </div>
 
                 <div class="row large-half-columns">
                     <div class="col-md-6">
                         <div class="widget same-height" v-resize="onResizeSameHeightDiv">
-                            <h3>{{ translateText('message.overall_status') }}</h3>
+                            <h3>{{ translate('message.overall_status') }}</h3>
                             <div class="flex flex-center">
                                 <div class="status-boxes big-status-boxes flex flex-v-center">
-                                    <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                                    <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                                    <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                                    <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                                    <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                                    <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                                 </div>
                             </div>
 
-                            <h4>{{ translateText('message.tasks_status') }}</h4>
+                            <h4>{{ translate('message.tasks_status') }}</h4>
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
-                                <div class="bar middle-bg flex-v-center" v-bind:style="{width: (currentStatusReport.information.projectTasksStatus['label.open'] * 100) / (currentStatusReport.information.projectTasksStatus['label.open'] + currentStatusReport.information.projectTasksStatus['label.closed']) + '%'}">
-                                    {{ translateText('label.open') }}: {{ currentStatusReport.information.projectTasksStatus['label.open'] }}
+                                <div class="bar middle-bg flex-v-center" :style="{width: (currentStatusReport.information.projectTasksStatus['label.open'] * 100) / (currentStatusReport.information.projectTasksStatus['label.open'] + currentStatusReport.information.projectTasksStatus['label.closed']) + '%'}">
+                                    {{ translate('label.open') }}: {{ currentStatusReport.information.projectTasksStatus['label.open'] }}
                                 </div>
-                                <div class="bar main-bg flex-v-center" v-bind:style="{width: (currentStatusReport.information.projectTasksStatus['label.closed'] * 100) / (currentStatusReport.information.projectTasksStatus['label.open'] + currentStatusReport.information.projectTasksStatus['label.closed']) + '%'}">
-                                    {{ translateText('label.closed') }}: {{ currentStatusReport.information.projectTasksStatus['label.closed'] }}
+                                <div class="bar main-bg flex-v-center" :style="{width: (currentStatusReport.information.projectTasksStatus['label.closed'] * 100) / (currentStatusReport.information.projectTasksStatus['label.open'] + currentStatusReport.information.projectTasksStatus['label.closed']) + '%'}">
+                                    {{ translate('label.closed') }}: {{ currentStatusReport.information.projectTasksStatus['label.closed'] }}
                                 </div>
                             </div>
 
-                            <h4>{{ translateText('message.tasks_condition') }}</h4>
+                            <h4>{{ translate('message.tasks_condition') }}</h4>
                             <div class="status-bar clearfix flex">
                                 <!-- bar width calculated as (data-number * 100)/(bar1_data-number + bar2_data-number + ...) -->
                                 <div
                                     v-for="condition in currentStatusReport.information.projectTasksStatus.conditions"
                                     class="bar flex-v-center"
-                                    v-bind:style="{width: (condition.count * 100) / (currentStatusReport.information.projectTasksStatus.conditions.total) + '%', background: condition.color}"
+                                    :style="{width: (condition.count * 100) / (currentStatusReport.information.projectTasksStatus.conditions.total) + '%', background: condition.color}"
                                 >
                                     {{ condition.count }}
                                 </div>
@@ -58,14 +58,14 @@
 
                             <div class="checkbox-input clearfix">
                                 <input v-model="actionNeeded" id="action_needed" disabled type="checkbox" name="" value="">
-                                <label class="no-margin-bottom" for="action_needed">{{ translateText('message.action_needed') }}</label>
+                                <label class="no-margin-bottom" for="action_needed">{{ translate('message.action_needed') }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="widget same-height" v-resize="onResizeSameHeightDiv">
-                            <h3>{{ translateText('message.project_trend') }}</h3>
-                            <h4>{{ translateText('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
+                            <h3>{{ translate('message.project_trend') }}</h3>
+                            <h4>{{ translate('message.current_date') }}: {{ today | moment('DD.MM.YYYY') }}</h4>
                             <vue-chart
                                 :columns="trendColumns"
                                 :rows="trendRows"
@@ -92,22 +92,22 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.schedule') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.schedule') }}</h3>
                     </div>
                     <div class="col-md-8">
                         <scrollbar class="table-wrapper customScrollbar">
                             <table class="table table-small">
                                 <thead>
                                     <tr>
-                                        <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                        <th>{{ translateText('table_header_cell.start') }}</th>
-                                        <th>{{ translateText('table_header_cell.finish') }}</th>
-                                        <th>{{ translateText('table_header_cell.duration') }}</th>
+                                        <th>{{ translate('table_header_cell.schedule') }}</th>
+                                        <th>{{ translate('table_header_cell.start') }}</th>
+                                        <th>{{ translate('table_header_cell.finish') }}</th>
+                                        <th>{{ translate('table_header_cell.duration') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ translateText('table_header_cell.base') }}</td>
+                                        <td>{{ translate('table_header_cell.base') }}</td>
                                         <td v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt">
                                             {{ currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt | moment('DD.MM.YYYY') }}
                                         </td>
@@ -122,7 +122,7 @@
                                         <td v-else>-</td>
                                     </tr>
                                     <tr :class="forecastColorClass">
-                                        <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                        <td>{{ translate('table_header_cell.forecast') }}</td>
                                         <td v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt">
                                             {{ currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt | moment('DD.MM.YYYY')  }}
                                         </td>
@@ -137,7 +137,7 @@
                                         <td v-else>-</td>
                                     </tr>
                                     <tr :class="actualColorClass">
-                                        <td>{{ translateText('table_header_cell.actual') }}</td>
+                                        <td>{{ translate('table_header_cell.actual') }}</td>
                                         <td v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt">
                                             {{ currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt | moment('DD.MM.YYYY')  }}
                                         </td>
@@ -158,23 +158,23 @@
                     <div class="col-md-4">
                         <div class="range-slider-legend">
                             <div class="legend-item">
-                                <span>{{ translateText('message.base_schedule') }}</span>
+                                <span>{{ translate('message.base_schedule') }}</span>
                                 <div class="legend-bar darker-bg"></div>
                             </div>
                             <div class="legend-item">
-                                <span>{{ translateText('message.forecast_schedule') }}</span>
+                                <span>{{ translate('message.forecast_schedule') }}</span>
                                 <div class="legend-bar middle-bg"></div>
                             </div>
                             <div class="legend-item">
-                                <span>{{ translateText('message.actual_schedule') }}</span>
+                                <span>{{ translate('message.actual_schedule') }}</span>
                                 <div class="legend-bar second-bg"></div>
                             </div>
                             <div class="legend-item">
-                                <span>{{ translateText('message.warning') }}</span>
+                                <span>{{ translate('message.warning') }}</span>
                                 <div class="legend-bar warning-bg"></div>
                             </div>
                             <div class="legend-item">
-                                <span>{{ translateText('message.danger') }}</span>
+                                <span>{{ translate('message.danger') }}</span>
                                 <div class="legend-bar danger-bg"></div>
                             </div>
                         </div>
@@ -188,31 +188,31 @@
                             <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.base_start && currentStatusReport.information.tasksForSchedule.base_finish"-->
                                     <!--class="base dark-range-slider"-->
                                     <!--id="scheduleBase"-->
-                                    <!--:message="translateText('table_header_cell.base')"-->
+                                    <!--:message="translate('table_header_cell.base')"-->
                                     <!--min="2017-01-01"-->
                                     <!--max="2018-01-01"-->
-                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"-->
-                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"-->
+                                    <!--:from="currentStatusReport.information.tasksForSchedule.base_start.scheduledStartAt"-->
+                                    <!--:to="currentStatusReport.information.tasksForSchedule.base_finish.scheduledFinishAt"-->
                                     <!--type="double">-->
                             <!--</task-range-slider>-->
                             <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.forecast_start && currentStatusReport.information.tasksForSchedule.forecast_finish"-->
                                     <!--class="forecast warning"-->
-                                    <!--id="translateText('table_header_cell.forecast')"-->
+                                    <!--id="translate('table_header_cell.forecast')"-->
                                     <!--message="Forecast"-->
                                     <!--min="2017-01-01"-->
                                     <!--max="2018-01-01"-->
-                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"-->
-                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "-->
+                                    <!--:from="currentStatusReport.information.tasksForSchedule.forecast_start.forecastStartAt"-->
+                                    <!--:to="currentStatusReport.information.tasksForSchedule.forecast_finish.forecastFinishAt "-->
                                     <!--type="double">-->
                             <!--</task-range-slider>-->
                             <!--<task-range-slider v-if="currentStatusReport.information.tasksForSchedule.actual_start && currentStatusReport.information.tasksForSchedule.actual_finish"-->
                                     <!--class="actual"-->
-                                    <!--id="translateText('table_header_cell.actual')"-->
+                                    <!--id="translate('table_header_cell.actual')"-->
                                     <!--message="Actual"-->
                                     <!--min="2017-01-01"-->
                                     <!--max="2018-01-01"-->
-                                    <!--v-bind:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"-->
-                                    <!--v-bind:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"-->
+                                    <!--:from="currentStatusReport.information.tasksForSchedule.actual_start.actualStartAt"-->
+                                    <!--:to="currentStatusReport.information.tasksForSchedule.actual_finish.actualFinishAt"-->
                                     <!--type="double">-->
                             <!--</task-range-slider>-->
                         </div>
@@ -224,17 +224,17 @@
                 <div class="row statuses">
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.project_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" v-bind:title="translateText('message.overall_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.project_progress.value" :title="translate('message.overall_progress')" class="left dark-chart medium-chart" :class="currentStatusReport.information.progresses.project_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.task_progress">
-                            <circle-chart v-bind:percentage="currentStatusReport.information.progresses.task_progress.value" v-bind:title="translateText('message.task_progress')" class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.task_progress.value" :title="translate('message.task_progress')" class="left dark-chart medium-chart" :class="currentStatusReport.information.progresses.task_progress.class"></circle-chart>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="status" v-if="currentStatusReport.information.progresses.cost_progress">
-                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" v-bind:title="translateText('message.costs_progress')"  class="left dark-chart medium-chart" v-bind:class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
+                            <circle-chart :percentage="currentStatusReport.information.progresses.cost_progress.value" :title="translate('message.costs_progress')"  class="left dark-chart medium-chart" :class="currentStatusReport.information.progresses.cost_progress.class"></circle-chart>
                         </div>
                     </div>
                 </div>
@@ -243,11 +243,11 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.phases_and_milestones') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
-                            <div class="status-box" v-bind:style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
+                            <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>
+                            <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>
+                            <div class="status-box" :style="{background: currentStatusReport.information.project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>
                         </div>
 
                         <vis-timeline :items="pmData" />
@@ -258,12 +258,12 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.internal_costs') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
                             <!-- needs to be fixed -->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.costData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.costData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.costData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -279,12 +279,12 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.external_costs') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.external_costs') }}</h3>
                         <div class="status-boxes flex flex-v-center marginbottom20">
                             <!-- needs to be fixed -->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
-                            <!--<div class="status-box" v-bind:style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
+                            <!--<div class="status-box" :style="{background: currentStatusReport.information.resourceData.byPhaseTraffic === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
                         </div>
 
                         <vue-chart
@@ -300,61 +300,15 @@
 
                 <div class="row ro-columns large-half-columns">
                     <div class="col-md-6 dark-border-right">
-                        <h3 class="marginbottom20 margintop0">{{ translateText('message.opportunities') }}</h3>
-                        <div class="ro-grid-wrapper clearfix">
-                            <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="false"></risk-grid>
-                            <h4>{{ translateText('message.top_opportunity') }}:</h4>
-                            <div class="ro-main ro-main-opportunity" v-if="currentStatusReport.information.risksOpportunitiesStats.opportunities && currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity">
-                                <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.title }}</b>
-                                <span class="ro-main-stats">|
-                                    <span class="light-color">{{ translateText('message.priority') }}</span>: 
-                                    <b v-bind:class="getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.priority).color">
-                                        {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.priority).name }}
-                                    </b>|
-                                    <span class="light-color">{{ translateText('message.potential_savings') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.costSavings }}{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.currency }}</b> |
-                                    <span class="light-color">{{ translateText('message.potential_time_savings') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeSavings }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.timeUnit) }}</b> |
-                                    <span class="light-color">{{ translateText('message.strategy') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStrategyName }}</b> |
-                                    <span class="light-color">{{ translateText('message.status') }}</span>: <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.opportunityStatusName }}</b>
-                                </span>
-                                <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityAvatar + ')' }"></div>
-                                    <div>
-                                        {{ translateText('message.responsible') }}:
-                                        <b>{{ currentStatusReport.information.risksOpportunitiesStats.opportunities.top_opportunity.responsibilityFullName }}</b>
-                                    </div>
-                                </div>
-                            </div>
-                            <opportunity-summary :summaryData="currentStatusReport.information.risksOpportunitiesStats.opportunities"></opportunity-summary>
-                        </div>
+                        <opportunities-grid
+                                :value="opportunitiesGrid"
+                                :currency="currency"/>
                     </div>
 
                     <div class="col-md-6">
-                        <h3 class="marginbottom20 margintop0">{{ translateText('message.risks') }}</h3>
-                        <div class="ro-grid-wrapper clearfix">
-                            <risk-grid :gridData="riskGridData" :isRisk="true" :clickable="false"></risk-grid>
-                            <h4>{{ translateText('message.top_risk') }}:</h4>
-                            <div class="ro-main ro-main-risk" v-if="currentStatusReport.information.risksOpportunitiesStats.risks && currentStatusReport.information.risksOpportunitiesStats.risks.top_risk">
-                                <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.title }}</b>
-                                <span class="ro-main-stats">|
-                                    <span class="light-color">{{ translateText('message.priority') }}:</span> 
-                                    <b v-bind:class="getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.priority).color">
-                                         {{ getPriorityNameColor(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.priority).name }}
-                                    </b> | 
-                                    <span class="light-color">{{ translateText('message.potential_savings') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.cost }}{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.currency }}</b> |
-                                    <span class="light-color">{{ translateText('message.potential_time_savings') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delay }} {{ translateText(currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.delayUnit) }}</b> |
-                                    <span class="light-color">{{ translateText('message.strategy') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStrategyName }}</b> |
-                                    <span class="light-color">{{ translateText('message.status') }}:</span> <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.riskStatusName }}</b>
-                                </span>
-                                <div class="entry-responsible flex flex-v-center">
-                                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityAvatar + ')' }"></div>
-                                    <div>
-                                        {{ translateText('message.responsible') }}:
-                                        <b>{{ currentStatusReport.information.risksOpportunitiesStats.risks.top_risk.responsibilityFullName }}</b>
-                                    </div>
-                                </div>
-                            </div>
-                            <risk-summary :summaryData="currentStatusReport.information.risksOpportunitiesStats.risks"></risk-summary>
-                        </div>
+                        <risks-grid
+                                :value="risksGrid"
+                                :currency="currency"/>
                     </div>
                 </div>
 
@@ -362,30 +316,30 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.todos') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.todos') }}</h3>
                         <table class="table table-striped table-responsive table-fixed table-small" v-if="currentStatusReport.information.todos.items && currentStatusReport.information.todos.items.length > 0">
                             <thead>
                             <tr>
-                                <th style="width:11%">{{ translateText('table_header_cell.status') }}</th>
-                                <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
-                                <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
-                                <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
-                                <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
+                                <th style="width:11%">{{ translate('table_header_cell.status') }}</th>
+                                <th style="width:14%">{{ translate('table_header_cell.due_date') }}</th>
+                                <th style="width:25%">{{ translate('table_header_cell.topic') }}</th>
+                                <th style="width:36%">{{ translate('table_header_cell.description') }}</th>
+                                <th style="width:14%">{{ translate('table_header_cell.responsible') }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="todo in currentStatusReport.information.todos.items">
-                                <td>{{ translateText(todo.statusName) }}</td>
+                                <td>{{ translate(todo.statusName) }}</td>
                                 <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ todo.title }}</td>
                                 <td class="cell-wrap">{{ todo.description }}</td>
                                 <td>
-                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" :style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <span v-else>{{ translateText('label.no_data') }}</span>
+                        <span v-else>{{ translate('label.no_data') }}</span>
                     </div>
                 </div>
 
@@ -393,14 +347,14 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="margintop0">{{ translateText('message.decisions') }}</h3>
+                        <h3 class="margintop0">{{ translate('message.decisions') }}</h3>
                         <table class="table table-striped table-responsive table-fixed table-small" v-if="currentStatusReport.information.decisions.items && currentStatusReport.information.decisions.items.length > 0">
                             <thead>
                                 <tr>
-                                    <th style="width:14%">{{ translateText('table_header_cell.due_date') }}</th>
-                                    <th style="width:25%">{{ translateText('table_header_cell.topic') }}</th>
-                                    <th style="width:36%">{{ translateText('table_header_cell.description') }}</th>
-                                    <th style="width:14%">{{ translateText('table_header_cell.responsible') }}</th>
+                                    <th style="width:14%">{{ translate('table_header_cell.due_date') }}</th>
+                                    <th style="width:25%">{{ translate('table_header_cell.topic') }}</th>
+                                    <th style="width:36%">{{ translate('table_header_cell.description') }}</th>
+                                    <th style="width:14%">{{ translate('table_header_cell.responsible') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -409,12 +363,12 @@
                                     <td class="cell-wrap">{{ decision.title }}</td>
                                     <td class="cell-wrap cell-large" v-html="decision.description"></td>
                                     <td>
-                                        <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                                        <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" :style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <span v-else>{{ translateText('label.no_data') }}</span>
+                        <span v-else>{{ translate('label.no_data') }}</span>
                     </div>
                 </div>
 
@@ -423,8 +377,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="flex flex-space-between">
-                            <a :href="downloadPdf" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.download_pdf') }} <download-icon fill="white-fill"></download-icon></a>
-                            <a @click="showEmailModal = true" class="btn-rounded btn-auto btn-auto second-bg">{{ translateText('button.email_status_report') }} <at-icon fill="white-fill"></at-icon></a>
+                            <a :href="downloadPdf" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.download_pdf') }} <download-icon fill="white-fill"></download-icon></a>
+                            <a @click="showEmailModal = true" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.email_status_report') }} <at-icon fill="white-fill"></at-icon></a>
                         </div>
                     </div>
                 </div>
@@ -455,6 +409,8 @@ import AtIcon from '../../_common/_icons/AtIcon';
 import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
 import resize from 'vue-resize-directive';
+import OpportunitiesGrid from './Create/OpportunitiesGrid';
+import RisksGrid from './Create/RisksGrid';
 
 export default {
     components: {
@@ -470,6 +426,8 @@ export default {
         AtIcon,
         Modal,
         AlertModal,
+        OpportunitiesGrid,
+        RisksGrid,
     },
     directives: {
         resize,
@@ -489,23 +447,6 @@ export default {
         onResizeSameHeightDiv: function() {
             $('.same-height').matchHeight();
         },
-        translateText: function(text) {
-            return this.translate(text);
-        },
-        getPriorityNameColor: function(value) {
-            const priorityNames = [
-                {name: 'message.very_low', color: 'ro-very-low-priority'},
-                {name: 'message.low', color: 'ro-low-priority'},
-                {name: 'message.medium', color: 'ro-medium-priority'},
-                {name: 'message.high', color: 'ro-high-priority'},
-                {name: 'message.very_high', color: 'ro-very-high-priority'},
-            ];
-
-            return {
-                name: this.translateText(priorityNames[value].name),
-                color: priorityNames[value].color,
-            };
-        },
         emailReport: function() {
             this
                 .emailStatusReport(this.$route.params.reportId)
@@ -522,11 +463,88 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            currentStatusReport: 'currentStatusReport',
-        }),
+        ...mapGetters([
+            'currentStatusReport',
+            'projectCurrencySymbol',
+        ]),
         downloadPdf() {
             return Routing.generate('app_status_report_pdf', {id: this.$route.params.reportId});
+        },
+        opportunitiesGrid() {
+            if (!this.currentStatusReport || !this.currentStatusReport.information) {
+                return {};
+            }
+
+            let stats = this.currentStatusReport.information.risksOpportunitiesStats;
+
+            if (!stats || !stats.opportunities) {
+                return {};
+            }
+
+            let gridValues = stats.opportunities.opportunity_data.gridValues;
+            let grid = [];
+
+            for (let i = 4; i >= 1; i--) {
+                for (let j = 1; j <= 4; j++) {
+                    grid.push(
+                        {probability: j, impact: i, number: gridValues[j+'-'+i], type: this.opportunityTypes[i-1][j-1], isActive: false},
+                    );
+                }
+            }
+
+            return Object.assign({}, stats.opportunities, {grid});
+        },
+        risksGrid() {
+            if (!this.currentStatusReport || !this.currentStatusReport.information) {
+                return {};
+            }
+
+            let stats = this.currentStatusReport.information.risksOpportunitiesStats;
+
+            if (!stats || !stats.risks) {
+                return {};
+            }
+
+            let gridValues = stats.risks.risk_data.gridValues;
+            let grid = [];
+            for (let i = 4; i >= 1; i--) {
+                for (let j = 1; j <= 4; j++) {
+                    grid.push(
+                        {probability: j, impact: i, number: gridValues[j+'-'+i], type: this.riskTypes[i-1][j-1], isActive: false},
+                    );
+                }
+            }
+
+            return Object.assign({}, stats.risks, {grid});
+        },
+        currency() {
+            if (this.projectCurrencySymbol) {
+                return this.projectCurrencySymbol;
+            }
+
+            return '';
+        },
+        pmData() {
+            let items = [];
+            if (!this.currentStatusReport || !this.currentStatusReport.information) {
+                return items;
+            }
+
+            let information = this.currentStatusReport.information;
+            if (!information || !information.projectMilestones) {
+                return items;
+            }
+
+            return items.concat(information.projectMilestones.items.map((item) => {
+                return {
+                    id: item.id,
+                    group: 0,
+                    content: item.name,
+                    start: new Date(item.scheduledFinishAt),
+                    value: item.workPackageStatus,
+                    title: renderTooltip(item),
+                };
+            }));
         },
     },
     watch: {
@@ -544,20 +562,6 @@ export default {
                     ? 'column-alert'
                     : 'column'
                 ;
-                let items = [];
-                if (information.projectMilestones && information.projectMilestones.items) {
-                    items = items.concat(information.projectMilestones.items.map((item) => {
-                        return {
-                            id: item.id,
-                            group: 0,
-                            content: item.name,
-                            start: new Date(item.scheduledFinishAt),
-                            value: item.workPackageStatus,
-                            title: renderTooltip(item),
-                        };
-                    }));
-                }
-                this.pmData = items;
                 // broken
                 // Object.entries(information.costData.byPhase).map(([key, value]) => {
                 //     this.costRowsByPhase.push([
@@ -577,44 +581,29 @@ export default {
                 //         value.base && value.actual ? parseInt(value.base) - parseInt(value.actual) : 0,
                 //     ]);
                 // });
-                let opportunityGridValues = information.risksOpportunitiesStats.opportunities.opportunity_data.gridValues;
-                let riskGridValues = information.risksOpportunitiesStats.risks.risk_data.gridValues;
-                const opportunityTypes = [
-                    ['very-high', 'very-high', 'high', 'medium'],
-                    ['very-high', 'high', 'medium', 'low'],
-                    ['high', 'medium', 'low', 'very-low'],
-                    ['medium', 'low', 'very-low', 'very-low'],
-                ];
-                const riskTypes = [
-                    ['very-low', 'very-low', 'low', 'medium'],
-                    ['very-low', 'low', 'medium', 'high'],
-                    ['low', 'medium', 'high', 'very-high'],
-                    ['medium', 'high', 'very-high', 'very-high'],
-                ];
-                for (let i = 4; i >= 1; i--) {
-                    for (let j = 1; j <= 4; j++) {
-                        this.opportunityGridData.push(
-                            {probability: j, impact: i, number: opportunityGridValues[j+'-'+i], type: opportunityTypes[i-1][j-1], isActive: false},
-                        );
-                        this.riskGridData.push(
-                            {probability: j, impact: i, number: riskGridValues[j+'-'+i], type: riskTypes[i-1][j-1], isActive: false},
-                        );
-                    }
-                }
                 this.trendRows = information.projectTrend ? information.projectTrend : [];
             }
         },
     },
     data() {
         return {
+            riskTypes: [
+                ['very-low', 'very-low', 'low', 'medium'],
+                ['very-low', 'low', 'medium', 'high'],
+                ['low', 'medium', 'high', 'very-high'],
+                ['medium', 'high', 'very-high', 'very-high'],
+            ],
+            opportunityTypes: [
+                ['very-high', 'very-high', 'high', 'medium'],
+                ['very-high', 'high', 'medium', 'low'],
+                ['high', 'medium', 'low', 'very-low'],
+                ['medium', 'low', 'very-low', 'very-low'],
+            ],
             actionNeeded: null,
             today: new Date(),
             comment: null,
             forecastColorClass: null,
             actualColorClass: null,
-            pmData: null,
-            opportunityGridData: [],
-            riskGridData: [],
             activePage: 1,
             showEmailModal: false,
             showSaved: false,
@@ -738,7 +727,7 @@ function renderTooltip(item) {
         <div class="task-box box">
             <div class="box-header">
                 <div class="user-info flex flex-v-center">
-                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url('` + item.responsibilityAvatar + `')' }" 
+                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url('` + item.responsibilityAvatar + `')' }"
                     v-tooltip.top-center="` + Vue.translate('table_header_cell.responsible') + item.responsibilityFullName + `"></div>
                     <p>` + item.responsibilityFullName + `</p>
                 </div>
@@ -766,7 +755,7 @@ function renderTooltip(item) {
             </div>
             <div class="status">
                 <p><span>` + Vue.translate('table_header_cell.status') + `:</span> ` + Vue.translate(item.workPackageStatusName) +`</p>
-                <bar-chart position="right" :percentage="85" :color="Green" v-bind:title-right="green"></bar-chart>
+                <bar-chart position="right" :percentage="85" :color="Green" :title-right="green"></bar-chart>
             </div>
         </div>
     </div>`;
@@ -1017,8 +1006,8 @@ function renderTooltip(item) {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 10px 0 0;  
+        display: inline-block;
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;

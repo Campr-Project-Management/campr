@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\Opportunity\OpportunityPriorityTrait;
+use Component\Model\PriorityAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
 use Component\TimeUnit\TimeUnitAwareInterface;
@@ -17,8 +19,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="opportunity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityRepository")
  */
-class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
+class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface
 {
+    use OpportunityPriorityTrait;
+
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
     const PRIORITY_MEDIUM = 2;
@@ -92,13 +96,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
      * @ORM\Column(name="time_unit", type="string", length=255)
      */
     private $timeUnit;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="priority", type="string", length=255, nullable=false)
-     */
-    private $priority;
 
     /**
      * @var OpportunityStrategy|null
@@ -338,30 +335,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
     public function getTimeSavings()
     {
         return $this->timeSavings;
-    }
-
-    /**
-     * Set priority.
-     *
-     * @param string $priority
-     *
-     * @return Opportunity
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * Get priority.
-     *
-     * @return string
-     */
-    public function getPriority()
-    {
-        return $this->priority;
     }
 
     /**
@@ -786,6 +759,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface
 
         $convertor = new TimeUnitsConvertor($this);
 
-        return $convertor->toHours($amount);
+        return round($convertor->toHours($amount), 2);
     }
 }
