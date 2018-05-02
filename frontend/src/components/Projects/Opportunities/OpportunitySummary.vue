@@ -1,6 +1,6 @@
 <template>
     <div class="ro-summary">
-        <div class="text-center" v-if="summary">
+        <div class="text-center" v-if="summary.opportunity_data">
             <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_potential_savings') }}:</span>
                 <span class="text-left">
@@ -42,10 +42,14 @@
 import {mapGetters} from 'vuex';
 
 export default {
-    props: ['summary'],
-    methods: {
-        translateText: function(text) {
-            return this.translate(text);
+    props: {
+        summary: {
+            type: Object,
+            required: true,
+            default: () => ({
+                opportunity_data: {},
+                measure_data: {},
+            }),
         },
     },
     computed: {
