@@ -90,14 +90,15 @@ export default {
 
     .notification-balloon {
         display: block;
-        width: 20px;
         height: 20px;
-        border-radius: 50%;
+        min-width: 20px;
+        border-radius: 10px;
         background: $secondColor;
         color: $mainColor;
         position: absolute;
         text-align: center;
         line-height: 22px;
+        padding: 0 4px 0 5px;
 
         @media screen and (max-width: 768px) {
             width: 16px;
@@ -113,7 +114,7 @@ export default {
         margin: 0;
         @include border-radius(0);
         border-top: 1px solid $fadeColor;
-        box-shadow: 0 0 8px -2px $blackColor;
+        box-shadow: 0 2px 20px -2px $blackColor;
         padding: 0;
 
         li {
@@ -135,7 +136,7 @@ export default {
 
     .new-box {    
         width: 25%;  
-        padding: 0 15px 30px;
+        padding: 15px;
 
         a {
             text-transform: uppercase; 

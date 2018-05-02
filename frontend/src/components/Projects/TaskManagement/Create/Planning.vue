@@ -15,7 +15,7 @@
                             {{ phaseOrMilestoneLabel }}
                             <span class="caret"></span>
                         </button>
-                        <scrollbar :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right">
+                        <scrollbar :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right customScrollbar">
                             <ul ref="ul">
                                 <li v-for="item in dropdownData">
                                     <a
@@ -29,6 +29,9 @@
                             </ul>
                         </scrollbar>
                     </div>
+                    <error at-path="parent" />
+                    <error at-path="milestone" />
+                    <error at-path="phase" />
                 </div>
             </div>
         </div>
@@ -38,8 +41,10 @@
 <script>
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
+import Error from '../../../_common/_messages/Error';
 
 export default {
+    components: {Error},
     props: {
         editPlanning: {},
         maxItems: {
@@ -212,7 +217,7 @@ export default {
         background: $darkColor;
         color: $lightColor;
         border: none;
-        width: 100%;
+        width: 100% !important;
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
@@ -237,22 +242,30 @@ export default {
             position: absolute;
         }
 
+        &:hover,
         &:focus {
             background: $middleColor;
-            color: $lighterColor;
-            outline: 0;
+            border-color: $darkColor;
         }
 
     }
 
-    .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-        background: $middleColor;
-        color: $lighterColor;
+    .btn-primary.active, .btn-primary:active,
+    .open > .dropdown-toggle.btn-primary {
+        background-color: $middleColor;
+        border-color: $darkColor;
+
+        &:hover,
+        &:focus {
+            background-color: $middleColor;
+            border-color: $darkColor;
+        }
     }
 
     .nested {
         margin-left: 45px;
     }
+
     .unselectable:hover {
         cursor: default;
         color: $lightColor;

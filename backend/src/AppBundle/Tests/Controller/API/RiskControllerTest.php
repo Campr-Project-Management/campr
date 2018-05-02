@@ -79,13 +79,14 @@ class RiskControllerTest extends BaseController
                     'probability' => 10,
                     'cost' => 1,
                     'potentialCost' => 0.1,
-                    'budget' => 1,
                     'delay' => 1,
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'potentialDelay' => 0.1,
                     'potentialDelayHours' => round(0.1 * 24, 2),
                     'priority' => 'priority1',
+                    'priorityName' => '',
                     'measures' => [],
+                    'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => '',
@@ -174,32 +175,38 @@ class RiskControllerTest extends BaseController
             ->setProbability(10)
             ->setDescription('description3')
             ->setCost(3)
-            ->setBudget(3)
             ->setDelay(3)
             ->setDelayUnit(TimeUnitAwareInterface::DAYS)
-            ->setPriority('priority3')
         ;
+
+        $risk->setPriority('priority3');
+
         $this->em->persist($risk);
         $this->em->flush();
 
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
+        try {
+            $user = $this->getUserByUsername('superadmin');
+            $token = $user->getApiToken();
 
-        $this->client->request(
-            'DELETE',
-            sprintf('/api/risks/%d', $risk->getId()),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
+            $this->client->request(
+                'DELETE',
+                sprintf('/api/risks/%d', $risk->getId()),
+                [],
+                [],
+                [
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+                ],
+                ''
+            );
+            $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($risk);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -279,13 +286,14 @@ class RiskControllerTest extends BaseController
                     'probability' => 20,
                     'cost' => 1,
                     'potentialCost' => 0.2,
-                    'budget' => 1,
                     'delay' => 1,
                     'potentialDelay' => 0.2,
                     'potentialDelayHours' => round(0.2 * 24, 2),
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'priority' => 'priority2',
+                    'priorityName' => '',
                     'measures' => [],
+                    'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,

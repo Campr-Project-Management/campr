@@ -19,7 +19,7 @@
         </div>
 
         <div class="meetings-list">
-            <scrollbar class="table-wrapper">
+            <scrollbar class="table-wrapper customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive table-fixed">
                         <thead>
@@ -73,6 +73,7 @@
             <pagination
                 :current-page="infosFilters.currentPage"
                 :number-of-pages="infosFilters.numberOfPages"
+                :value="infosFilters.currentPage"
                 v-on:change-page="setFiltersInfoPage"/>
         </div>
     </div>

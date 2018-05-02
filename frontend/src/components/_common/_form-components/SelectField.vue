@@ -23,8 +23,8 @@
         <scrollbar
                 v-if="!disabled"
                 v-show="availableOptions.length > 0"
-                :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
-                class="dropdown-menu dropdown-menu-right">
+                :style="{height: scrollbarHeight + 5 +'px', top: scrollbarTop + 'px'}"
+                class="dropdown-menu dropdown-menu-right customScrollbar">
             <ul ref="ul">
                 <li v-for="option in availableOptions" :style="{height: itemHeight + 'px'}">
                     <a href="javascript:void(0)" @click="onChange(option)">{{ translate(option.label) }}</a>
@@ -172,7 +172,7 @@ export default {
             ul {
                 list-style: none;
                 margin: 0;
-                padding: 5px;
+                padding: 0;
             }
         }
 
@@ -202,7 +202,7 @@ export default {
         background: $darkColor;
         color: $lightColor;
         border: none;
-        width: 100%;
+        width: 100% !important;
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
@@ -217,10 +217,6 @@ export default {
         text-overflow: ellipsis;
         @include transition(all, 0.2s, ease-in);
 
-        @media screen and (max-width: 1440px) {
-            width: 120px;
-        }
-
         .caret {
             right: 20px;
             top: 18px;
@@ -228,14 +224,25 @@ export default {
         }
 
         &:focus {
-            background: $middleColor;
-            color: $lighterColor;
             outline: 0;
+        }
+
+        &:hover,
+        &:focus {
+            background: $middleColor;
+            border-color: $darkColor;
         }
     }
 
-    .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-        background: $middleColor;
-        color: $lighterColor;
+    .btn-primary.active, .btn-primary:active,
+    .open > .dropdown-toggle.btn-primary {
+        background-color: $middleColor;
+        border-color: $darkColor;
+
+        &:hover,
+        &:focus {
+            background-color: $middleColor;
+            border-color: $darkColor;
+        }
     }
 </style>

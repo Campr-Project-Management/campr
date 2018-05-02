@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 custom-col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -246,6 +246,13 @@
                                 height="200px"
                                 label="placeholder.todo_description"
                                 v-model="todo.description" />
+                            <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
+                            <error
+                                v-if="validationMessages.todos[index.toString()].description && validationMessages.todos[index.toString()].description.length"
+                                v-for="(message, index) in validationMessages.todos[index.toString()].description"
+                                :key="`todo-description-${index}`"
+                                :message="message" />
+                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group">
@@ -301,8 +308,8 @@
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                         <error
-                            v-if="validationMessages.infos[index.toString()].title && validationMessages.infos[index.toString()].title.length"
-                            v-for="(message, index) in validationMessages.infos[index.toString()].title"
+                            v-if="validationMessages.infos[index.toString()].topic && validationMessages.infos[index.toString()].topic.length"
+                            v-for="(message, index) in validationMessages.infos[index.toString()].topic"
                             :key="`info-topic-${index}`"
                             :message="message" />
                         </div>
@@ -341,8 +348,8 @@
                                         :title="translate('label.select_status')"
                                         :options="infoStatusesForDropdown"
                                         v-model="info.infoStatus"
-                                        :currentOption="info.infoStatus" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoStatus[index.toString()]">
+                                        v-bind:currentOption="info.infoStatus" />
+                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
@@ -355,8 +362,8 @@
                                         :title="'label.category'"
                                         :options="infoCategoriesForDropdown"
                                         v-model="info.infoCategory"
-                                        :currentOption="info.infoCategory" />
-                                    <div v-if="validationMessages.infos && validationMessages.infoCategory[index.toString()]">
+                                        v-bind:currentOption="info.infoCategory" />
+                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
                                             v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
                                             v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
@@ -547,6 +554,9 @@ export default {
         this.getTodoStatuses();
         this.getInfoCategories();
         this.getInfoStatuses();
+    },
+    mounted() {
+        this.addObjective();
     },
     beforeDestroy() {
         this.emptyValidationMessages();

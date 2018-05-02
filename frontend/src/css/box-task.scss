@@ -1,97 +1,115 @@
 @import './_variables';
     
 .task-box {
-  .box-header {
-    border-bottom: 1px solid $middleColor;
-    padding-bottom: 15px;
+    padding: 20px;
 
-    h2 {
-      color: $secondColor;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.6px;
-      margin:8px 0 5px;
+    .box-header {
+        border-bottom: 1px solid $middleColor;
+        padding-bottom: 15px;
+
+        h2 {
+            color: $secondColor;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            margin:8px 0 5px;
+        }
+
+        .user-info {
+            .user-avatar {
+                width: 30px;
+                height: 30px;
+                margin-right: 5px; 
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;                
+                @include border-radius(50%);
+            }
+
+            .user-name {
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+            }
+        }
+
+        .status-boxes,
+        .favourite {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .status-boxes {
+            .status-box {
+                cursor: default;
+            }
+        }
+
+        .task-id {
+            color: $middleColor;
+            font-size: 11px;
+            margin: 0;
+        }
     }
 
-    .user-info {
-      .user-avatar {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
-        margin-right: 5px;  
-      }
+    .content {
+        margin-bottom: 40px;
     }
 
-    .status-boxes,
-    .favourite {
-      position: absolute;
-      top: 0;
-      right: 0;
+    &.small-box {
+        padding-bottom: 20px;
     }
-
-    .status-boxes {
-      .status-box {
-        cursor: default;
-      }
-    }
-
-    .task-id {
-      color: $middleColor;
-      font-size: 11px;
-      margin: 0;
-    }
-  } 
 }
 
 .info {
-  padding: 18px 0 5px;
+    padding: 18px 0 0;
 
-  .plan {
-    margin-bottom: 15px;
-    
-    a{
-      font-size: 12px;
-      color: $lighterColor;
-      @include transition(color, 0.2s, ease);
+    .plan {
+        margin-bottom: 15px;
 
-      &:hover,
-      &:active {
-        color: $secondColor;
-      }
+        a{
+            font-size: 12px;
+            color: $lighterColor;
+            @include transition(color, 0.2s, ease);
+
+            &:hover,
+            &:active {
+                color: $secondColor;
+            }
+        }
     }
-  }
 }
 
 .status {
-  p {
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    font-size: 8px;
-    line-height: 12px;
+    p {
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-size: 8px;
+        line-height: 12px;
 
-    span {
-      color: $middleColor;
+        span {
+            color: $middleColor;
+        }
     }
-  }
 }
 
 .status-box {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  margin-left: 2px;
-  @include border-radius(50%);
-  background: $mainColor;
-  cursor: pointer;
-  @include opacity(1);
-  @include transition(opacity, 0.2s, ease-in);
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
+    @include border-radius(50%);
+    background: $mainColor;
+    cursor: pointer;
+    @include opacity(1);
+    @include transition(opacity, 0.2s, ease-in);
 
-  &:first-child {
-    margin-left: 0;
-  }
+    &:first-child {
+        margin-left: 0;
+    }
 
-  &:hover {
-    @include opacity(0.8);
-  }
+    &:hover {
+        @include opacity(0.8);
+    }
 }

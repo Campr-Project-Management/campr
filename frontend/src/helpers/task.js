@@ -4,19 +4,19 @@ export const createFormData = (data) => {
     let formData = new FormData();
 
     // Basic Data
-    if (data.name) {
+    if (data.name != null) {
         formData.append('name', data.name);
     }
 
-    if (data.type) {
+    if (data.type != null) {
         formData.append('type', data.type);
     }
 
-    if (data.project) {
+    if (data.project != null) {
         formData.append('project', data.project);
     }
 
-    if (data.description) {
+    if (data.description != null) {
         formData.append('content', data.description);
     }
 
@@ -52,6 +52,7 @@ export const createFormData = (data) => {
     if (data.statusColor) {
         formData.append('colorStatus', data.statusColor.id);
     }
+
     if (data.parent) {
         formData.append('parent', data.parent);
     }
@@ -69,24 +70,23 @@ export const createFormData = (data) => {
     }
 
     if (data.externalCosts) {
-        // External Costs
-        for (let i = 0; i < data.externalCosts.items.length; i++) {
-            formData.append('costs[' + i + '][name]', data.externalCosts.items[i].name || '');
-            formData.append('costs[' + i + '][quantity]', data.externalCosts.items[i].quantity);
-            formData.append('costs[' + i + '][rate]', data.externalCosts.items[i].rate);
-            formData.append('costs[' + i + '][expenseType]', data.externalCosts.items[i].expenseType);
+        data.externalCosts.items.forEach((item, i) => {
+            formData.append('costs[' + i + '][name]', item.name || '');
+            formData.append('costs[' + i + '][quantity]', item.quantity);
+            formData.append('costs[' + i + '][rate]', item.rate);
+            formData.append('costs[' + i + '][expenseType]', item.expenseType);
             formData.append('costs[' + i + '][type]', 1);
-            if (data.externalCosts.items[i].customUnit && data.externalCosts.items[i].customUnit.length) {
-                formData.append('costs[' + i + '][customUnit]', data.externalCosts.items[i].customUnit);
-            } else if (data.externalCosts.items[i].unit) {
-                let unit = data.externalCosts.items[i].unit;
+            if (item.customUnit && item.customUnit.length) {
+                formData.append('costs[' + i + '][customUnit]', item.customUnit);
+            } else if (item.unit) {
+                let unit = item.unit;
                 if (typeof unit === 'object') {
                     unit = unit.id;
                 }
 
                 formData.append('costs[' + i + '][unit]', unit);
             }
-        }
+        });
 
         if (data.externalCosts.actual) {
             formData.append('externalActualCost', data.externalCosts.actual);
@@ -98,15 +98,14 @@ export const createFormData = (data) => {
     }
 
     if (data.internalCosts) {
-        // Internal Costs
-        for (let i = 0; i < data.internalCosts.items.length; i++) {
+        data.internalCosts.items.forEach((item, i) => {
             let costIndex = i + data.externalCosts.items.length;
-            formData.append('costs[' + costIndex + '][resource]', data.internalCosts.items[i].resource.key);
-            formData.append('costs[' + costIndex + '][quantity]', data.internalCosts.items[i].quantity);
-            formData.append('costs[' + costIndex + '][duration]', data.internalCosts.items[i].duration);
-            formData.append('costs[' + costIndex + '][rate]', data.internalCosts.items[i].rate);
+            formData.append('costs[' + costIndex + '][resource]', item.resource.key);
+            formData.append('costs[' + costIndex + '][quantity]', item.quantity);
+            formData.append('costs[' + costIndex + '][duration]', item.duration);
+            formData.append('costs[' + costIndex + '][rate]', item.rate);
             formData.append('costs[' + costIndex + '][type]', 0);
-        }
+        });
 
         if (data.internalCosts.actual) {
             formData.append('internalActualCost', data.internalCosts.actual);
@@ -119,11 +118,25 @@ export const createFormData = (data) => {
 
     if (data.schedule) {
         // Schedule Data
-        formData.append('scheduledStartAt', moment(data.schedule.baseStartDate).format('DD-MM-YYYY'));
-        formData.append('scheduledFinishAt', moment(data.schedule.baseEndDate).format('DD-MM-YYYY'));
-        formData.append('forecastStartAt', moment(data.schedule.forecastStartDate).format('DD-MM-YYYY'));
-        formData.append('forecastFinishAt', moment(data.schedule.forecastEndDate).format('DD-MM-YYYY'));
-        formData.append('duration', data.schedule.duration);
+        if (data.schedule.baseStartDate) {
+            formData.append('scheduledStartAt', moment(data.schedule.baseStartDate).format('DD-MM-YYYY'));
+        }
+
+        if (data.schedule.baseEndDate) {
+            formData.append('scheduledFinishAt', moment(data.schedule.baseEndDate).format('DD-MM-YYYY'));
+        }
+
+        if (data.schedule.forecastStartDate) {
+            formData.append('forecastStartAt', moment(data.schedule.forecastStartDate).format('DD-MM-YYYY'));
+        }
+
+        if (data.schedule.forecastEndDate) {
+            formData.append('forecastFinishAt', moment(data.schedule.forecastEndDate).format('DD-MM-YYYY'));
+        }
+
+        if (data.schedule.duration) {
+            formData.append('duration', data.schedule.duration);
+        }
     }
 
     if (data.subtasks) {

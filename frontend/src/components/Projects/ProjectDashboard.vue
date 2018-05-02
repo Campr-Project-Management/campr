@@ -77,36 +77,40 @@
                             </li>
                         </ul>
                         <h4 class="widget-title">{{ translateText('message.project_schedule') }}</h4>
-                        <table class="table table-small">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('message.schedule') }}</th>
-                                    <th>{{ translateText('message.start') }}</th>
-                                    <th>{{ translateText('message.finish') }}</th>
-                                    <th>{{ translateText('message.duration') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td>{{ project.scheduledStartAt || '-' }}</td>
-                                    <td>{{ project.scheduledFinishAt || '-' }}</td>
-                                    <td>{{ project.scheduledDuration || '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td>{{ project.forecastStartAt || '-' }}</td>
-                                    <td>{{ project.forecastFinishAt || '-' }}</td>
-                                    <td>{{ project.forecastDuration || '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.actual') }}</td>
-                                    <td>{{ project.actualStartAt || '-' }}</td>
-                                    <td>{{ project.actualFinishAt || '-' }}</td>
-                                    <td>{{ project.actualDuration || '-' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <scrollbar class="customScrollbar">
+                            <div class="scroll-wrapper">
+                                <table class="table table-small">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ translateText('message.schedule') }}</th>
+                                            <th>{{ translateText('message.start') }}</th>
+                                            <th>{{ translateText('message.finish') }}</th>
+                                            <th>{{ translateText('message.duration') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ translateText('table_header_cell.base') }}</td>
+                                            <td>{{ project.scheduledStartAt | date }}</td>
+                                            <td>{{ project.scheduledFinishAt | date }}</td>
+                                            <td>{{ project.scheduledDurationDays | formatNumber }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                            <td>{{ project.forecastStartAt | date }}</td>
+                                            <td>{{ project.forecastFinishAt | date }}</td>
+                                            <td>{{ project.forecastDurationDays | formatNumber }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{{ translateText('table_header_cell.actual') }}</td>
+                                            <td>{{ project.actualStartAt | date }}</td>
+                                            <td>{{ project.actualFinishAt | date }}</td>
+                                            <td>{{ project.actualDurationDays | formatNumber }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </scrollbar>
 
                         <div class="flex flex-direction-reverse margintop20" v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
                             <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translateText('button.close_project') }}</button>
@@ -345,6 +349,10 @@ export default {
             hr{
                 border-color: $middleColor;
             }
+
+            .task-box-wrapper {
+                margin-bottom: 20px;
+            }
         }
 
         @media (max-width:1280px) {
@@ -365,7 +373,7 @@ export default {
             >tr {
                 >th {
                     height: 30px;
-                    padding: 5px 15px;
+                    padding: 5px 15px !important;
                 }
             }
         }
@@ -391,7 +399,9 @@ export default {
     }
 
     .widget-list {
-        margin-bottom: 30px;
+        margin: 0 0 30px;
+        padding: 0;
+        list-style: none;
 
         li {
             display: flex;

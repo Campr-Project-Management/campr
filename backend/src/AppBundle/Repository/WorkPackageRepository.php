@@ -877,6 +877,196 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectScheduledStartAt(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.scheduledStartAt)')
+            ->andWhere('o.type = :type and o.project = :project')
+            ->andWhere($expr->isNotNull('o.scheduledStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectScheduledFinishAt(Project $project)
+    {
+        $createQueryBuilder = function () use ($project) {
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
+            return $qb
+                ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
+                ->setParameter('project', $project)
+                ->setParameter('type', WorkPackage::TYPE_TASK)
+            ;
+        };
+
+        $qb = $createQueryBuilder();
+        $expr = $qb->expr();
+
+        $found = $createQueryBuilder()
+            ->select('COUNT(o)')
+            ->andWhere($expr->isNull('o.scheduledFinishAt'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($found > 0) {
+            return null;
+        }
+
+        return $createQueryBuilder()
+            ->select('MAX(o.scheduledFinishAt)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectActualStartAt(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.actualStartAt)')
+            ->andWhere('o.type = :type and o.project = :project')
+            ->andWhere($expr->isNotNull('o.actualStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectActualFinishAt(Project $project)
+    {
+        $createQueryBuilder = function () use ($project) {
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
+            return $qb
+                ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
+                ->setParameter('project', $project)
+                ->setParameter('type', WorkPackage::TYPE_TASK)
+            ;
+        };
+
+        $qb = $createQueryBuilder();
+        $expr = $qb->expr();
+
+        $found = $createQueryBuilder()
+            ->select('COUNT(o)')
+            ->andWhere($expr->isNull('o.actualFinishAt'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($found > 0) {
+            return null;
+        }
+
+        return $createQueryBuilder()
+            ->select('MAX(o.actualFinishAt)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectForecastStartAt(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.forecastStartAt)')
+            ->andWhere('o.type = :type and o.project = :project')
+            ->andWhere($expr->isNotNull('o.forecastStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
+    public function getProjectForecastFinishAt(Project $project)
+    {
+        $createQueryBuilder = function () use ($project) {
+            $qb = $this->createQueryBuilder('o');
+            $expr = $qb->expr();
+
+            return $this
+                ->createQueryBuilder('o')
+                ->andWhere('o.type = :type and o.project = :project')
+                ->andWhere($expr->isNull('o.parent'))
+                ->setParameter('project', $project)
+                ->setParameter('type', WorkPackage::TYPE_TASK)
+            ;
+        };
+
+        $qb = $createQueryBuilder();
+        $expr = $qb->expr();
+
+        $found = $createQueryBuilder()
+            ->select('COUNT(o)')
+            ->andWhere($expr->isNull('o.forecastFinishAt'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($found > 0) {
+            return null;
+        }
+
+        return $createQueryBuilder()
+            ->select('MAX(o.forecastFinishAt)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * @param WorkPackage $workPackage
      *
      * @return \DateTime|null

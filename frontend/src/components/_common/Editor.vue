@@ -82,6 +82,8 @@
 </script>
 
 <style lang="scss">
+    @import '../../css/_variables';
+
     .editor {
         position: relative;
         clear: both;
@@ -96,6 +98,12 @@
                 opacity: .5;
                 pointer-events: none !important;
             }
+        }
+    }
+
+    .editor + .buttons {
+        .btn-auto {
+            margin:15px 10px 0 0;
         }
     }
 
@@ -136,6 +144,17 @@
         font-family: Poppins !important;
         font-size: 12px !important;
         line-height: 1.5em;
+
+        span {
+            background-color: transparent !important;
+            color: $lightColor !important;
+        }
+    }
+
+    .project-box {
+        .ql-editor {
+            padding: 12px 0;
+        }
     }
 
     .ql-container {
