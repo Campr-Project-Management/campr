@@ -944,6 +944,7 @@ label:
     select_department: Select Department
     subteam_name: Subteam Name
     select_managers: Select Managers
+    select_members: Select Members
     department_name: Department Name
     new_subteam: New Subteam
     resource: Resource
