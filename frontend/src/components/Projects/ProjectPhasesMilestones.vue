@@ -4,8 +4,8 @@
             <p class="modal-title">{{ translateText('message.delete_phase') }}</p>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showDeletePhaseModal = false"
-                   class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedPhase()" class="btn-rounded">{{
+                   class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedPhase()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{
                     translateText('message.yes') }}</a>
             </div>
         </modal>
@@ -13,8 +13,8 @@
             <p class="modal-title">{{ translateText('message.delete_milestone') }}</p>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showDeleteMilestoneModal = false"
-                   class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedMilestone()" class="btn-rounded">{{
+                   class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedMilestone()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{
                     translateText('message.yes') }}</a>
             </div>
         </modal>
@@ -54,7 +54,7 @@
 
         <!-- /// Phases List /// -->
         <div class="phases-list margintop20">
-            <scrollbar>
+            <scrollbar class="customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -145,10 +145,7 @@
                             </td>
                             <td>{{ translateText(phase.workPackageStatusName) }}</td>
                             <td class="small-avatar text-center">
-                                <div class="user-avatar"
-                                     v-tooltip.top-center="translateText('message.phase_responsible') + phase.responsibilityFullName">
-                                    <img :src="phase.responsibilityAvatar"/>
-                                </div>
+                                <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + phase.responsibilityAvatar + ')' }" v-tooltip.top-center="translateText('message.phase_responsible') + ': ' + phase.responsibilityFullName"></div>
                             </td>
                             <td>
                                 <router-link
@@ -213,7 +210,7 @@
 
         <!-- /// Milestones List /// -->
         <div class="phases-list margintop20">
-            <scrollbar>
+            <scrollbar class="customScrollbar">
                 <div class="scroll-wrapper">
                     <table class="table table-striped table-responsive">
                         <thead>
@@ -235,10 +232,7 @@
                             <td>{{ milestone.actualFinishAt | date }}</td>
                             <td>{{ translateText(milestone.workPackageStatusName) }}</td>
                             <td class="small-avatar text-center">
-                                <div class="user-avatar"
-                                     v-tooltip.top-center="translateText('message.milestone_responsible') + milestone.responsibilityFullName">
-                                    <img :src="milestone.responsibilityAvatar">
-                                </div>
+                                <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + milestone.responsibilityAvatar + ')' }" v-tooltip.top-center="translateText('message.milestone_responsible') + ': ' + milestone.responsibilityFullName"></div>
                             </td>
                             <td>
                                 <router-link

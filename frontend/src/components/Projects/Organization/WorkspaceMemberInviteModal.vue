@@ -37,12 +37,12 @@
 
                         <br>
 
-                        <div class="flex flex-center">
-                            <button :style="{width:'auto'}" class="btn-rounded btn-empty danger-color" @click="inviteMember()">
-                                {{ translateText('label.invite_workspace_member') }}
-                            </button>
-                            <button class="btn-rounded btn-empty danger-color danger-border" @click="$emit('close')">
+                        <div class="flex flex-space-between">                            
+                            <button class="btn-rounded btn-empty btn-md btn-auto btn-md btn-auto danger-color danger-border" @click="$emit('close')">
                                 {{ translateText('message.close') }}
+                            </button>
+                            <button :style="{width:'auto'}" class="btn-rounded" @click="inviteMember()">
+                                {{ translateText('label.invite_workspace_member') }}
                             </button>
                         </div>
                     </div>

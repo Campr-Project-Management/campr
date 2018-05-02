@@ -13,9 +13,9 @@
                 <span class="caret"></span>
             </button>
             <scrollbar v-show="availableOptions.length !== 0"
-                       :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
+                       :style="{height: scrollbarHeight + 5 + 'px', top: scrollbarTop + 'px'}"
                        v-if="!disabled"
-                       class="dropdown-menu dropdown-menu-right">
+                       class="dropdown-menu dropdown-menu-right customScrollbar">
                 <ul ref="ul">
                     <li v-for="option in availableOptions" :key="option.key">
                         <a href="javascript:void(0)" @click="onSelect(option)">{{ option.label }}</a>
@@ -23,17 +23,15 @@
                 </ul>
             </scrollbar>
         </div>
-        <scrollbar :style="{height: (3 * itemHeight) + 'px'}" class="multiselect-content">
+        <scrollbar class="multiselect-content customScrollbar">
             <div>
-                <p
-                        v-for="option in selection"
-                        :key="option.key"
-                        class="multiselect-option">
+                <p v-for="option in selection"
+                :key="option.key"
+                class="multiselect-option">
                     {{ option.label }}
-                    <a
-                            v-if="!disabled"
-                            @click="onRemove(option)"
-                            :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
+                    <a v-if="!disabled"
+                    @click="onRemove(option)"
+                    :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
                 </p>
             </div>
         </scrollbar>
@@ -170,7 +168,7 @@ export default {
             ul {
                 list-style: none;
                 margin: 0;
-                padding: 5px;
+                padding: 0;
             }
         }
 
@@ -208,10 +206,6 @@ export default {
         letter-spacing: 1.5px;
         @include transition(all, 0.2s, ease-in);
 
-        @media screen and (max-width: 1440px) {
-            width: 120px;
-        }
-
         .caret {
             right: 20px;
             top: 18px;
@@ -219,15 +213,26 @@ export default {
         }
 
         &:focus {
-            background: $middleColor;
-            color: $lighterColor;
             outline: 0;
+        }
+
+        &:hover,
+        &:focus {
+            background: $middleColor;
+            border-color: $darkColor;
         }
     }
 
-    .btn-primary.active, .btn-primary:active, .open > .dropdown-toggle.btn-primary {
-        background: $middleColor;
-        color: $lighterColor;
+    .btn-primary.active, .btn-primary:active,
+    .open > .dropdown-toggle.btn-primary {
+        background-color: $middleColor;
+        border-color: $darkColor;
+
+        &:hover, 
+        &:focus {
+            background-color: $middleColor;
+            border-color: $darkColor;
+        }
     }
 
     .multiselect-option {
