@@ -90,16 +90,18 @@
                                                         </svg>
                                                     </div>
                                                 </a>
-                                                <a href="{{ path('main_team_delete', {'id': team.id}) }}" class="btn-icon"  data-toggle="tooltip" title="Delete Team">
-                                                    <div class="delete-icon icon">
-                                                        <svg version="1.1" class="danger-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
-                                                            <path d="M15.2,2h-2.3h-2.1V0.5c0-0.3-0.2-0.5-0.5-0.5H5.1C4.8,0,4.6,0.2,4.6,0.5V2H2.5H0.8C0.5,2,0.3,2.2,0.3,2.5S0.5,3,0.8,3H2 v12.5C2,15.8,2.2,16,2.5,16h10.4c0.3,0,0.5-0.2,0.5-0.5V3h1.8c0.3,0,0.5-0.2,0.5-0.5S15.5,2,15.2,2z M5.6,1h4.2v1H5.6V1z M12.4,15H3 V3h2.1h5.2h2.1V15z"/>
-                                                            <path d="M5.1,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C5.6,4.5,5.3,4.2,5.1,4.2z"/>
-                                                            <path d="M7.7,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C8.2,4.5,8,4.2,7.7,4.2z"/>
-                                                            <path d="M9.8,4.7v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7c0-0.3-0.2-0.5-0.5-0.5S9.8,4.5,9.8,4.7z"/>
-                                                        </svg>
-                                                    </div>
-                                                </a>
+                                                <form action="{{ path('main_team_delete', {'id': team.id}) }}" method="post" style="display: inline">
+                                                    <button type="submit" class="btn-icon" data-toggle="tooltip" title="Delete Team" onclick="return confirm('Are you sure?');">
+                                                        <div class="delete-icon icon">
+                                                            <svg version="1.1" class="danger-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
+                                                                <path d="M15.2,2h-2.3h-2.1V0.5c0-0.3-0.2-0.5-0.5-0.5H5.1C4.8,0,4.6,0.2,4.6,0.5V2H2.5H0.8C0.5,2,0.3,2.2,0.3,2.5S0.5,3,0.8,3H2 v12.5C2,15.8,2.2,16,2.5,16h10.4c0.3,0,0.5-0.2,0.5-0.5V3h1.8c0.3,0,0.5-0.2,0.5-0.5S15.5,2,15.2,2z M5.6,1h4.2v1H5.6V1z M12.4,15H3 V3h2.1h5.2h2.1V15z"/>
+                                                                <path d="M5.1,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C5.6,4.5,5.3,4.2,5.1,4.2z"/>
+                                                                <path d="M7.7,4.2c-0.3,0-0.5,0.2-0.5,0.5v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7C8.2,4.5,8,4.2,7.7,4.2z"/>
+                                                                <path d="M9.8,4.7v7.8c0,0.3,0.2,0.5,0.5,0.5s0.5-0.2,0.5-0.5V4.7c0-0.3-0.2-0.5-0.5-0.5S9.8,4.5,9.8,4.7z"/>
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </form>
                                             {% endif %}
                                         </td>
                                     </tr>
