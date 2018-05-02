@@ -181,7 +181,11 @@
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+                            <circle-chart
+                                    :percentage="project.progress"
+                                    :precision="0"
+                                    :title="translateText('message.task_status')"
+                                    class="left"/>
                         </div>
                     </div>
                 </div>
