@@ -19,6 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  * @UniqueEntity(fields={"name"}, message="unique.workspace.name")
  * @UniqueEntity(fields={"slug"}, message="unique.workspace.slug")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Vich\Uploadable
  */
 class Team
@@ -39,7 +40,7 @@ class Team
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teams")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id")
+     *     @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      * })
      */
     private $user;
@@ -108,6 +109,15 @@ class Team
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * @var ArrayCollection|TeamMember[]
