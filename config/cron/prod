@@ -8,3 +8,4 @@ MAILTO=""
 0 */1 * * * root /usr/bin/php /var/www/campr.biz/current/bin/console app:workspace:clean:tutorial --days=5 --master >> /var/www/campr.biz/current/var/logs/clean_tutorials.log
 0 */12 * * * root /usr/bin/php /var/www/campr.biz/current/bin/dep --file=/var/www/campr.biz/current/deploy.php project:backup prod-local -vvv >> /var/www/campr.biz/current/var/logs/project_backup.log
 0 */12 * * * root /usr/local/bin/supervisorctl restart SSR:SSR_00
+0 0 * * * root /usr/bin/php /var/www/campr.biz/current/bin/console app:remove:deleted-teams --env=prod >> /var/www/campr.biz/current/var/logs/deleted_teams_removal.log
