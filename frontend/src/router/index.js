@@ -444,10 +444,12 @@ const routes = [
         path: '/tasks',
         name: 'tasks',
         component: Tasks,
+        meta: {title: 'Tasks'},
     },
     {
         path: '/tasks/:id',
         name: 'task',
+        meta: {title: 'View Task'},
         component: ViewTask,
     },
 ];
