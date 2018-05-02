@@ -35,8 +35,10 @@ class LoadRiskData extends AbstractFixture implements OrderedFixtureInterface
                 ->setCost(1)
                 ->setDelay(1)
                 ->setDelayUnit(TimeUnitAwareInterface::DAYS)
-                ->setPriority('priority'.$i)
-                ->setDueDate($dueDate)
+            ;
+
+            $risk->setPriority('priority'.$i);
+            $risk->setDueDate($dueDate)
                 ->setResponsibility($responsible)
                 ->setImpact($i * 10)
                 ->setProbability($i * 10)
