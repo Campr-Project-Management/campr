@@ -484,7 +484,7 @@ class WorkPackageListener
     {
         $sql = 'SELECT id, name, progress, type, puid, phase_id, milestone_id, parent_id
                 FROM work_package
-                WHERE project_id = :id AND (type IN (:type1) OR (type = :type2 AND parent_id IS NULL))
+                WHERE project_id = :id AND type IN (:type1) OR (type = :type2 AND parent_id IS NULL) 
                 ORDER BY puid ASC';
 
         return $this->runSelectQuery(

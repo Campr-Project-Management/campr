@@ -20,25 +20,36 @@ class ApiCreateType extends CreateType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('costs', CollectionType::class, [
-                'entry_type' => CostCreateType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('children', CollectionType::class, [
-                'entry_type' => WorkPackageBaseType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-            ->add('medias', CollectionType::class, [
-                'entry_type' => UploadMediaType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
-        ;
+            ->add(
+                'costs',
+                CollectionType::class,
+                [
+                    'entry_type' => CostCreateType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]
+            )
+            ->add(
+                'children',
+                CollectionType::class,
+                [
+                    'entry_type' => WorkPackageBaseType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]
+            )
+            ->add(
+                'medias',
+                CollectionType::class,
+                [
+                    'entry_type' => UploadMediaType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]
+            );
     }
 
     /**
@@ -46,10 +57,13 @@ class ApiCreateType extends CreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => WorkPackage::class,
-            'csrf_protection' => false,
-            'entity_manager' => null,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => WorkPackage::class,
+                'csrf_protection' => false,
+                'entity_manager' => null,
+                'validation_groups' => ['Default', 'create'],
+            ]
+        );
     }
 }
