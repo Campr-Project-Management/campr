@@ -135,6 +135,7 @@ class WorkPackage
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="responsibility_id")
+     * @Assert\NotBlank()
      */
     private $responsibility;
 
@@ -154,7 +155,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_start_at", type="date", nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"create"})
      */
     private $scheduledStartAt;
 
@@ -164,7 +165,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="scheduled_finish_at", type="date", nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"create"})
      */
     private $scheduledFinishAt;
 
@@ -174,7 +175,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_start_at", type="date", nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"edit"})
      */
     private $forecastStartAt;
 
@@ -184,7 +185,7 @@ class WorkPackage
      * @Serializer\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="forecast_finish_at", type="date", nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"edit"})
      */
     private $forecastFinishAt;
 
@@ -317,10 +318,10 @@ class WorkPackage
      * @ORM\JoinTable(
      *     name="work_package_media",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="media_id")
+     *         @ORM\JoinColumn(name="media_id", onDelete="CASCADE")
      *     }
      * )
      */
