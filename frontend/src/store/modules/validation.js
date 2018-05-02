@@ -47,15 +47,11 @@ const getters = {
         return messages[atPath];
     },
     allValidationMessages: state => extractValidationMessages(state.validationMessages),
-    validationOrigin: state => {
-        console.log(state.validationOrigin);
-        return state.validationOrigin;
-    },
+    validationOrigin: state => state.validationOrigin,
 };
 
 const actions = {
     setValidationMessages({commit}, {messages}) {
-        console.log('tes1');
         commit(types.SET_VALIDATION_MESSAGES, {messages});
     },
     emptyValidationMessages({commit}) {
