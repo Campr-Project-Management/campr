@@ -663,28 +663,34 @@ export default {
     @import '../../css/_mixins';
 
     .gantt-tabs {
-        margin-bottom: 0px !important;
+        margin: 0;
+        padding: 0;
+        border: none;
 
         li {
-            border-top: 1px solid #646EA0;
-            border-left: 1px solid #646EA0;
             display: inline-block;
-            padding: 0.5em;
-
-            &:last-child {
-                border-right: 1px solid #646EA0;
-            }
+            margin-right: 2px;
 
             button {
-                background: transparent;
+                background-color: rgba($lightColor, 0.25);
                 border: none;
                 outline: none;
                 text-transform: uppercase;
+                letter-spacing: 0.1em;
+                padding: 10px 15px;
+                @include transition(all, 0.2s, ease);
+            }
+
+            &:hover {
+                button {
+                    background-color: rgba($lightColor, 0.5);
+                }
             }
 
             &.active {
                 button {
-                    color: #5FC3A5;
+                    background-color: $secondColor;
+                    color: $darkColor;
                 }
             }
         }

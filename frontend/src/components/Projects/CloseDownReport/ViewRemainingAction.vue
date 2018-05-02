@@ -6,8 +6,8 @@
                     <modal v-if="showDeleteModal" @close="showDeleteModal = false">
                         <p class="modal-title">{{ translateText('message.delete_remaining_action') }}</p>
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                            <a href="javascript:void(0)" @click="removeAction()" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                            <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                            <a href="javascript:void(0)" @click="removeAction()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                         </div>
                     </modal>
 
@@ -24,8 +24,8 @@
                         <hr class="double">
 
                         <div class="flex flex-space-between">
-                            <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('button.cancel') }}</a>
-                            <a href="javascript:void(0)" @click="rescheduleAction" class="btn-rounded">{{ translateText('button.save') }}</a>
+                            <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                            <a href="javascript:void(0)" @click="rescheduleAction" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
                         </div>
                     </modal>
                     <!-- /// Header /// -->

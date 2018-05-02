@@ -1,7 +1,8 @@
 @import '_variables.scss';
+@import '_mixins.scss';
 
 .task-range-slider {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   height: 45px;
   position: relative;
 
@@ -178,7 +179,7 @@
 
     .tooltip-content {
       background-color: $mainColor;
-      box-shadow: 0 0 30px -5px #000;
+      @include box-shadow(0, 0, 20px, rgba($blackColor, 0.5));
       color: $lighterColor;
       padding: 5px 0;
       text-align: left;

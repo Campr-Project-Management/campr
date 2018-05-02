@@ -4,8 +4,8 @@
             <modal v-if="showDeleteModal" @close="showDeleteModal = false">
                 <p class="modal-title">{{ translateText('message.delete_remaining_action') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="removeAction" class="btn-rounded">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="removeAction" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -135,45 +135,47 @@
                 <!-- /// Remaining Actions Table /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.remaining_action') }}</h3>
-                    <div class="table-wrapper" v-if="closeDownActions">
-                        <table class="table table-striped table-responsive" v-if="closeDownActions.items && closeDownActions.items.length > 0">
-                            <thead>
-                                <tr>
-                                    <th class="date-cell">{{ translateText('table_header_cell.due_date') }}</th>
-                                    <th>{{ translateText('table_header_cell.topic') }}</th>
-                                    <th>{{ translateText('table_header_cell.description') }}</th>
-                                    <th class="text-center">{{ translateText('table_header_cell.responsible') }}</th>
-                                    <th>{{ translateText('table_header_cell.actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="action in closeDownActions.items">
-                                    <td>{{ action.dueDate|moment('DD.MM.YYYY') }}</td>
-                                    <td>{{ action.title }}</td>
-                                    <td>
-                                        <p class="action-description" v-html="action.description"></p>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="avatar" v-tooltip.top-center="action.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
-                                    </td>
-                                    <td>
-                                        <div class="text-right" v-if="!projectCloseDown.frozen">
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.view_remaining_action')">
-                                                <view-icon fill="second-fill"></view-icon>
-                                            </router-link>
-                                            <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
-                                                <edit-icon fill="second-fill"></edit-icon>
-                                            </router-link>
-                                            <button @click="initDeleteModal(action)" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
-                                                <delete-icon fill="danger-fill"></delete-icon>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div v-else>{{ translateText('label.no_data') }}</div>
-                    </div>
+                    <scrollbar class="customScrollbar" v-if="closeDownActions">
+                        <div class="scroll-wrapper">
+                            <table class="table table-striped table-responsive" v-if="closeDownActions.items && closeDownActions.items.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th class="date-cell">{{ translateText('table_header_cell.due_date') }}</th>
+                                        <th>{{ translateText('table_header_cell.topic') }}</th>
+                                        <th>{{ translateText('table_header_cell.description') }}</th>
+                                        <th class="text-center">{{ translateText('table_header_cell.responsible') }}</th>
+                                        <th>{{ translateText('table_header_cell.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="action in closeDownActions.items">
+                                        <td>{{ action.dueDate|moment('DD.MM.YYYY') }}</td>
+                                        <td>{{ action.title }}</td>
+                                        <td>
+                                            <p class="action-description" v-html="action.description"></p>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="avatar" v-tooltip.top-center="action.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right" v-if="!projectCloseDown.frozen">
+                                                <router-link class="btn-icon" :to="{name: 'project-close-down-report-view-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.view_remaining_action')">
+                                                    <view-icon fill="second-fill"></view-icon>
+                                                </router-link>
+                                                <router-link class="btn-icon" :to="{name: 'project-close-down-report-edit-remaining-action', params:{actionId: action.id}}" v-tooltip.top-center="translateText('message.edit_remaining_action')">
+                                                    <edit-icon fill="second-fill"></edit-icon>
+                                                </router-link>
+                                                <button @click="initDeleteModal(action)" data-toggle="modal" type="button" class="btn-icon" v-tooltip.top-center="translateText('message.delete_remaining_action')">
+                                                    <delete-icon fill="danger-fill"></delete-icon>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div v-else>{{ translateText('label.no_data') }}</div>
+                        </div>
+                    </scrollbar>
                     <div v-else>{{ translateText('label.no_data') }}</div>
                     <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 0">
                         <div class="pagination">
