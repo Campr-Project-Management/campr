@@ -54,9 +54,9 @@ message:
     costs_progress: Costs Progress
     task_progress: Task Progress
     overall_progress: Overall Progress
-    danger: Danger
+    danger: Critical
     warning: Warning
-    actual_schedule: Actual Schedule
+    actual_schedule: On track
     forecast_schedule: Forecast Schedule
     base_schedule: Base Schedule
     current_date: Current Date
@@ -1831,7 +1831,7 @@ roles:
 color_status:
     not_started: Critical
     in_progress: Warning
-    finished: OK
+    finished: On track
 
 todo_status:
     initiated: Initiated
