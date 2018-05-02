@@ -26,9 +26,7 @@
                                 <b :style="{color: info.infoStatusColor}">{{ translate(info.infoStatusName) }}</b></h4>
 
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                                <div class="user-avatar"> 
-                                    <img :src="(info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar)" :alt="info.responsibilityFullName"/>
-                                </div>
+                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
@@ -187,20 +185,16 @@ export default {
     }
 
     .user-avatar {
+        width: 30px;
+        height: 30px;
         display: inline-block;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-
-        img {
-            width: 30px;
-            height: 30px;
-            @include border-radius(50%);
-            margin: 0 10px 0 0;  
-            display: inline-block;
-            position: relative;
-            top: -2px;
-        }
+        margin: 0 10px 0 0;  
+        position: relative;
+        top: -2px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        @include border-radius(50%);
     }
 
     .entry-body {

@@ -6,10 +6,8 @@
             <div v-if="item.isResponsibilityAdded">
                 <div class="comment">
                     <div class="comment-header">
-                        <div class="user-avatar">
-                            <img :src="item.userAvatar" :alt="item.userFullName"/>
-                            <b>{{item.userFullName}}</b>
-                        </div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                        <b class="uppercase">{{item.userFullName}}</b>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
                                 class="simple-link">
@@ -32,10 +30,8 @@
             <div v-else-if="item.isCommentAdded">
                 <div class="comment">
                     <div class="comment-header">
-                        <div class="user-avatar">
-                            <img :src="item.userAvatar" :alt="item.userFullName"/>
-                            <b>{{item.userFullName}}</b>
-                        </div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                        <b class="uppercase">{{item.userFullName}}</b>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
                                 class="simple-link">
@@ -54,10 +50,8 @@
             <div v-else-if="item.isLabelAdded">
                 <div class="comment">
                     <div class="comment-header">
-                        <div class="user-avatar">
-                            <img :src="item.userAvatar" :alt="item.userFullName"/>
-                            <b>{{item.userFullName}}</b>
-                        </div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                        <b class="uppercase">{{item.userFullName}}</b>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
                                 class="simple-link">
@@ -77,10 +71,8 @@
             <div v-else-if="item.isFieldEdited" >
                 <div class="comment">
                     <div class="comment-header">
-                        <div class="user-avatar">
-                            <img :src="item.userAvatar" :alt="item.userFullName"/>
-                            <b>{{item.userFullName}}</b>
-                        </div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                        <b class="uppercase">{{item.userFullName}}</b>
                         <router-link
                                 :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
                                 class="simple-link">

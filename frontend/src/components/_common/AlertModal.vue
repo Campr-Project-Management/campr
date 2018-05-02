@@ -37,7 +37,7 @@
                         <br>
                         <slot name="footer">
                             <div class="flex flex-center">
-                                <button class="btn-rounded btn-empty danger-color danger-border" @click="$emit('close')">
+                                <button class="btn-rounded btn-empty btn-auto danger-color danger-border" @click="$emit('close')">
                                     {{ translateText(buttonText) }}
                                 </button>
                             </div>

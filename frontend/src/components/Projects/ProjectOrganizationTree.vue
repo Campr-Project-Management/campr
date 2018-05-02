@@ -40,9 +40,9 @@ export default {
 
             this.tree = d3.tree()
                 .separation((d) => {
-                    return d.depth < this.bigCellLimit ? 1.5 : 1;
+                    return this.cellHeights[d.depth] !== undefined ? 1.5 : 1;
                 })
-                .nodeSize([this.cellWidth, this.cellHeight])
+                .nodeSize([this.cellWidth, this.defaultCellHeight])
             ;
             this.root = d3.hierarchy(this.organizationTreeData);
             this.root.x0 = 0;
@@ -67,13 +67,8 @@ export default {
             this.svg
                 .call(zoom)
                 .call(zoom.transform, d3.zoomIdentity.translate(width, 16))
+                .on('wheel.zoom', null)
             ;
-
-            // this.svg.on('click', () => {
-            //     if (this.teamList !== '') {
-            //         this.teamList = '';
-            //     }
-            // });
         },
         collapseNode(node, level) {
             if (node.children) {
@@ -92,34 +87,16 @@ export default {
             return node;
         },
         branch(dst, src) {
-            const cw = this.cellWidth;
-            const ch = this.cellHeight;
-            const scw = this.smallCellWidth;
-            const sch = this.smallCellHeight;
+            const dstWidth = this.cellWidth;
+            const srcHeight = this.cellHeights[src.depth] || this.defaultCellHeight;
+            const srcWidth = this.cellWidth;
 
-            switch (true) {
-            case src.depth < (this.bigCellLimit - 1):
-                return `
-                M ${src.x + cw/2} ${src.y + ch}
-                L ${src.x + cw/2} ${src.y + ch + this.cellSpacing/2},
-                    ${dst.x + cw/2} ${src.y + ch + this.cellSpacing/2},
-                    ${dst.x + cw/2} ${dst.y}
+            return `
+                M ${src.x + srcWidth/2} ${src.y + srcHeight}
+                L ${src.x + srcWidth/2} ${src.y + srcHeight + this.cellSpacing/2},
+                    ${dst.x + dstWidth/2} ${src.y + srcHeight + this.cellSpacing/2},
+                    ${dst.x + dstWidth/2} ${dst.y}
             `;
-            case src.depth === (this.bigCellLimit - 1) && dst.depth === this.bigCellLimit:
-                return `
-                M ${src.x + cw/2} ${src.y + ch}
-                L ${src.x + cw/2} ${src.y + ch + this.cellSpacing/2},
-                    ${dst.x + scw/2} ${src.y + ch + this.cellSpacing/2},
-                    ${dst.x + scw/2} ${dst.y}
-            `;
-            default:
-                return `
-                M ${src.x + scw/2} ${src.y + sch}
-                L ${src.x + scw/2} ${src.y + sch + this.cellSpacing/2},
-                    ${dst.x + scw/2} ${src.y + sch + this.cellSpacing/2},
-                    ${dst.x + scw/2} ${dst.y}
-            `;
-            }
         },
         updateTree(source) {
             let treeData = this.tree(this.root);
@@ -128,11 +105,9 @@ export default {
             let links = treeData.descendants().slice(1);
 
             nodes.forEach(d => {
-                if (d.depth < this.bigCellLimit) {
-                    d.y = d.depth * (this.cellHeight + this.cellSpacing);
-                } else {
-                    d.y = this.bigCellLimit * (this.cellHeight + this.cellSpacing)
-                        + (d.depth - this.bigCellLimit) * (this.smallCellHeight + this.cellSpacing);
+                d.y = 0;
+                for (let c = 0; c < d.depth; c++) {
+                    d.y += (this.cellHeights[c] || this.defaultCellHeight) + this.cellSpacing;
                 }
                 d.x += this.cellWidth;
             });
@@ -153,14 +128,41 @@ export default {
                 .append('foreignObject')
                 .attr('y', 0)
                 .attr('x', 0)
-                .attr('width', d => d.depth < 2 ? this.cellWidth : this.smallCellWidth)
-                .attr('height', d => d.depth < 2 ? this.cellHeight : this.smallCellHeight)
+                .attr('width', d => this.cellWidth)
+                .attr('height', d => {
+                    return this.cellHeights[d.depth] || this.defaultCellHeight;
+                })
                 .attr('externalResourcesRequired', 'true')
                 .append('xhtml:body')
                 .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                .attr('style', d => d.depth < 2 ? `min-height: auto; height: ${this.cellHeight}px` : `min-height: ${this.smallCellHeight}px`)
+                .attr('style', d => {
+                    const h = (this.cellHeights[d.depth] || this.defaultCellHeight);
+
+                    return `display: table-cell; vertical-align: middle; width: ${this.cellWidth}px; height: ${h}px; min-height: auto`;
+                })
                 .html(d => this.userTpl(d))
                 .on('click', d => {
+                    if (d.depth < this.collapsedNodeLevel) {
+                        if (d.children) {
+                            d._children = d.children;
+                            d.children = null;
+                        } else {
+                            d.children = d._children;
+                            d._children = null;
+                        }
+
+                        if (this.activeTeamNode) {
+                            this.activeTeamNode.showTeam = false;
+                            this.updateTree(this.activeTeamNode);
+                            this.activeTeamNode = null;
+                            this.teamList = '';
+                        }
+
+                        this.updateTree(d);
+
+                        return;
+                    }
+
                     if (this.activeTeamNode) {
                         let shouldReturn = this.activeTeamNode === d;
                         this.activeTeamNode.showTeam = false;
@@ -228,6 +230,7 @@ export default {
 
                     return this.branch(o, o);
                 })
+                .remove() // prevents lines staying on page after update
             ;
 
             nodes.forEach(d => {
@@ -344,8 +347,8 @@ export default {
                     <div class="name" ${attributes}>${user.fullName}</div>
                     ${titles}
                     ${mediaData}
-                    ${teamButtom}
                 </div>
+                ${teamButtom}
             `;
         },
     },
@@ -372,14 +375,20 @@ export default {
                     return 0;
                 }
 
+                let height = 0;
                 let levels = 0;
+
                 this.root.descendants().map((item) => {
                     if (item.depth > levels) {
                         levels = item.depth;
                     }
                 });
 
-                return (levels + 1) * this.cellHeight + levels * this.cellSpacing;
+                for (let c = 0; c <= levels; c++) {
+                    height += (this.cellHeights[c] || this.defaultCellHeight) + (c ? this.cellSpacing : 0);
+                }
+
+                return height;
             },
         },
         teamListOffsetLeft: {
@@ -396,7 +405,11 @@ export default {
         },
         teamListOffsetTop: {
             get() {
-                return (this.height + 60) + 'px';
+                let offset = this.height;
+                if (this.$el) {
+                    offset += $(this.$el).offset().top;
+                }
+                return offset + 'px';
             },
         },
     },
@@ -417,14 +430,18 @@ export default {
     },
     data() {
         return {
+            cellHeights: {
+                0: 290,
+                1: 290,
+                3: 290,
+            },
+            defaultCellHeight: 225,
             collapsedNodeLevel: 3,
             bigCellLimit: 2,
             show: false,
             dataAttributes: [],
             cellWidth: 222,
-            cellHeight: 300,
-            smallCellWidth: 222, // should be the same as cellWidth to for easy math :]
-            smallCellHeight: 225,
+            cellHeight: 290,
             cellSpacing: 50,
             initialized: false,
             id: 'pot' + this._uid,
@@ -509,7 +526,25 @@ export default {
         }
     }
 
+    .btn-rounded.btn-empty {
+        padding: 0px 10px;
+        width: auto;
+        line-height: 30px;
+        height: 30px;
+        font-size: 10px;
+        letter-spacing: 0px;
+        margin: 0 auto;
+        display: block;
+        clear: both;
+        color: $lighterColor;
+    }
+
     .member-badge {
+        text-align: center;
+        display: block;
+        margin: 5px auto;
+        width: 100%;
+
         .social-links {
             position: inherit;
         }
@@ -518,14 +553,10 @@ export default {
             background: $middleColor;
         }
 
-        text-align: center;
-        display: inline-block;
-        margin: 10px;
-
         .avatar {
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
+            width: 199px;
+            height: 199px;
+            margin: 0 auto;
             @include border-radius(50%);
             background-size: cover;
             background-repeat: no-repeat;
@@ -533,19 +564,16 @@ export default {
         }
 
         .social-links {
-            margin-top: 5px;
-
             a {
                 margin: 0 3px;
             }
-
         }
 
         .name {
-            margin-top: 17px;
+            margin-top: 10px;
             text-transform: uppercase;
             letter-spacing: 2.1px;
-            line-height: 1.1em;
+            line-height: 12px;
             font-family: Poppins,sans-serif;
             color: $lighterColor;
         }
@@ -558,20 +586,11 @@ export default {
             font-family: Poppins,sans-serif;
         }
 
-        .btn-rounded.btn-empty {
-            padding: 0px 10px;
-            width: 100%;
-            line-height: 30px;
-            height: 30px;
-            font-size: 10px;
-            letter-spacing: 0px;
-            margin: 0;
-            color: $lighterColor;
-        }
-
         &.small {
-            margin: 10px;
-            width: 112px;
+            .avatar {
+                width: 112px;
+                height: 112px;
+            }
 
             .social-links {
                 a {

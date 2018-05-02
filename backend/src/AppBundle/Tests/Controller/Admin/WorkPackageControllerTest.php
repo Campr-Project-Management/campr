@@ -123,9 +123,16 @@ class WorkPackageControllerTest extends BaseController
         $form['create[name]'] = 'workpackage10';
         $form['create[type]'] = WorkPackage::TYPE_TASK;
         $form['create[duration]'] = '0';
+        $form['create[scheduledStartAt]'] = '01-01-2018';
+        $form['create[scheduledFinishAt]'] = '02-01-2018';
+        $form['create[forecastStartAt]'] = '01-01-2018';
+        $form['create[forecastFinishAt]'] = '02-01-2018';
+        $form['create[responsibility]'] = 3;
 
         $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $response = $this->client->getResponse();
+
+        $this->assertTrue($response->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('WorkPackage successfully created!', $this->client->getResponse()->getContent());
@@ -266,6 +273,10 @@ class WorkPackageControllerTest extends BaseController
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'workpackage2';
         $form['create[workPackageCategory]'] = 1;
+        $form['create[scheduledStartAt]'] = '01-01-2018';
+        $form['create[scheduledFinishAt]'] = '02-01-2018';
+        $form['create[forecastStartAt]'] = '01-01-2018';
+        $form['create[forecastFinishAt]'] = '02-01-2018';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

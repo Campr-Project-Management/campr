@@ -144,7 +144,6 @@ localServer('prod-local')
     ->set('mysql_database', 'campr')
 ;
 
-
 // Set tasks
 task('pemFile', function () {
     \Deployer\Task\Context::get()
