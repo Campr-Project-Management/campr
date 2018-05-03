@@ -65,11 +65,15 @@ class TeamController extends Controller
      */
     public function createAction(Request $request)
     {
+        // softdeleteable is incompatible with UniqueEntity validator
+        $em = $this->getDoctrine()->getManager();
+        $em->getFilters()->disable('softdeleteable');
+
         $team = new Team();
         $form = $this->createForm(CreateType::class, $team);
         $form->handleRequest($request);
 
-        if ($request->isMethod('POST') && $form->isValid()) {
+        if ($request->isMethod(Request::METHOD_POST) && $form->isValid()) {
             $team = $form->getData();
             $team->setUser($this->getUser());
             $teamMember = new TeamMember();
@@ -77,7 +81,6 @@ class TeamController extends Controller
             $teamMember->setUser($this->getUser());
             $teamMember->setRoles([User::ROLE_SUPER_ADMIN]);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($team);
             $em->persist($teamMember);
             $em->flush();
@@ -118,13 +121,16 @@ class TeamController extends Controller
     {
         $this->denyAccessUnlessGranted(TeamVoter::EDIT, $team);
 
+        // softdeleteable is incompatible with UniqueEntity validator
+        $em = $this->getDoctrine()->getManager();
+        $em->getFilters()->disable('softdeleteable');
+
         $form = $this->createForm(EditType::class, $team);
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()) {
             $team = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($team);
             $em->flush();
 
@@ -247,7 +253,7 @@ class TeamController extends Controller
      * Deletes a specific Team entity.
      *
      * @Route("/{id}/delete", name="main_team_delete")
-     * @Method({"GET"})
+     * @Method({"POST"})
      *
      * @param Team $team
      *
