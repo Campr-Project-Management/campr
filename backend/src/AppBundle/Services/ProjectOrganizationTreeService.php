@@ -111,9 +111,9 @@ class ProjectOrganizationTreeService
                         ],
                         'children' => $subteam
                             ->getSubteamMembers()
-//                            ->filter(function (SubteamMember $subteamMember) use ($manager) {
-//                                return $subteamMember->getUser() && $subteamMember->getUser() !== $manager->getUser();
-//                            })
+                            ->filter(function (SubteamMember $subteamMember) use ($manager) {
+                                return $subteamMember->getUser() && $subteamMember->getUser() !== $manager->getUser();
+                            })
                             ->map(function (SubteamMember $subteamMember) {
                                 return $this->extractUserData(
                                     $subteamMember->getUser(),
@@ -123,7 +123,8 @@ class ProjectOrganizationTreeService
                                         ],
                                     ]
                                 );
-                            }),
+                            })
+                            ->getValues(),
                     ]
                 );
             })
