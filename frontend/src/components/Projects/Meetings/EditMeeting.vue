@@ -124,7 +124,7 @@
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translate('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
                         <error
-                            v-if="validationOrigin==MEETING_OBJECTIVE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                            v-if="validationOrigin == MEETING_OBJECTIVE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                             v-for="message in validationMessages.description"
                             :message="message" />
                     </div>
@@ -261,7 +261,7 @@
 
                     <input-field type="text" v-bind:label="translate('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
                     <error
-                        v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
+                        v-if="validationOrigin == DECISION_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
                         :message="message" />
                     <div class="form-group">
@@ -272,7 +272,7 @@
                             v-model="decision.description" />
                     </div>
                     <error
-                        v-if="validationOrigin==DECISION_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-if="validationOrigin == DECISION_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div class="row">
@@ -342,7 +342,7 @@
                             v-model="todo.description" />
                     </div>
                     <error
-                        v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-if="validationOrigin == TODO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div class="row">
@@ -414,7 +414,7 @@
                         v-model="info.topic"
                         v-bind:content="info.topic" />
                     <error
-                        v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.topic && validationMessages.topic.length"
+                        v-if="validationOrigin == INFO_VALIDATION_ORIGIN && validationMessages.topic && validationMessages.topic.length"
                         v-for="message in validationMessages.topic"
                         :message="message" />
                     <div class="form-group">
@@ -425,7 +425,7 @@
                             v-model="info.description" />
                     </div>
                     <error
-                        v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
+                        v-if="validationOrigin == INFO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div class="row">

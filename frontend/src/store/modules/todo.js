@@ -2,7 +2,7 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
-export const TODO_VALIDATION_ORIGIN = 'todo';
+const TODO_VALIDATION_ORIGIN = 'todo';
 
 const state = {
     currentTodo: {},
