@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\User;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -10,6 +11,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Entity\Company;
 use AppBundle\Entity\User;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -41,6 +43,17 @@ class EditType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false,
             ])
+            ->add(
+                'company',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'class' => Company::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.company_choose',
+                    'translation_domain' => 'messages',
+                ]
+            )
             ->add('avatarFile', VichImageType::class, [
                 'required' => false,
                 'download_link' => false,
