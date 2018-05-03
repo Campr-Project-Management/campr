@@ -1080,7 +1080,9 @@ export default {
                         let link = document.createElement('a');
                         link.href = window.URL.createObjectURL(blob);
                         link.download = 'task_' + this.task.id + '.xml';
+                        document.body.appendChild(link);
                         link.click();
+                        link.remove();
                     }
                 }, (response) => {}
             );
