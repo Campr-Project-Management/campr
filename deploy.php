@@ -203,7 +203,7 @@ task('deploy:assetic:dump', function () {
     run('{{symfony_console}} assetic:dump {{symfony_console_options}}');
 })->desc('Dump assets');
 task('project:supervisor:restart', function () {
-    run('if [ ! "`sudo supervisorctl status | grep \'no\'`" ]; then sudo supervisorctl update; sudo supervisorctl restart SSR:SSR_00; sudo supervisorctl status; else sudo service supervisor start; sudo supervisorctl status; fi');
+    run('if [ ! "`sudo supervisorctl status | grep \'no\'`" ]; then sudo supervisorctl update; sudo supervisorctl restart all; sudo supervisorctl status; else sudo service supervisor start; sudo supervisorctl status; fi');
 });
 task('project:apache:restart', function () {
     run('sudo service apache2 restart');
