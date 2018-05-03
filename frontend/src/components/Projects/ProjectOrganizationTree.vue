@@ -67,6 +67,7 @@ export default {
             this.svg
                 .call(zoom)
                 .call(zoom.transform, d3.zoomIdentity.translate(width, 16))
+                .on('wheel.zoom', null)
             ;
         },
         collapseNode(node, level) {
@@ -137,7 +138,7 @@ export default {
                 .attr('style', d => {
                     const h = (this.cellHeights[d.depth] || this.defaultCellHeight);
 
-                    return `display: table-cell; vertical-align: middle; width: ${this.cellWidth}px; height: ${h}px`;
+                    return `display: table-cell; vertical-align: middle; width: ${this.cellWidth}px; height: ${h}px; min-height: auto`;
                 })
                 .html(d => this.userTpl(d))
                 .on('click', d => {
@@ -541,7 +542,7 @@ export default {
     .member-badge {
         text-align: center;
         display: block;
-        margin: 5px 0;
+        margin: 5px auto;
         width: 100%;
 
         .social-links {
