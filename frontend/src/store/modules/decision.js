@@ -2,7 +2,7 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
-export const DECISION_VALIDATION_ORIGIN = 'decision';
+const DECISION_VALIDATION_ORIGIN = 'decision';
 
 const state = {
     currentDecision: {},

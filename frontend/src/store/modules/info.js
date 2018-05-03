@@ -2,7 +2,7 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import _ from 'lodash';
 
-export const INFO_VALIDATION_ORIGIN = 'info';
+const INFO_VALIDATION_ORIGIN = 'info';
 
 const state = {
     info: null,
