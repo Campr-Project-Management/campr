@@ -71,6 +71,15 @@
                     ) }}
                     <div class="form-group">
                         {{ form_widget(
+                            form.company,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.company'|trans,
+                            }
+                        ) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(
                             form.avatarFile,
                             {
                                 'attr': {
