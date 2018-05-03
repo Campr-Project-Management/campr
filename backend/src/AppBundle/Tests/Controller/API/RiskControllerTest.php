@@ -84,6 +84,7 @@ class RiskControllerTest extends BaseController
                     'potentialDelay' => 0.1,
                     'potentialDelayHours' => round(0.1 * 24, 2),
                     'priority' => 'priority1',
+                    'priorityName' => '',
                     'measures' => [],
                     'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',
@@ -176,8 +177,10 @@ class RiskControllerTest extends BaseController
             ->setCost(3)
             ->setDelay(3)
             ->setDelayUnit(TimeUnitAwareInterface::DAYS)
-            ->setPriority('priority3')
         ;
+
+        $risk->setPriority('priority3');
+
         $this->em->persist($risk);
         $this->em->flush();
 
@@ -288,6 +291,7 @@ class RiskControllerTest extends BaseController
                     'potentialDelayHours' => round(0.2 * 24, 2),
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'priority' => 'priority2',
+                    'priorityName' => '',
                     'measures' => [],
                     'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',

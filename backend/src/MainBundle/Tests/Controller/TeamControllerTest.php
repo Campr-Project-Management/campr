@@ -541,4 +541,11 @@ class TeamControllerTest extends BaseController
         $this->em->remove($this->team);
         $this->em->flush();
     }
+
+    protected function tearDown()
+    {
+        $stmt = $this->em->getConnection()->prepare('DELETE FROM team WHERE deleted_at IS NOT NULL');
+        $stmt->execute();
+        parent::tearDown();
+    }
 }
