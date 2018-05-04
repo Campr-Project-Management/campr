@@ -29,9 +29,7 @@ export default {
             },
         }, */
         precision: {
-            default() {
-                return 2;
-            },
+            default: 0,
         },
         bgStrokeColor: {
             default() {
