@@ -49,7 +49,7 @@
             precision: {
                 type: Number,
                 required: false,
-                default: 2,
+                default: 0,
             },
         },
         computed: {
