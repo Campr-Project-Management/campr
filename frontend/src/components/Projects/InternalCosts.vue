@@ -18,6 +18,7 @@
 <script>
     import Chart from './Charts/CostsChart.vue';
     import {mapGetters, mapActions} from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: 'project-internal-costs',

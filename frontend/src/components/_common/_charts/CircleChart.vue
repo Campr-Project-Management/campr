@@ -14,6 +14,7 @@
 import * as d3 from 'd3';
 
 export default {
+    name: 'circle-chart',
     props: {
         percentage: {},
         title: {},
