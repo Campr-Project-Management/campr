@@ -40,10 +40,23 @@
                     </p>
                 </div>
               </div>
-            <bar-chart :percentage="project.progress" :status="project.statusName" title-right="Progress"></bar-chart>
+            <bar-chart
+                    :precision="0"
+                    :percentage="project.progress"
+                    :status="project.statusName"
+                    title-right="Progress"/>
             <div class="content-bottom flex circles">
-                <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
-                <circle-chart :percentage="project.costs_status" v-bind:title="translateText('message.cost_status')" class="right"></circle-chart>
+                <circle-chart
+                        :percentage="project.progress"
+                        :precision="0"
+                        :title="translate('message.task_status')"
+                        class="left"/>
+
+                <circle-chart
+                        :percentage="project.costProgress"
+                        :precision="0"
+                        :title="translate('message.cost_status')"
+                        class="right"/>
             </div>
             <div class="flex flex-space-between notes-title">
                 <span class="uppercase">{{ translateText('message.notes') }}</span>
