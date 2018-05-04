@@ -72,7 +72,7 @@
                             <li>
                                 <span>{{ translateText('message.currency') }}:</span>
                                 <div>
-                                    <b v-if="project.currency">{{ project.currency.code }} ({{ project.currency.name }})</b>
+                                    <b v-if="project.currency">{{ project.currency.symbol }}</b>
                                 </div>
                             </li>
                         </ul>
