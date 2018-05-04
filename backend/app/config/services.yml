@@ -163,6 +163,11 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.project_cost_status:
+        class: Component\Project\Calculator\ProjectCostStatusCalculator
+        arguments:
+            - '@app.repository.work_package'
+
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
 
@@ -578,6 +583,7 @@ services:
              - '@app.calculator.project_scheduled_dates'
              - '@app.calculator.project_forecast_dates'
              - '@app.calculator.project_actual_dates'
+             - '@app.calculator.project_cost_status'
         tags:
             - { name: jms_serializer.event_subscriber }
 

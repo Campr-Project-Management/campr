@@ -785,6 +785,11 @@ class WorkPackageRepository extends BaseRepository
         return $qb->getQuery()->getArrayResult();
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getTotalExternalInternalCosts(Project $project)
     {
         $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
