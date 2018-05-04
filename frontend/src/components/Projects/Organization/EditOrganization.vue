@@ -12,21 +12,19 @@
 
             <multi-select-field
                     :title="translate('label.select_members')"
-                    :options="projectUsersForSelect"
+                    :options="departmentMembersOptions"
                     v-model="editDepartmentMembers"/>
+            <error at-path="projectUsers"/>
             <br/>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{
-                    translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{
-                    translate('button.edit_department') }} +</a>
+                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_department') }} +</a>
             </div>
         </modal>
         <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
             <p class="modal-title">{{ translate('message.delete_department') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{
-                    translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
                 <a href="javascript:void(0)" @click="deleteSelectedDepartment()"
                    class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
@@ -517,7 +515,12 @@
                 'project',
                 'projectDepartmentsForSelect',
                 'projectDepartmentById',
+                'projectUsers',
             ]),
+            departmentMembersOptions() {
+                return this.projectUsers.items.map(
+                    (projectUser) => ({key: projectUser.id, label: projectUser.userFullName}));
+            },
             usersCurrentList: {
                 get() {
                     return this.users && this.users.length
