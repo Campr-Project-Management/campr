@@ -2,7 +2,7 @@
     <div>
         <div class="page-section projects">
             <div class="header">
-                <h1>{{ translateText('message.my_projects') }}</h1>
+                <h1>{{ translate('message.my_projects') }}</h1>
                 <div class="flex filters-container">
                     <project-filters :updateFilters="applyFilters"></project-filters>
                 </div>
@@ -11,15 +11,16 @@
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
                 <div class="new-box">
                     <router-link :to="{name: 'projects-create-1'}">
-                        <span>{{ translateText('message.new_project') }} +</span>
+                        <span>{{ translate('message.new_project') }} +</span>
                     </router-link>
                 </div>
             </div>
         </div>
+
         <pagination
-            :current-page="activePage"
-            :number-of-pages="pages"
-            v-on:change-page="changePage"/>
+                v-model.number="activePage"
+                :number-of-pages="pages"
+                @input="onPageChange"/>
     </div>
 </template>
 
@@ -37,12 +38,9 @@ export default {
     },
     methods: {
         ...mapActions(['getProjects', 'setProjectFilters', 'clearProjects']),
-        changePage(page) {
-            this.activePage = page;
+        onPageChange(page) {
+            this.page = page;
             this.getProjectsData();
-        },
-        translateText: function(text) {
-            return this.translate(text);
         },
         applyFilters: function(key, value) {
             let filterObj = {};
@@ -53,7 +51,7 @@ export default {
         getProjectsData: function() {
             this.getProjects({
                 queryParams: {
-                    page: this.activePage,
+                    page: this.page,
                 },
             });
         },
@@ -64,13 +62,13 @@ export default {
         this.getProjectsData();
     },
     computed: {
-        ...mapGetters({
-            projects: 'projects',
-            user: 'user',
-            localUser: 'localUser',
-            projectsCount: 'projectsCount',
-            projectsPerPage: 'projectsPerPage',
-        }),
+        ...mapGetters([
+            'projects',
+            'user',
+            'localUser',
+            'projectsCount',
+            'projectsPerPage',
+        ]),
         pages: function() {
             return Math.ceil(this.projectsCount / this.projectsPerPage);
         },
@@ -83,7 +81,7 @@ export default {
     },
     data() {
         return {
-            activePage: 1,
+            page: 1,
         };
     },
 };
