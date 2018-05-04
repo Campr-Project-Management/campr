@@ -949,6 +949,7 @@ label:
     department_name: Department Name
     new_subteam: New Subteam
     resource: Resource
+    cost_item: Cost Item
     quantity: Quantity
     username: Username
     email: Email

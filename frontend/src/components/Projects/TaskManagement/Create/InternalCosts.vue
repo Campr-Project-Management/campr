@@ -1,13 +1,12 @@
 <template>
     <div>
         <h3>{{ message.internal_costs }}</h3>
-        <span class="note blue-note">{{ message.project_currency }} <i class="fa fa-dollar"></i> USD</span>
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
-                            :title="label.resource"
+                            :title="translate('label.cost_item')"
                             :options="resourcesForSelect"
                             :value="{key: item.resource}"
                             @input="onItemUpdate('resource', index, $event)" />
@@ -17,28 +16,27 @@
                             :message="message" />
                     </div>
                     <div class="col-md-2">
-                        <input-field
-                            type="number"
-                            v-bind:label="label.daily_rate"
+                        <money-field
+                            :label="label.daily_rate"
+                            :currency="projectCurrencySymbol"
                             :value="item.rate"
-                            v-bind:content="item.rate"
-                            v-on:input="onItemUpdate('rate', index, $event)" />
+                            @input="onItemUpdate('rate', index, $event)" />
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            v-bind:label="label.qty"
+                            :label="label.qty"
                             :value="item.quantity"
-                            v-bind:content="item.quantity"
-                            v-on:input="onItemUpdate('quantity', index, $event)"/>
+                            :content="item.quantity"
+                            @input="onItemUpdate('quantity', index, $event)"/>
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            v-bind:label="label.days"
+                            :label="label.days"
                             :value="item.duration"
-                            v-bind:content="item.duration"
-                            v-on:input="onItemUpdate('duration', index, $event)"/>
+                            :content="item.duration"
+                            @input="onItemUpdate('duration', index, $event)"/>
                     </div>
                 </div>
             </div>
@@ -46,7 +44,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-6">
                         <span class="title">
-                            {{ label.internal_cost_subtotal }} <b>{{ itemTotal(item) | money }}</b>
+                            {{ label.internal_cost_subtotal }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
                         </span>
                     </div>
                     <div class="col-md-6">
@@ -66,7 +64,7 @@
             <div class="form-group last-form-group">
                 <div class="col-md-12">
                     <div class="pull-right">
-                        <a v-on:click="onAdd" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
+                        <a @click="onAdd" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
                     </div>
                 </div>
             </div>
@@ -75,21 +73,19 @@
         <div class="row">
             <div class="form-group last-form-group">                
                 <div class="col-md-4">
-                    <span class="title">{{ message.base_total }} <b>{{ baseTotal | money }}</b></span>
+                    <span class="title">{{ message.base_total }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b></span>
                 </div>
                 <div class="col-md-4">
-                    <input-field
-                        type="number"
-                        v-bind:label="label.forecast_total"
-                        v-bind:content="forecastContent"
+                    <money-field
+                        :label="label.forecast_total"
+                        :currency="projectCurrencySymbol"
                         :value="value.forecast"
                         @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
-                    <input-field
-                        type="number"
-                        v-bind:label="label.actual_total"
-                        v-bind:content="value.actual"
+                    <money-field
+                        :label="label.actual_total"
+                        :currency="projectCurrencySymbol"
                         :value="value.actual"
                         @input="onUpdate('actual', $event)"/>
                 </div>
@@ -100,6 +96,7 @@
 
 <script>
 import InputField from '../../../_common/_form-components/InputField';
+import MoneyField from '../../../_common/_form-components/MoneyField';
 import SelectField from '../../../_common/_form-components/SelectField';
 import DeleteIcon from '../../../_common/_icons/DeleteIcon';
 import Error from '../../../_common/_messages/Error.vue';
@@ -122,6 +119,7 @@ export default {
         SelectField,
         DeleteIcon,
         Error,
+        MoneyField,
     },
     methods: {
         ...mapActions([
@@ -176,15 +174,19 @@ export default {
             resources: 'projectDepartments',
             resourcesForSelect: 'projectResourcesForSelect',
         }),
-        baseTotal: function() {
+        ...mapGetters([
+            'projectCurrencySymbol',
+        ]),
+        baseTotal() {
             return this.value.items.reduce((prev, next) => {
                 return prev + this.itemTotal(next);
             }, 0);
         },
-        forecastContent: function() {
+        forecastContent() {
             if (this.$route.params.taskId) {
                 return this.value.forecast;
             }
+
             return this.baseTotal;
         },
     },
@@ -192,11 +194,9 @@ export default {
         return {
             message: {
                 internal_costs: this.translate('message.internal_costs'),
-                project_currency: this.translate('message.project_currency'),
                 base_total: this.translate('message.total'),
             },
             label: {
-                resource: this.translate('label.resource'),
                 daily_rate: this.translate('label.daily_rate'),
                 qty: this.translate('label.qty'),
                 days: this.translate('label.days'),
@@ -216,8 +216,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../../../css/_common';
-
     .note {
         padding-left: 10px;
         margin: 0;
