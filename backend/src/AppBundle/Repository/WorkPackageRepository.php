@@ -789,12 +789,22 @@ class WorkPackageRepository extends BaseRepository
      */
     public function getTotalActualCostsByPhase(Project $project, $type, $userIds = [])
     {
-        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        $qb = $qb
+            ->innerJoin('o.project', 'p')
+            ->where('p.id = :project and o.type = :type')
+            ->andWhere($expr->isNull('o.parent'))
+            ->andWhere()
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+        ;
 
         if (Cost::TYPE_EXTERNAL === intval($type)) {
-            $qb->select('SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast');
+            $qb->select('SUM(o.externalActualCost) as actual, SUM(o.externalForecastCost) as forecast');
         } elseif (Cost::TYPE_INTERNAL === intval($type)) {
-            $qb->select('SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast');
+            $qb->select('SUM(o.internalActualCost) as actual, SUM(o.internalForecastCost) as forecast');
         }
 
         if (!empty($userIds)) {
@@ -802,8 +812,11 @@ class WorkPackageRepository extends BaseRepository
                 $qb->expr()->in('wp.responsibility', $userIds)
             );
         } else {
-            $qb->addSelect('ph.name as phaseName');
-            $qb->innerJoin('wp.phase', 'ph')->groupBy('wp.phase');
+            $qb
+                ->addSelect('ph.name as phaseName')
+                ->innerJoin('o.phase', 'ph')
+                ->groupBy('o.phase')
+            ;
         }
 
         return $qb->getQuery()->getArrayResult();
