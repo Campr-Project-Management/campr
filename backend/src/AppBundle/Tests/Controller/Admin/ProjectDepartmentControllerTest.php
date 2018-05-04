@@ -46,7 +46,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('This value should not be blank.', $crawler->html());
         $this->assertContains('The abbreviation should not be blank', $crawler->html());
         $this->assertContains('The sequence field should not be blank', $crawler->html());
 
@@ -167,7 +167,7 @@ class ProjectDepartmentControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('The name field should not be blank', $crawler->html());
+        $this->assertContains('This value should not be blank.', $crawler->html());
         $this->assertContains('The abbreviation should not be blank', $crawler->html());
         $this->assertContains('The sequence field should not be blank', $crawler->html());
 
