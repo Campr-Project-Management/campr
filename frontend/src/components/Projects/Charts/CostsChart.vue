@@ -10,6 +10,8 @@
 </template>
 
 <script>
+    import _ from 'lodash';
+
     export default {
         name: 'charts-costs-chart',
         props: {
@@ -68,10 +70,10 @@
                 return _.map(data, (value, key) => {
                     return [
                         key,
-                        parseFloat(value.base),
-                        parseFloat(value.actual),
-                        parseFloat(value.forecast),
-                        parseFloat(value.remaining),
+                        _.toFinite(value.base),
+                        _.toFinite(value.actual),
+                        _.toFinite(value.forecast),
+                        _.toFinite(value.remaining),
                     ];
                 });
             },

@@ -60,3 +60,5 @@ parameters:
     app.pdf.service_url: 'http://localhost:3000/'
 
     app.token_duration: 5
+
+    app.team.retention_period: P1M

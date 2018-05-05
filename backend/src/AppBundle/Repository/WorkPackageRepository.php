@@ -561,6 +561,30 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return float
+     */
+    public function getProjectProgress(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return (float) $qb
+            ->select('AVG(o.progress)')
+            ->innerJoin('o.project', 'p')
+            ->where('p.id = :project and o.type = :type')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project    $project
@@ -785,6 +809,11 @@ class WorkPackageRepository extends BaseRepository
         return $qb->getQuery()->getArrayResult();
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getTotalExternalInternalCosts(Project $project)
     {
         $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
