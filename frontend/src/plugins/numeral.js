@@ -1,13 +1,13 @@
-import num from 'accounting';
+import accounting from 'accounting';
 
 export default {
     install(Vue) {
-        num.settings = settings.en;
+        accounting.settings = settings.en;
 
         if (typeof window.user === 'object' &&
             typeof window.user.locale === 'string' &&
             settings[window.user.locale]) {
-            num.settings = settings[window.user.locale];
+            accounting.settings = settings[window.user.locale];
         }
 
         Vue.formatMoney = (amount, options) => {
@@ -111,11 +111,11 @@ function formatMoney(amount, options = {}) {
         options.symbol = currencyCodeToSymbol(options.symbol);
     }
 
-    return num.formatMoney(amount, options);
+    return accounting.formatMoney(amount, options);
 }
 
 /**
- * Format number
+ * Format accountingber
  * @param {number} value
  * @param {object} options
  * @return {string}
@@ -125,5 +125,5 @@ function formatNumber(value, options = {}) {
         return value;
     }
 
-    return num.formatNumber(value, options);
+    return accounting.formatNumber(value, options);
 }
