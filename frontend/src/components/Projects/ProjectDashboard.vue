@@ -72,7 +72,7 @@
                             <li>
                                 <span>{{ translateText('message.currency') }}:</span>
                                 <div>
-                                    <b v-if="project.currency">{{ project.currency.code }} ({{ project.currency.name }})</b>
+                                    <b v-if="project.currency">{{ project.currency.symbol }}</b>
                                 </div>
                             </li>
                         </ul>
@@ -121,20 +121,20 @@
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
                         <hr>
 
-                        <h4 class="widget-title" v-if="colorStatuses && colorStatuses.length">
-                            {{ translateText('message.project_status') }} -
-                            <b v-for="(colorStatus, index) in colorStatuses" :key="index" :style="{color: colorStatus.color}"> {{ translateText(colorStatus.name) }} </b>
+                        <h4 class="widget-title" v-if="projectColorStatuses && projectColorStatuses.length">
+                            {{ translateText('message.project_condition') }} -
+                            <b v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" :style="{color: projectColorStatus.color}"> {{ translateText(projectColorStatus.name) }} </b>
                         </h4>
 
-                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length && userIsManager">
-                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.status === colorStatus.id ? colorStatus.color : null)}"  v-on:click="updateColorStatus(colorStatus)"></div>
+                        <div class="status-boxes flex flex-v-center" v-if="projectColorStatuses && projectColorStatuses.length && userIsManager">
+                            <div v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.projectColorStatus === projectColorStatus.name ? projectColorStatus.color : null)}"  v-on:click="updateProjectColorStatus(projectColorStatus)"></div>
                         </div>
 
-                        <div class="status-boxes flex flex-v-center" v-if="colorStatuses && colorStatuses.length && !userIsManager">
-                            <div v-for="(colorStatus, index) in colorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.status === colorStatus.id ? colorStatus.color : null)}"></div>
+                        <div class="status-boxes flex flex-v-center" v-if="projectColorStatuses && projectColorStatuses.length && !userIsManager">
+                            <div v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.projectColorStatus === projectColorStatus.name ? projectColorStatus.color : null)}"></div>
                         </div>
 
-                        <hr v-if="colorStatuses && colorStatuses.length">
+                        <hr v-if="projectColorStatuses && projectColorStatuses.length">
 
                         <!-- /// End Project Condition /// -->
 
@@ -181,7 +181,11 @@
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+                            <circle-chart
+                                    :percentage="project.progress"
+                                    :precision="0"
+                                    :title="translateText('message.task_status')"
+                                    class="left"/>
                         </div>
                     </div>
                 </div>
@@ -217,6 +221,7 @@ export default {
             'getProjectUsers',
             'getTasksForSchedule',
             'getColorStatuses',
+            'getProjectColorStatuses',
             'getTasksStatus',
             'closeProject',
             'editProject',
@@ -231,9 +236,9 @@ export default {
 
             return !isNaN(diff) ? diff + 1 : '-';
         },
-        updateColorStatus(colorStatus) {
+        updateProjectColorStatus(projectColorStatus) {
             this.editProject({
-                status: colorStatus.id,
+                projectColorStatus: projectColorStatus.name,
                 projectId: this.$route.params.id,
             });
         },
@@ -266,12 +271,17 @@ export default {
         if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
             this.getColorStatuses();
         }
+        if (!this.$store.state.projectColorStatus ||
+            (this.$store.state.projectColorStatus.projectColorStatuses && this.$store.state.projectColorStatus.projectColorStatuses.length === 0)) {
+            this.getProjectColorStatuses();
+        }
     },
     computed: {
         ...mapGetters({
             project: 'project',
             tasks: 'tasks',
             colorStatuses: 'colorStatuses',
+            projectColorStatuses: 'projectColorStatuses',
             projectSponsors: 'projectSponsors',
             projectManagers: 'projectManagers',
             tasksForSchedule: 'tasksForSchedule',
