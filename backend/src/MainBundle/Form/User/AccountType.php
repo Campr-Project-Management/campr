@@ -2,6 +2,7 @@
 
 namespace MainBundle\Form\User;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use MainBundle\Form\LocaleType;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\Form\AbstractType;
@@ -18,6 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Company;
 use Symfony\Component\Validator\Constraints\Regex;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -65,6 +67,17 @@ class AccountType extends AbstractType
                     ]),
                 ],
             ])
+            ->add(
+                'company',
+                EntityType::class,
+                [
+                    'required' => false,
+                    'class' => Company::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.company_choose',
+                    'translation_domain' => 'messages',
+                ]
+            )
             ->add('avatarFile', VichImageType::class, [
                 'required' => false,
                 'download_link' => false,
