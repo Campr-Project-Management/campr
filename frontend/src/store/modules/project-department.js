@@ -93,16 +93,25 @@ const actions = {
      * Edit a project department
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editDepartment({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_project_departments_edit', {id: data.id}),
                 JSON.stringify(data)
             ).then((response) => {
-                let department = response.data;
-                let id = data.id;
-                commit(types.EDIT_PROJECT_DEPARTMENT, {id, department});
+                if (response.body && response.body.error &&
+                    response.body.messages) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let department = response.data;
+                    commit(types.EDIT_PROJECT_DEPARTMENT, {department});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
+
+                return response;
             }, (response) => {
             });
     },
@@ -153,9 +162,9 @@ const mutations = {
      * @param {Object} state
      * @param {array} department
      */
-    [types.EDIT_PROJECT_DEPARTMENT](state, {id, department}) {
+    [types.EDIT_PROJECT_DEPARTMENT](state, {department}) {
         state.projectDepartments.items = state.projectDepartments.items.map((item) => {
-            return item.id === id ? department : item;
+            return item.id === department.id ? department : item;
         });
     },
     /**
