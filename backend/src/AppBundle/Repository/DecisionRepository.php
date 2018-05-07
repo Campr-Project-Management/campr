@@ -27,8 +27,11 @@ class DecisionRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('d')
+            ->leftJoin('AppBundle:Meeting', 'meeting', 'WITH', 'meeting.id = d.meeting')
             ->where('d.project = :project')
+            ->orWhere('meeting.project = :meetingProject')
             ->setParameter('project', $project)
+            ->setParameter('meetingProject', $project)
             ->orderBy('d.id', 'ASC')
         ;
 

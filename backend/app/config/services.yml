@@ -163,6 +163,16 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.project_cost_progress:
+        class: Component\Project\Calculator\ProjectCostProgressCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_progress:
+        class: Component\Project\Calculator\ProjectProgressCalculator
+        arguments:
+            - '@app.repository.work_package'
+
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
 
@@ -342,6 +352,13 @@ services:
 
     gedmo.listener.timestampable:
         class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    gedmo.listener.soft_delete_listener:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
@@ -571,6 +588,8 @@ services:
              - '@app.calculator.project_scheduled_dates'
              - '@app.calculator.project_forecast_dates'
              - '@app.calculator.project_actual_dates'
+             - '@app.calculator.project_cost_progress'
+             - '@app.calculator.project_progress'
         tags:
             - { name: jms_serializer.event_subscriber }
 
