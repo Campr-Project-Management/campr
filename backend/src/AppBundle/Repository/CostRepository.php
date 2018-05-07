@@ -27,7 +27,7 @@ class CostRepository extends BaseRepository
      */
     public function getTotalBaseCostByPhase(Project $project, $type, $userIds = [])
     {
-        $select = $type === Cost::TYPE_EXTERNAL
+        $select = Cost::TYPE_EXTERNAL === $type
             ? 'SUM(c.rate * c.quantity) as base'
             : 'SUM(c.rate * c.quantity * c.duration) as base'
         ;
@@ -58,6 +58,11 @@ class CostRepository extends BaseRepository
         return $qb->getQuery()->getArrayResult();
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getTotalBaseCost(Project $project)
     {
         $selectInternal = 'SUM(c.rate * c.quantity * c.duration) as base';
@@ -69,10 +74,21 @@ class CostRepository extends BaseRepository
             ->setParameter('project', $project)
         ;
 
-        $internalResult = $qb->select($selectInternal)->getQuery()->getSingleScalarResult();
-        $externalResult = $qb->select($selectExternal)->getQuery()->getSingleScalarResult();
+        $internalResult = $qb
+            ->select($selectInternal)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        $externalResult = $qb
+            ->select($selectExternal)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
 
-        return $internalResult + $externalResult;
+        return [
+            'internal' => (float) $internalResult,
+            'external' => (float) $externalResult,
+        ];
     }
 
     /**
