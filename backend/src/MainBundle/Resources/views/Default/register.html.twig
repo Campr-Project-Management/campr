@@ -2,6 +2,13 @@
 
 {% extends 'MainBundle::base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <!-- Select2 CSS -->
+    <link href="{{ asset('assets/admin/vendors/bower_components/select2/dist/css/select2.min.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body_content %}
     {% set hideSignUp = app.environment == 'prod' %}
 
@@ -42,18 +49,13 @@
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-10 mr-md-auto ml-md-auto">
                         <p class="subtitle text-center">
-                            CAMPR is an <b>open source app</b>. You can create an account and use the cloud version or
-                            register and download the on-premis (self-hosted) version. Both versions include all 16
-                            bedrock modules.
+                            CAMPR is currently in <b class="warning-color">BETA</b>. Please checkout our <a href="#prices" class="simple-link"><b>price model</b></a> below and <a href="#contact_us" class="simple-link"><b>contact us</b></a> if you want to start using our app. Don’t forget that <b>CAMPR is free for personal projects of up to 3 users</b>. 
                             <span class="small-separator"></span>
-                            <b class="block">Enterprise Edition coming soon with a lot of neat features.</b>
+                            <span class="block">If you represent a <b>School</b>, <b>University</b> or <b>Charity</b> and want to <b>use CAMPR for free</b>, please <a href="#contact-school" class="simple-link"><b>contact us</b></a>.</span>
                         </p>
                         <div class="buttons buttons-center">
-                            {% if not hideSignUp %}
-                                <a href="#signup" class="button">Sign up now</a>
-                            {% else %}
-                                <a href="javascript:void(0)" class="button">Coming soon!</a>
-                            {% endif %}
+                            <a href="#prices" class="button button-white-border">View Prices</a>
+                            <a href="#contact_us" class="button">Contact us</a>
                         </div>
                     </div>
                 </div>
@@ -62,114 +64,455 @@
     </section>
     <!-- Small Landing Section End -->
 
-    <!-- Community Edition Section Start -->
-    <section class="section purple-bkg">
-        <div class="container">
+    <!-- Payment Plan Section Start -->
+    <section class="section purple-bkg" id="prices">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-7">
-                    <h3>It's really simple</h3>
-                    <p class="mt-30">All you need to do to start using CAMPR is sign-up with a valid email address. You
-                        will receive an email with instruction on how to login to your account and a download link in
-                        case you want to use CAMPR on your own machine.</p>
-
-                    <p class="lead success-color">Enterprise Edition coming soon.</p>
-
-                    <p>Here are the main differences between the Community and the Enterprise Editions.</p>
-
-                    <div class="table-wrapper">
-                        <table class="table comparison-table">
+                <div class="col-md-12">
+                    <h2 class="text-center mb-30">
+                        Payment Plans
+                    </h2>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 mr-md-auto ml-md-auto">                        
+                    <p class="subtitle text-center">
+                        We have created 2 types of Licenses: <b>User Based License</b> and <b>Project Based License</b>, each with it’s own features and advantages. If you’re not sure which one is best for you, please checkout our <a href="#sign-up-wizard" class="simple-link"><b>Sign Up Wizard</b></a>.
+                    </p>
+                </div>
+                <div class="col-sm mb-15 d-block d-sm-none">
+                    <span class="note warning-color">scroll table to see the rest</span>
+                </div>
+                <div class="col-12">
+                    <div class="table-wrapper price-table-wrapper">
+                        <table class="table price-table" cellspacing="3">
                             <thead>
-                            <tr>
-                                <th>Features</th>
-                                <th>Enterprise Edition<span class="note success-color caps">coming soon</span></th>
-                                <th>Community Edition<span class="note warning-color">cloud hosted</span></th>
-                                <th>Community Edition<span class="note warning-color">on-premise</span></th>
-                            </tr>
+                                <tr>
+                                    <th class="cell-gray">
+                                        Project Type
+                                        <span class="note">(based on the number of users)</span>
+                                    </th>
+                                    <th class="text-center cell-gray-dark">
+                                        <b class="caps">Start-Up</b>
+                                        <span class="note">Limited to 3 users</span>
+                                    </th>
+                                    <th class="text-center cell-middle">
+                                        <b class="caps">User Based</b>
+                                        <span class="note warning-color">Monthly subscription.</span>
+                                        <span class="note warning-color">Unlimitied number of projects.</span>
+                                    </th>
+                                    <th class="text-center cell-middle">
+                                        <b class="caps">Project Based</b>
+                                        <span class="note warning-color">One time purchase.</span>
+                                        <span class="note warning-color">Unlimitied project duration.</span>
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>16 Bedrock Modules</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps success-color">Yes</td>
-                            </tr>
-                            <tr>
-                                <td>Cloud Hosted</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps danger-color">-</td>
-                            </tr>
-                            <tr>
-                                <td>Customized</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps danger-color">-</td>
-                                <td class="caps danger-color">-</td>
-                            </tr>
-                            <tr>
-                                <td>Professional Consulting</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps danger-color">-</td>
-                                <td class="caps danger-color">-</td>
-                            </tr>
-                            <tr>
-                                <td>+ 4 Pro Modules</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps danger-color">-</td>
-                                <td class="caps danger-color">-</td>
-                            </tr>
-                            <tr>
-                                <td>Long Term Support</td>
-                                <td class="caps success-color">Yes</td>
-                                <td class="caps danger-color">-</td>
-                                <td class="caps danger-color">-</td>
-                            </tr>
-                            <tr>
-                                <td>CAMPR Branding</td>
-                                <td class="caps success-color">-</td>
-                                <td class="caps danger-color">Yes</td>
-                                <td class="caps danger-color">Yes</td>
-                            </tr>
+                                <tr>
+                                    <td class="cell-yellow">
+                                        <span class="license-type">CAMPR Hammock</span> <span class="user-number">1 - 3 <span class="users">Users</span></span>
+                                    </td>
+                                    <td class="text-center cell-second-highlighted cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="hammock" data-license-type="" data-price="0"><span class="caps campr-is-free">Free</span></a>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-yellow">
+                                        <span class="license-type">CAMPR Tarp</span> <span class="user-number">4 - 15 <span class="users">Users</span></span>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-second-dark cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="tarp" data-license-type="user_based" data-price="20.00">€ 20,00 <span class="price-note">/ user / month <span class="warning-color">*</span><span></a>
+                                    </td>
+                                    <td class="text-center cell-second-dark cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="tarp" data-license-type="project_based" data-price="3400.00">€ 3.400,00 <span class="warning-color">*</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-yellow">
+                                        <span class="license-type">CAMPR Tent</span> <span class="user-number">16 - 29 <span class="users">Users</span></span>
+                                    </td>
+                                    <td class="text-center  cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="tent" data-license-type="user_based" data-price="16.00">€ 16,00 <span class="price-note">/ user / month <span class="warning-color">*</span><span></a>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="tent" data-license-type="project_based" data-price="3900.00">€ 3.900,00 <span class="warning-color">*</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-yellow">
+                                        <span class="license-type">CAMPR Trailer</span> <span class="user-number">30 - 60 <span class="users">Users</span></span>
+                                    </td>
+                                    <td class="text-center  cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="trailer" data-license-type="user_based" data-price="12.50">€ 12,50 <span class="price-note">/ user / month <span class="warning-color">*</span><span></a>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="trailer" data-license-type="project_based" data-price="4600.00">€ 4.600,00 <span class="warning-color">*</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-yellow">
+                                        <span class="license-type">CAMPR Hut</span> <span class="user-number">61 - <span class="infinity">∞</span> <span class="users">Users</span></span>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="hut" data-license-type="user_based" data-price="10.00">€ 10,00 <span class="price-note">/ user / month <span class="warning-color">*</span><span></a>
+                                    </td>
+                                    <td class="text-center cell-second-dark  cell-link-wrapper">
+                                        <a href="#contact_us" class="cell-link checkout-link" data-project-type="hut" data-license-type="project_based" data-price="5900.00">€ 5.900,00 <span class="warning-color">*</span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="cell-gray" colspan="4">
+                                        Features
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Technical support
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        New modules
+                                        <span class="note warning-color">(additional costs may apply)</span>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Additional services
+                                        <span class="note warning-color">(additional costs may apply)</span>
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Free webinars
+                                    </td>
+                                    <td class="text-center cell-gray-dark">
+                                        <b class="danger-color">-</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Collaborative work environment in Real-Time
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Program update / Bug fixing
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        New program releases
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Video tutorials
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="cell-middle">
+                                        Data stored on CAMPR Cloud Servers
+                                        <span class="note warning-color">(stored on CAMPR Cloud Servers in Germany )</span>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                    <td class="text-center cell-middle-dark">
+                                        <b class="caps success-color">Yes</b>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="mt-30 d-lg-none"></div>
-                    <h3>How to install on-premise</h3>
-                    <p class="mt-30">After you register you will receive an email with installation instructions. You
-                        can also find them below. The app runs on <a href="https://www.docker.com/" class="simple-link"
-                                                                     title="CAMPR runs with Docker">Docker</a>
-                        containers so you don't have to configure a server on your machine.</p>
-
-                    <div class="highlight mt-30">
-                        <pre class="code">
-                            <code>docker-compose up -d</code>
-                            <code>docker exec -it campr_php-fpm_1 bash</code>
-                            <code>bin/console cache:clear</code>
-                            <code>bin/front-static</code>
-                            <code>sudo chmod -R 777 /var/www/campr/var/logs/ /var/www/campr/var/cache/</code>
-                            <code>bin/console doc:mig:mig -n --env=dev && bin/console doc:mig:mig -n --env=trisoft_dev</code>
-                        </pre>
-                    </div>
-
-                    <div class="buttons text-right mt-30">
-                        {% if not hideSignUp %}
-                            <a href="#signup" class="button button-white-border">Sign up now</a>
-                        {% else %}
-                            <a href="javascript:void(0)" class="button button-white-border">Coming soon!</a>
-                        {% endif %}
+                        <p><span class="small warning-color">* all prices excl. VAT</span></p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- All Features Section End -->
+    <!-- Payment Plan Section End -->
 
-    <!-- Signup Start -->
-    {% if not hideSignUp %}
-        {% include "@Main/Default/Register/_signup.html.twig" %}
-    {% endif %}
-    <!-- Signup End -->
+    <!-- CAMPR for Schools, Universities or Charity Start -->
+    <section class="section comparison-section full-width" id="contact-school">
+        <div class="custom-placeholder dark-overlay">
+            <img class="tiny" media="(min-width: 0px)" srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-tiny.jpg') }}" alt="CAMPR is free for Schools, Universities and Charity" width="100%" style="position:absolute;width:100%;height:100%;top:0;left:0;">
+            <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+                <source srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity.jpg') }}" media="(min-width: 1200px)">
+                <source srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-large.jpg') }}" media="(min-width: 992px)">
+                <source srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-medium.jpg') }}" media="(min-width: 768px)">
+                <source srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-small.jpg') }}" media="(min-width: 400px)">
+                <source srcset="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-very-small.jpg') }}" media="(min-width: 0px)">
+                <!--[if IE 9]></video><![endif]-->
+                <img class="lazy lazyload" src="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity.jpg') }}" data-lazy-src="{{ asset('assets/admin/img/Campr-is-free-for-Schools-Universities-and-Charity-medium.jpg') }}" alt="CAMPR is free for Schools, Universities and Charity">         
+            </picture>
+        </div>
+        <div class="container-fluid">
+            <div class="row justify-content-between">
+                <div class="col-md-5 order-md-2 same-height">
+                    <div class="table">
+                        <div class="cell">
+                            <div class="pl-60">
+                                <h2>Using CAMPR for <b>free</b></h2>
+                                <p class="mt-30">One of our main goals is to educate people in the field of project management and to help students, young entrepreneurs and any kind of charity organizations improve their management skills. We are offering CAMPR for free to any <b>School</b>, <b>University</b> or <b>Charity</b> that needs it. <b>All you have to do is contact us.</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>                         
+                <div class="col-md-6 order-md-1 same-height">
+                    <div class="table">
+                        <div class="cell">
+                            <form class="form light-form mt-30">
+                                <div class="row">
+                                    <div class="col-12 mb-30">
+                                        <span class="input">
+                                            <input type="text" id="input-50" name="get_campr_free[school]" required="required" class="input__field">
+                                            <label class="input__label" for="input-50">
+                                                <span class="icon">
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                        <g>
+                                                            <path d="M23.5,23h-23C0.2,23,0,23.2,0,23.5S0.2,24,0.5,24h23c0.3,0,0.5-0.2,0.5-0.5S23.8,23,23.5,23z"/>
+                                                            <path d="M0.5,22h2h19h2c0.3,0,0.5-0.2,0.5-0.5S23.8,21,23.5,21H22v-1.5c0-0.3-0.2-0.5-0.5-0.5H21V9h1.5 C22.8,9,23,8.8,23,8.5v-2c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0,0,0,0,0,0c0,0-0.1-0.1-0.1-0.1c0,0,0,0,0,0c0,0,0,0-0.1-0.1l-10.5-6 c-0.2-0.1-0.3-0.1-0.5,0l-10.5,6c0,0,0,0-0.1,0.1c0,0,0,0,0,0c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0c0,0.1,0,0.1,0,0.2c0,0,0,0,0,0v2 C1,8.8,1.2,9,1.5,9H3v10H2.5C2.2,19,2,19.2,2,19.5V21H0.5C0.2,21,0,21.2,0,21.5S0.2,22,0.5,22z M20,19h-1V9h1V19z M16,19V9h2v10H16 z M14,19V9h1v10H14z M11,19V9h2v10H11z M9,19V9h1v10H9z M6,19V9h2v10H6z M12,1.1L20.6,6H3.4L12,1.1z M2,7h20v1h-1.5h-17H2V7z M4,9 h1v10H4V9z M3,20h0.5h17H21v1H3V20z"/>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                                <span class="input__label-content input__label">School / Organization Name</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-4 col-md-5 mb-30 select2-wrapper">
+                                        <select data-placeholder="Title" name="get_campr_free[title]" id="input-51" class="input">
+                                            <option value=""></option>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Ms.">Ms.</option>
+                                            <option value="Dr.">Dr.</option>
+                                            <option value="Prof.">Prof.</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-8 col-md-7 mb-30">
+                                        <span class="input">
+                                            <input type="text" id="input-52" name="get_campr_free[name]" required="required" class="input__field">
+                                            <label class="input__label" for="input-52">
+                                                <span class="icon">
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                        <g>
+                                                            <path d="M23.5,24h-23C0.2,24,0,23.8,0,23.5c0-0.1,0-2.2,1.1-4.3c0.7-1.5,3.2-2.4,6.7-3.7c0.4-0.1,0.8-0.3,1.2-0.5 v-2.4c-0.4-0.4-1.4-1.3-1.5-2.9C7.3,9.6,7.1,9.2,7,8.8C6.8,8.1,6.9,7.2,7.4,6.7c0,0,0-0.1-0.1-0.2C7,5.5,6.4,3.4,7.3,2.2 c0.3-0.4,0.8-0.7,1.4-0.7C9.3,0.3,11.3,0,12.9,0c1.9,0,4.2,0.7,4.6,2.3c0.3,1.4-0.4,3.2-0.8,4.2c0,0.1-0.1,0.2-0.1,0.2 c0.5,0.5,0.6,1.3,0.4,2c-0.1,0.4-0.3,0.8-0.5,1c-0.1,1.6-1,2.6-1.5,2.9v2.4c0.4,0.2,0.8,0.3,1.2,0.5c3.5,1.3,6,2.2,6.7,3.7 c1,2.1,1.1,4.2,1.1,4.3C24,23.8,23.8,24,23.5,24z M1,23H23c-0.1-0.7-0.3-2-0.9-3.3c-0.6-1.1-3.2-2.1-6.2-3.2 c-0.5-0.2-1-0.4-1.6-0.6c-0.2-0.1-0.3-0.3-0.3-0.5v-3c0-0.2,0.1-0.3,0.2-0.4c0,0,1.3-0.9,1.3-2.6c0-0.2,0.2-0.4,0.4-0.5 c0.1-0.1,0.3-0.6,0.2-1.1c0-0.3-0.1-0.4-0.3-0.5c-0.2-0.1-0.3-0.3-0.3-0.4c0-0.2,0.1-0.4,0.2-0.8c0.3-0.9,1-2.5,0.8-3.6 C16.3,1.7,14.9,1,12.9,1C11,1,9.6,1.5,9.5,2.1C9.4,2.3,9.2,2.4,9,2.4c-0.4,0-0.7,0.1-0.9,0.4c-0.6,0.8,0,2.7,0.3,3.5 c0.1,0.4,0.2,0.5,0.2,0.7c0,0.2-0.1,0.4-0.3,0.4C8.1,7.5,8,7.6,7.9,7.9C7.9,8.3,8,8.8,8.1,9C8.3,9,8.5,9.2,8.5,9.4 c0,1.7,1.3,2.6,1.3,2.6c0.1,0.1,0.2,0.2,0.2,0.4v3c0,0.2-0.1,0.4-0.3,0.5c-0.5,0.2-1.1,0.4-1.6,0.6c-3,1.1-5.6,2.1-6.2,3.2 C1.3,21,1.1,22.3,1,23z"/>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                                <span class="input__label-content input__label">Name</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-9 mb-30">
+                                        <span class="input">
+                                            <input type="text" id="input-53" name="get_campr_free[email]" required="required" class="input__field">
+                                            <label class="input__label" for="input-53">
+                                                <span class="icon">
+                                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                        <g>
+                                                            <path d="M22,20H2c-1.1,0-2-0.9-2-2V6c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v12C24,19.1,23.1,20,22,20z M2,5 C1.4,5,1,5.4,1,6v12c0,0.6,0.4,1,1,1h20c0.6,0,1-0.4,1-1V6c0-0.6-0.4-1-1-1H2z"/>
+                                                            <path d="M12,14.5c-0.1,0-0.2,0-0.3-0.1L3.2,8.9C3,8.8,2.9,8.5,3.1,8.2s0.5-0.3,0.7-0.1l8.2,5.3l8.2-5.3 c0.2-0.1,0.5-0.1,0.7,0.1c0.1,0.2,0.1,0.5-0.1,0.7l-8.5,5.5C12.2,14.5,12.1,14.5,12,14.5z"/>
+                                                            <path d="M3.5,16.5c-0.2,0-0.3-0.1-0.4-0.3C2.9,16,3,15.7,3.3,15.6l3.5-2c0.2-0.1,0.5-0.1,0.7,0.2s0.1,0.5-0.2,0.7 l-3.5,2C3.7,16.5,3.6,16.5,3.5,16.5z"/>
+                                                            <path d="M20.5,16.5c-0.1,0-0.2,0-0.2-0.1l-3.5-2c-0.2-0.1-0.3-0.4-0.2-0.7c0.1-0.2,0.4-0.3,0.7-0.2l3.5,2 c0.2,0.1,0.3,0.4,0.2,0.7C20.8,16.4,20.7,16.5,20.5,16.5z"/>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                                <span class="input__label-content input__label">Email</span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-3 mb-30">
+                                        <button class="button button-block" type="submit">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- @TODO: integrate form -->
+                        </div>
+                    </div>
+                </div>                    
+            </div>
+        </div>
+    </section>
+    <!-- CAMPR for Schools, Universities or Charity End -->
+
+    <!-- Contact Section Start -->
+    <section id="contact_us" class="section contact-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-30">
+                        Contact us
+                    </h2>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-8 mr-md-auto ml-md-auto">
+                    <p class="subtitle text-center">
+                        Send us a message if you want to start using CAMPR.
+                    </p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="container">
+            <div class="row">                    
+                <div class="col-lg-10 col-sm-12 ml-lg-auto mr-lg-auto">
+                    <form action="" class="form">
+                        <div class="row">
+                            <div class="col-md-12 mb-30">
+                                <span class="input">
+                                    <textarea id="input-28" name="homepage_register[message]" required="required" class="input__field" rows="4" cols="50"></textarea>
+                                    <label class="input__label" for="input-28">
+                                        <span class="icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                <g>
+                                                    <path d="M22.5,2h-21C0.7,2,0,2.7,0,3.5v13C0,17.3,0.7,18,1.5,18H3v3.5c0,0.2,0.1,0.4,0.3,0.5c0.1,0,0.1,0,0.2,0 c0.1,0,0.3-0.1,0.4-0.1L7.7,18h14.8c0.8,0,1.5-0.7,1.5-1.5v-13C24,2.7,23.3,2,22.5,2z M23,16.5c0,0.3-0.2,0.5-0.5,0.5h-15 c-0.1,0-0.3,0.1-0.4,0.1L4,20.3v-2.8C4,17.2,3.8,17,3.5,17h-2C1.2,17,1,16.8,1,16.5v-13C1,3.2,1.2,3,1.5,3h21C22.8,3,23,3.2,23,3.5 V16.5z"/>
+                                                    <path d="M8.5,9c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.1,9,8.5,9z M8.5,10C8.5,10,8.5,10,8.5,10H9H8.5z"/>
+                                                    <path d="M16.5,9c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S17.1,9,16.5,9z M16.5,10C16.5,10,16.5,10,16.5,10H17H16.5z"/>
+                                                    <path d="M12.5,9c-0.6,0-1,0.4-1,1s0.4,1,1,1c0.6,0,1-0.4,1-1S13.1,9,12.5,9z M12.5,10C12.5,10,12.5,10,12.5,10H13H12.5 z"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <span class="input__label-content input__label">Message: </span>
+                                    </label>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="input">
+                                    <input type="email" id="input-29" name="homepage_register[email]" required="required" class="input__field">
+                                    <label class="input__label" for="input-29">
+                                        <span class="icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                <g>
+                                                    <path d="M22,20H2c-1.1,0-2-0.9-2-2V6c0-1.1,0.9-2,2-2h20c1.1,0,2,0.9,2,2v12C24,19.1,23.1,20,22,20z M2,5 C1.4,5,1,5.4,1,6v12c0,0.6,0.4,1,1,1h20c0.6,0,1-0.4,1-1V6c0-0.6-0.4-1-1-1H2z"/>
+                                                    <path d="M12,14.5c-0.1,0-0.2,0-0.3-0.1L3.2,8.9C3,8.8,2.9,8.5,3.1,8.2s0.5-0.3,0.7-0.1l8.2,5.3l8.2-5.3 c0.2-0.1,0.5-0.1,0.7,0.1c0.1,0.2,0.1,0.5-0.1,0.7l-8.5,5.5C12.2,14.5,12.1,14.5,12,14.5z"/>
+                                                    <path d="M3.5,16.5c-0.2,0-0.3-0.1-0.4-0.3C2.9,16,3,15.7,3.3,15.6l3.5-2c0.2-0.1,0.5-0.1,0.7,0.2s0.1,0.5-0.2,0.7 l-3.5,2C3.7,16.5,3.6,16.5,3.5,16.5z"/>
+                                                    <path d="M20.5,16.5c-0.1,0-0.2,0-0.2-0.1l-3.5-2c-0.2-0.1-0.3-0.4-0.2-0.7c0.1-0.2,0.4-0.3,0.7-0.2l3.5,2 c0.2,0.1,0.3,0.4,0.2,0.7C20.8,16.4,20.7,16.5,20.5,16.5z"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <span class="input__label-content input__label">Email</span>
+                                    </label>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="input">
+                                    <input type="text" id="input-30" name="homepage_register[fullName]" required="required" class="input__field">
+                                    <label class="input__label" for="input-30">
+                                        <span class="icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
+                                                <g>
+                                                    <path d="M23.5,24h-23C0.2,24,0,23.8,0,23.5c0-0.1,0-2.2,1.1-4.3c0.7-1.5,3.2-2.4,6.7-3.7c0.4-0.1,0.8-0.3,1.2-0.5 v-2.4c-0.4-0.4-1.4-1.3-1.5-2.9C7.3,9.6,7.1,9.2,7,8.8C6.8,8.1,6.9,7.2,7.4,6.7c0,0,0-0.1-0.1-0.2C7,5.5,6.4,3.4,7.3,2.2 c0.3-0.4,0.8-0.7,1.4-0.7C9.3,0.3,11.3,0,12.9,0c1.9,0,4.2,0.7,4.6,2.3c0.3,1.4-0.4,3.2-0.8,4.2c0,0.1-0.1,0.2-0.1,0.2 c0.5,0.5,0.6,1.3,0.4,2c-0.1,0.4-0.3,0.8-0.5,1c-0.1,1.6-1,2.6-1.5,2.9v2.4c0.4,0.2,0.8,0.3,1.2,0.5c3.5,1.3,6,2.2,6.7,3.7 c1,2.1,1.1,4.2,1.1,4.3C24,23.8,23.8,24,23.5,24z M1,23H23c-0.1-0.7-0.3-2-0.9-3.3c-0.6-1.1-3.2-2.1-6.2-3.2 c-0.5-0.2-1-0.4-1.6-0.6c-0.2-0.1-0.3-0.3-0.3-0.5v-3c0-0.2,0.1-0.3,0.2-0.4c0,0,1.3-0.9,1.3-2.6c0-0.2,0.2-0.4,0.4-0.5 c0.1-0.1,0.3-0.6,0.2-1.1c0-0.3-0.1-0.4-0.3-0.5c-0.2-0.1-0.3-0.3-0.3-0.4c0-0.2,0.1-0.4,0.2-0.8c0.3-0.9,1-2.5,0.8-3.6 C16.3,1.7,14.9,1,12.9,1C11,1,9.6,1.5,9.5,2.1C9.4,2.3,9.2,2.4,9,2.4c-0.4,0-0.7,0.1-0.9,0.4c-0.6,0.8,0,2.7,0.3,3.5 c0.1,0.4,0.2,0.5,0.2,0.7c0,0.2-0.1,0.4-0.3,0.4C8.1,7.5,8,7.6,7.9,7.9C7.9,8.3,8,8.8,8.1,9C8.3,9,8.5,9.2,8.5,9.4 c0,1.7,1.3,2.6,1.3,2.6c0.1,0.1,0.2,0.2,0.2,0.4v3c0,0.2-0.1,0.4-0.3,0.5c-0.5,0.2-1.1,0.4-1.6,0.6c-3,1.1-5.6,2.1-6.2,3.2 C1.3,21,1.1,22.3,1,23z"/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <span class="input__label-content input__label">Name</span>
+                                    </label>
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="button button-block" type="submit">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- @TODO: integrate form -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+
+    <section id="contact"></section>
 {% endblock %}
 
 {% block javascripts %}
@@ -177,5 +520,6 @@
 
     <script src="{{ asset('assets/admin/js/lazyload.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/vendors/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/signup-script.js') }}"></script>
 {% endblock %}
