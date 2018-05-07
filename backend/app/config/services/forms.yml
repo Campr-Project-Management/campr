@@ -1,0 +1,42 @@
+services:
+    app.form.filesystem.create_type:
+        class: AppBundle\Form\FileSystem\CreateType
+        arguments:
+            - "%adapters%"
+        tags:
+            - { name: form.type }
+
+    app.form.filesystem.media_upload_type:
+        class: AppBundle\Form\FileSystem\MediaUploadType
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: form.type }
+
+    app.form.project.api_type:
+        class: AppBundle\Form\Project\ApiType
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: form.type }
+
+    app.form.workpackage.upload_media_type:
+        class: AppBundle\Form\WorkPackage\UploadMediaType
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: form.type }
+
+    app.form.cost.create_type:
+        class: AppBundle\Form\Cost\CreateType
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type }
+
+    app.form.cost.api_create_type:
+        class: AppBundle\Form\Cost\ApiCreateType
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type }
