@@ -5,10 +5,10 @@
         <div class="task-slider-holder base" v-if="showBase">
             <input type="text" class="range" ref="base"/>
         </div>
-        <div class="task-slider-holder forecast" v-if="showForecast">
+        <div class="task-slider-holder forecast" v-if="showForecast" v-bind:class="this.forecastExtraClass">
             <input type="text" class="range" ref="forecast"/>
         </div>
-        <div class="task-slider-holder actual" v-if="showActual">
+        <div class="task-slider-holder actual" v-if="showActual" v-bind:class="this.actualExtraClass">
             <input type="text" class="range" ref="actual"/>
         </div>
 
@@ -82,7 +82,7 @@
             showForecast() {
                 return this.forecastStartAt > 0 &&
                     this.forecastFinishAt > 0 &&
-                    this.forecastStartDate <= this.forecastFinishAt;
+                    this.forecastStartAt <= this.forecastFinishAt;
             },
             baseStartAt() {
                 return moment(this.task.scheduledStartAt).unix();
@@ -218,6 +218,11 @@
                 }
 
                 let $el = $(this.$refs.forecast);
+
+                if (this.forecastStartAt > this.baseStartAt) {
+                    this.forecastExtraClass = 'warning';
+                }
+
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -226,6 +231,7 @@
                     to: this.forecastFinishAt,
                     from_fixed: true,
                     to_fixed: true,
+                    extra_classes: (this.forecastStartAt > this.baseStartAt) ? 'irs-warning' : '',
                 };
 
                 $el.ionRangeSlider(options);
@@ -243,6 +249,15 @@
                 }
 
                 let $el = $(this.$refs.actual);
+                if (this.actualStartAt >= this.forecastStartAt) {
+                    if (this.actualFinishAt < this.forecastFinishAt) {
+                        this.actualExtraClass = 'success';
+                    }
+                    if (this.actualFinishAt > this.forecastFinishAt) {
+                        this.actualExtraClass = 'danger';
+                    }
+                }
+
                 let options = {
                     type: 'double',
                     min: this.min,
@@ -285,6 +300,9 @@
                 if (!this.task.actualFinishAt && prefix === 'Actual') {
                     toValue = 'N/A';
                 }
+                if (!this.task.forecastFinishAt && prefix === 'Forecast') {
+                    toValue = 'N/A';
+                }
                 let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
                 return this.createTooltip(el, text);
             },
@@ -298,6 +316,12 @@
 
                 return moment(date).format('DD.MM.YYYY');
             },
+        },
+        data() {
+            return {
+                actualExtraClass: '',
+                forecastExtraClass: '',
+            };
         },
     };
 </script>
