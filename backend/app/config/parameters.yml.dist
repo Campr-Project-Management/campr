@@ -62,3 +62,4 @@ parameters:
     app.token_duration: 5
 
     app.team.retention_period: P1M
+    gravatar.base_url: 'https://www.gravatar.com/avatar'
