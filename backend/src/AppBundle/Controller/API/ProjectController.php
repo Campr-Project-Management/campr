@@ -62,7 +62,6 @@ use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\ApiType as OpportunityCreateType;
-use AppBundle\Repository\CostRepository;
 use AppBundle\Repository\MeasureRepository;
 use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\OpportunityRepository;
@@ -1793,68 +1792,20 @@ class ProjectController extends ApiController
      */
     public function externalCostsGraphDataAction(Project $project)
     {
-        $em = $this->getDoctrine()->getManager();
+        $byPhase = $this
+            ->get('app.graph.generator.project_cost_by_phase')
+            ->generate($project, Cost::TYPE_EXTERNAL)
+        ;
 
-        /** @var CostRepository $costRepo */
-        $costRepo = $em->getRepository(Cost::class);
-
-        /** @var WorkPackageRepository $wpRepo */
-        $wpRepo = $em->getRepository(WorkPackage::class);
-
-        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL);
-        $actualCosts = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_EXTERNAL);
-
-        $dataByPhase = [];
-        foreach (array_merge($baseCosts, $actualCosts) as $cost) {
-            $phaseName = $cost['phaseName'];
-            unset($cost['phaseName']);
-
-            if (!isset($dataByPhase[$phaseName])) {
-                $dataByPhase[$phaseName] = [
-                    'base' => 0,
-                    'actual' => 0,
-                    'forecast' => 0,
-                    'remaining' => 0,
-                ];
-            }
-
-            $dataByPhase[$phaseName] = array_merge($dataByPhase[$phaseName], $cost);
-        }
-
-        $trafficLight = Project::STATUS_GREEN;
-        foreach ($dataByPhase as $name => $phase) {
-            $dataByPhase[$name]['remaining'] = $phase['base'] - $phase['actual'];
-
-            if ((float) $phase['forecast'] > (float) $phase['base']) {
-                $trafficLight = Project::STATUS_YELLOW;
-            }
-            if ((float) $phase['actual'] > (float) $phase['forecast']) {
-                $trafficLight = Project::STATUS_RED;
-                break;
-            }
-        }
-
-        $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
-        $dataByDepartment = [];
-        foreach ($userDepartments as $userDepartment) {
-            $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
-        }
-
-        foreach ($dataByDepartment as $key => $value) {
-            $baseCostArr = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-            $actualCostArr = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_EXTERNAL, $value['userIds']);
-
-            $dataByDepartment[$key]['base'] = (float) $baseCostArr[0]['base'] ?? 0;
-            $dataByDepartment[$key]['actual'] = (float) $actualCostArr[0]['actual'] ?? 0;
-            $dataByDepartment[$key]['forecast'] = (float) $actualCostArr[0]['forecast'] ?? 0;
-            $dataByDepartment[$key]['remaining'] = $dataByDepartment[$key]['base'] - $actualCostArr[0]['actual'];
-        }
+        $byDepartment = $this
+            ->get('app.graph.generator.project_cost_by_department')
+            ->generate($project, Cost::TYPE_EXTERNAL)
+        ;
 
         return $this->createApiResponse(
             [
-                'byPhase' => $dataByPhase,
-                'byPhaseTraffic' => $trafficLight,
-                'byDepartment' => $dataByDepartment,
+                'byPhase' => $byPhase,
+                'byDepartment' => $byDepartment,
             ]
         );
     }
@@ -1869,74 +1820,22 @@ class ProjectController extends ApiController
      */
     public function internalCostsGraphDataAction(Project $project)
     {
-        $em = $this->getDoctrine()->getManager();
+        $byPhase = $this
+            ->get('app.graph.generator.project_cost_by_phase')
+            ->generate($project, Cost::TYPE_INTERNAL)
+        ;
 
-        /** @var CostRepository $costRepo */
-        $costRepo = $em->getRepository(Cost::class);
+        $byDepartment = $this
+            ->get('app.graph.generator.project_cost_by_department')
+            ->generate($project, Cost::TYPE_INTERNAL)
+        ;
 
-        /** @var WorkPackageRepository $wpRepo */
-        $wpRepo = $em->getRepository(WorkPackage::class);
-
-        $baseCosts = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL);
-        $actualCosts = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_INTERNAL);
-        $dataByPhase = [];
-        foreach (array_merge($baseCosts, $actualCosts) as $cost) {
-            $phaseName = $cost['phaseName'];
-            unset($cost['phaseName']);
-
-            if (!isset($dataByPhase[$phaseName])) {
-                $dataByPhase[$phaseName] = [
-                    'base' => 0,
-                    'actual' => 0,
-                    'forecast' => 0,
-                    'remaining' => 0,
-                ];
-            }
-
-            $dataByPhase[$phaseName] = array_merge($dataByPhase[$phaseName], $cost);
-        }
-
-        $trafficLight = Project::STATUS_GREEN;
-        foreach ($dataByPhase as $name => $phase) {
-            $dataByPhase[$name] = array_map(
-                function ($value) {
-                    return (float) $value;
-                },
-                $phase
-            );
-
-            $dataByPhase[$name]['remaining'] = $phase['base'] - $phase['actual'];
-
-            if ((float) $phase['forecast'] > (float) $phase['base']) {
-                $trafficLight = Project::STATUS_YELLOW;
-            }
-            if ((float) $phase['actual'] > (float) $phase['forecast']) {
-                $trafficLight = Project::STATUS_RED;
-                break;
-            }
-        }
-
-        $userDepartments = $em->getRepository(ProjectUser::class)->getUserAndDepartment($project);
-        $dataByDepartment = [];
-        foreach ($userDepartments as $userDepartment) {
-            $dataByDepartment[$userDepartment['department']]['userIds'][] = $userDepartment['uid'];
-        }
-
-        foreach ($dataByDepartment as $key => $value) {
-            $base = $costRepo->getTotalBaseCostByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-            $actual = $wpRepo->getTotalActualCostsByPhase($project, Cost::TYPE_INTERNAL, $value['userIds']);
-
-            $dataByDepartment[$key]['base'] = (float) $base[0]['base'] ?? 0;
-            $dataByDepartment[$key]['actual'] = (float) $actual[0]['actual'] ?? 0;
-            $dataByDepartment[$key]['forecast'] = (float) $actual[0]['forecast'] ?? 0;
-            $dataByDepartment[$key]['remaining'] = $dataByDepartment[$key]['base'] - $dataByDepartment[$key]['actual'];
-        }
-
-        return $this->createApiResponse([
-            'byPhase' => $dataByPhase,
-            'byPhaseTraffic' => $trafficLight,
-            'byDepartment' => $dataByDepartment,
-        ]);
+        return $this->createApiResponse(
+            [
+                'byPhase' => $byPhase,
+                'byDepartment' => $byDepartment,
+            ]
+        );
     }
 
     /**

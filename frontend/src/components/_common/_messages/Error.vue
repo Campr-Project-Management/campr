@@ -1,7 +1,9 @@
 <template>
     <div>
         <template v-if="message">
-            <div class="error">{{ message }}</div>
+            <div
+                    v-for="message in displayMessages"
+                    class="error">{{ message }}</div>
         </template>
         <template v-else-if="atPath">
             <error
@@ -13,12 +15,13 @@
 
 <script>
     import {mapGetters} from 'vuex';
+    import _ from 'lodash';
 
     export default {
         name: 'error',
         props: {
             message: {
-                type: String,
+                type: [String, Array],
                 required: false,
             },
             atPath: {
@@ -31,6 +34,14 @@
                 'validationMessagesFor',
                 'validationMessages',
             ]),
+            displayMessages() {
+                let messages = this.message;
+                if (!_.isArray(this.message)) {
+                    messages = [this.message];
+                }
+
+                return messages;
+            },
             messages() {
                 if (!this.atPath) {
                     return [];
