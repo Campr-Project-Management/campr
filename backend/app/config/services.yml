@@ -163,6 +163,16 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.project_cost_progress:
+        class: Component\Project\Calculator\ProjectCostProgressCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_progress:
+        class: Component\Project\Calculator\ProjectProgressCalculator
+        arguments:
+            - '@app.repository.work_package'
+
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
 
@@ -188,6 +198,19 @@ services:
         class: AppBundle\Services\FileSystemResolver
         arguments:
             - '@app.repository.filesytem'
+
+    app.graph.generator.project_cost_by_phase:
+        class: Component\Cost\Graph\CostByPhaseGraphDataGenerator
+        arguments:
+            - '@app.repository.cost'
+            - '@app.repository.work_package'
+
+    app.graph.generator.project_cost_by_department:
+        class: Component\Cost\Graph\CostByDepartmentGraphDataGenerator
+        arguments:
+            - '@app.repository.cost'
+            - '@app.repository.work_package'
+            - '@app.repository.project_user'
 
 ### REPOSITORIES ###
     app.repository.work_package:
@@ -244,12 +267,6 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\Measure }
 
-    app.repository.project:
-        class: AppBundle\Repository\ProjectRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Project }
-
     app.repository.filesytem:
         class: AppBundle\Repository\FileSystemRepository
         arguments: ~
@@ -267,6 +284,12 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Project }
+
+    app.repository.cost:
+        class: AppBundle\Repository\CostRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Cost }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -578,6 +601,8 @@ services:
              - '@app.calculator.project_scheduled_dates'
              - '@app.calculator.project_forecast_dates'
              - '@app.calculator.project_actual_dates'
+             - '@app.calculator.project_cost_progress'
+             - '@app.calculator.project_progress'
         tags:
             - { name: jms_serializer.event_subscriber }
 

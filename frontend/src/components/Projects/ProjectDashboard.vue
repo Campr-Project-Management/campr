@@ -72,7 +72,7 @@
                             <li>
                                 <span>{{ translateText('message.currency') }}:</span>
                                 <div>
-                                    <b v-if="project.currency">{{ project.currency.code }} ({{ project.currency.name }})</b>
+                                    <b v-if="project.currency">{{ project.currency.symbol }}</b>
                                 </div>
                             </li>
                         </ul>
@@ -181,7 +181,11 @@
                             </li>
                         </ul>
                         <div class="task-status">
-                            <circle-chart :percentage="project.progress" v-bind:title="translateText('message.task_status')" class="left"></circle-chart>
+                            <circle-chart
+                                    :percentage="project.progress"
+                                    :precision="0"
+                                    :title="translateText('message.task_status')"
+                                    class="left"/>
                         </div>
                     </div>
                 </div>
