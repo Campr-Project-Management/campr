@@ -74,6 +74,11 @@
                             <label class="label">{{ 'label.last_name'|trans }}</label>
                         </div>
                     </div>
+                    <div class="control-group form-group {% if form_errors(form.lastName) %}has-error{% endif %}">
+                        <div class="input-holder">
+                            {{ form_widget(form.company, {'attr': {'class': 'selectpicker'}}) }}
+                        </div>
+                    </div>
                     <div class="control-group form-group {% if form_errors(form.avatarFile) %}has-error{% endif %}">
                         {{ form_widget(form.avatarFile, {'attr': {'class': 'input-field'}}) }}
                     </div>
