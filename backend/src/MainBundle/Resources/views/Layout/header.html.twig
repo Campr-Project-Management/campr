@@ -25,7 +25,7 @@
             <span></span>
         </a>
 
-        <div class="navbar-collapse navbar-offcanvas navbar-offcanvas-touch navbar-offcanvas-right" id="menu">
+        <div class="navbar-collapse navbar-offcanvas navbar-offcanvas-right" id="menu">
             <ul class="navbar-nav ml-auto">
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
@@ -59,7 +59,7 @@
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="{{ path('main_login') }}" class="btn btn-blue">{{ 'button.sign_in'|trans }}</a>
+                        <a class="nav-link" href="{{ path('main_login') }}">{{ 'button.sign_in'|trans }}</a>
                     </li>
                 {% endif %}
             </ul>
