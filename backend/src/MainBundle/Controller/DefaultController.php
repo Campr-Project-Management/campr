@@ -201,28 +201,4 @@ class DefaultController extends Controller
     public function logoutAction()
     {
     }
-
-    /**
-     * Cart page.
-     *
-     * @Route("/cart", name="main_cart")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function cartAction(Request $request)
-    {
-        return $this->render('MainBundle:Default:cart.html.twig');
-    }
-
-    /**
-     * Checkout page.
-     *
-     * @Route("/checkout", name="main_checkout")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function checkoutAction(Request $request)
-    {
-        return $this->render('MainBundle:Default:checkout.html.twig');
-    }
 }
