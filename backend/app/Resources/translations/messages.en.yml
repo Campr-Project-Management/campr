@@ -1739,7 +1739,7 @@ email:
         user:
             register: Campr - Account registration
             activation: Campr - Account activation code
-            reset: Campr - Reset account psasword
+            reset: Campr - Reset account password
         invoice: Campr - Payment Invoice
         contact: Campr contact
         workspace_member:
