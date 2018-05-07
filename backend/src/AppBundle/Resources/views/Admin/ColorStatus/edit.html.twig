@@ -48,6 +48,15 @@
                             </div>
                         {% endif %}
                         {{ form_widget(
+                            form.code,
+                            {
+                                'attr': {
+                                'class': 'form-control input-sm',
+                            },
+                                'label': 'label.code'|trans,
+                            }
+                        ) }}
+                        {{ form_widget(
                             form.name,
                             {
                                 'attr': {
