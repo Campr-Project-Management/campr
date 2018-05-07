@@ -54,9 +54,9 @@ message:
     costs_progress: Costs Progress
     task_progress: Task Progress
     overall_progress: Overall Progress
-    danger: Danger
+    danger: Critical
     warning: Warning
-    actual_schedule: Actual Schedule
+    actual_schedule: On track
     forecast_schedule: Forecast Schedule
     base_schedule: Base Schedule
     current_date: Current Date
@@ -202,6 +202,7 @@ message:
     back_to_risks_and_opportunities: Back to Risks & Opportunities
     total_tasks: Total tasks
     project_status: Project Status
+    project_condition: Project Condition
     project_schedule: Project Schedule
     approved_on: Approved On
     project_summary: Project Summary
@@ -944,9 +945,11 @@ label:
     select_department: Select Department
     subteam_name: Subteam Name
     select_managers: Select Managers
+    select_members: Select Members
     department_name: Department Name
     new_subteam: New Subteam
     resource: Resource
+    cost_item: Cost Item
     quantity: Quantity
     username: Username
     email: Email
@@ -1828,7 +1831,7 @@ roles:
 color_status:
     not_started: Critical
     in_progress: Warning
-    finished: OK
+    finished: On track
 
 todo_status:
     initiated: Initiated
@@ -1836,6 +1839,11 @@ todo_status:
     finished: Finished
     on_hold: On hold
     discontinued: Discontinued
+
+project_color_status: 
+    on_track: On track
+    warning: Warning
+    critical: Critical
 
 filter:
     clear: Clear filters

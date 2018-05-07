@@ -52,6 +52,7 @@ class CreateType extends AbstractType
                     ],
                 ]
             )
+            ->add('projectColorStatus', TextType::class)
             ->add(
                 'number',
                 TextType::class,
