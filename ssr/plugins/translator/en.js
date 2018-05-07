@@ -1836,7 +1836,7 @@ module.exports = function (Translator) {
     Translator.add("not_found.team", "Team not found", "messages", "en");
     Translator.add("email.subject.user.register", "Campr - Account registration", "messages", "en");
     Translator.add("email.subject.user.activation", "Campr - Account activation code", "messages", "en");
-    Translator.add("email.subject.user.reset", "Campr - Reset account psasword", "messages", "en");
+    Translator.add("email.subject.user.reset", "Campr - Reset account password", "messages", "en");
     Translator.add("email.subject.invoice", "Campr - Payment Invoice", "messages", "en");
     Translator.add("email.subject.contact", "Campr contact", "messages", "en");
     Translator.add("email.subject.workspace_member.invite", "Campr - Workspace member invitation", "messages", "en");
