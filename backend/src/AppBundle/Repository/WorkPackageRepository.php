@@ -741,6 +741,50 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return int
+     */
+    public function getTotalOpenedCount(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return (int) $qb
+            ->select('COUNT(o.id)')
+            ->where('o.project = :project and o.type = :type and o.workPackageStatus = :status')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('status', WorkPackageStatus::OPEN)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return int
+     */
+    public function getTotalClosedCount(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return (int) $qb
+            ->select('COUNT(o.id)')
+            ->where('o.project = :project and o.type = :type and o.workPackageStatus = :status')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('status', WorkPackageStatus::CLOSED)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * counts all workpackages for a give type.
      *
      * @param int $type
@@ -796,7 +840,6 @@ class WorkPackageRepository extends BaseRepository
             ->innerJoin('o.project', 'p')
             ->where('p.id = :project and o.type = :type')
             ->andWhere($expr->isNull('o.parent'))
-            ->andWhere()
             ->setParameter('project', $project)
             ->setParameter('type', WorkPackage::TYPE_TASK)
         ;
@@ -829,16 +872,40 @@ class WorkPackageRepository extends BaseRepository
      */
     public function getTotalExternalInternalCosts(Project $project)
     {
-        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
-        $selectInternal = 'SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast';
-        $selectExternal = 'SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast';
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
 
-        $internalResult = $qb->select($selectInternal)->getQuery()->getSingleResult();
-        $externalResult = $qb->select($selectExternal)->getQuery()->getSingleResult();
+        $qb = $qb
+            ->innerJoin('o.project', 'p')
+            ->where('p.id = :project and o.type = :type')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+        ;
+
+        $selectInternal = 'SUM(o.internalActualCost) as actual, SUM(o.internalForecastCost) as forecast';
+        $selectExternal = 'SUM(o.externalActualCost) as actual, SUM(o.externalForecastCost) as forecast';
+
+        $internalResult = $qb
+            ->select($selectInternal)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+        $externalResult = $qb
+            ->select($selectExternal)
+            ->getQuery()
+            ->getSingleResult()
+        ;
 
         return [
-            'forecast' => (int) $internalResult['forecast'] + (int) $externalResult['forecast'],
-            'actual' => (int) $internalResult['actual'] + (int) $externalResult['actual'],
+            'internal' => [
+                'forecast' => (float) $internalResult['forecast'],
+                'actual' => (float) $internalResult['actual'],
+            ],
+            'external' => [
+                'forecast' => (float) $externalResult['forecast'],
+                'actual' => (float) $externalResult['actual'],
+            ],
         ];
     }
 
@@ -1185,6 +1252,52 @@ class WorkPackageRepository extends BaseRepository
         ;
 
         return $qb->getResult();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getTrafficLightCount(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        $qb
+            ->select('COUNT(o.id)')
+            ->innerJoin('o.colorStatus', 'cs')
+            ->andWhere('o.type = :type and o.project = :project and cs.color = :color')
+            ->andWhere($expr->isNotNull('o.colorStatus'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('project', $project)
+        ;
+
+        $red = (int) $qb
+            ->setParameter('color', 'red')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        $green = (int) $qb
+            ->setParameter('color', 'green')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        $yellow = (int) $qb
+            ->setParameter('color', 'yellow')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return [
+            'red' => $red,
+            'yellow' => $yellow,
+            'green' => $green,
+        ];
     }
 
     /**
