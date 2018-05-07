@@ -7,21 +7,22 @@
         </div>
         <chart
                 title="message.by_phase"
-                :data="byPhase"/>
+                :data="internalCostsGraphData.byPhase | chartData"/>
         <hr class="double">
         <chart
                 title="message.by_department"
-                :data="byDepartment"/>
+                :data="internalCostsGraphData.byDepartment | chartData"/>
     </div>
 </template>
 
 <script>
     import Chart from './Charts/CostsChart.vue';
+    import filters from './Charts/mixins/filters';
     import {mapGetters, mapActions} from 'vuex';
-    import _ from 'lodash';
 
     export default {
         name: 'project-internal-costs',
+        mixins: [filters],
         components: {
             Chart,
         },
@@ -35,20 +36,6 @@
             ...mapGetters([
                 'internalCostsGraphData',
             ]),
-            byDepartment() {
-                if (!this.internalCostsGraphData.byDepartment || !_.isPlainObject(this.internalCostsGraphData.byDepartment)) {
-                    return {};
-                }
-
-                return this.internalCostsGraphData.byDepartment;
-            },
-            byPhase() {
-                if (!this.internalCostsGraphData.byPhase || !_.isPlainObject(this.internalCostsGraphData.byPhase)) {
-                    return {};
-                }
-
-                return this.internalCostsGraphData.byPhase;
-            },
         },
     };
 </script>
