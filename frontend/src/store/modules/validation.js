@@ -63,7 +63,7 @@ const mutations = {
     [types.SET_VALIDATION_MESSAGES](state, {messages}) {
         state.validationMessages = messages;
     },
-    [types.SET_VALIDATION_ORIGIN](state, {origin}) {
+    [types.SET_VALIDATION_ORIGIN](state, origin) {
         state.validationOrigin = origin;
     },
 };
