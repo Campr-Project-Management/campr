@@ -1,17 +1,17 @@
 <template>
     <div class="ro-summary">
-        <div class="text-center" v-if="summary.opportunity_data">
+        <div class="text-center">
             <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_potential_savings') }}:</span>
                 <span class="text-left">
-                    <b>{{ summary.opportunity_data.costSavings | money({symbol: projectCurrencySymbol}) }}</b>
+                    <b>{{ potentialCost | money({symbol: currency}) }}</b>
                 </span>
             </p>
             <p class="clearfix">                
                 <span class="text-right">{{ translate('message.total_potential_time_savings') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.opportunity_data.timeSaving">
-                        <b>{{ summary.opportunity_data.timeSaving | humanizeHours({ units: ['d', 'h'] }) }}</b>
+                    <span v-if="potentialTime">
+                        <b>{{ potentialTime | humanizeHours({ units: ['d', 'h'] }) }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -19,8 +19,8 @@
             <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_number_of_measures') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.measure_data.measuresNumber">
-                        <b>{{ summary.measure_data.measuresNumber }}</b>
+                    <span v-if="measuresCount">
+                        <b>{{ measuresCount }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -28,8 +28,8 @@
             <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_cost_of_measures') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.measure_data.totalCost">
-                        <b>{{ summary.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b>
+                    <span v-if="measuresCost">
+                        <b>{{ measuresCost | money({symbol: currency}) }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -39,23 +39,32 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-
 export default {
     props: {
-        summary: {
-            type: Object,
-            required: true,
-            default: () => ({
-                opportunity_data: {},
-                measure_data: {},
-            }),
+        potentialCost: {
+            type: Number,
+            required: false,
+            default: null,
         },
-    },
-    computed: {
-        ...mapGetters([
-            'projectCurrencySymbol',
-        ]),
+        potentialTime: {
+            type: Number,
+            required: false,
+            default: null,
+        },
+        measuresCount: {
+            type: Number,
+            required: false,
+            default: null,
+        },
+        measuresCost: {
+            type: Number,
+            required: false,
+            default: null,
+        },
+        currency: {
+            type: String,
+            required: true,
+        },
     },
 };
 </script>
