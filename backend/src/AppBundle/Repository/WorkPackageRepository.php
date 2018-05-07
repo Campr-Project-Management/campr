@@ -809,7 +809,7 @@ class WorkPackageRepository extends BaseRepository
 
         if (!empty($userIds)) {
             $qb->andWhere(
-                $qb->expr()->in('wp.responsibility', $userIds)
+                $qb->expr()->in('o.responsibility', $userIds)
             );
         } else {
             $qb
