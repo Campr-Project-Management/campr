@@ -199,6 +199,19 @@ services:
         arguments:
             - '@app.repository.filesytem'
 
+    app.graph.generator.project_cost_by_phase:
+        class: Component\Cost\Graph\CostByPhaseGraphDataGenerator
+        arguments:
+            - '@app.repository.cost'
+            - '@app.repository.work_package'
+
+    app.graph.generator.project_cost_by_department:
+        class: Component\Cost\Graph\CostByDepartmentGraphDataGenerator
+        arguments:
+            - '@app.repository.cost'
+            - '@app.repository.work_package'
+            - '@app.repository.project_user'
+
 ### REPOSITORIES ###
     app.repository.work_package:
         class: AppBundle\Repository\WorkPackageRepository
@@ -254,12 +267,6 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\Measure }
 
-    app.repository.project:
-        class: AppBundle\Repository\ProjectRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Project }
-
     app.repository.filesytem:
         class: AppBundle\Repository\FileSystemRepository
         arguments: ~
@@ -277,6 +284,12 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Project }
+
+    app.repository.cost:
+        class: AppBundle\Repository\CostRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Cost }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
