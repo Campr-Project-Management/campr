@@ -2,8 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\SnapshotAwareInterface;
+use Component\Snapshot\Snapshot;
+use Component\Snapshot\SnapshotInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Status Report.
@@ -11,7 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="status_report")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusReportRepository")
  */
-class StatusReport
+class StatusReport implements SnapshotAwareInterface
 {
     /**
      * @var int
@@ -40,6 +44,29 @@ class StatusReport
     private $information;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="project_action_needed", type="boolean", nullable=false, options={"default": false})
+     */
+    private $projectActionNeeded;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="project_traffic_light", type="integer", nullable=true)
+     * @Assert\NotNull()
+     * @Assert\Choice(callback={"Component\TrafficLight\TrafficLight", "getValues"})
+     */
+    private $projectTrafficLight;
+
+    /**
      * @var User
      *
      * @Serializer\Exclude()
@@ -64,6 +91,7 @@ class StatusReport
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->projectActionNeeded = false;
     }
 
     /**
@@ -83,9 +111,11 @@ class StatusReport
     }
 
     /**
-     * @param Project $project
+     * @param Project|null $project
+     *
+     * @return $this
      */
-    public function setProject($project)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -103,13 +133,11 @@ class StatusReport
     }
 
     /**
-     * Set information.
-     *
      * @param array $information
      *
-     * @return Project
+     * @return $this
      */
-    public function setInformation($information)
+    public function setInformation(array $information = [])
     {
         $this->information = $information;
 
@@ -150,6 +178,8 @@ class StatusReport
 
     /**
      * @param \DateTime $createdAt
+     *
+     * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
@@ -208,5 +238,83 @@ class StatusReport
     public function getProjectName()
     {
         return $this->project ? $this->project->getName() : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return (string) $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment = null)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return SnapshotInterface
+     */
+    public function getSnapshot(): SnapshotInterface
+    {
+        return new Snapshot($this->getInformation());
+    }
+
+    /**
+     * @param SnapshotInterface $snapshot
+     */
+    public function setSnapshot(SnapshotInterface $snapshot)
+    {
+        $this->setInformation($snapshot->toArray());
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return int
+     */
+    public function getWeekNumber(): int
+    {
+        if (!$this->createdAt) {
+            return 0;
+        }
+
+        return (int) $this->createdAt->format('W');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProjectActionNeeded(): bool
+    {
+        return (bool) $this->projectActionNeeded;
+    }
+
+    /**
+     * @param bool $projectActionNeeded
+     */
+    public function setProjectActionNeeded(bool $projectActionNeeded = null)
+    {
+        $this->projectActionNeeded = (bool) $projectActionNeeded;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getProjectTrafficLight()
+    {
+        return $this->projectTrafficLight;
+    }
+
+    /**
+     * @param int $projectTrafficLight
+     */
+    public function setProjectTrafficLight(int $projectTrafficLight = null)
+    {
+        $this->projectTrafficLight = $projectTrafficLight;
     }
 }

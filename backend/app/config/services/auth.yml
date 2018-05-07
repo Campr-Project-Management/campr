@@ -1,0 +1,28 @@
+services:
+    app.jwt_signer:
+        class: Lcobucci\JWT\Signer\Hmac\Sha512
+
+    app.jwt_builder:
+        class: Lcobucci\JWT\Builder
+
+    app.jwt_parser:
+        class: Lcobucci\JWT\Parser
+
+    app_api.authentication.handler.success:
+        class: AppBundle\Services\Authentication\SuccessHandler
+        arguments:
+            - "@translator.default"
+
+    app_api.authentication.handler.failure:
+        class: AppBundle\Services\Authentication\FailureHandler
+        arguments:
+            - "@translator.default"
+
+    app_api.authentication.handler.user_provider:
+        class: AppBundle\Services\Authentication\UserProvider
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+    app_api.authentication.handler.authenticator:
+        class: AppBundle\Services\Authentication\Authenticator
+        public: false
