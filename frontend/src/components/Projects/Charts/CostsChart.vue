@@ -11,6 +11,7 @@
 
 <script>
     import _ from 'lodash';
+    import {costChart as colors} from '../../../util/colors';
 
     export default {
         name: 'charts-costs-chart',
@@ -36,7 +37,7 @@
                         width: '100%',
                         height: 350,
                         curveType: 'function',
-                        colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
+                        colors: [colors.base, colors.actual, colors.forecast, colors.remaining],
                         backgroundColor: '#191E37',
                         titleTextStyle: {
                             color: '#D8DAE5',
@@ -59,6 +60,11 @@
                 type: String,
                 required: false,
                 default: null,
+            },
+            currency: {
+                type: String,
+                required: false,
+                default: '',
             },
         },
         filters: {

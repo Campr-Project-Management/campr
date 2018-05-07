@@ -1,0 +1,123 @@
+services:
+    # gedmo listeners are found here
+    # https://github.com/Atlantic18/DoctrineExtensions/blob/a3d7ad1cf41f397104bc16d99c0a91fd7b2e6d38/doc/symfony2.md
+    gedmo.listener.sluggable:
+        class: Gedmo\Sluggable\SluggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    gedmo.listener.sortable:
+        class: Gedmo\Sortable\SortableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    gedmo.listener.timestampable:
+        class: Gedmo\Timestampable\TimestampableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    gedmo.listener.soft_delete_listener:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ "@annotation_reader" ] ]
+
+    app.listener.user:
+        class: AppBundle\EventListener\UserListener
+        arguments:
+            - '@security.password_encoder'
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
+    app.listener.project_user:
+        class: AppBundle\EventListener\ProjectUserListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
+    app.listener.media:
+        class: AppBundle\EventListener\MediaSubscriber
+        arguments:
+            - '@app.service.filesystem'
+        tags :
+            - { name: doctrine.event_subscriber }
+
+    app.listener.filesystem:
+        class: AppBundle\EventListener\FilesystemListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    app.listener.db_logger:
+        class: AppBundle\EventListener\DBLogger
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+        arguments:
+            - "@security.token_storage"
+
+    app.listener.message:
+        class: AppBundle\EventListener\MessageListener
+        tags :
+            - { name: doctrine.event_listener, event: prePersist }
+
+    app.listener.request:
+        class: AppBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    app.listener.ajax_response:
+        class: AppBundle\EventListener\AjaxResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    app.subscriber.api_problem:
+        class: AppBundle\EventListener\ApiExceptionSubscriber
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.listener.work_package:
+        class: AppBundle\EventListener\WorkPackageListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    app.listener.project:
+        class: AppBundle\EventListener\ProjectListener
+        tags :
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postLoad }
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+
+    app.subscriber.work_package:
+        class: AppBundle\EventListener\WorkPackageSubscriber
+        arguments:
+            - '@app.service.workpackage_rasci_sync'
+            - '@app.repository.work_package'
+            - '@app.repository.work_package_status'
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.rasci:
+        class: AppBundle\EventListener\RasciSubscriber
+        arguments:
+            - '@app.service.rasci_workpackage_sync'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.recalculate_phase_dates:
+        class: AppBundle\EventListener\RecalculatePhaseDatesSubscriber
+        arguments:
+            - '@app.calculator.phase_actual_dates'
+        tags:
+            - { name: kernel.event_subscriber }
+
