@@ -7,11 +7,16 @@ cd $dir
 
 bin/console assets:install --symlink web
 bin/console assetic:dump web
+
+rm -f web/static/js/fos_js_routes*.js
+
 bin/console app:dump-routes
 bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
 bin/console bazinga:js-translation:dump --format=js --merge-domains web/js
+
 rm -rf frontend/static/js
 mkdir -p frontend/static/js
+
 for file in web/static/js/fos_js_routes*.js;
 do
     base=`basename $file`
@@ -19,6 +24,7 @@ do
     rm -fv $sl
     ln -s "${dir}/${file}" "${sl}"
 done
+
 ln -sf "${dir}/web/bundles/fosjsrouting/js/router.js" "${dir}/frontend/static/js/router.js"
 ln -sf "${dir}/web/bundles/bazingajstranslation/js/translator.min.js" "${dir}/frontend/static/js/translator.min.js"
 ln -sf "${dir}/web/js/translations/config.js" "${dir}/frontend/static/js/config.js"
