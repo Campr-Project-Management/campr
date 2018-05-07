@@ -5,36 +5,43 @@
             <risk-grid
                     :grid-data="value.grid"
                     :is-risk="false"
-                    :clickable="false"></risk-grid>
+                    :clickable="false"/>
 
             <h4>{{ translate('message.top_opportunity') }}:</h4>
-            <div class="ro-main ro-main-opportunity" v-if="value.top_opportunity">
-                <b>{{ value.top_opportunity.title }}</b>
+            <div class="ro-main ro-main-opportunity" v-if="value.top">
+                <b>{{ value.top.title }}</b>
 
                 <span class="ro-main-stats">|
-                    <template v-if="value.top_opportunity.priorityName">
-                        <b :class="value.top_opportunity.priorityName">
-                            {{ translate('message.priority') }}: {{ translate(`message.${value.top_opportunity.priorityName}`) }}
+                    <template v-if="value.top.priorityName">
+                        <b :class="value.top.priorityName">
+                            {{ translate('message.priority') }}: {{ translate(`message.${value.top.priorityName}`) }}
                         </b>|
                     </template>
-                    {{ translate('message.potential_savings') }}: {{ value.top_opportunity.potentialCostSavings | money({symbol: currency}) }} |
-                    {{ translate('message.potential_time_savings') }}: {{ value.top_opportunity.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }} |
-                    {{ translate('message.strategy') }}: {{ translate(value.top_opportunity.opportunityStrategyName) }} |
-                    {{ translate('message.status') }}: {{ value.top_opportunity.opportunityStatusName | defaultValue('-') }}
+                    {{ translate('message.potential_savings') }}: {{ value.top.potentialCost | money({symbol: currency}) }} |
+                    {{ translate('message.potential_time_savings') }}: {{ value.top.potentialTimeHours | humanizeHours({ units: ['d', 'h'] }) }} |
+                    {{ translate('message.strategy') }}: {{ translate(value.top.strategyName) }} |
+                    {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
-                <div class="entry-responsible flex flex-v-center">
-                    <div class="user-avatar">
-                        <img
-                                :src="value.top_opportunity.responsibilityAvatar"
-                                :alt="value.top_opportunity.responsibilityFullName"/>
-                    </div>
+                <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityAvatar">
+                    <user-avatar
+                            size="small"
+                            :url="projectUserAvatarByUserId(value.top.responsibilityId)"
+                            :name="value.top.responsibilityFullName"/>
+
                     <div>
                         {{ translate('message.responsible') }}:
-                        <b>{{ value.top_opportunity.responsibilityFullName }}</b>
+                        <b>{{ value.top.responsibilityFullName }}</b>
                     </div>
                 </div>
             </div>
-            <opportunity-summary :summary="value" v-if="value"></opportunity-summary>
+
+            <opportunity-summary
+                    :potential-cost="value.summary.potentialCost"
+                    :potential-time="value.summary.potentialTime"
+                    :measures-cost="value.summary.measuresCost"
+                    :measures-count="value.summary.measuresCount"
+                    :currency="currency"
+                    v-if="value.summary"/>
         </div>
     </div>
 </template>
@@ -42,6 +49,8 @@
 <script>
     import RiskGrid from '../../Risks/RiskGrid';
     import OpportunitySummary from '../../Opportunities/OpportunitySummary';
+    import UserAvatar from '../../../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'status-report-opportunities-grid',
@@ -50,6 +59,16 @@
                 type: Object,
                 required: true,
                 default: () => ({
+                    top_risk: {
+                        title: null,
+                        priorityName: null,
+                        opportunityStrategyName: null,
+                        opportunityriskStatusName: null,
+                        potentialTimeHours: null,
+                        potentialCost: null,
+                        responsibilityFullName: null,
+                        responsibilityAvatar: null,
+                    },
                     grid: [],
                 }),
             },
@@ -62,6 +81,12 @@
         components: {
             RiskGrid,
             OpportunitySummary,
+            UserAvatar,
+        },
+        computed: {
+            ...mapGetters([
+                'projectUserAvatarByUserId',
+            ]),
         },
     };
 </script>

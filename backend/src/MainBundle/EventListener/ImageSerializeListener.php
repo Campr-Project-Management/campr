@@ -21,9 +21,11 @@ use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\WorkPackage;
+use Component\User\UserAvatarUrlResolverInterface;
+use JMS\Serializer\EventDispatcher\ObjectEvent;
+use JMS\Serializer\GenericSerializationVisitor;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
-use JMS\Serializer\EventDispatcher\ObjectEvent;
 
 /**
  * Class ImageSerializeListener
@@ -32,9 +34,15 @@ use JMS\Serializer\EventDispatcher\ObjectEvent;
 class ImageSerializeListener
 {
     /**
+     * @var UserAvatarUrlResolverInterface
+     */
+    private $userAvatarUrlResolver;
+
+    /**
      * @var StorageInterface
      */
     private $storage;
+
     /**
      * @var RequestStack
      */
@@ -43,13 +51,18 @@ class ImageSerializeListener
     /**
      * ImageSerializeListener constructor.
      *
-     * @param StorageInterface $storage
-     * @param RequestStack     $requestStack
+     * @param StorageInterface               $storage
+     * @param RequestStack                   $requestStack
+     * @param UserAvatarUrlResolverInterface $userAvatarUrlResolver
      */
-    public function __construct(StorageInterface $storage, RequestStack $requestStack)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        RequestStack $requestStack,
+        UserAvatarUrlResolverInterface $userAvatarUrlResolver
+    ) {
         $this->storage = $storage;
         $this->requestStack = $requestStack;
+        $this->userAvatarUrlResolver = $userAvatarUrlResolver;
     }
 
     /**
@@ -58,12 +71,11 @@ class ImageSerializeListener
     public function onPostSerialize(ObjectEvent $event)
     {
         $object = $event->getObject();
+
+        /** @var GenericSerializationVisitor $visitor */
         $visitor = $event->getVisitor();
 
         switch (true) {
-            case $object instanceof User:
-                $visitor->addData('avatar', $this->getUri($object, 'avatarFile'));
-                break;
             case $object instanceof Team:
             case $object instanceof Project:
                 $visitor->addData('logo', $this->getUri($object, 'logoFile'));
@@ -72,20 +84,12 @@ class ImageSerializeListener
             case $object instanceof SubteamMember:
             case $object instanceof MeetingParticipant:
                 if ($object->getUser() instanceof User) {
-                    if ($object->getUser()->getAvatar()) {
-                        $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
-                    } else {
-                        $visitor->addData('userAvatar', $object->getUser()->getGravatar());
-                    }
+                    $visitor->setData('userAvatar', $this->userAvatarUrlResolver->resolve($object->getUser()));
                 }
                 break;
             case $object instanceof Log:
                 if ($object->getUser() instanceof User) {
-                    if ($object->getUser()->getAvatar()) {
-                        $visitor->addData('userAvatar', $this->getUri($object->getUser(), 'avatarFile'));
-                    } else {
-                        $visitor->addData('userAvatar', $object->getUser()->getGravatar());
-                    }
+                    $visitor->setData('userAvatar', $this->userAvatarUrlResolver->resolve($object->getUser()));
                 }
                 break;
             case $object instanceof WorkPackage:
@@ -101,18 +105,16 @@ class ImageSerializeListener
             case $object instanceof StatusReport:
             case $object instanceof CloseDownAction:
                 if (method_exists($object, 'getResponsibility') && $object->getResponsibility() instanceof User) {
-                    if ($object->getResponsibility()->getAvatar()) {
-                        $visitor->addData('responsibilityAvatar', $this->getUri($object->getResponsibility(), 'avatarFile'));
-                    } else {
-                        $visitor->addData('responsibilityAvatar', $object->getResponsibility()->getGravatar());
-                    }
+                    $visitor->setData(
+                        'responsibilityAvatar',
+                        $this->userAvatarUrlResolver->resolve($object->getResponsibility())
+                    );
                 }
                 if (method_exists($object, 'getCreatedBy') && $object->getCreatedBy() instanceof User) {
-                    if ($object->getCreatedBy()->getAvatar()) {
-                        $visitor->addData('createdByAvatar', $this->getUri($object->getCreatedBy(), 'avatarFile'));
-                    } else {
-                        $visitor->addData('createdByAvatar', $object->getCreatedBy()->getGravatar());
-                    }
+                    $visitor->setData(
+                        'responsibilityAvatar',
+                        $this->userAvatarUrlResolver->resolve($object->getCreatedBy())
+                    );
                 }
                 break;
         }
