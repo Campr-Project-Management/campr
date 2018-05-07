@@ -2,18 +2,22 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\CodeAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Color Status - green/yellow/red.
  *
  * @ORM\Table(name="color_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ColorStatusRepository")
+ * @UniqueEntity(fields="name", message="unique.code")
  */
-class ColorStatus
+class ColorStatus implements CodeAwareInterface
 {
     const STATUS_NOT_STARTED = 'color_status.not_started';
     const STATUS_IN_PROGRESS = 'color_status.in_progress';
@@ -55,6 +59,14 @@ class ColorStatus
      * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
      */
     private $sequence = 0;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", unique=true, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $code;
 
     /**
      * @var ArrayCollection
@@ -198,5 +210,21 @@ class ColorStatus
     public function getWorkPackages(): Collection
     {
         return $this->workPackages;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return (string) $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     */
+    public function setCode(string $code = null)
+    {
+        $this->code = $code;
     }
 }

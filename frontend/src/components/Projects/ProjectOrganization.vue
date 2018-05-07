@@ -10,7 +10,10 @@
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <div class="members main-list">
                 <div class="member flex member-row"  v-for="item in distributionList">
-                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                    <user-avatar
+                            size="small"
+                            :url="item.userAvatar"
+                            :name="item.userFullName"/>
                     <div class="member-info">
                         <p class="title">{{ item.userFullName }}</p>
                         <p class="description">{{ item.projectRoleNames }}</p>
@@ -81,8 +84,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="item in projectUsers.items">
-                                <td class="avatar text-center">
-                                    <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                                <td class="text-center">
+                                    <user-avatar
+                                            :url="item.userAvatar"
+                                            :name="item.userFullName"/>
                                 </td>
                                 <td class="text-center switchers">
                                     <switches
@@ -162,9 +167,11 @@ import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
 import ProjectOrganizationTree from './ProjectOrganizationTree';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         MemberBadge,
         SocialLinks,
         InputField,
@@ -382,14 +389,6 @@ export default {
 
             .member {
                 border-top: 1px solid $darkColor;
-
-                .user-avatar {
-                    width: 60px;
-                    height: 60px;
-                    display: inline-block;
-                    margin: 0 30px 0 0;
-                    top: 0;
-                }
 
                 .member-info {
                     p {

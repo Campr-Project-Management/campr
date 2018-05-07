@@ -172,14 +172,14 @@
                 <!-- /// Project Internal Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
-                    <chart :data="internalCostsGraphData.byPhase"/>
+                    <chart :data="internalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
 
                 <!-- /// Project External Costs /// -->
                 <div class="col-md-6">
                     <h3>{{ translateText('message.external_resources') }}</h3>
-                    <chart :data="externalCostsGraphData.byPhase"/>
+                    <chart :data="externalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project External Costs /// -->
             </div>
@@ -526,6 +526,20 @@ export default {
             get() {
                 return (this.approvedAt !== '');
             },
+        },
+    },
+    filters: {
+        graphData(value) {
+            if (!value) {
+                return {};
+            }
+
+            let data = {};
+            value.forEach((row) => {
+                data[row.name] = row.values;
+            });
+
+            return data;
         },
     },
     data() {
