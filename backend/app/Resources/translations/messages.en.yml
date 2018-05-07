@@ -945,9 +945,11 @@ label:
     select_department: Select Department
     subteam_name: Subteam Name
     select_managers: Select Managers
+    select_members: Select Members
     department_name: Department Name
     new_subteam: New Subteam
     resource: Resource
+    cost_item: Cost Item
     quantity: Quantity
     username: Username
     email: Email
@@ -1737,7 +1739,7 @@ email:
         user:
             register: Campr - Account registration
             activation: Campr - Account activation code
-            reset: Campr - Reset account psasword
+            reset: Campr - Reset account password
         invoice: Campr - Payment Invoice
         contact: Campr contact
         workspace_member:
