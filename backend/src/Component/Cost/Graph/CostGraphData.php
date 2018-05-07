@@ -17,7 +17,7 @@ class CostGraphData
      * @param string $name
      * @param float  $value
      */
-    public function setActual(string $name, float $value)
+    public function setActual(string $name, float $value = null)
     {
         $this->setValue($name, 'actual', $value);
     }
@@ -26,7 +26,7 @@ class CostGraphData
      * @param string $name
      * @param float  $value
      */
-    public function setBase(string $name, float $value)
+    public function setBase(string $name, float $value = null)
     {
         $this->setValue($name, 'base', $value);
     }
@@ -35,7 +35,7 @@ class CostGraphData
      * @param string $name
      * @param float  $value
      */
-    public function setForecast(string $name, float $value)
+    public function setForecast(string $name, float $value = null)
     {
         $this->setValue($name, 'forecast', $value);
     }
@@ -44,7 +44,7 @@ class CostGraphData
      * @param string $name
      * @param float  $value
      */
-    public function setRemaining(string $name, float $value)
+    public function setRemaining(string $name, float $value = null)
     {
         $this->setValue($name, 'remaining', $value);
     }
@@ -65,7 +65,7 @@ class CostGraphData
      * @param string $key
      * @param float  $value
      */
-    private function setValue(string $name, string $key, float $value)
+    private function setValue(string $name, string $key, float $value = null)
     {
         $this->init($name);
 
