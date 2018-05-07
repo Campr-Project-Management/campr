@@ -357,9 +357,9 @@ class MeetingController extends ApiController
     }
 
     /**
-     * Update meeting participants.
+     * Update meeting participant.
      *
-     * @Route("/{id}/participants", name="app_api_meeting_participants_update", options={"expose"=true})
+     * @Route("/{id}/participant", name="app_api_meeting_participant_update", options={"expose"=true})
      * @Method({"POST"})
      *
      * @param Request $request
@@ -389,6 +389,50 @@ class MeetingController extends ApiController
             $this->persistAndFlush($meetingParticipant);
 
             return $this->createApiResponse($meetingParticipant, Response::HTTP_ACCEPTED);
+        }
+
+        return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Bulk Update meeting participants.
+     *
+     * @Route("/{id}/participants", name="app_api_meeting_participants_update", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Meeting $meeting
+     *
+     * @return JsonResponse
+     */
+    public function participantsBulkUpdateAction(Request $request, Meeting $meeting)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $request->request->all();
+        if (isset($data['participants'])) {
+            foreach ($data['participants'] as $participant) {
+                if (isset($participant['user']) && isset($participant['isPresent'])) {
+                    $user = $em->getRepository(User::class)->find($participant['user']);
+                    $meetingParticipant = $em->getRepository(MeetingParticipant::class)->findOneBy([
+                        'meeting' => $meeting,
+                        'user' => $user,
+                    ]);
+                    if ($meetingParticipant) {
+                        $meetingParticipant->setIsPresent($participant['isPresent']);
+                    } else {
+                        $meetingParticipant = (new MeetingParticipant())
+                            ->setMeeting($meeting)
+                            ->setUser($user)
+                            ->setIsPresent($participant['isPresent'])
+                        ;
+                    }
+                    $this->persistAndFlush($meetingParticipant);
+                } else {
+                    return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
+                }
+            }
+
+            return $this->createApiResponse(null, Response::HTTP_ACCEPTED);
         }
 
         return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
