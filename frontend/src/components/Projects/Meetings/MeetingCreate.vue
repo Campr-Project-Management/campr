@@ -464,7 +464,7 @@ export default {
             'getTodoStatuses',
             'createProjectMeeting',
             'emptyValidationMessages',
-            'updateParticipantPresent',
+            'updateParticipantsPresent',
         ]),
         setMedias(value) {
             this.medias = value;
@@ -547,19 +547,13 @@ export default {
                         this.showFailed = true;
                     } else {
                         if (this.selectedParticipants.length > 0) {
-                            // add meeting participants
-                            for (let i = 0; i < this.selectedParticipants.length; i++) {
-                                this.updateParticipantPresent({
-                                    meeting: response.body.id,
-                                    user: this.selectedParticipants[i].user,
-                                    isPresent: this.selectedParticipants[i].isPresent,
-                                })
-                                .then((response) => {
-                                    if (i == this.selectedParticipants.length -1) {
-                                        this.showSaved = true;
-                                    }
-                                });
-                            }
+                            this.updateParticipantsPresent({
+                                meeting: response.body.id,
+                                participants: this.selectedParticipants,
+                            })
+                            .then((response) => {
+                                this.showSaved = true;
+                            });
                         } else {
                             this.showSaved = true;
                         }
