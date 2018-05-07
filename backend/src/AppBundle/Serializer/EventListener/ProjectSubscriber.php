@@ -3,6 +3,7 @@
 namespace AppBundle\Serializer\EventListener;
 
 use AppBundle\Entity\Project;
+use Component\Cost\Calculator\ProjectTotalCostCalculatorInterface;
 use Component\Project\Calculator\DateRangeCalculatorInterface;
 use Component\Project\Calculator\ProjectProgressCalculatorInterface;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
@@ -27,9 +28,9 @@ class ProjectSubscriber implements EventSubscriberInterface
     private $actualDatesCalculator;
 
     /**
-     * @var ProjectProgressCalculatorInterface
+     * @var ProjectTotalCostCalculatorInterface
      */
-    private $costProgressCalculator;
+    private $projectTotalCostCalculator;
 
     /**
      * @var ProjectProgressCalculatorInterface
@@ -39,23 +40,23 @@ class ProjectSubscriber implements EventSubscriberInterface
     /**
      * ProjectSubscriber constructor.
      *
-     * @param DateRangeCalculatorInterface       $scheduledDatesCalculator
-     * @param DateRangeCalculatorInterface       $forecastDatesCalculator
-     * @param DateRangeCalculatorInterface       $actualDatesCalculator
-     * @param ProjectProgressCalculatorInterface $costProgressCalculator
-     * @param ProjectProgressCalculatorInterface $progressCalculator
+     * @param DateRangeCalculatorInterface        $scheduledDatesCalculator
+     * @param DateRangeCalculatorInterface        $forecastDatesCalculator
+     * @param DateRangeCalculatorInterface        $actualDatesCalculator
+     * @param ProjectTotalCostCalculatorInterface $projectTotalCostCalculator
+     * @param ProjectProgressCalculatorInterface  $progressCalculator
      */
     public function __construct(
         DateRangeCalculatorInterface $scheduledDatesCalculator,
         DateRangeCalculatorInterface $forecastDatesCalculator,
         DateRangeCalculatorInterface $actualDatesCalculator,
-        ProjectProgressCalculatorInterface $costProgressCalculator,
+        ProjectTotalCostCalculatorInterface $projectTotalCostCalculator,
         ProjectProgressCalculatorInterface $progressCalculator
     ) {
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
         $this->forecastDatesCalculator = $forecastDatesCalculator;
         $this->actualDatesCalculator = $actualDatesCalculator;
-        $this->costProgressCalculator = $costProgressCalculator;
+        $this->projectTotalCostCalculator = $projectTotalCostCalculator;
         $this->progressCalculator = $progressCalculator;
     }
 
@@ -131,7 +132,9 @@ class ProjectSubscriber implements EventSubscriberInterface
      */
     private function addCostProgress(GenericSerializationVisitor $visitor, Project $project)
     {
-        $visitor->setData('costProgress', $this->costProgressCalculator->calculate($project));
+        $total = $this->projectTotalCostCalculator->calculate($project);
+
+        $visitor->setData('costProgress', $total->getProgress());
     }
 
     /**
