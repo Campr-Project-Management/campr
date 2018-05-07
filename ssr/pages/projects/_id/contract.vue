@@ -238,6 +238,7 @@ export default {
                 return (this.contract.approvedAt !== '');
             },
         },
+
     },
     async asyncData({params, query}) {
         let project = {};

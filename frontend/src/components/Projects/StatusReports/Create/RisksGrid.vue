@@ -5,32 +5,41 @@
             <risk-grid
                     :grid-data="value.grid"
                     :is-risk="true"
-                    :clickable="false"></risk-grid>
+                    :clickable="false"/>
+
             <h4>{{ translate('message.top_risk') }}:</h4>
-            <div class="ro-main ro-main-risk" v-if="value && value.top_risk">
-                <b>{{ value.top_risk.title }}</b>
+            <div class="ro-main ro-main-risk" v-if="value && value.top">
+                <b>{{ value.top.title }}</b>
                 <span class="ro-main-stats">|
-                    <template v-if="value.top_risk.priorityName">
-                        <b :class="value.top_risk.priorityName">
-                            {{ translate('message.priority') }}: {{ translate(`message.${value.top_risk.priorityName}`) }}
+                    <template v-if="value.top.priorityName">
+                        <b :class="value.top.priorityName">
+                            {{ translate('message.priority') }}: {{ translate(`message.${value.top.priorityName}`) }}
                         </b>|
                     </template>
-                    {{ translate('message.potential_savings') }}: {{ value.top_risk.potentialCost | money({symbol: currency}) }} |
-                    {{ translate('message.potential_time_savings') }}: {{ value.top_risk.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
-                    {{ translate('message.strategy') }}: {{ translate(value.top_risk.riskStrategyName) }} |
-                    {{ translate('message.status') }}: {{ value.top_risk.riskStatusName | defaultValue('-') }}
+                    {{ translate('message.potential_savings') }}: {{ value.top.potentialCost | money({symbol: currency}) }} |
+                    {{ translate('message.potential_time_savings') }}: {{ value.top.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
+                    {{ translate('message.strategy') }}: {{ translate(value.top.strategyName) }} |
+                    {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
-                <div class="entry-responsible flex flex-v-center">
-                    <div class="user-avatar">
-                        <img :src="value.top_risk.responsibilityAvatar" :alt="value.top_risk.responsibilityFullName"/>
+                <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityFullName">
+                    {{ value.top.responsibilityId }}
+                    <div class="user-avatar" v-if="value.top.responsibilityAvatar">
+                        <img :src="value.top.responsibilityAvatar" :alt="value.top.responsibilityFullName"/>
                     </div>
                     <div>
                         {{ translate('message.responsible') }}:
-                        <b>{{ value.top_risk.responsibilityFullName }}</b>
+                        <b>{{ value.top.responsibilityFullName }}</b>
                     </div>
                 </div>
             </div>
-            <risk-summary :summary="value"></risk-summary>
+
+            <risk-summary
+                    :potential-cost="value.summary.potentialCost"
+                    :potential-delay="value.summary.potentialDelay"
+                    :measures-cost="value.summary.measuresCost"
+                    :measures-count="value.summary.measuresCount"
+                    :currency="currency"
+                    v-if="value.summary"/>
         </div>
     </div>
 </template>
@@ -46,6 +55,16 @@
                 type: Object,
                 required: true,
                 default: () => ({
+                    top_risk: {
+                        title: null,
+                        priorityName: null,
+                        riskStrategyName: null,
+                        riskStatusName: null,
+                        potentialDelayHours: null,
+                        potentialCost: null,
+                        responsibilityFullName: null,
+                        responsibilityAvatar: null,
+                    },
                     grid: [],
                 }),
             },
