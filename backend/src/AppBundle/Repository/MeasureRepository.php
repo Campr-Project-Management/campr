@@ -16,15 +16,20 @@ class MeasureRepository extends BaseRepository
      */
     public function getStatsForRisk(Project $project)
     {
-        $qb = $this->createQueryBuilder('m')
+        $row = $this
+            ->createQueryBuilder('m')
             ->select('COUNT(m.id) as measuresNumber, SUM(m.cost) as totalCost')
             ->innerJoin('m.risk', 'r')
-            ->where('m.risk is NOT NULL')
             ->andWhere('r.project = :project')
             ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleResult()
         ;
 
-        return $qb->getQuery()->getSingleResult();
+        return [
+            'measuresNumber' => (int) $row['measuresNumber'],
+            'totalCost' => round($row['totalCost'], 2),
+        ];
     }
 
     /**
@@ -34,14 +39,18 @@ class MeasureRepository extends BaseRepository
      */
     public function getStatsForOpportunity(Project $project)
     {
-        $qb = $this->createQueryBuilder('m')
+        $row = $this->createQueryBuilder('m')
             ->select('COUNT(m.id) as measuresNumber, SUM(m.cost) as totalCost')
             ->innerJoin('m.opportunity', 'o')
-            ->where('m.opportunity is NOT NULL')
             ->andWhere('o.project = :project')
             ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleResult()
         ;
 
-        return $qb->getQuery()->getSingleResult();
+        return [
+            'measuresNumber' => (int) $row['measuresNumber'],
+            'totalCost' => round($row['totalCost'], 2),
+        ];
     }
 }
