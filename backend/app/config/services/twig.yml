@@ -1,0 +1,22 @@
+services:
+    app.twig.extension.app:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        arguments:
+            - '%show_tracking_code%'
+        tags:
+            - { name: twig.extension }
+
+    app.twig.extension.currency:
+        class: AppBundle\Twig\CurrencyExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    app.twig.extension.format_money:
+        class: AppBundle\Twig\FormatMoneyExtension
+        public: false
+        arguments:
+            - '@app.templating.helper.format_money'
+        tags:
+            - { name: twig.extension }
