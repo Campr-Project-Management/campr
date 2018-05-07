@@ -1,0 +1,28 @@
+parameters:
+    emails:
+        from_email:
+            info: "info@campr.biz"
+            no-reply: "no-reply@campr.biz"
+        from_name:
+            info: "Info Campr"
+            no-reply: "No Reply"
+
+services:
+    app.service.mailer:
+        class: AppBundle\Services\MailerService
+        arguments:
+            - "@mailer"
+            - "@twig"
+            - "%emails%"
+            -
+                activation_token_expiration_number: '%activation_token_expiration_number%'
+
+    app.service.automailer.plugin.redis:
+        class: AppBundle\Services\AutomailerRedisPlugin
+        public: false
+        arguments:
+            - '%kernel.environment%'
+            - '@redis.client'
+        tags:
+            - { name: 'swiftmailer.default.plugin' }
+

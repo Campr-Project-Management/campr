@@ -20,6 +20,14 @@ const getters = {
             return user.user === id;
         });
     },
+    projectUserAvatarByUserId: (state, getters) => (id) => {
+        let projectUser = getters.projectUserByUserId(id);
+        if (!projectUser) {
+            return null;
+        }
+
+        return projectUser.userAvatar;
+    },
     currentMember: state => state.currentMember,
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
