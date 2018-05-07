@@ -234,10 +234,10 @@
                                         <td>{{ translateText('label.base') }}</td>
                                         <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
                                         </td>
@@ -246,10 +246,10 @@
                                         <td>{{ translateText('label.forecast') }}</td>
                                         <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
                                         </td>
@@ -258,10 +258,10 @@
                                         <td>{{ translateText('label.actual') }}</td>
                                         <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
                                         </td>
@@ -314,10 +314,10 @@
                                 <tbody>
                                     <tr v-for="(item, index) in editableData.internalCosts" :key="index">
                                         <td>{{ item.resourceName }}</td>
-                                        <td>{{ item.rate | money }}</td>
+                                        <td>{{ item.rate | money({symbol: projectCurrencySymbol}) }}</td>
                                         <td>{{ item.quantity | formatNumber }}</td>
                                         <td>{{ item.duration | formatNumber }}</td>
-                                        <td><b>{{ item.total | money }}</b></td>
+                                        <td><b>{{ item.total | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button @click="initEditInternalCostModal(item)" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                             <button
@@ -328,21 +328,21 @@
                                             </button>
                                         </td>
                                     </tr>
-                            
+
                                     <tr>
                                         <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
-                                        <td colspan="2"><b>{{ task.internalCostTotal | money }}</b></td>
+                                        <td colspan="2"><b>{{ task.internalCostTotal | money({symbol: projectCurrencySymbol}) }}</b></td>
                                     </tr>
                                     <tr class="column-warning">
                                         <td colspan="4" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                        <td><b>{{ task.internalForecastCost | money }}</b></td>
+                                        <td><b>{{ task.internalForecastCost | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button @click="initEditInternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                        <td><b>{{ task.internalActualCost | money }}</b></td>
+                                        <td><b>{{ task.internalActualCost | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button @click="initEditInternalActualCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         </td>
@@ -387,7 +387,7 @@
                                         <td>{{ cost.name }} </td>
                                         <td>{{ cost.quantity | formatNumber }}</td>
                                         <td>{{ cost.unit }}</td>
-                                        <td><i class="fa fa-dollar"></i> {{cost.rate}}</td>
+                                        <td>{{ cost.rate | money({symbol: projectCurrencySymbol}) }}</td>
                                         <td>
                                             <switch-field
                                                     @input="onUpdateCostExpenseType(cost)"
@@ -395,7 +395,7 @@
                                                     :false-value="1"
                                                     v-model.number="cost.expenseType" />
                                         </td>
-                                        <td><b>{{ itemTotal(cost) | formatMoney }}</b></td>
+                                        <td><b>{{ itemTotal(cost) | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button @click="initEditExternalCostModal(cost)" data-target="#logistics-edit-modal" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill" ></edit-icon></button>
                                             <button
@@ -410,26 +410,26 @@
                                     </tr>
                                     <tr>
                                         <td colspan="5" class="text-right"><b>{{ translateText('message.capex_subtotal') }}</b></td>
-                                        <td colspan="2">{{ task.externalCostCAPEXTotal | money }}</td>
+                                        <td colspan="2">{{ task.externalCostCAPEXTotal | money({symbol: projectCurrencySymbol}) }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" class="text-right"><b>{{ translateText('message.opex_subtotal') }}</b></td>
-                                        <td colspan="2">{{ task.externalCostOPEXTotal | money }}</td>
+                                        <td colspan="2">{{ task.externalCostOPEXTotal | money({symbol: projectCurrencySymbol}) }}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="5" class="text-right"><b>{{ translateText('label.external_cost_total') }}</b></td>
-                                        <td colspan="2"><b> {{ task.externalCostTotal | money }}</b></td>
+                                        <td colspan="2"><b> {{ task.externalCostTotal | money({symbol: projectCurrencySymbol}) }}</b></td>
                                     </tr>
                                     <tr class="column-warning">
                                         <td colspan="5" class="text-right"><b>{{ translateText('label.forecast_total') }}</b></td>
-                                        <td><b>{{ task.externalForecastCost | money }}</b></td>
+                                        <td><b>{{ task.externalForecastCost | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button @click="initEditExternalForecastCostModal()" data-toggle="modal" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         </td>
                                     </tr>
                                     <tr class="column-alert">
                                         <td colspan="5" class="text-right"><b>{{ translateText('label.actual_total') }}</b></td>
-                                        <td><b>{{ task.externalActualCost | money }}</b></td>
+                                        <td><b>{{ task.externalActualCost | money({symbol: projectCurrencySymbol}) }}</b></td>
                                         <td>
                                             <button data-toggle="modal" @click="initEditExternalActualCostModal()" type="button" class="btn-icon"><edit-icon fill="second-fill"></edit-icon></button>
                                         </td>
@@ -526,8 +526,8 @@
                             <select-field
                                     :title="'Add Label'"
                                     :options="labelsForSelect"
-                                    :value="editableData.label"
-                                    @input="updateLabel"/>
+                                    v-model="editableData.label"
+                                    @input="updateLabel" />
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
@@ -625,6 +625,7 @@ export default {
             'colorStatusesForSelect',
             'workPackageStatusesForSelect',
             'projectUsers',
+            'projectCurrencySymbol',
         ]),
         isClosed() {
             return this.task.isClosed;
@@ -1236,8 +1237,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 5px 0;  
+        display: inline-block;
+        margin: 0 5px 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -1363,7 +1364,7 @@ export default {
     .buttons {
         .btn-rounded {
             margin: 0 0 10px 10px;
-            
+
             &:last-child {
                 margin-bottom: 0;
             }
