@@ -1,0 +1,26 @@
+services:
+    app.user_invited_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\UserInvitedValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.self_invite_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\SelfInviteValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.team_member_validator:
+        class: MainBundle\Validator\Constraints\TeamMember\ActiveMemberValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
+
+    app.validators.workpackage_assignments:
+        class: AppBundle\Validator\Constraints\WorkPackageAssignmentsValidator
+        tags:
+            - { name: validator.constraint_validator }

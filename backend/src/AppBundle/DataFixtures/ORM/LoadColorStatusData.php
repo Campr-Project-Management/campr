@@ -18,11 +18,12 @@ class LoadColorStatusData extends AbstractFixture implements OrderedFixtureInter
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 2; ++$i) {
-            $colorStatus = (new ColorStatus())
-                ->setName('color-status'.$i)
-                ->setSequence($i)
-                ->setColor('green')
-            ;
+            $colorStatus = new ColorStatus();
+            $colorStatus->setName('color-status'.$i);
+            $colorStatus->setSequence($i);
+            $colorStatus->setColor('green');
+            $colorStatus->setCode(sprintf('code%d', $i));
+
             $this->setReference('color-status'.$i, $colorStatus);
             $manager->persist($colorStatus);
         }
