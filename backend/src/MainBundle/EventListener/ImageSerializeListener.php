@@ -61,9 +61,6 @@ class ImageSerializeListener
         $visitor = $event->getVisitor();
 
         switch (true) {
-            case $object instanceof User:
-                $visitor->addData('avatar', $this->getUri($object, 'avatarFile'));
-                break;
             case $object instanceof Team:
             case $object instanceof Project:
                 $visitor->addData('logo', $this->getUri($object, 'logoFile'));
