@@ -72,7 +72,6 @@ export default {
             this.updateParticipantPresent({
                 meeting: this.$route.params.meetingId,
                 user: participant.id,
-                // isPresent: !this.showPresent,
                 isPresent: !participant.isPresent,
             });
         },
