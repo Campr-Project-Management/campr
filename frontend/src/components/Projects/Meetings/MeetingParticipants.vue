@@ -25,7 +25,8 @@
                                 <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
                             </td>
                             <td class="text-center switchers">
-                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent"></switches>
+                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
+                                <switches @click.native="addIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
                             </td>
                         </tr>
                         </tbody>
@@ -49,7 +50,7 @@ import Switches from '../../3rdparty/vue-switches';
 import {mapActions} from 'vuex';
 
 export default {
-    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages'],
+    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages', 'createMeeting'],
     components: {
         Switches,
     },
@@ -71,8 +72,15 @@ export default {
             this.updateParticipantPresent({
                 meeting: this.$route.params.meetingId,
                 user: participant.id,
-                isPresent: !this.showPresent,
+                // isPresent: !this.showPresent,
+                isPresent: !participant.isPresent,
             });
+        },
+        addIsPresent(participant) {
+            let meetingParticipant = {
+                user: participant.id,
+            };
+            this.$emit('input', meetingParticipant);
         },
     },
     data() {
