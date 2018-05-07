@@ -163,15 +163,38 @@ services:
         arguments:
             - '@app.repository.work_package'
 
-    app.calculator.project_cost_progress:
-        class: Component\Project\Calculator\ProjectCostProgressCalculator
-        arguments:
-            - '@app.repository.work_package'
-
     app.calculator.project_progress:
         class: Component\Project\Calculator\ProjectProgressCalculator
         arguments:
             - '@app.repository.work_package'
+
+    app.calculator.project_total_cost:
+        class: Component\Cost\Calculator\ProjectTotalCostCalculator
+        arguments:
+            - '@app.repository.work_package'
+            - '@app.repository.cost'
+
+    app.calculator.project_workpackage_status_total_count:
+        class: Component\Project\Calculator\WorkPackageStatusTotalCountCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_workpackage_traffic_light_total:
+        class: Component\Project\Calculator\WorkPackageTrafficLightTotalCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_risk_total:
+        class: Component\Project\Calculator\RiskTotalCalculator
+        arguments:
+            - '@app.repository.risk'
+            - '@app.repository.measure'
+
+    app.calculator.project_opportunity_total:
+        class: Component\Project\Calculator\OpportunityTotalCalculator
+        arguments:
+            - '@app.repository.opportunity'
+            - '@app.repository.measure'
 
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
@@ -211,6 +234,9 @@ services:
             - '@app.repository.cost'
             - '@app.repository.work_package'
             - '@app.repository.project_user'
+
+    app.graph.generator.status_report_project_traffic_light:
+        class: Component\StatusReport\Graph\ProjectTrafficLightTrendGraphDataGenerator
 
 ### REPOSITORIES ###
     app.repository.work_package:
@@ -290,6 +316,12 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Cost }
+
+    app.repository.status_report:
+        class: AppBundle\Repository\StatusReportRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\StatusReport }
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -601,8 +633,68 @@ services:
              - '@app.calculator.project_scheduled_dates'
              - '@app.calculator.project_forecast_dates'
              - '@app.calculator.project_actual_dates'
-             - '@app.calculator.project_cost_progress'
+             - '@app.calculator.project_total_cost'
              - '@app.calculator.project_progress'
         tags:
             - { name: jms_serializer.event_subscriber }
 
+### SNAPSHOT ###
+    app.snapshot.transformer.date:
+        class: Component\Snapshot\Transformer\DateTransformer
+
+    app.snapshot.transformer.costs:
+        class: Component\Snapshot\Transformer\CostsTransformer
+        arguments:
+            - '@app.graph.generator.project_cost_by_department'
+            - '@app.graph.generator.project_cost_by_phase'
+            - '@app.calculator.project_total_cost'
+
+    app.snapshot.transformer.tasks:
+        class: Component\Snapshot\Transformer\TasksTransformer
+        arguments:
+            - '@app.calculator.project_progress'
+            - '@app.calculator.project_workpackage_status_total_count'
+            - '@app.calculator.project_workpackage_traffic_light_total'
+
+    app.snapshot.transformer.risks:
+        class: Component\Snapshot\Transformer\RisksTransformer
+        arguments:
+            - '@app.calculator.project_risk_total'
+            - '@app.snapshot.transformer.date'
+            - '@app.repository.risk'
+
+    app.snapshot.transformer.opportunities:
+        class: Component\Snapshot\Transformer\OpportunitiesTransformer
+        arguments:
+            - '@app.calculator.project_opportunity_total'
+            - '@app.snapshot.transformer.date'
+            - '@app.repository.opportunity'
+
+    app.snapshot.transformer.todos:
+        class: Component\Snapshot\Transformer\TodosTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+
+    app.snapshot.transformer.decisions:
+        class: Component\Snapshot\Transformer\DecisionsTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+
+    app.snapshot.transformer.project:
+        class: Component\Snapshot\Transformer\ProjectTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+            - '@app.calculator.project_scheduled_dates'
+            - '@app.calculator.project_forecast_dates'
+            - '@app.calculator.project_actual_dates'
+            - '@app.snapshot.transformer.tasks'
+            - '@app.snapshot.transformer.costs'
+            - '@app.snapshot.transformer.risks'
+            - '@app.snapshot.transformer.opportunities'
+            - '@app.snapshot.transformer.todos'
+            - '@app.snapshot.transformer.decisions'
+
+    app.snapshot.factory.project:
+        class: Component\Snapshot\ProjectSnapshotFactory
+        arguments:
+          - '@app.snapshot.transformer.project'
