@@ -13,7 +13,7 @@
                 <div class="col-md-6">
                     <select-field
                         :title="translate('label.labels')"
-                        :options="labelsForSelect"
+                        :options="labelsForChoice"
                         :value="value.label"
                         @input="onLabelUpdate"/>
                 </div>
