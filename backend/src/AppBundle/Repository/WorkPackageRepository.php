@@ -561,6 +561,30 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return float
+     */
+    public function getProjectProgress(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return (float) $qb
+            ->select('AVG(o.progress)')
+            ->innerJoin('o.project', 'p')
+            ->where('p.id = :project and o.type = :type')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setFirstResult(0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * Return the query builder for all project workpackages filtered.
      *
      * @param Project    $project
@@ -765,26 +789,44 @@ class WorkPackageRepository extends BaseRepository
      */
     public function getTotalActualCostsByPhase(Project $project, $type, $userIds = [])
     {
-        $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        $qb = $qb
+            ->innerJoin('o.project', 'p')
+            ->where('p.id = :project and o.type = :type')
+            ->andWhere($expr->isNull('o.parent'))
+            ->andWhere()
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+        ;
 
         if (Cost::TYPE_EXTERNAL === intval($type)) {
-            $qb->select('SUM(wp.externalActualCost) as actual, SUM(wp.externalForecastCost) as forecast');
+            $qb->select('SUM(o.externalActualCost) as actual, SUM(o.externalForecastCost) as forecast');
         } elseif (Cost::TYPE_INTERNAL === intval($type)) {
-            $qb->select('SUM(wp.internalActualCost) as actual, SUM(wp.internalForecastCost) as forecast');
+            $qb->select('SUM(o.internalActualCost) as actual, SUM(o.internalForecastCost) as forecast');
         }
 
         if (!empty($userIds)) {
             $qb->andWhere(
-                $qb->expr()->in('wp.responsibility', $userIds)
+                $qb->expr()->in('o.responsibility', $userIds)
             );
         } else {
-            $qb->addSelect('ph.name as phaseName');
-            $qb->innerJoin('wp.phase', 'ph')->groupBy('wp.phase');
+            $qb
+                ->addSelect('ph.name as phaseName')
+                ->innerJoin('o.phase', 'ph')
+                ->groupBy('o.phase')
+            ;
         }
 
         return $qb->getQuery()->getArrayResult();
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getTotalExternalInternalCosts(Project $project)
     {
         $qb = $this->getQueryBuilderByProjectAndFilters($project, ['type' => WorkPackage::TYPE_TASK]);
