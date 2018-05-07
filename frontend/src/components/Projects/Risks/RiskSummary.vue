@@ -1,33 +1,28 @@
 <template>
     <div class="ro-summary">
-        <div class="text-center" v-if="summary.risk_data">
+        <div class="text-center">
             <p>
                 <span class="text-right">{{ translate('message.total_potential_cost') }}:</span>
                 <span class="text-left">
-                    <b>{{ summary.risk_data.costs | money({symbol: projectCurrencySymbol}) }}</b>
+                    <b>{{ potentialCost | money({symbol: currency}) }}</b>
                 </span>
             </p>
             <p>                
                 <span class="text-right">{{ translate('message.total_potential_delay') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.risk_data.delay">
-                        <b>{{ summary.risk_data.delay | humanizeHours({ units: ['d', 'h']}) }}</b>
-                    </span>
-                    <span v-else>-</span>
+                        <b>{{ potentialDelay | humanizeHours({ units: ['d', 'h']}) }}</b>
                 </span>
             </p>
             <p>
                 <span class="text-right">{{ translate('message.total_number_of_measures') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.measure_data.measuresNumber"><b>{{ summary.measure_data.measuresNumber }}</b></span>
-                    <span v-else>-</span>
+                    <b>{{ measuresCount }}</b>
                 </span>
             </p>
             <p>
                 <span class="text-right">{{ translate('message.total_cost_of_measures') }}:</span>
                 <span class="text-left">
-                    <span v-if="summary.measure_data.totalCost"><b>{{ summary.measure_data.totalCost | money({symbol: projectCurrencySymbol}) }}</b></span>
-                    <span v-else>-</span>
+                    <b>{{ measuresCost | money({symbol: currency}) }}</b>
                 </span>
             </p>
         </div>
@@ -35,25 +30,34 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-
-export default {
-    props: {
-        summary: {
-            type: Object,
-            required: true,
-            default: () => ({
-                risk_data: {},
-                measure_data: {},
-            }),
+    export default {
+        props: {
+            potentialCost: {
+                type: Number,
+                required: false,
+                default: null,
+            },
+            potentialDelay: {
+                type: Number,
+                required: false,
+                default: null,
+            },
+            measuresCount: {
+                type: Number,
+                required: false,
+                default: null,
+            },
+            measuresCost: {
+                type: Number,
+                required: false,
+                default: null,
+            },
+            currency: {
+                type: String,
+                required: true,
+            },
         },
-    },
-    computed: {
-        ...mapGetters([
-            'projectCurrencySymbol',
-        ]),
-    },
-};
+    };
 </script>
 
 <style scoped lang="scss">
