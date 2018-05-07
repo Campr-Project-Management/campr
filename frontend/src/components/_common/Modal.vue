@@ -1,8 +1,9 @@
 <template>
-    <div class="modal-mask modal">
+    <div class="modal-mask modal" v-bind:class="{'meeting-modal': hasSpecificClass}">
         <div class="modal-wrapper">
             <scrollbar class="modal-container customScrollbar">
                 <div class="modal-inner">
+                    {{mclass}}
                     <a href="javascript:void(0)" class="modal-close" @click="$emit('close')">
                         <svg version="1.1" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28.8 28.8">
                             <g>
@@ -21,6 +22,12 @@
 <script>
 import {mapActions} from 'vuex';
 export default {
+    props: {
+        hasSpecificClass: {
+            type: Boolean,
+            required: false,
+        },
+    },
     methods: {
         ...mapActions([
             'emptyValidationMessages',
@@ -36,6 +43,12 @@ export default {
 <style scoped lang="scss">
     @import '../../css/_variables';
 
+    .meeting-modal {
+        .customScrollbar.ps {
+            overflow: initial !important;
+        }
+    }
+    
     .st0 {
         stroke: $secondColor;
     }

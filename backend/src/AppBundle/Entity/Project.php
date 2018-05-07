@@ -52,6 +52,13 @@ class Project implements ProjectInterface
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="project_color_status", nullable=true, type="string", length=255)
+     */
+    private $projectColorStatus;
+
+    /**
+     * @var string
      * @ORM\Column(name="short_note", type="text", nullable=true)
      */
     private $shortNote;
@@ -629,6 +636,30 @@ class Project implements ProjectInterface
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * Get projectColorStatus.
+     *
+     * @return string
+     */
+    public function getProjectColorStatus()
+    {
+        return $this->projectColorStatus;
+    }
+
+    /**
+     * Set projectColorStatus.
+     *
+     * @param string $projectColorStatus
+     *
+     * @return Project
+     */
+    public function setProjectColorStatus($projectColorStatus)
+    {
+        $this->projectColorStatus = $projectColorStatus;
+
+        return $this;
     }
 
     /**
