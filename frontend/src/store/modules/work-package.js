@@ -64,6 +64,22 @@ const actions = {
                 Routing.generate('app_api_workpackage_edit', {id}),
                 data
             )
+            .then(
+                response => {
+                    if (response.body && !response.body.error) {
+                        commit(types.SET_GANTT_DATUM, {datum: response.body});
+                    }
+
+                    return response;
+                },
+                response => {
+                    if (response.status === 202) {
+                        commit(types.SET_GANTT_DATUM, {datum: response.body});
+                    }
+
+                    return response;
+                },
+            )
         ;
     },
 };
