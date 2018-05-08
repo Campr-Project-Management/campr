@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-6 custom-col-md-6">
+        <div class="col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -391,6 +391,32 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="create-meeting page-section">
+                <!-- /// Header /// -->
+                <div class="margintop20 text-right">
+                    <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
+                </div>
+                <!-- /// End Header /// -->
+
+                <div class="flex flex-v-center flex-space-between">
+                    <div>
+                        <h3>{{ translate('message.participants') }}</h3>
+                    </div>
+                    <!--<div class="buttons">
+                        <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</router-link>
+                    </div>-->
+                </div>
+
+                <meeting-participants
+                    v-bind:meetingParticipants="displayedParticipants"
+                    v-bind:participants="participants"
+                    v-bind:participantsPages="participantsPages"
+                    v-bind:participantsPerPage="participantsPerPage"
+                    v-bind:createMeeting="true"
+                    @input="addMeetingParticipant" />
+            </div>
+        </div>
 
         <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
@@ -412,6 +438,7 @@ import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
+import MeetingParticipants from './MeetingParticipants';
 
 export default {
     components: {
@@ -426,6 +453,7 @@ export default {
         AlertModal,
         Error,
         Editor,
+        MeetingParticipants,
     },
     methods: {
         ...mapActions([
@@ -436,6 +464,7 @@ export default {
             'getTodoStatuses',
             'createProjectMeeting',
             'emptyValidationMessages',
+            'updateParticipantsPresent',
         ]),
         setMedias(value) {
             this.medias = value;
@@ -517,13 +546,40 @@ export default {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
                     } else {
-                        this.showSaved = true;
+                        if (this.selectedParticipants.length > 0) {
+                            this.updateParticipantsPresent({
+                                meeting: response.body.id,
+                                participants: this.selectedParticipants,
+                            })
+                            .then((response) => {
+                                this.showSaved = true;
+                            });
+                        } else {
+                            this.showSaved = true;
+                        }
                     }
                 },
                 () => {
                     this.showFailed = true;
                 })
             ;
+        },
+        addMeetingParticipant(value) {
+            let existingUser = this.selectedParticipants.find((user) => {
+                return user.user === value.user;
+            });
+            if (!existingUser) {
+                this.selectedParticipants.push({
+                    user: value.user,
+                    isPresent: true,
+                });
+            } else {
+                this.selectedParticipants.filter((item) => {
+                    if (item.user === value.user) {
+                        item.isPresent = false;
+                    }
+                });
+            }
         },
     },
     computed: {
@@ -532,11 +588,56 @@ export default {
             'meetingCategoriesForSelect',
             'infoCategoriesForDropdown',
             'todoStatusesForSelect',
+            'distributionLists',
             'validationMessages',
             'infoStatusesForDropdown',
         ]),
     },
     watch: {
+        details: {
+            handler: function(value) {
+                let users = [];
+                this.lists = this.distributionLists.filter((item) => {
+                    for (let i = 0; i < this.details.distributionLists.length; i++) {
+                        if (item.id === this.details.distributionLists[i].key) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                this.lists.map((item) => {
+                    item.users.map((user) => {
+                        let projectUser = user.projectUsers.filter((item) => {
+                            return item.project !== this.$route.params.id;
+                        });
+                        if (projectUser.length > 0) {
+                            users.push({
+                                id: user.id,
+                                fullName: user.firstName + ' ' + user.lastName,
+                                avatar: user.avatar ? user.avatar : user.gravatar,
+                                departments: projectUser[0].projectDepartmentNames,
+                            });
+                        }
+                    });
+                });
+
+                this.participants = users;
+                this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
+                this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
+            },
+            deep: true,
+        },
+        meeting(value) {
+            this.name = this.meeting.name;
+            if (this.meeting.distributionLists.length > 0) {
+                let selectedList = [];
+                this.meeting.distributionLists.map(function(item) {
+                    selectedList.push({'key': item.id, 'label': item.name});
+                });
+                this.details.distributionLists = selectedList;
+            };
+        },
         showSaved(value) {
             if (value === false) {
                 router.push({
@@ -565,6 +666,9 @@ export default {
         return {
             showSaved: false,
             showFailed: false,
+            selectedParticipants: [],
+            participantsPerPage: 10,
+            participantsPages: 0,
             location: '',
             objectives: [],
             agendas: [],

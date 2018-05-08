@@ -28,6 +28,15 @@ const actions = {
     updateParticipantPresent({commit}, data) {
         Vue.http
             .post(
+                Routing.generate('app_api_meeting_participant_update', {'id': data.meeting}),
+                data
+            ).then((response) => {
+            }, (response) => {
+            });
+    },
+    updateParticipantsPresent({commit}, data) {
+        Vue.http
+            .post(
                 Routing.generate('app_api_meeting_participants_update', {'id': data.meeting}),
                 data
             ).then((response) => {
