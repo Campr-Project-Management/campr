@@ -46,7 +46,7 @@ class Rasci
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
-     * @ORM\JoinColumn(name="work_package_id")
+     * @ORM\JoinColumn(name="work_package_id", onDelete="SET NULL")
      */
     private $workPackage;
 
