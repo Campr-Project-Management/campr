@@ -51,6 +51,8 @@ const actions = {
                         let workPackageStatuses = response.data;
                         commit(types.SET_WORK_PACKAGE_STATUSES, {workPackageStatuses});
                     }
+
+                    return response;
                 },
                 (response) => {
                     //
