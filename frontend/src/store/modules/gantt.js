@@ -22,7 +22,7 @@ const actions = {
                         commit(types.SET_GANTT_DATA, {data});
                     }
                 },
-                () => {},
+                () => {}
             )
         ;
     },
@@ -37,6 +37,13 @@ const mutations = {
     },
     [types.CLEAR_GANTT_DATA](state) {
         state.ganttData = [];
+    },
+    [types.SET_GANTT_DATUM](state, {datum}) {
+        state.ganttData = state
+            .ganttData
+            .filter(item => item.id !== datum.id)
+            .concat([datum])
+        ;
     },
 };
 
