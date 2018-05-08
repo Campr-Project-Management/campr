@@ -891,6 +891,7 @@ subtitle:
     risk_status: List of Risk Statuses
 
 label:
+    approved_at: Approved At
     clear: Clear
     not_approved: Not approved
     invite_workspace_member: Invite member to workspace
