@@ -2,6 +2,10 @@
 
 namespace AppBundle\Form\ProjectUser;
 
+use AppBundle\Entity\ProjectCategory;
+use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\ProjectRole;
+use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -34,6 +38,33 @@ class BaseCreateType extends AbstractType
             ->add('showInResources', CheckboxType::class)
             ->add('showInRasci', CheckboxType::class)
             ->add('showInOrg', CheckboxType::class)
+            ->add('projectRoles', EntityType::class, [
+                'class' => ProjectRole::class,
+                'required' => false,
+                'multiple' => true,
+                'placeholder' => 'placeholder.project_role',
+                'translation_domain' => 'messages',
+            ])
+            ->add('projectCategory', EntityType::class, [
+                'class' => ProjectCategory::class,
+                'required' => false,
+                'placeholder' => 'placeholder.project_category',
+                'translation_domain' => 'messages',
+            ])
+            ->add('projectDepartments', EntityType::class, [
+                'class' => ProjectDepartment::class,
+                'required' => false,
+                'multiple' => true,
+                'placeholder' => 'placeholder.project_department',
+                'translation_domain' => 'messages',
+            ])
+            ->add('projectTeam', EntityType::class, [
+                'class' => ProjectTeam::class,
+                'required' => false,
+                'placeholder' => 'placeholder.project_team',
+                'translation_domain' => 'messages',
+            ])
+
         ;
     }
 
