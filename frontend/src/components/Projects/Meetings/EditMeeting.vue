@@ -512,7 +512,8 @@
                     v-bind:meetingParticipants="displayedParticipants"
                     v-bind:participants="participants"
                     v-bind:participantsPages="participantsPages"
-                    v-bind:participantsPerPage="participantsPerPage" />
+                    v-bind:participantsPerPage="participantsPerPage"
+                    v-bind:createMeeting="false" />
             </div>
         </div>
 
