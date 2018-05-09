@@ -891,6 +891,7 @@ subtitle:
     risk_status: List of Risk Statuses
 
 label:
+    approved_at: Approved At
     clear: Clear
     not_approved: Not approved
     invite_workspace_member: Invite member to workspace
@@ -1739,7 +1740,7 @@ email:
         user:
             register: Campr - Account registration
             activation: Campr - Account activation code
-            reset: Campr - Reset account psasword
+            reset: Campr - Reset account password
         invoice: Campr - Payment Invoice
         contact: Campr contact
         workspace_member:
@@ -1792,6 +1793,7 @@ site:
     disabled: Site disabled.
 
 exception:
+    progress_change_for_tasks_only: You can only change progress of tanks.
     cannot_invite_yourself: You cannot invite yourself.
     workpackage_must_belong_to_project: Workpackage must belong to the project.
     user_must_be_part_of_the_project: User must be part of the project.
