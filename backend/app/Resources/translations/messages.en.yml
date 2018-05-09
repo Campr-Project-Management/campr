@@ -1793,6 +1793,7 @@ site:
     disabled: Site disabled.
 
 exception:
+    progress_change_for_tasks_only: You can only change progress of tanks.
     cannot_invite_yourself: You cannot invite yourself.
     workpackage_must_belong_to_project: Workpackage must belong to the project.
     user_must_be_part_of_the_project: User must be part of the project.
