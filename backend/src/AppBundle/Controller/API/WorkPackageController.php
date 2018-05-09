@@ -12,7 +12,7 @@ use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiAttachmentType;
-use AppBundle\Form\WorkPackage\ApiEditType;
+use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Repository\WorkPackageRepository;
@@ -187,7 +187,7 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(
-            ApiEditType::class,
+            ApiCreateType::class,
             $wp,
             [
                 'csrf_protection' => false,
