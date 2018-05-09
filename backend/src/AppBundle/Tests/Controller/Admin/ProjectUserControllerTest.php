@@ -25,8 +25,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[user]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());
         $this->assertContains('name="create[project]"', $crawler->html());
-        $this->assertContains('id="create_projectCategory"', $crawler->html());
-        $this->assertContains('name="create[projectCategory]"', $crawler->html());
         $this->assertContains('id="create_projectRoles"', $crawler->html());
         $this->assertContains('name="create[projectRoles][]"', $crawler->html());
         $this->assertContains('id="create_projectDepartments"', $crawler->html());
@@ -191,8 +189,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[user]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());
         $this->assertContains('name="create[project]"', $crawler->html());
-        $this->assertContains('id="create_projectCategory"', $crawler->html());
-        $this->assertContains('name="create[projectCategory]"', $crawler->html());
         $this->assertContains('id="create_projectRoles"', $crawler->html());
         $this->assertContains('name="create[projectRoles][]"', $crawler->html());
         $this->assertContains('id="create_projectDepartments"', $crawler->html());
@@ -311,7 +307,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="userFullName"', $crawler->html());
         $this->assertContains('data-column-id="projectName"', $crawler->html());
-        $this->assertContains('data-column-id="projectCategoryName"', $crawler->html());
         $this->assertContains('data-column-id="projectTeamName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
