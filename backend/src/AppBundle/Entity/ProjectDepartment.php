@@ -124,6 +124,14 @@ class ProjectDepartment
     }
 
     /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->getName();
+    }
+
+    /**
      * Get id.
      *
      * @return int
@@ -464,13 +472,5 @@ class ProjectDepartment
     public function setSubteams($subteams)
     {
         $this->subteams = $subteams;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return (string) $this->getName();
     }
 }
