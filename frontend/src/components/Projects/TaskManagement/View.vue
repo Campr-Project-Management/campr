@@ -234,10 +234,10 @@
                                         <td>{{ translateText('label.base') }}</td>
                                         <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
                                         </td>
@@ -246,10 +246,10 @@
                                         <td>{{ translateText('label.forecast') }}</td>
                                         <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
                                         </td>
@@ -258,10 +258,10 @@
                                         <td>{{ translateText('label.actual') }}</td>
                                         <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
                                         <td v-else>-</td>
-                            
+
                                         <td>
                                             {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
                                         </td>
@@ -328,7 +328,7 @@
                                             </button>
                                         </td>
                                     </tr>
-                            
+
                                     <tr>
                                         <td colspan="4" class="text-right"><b>{{ translateText('label.internal_costs_total') }}</b></td>
                                         <td colspan="2"><b>{{ task.internalCostTotal | money({symbol: projectCurrencySymbol}) }}</b></td>
@@ -526,8 +526,8 @@
                             <select-field
                                     :title="'Add Label'"
                                     :options="labelsForSelect"
-                                    :value="editableData.label"
-                                    @input="updateLabel"/>
+                                    v-model="editableData.label"
+                                    @input="updateLabel" />
                         </div>
                     </div>
                     <!-- /// End Labels /// -->
@@ -1237,8 +1237,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 5px 0;  
+        display: inline-block;
+        margin: 0 5px 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -1364,7 +1364,7 @@ export default {
     .buttons {
         .btn-rounded {
             margin: 0 0 10px 10px;
-            
+
             &:last-child {
                 margin-bottom: 0;
             }
