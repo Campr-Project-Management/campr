@@ -429,33 +429,45 @@ export default {
 
                     switch (mode) {
                     case 'progress':
-                        // const progress = parseInt(task.progress * 100, 10);
                         params['progress'] = progress;
+                        const wp = this.ganttData.filter(wp => wp.id == id)[0];
+                        if (wp.type !== 2) {
+                            task.progress = wp.progress / 100;
+                            task.readonly = false;
+                            gantt.updateTask(id);
+                            gantt.message(this.translate('exception.progress_change_for_tasks_only'));
+                            return false;
+                        }
                         task.progress = progress / 100;
                         gantt.updateTask(id);
 
                         if (progress > 0) {
-                            const wp = this.ganttData.filter(wp => wp.id == id)[0];
-                            // const actualStartAt = wp.
-                            params['workPackageStatus'] = wp.type == 2 ? TASK_STATUS_ONGOING : TASK_STATUS_OPEN;
+                            params['workPackageStatus'] = TASK_STATUS_ONGOING;
 
                             if (progress === 100) {
                                 params['workPackageStatus'] = TASK_STATUS_COMPLETED;
                             }
                             if (oldEvent.progress == 0) {
-                                params[this.currentDate + 'StartAt'] = convert(new Date());
+                                params['actualStartAt'] = convert(new Date());
                             }
-                            params[this.currentDate + 'FinishAt'] = null;
+                            params['actualFinishAt'] = null;
                         } else {
-                            params[this.currentDate + 'StartAt'] = null;
-                            params[this.currentDate + 'FinishAt'] = null;
+                            params['actualStartAt'] = null;
+                            params['actualFinishAt'] = null;
                             params['workPackageStatus'] = TASK_STATUS_OPEN;
                         }
                         break;
                     default: // resize || move
                         params[this.currentDate + 'StartAt'] = convert(task.start_date);
                         const endDate = new Date(task.end_date.getTime() - DAY_IN_MILISECONDS);
-                        params[this.currentDate + 'FinishAt'] = progress === 100 && this.currentDate == 'actual' ? convert(endDate) : null;
+                        if (this.currentDate === 'actual') {
+                            params[this.currentDate + 'FinishAt'] = progress === 100
+                                ? convert(endDate)
+                                : null
+                            ;
+                        } else {
+                            params[this.currentDate + 'FinishAt'] = convert(endDate);
+                        }
 
                         break;
                     }
@@ -556,6 +568,10 @@ export default {
         },
         normalizeProgress(progress) {
             const p = parseInt(progress * 100, 10);
+            if (p > 5 && p < 25) {
+                // special case for user friendliness
+                return 25;
+            }
             return Math.round(p / 25) * 25;
         },
         updateEverything() {
