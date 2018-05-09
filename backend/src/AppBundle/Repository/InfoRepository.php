@@ -40,7 +40,7 @@ class InfoRepository extends BaseRepository
         }
 
         if ($user) {
-            $qb->innerJoin('i.users', 'u');
+            $qb->innerJoin('i.responsibility', 'u');
             $qb->andWhere(
                 $qb->expr()->in(
                     'u.id',
