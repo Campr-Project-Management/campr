@@ -9,23 +9,23 @@
                             <h1>{{ translateText('message.rasci_matrix') }}</h1>
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="responsible" :disabled="true" />
+                                    <responsibility-select value="responsible" :disabled="true"/>
                                     <span>Responsible</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="accountable" :disabled=true />
+                                    <responsibility-select value="accountable" :disabled="true"/>
                                     <span>Accountable</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="support" :disabled=true />
+                                    <responsibility-select value="support" :disabled="true"/>
                                     <span>Support</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="consulted" :disabled=true />
+                                    <responsibility-select value="consulted" :disabled="true"/>
                                     <span>Consulted</span>
                                 </div>
                                 <div class="rasci-legend-item">
-                                    <responsibility-select value="informed" :disabled=true />
+                                    <responsibility-select value="informed" :disabled="true"/>
                                     <span>Informed</span>
                                 </div>
                             </div>
@@ -81,13 +81,17 @@
                             <td v-for="(user, userIndex) in workPackage.rasci"
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
+                                v-on:keyup.esc="activeElement=''"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
                                 <responsibility-select
                                         v-if="workPackage.type === 2"
                                         :last="userIndex + 1 === workPackage.rasci.length"
                                         :second-to-last="userIndex + 2 === workPackage.rasci.length"
                                         :value="user.data"
-                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, data: $event})"/>
+                                        v-bind:activeElem="activeElement"
+                                        :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
+                                        @handleClick="openRasciModal(generateElementKey(workPackage.name + workPackage.id + userIndex) )"
+                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
                             <td class="rasci-cell last-cell"></td>
                         </tr>
@@ -101,7 +105,6 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
-
 export default {
     components: {
         ResponsibilitySelect,
@@ -111,10 +114,13 @@ export default {
         translateText: function(text) {
             return this.translate(text);
         },
-        setRaciData: function({project, user, workPackage, data}) {
+        setRaciData: function({project, user, workPackage, userObj, data}) {
             this.setRasci({project, user, workPackage, data}).then(() => {
                 this.loadRasci();
-            });
+                if(userObj.data != data) {
+                    this.activeElement = '';
+                }
+            }, (userObj, data));
         },
         repeat(str, count) {
             let c = 0;
@@ -135,6 +141,20 @@ export default {
 
             return user.gravatar;
         },
+        generateElementKey(string) {
+            string = string.toLowerCase();
+            string = string.replace(/\s*$/g, '');
+            string = string.replace(/\s+/g, '-');
+            return string;
+        },
+        openRasciModal(elementHash) {
+            this.activeElement = elementHash;
+        },
+        closeRasciModal(event) {
+            if(event.keyCode == 27) {
+                this.activeElement = '';
+            }
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
@@ -147,11 +167,17 @@ export default {
     },
     created() {
         this.loadRasci();
+        window.addEventListener('keyup', this.closeRasciModal);
+    },
+    destroyed() {
+        window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
         return {
             activeCell: null,
             activeRow: null,
+            scrolled: false,
+            activeElem: '',
         };
     },
 };
@@ -163,6 +189,13 @@ export default {
     @import '../../css/_variables';
     @import '../../css/common';
 
+    .rasci-matrix {
+        background: #232D4B;
+        position: sticky;
+        top: 0;
+        transition: all 0.2s, ease-in;
+        z-index: 2;
+    }
     .rasci-legend {
         .rasci-legend-item {
             display: flex;
