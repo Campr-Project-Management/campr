@@ -542,7 +542,7 @@ class MenuBuilder
             ])
             ->setAttribute('class', 'sidebar-menu-item')
             ->getParent()
-            ->addChild($this->translator->trans('menu.teams', [], 'messages'), [
+            ->addChild($this->translator->trans('menu.workspaces', [], 'messages'), [
                 'route' => 'main_admin_team_list',
             ])
             // ->setAttribute('class', 'sidebar-menu-item')
@@ -555,6 +555,11 @@ class MenuBuilder
             // ->addChild($this->translator->trans('menu.payments', [], 'messages'), [
             //     'route' => 'main_admin_payment_list',
             // ])
+            ->setAttribute('class', 'sidebar-menu-item')
+            ->getParent()
+            ->addChild($this->translator->trans('menu.deleted_workspaces', [], 'messages'), [
+                'route' => 'main_admin_team_deleted_teams',
+            ])
             ->setAttribute('class', 'sidebar-menu-item')
         ;
 
