@@ -571,12 +571,22 @@ export default {
             if (!existingUser) {
                 this.selectedParticipants.push({
                     user: value.user,
-                    isPresent: true,
+                    isPresent: value.isPresent,
+                });
+                this.participants.filter((item) => {
+                    if (item.id === value.user) {
+                        return item.isPresent = value.isPresent;
+                    }
                 });
             } else {
                 this.selectedParticipants.filter((item) => {
                     if (item.user === value.user) {
-                        item.isPresent = false;
+                        item.isPresent = value.isPresent;
+                    }
+                });
+                this.participants.filter((item) => {
+                    if (item.id === value.user) {
+                        return item.isPresent = value.isPresent;
                     }
                 });
             }
@@ -607,16 +617,32 @@ export default {
                 });
 
                 this.lists.map((item) => {
+                    let existingUser = users.find((participant) => {
+                        return participant.id === item.createdBy;
+                    });
+                    if (!existingUser) {
+                        users.push({
+                            id: item.createdBy,
+                            fullName: item.createdByFullName,
+                            avatar: item.createdByAvatar,
+                            departments: item.createdByDepartmentNames,
+                            isPresent: false,
+                        });
+                    }
                     item.users.map((user) => {
                         let projectUser = user.projectUsers.filter((item) => {
                             return item.project !== this.$route.params.id;
                         });
-                        if (projectUser.length > 0) {
+                        let existingUser = users.find((participant) => {
+                            return participant.id === user.id;
+                        });
+                        if (!existingUser && projectUser.length > 0) {
                             users.push({
                                 id: user.id,
                                 fullName: user.firstName + ' ' + user.lastName,
                                 avatar: user.avatar ? user.avatar : user.gravatar,
                                 departments: projectUser[0].projectDepartmentNames,
+                                isPresent: false,
                             });
                         }
                     });
