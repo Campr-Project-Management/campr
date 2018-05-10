@@ -452,7 +452,8 @@ message:
 
 menu:
     users: Users
-    teams: Teams
+    workspaces: Workspaces
+    deleted_workspaces: Deleted Workspaces
     workspaces: Workspaces
     payment_methods: Payment Methods
     payments: Payments
@@ -1216,6 +1217,7 @@ label:
     currency: Currency
 
 button:
+    restore: Restore
     back_to_workspace: Back to Workspace
     edit_member: Edit Member
     clear_filters: Clear Filters
@@ -1601,6 +1603,7 @@ table_header_cell:
     description: Description
     created_at: Created At
     updated_at: Updated At
+    deleted_at: Deleted At
     number: Number
     approved_at: Approved at
     status_updated_at: Status updated at
