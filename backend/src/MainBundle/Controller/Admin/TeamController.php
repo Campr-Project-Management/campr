@@ -7,6 +7,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -160,5 +161,48 @@ class TeamController extends Controller
         ;
 
         return $this->redirectToRoute('main_admin_team_list');
+    }
+
+    /**
+     * @Route("/deleted-teams", name="main_admin_team_deleted_teams")
+     * @Method({"GET"})
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
+     */
+    public function viewDeletedAction()
+    {
+        $teamRetentionPeriod = $this->container->getParameter('app.team.retention_period');
+        $retentionInterval = new \DateInterval($teamRetentionPeriod);
+
+        $deletedTeams = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Team::class)
+            ->findDeletedTeams()
+        ;
+
+        return $this->render(
+            'MainBundle:Admin/Team:deleted_teams.html.twig',
+            [
+                'deleted_teams' => $deletedTeams,
+                'retention_interval' => $retentionInterval,
+            ]
+        );
+    }
+
+    /**
+     * Can't use @ParamConverter here because the items that end up here are soft deleted.
+     *
+     * @Route("/{id}/restore", name="main_admin_team_restore")
+     * @Method({"GET", "POST"})
+     * @ParamConverter("team", class="AppBundle:Team", options={"repository_method":"findDeletedTeam"})
+     */
+    public function restoreAction(Team $team)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $team->setDeletedAt(null);
+        $em->persist($team);
+        $em->flush();
+
+        return $this->redirectToRoute('main_admin_team_deleted_teams');
     }
 }
