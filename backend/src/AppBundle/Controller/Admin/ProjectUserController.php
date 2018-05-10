@@ -81,6 +81,17 @@ class ProjectUserController extends BaseController
         $form = $this->createForm(ProjectUserCreateType::class, $projectUser);
         $form->handleRequest($request);
 
+        if ($request->isXmlHttpRequest()) {
+            $html = $this->renderView(
+                'AppBundle:Admin/ProjectUser/Partials:form.html.twig',
+                [
+                    'form' => $form->createView(),
+                ]
+            );
+
+            return new JsonResponse($html);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectUser);
@@ -124,6 +135,18 @@ class ProjectUserController extends BaseController
         $form = $this->createForm(ProjectUserCreateType::class, $projectUser);
         $form->handleRequest($request);
 
+        if ($request->isXmlHttpRequest()) {
+            $html = $this->renderView(
+                'AppBundle:Admin/ProjectUser/Partials:form_edit.html.twig',
+                [
+                    'id' => $projectUser->getId(),
+                    'form' => $form->createView(),
+                ]
+            );
+
+            return new JsonResponse($html);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $projectUser->setUpdatedAt(new \DateTime());
 
@@ -148,7 +171,7 @@ class ProjectUserController extends BaseController
         return $this->render(
             'AppBundle:Admin/ProjectUser:edit.html.twig',
             [
-                'project_user' => $projectUser,
+                'id' => $projectUser->getId(),
                 'form' => $form->createView(),
             ]
         );
