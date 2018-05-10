@@ -413,7 +413,9 @@
                     v-bind:participants="participants"
                     v-bind:participantsPages="participantsPages"
                     v-bind:participantsPerPage="participantsPerPage"
+                    v-bind:participantsActivePage="participantsActivePage"
                     v-bind:createMeeting="true"
+                    v-on:change-active-page="setParticipantsActivePage"
                     @input="addMeetingParticipant" />
             </div>
         </div>
@@ -591,6 +593,12 @@ export default {
                 });
             }
         },
+        setParticipantsActivePage(page) {
+            this.participantsActivePage = page;
+            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+
+            this.$forceUpdate();
+        },
     },
     computed: {
         ...mapGetters([
@@ -604,9 +612,10 @@ export default {
         ]),
     },
     watch: {
-        details: {
+        'details.distributionLists': {
             handler: function(value) {
                 let users = [];
+
                 this.lists = this.distributionLists.filter((item) => {
                     for (let i = 0; i < this.details.distributionLists.length; i++) {
                         if (item.id === this.details.distributionLists[i].key) {
@@ -648,6 +657,17 @@ export default {
                     });
                 });
 
+                if (this.selectedParticipants.length) {
+                    this.selectedParticipants.map((item) => {
+                        users.map((user) => {
+                            if(item.user === user.id) {
+                                user.isPresent = true;
+                            }
+                        });
+                    });
+                }
+
+                this.participantsActivePage = 1;
                 this.participants = users;
                 this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
                 this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
