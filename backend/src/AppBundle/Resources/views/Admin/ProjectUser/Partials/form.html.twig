@@ -1,0 +1,103 @@
+{% trans_default_domain 'messages' %}
+
+{% form_theme form 'AppBundle:Admin/Layout/Partials:form_fields.html.twig' %}
+
+{{ form_start(
+    form,
+    {
+        'method': 'POST',
+        'action': path('app_admin_project_user_create'),
+        'attr': {
+            'id': 'create-form',
+            'class': 'form-horizontal',
+            'novalidate': 'novalidate',
+        },
+    }
+    ) }}
+    {% if form.vars.valid == false %}
+        <div class="alert alert-danger">
+            {% for field in form.children %}
+                {{ form_errors(field) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {{ form_widget(
+        form.user,
+        {
+            'attr': {
+                'class': 'selectpicker',
+            },
+            'label': 'label.user'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.project,
+        {
+            'attr': {
+                'class': 'selectpicker',
+            },
+            'label': 'label.project'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.projectRoles,
+        {
+            'attr': {
+                'class': 'selectpicker',
+            },
+            'label': 'label.project_role'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.projectDepartments,
+        {
+            'attr': {
+                'class': 'selectpicker',
+            },
+            'label': 'label.project_department'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.projectTeam,
+        {
+            'attr': {
+                'class': 'selectpicker',
+            },
+            'label': 'label.project_team'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.showInResources,
+        {
+            'attr': {
+                'class': 'form-control input-sm',
+                'toggle': true
+            },
+            'label': 'label.show_in_resources'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.showInRasci,
+        {
+            'attr': {
+                'class': 'form-control input-sm',
+                'toggle': true
+            },
+            'label': 'label.show_in_rasci'|trans,
+        }
+    ) }}
+    {{ form_widget(
+        form.showInOrg,
+        {
+            'attr': {
+                'class': 'form-control input-sm',
+                'toggle': true
+            },
+            'label': 'label.show_in_org'|trans,
+        }
+    ) }}
+
+    {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
+
+    <span class="hidden">{{ form_row(form._token) }}</span>
+    {{ form_end(form, {'render_rest': false}) }}

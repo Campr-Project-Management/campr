@@ -69,6 +69,13 @@
                             'label': 'label.last_name'|trans
                         }
                     ) }}
+                    {{ form_widget(
+                        form.company,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.company'|trans,
+                        }
+                    ) }}
                     <div class="form-group">
                         {{ form_widget(
                             form.avatarFile,
