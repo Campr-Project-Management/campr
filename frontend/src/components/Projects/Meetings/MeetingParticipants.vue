@@ -25,8 +25,8 @@
                                 <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
                             </td>
                             <td class="text-center switchers">
-                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
-                                <switches @click.native="addIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
+                                <switches @click.native="updateIsPresent(participant)" v-model="participant.isPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
+                                <switches @click.native="addIsPresent(participant)" v-model="participant.isPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
                             </td>
                         </tr>
                         </tbody>
@@ -78,6 +78,7 @@ export default {
         addIsPresent(participant) {
             let meetingParticipant = {
                 user: participant.id,
+                isPresent: !participant.isPresent,
             };
             this.$emit('input', meetingParticipant);
         },
