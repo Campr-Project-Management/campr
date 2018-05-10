@@ -122,7 +122,7 @@ class Team
     /**
      * @var ArrayCollection|TeamMember[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="team", cascade={"all"})
      */
     private $teamMembers;
 
@@ -596,5 +596,24 @@ class Team
     public function getEnvName(): string
     {
         return str_replace('-', '_', $this->getSlug());
+    }
+
+    /**
+     * @param \DateTime|null $deletedAt
+     */
+    public function setDeletedAt(\DateTime $deletedAt = null)
+    {
+        $this->deletedAt = $deletedAt;
+        foreach ($this->teamMembers as $teamMember) {
+            $teamMember->setDeletedAt($deletedAt);
+        }
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDeletedAt(): ? \DateTime
+    {
+        return $this->deletedAt;
     }
 }
