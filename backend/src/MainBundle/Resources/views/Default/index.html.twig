@@ -7,12 +7,12 @@
     <div class="container-fluid">
         <section class="section first-section">
             <div class="row">
-                {% if app.user.teams.count %}
+                {% if teams|length %}
                 <div class="col-xl-6">
                     <div class="team-list-wrapper">
                         <h3 class="page-header">{{ 'message.your_workspaces'|trans }}</h3>
                         <ul class="thumb-list">
-                            {% for team in app.user.teams %}
+                            {% for team in teams %}
                             <li>
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-md-auto">
@@ -94,7 +94,7 @@
                 {% endif %}
 
 
-                {% if app.user.teams.count == 0 and app.user.teamMembers.count == 0 %}
+                {% if teams|length == 0 and app.user.teamMembers.count == 0 %}
                 <div class="col-xl-12" style="text-align: center;">
                     <p>Looks like you are new here, why don't you go ahead and <a href="{{ path('main_team_create') }}">create a new team</a>?</p>
                 </div>
