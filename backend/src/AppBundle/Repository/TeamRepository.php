@@ -83,6 +83,17 @@ class TeamRepository extends EntityRepository
         return $teams;
     }
 
+    public function findDeletedTeam($id)
+    {
+        $this->getEntityManager()->getFilters()->disable('softdeleteable');
+
+        $team = $this->find($id);
+
+        $this->getEntityManager()->getFilters()->enable('softdeleteable');
+
+        return $team->getDeletedAt() ? $team : null;
+    }
+
     public function permanentlyRemove(Team $team)
     {
         $em = $this->getEntityManager();
