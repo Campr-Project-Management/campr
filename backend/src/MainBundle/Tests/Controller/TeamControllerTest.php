@@ -356,14 +356,6 @@ class TeamControllerTest extends BaseController
         $this->assertContains('User with this email is already part of the team.', $crawler->html());
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
 
-        $teamMember = $this
-            ->em
-            ->getRepository(TeamMember::class)
-            ->findOneBy([
-                'user' => $user,
-                'team' => $this->team,
-            ])
-        ;
         $user = $this
             ->em
             ->getRepository(User::class)
@@ -372,7 +364,6 @@ class TeamControllerTest extends BaseController
             ])
         ;
 
-        $this->em->remove($teamMember);
         $this->em->remove($user);
         $this->removeTeam('test-team');
     }
@@ -540,5 +531,14 @@ class TeamControllerTest extends BaseController
         $this->em->remove($this->teamMember);
         $this->em->remove($this->team);
         $this->em->flush();
+    }
+
+    protected function tearDown()
+    {
+        foreach (['team_member', 'team']  as $table) {
+            $stmt = $this->em->getConnection()->prepare(sprintf('DELETE FROM %s WHERE deleted_at IS NOT NULL', $table));
+            $stmt->execute();
+        }
+        parent::tearDown();
     }
 }

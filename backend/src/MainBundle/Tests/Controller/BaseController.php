@@ -188,6 +188,7 @@ class BaseController extends WebTestCase
     protected function tearDown()
     {
         if ($this->user) {
+            $this->em->clear();
             $user = $this
                 ->em
                 ->getRepository(User::class)
