@@ -258,10 +258,13 @@ export default {
             this.showNotificationModal = false;
         },
         participants(meeting) {
+            let participants = meeting.meetingParticipants.filter((item) => {
+                return item.isPresent === true;
+            });
             if (this.showMore[meeting.id]) {
-                return meeting.meetingParticipants;
+                return participants;
             } else {
-                return meeting.meetingParticipants.slice(0, 3);
+                return participants.slice(0, 3);
             }
         },
         setShowMore(meetingId, value) {

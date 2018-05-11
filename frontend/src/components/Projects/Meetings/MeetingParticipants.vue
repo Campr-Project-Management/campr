@@ -12,7 +12,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for='participant in displayedParticipants'>
+                        <tr v-for='participant in displayedParticipants' :key="participant.id">
                             <td>
                                 <div class="avatars flex flex-v-center">
                                     <div>
@@ -25,8 +25,8 @@
                                 <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
                             </td>
                             <td class="text-center switchers">
-                                <switches @click.native="updateIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
-                                <switches @click.native="addIsPresent(participant)" v-model="showPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
+                                <switches @click.native="updateIsPresent(participant)" v-model="participant.isPresent" :selected="participant.isPresent" v-if="!createMeeting"></switches>
+                                <switches @click.native="addIsPresent(participant)" v-model="participant.isPresent" :selected="participant.isPresent" v-if="createMeeting"></switches>
                             </td>
                         </tr>
                         </tbody>
@@ -50,7 +50,7 @@ import Switches from '../../3rdparty/vue-switches';
 import {mapActions} from 'vuex';
 
 export default {
-    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages', 'createMeeting'],
+    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages', 'createMeeting', 'participantsActivePage'],
     components: {
         Switches,
     },
@@ -65,8 +65,7 @@ export default {
             return this.translate(text);
         },
         changeParticipantsPage: function(page) {
-            this.participantsActivePage = page;
-            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+            this.$emit('change-active-page', page);
         },
         updateIsPresent(participant) {
             this.updateParticipantPresent({
@@ -78,13 +77,13 @@ export default {
         addIsPresent(participant) {
             let meetingParticipant = {
                 user: participant.id,
+                isPresent: !participant.isPresent,
             };
             this.$emit('input', meetingParticipant);
         },
     },
     data() {
         return {
-            participantsActivePage: 1,
             showPresent: null,
         };
     },
