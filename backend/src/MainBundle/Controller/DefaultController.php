@@ -2,6 +2,7 @@
 
 namespace MainBundle\Controller;
 
+use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Form\User\LoginType;
 use AppBundle\Form\User\RegisterType;
@@ -22,7 +23,18 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MainBundle:Default:index.html.twig');
+        if ($this->getUser() instanceof User) {
+            $teams = $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository(Team::class)
+                ->findBy(['user' => $this->getUser()])
+            ;
+        } else {
+            $teams = [];
+        }
+
+        return $this->render('MainBundle:Default:index.html.twig', ['teams' => $teams]);
     }
 
     /**

@@ -31,7 +31,7 @@
                     <div class="member-details">
                         <div class="member-info">
                             <p>{{ translateText('message.role') }}: <b v-if="member.projectRoleNames && member.projectRoleNames.length > 0" v-for="(role, index) in member.projectRoleNames">{{ translateText(role) }}<span v-if="index < member.projectRoleNames.length - 1">,</span></b><b v-else>-</b></p>
-                            <p>{{ translateText('message.company') }}: <b v-if="member.company">{{ member.company }}</b><b v-else>-</b></p>
+                            <p>{{ translateText('message.company') }}: <b v-if="member.userCompanyName">{{ member.userCompanyName }}</b><b v-else>-</b></p>
                             <p>{{ translateText('message.department') }}: <b v-if="member.projectDepartmentNames && member.projectDepartmentNames.length > 0" v-for="(department, index) in member.projectDepartmentNames">{{ department }}<span v-if="index < member.projectDepartmentNames.length - 1">,</span></b><b v-else>-</b></p>
                             <p>{{ translateText('message.subteam') }}: <b v-if="member.subteamNames && member.subteamNames.length > 0" v-for="(subteam, index) in member.subteamNames">{{ subteam }}<span v-if="index < member.subteamNames.length - 1">,</span></b><b v-else></b></p>
                         </div>

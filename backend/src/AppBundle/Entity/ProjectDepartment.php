@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ProjectDepartment.
@@ -28,6 +29,7 @@ class ProjectDepartment
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -119,6 +121,14 @@ class ProjectDepartment
         $this->createdAt = new \DateTime();
         $this->projectUsers = new ArrayCollection();
         $this->subteams = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->getName();
     }
 
     /**
@@ -315,9 +325,9 @@ class ProjectDepartment
     }
 
     /**
-     * Remove projectUser.
-     *
      * @param ProjectUser $projectUser
+     *
+     * @return $this
      */
     public function removeProjectUser(ProjectUser $projectUser)
     {
@@ -329,6 +339,8 @@ class ProjectDepartment
 
     /**
      * Get projectUsers.
+     *
+     * @Serializer\VirtualProperty()
      *
      * @return ArrayCollection|ProjectUser[]
      */
@@ -369,7 +381,7 @@ class ProjectDepartment
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("managers")
      *
-     * @return string
+     * @return ProjectUser[]
      */
     public function getProjectDepartmentManagers()
     {
@@ -460,13 +472,5 @@ class ProjectDepartment
     public function setSubteams($subteams)
     {
         $this->subteams = $subteams;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return (string) $this->getName();
     }
 }

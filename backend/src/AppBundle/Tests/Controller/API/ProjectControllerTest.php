@@ -105,6 +105,7 @@ class ProjectControllerTest extends BaseController
                     'portfolioName' => null,
                     'userFavorites' => [],
                     'progress' => 0,
+                    'costProgress' => 0,
                     'programme' => null,
                     'programmeName' => null,
                     'configuration' => [],
@@ -364,6 +365,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 2,
                     'companyName' => 'company2',
+                    'projectColorStatus' => null,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -384,6 +386,7 @@ class ProjectControllerTest extends BaseController
                     'labelName' => null,
                     'userFavorites' => [],
                     'progress' => 0,
+                    'costProgress' => 0,
                     'programme' => null,
                     'programmeName' => null,
                     'projectModules' => [],
@@ -437,6 +440,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userCompanyName' => null,
                         ],
                     ],
                     'projectTeams' => [],
@@ -1929,6 +1933,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 1,
                     'companyName' => 'company1',
+                    'projectColorStatus' => null,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -1949,6 +1954,7 @@ class ProjectControllerTest extends BaseController
                     'labelName' => null,
                     'userFavorites' => [],
                     'progress' => 0,
+                    'costProgress' => 0,
                     'programme' => null,
                     'programmeName' => null,
                     'projectModules' => ['project-module1', 'project-module2', 'project-module3'],
@@ -2023,6 +2029,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userCompanyName' => null,
                         ],
                         [
                             'user' => 4,
@@ -2054,6 +2061,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userCompanyName' => null,
                         ],
                         [
                             'user' => 5,
@@ -2085,6 +2093,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userCompanyName' => null,
                         ],
                     ],
                     'projectTeams' => [
@@ -2592,6 +2601,7 @@ class ProjectControllerTest extends BaseController
                     'createdAt' => '',
                     'updatedAt' => null,
                     'userAvatar' => '',
+                    'userCompanyName' => null,
                 ],
             ],
         ];

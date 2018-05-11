@@ -21,6 +21,9 @@ class ProjectModuleTypeEnum
     const DECISIONS = 'decisions';
     const STATUS_REPORT = 'status_report';
     const CLOSE_DOWN_PROJECT = 'close_down_project';
+    const STATUS_CRITICAL = 'project_color_status.critical';
+    const STATUS_WARNING = 'project_color_status.warning';
+    const STATUS_ON_TRACK = 'project_color_status.on_track';
 
     const ELEMENTS = [
         self::CONTRACT => [
@@ -86,6 +89,21 @@ class ProjectModuleTypeEnum
         self::CLOSE_DOWN_PROJECT => [
             'title' => 'modules.close_down_project.title',
             'description' => 'modules.close_down_project.description',
+        ],
+    ];
+
+    const PROJECT_COLOR_STATUSES = [
+        [
+            'name' => self::STATUS_CRITICAL,
+            'color' => '#c87369',
+        ],
+        [
+            'name' => self::STATUS_WARNING,
+            'color' => '#ccba54',
+        ],
+        [
+            'name' => self::STATUS_ON_TRACK,
+            'color' => '#5fc3a5',
         ],
     ];
 }

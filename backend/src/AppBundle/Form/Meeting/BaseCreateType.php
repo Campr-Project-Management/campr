@@ -33,6 +33,7 @@ class BaseCreateType extends AbstractType
                 'class' => DistributionList::class,
                 'choice_label' => 'name',
                 'multiple' => true,
+                'by_reference' => false,
             ])
             ->add('name', TextType::class, [
                 'required' => true,

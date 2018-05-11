@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import * as projectStatus from './project-status';
-import _ from 'lodash';
 
 const state = {
     currentProject: {},
@@ -917,9 +916,6 @@ const mutations = {
      */
     [types.SET_PROJECT_EXTERNAL_COSTS_GRAPH_DATA](state, data) {
         state.externalCostsGraphData = data;
-        if (_.isArray(state.externalCostsGraphData.byPhase)) {
-            state.externalCostsGraphData.byPhase = {};
-        }
     },
     /**
      * Set project internal costs data
@@ -928,9 +924,6 @@ const mutations = {
      */
     [types.SET_PROJECT_INTERNAL_COSTS_GRAPH_DATA](state, data) {
         state.internalCostsGraphData = data;
-        if (_.isArray(state.internalCostsGraphData.byPhase)) {
-            state.internalCostsGraphData.byPhase = {};
-        }
     },
     /**
      * Set project/task/cost progresses
