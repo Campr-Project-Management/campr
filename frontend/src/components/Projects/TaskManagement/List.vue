@@ -93,12 +93,16 @@ export default {
             this.getTaskStatuses();
         }
 
-        let project = this.$route.params.id;
-        this.getProjectUsers({id: project});
+        if (!this.project) {
+            this.getProjectById(this.$route.params.id);
+        }
+
+        this.getProjectUsers({id: this.$route.params.id});
         this.getColorStatuses();
     },
     computed: {
         ...mapGetters([
+            'project',
             'taskStatuses',
             'projectUsersForSelect',
             'colorStatusesForSelect',
@@ -110,6 +114,7 @@ export default {
     },
     methods: {
         ...mapActions([
+            'getProjectById',
             'getTaskStatuses',
             'setFilters',
             'getProjectUsers',
