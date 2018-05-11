@@ -513,7 +513,9 @@
                     v-bind:participants="participants"
                     v-bind:participantsPages="participantsPages"
                     v-bind:participantsPerPage="participantsPerPage"
-                    v-bind:createMeeting="false" />
+                    v-bind:participantsActivePage="participantsActivePage"
+                    v-bind:createMeeting="false" 
+                    v-on:change-active-page="setParticipantsActivePage"/>
             </div>
         </div>
 
@@ -779,6 +781,12 @@ export default {
                 )
             ;
         },
+        setParticipantsActivePage(page) {
+            this.participantsActivePage = page;
+            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+
+            this.$forceUpdate();
+        },
     },
     computed: {
         ...mapGetters({
@@ -902,7 +910,7 @@ export default {
         };
     },
     watch: {
-        details: {
+        'details.distributionLists': {
             handler: function(value) {
                 let users = [];
                 this.getMeetingParticipants({id: this.$route.params.meetingId});
@@ -956,6 +964,7 @@ export default {
                 });
 
                 this.participants = users;
+                this.participantsActivePage = 1;
                 this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
                 this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
             },
