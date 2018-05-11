@@ -30,13 +30,15 @@
             <div class="table-wrapper table-responsive">
                 <table class="custom-table">
                     <thead>
-                        <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
-                        <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
-                        <th>{{ 'table_header_cell.name'|trans }}</th>
-                        <th>{{ 'table_header_cell.slug'|trans }}</th>
-                        <th>{{ 'table_header_cell.created_at'|trans }}</th>
-                        <th>{{ 'table_header_cell.updated_at'|trans }}</th>
-                        <th>{{ 'placeholder.actions'|trans }}</th>
+                        <tr>
+                            <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
+                            <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
+                            <th>{{ 'table_header_cell.name'|trans }}</th>
+                            <th>{{ 'table_header_cell.slug'|trans }}</th>
+                            <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                            <th>{{ 'table_header_cell.updated_at'|trans }}</th>
+                            <th>{{ 'placeholder.actions'|trans }}</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {% for team in teams %}

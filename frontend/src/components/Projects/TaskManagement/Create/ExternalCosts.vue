@@ -1,25 +1,24 @@
 <template>
     <div>
         <h3>{{ message.external_costs }}</h3>
-        <span class="note blue-note">{{ message.project_currency }} <i class="fa fa-dollar"></i> USD</span>
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-10">
                         <input-field
                             type="text"
-                            v-bind:label="label.external_cost_description"
+                            :label="label.external_cost_description"
                             :value="item.name"
-                            v-bind:content="item.name"
-                            v-on:input="onItemUpdate(index, 'name', $event)" />
+                            :content="item.name"
+                            @input="onItemUpdate(index, 'name', $event)" />
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            v-bind:label="label.external_cost_qty"
+                            :label="label.external_cost_qty"
                             :value="item.quantity"
-                            v-bind:content="item.quantity"
-                            v-on:input="onItemUpdate(index, 'quantity', $event)"
+                            :content="item.quantity"
+                            @input="onItemUpdate(index, 'quantity', $event)"
                         />
                         <error
                             v-if="getValidationMessages(index, 'quantity').length"
@@ -33,30 +32,29 @@
                     <div class="col-md-8">
                         <radio-field
                             name="units"
-                            v-bind:options="projectUnitsForSelect"
-                            v-bind:currentOption="(item.unit && item.unit.id) || 'custom'"
-                            v-on:input="onItemUpdate(index, 'unit', $event)"/>
+                            :options="projectUnitsForSelect"
+                            :currentOption="(item.unit && item.unit.id) || 'custom'"
+                            @input="onItemUpdate(index, 'unit', $event)"/>
                     </div>
                     <div class="col-md-2">
                         <input-field
                             type="text"
-                            v-bind:label="label.custom"
+                            :label="label.custom"
                             :value="item.customUnit"
-                            v-bind:content="item.customUnit"
-                            v-bind:disabled="item.unit && item.unit !== 'custom'"
-                            v-on:input="onItemUpdate(index, 'customUnit', $event)"/>
+                            :content="item.customUnit"
+                            :disabled="item.unit && item.unit !== 'custom'"
+                            @input="onItemUpdate(index, 'customUnit', $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'unit').length"
                             v-for="message in getValidationMessages(index, 'unit')"
                             :message="message" />
                     </div>
                     <div class="col-md-2">
-                        <input-field
-                            type="number"
-                            v-bind:label="label.external_cost_unit_rate"
+                        <money-field
+                            :label="label.external_cost_unit_rate"
+                            :currency="projectCurrencySymbol"
                             :value="item.rate"
-                            v-bind:content="item.rate"
-                            v-on:input="onItemUpdate(index, 'rate', $event)"/>
+                            @input="onItemUpdate(index, 'rate', $event)"/>
                         <error
                             v-if="getValidationMessages(index, 'rate').length"
                             v-for="message in getValidationMessages(index, 'rate')"
@@ -68,7 +66,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-12">
                         <span class="title">
-                            {{ label.external_cost_total }} <b>{{ itemTotal(item) | money }}</b>
+                            {{ label.external_cost_total }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
                         </span>
                     </div>
                 </div>
@@ -113,12 +111,12 @@
             <div class="form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.capex_subtotal }} <b>{{ capexSubtotal | money }}</b>
+                        {{ message.capex_subtotal }} <b>{{ capexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.opex_subtotal }} <b>{{ opexSubtotal | money }}</b>
+                        {{ message.opex_subtotal }} <b>{{ opexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
             </div>
@@ -127,23 +125,21 @@
             <div class="form-group last-form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.external_costs_total }} <b>{{ baseTotal | money }}</b>
+                        {{ message.external_costs_total }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
-                    <input-field
-                        type="number"
+                    <money-field
                         :label="label.external_cost_forecast"
-                        :content="value.forecast"
                         :value="value.forecast"
+                        :currency="projectCurrencySymbol"
                         @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
-                    <input-field
-                        type="number"
+                    <money-field
                         :label="label.external_cost_actual"
-                        :content="value.actual"
                         :value="value.actual"
+                        :currency="projectCurrencySymbol"
                         @input="onUpdate('actual', $event)"/>
                 </div>
             </div>
@@ -153,6 +149,7 @@
 
 <script>
 import InputField from '../../../_common/_form-components/InputField';
+import MoneyField from '../../../_common/_form-components/MoneyField';
 import SelectField from '../../../_common/_form-components/SelectField';
 import RadioField from '../../../_common/_form-components/RadioField';
 import Switches from '../../../3rdparty/vue-switches';
@@ -182,6 +179,7 @@ export default {
         DeleteIcon,
         Error,
         SwitchField,
+        MoneyField,
     },
     methods: {
         ...mapActions(['getProjectUnits']),
@@ -226,20 +224,21 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            projectUnitsForSelect: 'projectUnitsForSelect',
-        }),
-        baseTotal: function() {
+        ...mapGetters([
+            'projectUnitsForSelect',
+            'projectCurrencySymbol',
+        ]),
+        baseTotal() {
             return this.value.items.reduce((total, item) => {
                 return total + this.itemTotal(item);
             }, 0);
         },
-        opexSubtotal: function() {
+        opexSubtotal() {
             return this.value.items.reduce((total, item) => {
                 return this.isOPEX(item) ? total + this.itemTotal(item) : total;
             }, 0);
         },
-        capexSubtotal: function() {
+        capexSubtotal() {
             return this.value.items.reduce((total, item) => {
                 return this.isCAPEX(item) ? total + this.itemTotal(item) : total;
             }, 0);
@@ -252,7 +251,6 @@ export default {
         return {
             message: {
                 external_costs: this.translate('message.external_costs'),
-                project_currency: this.translate('message.project_currency'),
                 note: this.translate('message.note'),
                 capex: this.translate('message.capex'),
                 opex_capex_note: this.translate('message.opex_capex_note'),
@@ -278,8 +276,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../../../css/_common';
-
     .title {
         position: relative;
         top: 15px;

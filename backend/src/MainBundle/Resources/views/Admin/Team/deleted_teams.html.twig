@@ -1,0 +1,67 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col">
+            {% for flashMessage in app.session.flashbag.get('success') %}
+                <div class="alert alert-success">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ flashMessage }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row justify-content-between align-items-center">
+        <div class="col-md-auto">
+            <h3 class="page-header">{{ 'title.workspace.list'|trans }}</h3>
+        </div>
+    </div>
+    <div class="row mt-30">
+        <div class="col">
+            <div class="table-wrapper table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
+                            <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
+                            <th>{{ 'table_header_cell.name'|trans }}</th>
+                            <th>{{ 'table_header_cell.slug'|trans }}</th>
+                            <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                            <th>{{ 'table_header_cell.deleted_at'|trans }}</th>
+                            <th>{{ 'placeholder.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for team in deleted_teams %}
+                        <tr>
+                            <td>{{ team.id }}</td>
+                            <td class="avatar text-center">
+                                {% if team.logo %}
+                                    <div class="user-avatar-wrapper">
+                                        <img src="{{ vich_uploader_asset(team, 'logoFile') }}">
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>{{ team.name }}</td>
+                            <td>{{ team.slug }}</td>
+                            <td>{{ team.createdAt|date('d/m/Y') }}</td>
+                            <td>{{ team.deletedAt|date('d/m/Y') }}</td>
+                            <td>
+                                <form action="{{ path('main_admin_team_restore', {id: team.id}) }}" method="post">
+                                    <button class="button button-small">{{ 'button.restore'|trans }}</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
-export const NOTE_VALIDATION_ORIGIN = 'note';
+const NOTE_VALIDATION_ORIGIN = 'note';
 
 const state = {};
 

@@ -19,6 +19,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  * @UniqueEntity(fields={"name"}, message="unique.workspace.name")
  * @UniqueEntity(fields={"slug"}, message="unique.workspace.slug")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Vich\Uploadable
  */
 class Team
@@ -39,7 +40,7 @@ class Team
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teams")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id")
+     *     @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      * })
      */
     private $user;
@@ -110,9 +111,18 @@ class Team
     private $updatedAt;
 
     /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
      * @var ArrayCollection|TeamMember[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamMember", mappedBy="team", cascade={"all"})
      */
     private $teamMembers;
 
@@ -586,5 +596,24 @@ class Team
     public function getEnvName(): string
     {
         return str_replace('-', '_', $this->getSlug());
+    }
+
+    /**
+     * @param \DateTime|null $deletedAt
+     */
+    public function setDeletedAt(\DateTime $deletedAt = null)
+    {
+        $this->deletedAt = $deletedAt;
+        foreach ($this->teamMembers as $teamMember) {
+            $teamMember->setDeletedAt($deletedAt);
+        }
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDeletedAt(): ? \DateTime
+    {
+        return $this->deletedAt;
     }
 }

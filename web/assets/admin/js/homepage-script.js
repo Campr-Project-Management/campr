@@ -259,6 +259,9 @@ function responsivePlax() {
 
     $('.same-height').matchHeight();
 
+    var organizationIcon = new Vivus('workspace-icon', {
+        type: 'delayed'
+    });
     var organizationIcon = new Vivus('organization-icon', {
         type: 'delayed'
     });
@@ -267,6 +270,15 @@ function responsivePlax() {
     });
     var taskManagementIcon = new Vivus('task-management-icon', {
         type: 'delayed'
+    });
+
+    var waypoint = new Waypoint({
+        element: document.getElementById('workspace-feature'),
+        handler: function(direction) {  
+            organizationIcon.play();
+            document.getElementById('workspace-img').classList.add('in-view');
+        },
+        offset: '25%'
     });
 
     var waypoint = new Waypoint({

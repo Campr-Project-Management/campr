@@ -25,9 +25,17 @@ class ProjectDepartmentControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
+        $department = $this->em->find(ProjectDepartment::class, 1);
+        $this->assertNotNull($department, 'Project department with ID 1 is missing');
+
+        $department = clone $department;
+        $department->setName('Foo Department');
+        $this->em->persist($department);
+        $this->em->flush();
+
         $this->client->request(
             'PATCH',
-            '/api/project-departments/1',
+            sprintf('/api/project-departments/%d', $department->getId()),
             [],
             [],
             [
@@ -38,12 +46,23 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $projectDepartment = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectDepartment['updatedAt'];
+        try {
+            $actual = json_decode($response->getContent(), true);
+            $this->assertArrayHasKey('updatedAt', $actual, 'Invalid response format');
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+            $responseContent['updatedAt'] = $actual['updatedAt'];
+            $responseContent['id'] = $actual['id'];
+            foreach ($actual['projectUsers'] as $index => $projectUser) {
+                $responseContent['projectUsers'][$index]['updatedAt'] = $projectUser['updatedAt'];
+            }
+
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($department);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -62,6 +81,72 @@ class ProjectDepartmentControllerTest extends BaseController
                     'projectWorkCostType' => 1,
                     'projectWorkCostTypeName' => 'project-work-cost-type1',
                     'managers' => [],
+                    'projectUsers' => [
+                        [
+                            'user' => 3,
+                            'userFullName' => 'FirstName3 LastName3',
+                            'userUsername' => 'user3',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user3@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 1,
+                            'projectCategoryName' => 'project-category1',
+                            'projectRoles' => [5],
+                            'projectDepartments' => [1],
+                            'projectDepartmentNames' => ['project-department1'],
+                            'projectTeam' => 1,
+                            'projectTeamName' => 'project-team1',
+                            'projectRoleNames' => ['manager'],
+                            'subteams' => [],
+                            'subteamNames' => [],
+                            'id' => 1,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => '',
+                            'userAvatar' => 'https://www.gravatar.com/avatar/96083be540ce27b34e5b5424ea9270ad?d=identicon',
+                            'userCompanyName' => null,
+                        ],
+                        [
+                            'user' => 5,
+                            'userFullName' => 'FirstName5 LastName5',
+                            'userUsername' => 'user5',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user5@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 1,
+                            'projectCategoryName' => 'project-category1',
+                            'projectRoles' => [7],
+                            'projectDepartments' => [1],
+                            'projectDepartmentNames' => ['project-department1'],
+                            'projectTeam' => 1,
+                            'projectTeamName' => 'project-team1',
+                            'projectRoleNames' => ['team-member'],
+                            'subteams' => [],
+                            'subteamNames' => [],
+                            'id' => 3,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'userAvatar' => 'https://www.gravatar.com/avatar/07b23578addd736da1cf36ae5efb358e?d=identicon',
+                            'userCompanyName' => null,
+                        ],
+                    ],
                     'membersCount' => 2,
                     'project' => null,
                     'projectName' => null,
@@ -106,10 +191,11 @@ class ProjectDepartmentControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -128,7 +214,7 @@ class ProjectDepartmentControllerTest extends BaseController
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
-                        'name' => ['The name field should not be blank'],
+                        'name' => ['This value should not be blank.'],
                     ],
                 ],
             ],
@@ -169,8 +255,13 @@ class ProjectDepartmentControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($projectDepartment);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -215,12 +306,16 @@ class ProjectDepartmentControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
-        $projectDepartment = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectDepartment['updatedAt'];
+        $actual = json_decode($response->getContent(), true);
+
+        $responseContent['updatedAt'] = $actual['updatedAt'];
+        foreach ($actual['projectUsers'] as $index => $projectUser) {
+            $responseContent['projectUsers'][$index]['updatedAt'] = $projectUser['updatedAt'];
+        }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -237,6 +332,72 @@ class ProjectDepartmentControllerTest extends BaseController
                     'projectWorkCostType' => 2,
                     'projectWorkCostTypeName' => 'project-work-cost-type2',
                     'managers' => [],
+                    'projectUsers' => [
+                        [
+                            'user' => 4,
+                            'userFullName' => 'FirstName4 LastName4',
+                            'userUsername' => 'user4',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user4@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 1,
+                            'projectName' => 'project1',
+                            'projectCategory' => 2,
+                            'projectCategoryName' => 'project-category2',
+                            'projectRoles' => [6],
+                            'projectDepartments' => [2],
+                            'projectDepartmentNames' => ['project-department2'],
+                            'projectTeam' => 2,
+                            'projectTeamName' => 'project-team2',
+                            'projectRoleNames' => ['sponsor'],
+                            'subteams' => [],
+                            'subteamNames' => [],
+                            'id' => 2,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => '',
+                            'userAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                            'userCompanyName' => null,
+                        ],
+                        [
+                            'user' => 6,
+                            'userFullName' => 'FirstName6 LastName6',
+                            'userUsername' => 'user6',
+                            'userFacebook' => null,
+                            'userTwitter' => null,
+                            'userLinkedIn' => null,
+                            'userGplus' => null,
+                            'userEmail' => 'user6@trisoft.ro',
+                            'userPhone' => null,
+                            'project' => 2,
+                            'projectName' => 'project2',
+                            'projectCategory' => 2,
+                            'projectCategoryName' => 'project-category2',
+                            'projectRoles' => [8],
+                            'projectDepartments' => [2],
+                            'projectDepartmentNames' => ['project-department2'],
+                            'projectTeam' => 2,
+                            'projectTeamName' => 'project-team2',
+                            'projectRoleNames' => ['team-participant'],
+                            'subteams' => [],
+                            'subteamNames' => [],
+                            'id' => 4,
+                            'showInResources' => true,
+                            'showInRasci' => true,
+                            'showInOrg' => true,
+                            'company' => null,
+                            'createdAt' => '2017-01-01 12:00:00',
+                            'updatedAt' => null,
+                            'userAvatar' => 'https://www.gravatar.com/avatar/232f46da009f9ab6ab311f012c1e4b26?d=identicon',
+                            'userCompanyName' => null,
+                        ],
+                    ],
                     'membersCount' => 2,
                     'project' => null,
                     'projectName' => null,

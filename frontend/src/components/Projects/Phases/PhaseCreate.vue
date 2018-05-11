@@ -84,7 +84,12 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search
+                                        v-model="details.responsible"
+                                        v-bind:placeholder="translateText('placeholder.responsible')"
+                                        v-bind:singleSelect="true"/>
+
+                                <error at-path="responsibility" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
@@ -261,10 +266,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../css/_mixins';
-    @import '../../../css/_variables';
-    @import '../../../css/common';
-
     .title {
         position: relative;
         top: 15px;

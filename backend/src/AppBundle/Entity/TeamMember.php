@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="team_member")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamMemberRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class TeamMember
 {
@@ -37,7 +38,7 @@ class TeamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamMembers")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $user;
@@ -72,6 +73,15 @@ class TeamMember
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     public function __construct()
     {
@@ -271,5 +281,21 @@ class TeamMember
     public function getTeamName()
     {
         return $this->team ? $this->team->getName() : null;
+    }
+
+    /**
+     * @param \DateTime|null $deletedAt
+     */
+    public function setDeletedAt(\DateTime $deletedAt = null)
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDeletedAt(): ? \DateTime
+    {
+        return $this->deletedAt;
     }
 }
