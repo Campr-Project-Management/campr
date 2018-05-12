@@ -57,10 +57,10 @@
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
                             v-on:mouseout="activeRow = null">
-                            <td v-if="workPackage.type !== 2">
+                            <td v-if="workPackage.type !== 2" @click.stop="closeRasciModal" ref="closeModal">
                                 {{ repeat('&nbsp', workPackage.type * 6) }}{{ workPackage.name }}
                             </td>
-                            <td class="task-number" v-if="workPackage.type === 2">
+                            <td class="task-number" v-if="workPackage.type === 2" @click.stop="closeRasciModal" ref="closeModal">
                                 <span class="light-color">
                                     <template v-if="workPackage.hasPhase || workPackage.hasMilestone">
                                         {{ repeat('&nbsp', workPackage.type * 6) }}#{{ workPackage.id }}
@@ -70,7 +70,7 @@
                                     </template>
                                 </span>
                             </td>
-                            <td>
+                            <td @click.stop="closeRasciModal" ref="closeModal">
                                 <span v-if="workPackage.type === 2">
                                      <router-link
                                             :to="{name: 'project-task-management-view', params: { id: workPackage.project, taskId: workPackage.id }}">
@@ -81,8 +81,8 @@
                             <td v-for="(user, userIndex) in workPackage.rasci"
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
-                                v-on:keyup.esc="activeElement=''"
-                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
+                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}"
+                                @click.stop="closeRasciModal" ref="closeModal">
                                 <responsibility-select
                                         v-if="workPackage.type === 2"
                                         :last="userIndex + 1 === workPackage.rasci.length"
@@ -90,10 +90,10 @@
                                         :value="user.data"
                                         v-bind:activeElem="activeElement"
                                         :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
-                                        @handleClick="openRasciModal(generateElementKey(workPackage.name + workPackage.id + userIndex) )"
+                                        @handleClick="activeElement = $event"
                                         @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
-                            <td class="rasci-cell last-cell"></td>
+                            <td class="rasci-cell last-cell" @click.stop="closeRasciModal" ref="closeModal"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,6 +105,7 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
+
 export default {
     components: {
         ResponsibilitySelect,
@@ -147,13 +148,12 @@ export default {
             string = string.replace(/\s+/g, '-');
             return string;
         },
-        openRasciModal(elementHash) {
-            this.activeElement = elementHash;
-        },
         closeRasciModal(event) {
-            if(event.keyCode == 27) {
-                this.activeElement = '';
-            }
+            this.$refs.closeModal.map((item) => {
+                if(item == event.target) {
+                    this.activeElement = '';
+                }
+            });
         },
     },
     computed: {
@@ -167,10 +167,6 @@ export default {
     },
     created() {
         this.loadRasci();
-        window.addEventListener('keyup', this.closeRasciModal);
-    },
-    destroyed() {
-        window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
         return {
