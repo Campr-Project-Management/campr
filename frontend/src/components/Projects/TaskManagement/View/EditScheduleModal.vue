@@ -1,5 +1,5 @@
 <template>
-    <modal @close="onCancel" v-if="value">
+    <modal @close="onCancel" v-if="value" v-bind:hasSpecificClass="true">
         <p class="modal-title">{{ translate('title.schedule.edit') }}</p>
         <schedule
                 v-model="scheduleModel"
