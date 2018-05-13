@@ -10,7 +10,7 @@
                             <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
                         </div>
                     </modal>
-                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal">
+                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal" v-bind:hasSpecificClass="true">
                         <p class="modal-title">{{ translate('message.reschedule_todo') }}</p>
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
@@ -140,8 +140,8 @@ export default {
         },
         cancelRescheduleModal: function() {
             this.showRescheduleModal = false;
-            this.rescheduleObj.date = this.todo.date;
-            this.rescheduleObj.dueDate = this.todo.dueDate;
+            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
+            this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
     created() {
@@ -156,8 +156,8 @@ export default {
     },
     watch: {
         todo(val) {
-            this.rescheduleObj.date = this.todo.date;
-            this.rescheduleObj.dueDate = this.todo.dueDate;
+            this.rescheduleObj.date = tthis.todo.date ? moment(this.todo.date).toDate() : null;
+            this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
     data() {
@@ -165,8 +165,8 @@ export default {
             showDeleteModal: false,
             showRescheduleModal: false,
             rescheduleObj: {
-                date: new Date(),
-                dueDate: new Date(),
+                date: moment().toDate(),
+                dueDate: moment().toDate(),
             },
         };
     },
