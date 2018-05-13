@@ -43,7 +43,7 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{todo.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 <div>
@@ -156,7 +156,7 @@ export default {
     },
     watch: {
         todo(val) {
-            this.rescheduleObj.date = tthis.todo.date ? moment(this.todo.date).toDate() : null;
+            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
             this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
