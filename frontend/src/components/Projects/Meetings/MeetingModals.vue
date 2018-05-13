@@ -316,6 +316,11 @@ export default {
             this.$emit('input', this.showDeleteObjectiveModal);
         },
         saveAgenda: function() {
+            if (this.editAgendaObject.responsible) {
+                if (this.editAgendaObject.responsible[0]) {
+                    this.editAgendaObject.responsibility = this.editAgendaObject.responsible[0];
+                }
+            }
             this.editAgendaObject.start = this.editAgendaObject.start.HH + ':' + this.editAgendaObject.start.mm,
             this.editAgendaObject.end = this.editAgendaObject.end.HH + ':' + this.editAgendaObject.end.mm,
             this.editMeetingAgenda(this.editAgendaObject);
