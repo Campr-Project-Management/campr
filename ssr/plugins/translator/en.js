@@ -394,6 +394,7 @@ module.exports = function (Translator) {
     Translator.add("message.time_calculation", "Time Saved is calculated as Probability times Potential Time Savings", "messages", "en");
     Translator.add("message.average_impact", "Average Impact Value of all opportunities is", "messages", "en");
     Translator.add("message.average_probability", "Average Probability Value of all opportunities is", "messages", "en");
+    Translator.add("message.reschedule_info", "Reschedule Info", "messages", "en");
     Translator.add("message.reschedule_meeting", "Reschedule Meeting", "messages", "en");
     Translator.add("message.send_notifications", "Send Notifications", "messages", "en");
     Translator.add("message.back_to_meetings", "Back to Meetings", "messages", "en");
