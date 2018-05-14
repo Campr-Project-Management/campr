@@ -267,12 +267,6 @@ export default {
         },
         agendaObject(value) {
             this.editAgendaObject = this.agendaObject;
-            // this.editAgendaObject.responsible = [];
-            // if (this.agendaObject.responsibility) {
-            //     console.log(this.agendaObject.responsibility);
-            //     this.editAgendaObject.responsible.push(this.agendaObject.responsibility);
-            // }
-            console.log(this.editAgendaObject);
         },
         editDecisionModal(value) {
             this.showEditDecisionModal = this.editDecisionModal;
@@ -290,7 +284,6 @@ export default {
             this.showDeleteTodoModal = this.deleteTodoModal;
         },
         todoObject(value) {
-            console.log(this.todoObject.responsibility);
             this.editTodoObject = this.todoObject;
         },
         editInfoModal(value) {
