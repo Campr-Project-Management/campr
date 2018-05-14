@@ -140,3 +140,17 @@
         </div>
     </div>
 {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .form-group .vich-image a img {
+            width: 50%;
+        }
+
+        .checkbox.checkbox-inline.m-r-10.fix-margin {
+            margin-left: 10px;
+            margin-top: 15px;
+        }
+    </style>
+{% endblock stylesheets %}
