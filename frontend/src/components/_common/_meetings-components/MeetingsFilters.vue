@@ -19,9 +19,11 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
-    import Dropdown from '../_form-components/Datepicker';
+    // import Dropdown from '../_form-components/Datepicker';
+    import Dropdown from '../../_common/Dropdown';
     import CalendarIcon from '../../_common/_icons/CalendarIcon';
-    import datepicker from 'vuejs-datepicker';
+    // import datepicker from 'vuejs-datepicker';
+    import datepicker from '../_form-components/Datepicker';
     import InputField from '../../_common/_form-components/InputField';
 
     export default {
