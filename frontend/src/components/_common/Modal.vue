@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-mask modal" v-bind:class="{'meeting-modal': hasSpecificClass}">
+    <div class="modal-mask modal" v-bind:class="{'specific-modal': hasSpecificClass}">
         <div class="modal-wrapper">
             <scrollbar class="modal-container customScrollbar">
                 <div class="modal-inner">
@@ -43,7 +43,7 @@ export default {
 <style scoped lang="scss">
     @import '../../css/_variables';
 
-    .meeting-modal {
+    .specific-modal {
         .customScrollbar.ps {
             overflow: initial !important;
         }
