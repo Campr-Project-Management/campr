@@ -229,9 +229,13 @@ export default {
         editExistingTask: function() {
             let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
 
+            let formData = createFormData(this.formData);
+            formData.append('scheduledStartAt', moment(this.task.scheduledStartAt).format('DD-MM-YYYY'));
+            formData.append('scheduledFinishAt', moment(this.task.scheduledFinishAt).format('DD-MM-YYYY'));
+
             this
                 .editTask({
-                    data: createFormData(this.formData),
+                    data: formData,
                     taskId: this.$route.params.taskId,
                 })
                 .then(
