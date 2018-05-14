@@ -10,7 +10,7 @@
                             <a href="javascript:void(0)" @click="removeTodo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
                         </div>
                     </modal>
-                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal">
+                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal" v-bind:hasSpecificClass="true">
                         <p class="modal-title">{{ translate('message.reschedule_todo') }}</p>
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
@@ -43,7 +43,7 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{rescheduleObj.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{rescheduleObj.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{todo.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 <div>
@@ -140,8 +140,8 @@ export default {
         },
         cancelRescheduleModal: function() {
             this.showRescheduleModal = false;
-            this.rescheduleObj.date = this.todo.date;
-            this.rescheduleObj.dueDate = this.todo.dueDate;
+            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
+            this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
     created() {
@@ -156,8 +156,8 @@ export default {
     },
     watch: {
         todo(val) {
-            this.rescheduleObj.date = this.todo.date;
-            this.rescheduleObj.dueDate = this.todo.dueDate;
+            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
+            this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
     data() {
@@ -165,8 +165,8 @@ export default {
             showDeleteModal: false,
             showRescheduleModal: false,
             rescheduleObj: {
-                date: new Date(),
-                dueDate: new Date(),
+                date: moment().toDate(),
+                dueDate: moment().toDate(),
             },
         };
     },
