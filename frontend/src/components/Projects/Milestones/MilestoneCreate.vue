@@ -64,6 +64,7 @@
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
                                 <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <error at-path="responsibility" />
                             </div>
                             <div class="col-md-6">
                                 <select-field
