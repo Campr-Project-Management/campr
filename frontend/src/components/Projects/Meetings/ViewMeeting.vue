@@ -390,7 +390,8 @@ export default {
             this.editAgendaObject = {
                 id: agenda.id,
                 topic: agenda.topic,
-                responsibility: agenda.responsibility,
+                responsibility: [agenda.responsibility],
+                responsibilityFullName: agenda.responsibilityFullName,
                 start: {
                     HH: moment(agenda.start, 'HH:mm').format('HH'),
                     mm: moment(agenda.start, 'HH:mm').format('mm'),

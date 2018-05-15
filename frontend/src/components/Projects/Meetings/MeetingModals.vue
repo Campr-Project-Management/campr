@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="form-group form-group">
                         <div class="col-md-4">
-                            <member-search v-model="editAgendaObject.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                            <member-search v-bind:selectedUser="editAgendaObject.responsibilityFullName" v-model="editAgendaObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                         </div>
                         <div class="col-md-4">
                             <div class="input-holder right">
@@ -316,11 +316,7 @@ export default {
             this.$emit('input', this.showDeleteObjectiveModal);
         },
         saveAgenda: function() {
-            if (this.editAgendaObject.responsible) {
-                if (this.editAgendaObject.responsible[0]) {
-                    this.editAgendaObject.responsibility = this.editAgendaObject.responsible[0];
-                }
-            }
+            this.editAgendaObject.responsibility = this.editAgendaObject.responsibility.length > 0 ? this.editAgendaObject.responsibility[0] : null;
             this.editAgendaObject.start = this.editAgendaObject.start.HH + ':' + this.editAgendaObject.start.mm,
             this.editAgendaObject.end = this.editAgendaObject.end.HH + ':' + this.editAgendaObject.end.mm,
             this.editMeetingAgenda(this.editAgendaObject);
