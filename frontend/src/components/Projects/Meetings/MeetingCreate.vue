@@ -413,7 +413,9 @@
                     v-bind:participants="participants"
                     v-bind:participantsPages="participantsPages"
                     v-bind:participantsPerPage="participantsPerPage"
+                    v-bind:participantsActivePage="participantsActivePage"
                     v-bind:createMeeting="true"
+                    v-on:change-active-page="setParticipantsActivePage"
                     @input="addMeetingParticipant" />
             </div>
         </div>
@@ -571,15 +573,31 @@ export default {
             if (!existingUser) {
                 this.selectedParticipants.push({
                     user: value.user,
-                    isPresent: true,
+                    isPresent: value.isPresent,
+                });
+                this.participants.filter((item) => {
+                    if (item.id === value.user) {
+                        return item.isPresent = value.isPresent;
+                    }
                 });
             } else {
                 this.selectedParticipants.filter((item) => {
                     if (item.user === value.user) {
-                        item.isPresent = false;
+                        item.isPresent = value.isPresent;
+                    }
+                });
+                this.participants.filter((item) => {
+                    if (item.id === value.user) {
+                        return item.isPresent = value.isPresent;
                     }
                 });
             }
+        },
+        setParticipantsActivePage(page) {
+            this.participantsActivePage = page;
+            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+
+            this.$forceUpdate();
         },
     },
     computed: {
@@ -594,9 +612,10 @@ export default {
         ]),
     },
     watch: {
-        details: {
+        'details.distributionLists': {
             handler: function(value) {
                 let users = [];
+
                 this.lists = this.distributionLists.filter((item) => {
                     for (let i = 0; i < this.details.distributionLists.length; i++) {
                         if (item.id === this.details.distributionLists[i].key) {
@@ -607,21 +626,48 @@ export default {
                 });
 
                 this.lists.map((item) => {
+                    let existingUser = users.find((participant) => {
+                        return participant.id === item.createdBy;
+                    });
+                    if (!existingUser) {
+                        users.push({
+                            id: item.createdBy,
+                            fullName: item.createdByFullName,
+                            avatar: item.createdByAvatar,
+                            departments: item.createdByDepartmentNames,
+                            isPresent: false,
+                        });
+                    }
                     item.users.map((user) => {
                         let projectUser = user.projectUsers.filter((item) => {
                             return item.project !== this.$route.params.id;
                         });
-                        if (projectUser.length > 0) {
+                        let existingUser = users.find((participant) => {
+                            return participant.id === user.id;
+                        });
+                        if (!existingUser && projectUser.length > 0) {
                             users.push({
                                 id: user.id,
                                 fullName: user.firstName + ' ' + user.lastName,
                                 avatar: user.avatar ? user.avatar : user.gravatar,
                                 departments: projectUser[0].projectDepartmentNames,
+                                isPresent: false,
                             });
                         }
                     });
                 });
 
+                if (this.selectedParticipants.length) {
+                    this.selectedParticipants.map((item) => {
+                        users.map((user) => {
+                            if(item.user === user.id) {
+                                user.isPresent = true;
+                            }
+                        });
+                    });
+                }
+
+                this.participantsActivePage = 1;
                 this.participants = users;
                 this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
                 this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
