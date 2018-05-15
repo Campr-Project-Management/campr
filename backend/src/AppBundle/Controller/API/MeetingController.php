@@ -10,7 +10,6 @@ use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
@@ -24,12 +23,16 @@ use AppBundle\Form\MeetingAgenda\CreateType as MeetingAgendaType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\Todo\CreateType as TodoType;
 use AppBundle\Form\Note\CreateType as NoteType;
+use AppBundle\Form\MeetingParticipant\CreateType as MeetingParticipantType;
 
 /**
  * @Route("/api/meetings")
  */
 class MeetingController extends ApiController
 {
+    const ENTITY_CLASS = MeetingParticipant::class;
+    const FORM_CLASS = MeetingParticipantType::class;
+
     /**
      * Retrieve Meeting information.
      *
@@ -359,33 +362,20 @@ class MeetingController extends ApiController
     /**
      * Update meeting participant.
      *
-     * @Route("/{id}/participant", name="app_api_meeting_participant_update", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{id}/participant-update", name="app_api_meeting_participant_update", options={"expose"=true})
+     * @Method({"POST", "PATCH"})
      *
-     * @param Request $request
-     * @param Meeting $meeting
+     * @param Request            $request
+     * @param MeetingParticipant $meetingParticipant
      *
      * @return JsonResponse
      */
-    public function participantsUpdateAction(Request $request, Meeting $meeting)
+    public function meetingParticipantsUpdateAction(Request $request, MeetingParticipant $meetingParticipant)
     {
-        $em = $this->getDoctrine()->getManager();
-        $data = $request->request->all();
-        if (isset($data['user']) && isset($data['isPresent'])) {
-            $user = $em->getRepository(User::class)->find($data['user']);
-            $meetingParticipant = $em->getRepository(MeetingParticipant::class)->findOneBy([
-                'meeting' => $meeting,
-                'user' => $user,
-            ]);
-            if ($meetingParticipant) {
-                $meetingParticipant->setIsPresent($data['isPresent']);
-            } else {
-                $meetingParticipant = (new MeetingParticipant())
-                    ->setMeeting($meeting)
-                    ->setUser($user)
-                    ->setIsPresent($data['isPresent'])
-                ;
-            }
+        $form = $this->getForm($meetingParticipant, ['method' => $request->getMethod(), 'csrf_protection' => false]);
+        $this->processForm($request, $form, false);
+
+        if ($form->isValid()) {
             $this->persistAndFlush($meetingParticipant);
 
             return $this->createApiResponse($meetingParticipant, Response::HTTP_ACCEPTED);
