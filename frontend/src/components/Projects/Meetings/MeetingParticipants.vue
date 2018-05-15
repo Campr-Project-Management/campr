@@ -12,7 +12,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for='participant in displayedParticipants' :key="participant.id">
+                        <tr v-for='participant in displayedParticipants' :key="participant.id+'-'+participant.isPresent">
                             <td>
                                 <div class="avatars flex flex-v-center">
                                     <div>
@@ -50,7 +50,7 @@ import Switches from '../../3rdparty/vue-switches';
 import {mapActions} from 'vuex';
 
 export default {
-    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages', 'createMeeting', 'participantsActivePage'],
+    props: ['meetingParticipants', 'participants', 'participantsPerPage', 'participantsPages', 'createMeeting', 'participantsActivePage', 'meetingId'],
     components: {
         Switches,
     },
@@ -81,11 +81,6 @@ export default {
             };
             this.$emit('input', meetingParticipant);
         },
-    },
-    data() {
-        return {
-            showPresent: null,
-        };
     },
 };
 </script>

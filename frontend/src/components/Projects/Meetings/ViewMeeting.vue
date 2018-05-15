@@ -296,7 +296,11 @@
                         v-bind:meetingParticipants="displayedParticipants"
                         v-bind:participants="participants"
                         v-bind:participantsPages="participantsPages"
-                        v-bind:participantsPerPage="participantsPerPage" />
+                        v-bind:participantsPerPage="participantsPerPage"
+                        v-bind:participantsActivePage="participantsActivePage"
+                        v-bind:createMeeting="false" 
+                        v-on:change-active-page="setParticipantsActivePage"
+                        v-bind:meetingId="meetingId" />
                 </div>
             </div>
         </div>
@@ -479,6 +483,12 @@ export default {
         downloadMedia: function(media) {
             return Routing.generate('app_media_download', {id: media.id});
         },
+        setParticipantsActivePage(page) {
+            this.participantsActivePage = page;
+            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
+
+            this.$forceUpdate();
+        },
     },
     computed: {
         ...mapGetters({
@@ -535,15 +545,6 @@ export default {
     watch: {
         meeting(value) {
             let users = [];
-            this.meetingParticipants.map(function(item) {
-                users.push({
-                    id: item.user,
-                    fullName: item.userFullName,
-                    avatar: item.userAvatar,
-                    departments: item.userDepartmentNames,
-                    isPresent: item.isPresent,
-                });
-            });
             this.lists = this.distributionLists.filter((item) => {
                 for (let i = 0; i < this.meeting.distributionLists.length; i++) {
                     if (item.id === this.meeting.distributionLists[i].id) {
@@ -583,7 +584,20 @@ export default {
                 });
             });
 
+            users.map((user) => {
+                let existingUser = this.meetingParticipants.filter((item) => {
+                    return item.user === user.id;
+                });
+                if (!existingUser) {
+                    user.isPresent = false;
+                } else {
+                    user.isPresent = existingUser[0] ? existingUser[0].isPresent : false;
+                }
+            });
+
             this.participants = users;
+            this.participantsActivePage = 1;
+
             this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
             this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
             this.date = moment(this.meeting.date).toDate();
