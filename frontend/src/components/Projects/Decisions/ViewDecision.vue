@@ -11,7 +11,7 @@
                             <a href="javascript:void(0)" @click="removeDecision()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
                         </div>
                     </modal>
-                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal()">
+                    <modal v-if="showRescheduleModal" @close="cancelRescheduleModal()" v-bind:hasSpecificClass="true">
                         <p class="modal-title">{{ translateText('message.reschedule_decision') }}</p>
                         <div class="form-group last-form-group">
                             <div class="col-md-4">
@@ -167,7 +167,7 @@ export default {
     watch: {
         currentDecision(val) {
             this.reschedule.date = this.currentDecision.date ? moment(this.currentDecision.date).toDate() : null;
-            this.reschedule.dueDate = new Date(this.currentDecision.dueDate);
+            this.reschedule.dueDate = this.currentDecision.dueDate ? moment(this.currentDecision.dueDate).toDate() : null;
         },
     },
 };

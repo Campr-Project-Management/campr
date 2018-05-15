@@ -57,7 +57,12 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <member-search v-model="responsible" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <div class="input-holder right">
+                                    <label class="active">{{ translate('label.date') }}</label>
+                                    <datepicker v-model="schedule.date" format="dd-MM-yyyy" />
+                                    <calendar-icon fill="middle-fill"/>
+                                </div>
+                                <error at-path="date"/>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
@@ -67,6 +72,12 @@
                                 </div>
                                 <error at-path="dueDate"/>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <member-search v-model="responsible" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                         </div>
                     </div>
 
@@ -125,6 +136,7 @@ export default {
                 description: this.description,
                 decisionCategory: this.details.decisionCategory ? this.details.decisionCategory.key : null,
                 responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
+                date: this.schedule.date ? moment(this.schedule.date).format('DD-MM-YYYY') : null,
                 dueDate: this.schedule.dueDate ? moment(this.schedule.dueDate).format('DD-MM-YYYY') : null,
             };
         },
@@ -194,6 +206,7 @@ export default {
             ;
             this.responsible.push(this.currentDecision.responsibility);
             this.schedule.dueDate = this.currentDecision.dueDate ? moment(this.currentDecision.dueDate).toDate() : null;
+            this.schedule.date = this.currentDecision.date ? moment(this.currentDecision.date).toDate() : null;
         },
     },
     data() {
@@ -203,6 +216,7 @@ export default {
             description: '',
             schedule: {
                 dueDate: null,
+                date: null,
             },
             details: {
                 meeting: null,
