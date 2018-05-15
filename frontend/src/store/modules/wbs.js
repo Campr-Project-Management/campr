@@ -18,7 +18,7 @@ function getPhasesAndMilestones(workPackage, level) {
 
     workPackage
         .children
-        .filter(wp => [0, 1, 2].indexOf(wp.type) !== -1)
+        .filter(wp => [0, 1].indexOf(wp.type) !== -1)
         .map(wp => {
             let newWp = {
                 id: wp.id,
@@ -53,7 +53,7 @@ const getters = {
         state
             .wbs
             .children
-            .filter(wp => [0, 1, 2].indexOf(wp.type) !== -1)
+            .filter(wp => [0, 1].indexOf(wp.type) !== -1)
             .map(wp => {
                 let newWp = {
                     id: wp.id,
