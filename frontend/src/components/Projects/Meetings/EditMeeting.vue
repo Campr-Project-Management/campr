@@ -195,7 +195,7 @@
                     <div class="row">
                         <div class="form-group form-group">
                             <div class="col-md-4">
-                                <member-search v-model="agenda.responsible" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <member-search  v-bind:selectedUser="agenda.responsibilityFullName" v-model="agenda.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
                             <div class="col-md-4">
                                 <div class="input-holder right">
@@ -629,7 +629,7 @@ export default {
             this.createMeetingAgenda({
                 id: this.$route.params.meetingId,
                 topic: this.agenda.topic,
-                responsibility: this.agenda.responsible.length > 0 ? this.agenda.responsible[0] : null,
+                responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
                 start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
                 end: this.agenda.endTime.HH + ':' + this.agenda.endTime.mm,
             });
@@ -642,6 +642,7 @@ export default {
                 id: agenda.id,
                 topic: agenda.topic,
                 responsibility: agenda.responsibility,
+                responsibilityFullName: agenda.responsibilityFullName,
                 start: {
                     HH: moment(agenda.start, 'HH:mm').format('HH'),
                     mm: moment(agenda.start, 'HH:mm').format('mm'),
