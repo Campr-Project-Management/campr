@@ -148,6 +148,8 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $wp->setActualFinishAt($finishAt);
         if (!$wp->getActualStartAt()) {
             $wp->setActualStartAt($finishAt);
+        } elseif ($wp->getActualStartAt() && $finishAt && $wp->getActualStartAt()->getTimestamp() > $finishAt->getTimestamp()) {
+            $wp->setActualStartAt(clone $finishAt);
         }
     }
 
