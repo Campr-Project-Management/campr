@@ -82,22 +82,6 @@ export default {
                     parent: null,
                 };
                 break;
-            case 2:
-                this.planning = {
-                    phase: {
-                        key: wp.phase,
-                        label: wp.phaseName,
-                    },
-                    milestone: {
-                        key: wp.milestone,
-                        label: wp.milestoneName,
-                    },
-                    parent: {
-                        key: wp.id,
-                        label: wp.name,
-                    },
-                };
-                break;
             }
         },
         clearPhaseMilestone() {
