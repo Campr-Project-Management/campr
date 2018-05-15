@@ -84,7 +84,7 @@
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
                                 <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
-                                    <div class="avatars collapse in" v-if="meeting.meetingParticipants.length > 0">
+                                    <div class="avatars collapse in" v-if="meetingHasParticipants(meeting)">
                                         <div>
                                             <span v-for="(participant, index) in participants(meeting)"
                                                 :key="index">
@@ -258,15 +258,29 @@ export default {
             this.showNotificationModal = false;
         },
         participants(meeting) {
+            let participants = meeting.meetingParticipants.filter((item) => {
+                return item.isPresent === true;
+            });
             if (this.showMore[meeting.id]) {
-                return meeting.meetingParticipants;
+                return participants;
             } else {
-                return meeting.meetingParticipants.slice(0, 3);
+                return participants.slice(0, 3);
             }
         },
         setShowMore(meetingId, value) {
             this.showMore[meetingId] = value;
             this.$forceUpdate();
+        },
+        meetingHasParticipants(meeting) {
+            if (meeting.meetingParticipants.length) {
+                let participants = meeting.meetingParticipants.filter((participant) => {
+                    return participant.isPresent === true;
+                });
+                if (participants.length) {
+                    return true;
+                }
+            }
+            return false;
         },
     },
     created() {
