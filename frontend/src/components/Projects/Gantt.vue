@@ -93,7 +93,7 @@ export default {
             ];
             gantt.config.drag_links = false;
             gantt.config.show_unscheduled = true;
-            gantt.config.drag_resize = this.currentDate === 'actual';
+            gantt.config.drag_resize = this.currentDate === 'forecast';
             gantt.config.drag_move = false;
             gantt.config.scale_unit = 'day';
             gantt.config.date_scale = '%j %M %y';
@@ -580,7 +580,7 @@ export default {
             this.updateGanttDataFormatted();
             this.updateGanttDates();
 
-            gantt.config.drag_resize = this.currentDate === 'actual';
+            gantt.config.drag_resize = this.currentDate === 'forecast';
 
             gantt.parse({
                 data: this.ganttDataFormatted,
