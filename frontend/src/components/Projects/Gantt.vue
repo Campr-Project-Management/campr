@@ -93,7 +93,8 @@ export default {
             ];
             gantt.config.drag_links = false;
             gantt.config.show_unscheduled = true;
-            gantt.config.progress = true;
+            gantt.config.drag_resize = this.currentDate === 'actual';
+            gantt.config.drag_move = false;
             gantt.config.scale_unit = 'day';
             gantt.config.date_scale = '%j %M %y';
         },
@@ -579,6 +580,8 @@ export default {
             this.updateGanttDataFormatted();
             this.updateGanttDates();
 
+            gantt.config.drag_resize = this.currentDate === 'actual';
+
             gantt.parse({
                 data: this.ganttDataFormatted,
                 links: this.ganttDataLinks,
@@ -636,12 +639,10 @@ export default {
         this.ganttConfigure();
 
         gantt.init(this.$refs.gantt_chart);
-        console.log('mounted()');
     },
     beforeDestroy() {
         this.ganttRemoveAllEvents();
         this.clearGanttData();
-        console.log('beforeDestroy()');
     },
     data() {
         return {
