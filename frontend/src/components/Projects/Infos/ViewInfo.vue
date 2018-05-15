@@ -5,6 +5,23 @@
         </div>
 
         <div class="row" v-if="info">
+            <modal v-if="rescheduleModal" @close="rescheduleModal = false" v-bind:hasSpecificClass="true">
+                <p class="modal-title">{{ translateText('message.reschedule_info') }}</p>
+                <div class="form-group last-form-group">
+                    <div class="col-md-12">
+                        <div class="input-holder">
+                            <label class="active">{{ translateText('label.due_date') }}</label>
+                            <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                        </div>
+                    </div>
+                </div>
+                <hr class="double">
+
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleInfo()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                </div>
+            </modal>
             <div class="col-md-6">
                 <div class="view-todo page-section">
                     <!-- /// Header /// -->
@@ -32,10 +49,7 @@
                                     <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <router-link :to="{name: 'project-infos-edit'}" class="btn-rounded btn-auto btn-md btn-empty">
-                                {{ translate('button.reschedule') }}
-                                <reschedule-icon></reschedule-icon>
-                            </router-link>
+                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -97,6 +111,9 @@ import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
+import Modal from '../../_common/Modal';
+import datepicker from '../../_common/_form-components/Datepicker';
+import moment from 'moment';
 
 export default {
     components: {
@@ -105,12 +122,14 @@ export default {
         Switches,
         RescheduleIcon,
         DownloadbuttonIcon,
+        Modal,
+        datepicker,
     },
     created() {
         this.getInfo(this.$route.params.infoId);
     },
     methods: {
-        ...mapActions(['getInfo', 'deleteInfo']),
+        ...mapActions(['getInfo', 'deleteInfo', 'editInfo']),
         tryDeleteInfo(id) {
             if (confirm(this.translate('message.delete_info'))) {
                 this
@@ -126,6 +145,17 @@ export default {
                 ;
             }
         },
+        translateText: function(text) {
+            return this.translate(text);
+        },
+        rescheduleInfo: function() {
+            this.rescheduleModal = false;
+            const id = this.$route.params.infoId;
+            const data = {
+                dueDate: moment(this.date).format('DD-MM-YYYY'),
+            };
+            this.editInfo({id, data});
+        },
     },
     computed: {
         ...mapGetters(['info']),
@@ -134,6 +164,8 @@ export default {
         return {
             showPresent: '',
             distributionList: '',
+            rescheduleModal: false,
+            date: new Date(),
         };
     },
 };
