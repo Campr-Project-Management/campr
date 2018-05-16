@@ -13,7 +13,7 @@
 
         <div class="row large-half-columns">
             <div class="col-md-6">
-                <div class="widget same-height" v-resize="onResizeSameHeightDiv">
+                <div class="widget">
                     <h3>{{ translate('message.overall_status') }}</h3>
                     <div class="flex flex-center">
                         <traffic-light :status="projectTrafficLight" size="large"/>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="widget same-height" v-resize="onResizeSameHeightDiv">
+                <div class="widget">
                     <h3>{{ translate('message.project_trend') }}</h3>
                     <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
 
@@ -58,6 +58,7 @@
                             :data="trendChartData"
                             :labels="trendChartLabels"
                             :point-color="trendChartPointColor"/>
+                    <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
                 </div>
             </div>
         </div>
@@ -244,7 +245,6 @@
     import VisTimeline from '../../../_common/_phases-and-milestones-components/VisTimeline';
     import Vue from 'vue';
     import moment from 'moment';
-    import $ from 'jquery';
     import 'jquery-match-height/jquery.matchHeight.js';
     import CircleChart from '../../../_common/_charts/CircleChart';
     import Chart from '.././../Charts/CostsChart.vue';
@@ -257,7 +257,6 @@
     import AtIcon from '../../../_common/_icons/AtIcon';
     import Editor from '../../../_common/Editor';
     import TrafficLight from '../../../_common/TrafficLight';
-    import resize from 'vue-resize-directive';
     import OpportunitiesGrid from './OpportunitiesGrid';
     import RisksGrid from './RisksGrid';
     import colors from '../../../../util/colors';
@@ -306,9 +305,6 @@
             RisksGrid,
             TrafficLight,
         },
-        directives: {
-            resize,
-        },
         created() {
             this.getStatusReportTrendGraph(this.$route.params.id);
 
@@ -342,9 +338,6 @@
                 'getStatusReportTrendGraph',
                 'createStatusReport',
             ]),
-            onResizeSameHeightDiv: function() {
-                $('.same-height').matchHeight();
-            },
             onActionNeededUpdate(event) {
                 if (!this.editable) {
                     return;
@@ -695,6 +688,7 @@
     .widget {
         background-color: $darkColor;
         padding: 25px 20px;
+        height: 360px;
 
         h3, h4 {
             margin: 0 0 10px;
@@ -855,5 +849,12 @@
 
     .min-status {
         min-width: 716px;
+    }
+
+    .trend-no-results {
+        text-align: center;
+        color: $middleColor;
+        min-height: 80%;
+        line-height: 20em;
     }
 </style>

@@ -82,7 +82,7 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            min-width: 5%;
+            min-width: 7em;
             display: inline-table;
         }
     }
