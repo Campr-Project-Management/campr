@@ -66,7 +66,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form">
-                    <!-- /// Project Status Comment /// -->
                     <div class="form-group last-form-group">
                         <template v-if="editable">
                             <editor
@@ -75,9 +74,9 @@
                                     @input="onCommentUpdate"/>
                             <error at-path="comment"/>
                         </template>
-                        <template v-else>
+                        <template v-else-if="report.comment">
                             <br/>
-                            <h4>Comment</h4>
+                            <h4>{{ translate('message.comment') }}</h4>
                             <div v-html="report.comment"></div>
                         </template>
                     </div>
