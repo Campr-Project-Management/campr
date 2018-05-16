@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Component\Currency\CurrencyInterface;
 use Component\Project\ProjectInterface;
+use Component\TrafficLight\TrafficLight;
+use Doctrine\Common\Collections\Criteria;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,10 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Project implements ProjectInterface
 {
-    const STATUS_RED = 0;
-    const STATUS_YELLOW = 1;
-    const STATUS_GREEN = 2;
-
     /**
      * @var int
      *
@@ -2281,6 +2279,42 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @return Risk|null
+     */
+    public function getTopRisk()
+    {
+        $criteria = Criteria::create();
+        $criteria
+            ->orderBy(['priority' => Criteria::DESC])
+            ->setMaxResults(1)
+        ;
+
+        return $this
+            ->getRisks()
+            ->matching($criteria)
+            ->first()
+        ;
+    }
+
+    /**
+     * @return Opportunity|null
+     */
+    public function getTopOpportunity()
+    {
+        $criteria = Criteria::create();
+        $criteria
+            ->orderBy(['priority' => Criteria::DESC])
+            ->setMaxResults(1)
+        ;
+
+        return $this
+            ->getOpportunities()
+            ->matching($criteria)
+            ->first()
+        ;
+    }
+
+    /**
      * Add opportunity.
      *
      * @param Opportunity $opportunity
@@ -2709,20 +2743,28 @@ class Project implements ProjectInterface
      */
     public function getOverallStatus()
     {
-        $status = self::STATUS_GREEN;
+        $status = TrafficLight::GREEN;
         foreach ($this->workPackages as $wp) {
             $colorStatus = $wp->getColorStatus();
             if ($colorStatus) {
                 if (ColorStatus::STATUS_IN_PROGRESS === $colorStatus->getName()) {
-                    $status = self::STATUS_YELLOW;
+                    $status = TrafficLight::YELLOW;
                 } elseif (ColorStatus::STATUS_NOT_STARTED === $colorStatus->getName()) {
-                    $status = self::STATUS_RED;
+                    $status = TrafficLight::RED;
                     break;
                 }
             }
         }
 
         return $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrafficLight(): int
+    {
+        return $this->getOverallStatus();
     }
 
     /**

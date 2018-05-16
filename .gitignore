@@ -35,3 +35,4 @@ npm-debug.log
 ssr/.nuxt
 ssr/node_modules
 /*.sql
+.php_cs.cache
