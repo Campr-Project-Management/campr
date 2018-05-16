@@ -94,6 +94,7 @@
                 html2canvasOptions: {
                     backgroundColor: '#232D4B',
                     logging: false,
+                    allowTaint: true,
                 },
             };
         },
