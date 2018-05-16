@@ -18,7 +18,7 @@
             height: {
                 type: Number,
                 required: false,
-                default: 140,
+                default: 250,
             },
             pointColor: {
                 type: Array,
@@ -31,6 +31,7 @@
                 default: () => {
                     return {
                         responsive: true,
+                        maintainAspectRatio: false,
                         title: {
                             display: false,
                         },
