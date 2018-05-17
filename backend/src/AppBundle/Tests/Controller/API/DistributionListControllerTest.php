@@ -43,13 +43,14 @@ class DistributionListControllerTest extends BaseController
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
+        $responseContent['users'][0]['avatarUrl'] = $distributionList['users'][0]['avatarUrl'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $distributionList);
     }
 
     /**
@@ -84,6 +85,7 @@ class DistributionListControllerTest extends BaseController
                             'phone' => null,
                             'firstName' => 'FirstName10',
                             'lastName' => 'LastName10',
+                            'fullName' => 'FirstName10 LastName10',
                             'isEnabled' => true,
                             'isSuspended' => false,
                             'createdAt' => '2017-01-01 00:00:00',
@@ -102,6 +104,7 @@ class DistributionListControllerTest extends BaseController
                             'signUpDetails' => [],
                             'locale' => 'en',
                             'avatar' => null,
+                            'avatarUrl' => null,
                         ],
                     ],
                     'meetings' => [],
@@ -374,13 +377,14 @@ class DistributionListControllerTest extends BaseController
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['users'][0]['apiToken'] = $distributionList['users'][0]['apiToken'];
         $responseContent['users'][0]['updatedAt'] = $distributionList['users'][0]['updatedAt'];
+        $responseContent['users'][0]['avatarUrl'] = $distributionList['users'][0]['avatarUrl'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $distributionList);
     }
 
     /**
@@ -413,6 +417,7 @@ class DistributionListControllerTest extends BaseController
                             'phone' => null,
                             'firstName' => 'FirstName10',
                             'lastName' => 'LastName10',
+                            'fullName' => 'FirstName10 LastName10',
                             'isEnabled' => true,
                             'isSuspended' => false,
                             'createdAt' => '2017-01-01 00:00:00',
@@ -431,6 +436,7 @@ class DistributionListControllerTest extends BaseController
                             'signUpDetails' => [],
                             'locale' => 'en',
                             'avatar' => null,
+                            'avatarUrl' => null,
                         ],
                     ],
                     'meetings' => [],

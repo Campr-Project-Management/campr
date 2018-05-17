@@ -40,12 +40,17 @@ class UserControllerTest extends BaseController
             $responseContent['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
 
+        if (isset($userContent['avatarUrl'])) {
+            $responseContent['avatarUrl'] = $userContent['avatarUrl'];
+            $responseContent['avatar'] = $userContent['avatar'];
+        }
+
         if (isset($responseContent['updatedAt'])) {
             $responseContent['updatedAt'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
         }
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $userContent);
     }
 
     /**
@@ -76,6 +81,7 @@ class UserControllerTest extends BaseController
                     'phone' => null,
                     'firstName' => 'FirstName1',
                     'lastName' => 'LastName1',
+                    'fullName' => 'FirstName1 LastName1',
                     'isEnabled' => true,
                     'isSuspended' => false,
                     'createdAt' => '2017-01-01 00:00:00',
@@ -94,6 +100,7 @@ class UserControllerTest extends BaseController
                     'signUpDetails' => [],
                     'locale' => 'en',
                     'avatar' => null,
+                    'avatarUrl' => '',
                 ],
             ],
         ];
@@ -121,6 +128,7 @@ class UserControllerTest extends BaseController
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
 
+        $actual = json_decode($response->getContent(), true);
         $user = $this->getUserByUsername('testuser');
         if (isset($responseContent['id'])) {
             $responseContent['id'] = $user->getId();
@@ -138,7 +146,12 @@ class UserControllerTest extends BaseController
             $email = md5(strtolower(trim($user->getEmail())));
             $responseContent['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         }
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        if (isset($actual['avatarUrl'])) {
+            $responseContent['avatarUrl'] = $actual['avatarUrl'];
+            $responseContent['avatar'] = $actual['avatar'];
+        }
+
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -180,6 +193,7 @@ class UserControllerTest extends BaseController
                     'phone' => null,
                     'firstName' => 'User3',
                     'lastName' => 'LastName',
+                    'fullName' => 'User3 LastName',
                     'isEnabled' => true,
                     'isSuspended' => false,
                     'createdAt' => '',
@@ -198,6 +212,7 @@ class UserControllerTest extends BaseController
                     'signUpDetails' => [],
                     'locale' => 'en',
                     'avatar' => null,
+                    'avatarUrl' => '',
                 ],
             ],
         ];
