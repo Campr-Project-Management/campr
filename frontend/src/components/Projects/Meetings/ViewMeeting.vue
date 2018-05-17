@@ -545,17 +545,6 @@ export default {
     watch: {
         meeting(value) {
             let users = [];
-            // this.meetingParticipants.map(function(item) {
-            //     users.push({
-            //         id: item.user,
-            //         fullName: item.userFullName,
-            //         avatar: item.userAvatar,
-            //         departments: item.userDepartmentNames,
-            //         isPresent: item.isPresent,
-            //         inDistributionList: item.inDistributionList,
-            //         meetingParticipantId: item.id,
-            //     });
-            // });
             this.lists = this.distributionLists.filter((item) => {
                 for (let i = 0; i < this.meeting.distributionLists.length; i++) {
                     if (item.id === this.meeting.distributionLists[i].id) {
