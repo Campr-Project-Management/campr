@@ -22,11 +22,21 @@ class ColorStatusControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/color-statuses', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            '/api/color-statuses',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
+
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -45,6 +55,7 @@ class ColorStatusControllerTest extends BaseController
                         'description' => null,
                         'color' => '#c87369',
                         'sequence' => 0,
+                        'code' => 'red',
                     ],
                     [
                         'id' => 2,
@@ -52,6 +63,7 @@ class ColorStatusControllerTest extends BaseController
                         'description' => null,
                         'color' => '#ccba54',
                         'sequence' => 1,
+                        'code' => 'yellow',
                     ],
                     [
                         'id' => 3,
@@ -59,6 +71,7 @@ class ColorStatusControllerTest extends BaseController
                         'description' => null,
                         'color' => '#5fc3a5',
                         'sequence' => 2,
+                        'code' => 'green',
                     ],
                     [
                         'id' => 4,
@@ -66,6 +79,7 @@ class ColorStatusControllerTest extends BaseController
                         'description' => null,
                         'color' => 'green',
                         'sequence' => 1,
+                        'code' => 'code1',
                     ],
                     [
                         'id' => 5,
@@ -73,6 +87,7 @@ class ColorStatusControllerTest extends BaseController
                         'description' => null,
                         'color' => 'green',
                         'sequence' => 2,
+                        'code' => 'code2',
                     ],
                 ],
             ],

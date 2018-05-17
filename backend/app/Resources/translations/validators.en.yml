@@ -92,6 +92,7 @@ not_null:
 
 unique:
     name: That name is taken
+    code: Code is already in use
     username: The username is already used
     email: The email is already used
     number: That number is taken

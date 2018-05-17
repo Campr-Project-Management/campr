@@ -1,11 +1,14 @@
+imports:
+    - { resource: services/forms.yml }
+    - { resource: services/repositories.yml }
+    - { resource: services/twig.yml }
+    - { resource: services/listeners.yml }
+    - { resource: services/serializer.yml }
+    - { resource: services/mailer.yml }
+    - { resource: services/auth.yml }
+    - { resource: services/validators.yml }
+
 parameters:
-    emails:
-        from_email:
-            info: "info@campr.biz"
-            no-reply: "no-reply@campr.biz"
-        from_name:
-            info: "Info Campr"
-            no-reply: "No Reply"
     adapters:
         placeholder.driver.local: "local_adapter"
 
@@ -20,33 +23,6 @@ services:
         class: AppBundle\Services\TeamService
         parent: app.service.base_client
         arguments: ["@redis.client"]
-
-    app.jwt_signer:
-        class: Lcobucci\JWT\Signer\Hmac\Sha512
-
-    app.jwt_builder:
-        class: Lcobucci\JWT\Builder
-
-    app.jwt_parser:
-        class: Lcobucci\JWT\Parser
-
-    app.service.mailer:
-        class: AppBundle\Services\MailerService
-        arguments:
-            - "@mailer"
-            - "@twig"
-            - "%emails%"
-            -
-                activation_token_expiration_number: '%activation_token_expiration_number%'
-
-    app.service.automailer.plugin.redis:
-        class: AppBundle\Services\AutomailerRedisPlugin
-        public: false
-        arguments:
-            - '%kernel.environment%'
-            - '@redis.client'
-        tags:
-            - { name: 'swiftmailer.default.plugin' }
 
     app.service.user:
         class: AppBundle\Services\UserService
@@ -163,15 +139,38 @@ services:
         arguments:
             - '@app.repository.work_package'
 
-    app.calculator.project_cost_progress:
-        class: Component\Project\Calculator\ProjectCostProgressCalculator
-        arguments:
-            - '@app.repository.work_package'
-
     app.calculator.project_progress:
         class: Component\Project\Calculator\ProjectProgressCalculator
         arguments:
             - '@app.repository.work_package'
+
+    app.calculator.project_total_cost:
+        class: Component\Cost\Calculator\ProjectTotalCostCalculator
+        arguments:
+            - '@app.repository.work_package'
+            - '@app.repository.cost'
+
+    app.calculator.project_workpackage_status_total_count:
+        class: Component\Project\Calculator\WorkPackageStatusTotalCountCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_workpackage_traffic_light_total:
+        class: Component\Project\Calculator\WorkPackageTrafficLightTotalCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.project_risk_total:
+        class: Component\Project\Calculator\RiskTotalCalculator
+        arguments:
+            - '@app.repository.risk'
+            - '@app.repository.measure'
+
+    app.calculator.project_opportunity_total:
+        class: Component\Project\Calculator\OpportunityTotalCalculator
+        arguments:
+            - '@app.repository.opportunity'
+            - '@app.repository.measure'
 
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
@@ -212,84 +211,20 @@ services:
             - '@app.repository.work_package'
             - '@app.repository.project_user'
 
-### REPOSITORIES ###
-    app.repository.work_package:
-        class: AppBundle\Repository\WorkPackageRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\WorkPackage }
+    app.graph.generator.status_report_project_traffic_light:
+        class: Component\StatusReport\Graph\ProjectTrafficLightTrendGraphDataGenerator
 
-    app.repository.work_package_status:
-        class: AppBundle\Repository\WorkPackageStatusRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\WorkPackageStatus }
+    app.resolver.user_uploaded_avatar_url:
+        class: Component\User\UserUploadedAvatarUrlResolver
+        arguments:
+            - '@vich_uploader.storage'
+            - '@router'
 
-    app.repository.rasci:
-        class: AppBundle\Repository\RasciRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Rasci }
-
-    app.repository.project_user:
-        class: AppBundle\Repository\ProjectUserRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\ProjectUser }
-
-    app.repository.team:
-        class: AppBundle\Repository\TeamRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Team }
-
-    app.repository.currency:
-        class: AppBundle\Repository\CurrencyRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Currency }
-
-    app.repository.risk:
-        class: AppBundle\Repository\RiskRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Risk }
-
-    app.repository.opportunity:
-        class: AppBundle\Repository\OpportunityRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Opportunity }
-
-    app.repository.measure:
-        class: AppBundle\Repository\MeasureRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Measure }
-
-    app.repository.filesytem:
-        class: AppBundle\Repository\FileSystemRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\FileSystem }
-
-    app.repository.media:
-        class: AppBundle\Repository\MediaRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Media }
-
-    app.repository.project:
-        class: AppBundle\Repository\ProjectRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Project }
-
-    app.repository.cost:
-        class: AppBundle\Repository\CostRepository
-        arguments: ~
-        tags:
-            - { name: app.repository, class: AppBundle\Entity\Cost }
+    app.resolver.user_avatar_url:
+        class: Component\User\UserAvatarUrlResolver
+        arguments:
+            - '@app.resolver.user_uploaded_avatar_url'
+            - '%gravatar.base_url%'
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -302,195 +237,6 @@ services:
             - "@knp_menu.factory"
         tags:
             - { name: knp_menu.menu_builder, method: createAdminAppMenu, alias: admin_app }
-
-### FORM TYPES ###
-    app.form.filesystem.create_type:
-        class: AppBundle\Form\FileSystem\CreateType
-        arguments:
-            - "%adapters%"
-        tags:
-            - { name: form.type }
-
-    app.form.filesystem.media_upload_type:
-        class: AppBundle\Form\FileSystem\MediaUploadType
-        arguments:
-            - "@security.token_storage"
-        tags:
-            - { name: form.type }
-
-    app.form.project.api_type:
-        class: AppBundle\Form\Project\ApiType
-        arguments:
-            - "@security.token_storage"
-        tags:
-            - { name: form.type }
-
-    app.form.workpackage.upload_media_type:
-        class: AppBundle\Form\WorkPackage\UploadMediaType
-        arguments:
-            - "@security.token_storage"
-        tags:
-            - { name: form.type }
-
-    app.form.cost.create_type:
-        class: AppBundle\Form\Cost\CreateType
-        arguments:
-            - "@doctrine.orm.entity_manager"
-        tags:
-            - { name: form.type }
-
-    app.form.cost.api_create_type:
-        class: AppBundle\Form\Cost\ApiCreateType
-        arguments:
-            - "@doctrine.orm.entity_manager"
-        tags:
-            - { name: form.type }
-
-### LISTENERS ###
-    # gedmo listeners are found here
-    # https://github.com/Atlantic18/DoctrineExtensions/blob/a3d7ad1cf41f397104bc16d99c0a91fd7b2e6d38/doc/symfony2.md
-    gedmo.listener.sluggable:
-        class: Gedmo\Sluggable\SluggableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
-
-    gedmo.listener.sortable:
-        class: Gedmo\Sortable\SortableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
-
-    gedmo.listener.timestampable:
-        class: Gedmo\Timestampable\TimestampableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
-
-    gedmo.listener.soft_delete_listener:
-        class: Gedmo\SoftDeleteable\SoftDeleteableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ "@annotation_reader" ] ]
-
-    app.listener.user:
-        class: AppBundle\EventListener\UserListener
-        arguments:
-            - '@security.password_encoder'
-        tags :
-            - { name: doctrine.event_listener, event: onFlush }
-
-    app.listener.project_user:
-        class: AppBundle\EventListener\ProjectUserListener
-        tags :
-            - { name: doctrine.event_listener, event: onFlush }
-
-    app.listener.media:
-        class: AppBundle\EventListener\MediaSubscriber
-        arguments:
-            - '@app.service.filesystem'
-        tags :
-            - { name: doctrine.event_subscriber }
-
-    app.listener.filesystem:
-        class: AppBundle\EventListener\FilesystemListener
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-
-    app.listener.db_logger:
-        class: AppBundle\EventListener\DBLogger
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-        arguments:
-            - "@security.token_storage"
-
-    app.listener.message:
-        class: AppBundle\EventListener\MessageListener
-        tags :
-            - { name: doctrine.event_listener, event: prePersist }
-
-    app.listener.request:
-        class: AppBundle\EventListener\RequestListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-    app.listener.ajax_response:
-        class: AppBundle\EventListener\AjaxResponseListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-
-    app.subscriber.api_problem:
-        class: AppBundle\EventListener\ApiExceptionSubscriber
-        arguments:
-            - '@service_container'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    app.listener.work_package:
-        class: AppBundle\EventListener\WorkPackageListener
-        tags :
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }
-
-    app.listener.project:
-        class: AppBundle\EventListener\ProjectListener
-        tags :
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: postLoad }
-        arguments:
-            - '@security.token_storage'
-            - '@translator'
-
-    app.subscriber.work_package:
-        class: AppBundle\EventListener\WorkPackageSubscriber
-        arguments:
-            - '@app.service.workpackage_rasci_sync'
-            - '@app.repository.work_package'
-            - '@app.repository.work_package_status'
-            - '@event_dispatcher'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    app.subscriber.rasci:
-        class: AppBundle\EventListener\RasciSubscriber
-        arguments:
-            - '@app.service.rasci_workpackage_sync'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    app.subscriber.recalculate_phase_dates:
-        class: AppBundle\EventListener\RecalculatePhaseDatesSubscriber
-        arguments:
-            - '@app.calculator.phase_actual_dates'
-        tags:
-            - { name: kernel.event_subscriber }
-
-### EXTENSIONS ###
-    app.twig.extension.app:
-        class: AppBundle\Twig\AppExtension
-        public: false
-        arguments:
-            - '%show_tracking_code%'
-        tags:
-            - { name: twig.extension }
-
-    app.twig.extension.currency:
-        class: AppBundle\Twig\CurrencyExtension
-        public: false
-        tags:
-            - { name: twig.extension }
-
-    app.twig.extension.format_money:
-        class: AppBundle\Twig\FormatMoneyExtension
-        public: false
-        arguments:
-            - '@app.templating.helper.format_money'
-        tags:
-            - { name: twig.extension }
 
 ### VOTERS ###
     app.admin_voter:
@@ -535,53 +281,6 @@ services:
             - { name: security.voter }
         public: false
 
-### Authentication ###
-    app_api.authentication.handler.success:
-        class: AppBundle\Services\Authentication\SuccessHandler
-        arguments:
-            - "@translator.default"
-
-    app_api.authentication.handler.failure:
-        class: AppBundle\Services\Authentication\FailureHandler
-        arguments:
-            - "@translator.default"
-
-    app_api.authentication.handler.user_provider:
-        class: AppBundle\Services\Authentication\UserProvider
-        arguments:
-            - "@doctrine.orm.entity_manager"
-
-    app_api.authentication.handler.authenticator:
-        class: AppBundle\Services\Authentication\Authenticator
-        public: false
-
-### VALIDATORS ###
-    app.user_invited_validator:
-        class: MainBundle\Validator\Constraints\TeamMember\UserInvitedValidator
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator }
-
-    app.self_imvite_validator:
-        class: MainBundle\Validator\Constraints\TeamMember\SelfInviteValidator
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator }
-
-    app.team_member_validator:
-        class: MainBundle\Validator\Constraints\TeamMember\ActiveMemberValidator
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator }
-
-    app.validators.workpackage_assignments:
-        class: AppBundle\Validator\Constraints\WorkPackageAssignmentsValidator
-        tags:
-            - { name: validator.constraint_validator }
-
 ### ROUTING ###
     app.routing.loader:
         class: AppBundle\Routing\Loader
@@ -594,15 +293,63 @@ services:
         tags:
             - { name: routing.loader }
 
-### SERIALIZER ###
-    app.serializer.listener.project:
-        class: AppBundle\Serializer\EventListener\ProjectSubscriber
-        arguments:
-             - '@app.calculator.project_scheduled_dates'
-             - '@app.calculator.project_forecast_dates'
-             - '@app.calculator.project_actual_dates'
-             - '@app.calculator.project_cost_progress'
-             - '@app.calculator.project_progress'
-        tags:
-            - { name: jms_serializer.event_subscriber }
+### SNAPSHOT ###
+    app.snapshot.transformer.date:
+        class: Component\Snapshot\Transformer\DateTransformer
 
+    app.snapshot.transformer.costs:
+        class: Component\Snapshot\Transformer\CostsTransformer
+        arguments:
+            - '@app.graph.generator.project_cost_by_department'
+            - '@app.graph.generator.project_cost_by_phase'
+            - '@app.calculator.project_total_cost'
+
+    app.snapshot.transformer.tasks:
+        class: Component\Snapshot\Transformer\TasksTransformer
+        arguments:
+            - '@app.calculator.project_progress'
+            - '@app.calculator.project_workpackage_status_total_count'
+            - '@app.calculator.project_workpackage_traffic_light_total'
+
+    app.snapshot.transformer.risks:
+        class: Component\Snapshot\Transformer\RisksTransformer
+        arguments:
+            - '@app.calculator.project_risk_total'
+            - '@app.snapshot.transformer.date'
+            - '@app.repository.risk'
+
+    app.snapshot.transformer.opportunities:
+        class: Component\Snapshot\Transformer\OpportunitiesTransformer
+        arguments:
+            - '@app.calculator.project_opportunity_total'
+            - '@app.snapshot.transformer.date'
+            - '@app.repository.opportunity'
+
+    app.snapshot.transformer.todos:
+        class: Component\Snapshot\Transformer\TodosTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+
+    app.snapshot.transformer.decisions:
+        class: Component\Snapshot\Transformer\DecisionsTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+
+    app.snapshot.transformer.project:
+        class: Component\Snapshot\Transformer\ProjectTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+            - '@app.calculator.project_scheduled_dates'
+            - '@app.calculator.project_forecast_dates'
+            - '@app.calculator.project_actual_dates'
+            - '@app.snapshot.transformer.tasks'
+            - '@app.snapshot.transformer.costs'
+            - '@app.snapshot.transformer.risks'
+            - '@app.snapshot.transformer.opportunities'
+            - '@app.snapshot.transformer.todos'
+            - '@app.snapshot.transformer.decisions'
+
+    app.snapshot.factory.project:
+        class: Component\Snapshot\ProjectSnapshotFactory
+        arguments:
+          - '@app.snapshot.transformer.project'
