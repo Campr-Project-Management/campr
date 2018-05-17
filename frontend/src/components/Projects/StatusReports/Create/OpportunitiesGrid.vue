@@ -22,7 +22,7 @@
                     {{ translate('message.strategy') }}: {{ translate(value.top.strategyName) }} |
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
-                <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityAvatar">
+                <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityId">
                     <user-avatar
                             size="small"
                             :url="projectUserAvatarByUserId(value.top.responsibilityId)"
