@@ -634,6 +634,8 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return string
      */
     public function getFullName()
