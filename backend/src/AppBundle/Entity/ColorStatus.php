@@ -63,7 +63,7 @@ class ColorStatus implements CodeAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string")
+     * @ORM\Column(name="code", type="string", unique=true, nullable=false)
      * @Assert\NotBlank()
      */
     private $code;
