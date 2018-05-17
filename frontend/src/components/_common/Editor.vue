@@ -6,7 +6,7 @@
             :value="value"
             @input="onInput"
             :disabled="disabled"
-            :editorToolbar="toolbar"/>
+            :editorToolbar="toolbar" />
     </div>
 </template>
 
@@ -52,8 +52,7 @@
                 type: Object,
                 required: false,
                 default: () => {
-                    return {
-                    };
+                    return {};
                 },
             },
             height: {

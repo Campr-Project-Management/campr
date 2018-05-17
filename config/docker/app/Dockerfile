@@ -89,6 +89,13 @@ ADD config/php/php.ini /etc/php/7.1/cli/conf.d/99-php.ini
 ADD config/supervisor/supervisor.conf /etc/supervisor.conf
 ADD config/supervisor/services.conf /etc/supervisor/conf.d/nginx-php.conf
 
+# Server Side Rendering
+RUN curl -o /tmp/google-chrome-stable_current_amd64.deb \
+        https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || true) \
+    && apt-get install -y -f \
+    && apt-get install -y xvfb
+
 RUN go-replace --mode=line --regex \
     -s '^[\s;]*user[\s]*='  -r "user = $APPLICATION_USER" \
     -s '^[\s;]*group[\s]*=' -r "group = $APPLICATION_GROUP" \

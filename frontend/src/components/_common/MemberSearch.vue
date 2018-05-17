@@ -82,6 +82,9 @@ export default {
                 this.getUsers({id: val});
             } else {
                 this.clearUsers();
+                this.usersList = [];
+                this.selectedUsers = [];
+                this.reset();
             }
         },
         hasItems(val) {
