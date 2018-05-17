@@ -79,8 +79,6 @@ class PDF
             'key' => $this->getUser()->getApiToken(),
         ];
 
-        $query['host'] = str_replace('.dev.', '.qa.', $query['host']);
-
         $options = strtr($this->binaryOptions, [
             '%url%' => $this->serviceUrl.strtr($url, $params).'?'.http_build_query($query),
             '%file%' => $tmpFile,
