@@ -13,7 +13,7 @@
                 <!-- /// Header /// -->
                 <div class="col-md-12">
                     <div class="header">
-                        <div class="text-center">                            
+                        <div class="text-center">
                             <h1>{{ projectCloseDown.projectName }}</h1>
                         </div>
                     </div>
@@ -226,8 +226,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
-                        <!-- /// End Responsible and Due Date /// -->             
+                        </div>
+                        <!-- /// End Responsible and Due Date /// -->
 
                         <!-- /// Actions /// -->
                         <div class="flex flex-direction-reverse">
@@ -568,7 +568,7 @@ export default {
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
 
     .project-info {
