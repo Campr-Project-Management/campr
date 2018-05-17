@@ -914,17 +914,17 @@ export default {
         'details.distributionLists': {
             handler: function(value) {
                 let users = [];
-                this.meetingParticipants.map(function(item) {
-                    users.push({
-                        id: item.user,
-                        fullName: item.userFullName,
-                        avatar: item.userAvatar,
-                        departments: item.userDepartmentNames,
-                        isPresent: item.isPresent,
-                        inDistributionList: item.inDistributionList,
-                        meetingParticipantId: item.id,
-                    });
-                });
+                // this.meetingParticipants.map(function(item) {
+                //     users.push({
+                //         id: item.user,
+                //         fullName: item.userFullName,
+                //         avatar: item.userAvatar,
+                //         departments: item.userDepartmentNames,
+                //         isPresent: item.isPresent,
+                //         inDistributionList: item.inDistributionList,
+                //         meetingParticipantId: item.id,
+                //     });
+                // });
                 this.getMeetingParticipants({id: this.$route.params.meetingId});
                 this.lists = this.distributionLists.filter((item) => {
                     for (let i = 0; i < this.details.distributionLists.length; i++) {
