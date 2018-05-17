@@ -14,8 +14,11 @@
             <td class="cell-wrap">{{ item.title }}</td>
             <td class="cell-wrap cell-large" v-html="item.description"></td>
             <td>
-                <div class="avatar" v-tooltip.top-center="item.responsibilityFullName"
-                     :style="{ backgroundImage: 'url(' + item.responsibilityAvatar + ')' }"></div>
+                <user-avatar
+                        size="small"
+                        :url="projectUserAvatarByUserId(item.responsibilityId)"
+                        :name="item.responsibilityFullName"
+                        :tooltip="item.responsibilityFullName"/>
             </td>
         </tr>
         </tbody>
@@ -24,14 +27,25 @@
 </template>
 
 <script>
+    import UserAvatar from '../../../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
+
     export default {
         name: 'status-report-decisions',
+        components: {
+            UserAvatar,
+        },
         props: {
             items: {
                 type: Array,
                 required: true,
                 default: () => [],
             },
+        },
+        computed: {
+            ...mapGetters([
+                'projectUserAvatarByUserId',
+            ]),
         },
     };
 </script>

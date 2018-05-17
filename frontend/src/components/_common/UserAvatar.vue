@@ -1,10 +1,14 @@
 <template>
-    <div class="user-avatar" :class="size">
+    <div
+            class="user-avatar"
+            :class="size"
+            v-tooltip.top-center="this.tooltip">
         <letter-avatar
                 v-if="name"
                 :name="name"
                 :size="letterAvatarSize"/>
         <span
+                v-if="url"
                 class="avatar-image"
                 :style="{ backgroundImage: 'url(' + url + ')' }"></span>
     </div>
@@ -30,6 +34,10 @@
                 validate(value) {
                     return ['small', 'normal', 'medium', 'large'].indexOf(value) >= 0;
                 },
+            },
+            tooltip: {
+                type: String,
+                required: false,
             },
         },
         components: {
