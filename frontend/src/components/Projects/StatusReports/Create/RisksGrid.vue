@@ -22,6 +22,7 @@
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
                 <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityFullName">
+                    {{ value.top.responsibilityId }}
                     <div class="user-avatar" v-if="value.top.responsibilityAvatar">
                         <img :src="value.top.responsibilityAvatar" :alt="value.top.responsibilityFullName"/>
                     </div>

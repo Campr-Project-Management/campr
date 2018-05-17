@@ -136,11 +136,7 @@ export default {
             this.getRasci({id});
         },
         getUserAvatar(user) {
-            if (user.avatar) {
-                return user.avatar;
-            }
-
-            return user.gravatar;
+            return user.avatarUrl;
         },
         generateElementKey(string) {
             string = string.toLowerCase();

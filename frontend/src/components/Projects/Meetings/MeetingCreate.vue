@@ -649,7 +649,7 @@ export default {
                             users.push({
                                 id: user.id,
                                 fullName: user.firstName + ' ' + user.lastName,
-                                avatar: user.avatar ? user.avatar : user.gravatar,
+                                avatar: user.avatarUrl,
                                 departments: projectUser[0].projectDepartmentNames,
                                 isPresent: false,
                             });

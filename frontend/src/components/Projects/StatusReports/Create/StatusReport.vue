@@ -107,19 +107,19 @@
                             <td>{{ translate('table_header_cell.base') }}</td>
                             <td>{{ schedule.base.startAt | date }}</td>
                             <td>{{ schedule.base.finishAt | date }}</td>
-                            <td>{{ schedule.base.durationDays | formatNumber }}</td>
+                            <td>{{ schedule.base.durationDays > 0 ? (schedule.base.durationDays  | formatNumber) : '-' }}</td>
                         </tr>
                         <tr :style="{color: schedule.forecast.color}">
                             <td>{{ translate('table_header_cell.forecast') }}</td>
                             <td>{{ schedule.forecast.startAt | date }}</td>
                             <td>{{ schedule.forecast.finishAt | date }}</td>
-                            <td>{{ schedule.forecast.durationDays | formatNumber }}</td>
+                            <td>{{ schedule.forecast.durationDays > 0 ? (schedule.forecast.durationDays | formatNumber) : '-' }}</td>
                         </tr>
                         <tr :style="{color: schedule.actual.color}">
                             <td>{{ translate('table_header_cell.actual') }}</td>
                             <td>{{ schedule.actual.startAt | date }}</td>
                             <td>{{ schedule.actual.finishAt | date }}</td>
-                            <td>{{ schedule.actual.durationDays | formatNumber }}</td>
+                            <td>{{ schedule.actual.durationDays > 0 ? (schedule.actual.durationDays | formatNumber) : '-' }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -168,20 +168,16 @@
 
         <hr class="double">
 
-        <!--<div class="row">-->
-        <!--<div class="col-md-12">-->
-        <!--<h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>-->
-        <!--<div class="status-boxes flex flex-v-center marginbottom20">-->
-        <!--<div class="status-box" :style="{background: project.overallStatus === 2 ? '#5FC3A5' : '', cursor: 'default'}"></div>-->
-        <!--<div class="status-box" :style="{background: project.overallStatus === 1 ? '#ccba54' : '', cursor: 'default'}"></div>-->
-        <!--<div class="status-box" :style="{background: project.overallStatus === 0 ? '#c87369' : '', cursor: 'default'}"></div>-->
-        <!--</div>-->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
+                <traffic-light :status="projectTrafficLight"/>
 
-        <!--<vis-timeline :items="pmData" :withPhases="false" />-->
-        <!--</div>-->
-        <!--</div>-->
+                <!--<vis-timeline :items="pmData" :withPhases="false" />-->
+            </div>
+        </div>
 
-        <!--<hr class="double">-->
+        <hr class="double">
 
         <div class="row" v-if="internalCostsGraphData">
             <div class="col-md-12">
@@ -305,17 +301,9 @@
             TrafficLight,
         },
         created() {
+            this.getProjectUsers({id: this.$route.params.id});
             this.getStatusReportTrendGraph(this.$route.params.id);
 
-            // this.getProjectStatusReports({
-            //     projectId: this.$route.params.id,
-            //     queryParams: {
-            //         trend: true,
-            //     },
-            // });
-            // this.getProjectById(this.$route.params.id);
-            // this.getTasksStatus(this.$route.params.id);
-            // this.getTasksForSchedule(this.$route.params.id);
             // this.setMilestonesFilters(
             //     {
             //         isKeyMilestone: true,
@@ -336,6 +324,7 @@
                 'getProjectMilestones',
                 'getStatusReportTrendGraph',
                 'createStatusReport',
+                'getProjectUsers',
             ]),
             onActionNeededUpdate(event) {
                 if (!this.editable) {
