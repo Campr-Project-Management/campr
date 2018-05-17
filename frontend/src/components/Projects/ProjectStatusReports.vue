@@ -28,9 +28,13 @@
                 </thead>
                 <tbody>
                     <tr v-for="report in statusReports.items">
-                        <td>{{ report.createdAt | moment('DD.MM.YYYY') }} @ {{ report.createdAt | moment('H:m') }}</td>
+                        <td>{{ report.createdAt | date }} @ {{ report.createdAt | hour }}</td>
                         <td class="small-avatar text-center">
-                            <div class="user-avatar-wrapper" v-tooltip.top-center="report.createdByFullName" :style="{ backgroundImage: 'url('+report.createdByAvatar+')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="report.createdByAvatar"
+                                    :name="report.createdByFullName"
+                                    :tooltip="report.createdByFullName"/>
                         </td>
                         <td>
                             <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
@@ -66,9 +70,11 @@ import NotificationIcon from '../_common/_icons/NotificationIcon';
 import DownloadIcon from '../_common/_icons/DownloadIcon';
 import Modal from '../_common/Modal';
 import AlertModal from '../_common/AlertModal.vue';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         StatusFilters,
         ViewIcon,
         PrintIcon,
@@ -153,9 +159,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../css/variables';
     @import '../../css/mixins';
-    @import '../../css/common';
 
     .date-cell {
         width: 5%;

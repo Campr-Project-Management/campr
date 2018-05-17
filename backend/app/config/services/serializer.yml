@@ -1,0 +1,19 @@
+services:
+    app.serializer.listener.project:
+        class: AppBundle\Serializer\EventListener\ProjectSubscriber
+        arguments:
+             - '@app.calculator.project_scheduled_dates'
+             - '@app.calculator.project_forecast_dates'
+             - '@app.calculator.project_actual_dates'
+             - '@app.calculator.project_total_cost'
+             - '@app.calculator.project_progress'
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    app.serializer.listener.user:
+        class: AppBundle\Serializer\EventListener\UserSubscriber
+        arguments:
+             - '@app.resolver.user_avatar_url'
+             - '@app.resolver.user_uploaded_avatar_url'
+        tags:
+            - { name: jms_serializer.event_subscriber }

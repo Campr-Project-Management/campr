@@ -31,6 +31,11 @@ class RiskRepository extends BaseRepository
         ;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return Risk
+     */
     public function findTopByProject(Project $project)
     {
         return $this
@@ -184,13 +189,8 @@ class RiskRepository extends BaseRepository
     public function getTotalPotentialDelay(Project $project)
     {
         $hours = 0;
-        $risks = $this
-            ->getQueryBuilderByProject($project)
-            ->getQuery()
-            ->getResult();
-
         /** @var Risk $risk */
-        foreach ($risks as $risk) {
+        foreach ($project->getRisks() as $risk) {
             $hours += $risk->getPotentialDelayHours();
         }
 
