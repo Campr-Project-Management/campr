@@ -20,42 +20,68 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-            ->add('color', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    'choices.green' => 'green',
-                    'choices.yellow' => 'yellow',
-                    'choices.red' => 'red',
-                ],
-                'placeholder' => 'placeholder.color_status',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.color',
-                    ]),
-                ],
-                'translation_domain' => 'messages',
-            ])
-            ->add('sequence', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
-                    ]),
-                ],
-            ])
-        ;
+            ->add(
+                'code',
+                TextType::class,
+                [
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'color',
+                ChoiceType::class,
+                [
+                    'required' => true,
+                    'choices' => [
+                        'choices.green' => 'green',
+                        'choices.yellow' => 'yellow',
+                        'choices.red' => 'red',
+                    ],
+                    'placeholder' => 'placeholder.color_status',
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.color',
+                            ]
+                        ),
+                    ],
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'sequence',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.sequence',
+                            ]
+                        ),
+                        new Regex(
+                            [
+                                'pattern' => '/^([1-9]+\d*)$|^0$/',
+                                'message' => 'invalid.sequence',
+                            ]
+                        ),
+                    ],
+                ]
+            );
     }
 
     /**
