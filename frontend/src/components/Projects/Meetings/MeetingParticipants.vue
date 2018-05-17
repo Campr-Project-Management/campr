@@ -82,6 +82,13 @@ export default {
             this.$emit('input', meetingParticipant);
         },
     },
+    data() {
+        return {
+            participantsActivePage: 1,
+            showPresent: {},
+            showDistributionList: {},
+        };
+    },
 };
 </script>
 <style scoped lang="scss">
