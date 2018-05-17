@@ -23,11 +23,11 @@
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
                 <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityAvatar">
-                    <div class="user-avatar">
-                        <img
-                                :src="value.top.responsibilityAvatar"
-                                :alt="value.top.responsibilityFullName"/>
-                    </div>
+                    <user-avatar
+                            size="small"
+                            :url="projectUserAvatarByUserId(value.top.responsibilityId)"
+                            :name="value.top.responsibilityFullName"/>
+
                     <div>
                         {{ translate('message.responsible') }}:
                         <b>{{ value.top.responsibilityFullName }}</b>
@@ -49,6 +49,8 @@
 <script>
     import RiskGrid from '../../Risks/RiskGrid';
     import OpportunitySummary from '../../Opportunities/OpportunitySummary';
+    import UserAvatar from '../../../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'status-report-opportunities-grid',
@@ -79,6 +81,12 @@
         components: {
             RiskGrid,
             OpportunitySummary,
+            UserAvatar,
+        },
+        computed: {
+            ...mapGetters([
+                'projectUserAvatarByUserId',
+            ]),
         },
     };
 </script>
