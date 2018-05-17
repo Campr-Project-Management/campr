@@ -9,13 +9,25 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SelfInviteValidator extends ConstraintValidator
 {
+    /**
+     * @var EntityManager
+     */
     private $em;
 
+    /**
+     * SelfInviteValidator constructor.
+     *
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
 
+    /**
+     * @param mixed      $value
+     * @param Constraint $constraint
+     */
     public function validate($value, Constraint $constraint)
     {
         if (empty($value)) {
@@ -25,10 +37,11 @@ class SelfInviteValidator extends ConstraintValidator
         $user = $this
             ->em
             ->getRepository(User::class)
-            ->findOneBy([
-                'email' => $value,
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'email' => $value,
+                ]
+            );
 
         if ($user === $constraint->user) {
             $this

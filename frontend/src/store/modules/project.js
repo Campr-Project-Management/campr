@@ -676,27 +676,6 @@ const actions = {
         ;
     },
     /**
-     * Gets the project/tasks/cost progresses
-     * @param {function} commit
-     * @param {number} id
-     * @return {object}
-     */
-    getProgress({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_progress', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let progresses = response.data;
-                        commit(types.SET_PROJECT_PROGRESSES, {progresses});
-                    }
-                },
-                (response) => {}
-            )
-        ;
-    },
-    /**
      * Check if the user cand create a status report
      * @param {function} commit
      * @param {integer} id

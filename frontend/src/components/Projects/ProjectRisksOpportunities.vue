@@ -18,7 +18,6 @@
                     <!-- /// Project Opportunities Grid /// -->
                     <risk-grid :gridData="opportunityGridData" :isRisk="false" :clickable="true"/>
                     <!-- /// End Project Opportunities Grid /// -->
-
                     <!-- /// Project Opportunities List /// -->
                     <opportunity-list :listData="opportunities"/>
                     <!-- /// End Project Opportunities List /// -->
@@ -26,7 +25,12 @@
                 <!-- /// End Project Opportunities /// -->
 
                 <!-- /// Project Opportunities Summary /// -->
-                <opportunity-summary :summary="risksOpportunitiesStats.opportunities"/>
+                <opportunity-summary
+                        :potential-cost="opportunitiesSummary.potentialCost"
+                        :potential-time="opportunitiesSummary.potentialTime"
+                        :measures-cost="opportunitiesSummary.measuresCost"
+                        :measures-count="opportunitiesSummary.measuresCount"
+                        :currency="currency"/>
                 <!-- /// End Project Opportunities Summary /// -->
             </div>
             <div class="col-lg-6">
@@ -54,7 +58,12 @@
                 <!-- /// End Project Risks /// -->
 
                 <!-- /// Project Risks Summary /// -->
-                <risk-summary :summary="risksOpportunitiesStats.risks"/>
+                <risk-summary
+                        :potential-cost="risksSummary.potentialCost"
+                        :potential-delay="risksSummary.potentialDelay"
+                        :measures-count="risksSummary.measuresCount"
+                        :measures-cost="risksSummary.measuresCost"
+                        :currency="currency"/>
                 <!-- /// End Project Risks Summary /// -->
             </div>
         </div>
@@ -78,11 +87,49 @@ export default {
         OpportunityList,
     },
     computed: {
-        ...mapGetters({
-            opportunities: 'opportunities',
-            risks: 'risks',
-            risksOpportunitiesStats: 'risksOpportunitiesStats',
-        }),
+        ...mapGetters([
+            'risks',
+            'opportunities',
+            'risksOpportunitiesStats',
+            'projectCurrencySymbol',
+        ]),
+        risksStats() {
+            return this.risksOpportunitiesStats.risks;
+        },
+        opportunitiesStats() {
+            return this.risksOpportunitiesStats.opportunities;
+        },
+        opportunitiesSummary() {
+            if (!this.opportunitiesStats) {
+                return {};
+            }
+
+            return {
+                potentialCost: this.opportunitiesStats.opportunity_data.costSavings,
+                potentialDelay: this.opportunitiesStats.opportunity_data.timeSaving,
+                measuresCount: this.opportunitiesStats.measure_data.measuresNumber,
+                measuresCost: this.opportunitiesStats.measure_data.totalCost,
+            };
+        },
+        risksSummary() {
+            if (!this.risksStats) {
+                return {};
+            }
+
+            return {
+                potentialCost: this.risksStats.risk_data.costs,
+                potentialDelay: this.risksStats.risk_data.delay,
+                measuresCount: this.risksStats.measure_data.measuresNumber,
+                measuresCost: this.risksStats.measure_data.totalCost,
+            };
+        },
+        currency() {
+            if (!this.projectCurrencySymbol) {
+                return '';
+            }
+
+            return this.projectCurrencySymbol;
+        },
     },
     methods: {
         ...mapActions(['getProjectOpportunities', 'getProjectRisks', 'getProjectRiskAndOpportunitiesStats']),

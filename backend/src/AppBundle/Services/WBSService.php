@@ -39,9 +39,7 @@ class WBSService
             ->getWorkPackages()
             ->filter(
                 function (WorkPackage $wp) {
-                    return $wp->isPhase() && !$wp->getParent() ||
-                        $wp->isTutorial() ||
-                        ($wp->isTask() && !$wp->getPhase() && !$wp->getMilestone() && !$wp->getParent());
+                    return !$wp->getPhase() && !$wp->getMilestone() && !$wp->getParent();
                 }
             )
             ->map(
