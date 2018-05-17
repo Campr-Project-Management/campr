@@ -512,7 +512,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      *
      * @param User $responsibility
      *
-     * @return Risk
+     * @return Opportunity
      */
     public function setResponsibility(User $responsibility = null)
     {

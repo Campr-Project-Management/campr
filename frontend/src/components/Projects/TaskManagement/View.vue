@@ -63,7 +63,10 @@
                         <div class="task-status-info">
                             <b>#{{ task.puid }}</b>
                             {{ translateText('message.created_on') }} {{ task.createdAt | moment('DD.MM.YYYY') }} {{ translateText('message.by') }}
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="task.responsibilityAvatar"
+                                    :name="task.responsiblityFullName"/>
                             <b class="uppercase">{{ task.responsibilityFullName }}</b>
                             <span class="task-subtasks" v-if="task && task.children && task.children.length">
                                 &nbsp;&nbsp;|&nbsp;&nbsp; {{ getSubtaskSummary() }} {{ translateText('message.subtasks') }} {{ translateText('label.completed') }}
@@ -126,7 +129,11 @@
 
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
-                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentUserAvatar + ')' }"></div>
+                    <user-avatar
+                            size="small"
+                            :url="currentUser.avatarUrl"
+                            :name="currentUser.fullName"/>
+
                     <div class="new-comment-body">
                         <editor
                             height="200px"
@@ -571,6 +578,7 @@ import Vue from 'vue';
 import SwitchField from '../../_common/_form-components/SwitchField';
 import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
+import UserAvatar from '../../_common/UserAvatar';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -579,6 +587,7 @@ const TASK_STATUS_COMPLETED = 4;
 export default {
     name: 'task-view',
     components: {
+        UserAvatar,
         EditStatusModal,
         TaskViewAssignments,
         EditIcon,
@@ -648,11 +657,7 @@ export default {
             return count;
         },
         currentUserAvatar: function() {
-            if (this.currentUser.avatar === null) {
-                return this.currentUser.gravatar;
-            }
-
-            return this.currentUser.avatar;
+            return this.currentUser.avatarUrl;
         },
     },
     watch: {
@@ -1225,27 +1230,7 @@ export default {
 
         .task-status-info {
             padding-left: 10px;
-
-            .user-avatar {
-                img {
-                    margin: 0 10px;
-                }
-            }
         }
-    }
-
-    .user-avatar {
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        margin: 0 5px 0;
-        position: relative;
-        top: -2px;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        @include border-radius(50%);
     }
 
     p {
@@ -1336,12 +1321,6 @@ export default {
     .new-comment {
         position: relative;
         padding-left: 55px;
-
-        .user-avatar {
-            position: absolute;
-            top: 2px;
-            left: 0;
-        }
     }
 
     .task-sidebar {
