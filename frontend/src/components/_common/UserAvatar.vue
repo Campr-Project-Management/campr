@@ -4,13 +4,15 @@
             :class="size"
             v-tooltip.top-center="this.tooltip">
         <letter-avatar
-                v-if="name"
+                v-if="name && !lazyUrl"
+                :ratio="ratio"
                 :name="name"
                 :size="letterAvatarSize"/>
-        <span
-                v-if="url"
+        <img
+                v-if="lazyUrl"
                 class="avatar-image"
-                :style="{ backgroundImage: 'url(' + url + ')' }"></span>
+                :src="lazyUrl"
+                :alt="name"/>
     </div>
 </template>
 
@@ -35,6 +37,10 @@
                     return ['small', 'normal', 'medium', 'large'].indexOf(value) >= 0;
                 },
             },
+            ratio: {
+                type: Number,
+                default: window.devicePixelRatio ? window.devicePixelRatio : 1,
+            },
             tooltip: {
                 type: String,
                 required: false,
@@ -48,9 +54,32 @@
                 return this.letterAvatarSizes[this.size];
             },
         },
+        watch: {
+            url(value) {
+                this.lazyUrl = value;
+
+                if (!this.lazyUrl) {
+                    return;
+                }
+
+                let image = new Image();
+                image.src = this.lazyUrl;
+
+                image.onerror = () => {
+                    this.lazyUrl = null;
+                };
+            },
+        },
         data() {
             return {
                 letterAvatarSizes: {
+                    'small': 30,
+                    'normal': 40,
+                    'medium': 50,
+                    'large': 60,
+                },
+                lazyUrl: this.url,
+                sizes: {
                     'small': 30,
                     'normal': 40,
                     'medium': 50,
@@ -70,12 +99,6 @@
         margin: 5px;
 
         .avatar-image {
-            top: 0;
-            left: 0;
-            position: absolute;
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
             @include border-radius(50%);
         }
 
@@ -87,7 +110,7 @@
                 width: 30px;
                 height: 30px;
             }
-        },
+        }
 
         &.normal {
             width: 40px;

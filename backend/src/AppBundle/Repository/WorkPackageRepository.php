@@ -1267,28 +1267,27 @@ class WorkPackageRepository extends BaseRepository
         $qb
             ->select('COUNT(o.id)')
             ->innerJoin('o.colorStatus', 'cs')
-            ->andWhere('o.type = :type and o.project = :project and cs.color = :color')
+            ->andWhere('o.type = :type and o.project = :project and cs.code = :code')
             ->andWhere($expr->isNotNull('o.colorStatus'))
-            ->andWhere($expr->isNull('o.parent'))
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
         ;
 
         $red = (int) $qb
-            ->setParameter('color', 'red')
+            ->setParameter('code', 'red')
             ->getQuery()
             ->getSingleScalarResult()
         ;
 
         $green = (int) $qb
-            ->setParameter('color', 'green')
+            ->setParameter('code', 'green')
             ->getQuery()
             ->getSingleScalarResult()
         ;
 
         $yellow = (int) $qb
-            ->setParameter('color', 'yellow')
+            ->setParameter('code', 'yellow')
             ->getQuery()
             ->getSingleScalarResult()
         ;
