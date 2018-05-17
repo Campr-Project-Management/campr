@@ -34,6 +34,11 @@ export default {
                     return formatDate(date, options);
                 },
 
+                hour(date, options) {
+                    return formatDate(date,
+                        Object.assign({}, {format: 'H:m'}, options));
+                },
+
                 humanizeDate(date) {
                     return humanizeDate(date);
                 },

@@ -54,7 +54,11 @@ class BaseController extends WebTestCase
      */
     public function createUser($username, $email, $password, array $roles)
     {
-        $user = new User();
+        $user = $this->em->getRepository(User::class)->findBy(['username' => $username]);
+        if (!$user) {
+            $user = new User();
+        }
+
         $encoder = $this
             ->client
             ->getContainer()

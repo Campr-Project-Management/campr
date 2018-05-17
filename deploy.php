@@ -266,13 +266,13 @@ task('hivebot:branch', function () {
     }
 });
 task('hivebot:deploy-start', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 44y4yERn3a4xE-lk_6m3mcIJMJHlZW2uhVujT9Oz6O4" -X POST -d "{\"status\":\"started\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-failed', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 44y4yERn3a4xE-lk_6m3mcIJMJHlZW2uhVujT9Oz6O4" -X POST -d "{\"status\":\"failed\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('hivebot:deploy-success', function () {
-    run('curl --header "X-Deploy-Token: 5I-DQdWaizEjI-yaP-4a_zunaATeYKC_k3gF_-zd2bM" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
+    run('curl --header "X-Deploy-Token: 44y4yERn3a4xE-lk_6m3mcIJMJHlZW2uhVujT9Oz6O4" -X POST -d "{\"status\":\"success\", \"env\":\"{{env}}\", \"branch\":\"{{hivebotBranch}}\", \"domain\":\"{{domain}}\", \"by\":\"{{localUser}}\", \"in\":\"{{runTime}}\"}" https://hive.trisoft.ro/api/deploy');
 });
 task('run:start-time', function () {
     set('startTime', time());
