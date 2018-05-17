@@ -22,10 +22,10 @@
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
                 <div class="entry-responsible flex flex-v-center" v-if="value.top.responsibilityFullName">
-                    {{ value.top.responsibilityId }}
-                    <div class="user-avatar" v-if="value.top.responsibilityAvatar">
-                        <img :src="value.top.responsibilityAvatar" :alt="value.top.responsibilityFullName"/>
-                    </div>
+                    <user-avatar
+                            size="small"
+                            :url="getAvatarUrl(value.top.responsibilityId)"
+                            :name="value.top.responsibilityFullName"/>
                     <div>
                         {{ translate('message.responsible') }}:
                         <b>{{ value.top.responsibilityFullName }}</b>
@@ -47,6 +47,8 @@
 <script>
     import RiskGrid from '../../Risks/RiskGrid';
     import RiskSummary from '../../Risks/RiskSummary';
+    import UserAvatar from '../../../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'status-report-risks-grid',
@@ -76,13 +78,28 @@
         components: {
             RiskGrid,
             RiskSummary,
+            UserAvatar,
+        },
+        computed: {
+            ...mapGetters([
+                'projectUserByUserId',
+            ]),
+        },
+        methods: {
+            getAvatarUrl(id) {
+                let projectUser = this.projectUserByUserId(id);
+                if (!projectUser) {
+                    return null;
+                }
+
+                return projectUser.userAvatar;
+            },
         },
     };
 </script>
 
 <style lang="scss" scoped>
     @import '../../../../css/_variables';
-    @import '../../../../css/_mixins';
 
     .ro-grid-wrapper {
         .ro-grid {
