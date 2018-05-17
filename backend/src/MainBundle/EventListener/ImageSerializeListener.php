@@ -112,7 +112,7 @@ class ImageSerializeListener
                 }
                 if (method_exists($object, 'getCreatedBy') && $object->getCreatedBy() instanceof User) {
                     $visitor->setData(
-                        'responsibilityAvatar',
+                        'createdByAvatar',
                         $this->userAvatarUrlResolver->resolve($object->getCreatedBy())
                     );
                 }

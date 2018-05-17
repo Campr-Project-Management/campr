@@ -846,8 +846,13 @@ class ProjectControllerTest extends BaseController
 
         $responseContent[0]['users'][0]['apiToken'] = $responseArray[0]['users'][0]['apiToken'];
         $responseContent[1]['users'][0]['apiToken'] = $responseArray[1]['users'][0]['apiToken'];
+
         $responseContent[0]['users'][0]['updatedAt'] = $responseArray[0]['users'][0]['updatedAt'];
         $responseContent[1]['users'][0]['updatedAt'] = $responseArray[1]['users'][0]['updatedAt'];
+
+        $responseContent[0]['users'][0]['avatarUrl'] = $responseArray[0]['users'][0]['avatarUrl'];
+        $responseContent[1]['users'][0]['avatarUrl'] = $responseArray[1]['users'][0]['avatarUrl'];
+
         $email = md5(strtolower(trim($responseArray[0]['users'][0]['email'])));
         $responseContent[0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $email = md5(strtolower(trim($responseArray[1]['users'][0]['email'])));
@@ -855,11 +860,9 @@ class ProjectControllerTest extends BaseController
         $responseContent[0]['createdByAvatar'] = $responseArray[0]['createdByAvatar'];
         $responseContent[1]['createdByAvatar'] = $responseArray[1]['createdByAvatar'];
 
-        $responseArray = json_encode($responseArray);
-
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $responseArray);
+        $this->assertEquals($responseContent, $responseArray);
     }
 
     /**
@@ -893,6 +896,7 @@ class ProjectControllerTest extends BaseController
                                 'phone' => null,
                                 'firstName' => 'FirstName10',
                                 'lastName' => 'LastName10',
+                                'fullName' => 'FirstName10 LastName10',
                                 'isEnabled' => true,
                                 'isSuspended' => false,
                                 'createdAt' => '2017-01-01 00:00:00',
@@ -911,6 +915,7 @@ class ProjectControllerTest extends BaseController
                                 'signUpDetails' => [],
                                 'locale' => 'en',
                                 'avatar' => null,
+                                'avatarUrl' => null,
                             ],
                         ],
                         'meetings' => [],
@@ -938,6 +943,7 @@ class ProjectControllerTest extends BaseController
                                 'phone' => null,
                                 'firstName' => 'FirstName10',
                                 'lastName' => 'LastName10',
+                                'fullName' => 'FirstName10 LastName10',
                                 'isEnabled' => true,
                                 'isSuspended' => false,
                                 'createdAt' => '2017-01-01 00:00:00',
@@ -956,6 +962,7 @@ class ProjectControllerTest extends BaseController
                                 'signUpDetails' => [],
                                 'locale' => 'en',
                                 'avatar' => null,
+                                'avatarUrl' => null,
                             ],
                         ],
                         'meetings' => [],

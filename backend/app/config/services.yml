@@ -6,6 +6,7 @@ imports:
     - { resource: services/serializer.yml }
     - { resource: services/mailer.yml }
     - { resource: services/auth.yml }
+    - { resource: services/validators.yml }
 
 parameters:
     adapters:

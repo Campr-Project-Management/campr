@@ -428,19 +428,29 @@ class TeamControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $crawler = $this->client->followRedirect();
 
-        $this->assertContains(sprintf('New invitation sent to user with email %s.', 'teammember@trisoft.ro'), $crawler->html());
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        try {
+            $this->assertContains(
+                sprintf('New invitation sent to user with email %s.', 'teammember@trisoft.ro'),
+                $crawler->html()
+            );
+            $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        } finally {
+            $teamInvite = $this
+                ->em
+                ->getRepository(TeamInvite::class)
+                ->findOneBy(
+                    [
+                        'email' => 'teammember@trisoft.ro',
+                        'team' => $this->team,
+                    ]
+                )
+            ;
 
-        $teamInvite = $this
-            ->em
-            ->getRepository(TeamInvite::class)
-            ->findOneBy([
-                'email' => 'teammember@trisoft.ro',
-                'team' => $this->team,
-            ])
-        ;
-        $this->em->remove($teamInvite);
-        $this->removeTeam('test-team');
+            if ($teamInvite) {
+                $this->em->remove($teamInvite);
+                $this->removeTeam('test-team');
+            }
+        }
     }
 
     public function testInvitationAcceptedAction()
@@ -515,21 +525,31 @@ class TeamControllerTest extends BaseController
         $this->team = $this
             ->em
             ->getRepository(Team::class)
-            ->findOneBy([
-                'name' => $name,
-            ])
+            ->findOneBy(
+                [
+                    'name' => $name,
+                ]
+            )
         ;
         $this->teamMember = $this
             ->em
             ->getRepository(TeamMember::class)
-            ->findOneBy([
-                'user' => $this->user,
-                'team' => $this->team,
-            ])
+            ->findOneBy(
+                [
+                    'user' => $this->user,
+                    'team' => $this->team,
+                ]
+            )
         ;
 
-        $this->em->remove($this->teamMember);
-        $this->em->remove($this->team);
+        if ($this->teamMember) {
+            $this->em->remove($this->teamMember);
+        }
+
+        if ($this->team) {
+            $this->em->remove($this->team);
+        }
+
         $this->em->flush();
     }
 
