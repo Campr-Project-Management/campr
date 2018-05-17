@@ -107,7 +107,7 @@
                                     <tr v-for="user in usersCurrentList" :key="user.id">
                                         <td class="avatar text-center">
                                             <div class="user-avatar-wrapper"
-                                                 :style="{ backgroundImage: 'url(' + (user.avatar || user.gravatar) + ')' }"></div>
+                                                 :style="{ backgroundImage: 'url(' + user.avatarUrl + ')' }"></div>
                                         </td>
                                         <td>{{ user.firstName + ' ' + user.lastName }}</td>
                                         <td>{{ user.email }}</td>
