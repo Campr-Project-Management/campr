@@ -28,7 +28,9 @@
                 </ul>
             </div>
             <p class="user-message">{{ message.hi }}, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
-            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + userAvatar + ')' }"></div>
+            <user-avatar
+                    :url="user.avatarUrl"
+                    :name="user.fullName"/>
             <!--TODO: Further implementation of notifications-->
             <!--<a class="notifications" href="">-->
                 <!--<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"-->
@@ -69,20 +71,20 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     name: 'navigation',
     props: ['user'],
+    components: {
+        UserAvatar,
+    },
     computed: {
         ...mapGetters({
             currentProjectName: 'currentProjectName',
         }),
         userAvatar: function() {
-            if (this.user.avatar === null) {
-                return this.user.gravatar;
-            }
-
-            return this.user.avatar;
+            return this.user.avatarUrl;
         },
         showDashboard: function() {
             return this.user.isAdmin;
@@ -163,18 +165,6 @@ export default {
         line-height: 45px;
         font-size: 12px;
         letter-spacing: 1.2px;
-    }
-
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        display: block;       
-        margin: 0 20px 0 0;
-        top: 0;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        @include border-radius(50%);
     }
 
     .notifications {
