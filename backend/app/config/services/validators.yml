@@ -6,7 +6,7 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    app.self_imvite_validator:
+    app.self_invite_validator:
         class: MainBundle\Validator\Constraints\TeamMember\SelfInviteValidator
         arguments:
             - '@doctrine.orm.entity_manager'

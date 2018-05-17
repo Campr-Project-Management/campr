@@ -2762,7 +2762,7 @@ class Project implements ProjectInterface
     /**
      * @return int
      */
-    public function getTrafficLight(): int
+    public function getTrafficLight()
     {
         return $this->getOverallStatus();
     }
@@ -2928,7 +2928,7 @@ class Project implements ProjectInterface
     /**
      * @return bool
      */
-    public function hasFileSystem(): bool
+    public function hasFileSystem()
     {
         return (bool) $this->getFileSystem();
     }

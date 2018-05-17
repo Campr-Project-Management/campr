@@ -303,20 +303,6 @@
         created() {
             this.getProjectUsers({id: this.$route.params.id});
             this.getStatusReportTrendGraph(this.$route.params.id);
-
-            // this.setMilestonesFilters(
-            //     {
-            //         isKeyMilestone: true,
-            //         startDate: moment().subtract(14, 'd').format('YYYY-MM-DD'),
-            //         endDate: moment().add(14, 'd').format('YYYY-MM-DD'),
-            //     }
-            // );
-            // this.getProjectMilestones({
-            //     projectId: this.$route.params.id,
-            //     apiParams: {
-            //         page: 1,
-            //     },
-            // });
         },
         methods: {
             ...mapActions([
@@ -537,18 +523,6 @@
                 return this.snapshot.currency.symbol;
             },
         },
-        // watch: {
-        //     projectMilestones(value) {
-        //         for (let i = 0; i < this.projectMilestones.length; i++) {
-        //             if (this.projectMilestones[i].colorStatusColor === '#ccba54') {
-        //                 this.milestoneColorClass = '#ccba54';
-        //             } else if (this.projectMilestones[i].colorStatusColor === '#c87369') {
-        //                 this.milestoneColorClass = '#c87369';
-        //                 break;
-        //             }
-        //         }
-        //     },
-        // },
         data() {
             return {
                 projectId: this.$route.params.id,
