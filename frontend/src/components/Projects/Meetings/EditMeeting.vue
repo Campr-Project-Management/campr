@@ -914,7 +914,6 @@ export default {
         'details.distributionLists': {
             handler: function(value) {
                 let users = [];
-                this.getMeetingParticipants({id: this.$route.params.meetingId});
                 this.meetingParticipants.map(function(item) {
                     users.push({
                         id: item.user,
@@ -926,7 +925,7 @@ export default {
                         meetingParticipantId: item.id,
                     });
                 });
-
+                this.getMeetingParticipants({id: this.$route.params.meetingId});
                 this.lists = this.distributionLists.filter((item) => {
                     for (let i = 0; i < this.details.distributionLists.length; i++) {
                         if (item.id === this.details.distributionLists[i].key) {
@@ -964,6 +963,17 @@ export default {
                             });
                         }
                     });
+                });
+
+                users.map((user) => {
+                    let existingUser = this.meetingParticipants.filter((item) => {
+                        return item.user === user.id;
+                    });
+                    if (!existingUser) {
+                        user.isPresent = false;
+                    } else {
+                        user.isPresent = existingUser[0] ? existingUser[0].isPresent : false;
+                    }
                 });
 
                 this.participants = users;
