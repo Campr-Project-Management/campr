@@ -4,15 +4,26 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
+use Component\Project\Calculator\ProjectProgressCalculatorInterface;
+use Component\WorkPackage\Calculator\WorkPackageProgressCalculatorInterface;
 use Doctrine\ORM\EntityManager;
 
 class WBSService
 {
     private $em;
 
-    public function __construct(EntityManager $em)
-    {
+    private $progressCalculator;
+
+    private $workPackageProgressCalculator;
+
+    public function __construct(
+        EntityManager $em,
+        ProjectProgressCalculatorInterface $projectProgressCalculator,
+        WorkPackageProgressCalculatorInterface $workPackageProgressCalculator
+    ) {
         $this->em = $em;
+        $this->progressCalculator = $projectProgressCalculator;
+        $this->workPackageProgressCalculator = $workPackageProgressCalculator;
     }
 
     public function getData(Project $project)
@@ -21,7 +32,7 @@ class WBSService
             'id' => $project->getId(),
             'name' => (string) $project,
             'children' => $this->getProjectChildren($project),
-            'progress' => $project->getProgress(),
+            'progress' => round($this->progressCalculator->calculate($project)),
             'colorStatus' => $project->getColorStatusId(),
             'colorStatusName' => $project->getColorStatusName(),
             'colorStatusColor' => $project->getColorStatusColor(),
@@ -53,29 +64,6 @@ class WBSService
 
     private function getChildren(WorkPackage $wp)
     {
-        $startDate = array_reduce(
-            [$wp->getActualStartAt(), $wp->getForecastStartAt(), $wp->getScheduledStartAt()],
-            function ($carry, $item) {
-                if ($carry) {
-                    return $carry;
-                }
-
-                return $item;
-            },
-            null
-        );
-        $endDate = array_reduce(
-            [$wp->getActualFinishAt(), $wp->getForecastFinishAt(), $wp->getScheduledFinishAt()],
-            function ($carry, $item) {
-                if ($carry) {
-                    return $carry;
-                }
-
-                return $item;
-            },
-            null
-        );
-
         $out = [
             'id' => $wp->getId(),
             'project' => $wp->getProjectId(),
@@ -93,10 +81,10 @@ class WBSService
             'colorStatus' => $wp->getColorStatusId(),
             'colorStatusName' => $wp->getColorStatusName(),
             'colorStatusColor' => $wp->getColorStatusColor(),
-            'progress' => $wp->getProgress(),
+            'progress' => $this->workPackageProgressCalculator->calculate($wp),
             'puid' => $wp->getPUIDForDisplay(),
-            'startDate' => $startDate ? $startDate->format('m/d/Y') : 'N/A',
-            'endDate' => $endDate ? $endDate->format('m/d/Y') : 'N/A',
+            'startDate' => $wp->getActualStartAt() ? $wp->getActualStartAt()->format('d/m/Y') : 'N/A',
+            'endDate' => $wp->getActualFinishAt() ? $wp->getActualFinishAt()->format('d/m/Y') : 'N/A',
         ];
 
         switch ($wp->getType()) {
@@ -105,8 +93,9 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return (WorkPackage::TYPE_PHASE === $package->getType() && $package->getParent() === $wp)
-                            || (WorkPackage::TYPE_MILESTONE === $package->getType() && $package->getPhase() === $wp && !$package->getParent())
+                        return ($package->isTask() && $package->getPhase() === $wp && !$package->getMilestone() && !$package->getParent())
+                            || ($package->isPhase() && $package->getParent() === $wp)
+                            || ($package->isMilestone() && $package->getPhase() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
@@ -120,8 +109,8 @@ class WBSService
                     ->getProject()
                     ->getWorkPackages()
                     ->filter(function (WorkPackage $package) use ($wp) {
-                        return (WorkPackage::TYPE_MILESTONE === $package->getType() && $package->getParent() === $wp)
-                            || (WorkPackage::TYPE_TASK === $package->getType() && $package->getMilestone() === $wp && !$package->getParent())
+                        return ($package->isMilestone() && $package->getParent() === $wp)
+                            || ($package->isTask() && $package->getMilestone() === $wp && !$package->getParent())
                         ;
                     })
                     ->map(function (WorkPackage $wp) {
