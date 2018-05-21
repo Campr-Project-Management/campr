@@ -1821,9 +1821,6 @@ class Project implements ProjectInterface
     /**
      * Get project progress.
      *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("progress")
-     *
      * @return int
      */
     public function getProgress()

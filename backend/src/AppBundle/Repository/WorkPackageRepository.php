@@ -14,6 +14,7 @@ use AppBundle\Repository\Traits\WorkPackageSortingTrait;
 use AppBundle\Repository\Traits\WorkPackageCategorySortingTrait;
 use AppBundle\Repository\Traits\UserSortingTrait;
 use Pagerfanta\Pagerfanta;
+use Webmozart\Assert\Assert;
 
 class WorkPackageRepository extends BaseRepository
 {
@@ -1397,5 +1398,28 @@ class WorkPackageRepository extends BaseRepository
         );
 
         return $qb;
+    }
+
+    /**
+     * @param WorkPackage $wp
+     *
+     * @return int
+     *
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getWorkPackageProgress(WorkPackage $wp)
+    {
+        $columns = [WorkPackage::TYPE_PHASE => 'phase', WorkPackage::TYPE_MILESTONE => 'milestone'];
+        $column = $columns[$wp->getType()] ?? null;
+        Assert::notNull($column);
+
+        $qb = $this->createQueryBuilder('wp');
+        $qb->select('AVG(wp.progress)');
+        $qb->andWhere('(wp.parent = :parent OR wp.'.$column.' = :parent) and wp.type = :type AND wp.parent IS NULL');
+        $qb->setParameter('parent', $wp->getId());
+        $qb->setParameter('type', WorkPackage::TYPE_TASK);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

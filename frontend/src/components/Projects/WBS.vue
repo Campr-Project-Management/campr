@@ -12,6 +12,12 @@ import $ from 'jquery';
 import _ from 'lodash';
 import AlertModal from '../_common/AlertModal.vue';
 import router from '../../router';
+import moment from 'moment';
+
+
+const TASK_STATUS_OPEN = 1;
+const TASK_STATUS_ONGOING = 3;
+const TASK_STATUS_COMPLETED = 4;
 
 export default {
     components: {
@@ -509,7 +515,35 @@ export default {
                                 d.showProgressSelector = false;
                                 group.select('text.progress').text(x + '%');
                                 doUpdate();
-                                setWorkPackageProgress({id: d.data.id, progress: x})
+
+                                let actualStartAt = null;
+                                let actualFinishAt = null;
+                                let workPackageStatus = TASK_STATUS_OPEN;
+
+                                if (x > 0) {
+                                    actualStartAt = d.data.startDate !== 'N/A'
+                                        ? moment(d.data.startDate, 'DD/MM/YYYY').format('DD-MM-YYYY')
+                                        : moment().format('DD-MM-YYYY')
+                                    ;
+                                    workPackageStatus = TASK_STATUS_ONGOING;
+
+                                    if (x === 100) {
+                                        actualFinishAt = d.data.endDate !== 'N/A'
+                                            ? moment(d.data.endDate, 'DD/MM/YYYY').format('DD-MM-YYYY')
+                                            : moment().format('DD-MM-YYYY')
+                                        ;
+                                        workPackageStatus = TASK_STATUS_COMPLETED;
+                                    }
+                                }
+
+                                setWorkPackageProgress(
+                                    {
+                                        id: d.data.id,
+                                        progress: x,
+                                        actualStartAt,
+                                        actualFinishAt,
+                                        workPackageStatus,
+                                    })
                                     .then(
                                         (response) => {
                                             getWBSByProjectID(projectId);
