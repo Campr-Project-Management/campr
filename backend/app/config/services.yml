@@ -113,6 +113,8 @@ services:
         class: AppBundle\Services\WBSService
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - '@app.calculator.project_progress'
+            - '@app.calculator.work_package_progress'
 
     app.service.project_organization_tree:
         class: AppBundle\Services\ProjectOrganizationTreeService
@@ -141,6 +143,11 @@ services:
 
     app.calculator.project_progress:
         class: Component\Project\Calculator\ProjectProgressCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.work_package_progress:
+        class: Component\WorkPackage\Calculator\WorkPackageProgressCalculator
         arguments:
             - '@app.repository.work_package'
 
