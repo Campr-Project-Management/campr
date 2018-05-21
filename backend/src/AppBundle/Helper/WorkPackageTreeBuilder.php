@@ -3,7 +3,6 @@
 namespace AppBundle\Helper;
 
 use AppBundle\Entity\WorkPackage;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class WorkPackageTreeBuilder
 {
@@ -12,6 +11,12 @@ class WorkPackageTreeBuilder
         return self::filterChildren(['type' => -1], $workPackages);
     }
 
+    /**
+     * @param array $workPackage
+     * @param array $workPackages
+     *
+     * @return array
+     */
     private static function filterChildren(array $workPackage, array $workPackages)
     {
         $out = array_filter($workPackages, function ($wp) use ($workPackage) {
@@ -50,9 +55,5 @@ class WorkPackageTreeBuilder
         });
 
         return $out;
-    }
-
-    public static function buildFromEntities(ArrayCollection $workPackages)
-    {
     }
 }
