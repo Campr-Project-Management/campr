@@ -114,6 +114,9 @@ class WorkPackage
 
     /**
      * @var int
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\Column(name="progress", type="integer", options={"default"=0})
      */
     private $progress = 0;
