@@ -10,6 +10,13 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
+    app.serializer.listener.work_package:
+        class: AppBundle\Serializer\EventListener\WorkPackageSubscriber
+        arguments:
+            - '@app.calculator.work_package_progress'
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
     app.serializer.listener.user:
         class: AppBundle\Serializer\EventListener\UserSubscriber
         arguments:
