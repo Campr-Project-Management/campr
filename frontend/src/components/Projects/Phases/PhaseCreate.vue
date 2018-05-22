@@ -32,54 +32,39 @@
 
                     <hr class="double">
 
-                    <!-- /// Phase Schedule /// -->
-                    <h3>{{ translateText('message.schedule') }}</h3>
-                    <hr>
+                    <template v-if="!isEdit">
+                        <!-- /// Phase Schedule /// -->
+                        <h3>{{ translateText('message.schedule') }}</h3>
+                        <br/>
 
-                    <span class="note no-margin-bottom">{{ translateText('message.manual_phase_schedule_note_first') }}</span>
-                    <span class="note"><b>{{ translateText('message.note') }}:</b> {{ translateText('message.manual_phase_schedule_note_second') }}</span>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.base_start_date') }}</label>
-                                    <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.base_start_date') }}</label>
+                                        <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill"/>
+                                    </div>
+                                    <error at-path="scheduledStartAt" />
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.base_end_date') }}</label>
-                                    <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.base_end_date') }}</label>
+                                        <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill"/>
+                                    </div>
+                                    <error at-path="scheduledFinishAt" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.forecast_start_date') }}</label>
-                                    <datepicker v-model="schedule.forecastStartDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.forecast_end_date') }}</label>
-                                    <datepicker v-model="schedule.forecastEndDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /// End Phase Schedule /// -->
+                        <!-- /// End Phase Schedule /// -->
 
-                    <hr class="double">
+                        <hr class="double">
+                    </template>
 
                     <!-- /// Phase Details /// -->
                     <h3>{{ translateText('message.details') }}</h3>
+                    <br/>
 
                     <div class="row">
                         <div class="form-group last-form-group">
@@ -179,8 +164,6 @@ export default {
                 content: this.content,
                 scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
-                forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
@@ -193,10 +176,6 @@ export default {
                 name: this.name,
                 type: 0,
                 content: this.content,
-                scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
-                scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
-                forecastStartAt: moment(this.schedule.forecastStartDate).format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.schedule.forecastEndDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 parent: !this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
