@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Meeting;
 
 use AppBundle\Entity\Meeting;
+use AppBundle\Form\MeetingParticipant\CreateType as MeetingParticipantCreateType;
 use AppBundle\Form\WorkPackage\UploadMediaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,6 +57,15 @@ class ApiCreateType extends BaseCreateType
             ])
             ->add('medias', CollectionType::class, [
                 'entry_type' => UploadMediaType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('meetingParticipants', CollectionType::class, [
+                'entry_type' => MeetingParticipantCreateType::class,
+                'entry_options' => [
+                    'skip_meeting' => true,
+                ],
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
