@@ -1,5 +1,5 @@
 <template>
-    <div class="task-range-slider">
+    <div class="task-range-slider" :class="{'no-pins': !showPins}">
         <div class="task-range-slider-title" v-if="title">{{ translate(title) }}</div>
 
         <div
@@ -10,13 +10,13 @@
         <div
                 class="task-slider-holder forecast"
                 v-if="showForecast"
-                :class="{[forecastClass]: forecastClass, 'no-pins': !showPins}">
+                :class="forecastClass">
             <input type="text" class="range" ref="forecast"/>
         </div>
         <div
                 class="task-slider-holder actual"
                 v-if="showActual"
-                :class="{[actualClass]: actualClass, 'no-pins': !showPins}">
+                :class="actualClass">
             <input type="text" class="range" ref="actual"/>
         </div>
 
@@ -375,7 +375,7 @@
     @import '../../css/_variables';
 
     .task-range-slider {
-        .no-pins {
+        &.no-pins {
             .irs-slider {
                 display: none;
             }
