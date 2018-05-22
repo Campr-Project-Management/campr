@@ -9,7 +9,7 @@ use Component\Date\DateRangeInterface;
 use Component\Repository\RepositoryInterface;
 use Webmozart\Assert\Assert;
 
-class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
+class PhaseForecastDatesCalculator implements DateRangeCalculatorInterface
 {
     /**
      * @var RepositoryInterface
@@ -17,7 +17,7 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
     private $workPackageRepository;
 
     /**
-     * PhaseActualDatesCalculator constructor.
+     * PhaseForecastDatesCalculator constructor.
      *
      * @param WorkPackageRepository $workPackageRepository
      */
@@ -35,7 +35,7 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
     {
         Assert::true($workPackage->isPhase(), 'WorkPackage is not a phase');
 
-        $startAt = $this->workPackageRepository->getPhaseActualStartDate($workPackage);
+        $startAt = $this->workPackageRepository->getPhaseForecastStartDate($workPackage);
         $finishAt = $this->workPackageRepository->getPhaseActualFinishDate($workPackage);
 
         if ($startAt) {
