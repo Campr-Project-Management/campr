@@ -136,7 +136,7 @@
                 <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
                 <traffic-light :status="projectTrafficLight"/>
 
-                <!--<vis-timeline :items="pmData" :withPhases="false" />-->
+                <vis-timeline :items="pmData" :with-phases="true"/>
             </div>
         </div>
 
