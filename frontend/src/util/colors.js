@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import {getScheduleForecastTrafficLight, getScheduleActualTrafficLight} from './traffic-light';
 
 export const trafficLight = Object.freeze({
     red: '#c87369',
@@ -36,49 +36,39 @@ export function getTrafficLightColorByStatus(status) {
     return statusToTrafficLightMap[status];
 }
 
-/**
- * Forecast finish date color
- *
- * @param {string} scheduledFinishAt
- * @param {string} forecastFinishAt
- * @return {string}
- */
-export function getForecastDateColor(scheduledFinishAt, forecastFinishAt) {
-    if (!scheduledFinishAt || !forecastFinishAt) {
-        return '';
-    }
+export const schedule = Object.freeze({
+    getForecastColor(scheduled, forecast) {
+        let tl = getScheduleForecastTrafficLight(scheduled, forecast);
 
-    if (moment(forecastFinishAt).isAfter(scheduledFinishAt)) {
-        return trafficLight.yellow;
-    }
+        if (tl.isGreen()) {
+            return;
+        }
 
-    return '';
-}
+        if (tl.isYellow()) {
+            return trafficLight.yellow;
+        }
 
-/**
- * Actual finish date color
- *
- * @param {string} forecastFinishAt
- * @param {string} actualFinishAt
- * @return {string}
- */
-export function getActualDateColor(forecastFinishAt, actualFinishAt) {
-    if (!forecastFinishAt || !actualFinishAt) {
-        return '';
-    }
-
-    if (moment(actualFinishAt).isAfter(forecastFinishAt)) {
         return trafficLight.red;
-    }
+    },
+    getActualColor(forecast, actual, completed = true) {
+        let tl = getScheduleActualTrafficLight(forecast, actual, completed);
 
-    return '';
-}
+        if (tl.isGreen()) {
+            return;
+        }
+
+        if (tl.isYellow()) {
+            return trafficLight.yellow;
+        }
+
+        return trafficLight.red;
+    },
+});
 
 export default Object.freeze({
     trafficLight,
     green,
     getTrafficLightColorByStatus,
-    getForecastDateColor,
-    getActualDateColor,
+    schedule,
 });
 

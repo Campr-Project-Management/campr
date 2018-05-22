@@ -14,6 +14,8 @@ services:
         class: AppBundle\Serializer\EventListener\WorkPackageSubscriber
         arguments:
             - '@app.calculator.work_package_progress'
+            - '@app.calculator.phase_forecast_dates'
+            - '@app.calculator.phase_actual_dates'
         tags:
             - { name: jms_serializer.event_subscriber }
 

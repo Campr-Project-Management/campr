@@ -56,7 +56,7 @@ message:
     overall_progress: Overall Progress
     danger: Critical
     warning: Warning
-    actual_schedule: On track
+    actual_schedule: Actual Schedule
     forecast_schedule: Forecast Schedule
     base_schedule: Base Schedule
     current_date: Current Date
