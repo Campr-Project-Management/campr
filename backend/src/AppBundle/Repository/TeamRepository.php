@@ -51,6 +51,8 @@ class TeamRepository extends EntityRepository
         $this->getEntityManager()->getFilters()->disable('softdeleteable');
 
         $qb = $this->createQueryBuilder('t');
+        $qb->select('t, tm');
+        $qb->join('t.teamMembers', 'tm');
         $qb->andWhere(
             $qb
                 ->expr()
@@ -88,6 +90,11 @@ class TeamRepository extends EntityRepository
         $this->getEntityManager()->getFilters()->disable('softdeleteable');
 
         $team = $this->find($id);
+
+        if ($team instanceof Team) {
+            // forces the load of team members
+            $team->getTeamMembers()->count();
+        }
 
         $this->getEntityManager()->getFilters()->enable('softdeleteable');
 
