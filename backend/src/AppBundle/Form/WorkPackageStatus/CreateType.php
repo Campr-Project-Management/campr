@@ -22,33 +22,58 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-            ->add('sequence', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
-                    ]),
-                ],
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
-            ])
+            ->add(
+                'code',
+                TextType::class,
+                [
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'sequence',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.sequence',
+                            ]
+                        ),
+                        new Regex(
+                            [
+                                'pattern' => '/^([1-9]+\d*)$|^0$/',
+                                'message' => 'invalid.sequence',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'project',
+                EntityType::class,
+                [
+                    'class' => Project::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.project',
+                    'translation_domain' => 'messages',
+                ]
+            )
             ->add('visible', CheckboxType::class)
         ;
     }
