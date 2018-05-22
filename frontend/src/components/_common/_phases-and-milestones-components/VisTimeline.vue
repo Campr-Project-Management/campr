@@ -11,137 +11,186 @@
 </template>
 
 <script>
-import vis from 'vis';
-import Tooltip from '../../Projects/PhasesAndMilestones/Tooltip.vue';
-import _ from 'lodash';
+    import vis from 'vis';
+    import Tooltip from '../../Projects/PhasesAndMilestones/Tooltip.vue';
+    import _ from 'lodash';
+    import moment from 'moment';
 
-const TYPE_PHASE = 0;
+    const TYPE_PHASE = 0;
 
-export default {
-    props: {
-        items: {
-            type: Array,
-            required: true,
+    export default {
+        props: {
+            items: {
+                type: Array,
+                required: true,
+            },
+            withPhases: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            startTime: {
+                type: String,
+                required: false,
+                default: '08:00:00',
+                validate(value) {
+                    return moment(`2001-01-01 ${value}`).isValid();
+                },
+            },
+            endTime: {
+                type: String,
+                required: false,
+                default: '18:00:00',
+                validate(value) {
+                    return moment(`2001-01-01 ${value}`).isValid();
+                },
+            },
         },
-        withPhases: {
-            type: Boolean,
-            required: false,
-            default: false,
+        components: {
+            vis,
+            Tooltip,
         },
-        startHour: {
-            type: String,
-            required: false,
-            default: '08:00:00',
-        },
-        endHour: {
-            type: String,
-            required: false,
-            default: '18:00:00',
-        },
-    },
-    components: {
-        vis,
-        Tooltip,
-    },
-    data: function() {
-        let groups = [];
-        if (this.withPhases) {
-            groups.push({id: 0, content: 'Phases', value: 1});
-            groups.push({id: 1, content: 'Milestones', value: 2});
-        } else {
-            groups.push({id: 0, content: 'Milestones', value: 1});
-        }
-
-        return {
-            groups: groups,
-            timeline: null,
-            tooltips: {},
-        };
-    },
-    methods: {
-        isPhase(item) {
-            return item.data.type === TYPE_PHASE;
-        },
-        getType(item) {
-            if (this.isPhase(item)) {
-                return 'phase';
+        data: function() {
+            let groups = [];
+            if (this.withPhases) {
+                groups.push({id: 0, content: 'Phases', value: 1});
+                groups.push({id: 1, content: 'Milestones', value: 2});
+            } else {
+                groups.push({id: 0, content: 'Milestones', value: 1});
             }
 
-            return 'milestone';
-        },
-    },
-    computed: {
-        hiddenDates() {
-            return [
-                {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startHour}`, repeat: 'daily'},
-                {start: `2018-01-03 ${this.endHour}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
-            ];
-        },
-        visOptions: function() {
-            let min = new Date(_.minBy(this.items, 'start'));
-            let max = new Date(_.minBy(this.items, 'end'));
-
-            min.setFullYear(min.getFullYear() - 2);
-            max.setFullYear(max.getFullYear() + 1);
-
             return {
-                width: '100%',
-                horizontalScroll: true,
-                margin: {
-                    item: {
-                        horizontal: 0,
-                        vertical: 5,
-                    },
-                },
-                hiddenDates: [
-                    {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                    {start: '2018-01-03 00:00:00', end: '2018-01-03 08:00:00', repeat: 'daily'},
-                    {start: '2018-01-03 18:00:00', end: '2018-01-04 00:00:00', repeat: 'daily'},
-                ],
-                min: min,
-                max: max,
-                zoomMax: 31536000000000,
-                zoomMin: 315360000,
-                order: (a, b) => b.id - a.id,
-                tooltip: {
-                    followMouse: false,
-                    overflowMethod: 'flip',
-                },
-                visibleFrameTemplate: function(item) {
-                    if (item.visibleFrameTemplate) {
-                        return item.visibleFrameTemplate;
-                    }
-                    let percentage = item.value + '%';
-                    return `<span class="timeline-status"><span style="width:` + percentage + `"></span>`;
-                },
+                groups: groups,
+                timeline: null,
+                tooltips: {},
             };
         },
-        visItems() {
-            return this.items.map((item) => {
-                let $tooltip = document.getElementsByClassName('tooltip' + item.id)[0];
-                item.title = $tooltip ? $tooltip.innerHTML : item.title;
-                return item;
-            });
-        },
-    },
-    watch: {
-        items: function() {
-            this.$nextTick(() => {
+        methods: {
+            isPhase(item) {
+                return item.data.type === TYPE_PHASE;
+            },
+            getType(item) {
+                if (this.isPhase(item)) {
+                    return 'phase';
+                }
+
+                return 'milestone';
+            },
+            refreshTimeline() {
                 if (this.timeline) {
                     this.timeline.destroy();
                 }
 
                 this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+            },
+        },
+        computed: {
+            startHour() {
+                return moment(`2001-01-01 ${this.startTime}`).hour();
+            },
+            startMinute() {
+                return moment(`2001-01-01 ${this.startTime}`).minute();
+            },
+            startSecond() {
+                return moment(`2001-01-01 ${this.startTime}`).second();
+            },
+            endHour() {
+                return moment(`2001-01-01 ${this.endTime}`).hour();
+            },
+            endMinute() {
+                return moment(`2001-01-01 ${this.endTime}`).minute();
+            },
+            endSecond() {
+                return moment(`2001-01-01 ${this.endTime}`).second();
+            },
+            hiddenDates() {
+                return [
+                    {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
+                    {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startTime}`, repeat: 'daily'},
+                    {start: `2018-01-03 ${this.endTime}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
+                ];
+            },
+            visOptions: function() {
+                let min = new Date(_.minBy(this.items, 'start'));
+                let max = new Date(_.minBy(this.items, 'end'));
+
+                min.setFullYear(min.getFullYear() - 2);
+                max.setFullYear(max.getFullYear() + 1);
+
+                return {
+                    width: '100%',
+                    horizontalScroll: true,
+                    margin: {
+                        item: {
+                            horizontal: 0,
+                            vertical: 5,
+                        },
+                    },
+                    hiddenDates: this.hiddenDates,
+                    min: min,
+                    max: max,
+                    zoomMax: 31536000000000,
+                    zoomMin: 315360000,
+                    order: (a, b) => b.id - a.id,
+                    tooltip: {
+                        followMouse: false,
+                        overflowMethod: 'flip',
+                    },
+                    visibleFrameTemplate: function(item) {
+                        if (item.visibleFrameTemplate) {
+                            return item.visibleFrameTemplate;
+                        }
+                        let percentage = item.value + '%';
+                        return `<span class="timeline-status"><span style="width:` + percentage + `"></span>`;
+                    },
+                };
+            },
+            visItems() {
+                let items = this.items.map((item) => {
+                    let title = item.title;
+                    let $tooltip = document.getElementsByClassName('tooltip' + item.id)[0];
+                    if ($tooltip) {
+                        title = $tooltip.innerHTML;
+                    }
+
+                    item.title = title;
+
+                    if (item.start) {
+                        item.start.setHours(this.startHour);
+                        item.start.setMinutes(this.startMinute);
+                        item.start.setSeconds(this.startSecond);
+                    }
+
+                    if (item.end) {
+                        item.end.setHours(this.endHour);
+                        item.end.setMinutes(this.endMinute);
+                        item.end.setSeconds(this.endSecond);
+                    }
+
+                    return item;
+                });
+
+                return items;
+            },
+        },
+        updated() {
+            this.$nextTick(() => {
+                this.refreshTimeline();
             });
         },
-    },
-    mounted() {
-        this.$nextTick(() => {
-            this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
-        });
-    },
-};
+        watch: {
+            items() {
+                this.$nextTick(() => {
+                    this.refreshTimeline();
+                });
+            },
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.refreshTimeline();
+            });
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -151,7 +200,6 @@ export default {
     @import '../../../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
     @import '../../../css/box';
     @import '../../../css/box-task';
-    @import '../../../css/common';
 
     .vis-timeline,
     .vis-panel.vis-bottom,
@@ -240,8 +288,8 @@ export default {
             @include border-radius(50px);
 
             .vis-item-content {
-                font-size: 10px; 
-                padding: 10px 15px;               
+                font-size: 10px;
+                padding: 10px 15px;
             }
 
             &.reached {
@@ -250,7 +298,7 @@ export default {
             }
 
             &.on-hold {
-                color: darken($warningColor,30%);
+                color: darken($warningColor, 30%);
                 background-color: $warningColor;
             }
 

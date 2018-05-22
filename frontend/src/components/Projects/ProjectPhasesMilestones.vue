@@ -14,8 +14,7 @@
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showDeleteMilestoneModal = false"
                    class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedMilestone()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{
-                    translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedMilestone()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
 
@@ -37,9 +36,7 @@
                 <h1>{{ translateText('message.project_phases') }}</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">{{
-                    translateText('button.add_new_phase') }}
-                </router-link>
+                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_phase') }}</router-link>
             </div>
         </div>
         <div class="full-filters flex flex-direction-reverse">
@@ -63,9 +60,7 @@
                             <th class="no-padding">
                                 <table class="table inner-table">
                                     <tr>
-                                        <th class="text-center" colspan="3">{{
-                                            translateText('table_header_cell.base_schedule') }}
-                                        </th>
+                                        <th class="text-center" colspan="3">{{ translateText('table_header_cell.base_schedule') }}</th>
                                     </tr>
                                     <tr>
                                         <th class="text-center">{{ translateText('table_header_cell.start') }}</th>
@@ -91,8 +86,7 @@
                             <th class="no-padding">
                                 <table class="table inner-table">
                                     <tr>
-                                        <th class="text-center" colspan="3">{{
-                                            translateText('table_header_cell.actual_schedule') }}
+                                        <th class="text-center" colspan="3">{{ translateText('table_header_cell.actual_schedule') }}
                                         </th>
                                     </tr>
                                     <tr>
@@ -115,8 +109,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.scheduledStartAt | date }}</td>
                                         <td class="text-center">{{ phase.scheduledFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.scheduledDurationDays > 0 ?
-                                            $formatNumber(phase.scheduledDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.scheduledDurationDays > 0 ? $formatNumber(phase.scheduledDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
@@ -126,8 +119,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.forecastStartAt | date }}</td>
                                         <td class="text-center">{{ phase.forecastFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.forecastDurationDays ?
-                                            $formatNumber(phase.forecastDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.forecastDurationDays ? $formatNumber(phase.forecastDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
@@ -137,8 +129,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.actualStartAt | date }}</td>
                                         <td class="text-center">{{ phase.actualFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.actualDurationDays ?
-                                            $formatNumber(phase.actualDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.actualDurationDays ? $formatNumber(phase.actualDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
