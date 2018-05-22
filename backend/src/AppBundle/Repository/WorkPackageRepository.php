@@ -1237,6 +1237,144 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseForecastStartDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.forecastStartAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->andWhere($expr->isNotNull('o.forecastStartAt'))
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseForecastFinishDate(WorkPackage $workPackage)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->select('MAX(o.forecastFinishAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getMilestoneActualStartDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.actualStartAt)')
+            ->andWhere('o.milestone = :milestone and o.type = :type')
+            ->andWhere($expr->isNotNull('o.actualStartAt'))
+            ->setParameter('milestone', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getMilestoneActualFinishDate(WorkPackage $workPackage)
+    {
+        $createQueryBuilder = function () use ($workPackage) {
+            $qb = $this->createQueryBuilder('o');
+
+            return $qb
+                ->andWhere('o.milestone = :milestone and o.type = :type')
+                ->setParameter('milestone', $workPackage->getId())
+                ->setParameter('type', WorkPackage::TYPE_TASK)
+                ;
+        };
+
+        $qb = $createQueryBuilder();
+        $expr = $qb->expr();
+
+        $found = $createQueryBuilder()
+            ->select('COUNT(o)')
+            ->andWhere($expr->isNull('o.actualFinishAt'))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        if ($found > 0) {
+            return null;
+        }
+
+        return $createQueryBuilder()
+            ->select('MAX(o.actualFinishAt)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getMilestoneForecastStartDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.forecastStartAt)')
+            ->andWhere('o.milestone = :milestone and o.type = :type')
+            ->andWhere($expr->isNotNull('o.forecastStartAt'))
+            ->setParameter('milestone', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getMilestoneForecastFinishDate(WorkPackage $workPackage)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->select('MAX(o.forecastFinishAt)')
+            ->andWhere('o.milestone = :milestone and o.type = :type')
+            ->setParameter('milestone', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * @param \DateTime $date
      *
      * @return array
@@ -1403,10 +1541,10 @@ class WorkPackageRepository extends BaseRepository
     /**
      * @param WorkPackage $wp
      *
-     * @return int
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @return int
      */
     public function getWorkPackageProgress(WorkPackage $wp)
     {
@@ -1421,5 +1559,69 @@ class WorkPackageRepository extends BaseRepository
         $qb->setParameter('type', WorkPackage::TYPE_TASK);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getMilestones(Project $project)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->where('o.type = :type and o.project = :project')
+            ->setParameter('type', WorkPackage::TYPE_MILESTONE)
+            ->setParameter('project', $project->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getPhases(Project $project)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->where('o.type = :type and o.project = :project')
+            ->setParameter('type', WorkPackage::TYPE_PHASE)
+            ->setParameter('project', $project->getId())
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackageStatus|null
+     */
+    public function getPhaseStatus(WorkPackage $workPackage)
+    {
+        // to be continued
+        $qb = $this
+            ->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.workPackageStatus', 's')
+            ->where('o.type = :type and o.phase = :phase and o.parent is null and s.code = :code')
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('phase', $workPackage->getId())
+            ->setMaxResults(1)
+        ;
+
+        /** @var WorkPackage $workPackage */
+        $workPackage = $qb
+            ->setParameter('code', WorkPackageStatus::CODE_ONGOING)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        if ($workPackage) {
+            return $workPackage->getWorkPackageStatus();
+        }
     }
 }

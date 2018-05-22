@@ -3,16 +3,19 @@
 namespace Component\WorkPackage\Calculator;
 
 use AppBundle\Entity\WorkPackage;
-use Component\Repository\RepositoryInterface;
+use AppBundle\Repository\WorkPackageRepository;
 
 class WorkPackageProgressCalculator implements WorkPackageProgressCalculatorInterface
 {
+    /**
+     * @var WorkPackage
+     */
     private $workPackageRepository;
 
     /**
-     * @param RepositoryInterface $workPackageRepository
+     * @param WorkPackageRepository $workPackageRepository
      */
-    public function __construct(RepositoryInterface $workPackageRepository)
+    public function __construct(WorkPackageRepository $workPackageRepository)
     {
         $this->workPackageRepository = $workPackageRepository;
     }
