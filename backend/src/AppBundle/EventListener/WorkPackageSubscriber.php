@@ -84,13 +84,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $wp = $event->getWorkPackage();
         $this->workPackageRasciSync->sync($wp);
 
-        if ($wp->hasPhase()) {
-            $this->eventDispatcher->dispatch(
-                WorkPackageEvents::RECALCULATE_PHASE_DATES,
-                new WorkPackageEvent($wp->getPhase())
-            );
-        }
-
         $this->workPackageRepository->add($wp);
     }
 
