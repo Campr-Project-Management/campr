@@ -2,7 +2,7 @@
 @import '_mixins.scss';
 
 .task-range-slider {
-  margin-bottom: 10px;
+  margin: 10px 0;
   height: 45px;
   position: relative;
 
@@ -47,7 +47,7 @@
 
     &.base {
       .irs-bar {
-        background: $mainColor !important;
+        background: $mainColor;
       }
 
       .irs-slider {
@@ -67,7 +67,7 @@
 
     &.forecast {
       .irs-bar {
-        background: $middleColor !important;
+        background: $middleColor;
       }
 
       .irs-slider {
@@ -86,7 +86,7 @@
 
       &.danger {
         .irs-bar {
-          background: $dangerColor !important;
+          background: $dangerColor;
         }
 
         .irs-slider {
