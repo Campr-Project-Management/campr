@@ -126,6 +126,11 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.phase_forecast_dates:
+        class: Component\WorkPackage\Calculator\PhaseForecastDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
     app.calculator.project_scheduled_dates:
         class: Component\Project\Calculator\ProjectScheduledDatesCalculator
         arguments:
