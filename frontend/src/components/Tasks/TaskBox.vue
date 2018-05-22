@@ -44,7 +44,18 @@
                         </router-link>
                     </span>
 
-                    <task-schedule-bar :task="task" title="message.schedule"/>
+                    <schedule-dates-bar
+                            title="message.schedule"
+                            :base-start-at="task.scheduledStartAt"
+                            :base-finish-at="task.scheduledFinishAt"
+                            :base-duration-days="task.scheduledDurationDays"
+                            :forecast-start-at="task.forecastStartAt"
+                            :forecast-finish-at="task.forecastFinishAt"
+                            :forecast-duration-days="task.forecastDurationDays"
+                            :actual-start-at="task.actualStartAt"
+                            :actual-finish-at="task.actualFinishAt"
+                            :actual-duration-days="task.actualDurationDays"/>
+
                     <task-cost-bar :task="task" title="message.cost"/>
                 </div>
             </div>            
@@ -99,24 +110,24 @@
             </div>
         </div>
         <task-label-bar
-            v-if="hasLabel()"
-            :title="task.labelName"
-                :color="task.labelColor" />
+                v-if="hasLabel()"
+                :title="task.labelName"
+                :color="task.labelColor"/>
     </div>
 </template>
 
 <script>
     import BarChart from '../_common/_charts/BarChart';
     import moment from 'moment';
-    import TaskScheduleBar from './TaskScheduleBar.vue';
     import TaskCostBar from './TaskCostBar.vue';
     import TaskLabelBar from './TaskLabelBar';
     import _ from 'lodash';
+    import ScheduleDatesBar from '../_common/ScheduleDatesBar';
 
     export default {
         components: {
+            ScheduleDatesBar,
             BarChart,
-            TaskScheduleBar,
             TaskCostBar,
             TaskLabelBar,
         },
