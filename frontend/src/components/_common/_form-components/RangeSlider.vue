@@ -244,96 +244,97 @@ export default {
 <style lang="scss">
     @import '../../../css/_variables.scss';
 
-    .irs-min, .irs-max, .irs-from, .irs-to, .irs-single {
-        display: none !important;
-        visibility: hidden !important;
-    }
+    .slider-holder {
+        .irs-min, .irs-max, .irs-from, .irs-to, .irs-single {
+            display: none !important;
+            visibility: hidden !important;
+        }
 
-    .irs-line {
-        background: $darkColor !important;
-        border: none !important;
-    }
-
-    .irs-bar {
-        background: $middleColor !important;
-        border: none !important;
-    }
-
-    .irs-bar-edge {
-        background: $middleColor !important;
-        border: none !important;
-    }
-
-    .irs-slider {
-        font-size: 0 !important;
-        background: $secondColor !important;
-        border: 2px solid $secondDarkColor !important;
-    }
-
-    .task-sidebar {
         .irs-line {
+            background: $darkColor !important;
+            border: none !important;
+        }
+
+        .irs-bar {
             background: $middleColor !important;
             border: none !important;
         }
 
-        .irs-bar,
         .irs-bar-edge {
-            background: $secondColor !important;
+            background: $middleColor !important;
             border: none !important;
+        }
+
+        .irs-slider {
+            font-size: 0 !important;
+            background: $secondColor !important;
+            border: 2px solid $secondDarkColor !important;
+        }
+
+        .task-sidebar {
+            .irs-line {
+                background: $middleColor !important;
+                border: none !important;
+            }
+
+            .irs-bar,
+            .irs-bar-edge {
+                background: $secondColor !important;
+                border: none !important;
+            }
         }
     }
 </style>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../../css/_variables.scss';
+    @import '../../../css/_variables.scss';
 
-  .slider-holder {
-      text-transform: uppercase;
-      color: $lightColor;
-      position: relative;
-      margin-bottom: 35px;
+    .slider-holder {
+        text-transform: uppercase;
+        color: $lightColor;
+        position: relative;
+        margin-bottom: 35px;
 
-      .heading {
-          position: absolute;
-          width: 100%;
-      }
+        .heading {
+            position: absolute;
+            width: 100%;
+        }
 
-      .title {
-          letter-spacing: 1.9px;
-      }
+        .title {
+            letter-spacing: 1.9px;
+        }
 
-      .value {
-          letter-spacing: 1.6px;
-      }
+        .value {
+            letter-spacing: 1.6px;
+        }
 
-      .number {
-          color: $secondColor;
-      }
+        .number {
+            color: $secondColor;
+        }
 
-      .slider {
-          margin-top: 9px;
-          width: 100%;
-          height: 11px;
-          padding: 0;
-      }
+        .slider {
+            margin-top: 9px;
+            width: 100%;
+            height: 11px;
+            padding: 0;
+        }
 
-      .range-slider-rail, .range-slider-fill {
-          height: 10px;
-          border-radius: 5px;
-      }
+        .range-slider-rail, .range-slider-fill {
+            height: 10px;
+            border-radius: 5px;
+        }
 
-      .range-slider-rail {
-          background: $darkColor;
-      }
+        .range-slider-rail {
+            background: $darkColor;
+        }
 
-      .range-slider-fill {
-          background: $middleColor;
-      }
+        .range-slider-fill {
+            background: $middleColor;
+        }
 
-      .range-slider-knob {
-          background: $secondColor;
-          border: 2px solid $secondDarkColor;
-      }
-  }
+        .range-slider-knob {
+            background: $secondColor;
+            border: 2px solid $secondDarkColor;
+        }
+    }
 </style>
