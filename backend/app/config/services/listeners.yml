@@ -113,11 +113,3 @@ services:
             - '@app.service.rasci_workpackage_sync'
         tags:
             - { name: kernel.event_subscriber }
-
-    app.subscriber.recalculate_phase_dates:
-        class: AppBundle\EventListener\RecalculatePhaseDatesSubscriber
-        arguments:
-            - '@app.calculator.phase_actual_dates'
-        tags:
-            - { name: kernel.event_subscriber }
-

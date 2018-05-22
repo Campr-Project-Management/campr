@@ -1558,6 +1558,16 @@ class WorkPackage
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string|null
+     */
+    public function getWorkPackageStatusCode()
+    {
+        return $this->workPackageStatus ? $this->workPackageStatus->getCode() : null;
+    }
+
+    /**
      * Returns WorkPackageStatus name.
      *
      * @Serializer\VirtualProperty()
