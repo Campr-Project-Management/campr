@@ -58,6 +58,16 @@ class ProjectTransformer extends AbstractTransformer
     private $decisionsTransformer;
 
     /**
+     * @var TransformerInterface
+     */
+    private $phasesTransformer;
+
+    /**
+     * @var TransformerInterface
+     */
+    private $milestonesTransformer;
+
+    /**
      * ProjectTransformer constructor.
      *
      * @param TransformerInterface         $dateTransformer
@@ -70,6 +80,8 @@ class ProjectTransformer extends AbstractTransformer
      * @param TransformerInterface         $opportunitiesTransformer
      * @param TransformerInterface         $todosTransformer
      * @param TransformerInterface         $decisionsTransformer
+     * @param TransformerInterface         $phasesTransformer
+     * @param TransformerInterface         $milestonesTransformer
      */
     public function __construct(
         TransformerInterface $dateTransformer,
@@ -81,7 +93,9 @@ class ProjectTransformer extends AbstractTransformer
         TransformerInterface $risksTransformer,
         TransformerInterface $opportunitiesTransformer,
         TransformerInterface $todosTransformer,
-        TransformerInterface $decisionsTransformer
+        TransformerInterface $decisionsTransformer,
+        TransformerInterface $phasesTransformer,
+        TransformerInterface $milestonesTransformer
     ) {
         $this->dateTransformer = $dateTransformer;
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
@@ -94,6 +108,8 @@ class ProjectTransformer extends AbstractTransformer
         $this->opportunitiesTransformer = $opportunitiesTransformer;
         $this->todosTransformer = $todosTransformer;
         $this->decisionsTransformer = $decisionsTransformer;
+        $this->phasesTransformer = $phasesTransformer;
+        $this->milestonesTransformer = $milestonesTransformer;
     }
 
     /**
@@ -114,6 +130,8 @@ class ProjectTransformer extends AbstractTransformer
             'trafficLight' => $project->getTrafficLight(),
             'schedule' => $this->getScheduleData($project),
             'tasks' => $this->tasksTransformer->transform($project),
+            'phases' => $this->phasesTransformer->transform($project),
+            'milestones' => $this->milestonesTransformer->transform($project),
             'costs' => $this->costsTransformer->transform($project),
             'risks' => $this->risksTransformer->transform($project),
             'opportunities' => $this->opportunitiesTransformer->transform($project),
