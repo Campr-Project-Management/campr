@@ -126,6 +126,33 @@ services:
         arguments:
             - '@app.repository.work_package'
 
+    app.calculator.phase_forecast_dates:
+        class: Component\WorkPackage\Calculator\PhaseForecastDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.milestone_actual_dates:
+        class: Component\WorkPackage\Calculator\MilestoneActualDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.milestone_forecast_dates:
+        class: Component\WorkPackage\Calculator\MilestoneForecastDatesCalculator
+        arguments:
+            - '@app.repository.work_package'
+
+    app.calculator.phase_status:
+        class: Component\WorkPackage\Calculator\PhaseStatusCalculator
+        arguments:
+            - '@app.repository.work_package'
+            - '@app.repository.work_package_status'
+
+    app.calculator.milestone_status:
+        class: Component\WorkPackage\Calculator\MilestoneStatusCalculator
+        arguments:
+            - '@app.repository.work_package'
+            - '@app.repository.work_package_status'
+
     app.calculator.project_scheduled_dates:
         class: Component\Project\Calculator\ProjectScheduledDatesCalculator
         arguments:
@@ -311,12 +338,48 @@ services:
             - '@app.graph.generator.project_cost_by_phase'
             - '@app.calculator.project_total_cost'
 
+    app.snapshot.transformer.task:
+        class: Component\Snapshot\Transformer\TaskTransformer
+        arguments:
+            - '@app.snapshot.transformer.date'
+            - '@app.calculator.work_package_progress'
+
     app.snapshot.transformer.tasks:
         class: Component\Snapshot\Transformer\TasksTransformer
         arguments:
             - '@app.calculator.project_progress'
             - '@app.calculator.project_workpackage_status_total_count'
             - '@app.calculator.project_workpackage_traffic_light_total'
+
+    app.snapshot.transformer.phase:
+        class: Component\Snapshot\Transformer\PhaseTransformer
+        arguments:
+            - '@app.snapshot.transformer.task'
+            - '@app.snapshot.transformer.date'
+            - '@app.calculator.phase_forecast_dates'
+            - '@app.calculator.phase_actual_dates'
+            - '@app.calculator.phase_status'
+
+    app.snapshot.transformer.phases:
+        class: Component\Snapshot\Transformer\PhasesTransformer
+        arguments:
+            - '@app.snapshot.transformer.phase'
+            - '@app.repository.work_package'
+
+    app.snapshot.transformer.milestone:
+        class: Component\Snapshot\Transformer\MilestoneTransformer
+        arguments:
+            - '@app.snapshot.transformer.task'
+            - '@app.snapshot.transformer.date'
+            - '@app.calculator.milestone_forecast_dates'
+            - '@app.calculator.milestone_actual_dates'
+            - '@app.calculator.milestone_status'
+
+    app.snapshot.transformer.milestones:
+        class: Component\Snapshot\Transformer\MilestonesTransformer
+        arguments:
+            - '@app.snapshot.transformer.milestone'
+            - '@app.repository.work_package'
 
     app.snapshot.transformer.risks:
         class: Component\Snapshot\Transformer\RisksTransformer
@@ -355,6 +418,8 @@ services:
             - '@app.snapshot.transformer.opportunities'
             - '@app.snapshot.transformer.todos'
             - '@app.snapshot.transformer.decisions'
+            - '@app.snapshot.transformer.phases'
+            - '@app.snapshot.transformer.milestones'
 
     app.snapshot.factory.project:
         class: Component\Snapshot\ProjectSnapshotFactory
