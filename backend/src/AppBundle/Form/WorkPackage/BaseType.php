@@ -19,29 +19,41 @@ class BaseType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-            ->add('type', ChoiceType::class, [
-                'required' => true,
-                'choices' => [
-                    'choices.phase' => WorkPackage::TYPE_PHASE,
-                    'choices.milestone' => WorkPackage::TYPE_MILESTONE,
-                    'choices.task' => WorkPackage::TYPE_TASK,
-                ],
-                'placeholder' => 'placeholder.type',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.type',
-                    ]),
-                ],
-                'translation_domain' => 'messages',
-            ])
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'type',
+                ChoiceType::class,
+                [
+                    'required' => true,
+                    'choices' => [
+                        'choices.phase' => WorkPackage::TYPE_PHASE,
+                        'choices.milestone' => WorkPackage::TYPE_MILESTONE,
+                        'choices.task' => WorkPackage::TYPE_TASK,
+                    ],
+                    'placeholder' => 'placeholder.type',
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.type',
+                            ]
+                        ),
+                    ],
+                    'translation_domain' => 'messages',
+                ]
+            )
         ;
     }
 
@@ -50,9 +62,11 @@ class BaseType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => WorkPackage::class,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => WorkPackage::class,
+                'csrf_protection' => false,
+            ]
+        );
     }
 }
