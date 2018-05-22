@@ -2,9 +2,14 @@
 @import '_mixins.scss';
 
 .task-range-slider {
-  margin-bottom: 10px;
+  margin: 10px 0;
   height: 45px;
   position: relative;
+
+  .irs-min, .irs-max, .irs-from, .irs-to, .irs-single {
+    display: none !important;
+    visibility: hidden !important;
+  }
 
   .task-range-slider-title {
     text-transform: uppercase;
@@ -47,11 +52,11 @@
 
     &.base {
       .irs-bar {
-        background: $mainColor !important;
+        background: $mainColor;
       }
 
       .irs-slider {
-        background-color: $mainColor !important;
+        background: $mainColor !important;
       }
 
       &.dark-range-slider {
@@ -60,18 +65,18 @@
         }
 
         .irs-slider {
-          background-color: $darkerColor !important;
+          background: $darkerColor !important;
         }
       }
     }
 
     &.forecast {
       .irs-bar {
-        background: $middleColor !important;
+        background: $middleColor;
       }
 
       .irs-slider {
-        background-color: $middleColor !important;
+        background: $middleColor !important;
       }
 
       &.warning {
@@ -80,17 +85,17 @@
         }
 
         .irs-slider {
-          background-color: $warningColor !important;
+          background: $warningColor !important;
         }
       }
 
       &.danger {
         .irs-bar {
-          background: $dangerColor !important;
+          background: $dangerColor;
         }
 
         .irs-slider {
-          background-color: $dangerColor !important;
+          background: $dangerColor !important;
         }
       }
     }
@@ -101,7 +106,7 @@
       }
 
       .irs-slider {
-        background-color: $secondColor !important;
+        background: $secondColor !important;
       }
 
       &.warning {
@@ -110,7 +115,7 @@
         }
 
         .irs-slider {
-          background-color: $warningColor !important;
+          background: $warningColor !important;
         }
       }
 
@@ -120,7 +125,7 @@
         }
 
         .irs-slider {
-          background-color: $dangerColor !important;
+          background: $dangerColor !important;
         }
       }
     }
