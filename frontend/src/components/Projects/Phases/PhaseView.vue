@@ -37,36 +37,16 @@
                     <h3>{{ translateText('message.schedule') }}</h3>
 
                     <div class="table-wrapper">
-                        <table class="table table-striped table-responsive">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                    <th>{{ translateText('table_header_cell.start') }}</th>
-                                    <th>{{ translateText('table_header_cell.finish') }}</th>
-                                    <th>{{ translateText('table_header_cell.duration_in_days') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td>{{ phase.scheduledStartAt }}</td>
-                                    <td>{{ phase.scheduledFinishAt }}</td>
-                                    <td>{{ phase.scheduledDurationDays > 0 ? phase.scheduledDurationDays : '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td>{{ phase.forecastStartAt }}</td>
-                                    <td>{{ phase.forecastFinishAt }}</td>
-                                    <td>{{ phase.forecastDurationDays > 0 ? phase.forecastDurationDays : '-' }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.actual') }}</td>
-                                    <td>{{ phase.actualStartAt }}</td>
-                                    <td>{{ phase.actualFinishAt }}</td>
-                                    <td>{{ phase.actualDurationDays > 0 ? phase.actualDurationDays : '-' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <schedule-dates-table
+                                :base-start-at="phase.scheduledStartAt"
+                                :base-finish-at="phase.scheduledFinishAt"
+                                :base-duration-days="phase.scheduledDurationDays"
+                                :forecast-start-at="phase.forecastStartAt"
+                                :forecast-finish-at="phase.forecastFinishAt"
+                                :forecast-duration-days="phase.forecastDurationDays"
+                                :actual-start-at="phase.actualStartAt"
+                                :actual-finish-at="phase.actualFinishAt"
+                                :actual-duration-days="phase.actualDurationDays"/>
                     </div>
 
                     <h3 v-if="phaseWorkPackages.length > 0">
@@ -131,9 +111,11 @@
 import {mapGetters, mapActions} from 'vuex';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
+import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
 
 export default {
     components: {
+        ScheduleDatesTable,
         Modal,
         router,
     },
