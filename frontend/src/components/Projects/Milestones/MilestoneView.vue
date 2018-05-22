@@ -37,28 +37,16 @@
                     <h3>{{ translateText('message.schedule') }}</h3>
 
                     <div class="table-wrapper">
-                        <table class="table table-striped table-responsive">
-                            <thead>
-                                <tr>
-                                    <th>{{ translateText('message.schedule') }}</th>
-                                    <th>{{ translateText('table_header_cell.due_date') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.base') }}</td>
-                                    <td>{{ milestone.scheduledFinishAt }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.forecast') }}</td>
-                                    <td>{{ milestone.forecastFinishAt }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ translateText('table_header_cell.actual') }}</td>
-                                    <td>{{ milestone.actualFinishAt }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <schedule-dates-table
+                                :base-start-at="milestone.scheduledStartAt"
+                                :base-finish-at="milestone.scheduledFinishAt"
+                                :base-duration-days="milestone.scheduledDurationDays"
+                                :forecast-start-at="milestone.forecastStartAt"
+                                :forecast-finish-at="milestone.forecastFinishAt"
+                                :forecast-duration-days="milestone.forecastDurationDays"
+                                :actual-start-at="milestone.actualStartAt"
+                                :actual-finish-at="milestone.actualFinishAt"
+                                :actual-duration-days="milestone.actualDurationDays"/>
                     </div>
 
                     <hr>
@@ -111,9 +99,11 @@ import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
+import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
 
 export default {
     components: {
+        ScheduleDatesTable,
         Modal,
         router,
     },

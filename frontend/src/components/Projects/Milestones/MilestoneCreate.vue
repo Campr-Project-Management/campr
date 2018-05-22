@@ -32,33 +32,38 @@
 
                     <hr class="double">
 
-                    <!-- /// Milestone Schedule /// -->
-                    <h3>{{ translateText('message.schedule') }}</h3>
-                    <span class="note"><b>{{ translateText('message.note') }}:</b> {{ translateText('message.milestone_schedule_note') }}</span>
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <div class="input-holder right" :class="{disabledpicker: isEdit }">
-                                    <label class="active">{{ translateText('label.base_due_date') }}</label>
-                                    <datepicker v-model="schedule.baseDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                    <template v-if="!isEdit">
+                        <!-- /// Milestone Schedule /// -->
+                        <h3>{{ translateText('message.schedule') }}</h3>
+                        <br/>
+                        <div class="row">
+                            <div class="form-group last-form-group">
+                                <div class="col-md-6">
+                                    <div class="input-holder right" :class="{disabledpicker: isEdit }">
+                                        <label class="active">{{ translateText('label.base_start_date') }}</label>
+                                        <datepicker v-model="schedule.scheduledStartAt" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill"/>
+                                    </div>
+                                    <error at-path="scheduledStartAt"/>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translateText('label.forecast_due_date') }}</label>
-                                    <datepicker v-model="schedule.forecastDueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                <div class="col-md-6">
+                                    <div class="input-holder right">
+                                        <label class="active">{{ translateText('label.base_end_date') }}</label>
+                                        <datepicker v-model="schedule.scheduledFinishAt" format="dd-MM-yyyy" />
+                                        <calendar-icon fill="middle-fill"/>
+                                    </div>
+                                    <error at-path="scheduledFinishAt"/>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- /// End Milestone Schedule /// -->
+                        <!-- /// End Milestone Schedule /// -->
 
-                    <hr class="double">
+                        <hr class="double">
+                    </template>
 
                     <!-- /// Milestone Details /// -->
                     <h3>{{ translateText('message.details') }}</h3>
+                    <br/>
 
                     <div class="row">
                         <div class="form-group last-form-group">
@@ -154,8 +159,8 @@ export default {
                 name: this.name,
                 type: 1,
                 content: this.content,
-                scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
+                scheduledStartAt: moment(this.schedule.scheduledStartAt).format('DD-MM-YYYY'),
+                scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
@@ -170,8 +175,6 @@ export default {
                 name: this.name,
                 type: 1,
                 content: this.content,
-                scheduledFinishAt: moment(this.schedule.baseDueDate).format('DD-MM-YYYY'),
-                forecastFinishAt: moment(this.schedule.forecastDueDate).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
@@ -191,8 +194,8 @@ export default {
     watch: {
         milestone(value) {
             this.name = this.milestone.name;
-            this.schedule.baseDueDate = new Date(this.milestone.scheduledFinishAt);
-            this.schedule.forecastDueDate = new Date(this.milestone.forecastFinishAt);
+            this.schedule.scheduledStartAt = new Date(this.milestone.scheduledStartAt);
+            this.schedule.scheduledFinishAt = new Date(this.milestone.scheduledFinishAt);
             this.details.status = this.milestone.workPackageStatus
                 ? {key: this.milestone.workPackageStatus, label: this.translateText(this.milestone.workPackageStatusName)}
                 : null
@@ -222,8 +225,8 @@ export default {
             name: '',
             content: '',
             schedule: {
-                baseDueDate: new Date(),
-                forecastDueDate: new Date(),
+                scheduledStartAt: new Date(),
+                scheduledFinishAt: new Date(),
             },
             details: {
                 status: null,
