@@ -1099,11 +1099,8 @@ class ProjectController extends ApiController
     {
         $filters = $request->query->all();
         /** @var WorkPackageRepository $repo */
-        $repo = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(WorkPackage::class)
-        ;
+        $repo = $this->get('app.repository.work_package');
+
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_PHASE;
@@ -1156,17 +1153,12 @@ class ProjectController extends ApiController
     {
         $filters = $request->query->all();
         /** @var WorkPackageRepository $repo */
-        $repo = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(WorkPackage::class)
-        ;
+        $repo = $this->get('app.repository.work_package');
 
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize'])
                 ? $filters['pageSize']
-                : $this->getParameter('front.per_page')
-            ;
+                : $this->getParameter('front.per_page');
             $filters['type'] = WorkPackage::TYPE_MILESTONE;
 
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
@@ -1178,10 +1170,12 @@ class ProjectController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => $repo->findMilestonesByProject($project),
-            'totalItems' => $repo->countMilestonesByProject($project),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $repo->findMilestonesByProject($project),
+                'totalItems' => $repo->countMilestonesByProject($project),
+            ]
+        );
     }
 
     /**
