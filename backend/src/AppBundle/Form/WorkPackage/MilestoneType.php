@@ -23,28 +23,52 @@ class MilestoneType extends BaseType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('content', TextareaType::class, [
-                'required' => false,
-            ])
-            ->add('scheduledFinishAt', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            ->add('forecastFinishAt', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            ->add('responsibility', EntityType::class, [
-                'class' => User::class,
-            ])
-            ->add('workPackageStatus', EntityType::class, [
-                'class' => WorkPackageStatus::class,
-            ])
-            ->add('phase', EntityType::class, [
-                'class' => WorkPackage::class,
-            ])
+            ->add(
+                'content',
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'scheduledStartAt',
+                DateType::class,
+                [
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                ]
+            )
+            ->add(
+                'scheduledFinishAt',
+                DateType::class,
+                [
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                ]
+            )
+            ->add(
+                'responsibility',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                ]
+            )
+            ->add(
+                'workPackageStatus',
+                EntityType::class,
+                [
+                    'class' => WorkPackageStatus::class,
+                ]
+            )
+            ->add(
+                'phase',
+                EntityType::class,
+                [
+                    'class' => WorkPackage::class,
+                ]
+            )
             ->add('isKeyMilestone', CheckboxType::class)
         ;
     }

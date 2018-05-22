@@ -2,24 +2,33 @@
 
 namespace AppBundle\Entity;
 
+use Component\Model\CodeAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * WorkPackageStatus.
  *
  * @ORM\Table(name="work_package_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageStatusRepository")
+ * @UniqueEntity(fields="code", message="unique.code")
  */
-class WorkPackageStatus
+class WorkPackageStatus implements CodeAwareInterface
 {
     const OPEN = 1;
     const PENDING = 2;
     const ONGOING = 3;
     const COMPLETED = 4;
     const CLOSED = 5;
+
+    const CODE_OPEN = 'open';
+    const CODE_PENDING = 'pending';
+    const CODE_ONGOING = 'ongoing';
+    const CODE_COMPLETED = 'completed';
+    const CODE_CLOSED = 'closed';
 
     /**
      * @var int
@@ -89,6 +98,20 @@ class WorkPackageStatus
     private $createdAt;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", nullable=false, unique=true)
+     */
+    private $code;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="default", type="boolean", nullable=false, options={"default"=0})
+     */
+    private $default;
+
+    /**
      * @var \DateTime|null
      *
      * @Serializer\Exclude()
@@ -103,6 +126,7 @@ class WorkPackageStatus
         $this->createdAt = new \DateTime();
         $this->workPackages = new ArrayCollection();
         $this->visible = true;
+        $this->default = false;
     }
 
     /**
@@ -357,5 +381,37 @@ class WorkPackageStatus
     public function isOnGoing(): bool
     {
         return self::ONGOING === $this->getId();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return (string) $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     */
+    public function setCode(string $code = null)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param bool $default
+     */
+    public function setDefault(bool $default = null)
+    {
+        $this->default = (bool) $default;
     }
 }
