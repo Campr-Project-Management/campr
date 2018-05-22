@@ -1237,6 +1237,45 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseForecastStartDate(WorkPackage $workPackage)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.forecastStartAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->andWhere($expr->isNotNull('o.forecastStartAt'))
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return \DateTime|null
+     */
+    public function getPhaseForecastFinishDate(WorkPackage $workPackage)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->select('MAX(o.forecastFinishAt)')
+            ->andWhere('o.phase = :phase and o.type = :type')
+            ->setParameter('phase', $workPackage->getId())
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * @param \DateTime $date
      *
      * @return array
@@ -1403,10 +1442,10 @@ class WorkPackageRepository extends BaseRepository
     /**
      * @param WorkPackage $wp
      *
-     * @return int
-     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @return int
      */
     public function getWorkPackageProgress(WorkPackage $wp)
     {

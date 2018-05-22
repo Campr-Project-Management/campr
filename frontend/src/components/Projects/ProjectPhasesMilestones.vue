@@ -91,8 +91,7 @@
                             <th class="no-padding">
                                 <table class="table inner-table">
                                     <tr>
-                                        <th class="text-center" colspan="3">{{
-                                            translateText('table_header_cell.actual_schedule') }}
+                                        <th class="text-center" colspan="3">{{ translateText('table_header_cell.actual_schedule') }}
                                         </th>
                                     </tr>
                                     <tr>
@@ -115,8 +114,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.scheduledStartAt | date }}</td>
                                         <td class="text-center">{{ phase.scheduledFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.scheduledDurationDays > 0 ?
-                                            $formatNumber(phase.scheduledDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.scheduledDurationDays > 0 ? $formatNumber(phase.scheduledDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
@@ -126,8 +124,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.forecastStartAt | date }}</td>
                                         <td class="text-center">{{ phase.forecastFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.forecastDurationDays ?
-                                            $formatNumber(phase.forecastDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.forecastDurationDays ? $formatNumber(phase.forecastDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
@@ -137,8 +134,7 @@
                                     <tr>
                                         <td class="text-center">{{ phase.actualStartAt | date }}</td>
                                         <td class="text-center">{{ phase.actualFinishAt | date }}</td>
-                                        <td class="text-center">{{ phase.actualDurationDays ?
-                                            $formatNumber(phase.actualDurationDays) : '-' }}
+                                        <td class="text-center">{{ phase.actualDurationDays ? $formatNumber(phase.actualDurationDays) : '-' }}
                                         </td>
                                     </tr>
                                 </table>
