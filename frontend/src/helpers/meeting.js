@@ -90,5 +90,17 @@ export const createFormData = (data) => {
         }
     }
 
+    if (data.meetingParticipants) {
+        for (let i = 0; i < data.meetingParticipants.length; i++) {
+            formData.append('meetingParticipants[' + i + '][user]', data.meetingParticipants[i].user);
+            if (data.meetingParticipants[i].isPresent) {
+                formData.append('meetingParticipants[' + i + '][isPresent]', 1);
+            }
+            if (data.meetingParticipants[i].inDistributionList) {
+                formData.append('meetingParticipants[' + i + '][inDistributionList]', 1);
+            }
+        }
+    }
+
     return formData;
 };

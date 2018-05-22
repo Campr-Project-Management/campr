@@ -26,8 +26,6 @@ const actions = {
             });
     },
     updateParticipant({commit}, {id, data}) {
-        console.log(id);
-        console.log(data);
         Vue.http
             .patch(
                 Routing.generate('app_api_meeting_participant_update', {'id': id}),
