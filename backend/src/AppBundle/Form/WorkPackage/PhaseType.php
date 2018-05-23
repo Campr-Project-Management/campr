@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form\WorkPackage;
 
-use AppBundle\Entity\WorkPackageStatus;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -52,13 +51,6 @@ class PhaseType extends BaseType
                 EntityType::class,
                 [
                     'class' => User::class,
-                ]
-            )
-            ->add(
-                'workPackageStatus',
-                EntityType::class,
-                [
-                    'class' => WorkPackageStatus::class,
                 ]
             )
             ->add(
