@@ -1983,30 +1983,6 @@ class WorkPackage
     }
 
     /**
-     * Validation for milestones, they can have only the OPEN&COMPLETED status.
-     *
-     * @Assert\Callback
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function workPackageStatusValidator(ExecutionContextInterface $context)
-    {
-        if (self::TYPE_MILESTONE !== $this->getType()) {
-            return;
-        }
-
-        $allowedStatuses = [WorkPackageStatus::OPEN, WorkPackageStatus::COMPLETED];
-
-        if (!in_array($this->getWorkPackageStatusId(), $allowedStatuses)) {
-            $context
-                ->buildViolation('invalid.milestone.work_package_status')
-                ->atPath('workPackageStatus')
-                ->addViolation()
-            ;
-        }
-    }
-
-    /**
      * Validation for task duration, the sum of the duration of all the children
      * cannot excede the duration of their parent.
      *
