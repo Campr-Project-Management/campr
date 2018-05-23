@@ -36,7 +36,7 @@ class PhaseForecastDatesCalculator implements DateRangeCalculatorInterface
         Assert::true($workPackage->isPhase(), 'WorkPackage is not a phase');
 
         $startAt = $this->workPackageRepository->getPhaseForecastStartDate($workPackage);
-        $finishAt = $this->workPackageRepository->getPhaseForecastStartDate($workPackage);
+        $finishAt = $this->workPackageRepository->getPhaseActualFinishDate($workPackage);
 
         if ($startAt) {
             $startAt = new \DateTime($startAt);
