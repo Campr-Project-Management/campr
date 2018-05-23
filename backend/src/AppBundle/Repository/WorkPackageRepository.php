@@ -1594,4 +1594,34 @@ class WorkPackageRepository extends BaseRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackageStatus|null
+     */
+    public function getPhaseStatus(WorkPackage $workPackage)
+    {
+        // to be continued
+        $qb = $this
+            ->createQueryBuilder('o')
+            ->select('o, s')
+            ->innerJoin('o.workPackageStatus', 's')
+            ->where('o.type = :type and o.phase = :phase and o.parent is null and s.code = :code')
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('phase', $workPackage->getId())
+            ->setMaxResults(1)
+        ;
+
+        /** @var WorkPackage $workPackage */
+        $workPackage = $qb
+            ->setParameter('code', WorkPackageStatus::CODE_ONGOING)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        if ($workPackage) {
+            return $workPackage->getWorkPackageStatus();
+        }
+    }
 }
