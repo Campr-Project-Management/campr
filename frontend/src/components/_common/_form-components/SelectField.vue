@@ -1,14 +1,14 @@
 <template>
     <div class="dropdown" :class="{disabled: disabled}">
         <button
-            ref="btn-dropdown"
-            class="btn btn-primary dropdown-toggle"
-            type="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            @click="updateScrollbarTop($event)"
-            :title="title">
+                ref="btn-dropdown"
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                @click="updateScrollbarTop($event)"
+                :title="title">
 
             <span class="select-field-placeholder">{{ placeholder }}</span>
 
@@ -35,125 +35,125 @@
 </template>
 
 <script>
-import $ from 'jquery';
-import _ from 'lodash';
+    import $ from 'jquery';
+    import _ from 'lodash';
 
-export default {
-    name: 'select-field',
-    props: {
-        value: {
-            type: Object,
-            required: false,
-            default: null,
+    export default {
+        name: 'select-field',
+        props: {
+            value: {
+                type: Object,
+                required: false,
+                default: null,
+            },
+            title: {
+                type: String,
+                required: false,
+                default: null,
+            },
+            options: {
+                type: Array,
+                required: true,
+                default: () => [],
+            },
+            maxItems: {
+                type: Number,
+                default: 3,
+            },
+            allowClear: {
+                type: Boolean,
+                default: false,
+                required: false,
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+            },
         },
-        title: {
-            type: String,
-            required: false,
-            default: null,
-        },
-        options: {
-            type: Array,
-            required: true,
-            default: () => [],
-        },
-        maxItems: {
-            type: Number,
-            default: 3,
-        },
-        allowClear: {
-            type: Boolean,
-            default: false,
-            required: false,
-        },
-        disabled: {
-            type: Boolean,
-            required: false,
-        },
-    },
-    computed: {
-        availableOptions() {
-            return _.uniqBy(this.options, 'key');
-        },
-        placeholder() {
-            let option = null;
-            if (this.value) {
-                option = _.find(this.availableOptions, (o) => {
-                    return o.key === this.value.key;
-                });
-            }
+        computed: {
+            availableOptions() {
+                return _.uniqBy(this.options, 'key');
+            },
+            placeholder() {
+                let option = null;
+                if (this.value) {
+                    option = _.find(this.availableOptions, (o) => {
+                        return o.key === this.value.key;
+                    });
+                }
 
-            if (option) {
-                return this.translate(option.label);
-            }
+                if (option) {
+                    return this.translate(option.label);
+                }
 
-            return this.title;
-        },
-        scrollbarHeight() {
-            const itemsToShow = this.availableOptions.length < this.maxItems
-                ? this.availableOptions.length
-                : this.maxItems
-            ;
+                return this.title;
+            },
+            scrollbarHeight() {
+                const itemsToShow = this.availableOptions.length < this.maxItems
+                    ? this.availableOptions.length
+                    : this.maxItems
+                ;
 
-            return (itemsToShow * this.itemHeight)
-                + (this.marginBottom + this.marginTop)
-                + (this.paddingBottom + this.paddingTop);
+                return (itemsToShow * this.itemHeight)
+                    + (this.marginBottom + this.marginTop)
+                    + (this.paddingBottom + this.paddingTop);
+            },
         },
-    },
-    methods: {
-        onChange(value) {
-            if (this.disabled) {
-                return;
-            }
+        methods: {
+            onChange(value) {
+                if (this.disabled) {
+                    return;
+                }
 
-            this.$emit('input', value);
-        },
-        onClear(event) {
-            if (this.disabled) {
-                return;
-            }
+                this.$emit('input', value);
+            },
+            onClear(event) {
+                if (this.disabled) {
+                    return;
+                }
 
-            event.stopPropagation();
-            this.$emit('input', null);
-        },
-        updateScrollbarTop(event) {
-            if (this.disabled) {
                 event.stopPropagation();
-                return;
-            }
+                this.$emit('input', null);
+            },
+            updateScrollbarTop(event) {
+                if (this.disabled) {
+                    event.stopPropagation();
+                    return;
+                }
 
-            let scrollTop = $(window).scrollTop();
-            let elementOffset = $(this.$el).offset().top;
-            let currentElementOffset = (elementOffset - scrollTop);
-            let windowInnerHeight = window.innerHeight;
+                let scrollTop = $(window).scrollTop();
+                let elementOffset = $(this.$el).offset().top;
+                let currentElementOffset = (elementOffset - scrollTop);
+                let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
-                this.scrollbarTop = -1 * this.scrollbarHeight;
-            } else {
-                this.scrollbarTop = this.itemHeight;
-            }
+                if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                    this.scrollbarTop = -1 * this.scrollbarHeight;
+                } else {
+                    this.scrollbarTop = this.itemHeight;
+                }
+            },
         },
-    },
-    mounted() {
-        let $ul = $(this.$refs.ul);
+        mounted() {
+            let $ul = $(this.$refs.ul);
 
-        this.itemHeight = $(this.$el).height();
-        this.marginTop = parseInt($ul.css('margin-top'), 10);
-        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
-        this.paddingTop = parseInt($ul.css('padding-top'), 10);
-        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
-        this.scrollbarTop = this.itemHeight;
-    },
-    data() {
-        return {
-            itemHeight: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-            marginTop: 0,
-            marginBottom: 0,
-            scrollbarTop: 0,
-        };
-    },
-};
+            this.itemHeight = $(this.$el).height();
+            this.marginTop = parseInt($ul.css('margin-top'), 10);
+            this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+            this.paddingTop = parseInt($ul.css('padding-top'), 10);
+            this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+            this.scrollbarTop = this.itemHeight;
+        },
+        data() {
+            return {
+                itemHeight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                scrollbarTop: 0,
+            };
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
