@@ -18,16 +18,14 @@
                 <div class="form">
                     <!-- /// Milestone Name /// -->
                     <input-field type="text" v-bind:label="translateText('placeholder.milestone_name')" v-model="name" v-bind:content="name" />
-                    <error
-                        v-if="validationMessages.name && validationMessages.name.length"
-                        v-for="message in validationMessages.name"
-                        :message="message" />
+                    <error at-path="name"/>
                     <!-- /// End Milestone Name /// -->
 
                     <!-- /// Milestone Description /// -->
                     <editor
                         v-model="content"
                         :label="'placeholder.milestone_description'"/>
+                    <error at-path="content"/>
                     <!-- /// End Milestone Description /// -->
 
                     <hr class="double">
@@ -67,20 +65,9 @@
 
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                                 <error at-path="responsibility" />
-                            </div>
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.status')"
-                                    v-bind:options="workPackageStatusesForMilestone"
-                                    v-model="details.status"
-                                    v-bind:currentOption="details.status" />
-                                <error
-                                    v-if="validationMessages.workPackageStatus && validationMessages.workPackageStatus.length"
-                                    v-for="message in validationMessages.workPackageStatus"
-                                    :message="message" />
                             </div>
                         </div>
                     </div>
