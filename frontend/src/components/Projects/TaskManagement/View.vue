@@ -227,54 +227,16 @@
                     <h3>{{ translateText('message.task_schedule') }}</h3>
                     <scrollbar class="customScrollbar">
                         <div class="scroll-wrapper">
-                            <table class="table table-small">
-                                <thead>
-                                    <tr>
-                                        <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                        <th>{{ translateText('table_header_cell.start') }}</th>
-                                        <th>{{ translateText('table_header_cell.finish') }}</th>
-                                        <th>{{ translateText('table_header_cell.duration') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ translateText('label.base') }}</td>
-                                        <td v-if="task.scheduledStartAt">{{ task.scheduledStartAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td v-if="task.scheduledFinishAt">{{ task.scheduledFinishAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td>
-                                            {{ getDuration(task.scheduledStartAt, task.scheduledFinishAt) }}
-                                        </td>
-                                    </tr>
-                                    <tr class="column-warning">
-                                        <td>{{ translateText('label.forecast') }}</td>
-                                        <td v-if="task.forecastStartAt">{{ task.forecastStartAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td v-if="task.forecastFinishAt">{{ task.forecastFinishAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td>
-                                            {{ getDuration(task.forecastStartAt, task.forecastFinishAt) }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ translateText('label.actual') }}</td>
-                                        <td v-if="task.actualStartAt" >{{ task.actualStartAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td v-if="task.actualFinishAt">{{ task.actualFinishAt|date }}</td>
-                                        <td v-else>-</td>
-
-                                        <td>
-                                            {{ getDuration(task.actualStartAt, task.actualFinishAt) }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <schedule-dates-table
+                                    :base-start-at="task.scheduledStartAt"
+                                    :base-finish-at="task.scheduledFinishAt"
+                                    :base-duration-days="task.scheduledDurationDays"
+                                    :forecast-start-at="task.forecastStartAt"
+                                    :forecast-finish-at="task.forecastFinishAt"
+                                    :forecast-duration-days="task.forecastDurationDays"
+                                    :actual-start-at="task.actualStartAt"
+                                    :actual-finish-at="task.actualFinishAt"
+                                    :actual-duration-days="task.actualDurationDays" />
                         </div>
                     </scrollbar>
                     <div v-for="(dependancy, index) in task.dependencies"
@@ -579,6 +541,7 @@ import SwitchField from '../../_common/_form-components/SwitchField';
 import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
 import UserAvatar from '../../_common/UserAvatar';
+import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -587,6 +550,7 @@ const TASK_STATUS_COMPLETED = 4;
 export default {
     name: 'task-view',
     components: {
+        ScheduleDatesTable,
         UserAvatar,
         EditStatusModal,
         TaskViewAssignments,
@@ -792,12 +756,6 @@ export default {
         deleteSubtask(subtaskId) {
             this.deleteTaskSubtask(subtaskId);
             this.showDeleteModal = false;
-        },
-        getDuration(startDate, endDate) {
-            let end = moment(endDate);
-            let start = moment(startDate);
-
-            return !isNaN(end.diff(start, 'days')) ? end.diff(start, 'days') + 1 : '-';
         },
         getSubtaskSummary() {
             return Translator.trans(
