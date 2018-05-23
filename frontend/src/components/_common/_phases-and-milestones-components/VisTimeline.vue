@@ -14,6 +14,7 @@
     import vis from 'vis';
     import Tooltip from '../../Projects/PhasesAndMilestones/Tooltip.vue';
     import _ from 'lodash';
+    import moment from 'moment';
 
     const TYPE_PHASE = 0;
 
@@ -28,15 +29,21 @@
                 required: false,
                 default: false,
             },
-            startHour: {
+            startTime: {
                 type: String,
                 required: false,
                 default: '08:00:00',
+                validate(value) {
+                    return moment(`2001-01-01 ${value}`).isValid();
+                },
             },
-            endHour: {
+            endTime: {
                 type: String,
                 required: false,
                 default: '18:00:00',
+                validate(value) {
+                    return moment(`2001-01-01 ${value}`).isValid();
+                },
             },
         },
         components: {
@@ -69,13 +76,38 @@
 
                 return 'milestone';
             },
+            refreshTimeline() {
+                if (this.timeline) {
+                    this.timeline.destroy();
+                }
+
+                this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+            },
         },
         computed: {
+            startHour() {
+                return moment(`2001-01-01 ${this.startTime}`).hour();
+            },
+            startMinute() {
+                return moment(`2001-01-01 ${this.startTime}`).minute();
+            },
+            startSecond() {
+                return moment(`2001-01-01 ${this.startTime}`).second();
+            },
+            endHour() {
+                return moment(`2001-01-01 ${this.endTime}`).hour();
+            },
+            endMinute() {
+                return moment(`2001-01-01 ${this.endTime}`).minute();
+            },
+            endSecond() {
+                return moment(`2001-01-01 ${this.endTime}`).second();
+            },
             hiddenDates() {
                 return [
                     {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                    {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startHour}`, repeat: 'daily'},
-                    {start: `2018-01-03 ${this.endHour}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
+                    {start: '2018-01-03 00:00:00', end: `2018-01-03 ${this.startTime}`, repeat: 'daily'},
+                    {start: `2018-01-03 ${this.endTime}`, end: '2018-01-04 00:00:00', repeat: 'daily'},
                 ];
             },
             visOptions: function() {
@@ -94,11 +126,7 @@
                             vertical: 5,
                         },
                     },
-                    hiddenDates: [
-                        {start: '2018-01-06 00:00:00', end: '2018-01-08 00:00:00', repeat: 'weekly'},
-                        {start: '2018-01-03 00:00:00', end: '2018-01-03 08:00:00', repeat: 'daily'},
-                        {start: '2018-01-03 18:00:00', end: '2018-01-04 00:00:00', repeat: 'daily'},
-                    ],
+                    hiddenDates: this.hiddenDates,
                     min: min,
                     max: max,
                     zoomMax: 31536000000000,
@@ -118,27 +146,49 @@
                 };
             },
             visItems() {
-                return this.items.map((item) => {
+                let items = this.items.map((item) => {
+                    let title = item.title;
                     let $tooltip = document.getElementsByClassName('tooltip' + item.id)[0];
-                    item.title = $tooltip ? $tooltip.innerHTML : item.title;
-                    return item;
-                });
-            },
-        },
-        watch: {
-            items: function() {
-                this.$nextTick(() => {
-                    if (this.timeline) {
-                        this.timeline.destroy();
+                    if ($tooltip) {
+                        title = $tooltip.innerHTML;
                     }
 
-                    this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+                    item.title = title;
+
+                    if (item.start) {
+                        item.start.setHours(this.startHour);
+                        item.start.setMinutes(this.startMinute);
+                        item.start.setSeconds(this.startSecond);
+                    }
+
+                    if (item.end) {
+                        item.end.setHours(this.endHour);
+                        item.end.setMinutes(this.endMinute);
+                        item.end.setSeconds(this.endSecond);
+                    }
+
+                    return item;
+                });
+
+                console.info(items);
+                return items;
+            },
+        },
+        updated() {
+            this.$nextTick(() => {
+                this.refreshTimeline();
+            });
+        },
+        watch: {
+            items() {
+                this.$nextTick(() => {
+                    this.refreshTimeline();
                 });
             },
         },
         mounted() {
             this.$nextTick(() => {
-                this.timeline = new vis.Timeline(this.$refs.timeline, this.visItems, this.groups, this.visOptions);
+                this.refreshTimeline();
             });
         },
     };

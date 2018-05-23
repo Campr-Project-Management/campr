@@ -16,6 +16,10 @@ services:
             - '@app.calculator.work_package_progress'
             - '@app.calculator.phase_forecast_dates'
             - '@app.calculator.phase_actual_dates'
+            - '@app.calculator.milestone_forecast_dates'
+            - '@app.calculator.milestone_actual_dates'
+            - '@app.calculator.phase_status'
+            - '@app.calculator.milestone_status'
         tags:
             - { name: jms_serializer.event_subscriber }
 
