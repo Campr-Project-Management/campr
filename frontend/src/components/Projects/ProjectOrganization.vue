@@ -9,7 +9,7 @@
                 :message="message" />
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <div class="members main-list">
-                <div class="member flex member-row"  v-for="item in distributionList">
+                <div class="member flex member-row"  v-for="item in distributionLists">
                     <user-avatar
                             size="small"
                             :url="item.userAvatar"
@@ -122,8 +122,8 @@
                                 <td class="text-center switchers">
                                     <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
                                 </td>
-                                <td class="text-center switchers" v-for="dl in project.distributionLists">
-                                    <switches :modelChanged="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
+                                <td class="text-center switchers" v-for="dl in project.distributionLists" :key="dl.id+'-'+item.user.id">
+                                    <switches @click.native="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
                                 <td>
                                     <router-link :to="{name: 'project-organization-view-member', params: {id: projectId, userId: item.id} }" class="btn-icon">
@@ -259,12 +259,9 @@ export default {
         },
         updateDistributionItem: function(item, distribution) {
             const self = this;
-            return function(value) {
-                value
-                    ? self.addToDistribution({id: distribution.id, user: item.user})
-                    : self.removeFromDistribution({id: distribution.id, user: item.user})
-                ;
-            };
+            this.inDistributionList(item.user, distribution)
+                ? self.removeFromDistribution({id: distribution.id, user: item.user})
+                : self.addToDistribution({id: distribution.id, user: item.user});
         },
         clearFilters: function() {
             this.$refs.gridMemberSearch.clearValue();
@@ -288,6 +285,7 @@ export default {
             project: 'project',
             projectUsers: 'projectUsers',
             validationMessages: 'validationMessages',
+            distributionList: 'distributionList',
         }),
         pages: function() {
             if (!this.projectUsers || !this.projectUsers.totalItems) {
@@ -309,7 +307,7 @@ export default {
             showWorkspaceMemberInviteModal: false,
             showFailed: false,
             selectedDistribution: [],
-            distributionList: [],
+            distributionLists: [],
             gridList: [],
             showInRasci: '',
             showInOrg: '',
@@ -321,9 +319,13 @@ export default {
             projectId: this.$route.params.id,
             showDeleteMemberModal: false,
             memberId: null,
+            projectItem: {},
         };
     },
     watch: {
+        distributionList(value) {
+            this.getProjectById(this.$route.params.id);
+        },
         gridList(value) {
             this.getProjectUsers({id: this.$route.params.id, page: this.activePage, users: this.gridList});
         },
@@ -333,7 +335,7 @@ export default {
             this.project.projectUsers.map(function(user) {
                 if (selected.indexOf(user.user) > -1) distribution.push(user);
             });
-            this.distributionList = distribution;
+            this.distributionLists = distribution;
         },
     },
 };
