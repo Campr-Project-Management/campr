@@ -4,8 +4,8 @@
             <div class="user-info flex flex-v-center">
                 <user-avatar
                         size="small"
-                        :url="item.responsibilityAvatar"
-                        :name="item.responsibilityFullName" />
+                        :url="avatarUrl"
+                        :name="item.responsibilityFullName"/>
                 <div class="user-name">{{ item.responsibilityFullName }}</div>
             </div>
             <h2>
@@ -34,13 +34,16 @@
 </template>
 
 <script>
-    import moment from 'moment';
     import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
     import UserAvatar from '../../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'phases-and-milestones-tooltip',
-        components: {UserAvatar, ScheduleDatesTable},
+        components: {
+            UserAvatar,
+            ScheduleDatesTable,
+        },
         props: {
             item: {
                 type: Object,
@@ -56,39 +59,19 @@
             },
         },
         computed: {
-            isPhase() {
-                return this.type === 'phase';
-            },
-            isMilestone() {
-                return this.type === 'milestone';
-            },
-            forecastColorClass() {
-                let klass = 'column';
-                if (moment(this.item.forecastFinishAt).diff(moment(this.item.scheduledFinishAt), 'days') > 0) {
-                    klass = 'column-warning';
-                }
-
-                if (moment(this.item.actualFinishAt).diff(moment(this.item.forecastFinishAt), 'days') > 0 &&
-                    this.isMilestone) {
-                    klass = 'column-alert';
-                }
-
-                return klass;
-            },
-            actualColorClass() {
-                let klass = 'column';
-                if (moment(this.item.actualFinishAt).diff(moment(this.item.forecastFinishAt), 'days') > 0) {
-                    klass = 'column-alert';
-                }
-
-                return klass;
+            ...mapGetters([
+                'projectUserAvatarByUserId',
+                'projectUserByUserId',
+            ]),
+            avatarUrl() {
+                return this.projectUserAvatarByUserId(this.item.responsibility);
             },
         },
     };
 </script>
 
 <style scoped lang="scss">
-    table {
-        max-width: 400px;
+    .content {
+        max-width: 500px;
     }
 </style>

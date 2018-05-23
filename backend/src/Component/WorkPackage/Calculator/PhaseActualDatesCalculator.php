@@ -33,7 +33,7 @@ class PhaseActualDatesCalculator implements DateRangeCalculatorInterface
      */
     public function calculate(WorkPackage $workPackage): DateRangeInterface
     {
-        Assert::true($workPackage->isPhase() || $workPackage->isMilestone(), 'Task is not a phase/milestone');
+        Assert::true($workPackage->isPhase(), 'WorkPackage is not a phase');
 
         $startAt = $this->workPackageRepository->getPhaseActualStartDate($workPackage);
         $finishAt = $this->workPackageRepository->getPhaseActualFinishDate($workPackage);
