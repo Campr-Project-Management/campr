@@ -426,7 +426,8 @@ class WorkPackageRepository extends BaseRepository
         $qBuilder = $this->getQueryBuilderByProjectAndFilters($project, $criteria);
 
         if (isset($criteria['isGrid'])) {
-            $qBuilder->addSelect('(CASE
+            $qBuilder->addSelect(
+                '(CASE
                     WHEN wp.workPackageStatus = :statusOngoing THEN 0
                     WHEN wp.workPackageStatus = :statusPending THEN 1
                     WHEN wp.workPackageStatus = :statusClosed THEN 2
@@ -1596,32 +1597,44 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
-     * @param WorkPackage $workPackage
+     * @param WorkPackage       $workPackage
+     * @param WorkPackageStatus $status
      *
-     * @return WorkPackageStatus|null
+     * @return int
      */
-    public function getPhaseStatus(WorkPackage $workPackage)
+    public function getStatusCountByPhase(WorkPackage $workPackage, WorkPackageStatus $status)
     {
-        // to be continued
-        $qb = $this
+        return $this
             ->createQueryBuilder('o')
-            ->select('o, s')
-            ->innerJoin('o.workPackageStatus', 's')
-            ->where('o.type = :type and o.phase = :phase and o.parent is null and s.code = :code')
+            ->select('COUNT(o)')
+            ->where('o.type = :type and o.phase = :phase and o.parent is null and o.workPackageStatus = :status')
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('phase', $workPackage->getId())
+            ->setParameter('status', $status->getId())
             ->setMaxResults(1)
-        ;
-
-        /** @var WorkPackage $workPackage */
-        $workPackage = $qb
-            ->setParameter('code', WorkPackageStatus::CODE_ONGOING)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
         ;
+    }
 
-        if ($workPackage) {
-            return $workPackage->getWorkPackageStatus();
-        }
+    /**
+     * @param WorkPackage       $workPackage
+     * @param WorkPackageStatus $status
+     *
+     * @return int
+     */
+    public function getStatusCountByMilestone(WorkPackage $workPackage, WorkPackageStatus $status)
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->select('COUNT(o)')
+            ->where('o.type = :type and o.milestone = :milestone and o.parent is null and o.workPackageStatus = :status')
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('milestone', $workPackage->getId())
+            ->setParameter('status', $status->getId())
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
