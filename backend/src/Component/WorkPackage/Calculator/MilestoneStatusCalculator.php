@@ -3,49 +3,36 @@
 namespace Component\WorkPackage\Calculator;
 
 use AppBundle\Entity\WorkPackage;
-use AppBundle\Entity\WorkPackageStatus;
-use AppBundle\Repository\WorkPackageRepository;
-use AppBundle\Repository\WorkPackageStatusRepository;
-use Webmozart\Assert\Assert;
 
-class MilestoneStatusCalculator implements StatusCalculatorInterface
+class MilestoneStatusCalculator extends PhaseStatusCalculator
 {
     /**
-     * @var WorkPackage
+     * @param WorkPackage $workPackage
+     *
+     * @return array
      */
-    private $workPackageRepository;
+    protected function getStatusesCodes(WorkPackage $workPackage): array
+    {
+        $codes = [];
+        foreach ($this->getStatuses() as $status) {
+            $count = $this->workPackageRepository->getStatusCountByPhase($workPackage, $status);
+            if (!$count) {
+                continue;
+            }
 
-    /**
-     * @var WorkPackageStatusRepository
-     */
-    private $workPackageStatusRepository;
+            $codes[] = $status->getCode();
+        }
 
-    /**
-     * @param WorkPackageRepository       $workPackageRepository
-     * @param WorkPackageStatusRepository $workPackageStatusRepository
-     */
-    public function __construct(
-        WorkPackageRepository $workPackageRepository,
-        WorkPackageStatusRepository $workPackageStatusRepository
-    ) {
-        $this->workPackageRepository = $workPackageRepository;
-        $this->workPackageStatusRepository = $workPackageStatusRepository;
+        return $codes;
     }
 
     /**
      * @param WorkPackage $workPackage
      *
-     * @return WorkPackageStatus
+     * @return bool
      */
-    public function calculate(WorkPackage $workPackage): WorkPackageStatus
+    protected function isSupported(WorkPackage $workPackage)
     {
-        Assert::true($workPackage->isMilestone(), 'WorkPackage is not a milestone');
-
-        $status = $workPackage->getWorkPackageStatus();
-        if (!$status) {
-            $status = $this->workPackageStatusRepository->getDefault();
-        }
-
-        return $status;
+        return $workPackage->isMilestone();
     }
 }
