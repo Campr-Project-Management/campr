@@ -3,10 +3,12 @@ import * as types from '../mutation-types';
 
 const state = {
     distributionLists: [],
+    distributionList: {},
 };
 
 const getters = {
     distributionLists: state => state.distributionLists,
+    distributionList: state => state.distributionList,
     distributionListsForSelect: state => {
         let selectLsts = [];
         state.distributionLists.map(function(item) {
@@ -42,6 +44,10 @@ const actions = {
             .patch(Routing.generate('app_api_distribution_list_add_user', {'id': data.id}),
                 JSON.stringify(data)
             ).then((response) => {
+                if (response.status === 200) {
+                    let distributionList = response.data;
+                    commit(types.SET_DISTRIBUTION_LIST, {distributionList});
+                }
             }, (response) => {
             });
     },
@@ -55,6 +61,10 @@ const actions = {
             .patch(Routing.generate('app_api_distribution_list_remove_user', {'id': data.id}),
                 JSON.stringify(data)
             ).then((response) => {
+                if (response.status === 200) {
+                    let distributionList = response.data;
+                    commit(types.SET_DISTRIBUTION_LIST, {distributionList});
+                }
             }, (response) => {
             });
     },
@@ -68,6 +78,15 @@ const mutations = {
      */
     [types.SET_DISTRIBUTION_LISTS](state, {distributionLists}) {
         state.distributionLists = distributionLists;
+    },
+
+    /**
+     * Sets distribution list to state
+     * @param {Object} state
+     * @param {array} customers
+     */
+    [types.SET_DISTRIBUTION_LIST](state, {distributionList}) {
+        state.distributionList = distributionList;
     },
 };
 
