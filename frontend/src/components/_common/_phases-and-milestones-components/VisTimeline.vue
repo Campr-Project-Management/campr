@@ -170,7 +170,6 @@
                     return item;
                 });
 
-                console.info(items);
                 return items;
             },
         },
