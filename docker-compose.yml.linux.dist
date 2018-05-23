@@ -1,6 +1,25 @@
 version: "3"
 
 services:
+    dev.campr.biz:
+        container_name: campr_app
+        build: config/docker/app
+        links:
+            - mysql
+            - redis
+            - mailcatcher
+        volumes:
+            - .:/app
+            - ~/.ssh:/root/.ssh
+            - ~/.gitconfig:/home/application/.gitconfig
+            - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
+        shm_size: 1g
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        env_file: config/docker/.env
+
     mailcatcher:
         container_name: campr_mailcatcher
         image: schickling/mailcatcher
@@ -21,25 +40,6 @@ services:
     redis:
         container_name: campr_redis
         image: redis
-        env_file: config/docker/.env
-
-    dev.campr.biz:
-        container_name: campr_app
-        build: config/docker/app
-        links:
-            - mysql
-            - redis
-            - mailcatcher
-        volumes:
-            - .:/app
-            - ~/.ssh:/root/.ssh
-            - ~/.gitconfig:/root/.gitconfig
-            - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
-        shm_size: 1g
-        ports:
-            - "80:80"
-            - "8080:8080"
-            - "443:443"
         env_file: config/docker/.env
 
 volumes:
