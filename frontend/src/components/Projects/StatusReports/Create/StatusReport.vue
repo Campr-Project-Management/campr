@@ -91,19 +91,19 @@
             <div class="row" >
                 <div class="col-md-12">
                     <h3 class="margintop0">{{ translate('message.schedule') }}</h3>
+                    <br/>
+                    <status-report-schedule
+                            :base-start-at="schedule.base.startAt"
+                            :base-finish-at="schedule.base.finishAt"
+                            :base-duration-days="schedule.base.durationDays"
+                            :forecast-start-at="schedule.forecast.startAt"
+                            :forecast-finish-at="schedule.forecast.finishAt"
+                            :forecast-duration-days="schedule.forecast.durationDays"
+                            :actual-start-at="schedule.actual.startAt"
+                            :actual-finish-at="schedule.actual.finishAt"
+                            :actual-duration-days="schedule.actual.durationDays"/>
                 </div>
             </div>
-
-            <status-report-schedule
-                    :base-start-at="schedule.base.startAt"
-                    :base-finish-at="schedule.base.finishAt"
-                    :base-duration-days="schedule.base.durationDays"
-                    :forecast-start-at="schedule.forecast.startAt"
-                    :forecast-finish-at="schedule.forecast.finishAt"
-                    :forecast-duration-days="schedule.forecast.durationDays"
-                    :actual-start-at="schedule.actual.startAt"
-                    :actual-finish-at="schedule.actual.finishAt"
-                    :actual-duration-days="schedule.actual.durationDays"/>
 
             <hr class="double">
         </template>
@@ -131,16 +131,22 @@
 
         <hr class="double">
 
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
-                <traffic-light :status="projectTrafficLight"/>
+        <template v-if="phases || milestones">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
+                    <traffic-light :status="projectTrafficLight"/>
 
-                <vis-timeline :items="pmData" :with-phases="true"/>
+                    <br/>
+
+                    <status-report-timeline
+                            :phases="phases"
+                            :milestones="milestones" />
+                </div>
             </div>
-        </div>
 
-        <hr class="double">
+            <hr class="double">
+        </template>
 
         <div class="row" v-if="internalCostsGraphData">
             <div class="col-md-12">
@@ -200,9 +206,6 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
-    import VisTimeline from '../../../_common/_phases-and-milestones-components/VisTimeline';
-    import Vue from 'vue';
-    import moment from 'moment';
     import 'jquery-match-height/jquery.matchHeight.js';
     import CircleChart from '../../../_common/_charts/CircleChart';
     import Chart from '.././../Charts/CostsChart.vue';
@@ -224,6 +227,7 @@
     import StatusReportTrendChart from './TrendChart';
     import Error from '../../../_common/_messages/Error';
     import StatusReportSchedule from './Schedule';
+    import StatusReportTimeline from './Timeline';
 
     export default {
         name: 'status-report',
@@ -244,13 +248,13 @@
             },
         },
         components: {
+            StatusReportTimeline,
             StatusReportSchedule,
             Error,
             StatusReportTrendChart,
             StatusReportDecisions,
             StatusReportTodos,
             ProgressBarChart,
-            VisTimeline,
             CircleChart,
             RiskGrid,
             RiskList,
@@ -387,22 +391,6 @@
 
                 return data;
             },
-            pmData: function() {
-                let items = [];
-                if (this.projectMilestones && this.projectMilestones.items) {
-                    items = items.concat(this.projectMilestones.items.map((item) => {
-                        return {
-                            id: item.id,
-                            group: 0,
-                            content: item.name,
-                            start: new Date(item.scheduledFinishAt),
-                            value: item.workPackageStatus,
-                            title: renderTooltip(item),
-                        };
-                    }));
-                }
-                return items;
-            },
             opportunitiesGrid() {
                 let data = {
                     top: this.snapshot.opportunities.topItem,
@@ -480,6 +468,20 @@
                     return `${this.translate('message.week')} ${data.week}`;
                 });
             },
+            phases() {
+                if (!this.snapshot.phases) {
+                    return [];
+                }
+
+                return this.snapshot.phases.items;
+            },
+            milestones() {
+                if (!this.snapshot.milestones) {
+                    return [];
+                }
+
+                return this.snapshot.milestones.items;
+            },
             currency() {
                 return this.snapshot.currency.symbol;
             },
@@ -508,58 +510,6 @@
             };
         },
     };
-
-    /**
-     * Render tooltip based of arguments
-     * @param {Object} item
-     * @return {string}
-     */
-    function renderTooltip(item) {
-        let forecastColorClass = 'column';
-        if (moment(item.forecastFinishAt).diff(moment(item.scheduledFinishAt), 'days') > 0) {
-            forecastColorClass = 'column-warning';
-        } else if (moment(item.actualFinishAt).diff(moment(item.forecastFinishAt), 'days') > 0) {
-            forecastColorClass = 'column-alert';
-        }
-        return `<div>
-        <div class="task-box box">
-            <div class="box-header">
-                <div class="user-info flex flex-v-center">
-                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url('` + item.responsibilityAvatar + `')' }"
-                    v-tooltip.top-center="` + Vue.translate('table_header_cell.responsible') +
-            item.responsibilityFullName + `"></div>
-                    <p>` + item.responsibilityFullName + `</p>
-                </div>
-                <h2><router-link to="" class="simple-link">` + item.name + `</router-link></h2>
-            </div>
-            <div class="content">
-                <table class="table table-small">
-                    <thead>
-                        <tr>
-                            <th>` + Vue.translate('table_header_cell.schedule') + `</th>` +
-            `<th>` + Vue.translate('table_header_cell.date') + `</th>` +
-            `</tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>` + Vue.translate('table_header_cell.base') + `</td>` +
-            `<td>` + (item.scheduledFinishAt ? item.scheduledFinishAt : '-') + `</td>` +
-            `</tr>
-                        <tr class="` + forecastColorClass + `">
-                            <td>` + Vue.translate('table_header_cell.forecast') + `</td>` +
-            `<td>` + (item.forecastFinishAt ? item.forecastFinishAt : '-') + `</td>` +
-            `</tr>` +
-            `</tbody>
-                </table>
-            </div>
-            <div class="status">
-                <p><span>` + Vue.translate('table_header_cell.status') + `:</span> ` +
-            Vue.translate(item.workPackageStatusName) + `</p>
-                <bar-chart position="right" :percentage="85" :color="Green" :title-right="green"></bar-chart>
-            </div>
-        </div>
-    </div>`;
-    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -684,19 +634,6 @@
         }
     }
 
-    .user-avatar {
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        margin: 0 10px 0 0;
-        position: relative;
-        top: -2px;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        @include border-radius(50%);
-    }
-
     .entry-responsible {
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -716,19 +653,6 @@
 
     .cell-large {
         text-transform: none;
-    }
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
-        background-size: cover;
-        display: inline-block;
-        margin-right: 5px;
-
-        &:last-child {
-            margin-right: 0;
-        }
     }
 
     .table-small > thead > tr > th {

@@ -4,6 +4,7 @@ namespace AppBundle\Serializer\EventListener;
 
 use AppBundle\Entity\WorkPackage;
 use Component\WorkPackage\Calculator\DateRangeCalculatorInterface;
+use Component\WorkPackage\Calculator\StatusCalculatorInterface;
 use Component\WorkPackage\Calculator\WorkPackageProgressCalculatorInterface;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -27,20 +28,52 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $phaseActualDatesCalculator;
 
     /**
+     * @var DateRangeCalculatorInterface
+     */
+    private $milestoneForecastDatesCalculator;
+
+    /**
+     * @var DateRangeCalculatorInterface
+     */
+    private $milestoneActualDatesCalculator;
+
+    /**
+     * @var StatusCalculatorInterface
+     */
+    private $phaseStatusCalculator;
+
+    /**
+     * @var StatusCalculatorInterface
+     */
+    private $milestoneStatusCalculator;
+
+    /**
      * WorkPackageSubscriber constructor.
      *
      * @param WorkPackageProgressCalculatorInterface $workPackageProgressCalculator
      * @param DateRangeCalculatorInterface           $phaseForecastDatesCalculator
      * @param DateRangeCalculatorInterface           $phaseActualDatesCalculator
+     * @param DateRangeCalculatorInterface           $milestoneForecastDatesCalculator
+     * @param DateRangeCalculatorInterface           $milestoneActualDatesCalculator
+     * @param StatusCalculatorInterface              $phaseStatusCalculator
+     * @param StatusCalculatorInterface              $milestoneStatusCalculator
      */
     public function __construct(
         WorkPackageProgressCalculatorInterface $workPackageProgressCalculator,
         DateRangeCalculatorInterface $phaseForecastDatesCalculator,
-        DateRangeCalculatorInterface $phaseActualDatesCalculator
+        DateRangeCalculatorInterface $phaseActualDatesCalculator,
+        DateRangeCalculatorInterface $milestoneForecastDatesCalculator,
+        DateRangeCalculatorInterface $milestoneActualDatesCalculator,
+        StatusCalculatorInterface $phaseStatusCalculator,
+        StatusCalculatorInterface $milestoneStatusCalculator
     ) {
         $this->workPackageProgressCalculator = $workPackageProgressCalculator;
         $this->phaseForecastDatesCalculator = $phaseForecastDatesCalculator;
         $this->phaseActualDatesCalculator = $phaseActualDatesCalculator;
+        $this->milestoneForecastDatesCalculator = $milestoneForecastDatesCalculator;
+        $this->milestoneActualDatesCalculator = $milestoneActualDatesCalculator;
+        $this->phaseStatusCalculator = $phaseStatusCalculator;
+        $this->milestoneStatusCalculator = $milestoneStatusCalculator;
     }
 
     /**
@@ -70,6 +103,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->addProgress($visitor, $workPackage);
         $this->addForecastDates($visitor, $workPackage);
         $this->addActualDates($visitor, $workPackage);
+        $this->addWorkPackageStatus($visitor, $workPackage);
     }
 
     /**
@@ -91,7 +125,12 @@ class WorkPackageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $range = $this->phaseForecastDatesCalculator->calculate($workPackage);
+        $calculator = $this->phaseForecastDatesCalculator;
+        if ($workPackage->isMilestone()) {
+            $calculator = $this->milestoneForecastDatesCalculator;
+        }
+
+        $range = $calculator->calculate($workPackage);
 
         $visitor->setData('forecastStartAt', $this->dateToString($range->getStart()));
         $visitor->setData('forecastFinishAt', $this->dateToString($range->getFinish()));
@@ -108,7 +147,12 @@ class WorkPackageSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $range = $this->phaseActualDatesCalculator->calculate($workPackage);
+        $calculator = $this->phaseActualDatesCalculator;
+        if ($workPackage->isMilestone()) {
+            $calculator = $this->milestoneActualDatesCalculator;
+        }
+
+        $range = $calculator->calculate($workPackage);
 
         $visitor->setData('actualStartAt', $this->dateToString($range->getStart()));
         $visitor->setData('actualFinishAt', $this->dateToString($range->getFinish()));
@@ -127,5 +171,28 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         }
 
         return $date->format('Y-m-d');
+    }
+
+    /**
+     * @param GenericSerializationVisitor $visitor
+     * @param WorkPackage                 $workPackage
+     */
+    private function addWorkPackageStatus(GenericSerializationVisitor $visitor, WorkPackage $workPackage)
+    {
+        if (!$workPackage->isPhase() && !$workPackage->isMilestone()) {
+            return;
+        }
+
+        $calculator = $this->phaseStatusCalculator;
+        if ($workPackage->isMilestone()) {
+            $calculator = $this->milestoneStatusCalculator;
+        }
+
+        $status = $calculator->calculate($workPackage);
+
+        $visitor->setData('workPackageStatusId', $status->getId());
+        $visitor->setData('workPackageStatus', $status->getId());
+        $visitor->setData('workPackageStatusName', $status->getName());
+        $visitor->setData('workPackageStatusCode', $status->getCode());
     }
 }
