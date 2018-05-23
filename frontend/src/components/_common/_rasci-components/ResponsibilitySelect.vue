@@ -97,13 +97,13 @@
         position: relative;
         display: inline-block;
         width: 30px;
-        height: 30px;
+        height: 40px;
         box-sizing: content-box;
 
         li {
             position: absolute;
-            top: 3px;
-            left: 3px;
+            top: 5px;
+            left: 0;
             z-index: -1;
             @include translate(0, 0);
             @include opacity(0);
