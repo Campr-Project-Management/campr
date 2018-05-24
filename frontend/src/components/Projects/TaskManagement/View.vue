@@ -125,8 +125,6 @@
 
                 <hr class="double">
 
-                <task-history :history="taskHistory" />
-
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
                     <user-avatar
@@ -147,6 +145,10 @@
                     </div>
                 </div>
                 <!-- /// End New Task Description /// -->
+
+                <hr class="double">
+
+                <task-history :history="taskHistory" @load-next="loadNextHistory" />
             </div>
 
             <div class="col-lg-6">
@@ -591,7 +593,6 @@ export default {
     created() {
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
-            this.getTaskHistory(this.$route.params.taskId);
         }
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
@@ -742,6 +743,11 @@ export default {
                     this.completedSubtasksIds.push(subtask.id);
                 }
             });
+
+            let data = {
+                id: this.$route.params.taskId,
+            };
+            this.getTaskHistory(data);
         },
     },
     methods: {
@@ -1060,6 +1066,12 @@ export default {
                     }
                 }, (response) => {}
             );
+        },
+        loadNextHistory() {
+            let data = {
+                id: this.$route.params.taskId,
+            };
+            this.getTaskHistory(data);
         },
     },
     data() {
@@ -1405,6 +1417,35 @@ export default {
 
         &:last-child {
             margin: 0;
+        }
+    }
+
+    .loading-more {
+        text-align: center;
+        padding: 1em 0 1em;
+        color: $middleColor;
+    }
+
+    .histories-scroll {
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        overflow-y: hidden !important;
+    }
+
+    .task-history {
+        height: 600px;
+    }
+</style>
+
+<style lang="scss">
+    .histories-scroll {
+        .ps__scrollbar-x-rail {
+            bottom: auto !important;
+            top: 0;
+        }
+        > .ps__scrollbar-y-rail {
+            visibility: visible;
         }
     }
 </style>

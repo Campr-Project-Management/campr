@@ -461,7 +461,7 @@ class WorkPackageController extends ApiController
         $filters = $request->query->all();
         $filters['pageSize'] = (isset($filters['pageSize']))
             ? $filters['pageSize']
-            : $this->getParameter('front.per_page')
+            : $this->getParameter('history.per_page')
         ;
         $filters['page'] = isset($filters['page']) ? intval($filters['page']) : 1;
 
