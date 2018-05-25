@@ -77,6 +77,7 @@ const actions = {
                     return response;
                 },
                 () => {}
+            );
     },
     /**
      * remove project user from distribution list
