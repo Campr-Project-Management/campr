@@ -1,5 +1,11 @@
 <template>
     <div class="row">
+        <edit-distribution-list-modal
+            v-if="editDistributionListModal"
+            @close="editDistributionListModal = null"
+            v-on:distributionListUpdated="distributionListUpdated"
+            :distribution-id="editDistributionListModal" />
+
         <div class="col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
@@ -21,10 +27,10 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <multi-select-field
-                                        :title="translate('placeholder.distribution_list')"
-                                        :options="distributionListsForSelect"
-                                        v-model="details.distributionLists"/>
+                                <select-field
+                                    v-bind:title="translate('placeholder.distribution_list')"
+                                    v-bind:options="distributionListsForSelect"
+                                    v-model="details.distributionList"/>
                                 <error at-path="distributionLists"/>
                             </div>
                             <div class="col-md-6">
@@ -397,6 +403,9 @@
                 <div class="margintop20 text-right">
                     <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                 </div>
+                <div class="margintop20 text-right">
+                    <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</a>
+                </div>
                 <!-- /// End Header /// -->
 
                 <div class="flex flex-v-center flex-space-between">
@@ -408,15 +417,7 @@
                     </div>-->
                 </div>
 
-                <meeting-participants
-                    v-bind:meetingParticipants="displayedParticipants"
-                    v-bind:participants="participants"
-                    v-bind:participantsPages="participantsPages"
-                    v-bind:participantsPerPage="participantsPerPage"
-                    v-bind:participantsActivePage="participantsActivePage"
-                    v-bind:createMeeting="true"
-                    v-on:change-active-page="setParticipantsActivePage"
-                    @input="addMeetingParticipant" />
+                <meeting-participants v-model="selectedParticipants" />
             </div>
         </div>
 
@@ -441,6 +442,7 @@ import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
 import MeetingParticipants from './MeetingParticipants';
+import EditDistributionListModal from '../../_common/EditDistributionListModal';
 
 export default {
     components: {
@@ -456,6 +458,7 @@ export default {
         Error,
         Editor,
         MeetingParticipants,
+        EditDistributionListModal,
     },
     methods: {
         ...mapActions([
@@ -517,7 +520,9 @@ export default {
         },
         saveMeeting() {
             let data = {
-                distributionLists: this.details.distributionLists,
+                distributionLists: this.details.distributionList
+                    ? [this.details.distributionList]
+                    : null,
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
                 start: this.schedule.startTime,
@@ -529,12 +534,19 @@ export default {
                 decisions: this.decisions,
                 todos: this.todos,
                 infos: this.infos,
+                meetingParticipants: this.selectedParticipants.map(participant => {
+                    return {
+                        user: participant.id,
+                        isPresent: participant.isPresent,
+                        inDistributionList: participant.inDistributionList,
+                    };
+                }),
             };
 
-            if (this.details.distributionLists.length > 0) {
+            if (data.distributionLists && data.distributionLists.length > 0) {
                 data.name = '';
-                const length = this.details.distributionLists.length;
-                this.details.distributionLists.map((item, index) => {
+                const length = data.distributionLists.length;
+                data.distributionLists.map((item, index) => {
                     data.name += index !== length - 1 ? item.label + '|' : item.label;
                 });
             }
@@ -548,17 +560,7 @@ export default {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
                     } else {
-                        if (this.selectedParticipants.length > 0) {
-                            this.updateParticipantsPresent({
-                                meeting: response.body.id,
-                                participants: this.selectedParticipants,
-                            })
-                            .then((response) => {
-                                this.showSaved = true;
-                            });
-                        } else {
-                            this.showSaved = true;
-                        }
+                        this.showSaved = true;
                     }
                 },
                 () => {
@@ -566,38 +568,8 @@ export default {
                 })
             ;
         },
-        addMeetingParticipant(value) {
-            let existingUser = this.selectedParticipants.find((user) => {
-                return user.user === value.user;
-            });
-            if (!existingUser) {
-                this.selectedParticipants.push({
-                    user: value.user,
-                    isPresent: value.isPresent,
-                });
-                this.participants.filter((item) => {
-                    if (item.id === value.user) {
-                        return item.isPresent = value.isPresent;
-                    }
-                });
-            } else {
-                this.selectedParticipants.filter((item) => {
-                    if (item.user === value.user) {
-                        item.isPresent = value.isPresent;
-                    }
-                });
-                this.participants.filter((item) => {
-                    if (item.id === value.user) {
-                        return item.isPresent = value.isPresent;
-                    }
-                });
-            }
-        },
-        setParticipantsActivePage(page) {
-            this.participantsActivePage = page;
-            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
-
-            this.$forceUpdate();
+        distributionListUpdated(distributionList) {
+            this.details.distributionList = {key: distributionList.id, label: distributionList.name};
         },
     },
     computed: {
@@ -612,77 +584,48 @@ export default {
         ]),
     },
     watch: {
-        'details.distributionLists': {
+        'details.distributionList': {
             handler: function(value) {
-                let users = [];
+                this.selectedParticipants = this
+                    .selectedParticipants
+                    .filter(participant => participant.isPresent || participant.inDistributionList);
 
-                this.lists = this.distributionLists.filter((item) => {
-                    for (let i = 0; i < this.details.distributionLists.length; i++) {
-                        if (item.id === this.details.distributionLists[i].key) {
-                            return true;
-                        }
-                    }
-                    return false;
-                });
-
-                this.lists.map((item) => {
-                    let existingUser = users.find((participant) => {
-                        return participant.id === item.createdBy;
-                    });
-                    if (!existingUser) {
-                        users.push({
-                            id: item.createdBy,
-                            fullName: item.createdByFullName,
-                            avatar: item.createdByAvatar,
-                            departments: item.createdByDepartmentNames,
-                            isPresent: false,
-                        });
-                    }
-                    item.users.map((user) => {
-                        let projectUser = user.projectUsers.filter((item) => {
-                            return item.project !== this.$route.params.id;
-                        });
-                        let existingUser = users.find((participant) => {
-                            return participant.id === user.id;
-                        });
-                        if (!existingUser && projectUser.length > 0) {
-                            users.push({
-                                id: user.id,
-                                fullName: user.firstName + ' ' + user.lastName,
-                                avatar: user.avatarUrl,
-                                departments: projectUser[0].projectDepartmentNames,
-                                isPresent: false,
-                            });
-                        }
-                    });
-                });
-
-                if (this.selectedParticipants.length) {
-                    this.selectedParticipants.map((item) => {
-                        users.map((user) => {
-                            if(item.user === user.id) {
-                                user.isPresent = true;
-                            }
-                        });
-                    });
+                if (!value || !value.key) {
+                    return;
                 }
 
-                this.participantsActivePage = 1;
-                this.participants = users;
-                this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
-                this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
+                this.distributionLists.forEach(distributionList => {
+                    if (value.key !== distributionList.id) {
+                        return;
+                    }
+
+                    distributionList
+                        .users
+                        .filter(u => this.selectedParticipants.map(sp => sp.id).indexOf(u.id) === -1)
+                        .forEach(user => {
+                            let projectUser = user.projectUsers.filter((item) => {
+                                return item.project !== this.$route.params.id;
+                            });
+
+                            this.selectedParticipants.push({
+                                id: user.id,
+                                userFullName: user.firstName + ' ' + user.lastName,
+                                userAvatar: user.avatarUrl,
+                                departments: projectUser.length ? projectUser[0].projectDepartmentNames : [],
+                                isPresent: false,
+                                inDistributionList: false,
+                            });
+                        });
+                });
             },
             deep: true,
         },
         meeting(value) {
             this.name = this.meeting.name;
             if (this.meeting.distributionLists.length > 0) {
-                let selectedList = [];
-                this.meeting.distributionLists.map(function(item) {
-                    selectedList.push({'key': item.id, 'label': item.name});
-                });
-                this.details.distributionLists = selectedList;
-            };
+                let item = this.meeting.distributionLists[0];
+                this.details.distributionList = {'key': item.id, 'label': item.name};
+            }
         },
         showSaved(value) {
             if (value === false) {
@@ -734,9 +677,10 @@ export default {
                 },
             },
             details: {
-                distributionLists: [],
+                distributionList: null,
                 category: null,
             },
+            editDistributionListModal: null,
         };
     },
 };

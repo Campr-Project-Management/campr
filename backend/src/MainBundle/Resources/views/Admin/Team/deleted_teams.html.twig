@@ -32,6 +32,7 @@
                             <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
                             <th>{{ 'table_header_cell.name'|trans }}</th>
                             <th>{{ 'table_header_cell.slug'|trans }}</th>
+                            <th>{{ 'table_header_cell.members'|trans }}</th>
                             <th>{{ 'table_header_cell.created_at'|trans }}</th>
                             <th>{{ 'table_header_cell.deleted_at'|trans }}</th>
                             <th>{{ 'placeholder.actions'|trans }}</th>
@@ -50,6 +51,7 @@
                             </td>
                             <td>{{ team.name }}</td>
                             <td>{{ team.slug }}</td>
+                            <td>{{ team.teamMembers|length }}</td>
                             <td>{{ team.createdAt|date('d/m/Y') }}</td>
                             <td>{{ team.deletedAt|date('d/m/Y') }}</td>
                             <td>
