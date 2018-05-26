@@ -175,8 +175,8 @@ export default {
             return this.translate(text);
         },
         isInactive(meeting) {
-            let currentDate = new Date();
-            let meetingDate = new Date(meeting.date);
+            let currentDate = moment();
+            let meetingDate = moment(meeting.date);
 
             return meetingDate < currentDate;
         },
