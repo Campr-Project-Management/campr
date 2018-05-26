@@ -593,6 +593,5 @@ export default {
     .time-delay {
         text-overflow: ellipsis;
         white-space: nowrap;
-        overflow: hidden;
     }
 </style>
