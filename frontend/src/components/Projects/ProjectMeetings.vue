@@ -8,7 +8,7 @@
             </div>
         </modal>
 
-        <modal v-if="showRescheduleModal" @close="showRescheduleModal = false">
+        <modal v-if="showRescheduleModal" @close="showRescheduleModal = false" v-bind:hasSpecificClass="true">
             <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
             <div class="form-group last-form-group">
                 <div class="col-md-4">
