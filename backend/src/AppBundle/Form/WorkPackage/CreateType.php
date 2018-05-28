@@ -180,12 +180,12 @@ class CreateType extends BaseType
                 ],
             ])
             ->add('scheduledStartAt', DateType::class, [
-                'required' => true,
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
             ->add('scheduledFinishAt', DateType::class, [
-                'required' => true,
+                'required' => false,
                 'widget' => 'single_text',
                 'format' => 'dd-MM-yyyy',
             ])
@@ -276,7 +276,34 @@ class CreateType extends BaseType
                 FormEvents::PRE_SET_DATA,
                 function (FormEvent $event) use ($formModifier) {
                     $data = $event->getData();
+                    $form = $event->getForm();
                     $formModifier($event->getForm(), $data->getProject(), $data->getId());
+
+                    if ($data->getId()) {
+                        $forecastStartAtOptions = $form->get('forecastStartAt')->getConfig()->getOptions();
+                        $forecastStartAtOptions['required'] = true;
+                        $forecastFinishAtOptions = $form->get('forecastFinishAt')->getConfig()->getOptions();
+                        $forecastFinishAtOptions['required'] = true;
+
+                        $form
+                            ->remove('forecastStartAt')
+                            ->remove('forecastFinishAt')
+                            ->add('forecastStartAt', DateType::class, $forecastStartAtOptions)
+                            ->add('forecastFinishAt', DateType::class, $forecastFinishAtOptions)
+                        ;
+                    } else {
+                        $scheduleStartAtOptions = $form->get('scheduledStartAt')->getConfig()->getOptions();
+                        $scheduleStartAtOptions['required'] = true;
+                        $scheduleFinishAtOptions = $form->get('scheduledFinishAt')->getConfig()->getOptions();
+                        $scheduleFinishAtOptions['required'] = true;
+
+                        $form
+                            ->remove('scheduledStartAt')
+                            ->remove('scheduledFinishAt')
+                            ->add('scheduledStartAt', DateType::class, $scheduleStartAtOptions)
+                            ->add('scheduledFinishAt', DateType::class, $scheduleFinishAtOptions)
+                        ;
+                    }
                 }
             )
         ;
