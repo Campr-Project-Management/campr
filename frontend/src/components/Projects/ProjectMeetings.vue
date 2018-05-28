@@ -8,7 +8,7 @@
             </div>
         </modal>
 
-        <modal v-if="showRescheduleModal" @close="showRescheduleModal = false">
+        <modal v-if="showRescheduleModal" @close="showRescheduleModal = false" v-bind:hasSpecificClass="true">
             <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
             <div class="form-group last-form-group">
                 <div class="col-md-4">
@@ -227,7 +227,7 @@ export default {
         initRescheduleModal(meeting) {
             this.showRescheduleModal = true;
             this.meetingId = meeting.id;
-            this.date = new Date(meeting.date);
+            this.date = meeting.date ? moment(meeting.date).toDate() : null;
 
             this.startTime = {
                 HH: moment(meeting.start, 'HH:mm').format('HH'),
@@ -312,7 +312,7 @@ export default {
             showRescheduleModal: false,
             showNotificationModal: false,
             meetingId: null,
-            date: null,
+            date: moment().toDate(),
             startTime: null,
             endTime: null,
             showMore: {},
