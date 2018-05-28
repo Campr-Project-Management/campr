@@ -13,7 +13,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for='(participant, index) in value' :key="participant.id+'-'+participant.isPresent">
+                        <tr v-for='(participant, index) in value' :key="participant.user">
                             <td>
                                 <div class="avatars flex flex-v-center">
                                     <div>
