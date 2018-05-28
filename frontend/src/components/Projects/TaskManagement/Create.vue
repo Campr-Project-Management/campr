@@ -63,8 +63,9 @@
                     <!-- /// Task Schedule /// -->
                     <schedule
                             v-model="schedule"
-                            :editable-base="!isEdit"
-                            :editable-forecast="isEdit"/>
+                            :editable-base="!isEditBase"
+                            :editable-forecast="isEdit"
+                            v-on:input="updateSchedule"/>
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
@@ -230,8 +231,10 @@ export default {
             let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
 
             let formData = createFormData(this.formData);
-            formData.append('scheduledStartAt', moment(this.task.scheduledStartAt).format('DD-MM-YYYY'));
-            formData.append('scheduledFinishAt', moment(this.task.scheduledFinishAt).format('DD-MM-YYYY'));
+            if (this.task.scheduledStartAt && this.task.scheduledFinishAt) {
+                formData.append('scheduledStartAt', moment(this.task.scheduledStartAt).format('DD-MM-YYYY'));
+                formData.append('scheduledFinishAt', moment(this.task.scheduledFinishAt).format('DD-MM-YYYY'));
+            }
 
             this
                 .editTask({
@@ -316,6 +319,9 @@ export default {
         onAssignmentsUpdate(value) {
             this.assignments = Object.assign({}, this.assignments, value);
         },
+        updateSchedule(value) {
+            this.schedule = value;
+        },
     },
     created() {
         if (this.$route.params.taskId) {
@@ -384,6 +390,9 @@ export default {
         isEdit() {
             return !!this.$route.params.taskId;
         },
+        isEditBase() {
+            return this.task.scheduledStartAt && this.task.scheduledFinishAt && !!this.$route.params.taskId;
+        },
         formData() {
             let data = {
                 project: this.$route.params.id,
@@ -404,6 +413,10 @@ export default {
             if (this.isEdit) {
                 data.schedule.forecastStartDate = this.schedule.forecastStartDate;
                 data.schedule.forecastEndDate = this.schedule.forecastEndDate;
+                if(!this.isEditBase) {
+                    data.schedule.baseStartDate = this.schedule.baseStartDate;
+                    data.schedule.baseEndDate = this.schedule.baseEndDate;
+                }
             } else {
                 data.schedule.baseStartDate = this.schedule.baseStartDate;
                 data.schedule.baseEndDate = this.schedule.baseEndDate;
