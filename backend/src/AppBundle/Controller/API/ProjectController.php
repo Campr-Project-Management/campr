@@ -1987,7 +1987,7 @@ class ProjectController extends ApiController
         $riskStrategies = $this
             ->getEntityManager()
             ->getRepository(RiskStrategy::class)
-            ->findAllByProjectNullable($project)
+            ->findAll()
         ;
 
         return $this->createApiResponse($riskStrategies);
