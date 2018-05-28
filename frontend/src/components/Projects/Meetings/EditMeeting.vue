@@ -976,14 +976,15 @@ export default {
                             let projectUser = user.projectUsers.filter((item) => {
                                 return item.project !== this.$route.params.id;
                             });
+                            let participant = this.meeting.meetingParticipants.filter(mp => mp.user === user.id);
 
                             this.selectedParticipants.push({
-                                id: user.id,
+                                user: user.id,
                                 userFullName: user.firstName + ' ' + user.lastName,
                                 userAvatar: user.avatarUrl,
                                 departments: projectUser.length ? projectUser[0].projectDepartmentNames : [],
-                                isPresent: false,
-                                inDistributionList: false,
+                                isPresent: participant.length && participant[0].isPresent,
+                                inDistributionList: participant.length && participant[0].inDistributionList,
                             });
                         });
                 });
@@ -1016,7 +1017,11 @@ export default {
                 };
             });
 
-            this.selectedParticipants = this.meeting.meetingParticipants.map(i => i);
+            // this.selectedParticipants = this.meeting.meetingParticipants.map(mp => {
+            //     return {
+            //         user: mp.user,
+            //     };
+            // });
         },
         showSaved(value) {
             if (value === false) {
