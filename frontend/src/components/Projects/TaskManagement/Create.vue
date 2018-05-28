@@ -413,7 +413,7 @@ export default {
             if (this.isEdit) {
                 data.schedule.forecastStartDate = this.schedule.forecastStartDate;
                 data.schedule.forecastEndDate = this.schedule.forecastEndDate;
-                if(!this.isEditBase) {
+                if (!this.isEditBase) {
                     data.schedule.baseStartDate = this.schedule.baseStartDate;
                     data.schedule.baseEndDate = this.schedule.baseEndDate;
                 }
