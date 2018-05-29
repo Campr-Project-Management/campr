@@ -26,7 +26,7 @@ class ProjectObjectiveController extends BaseController
      *
      * @Route("/list", name="app_admin_project_objective_list")
      * @Method("GET")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */
