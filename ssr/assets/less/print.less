@@ -57,8 +57,17 @@
 
   tr,
   div,
-  img {
+  img,
+  h1, h2, h3, h4, h5, h6 {
     page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    padding-top: 10px;
+  }
+
+  div.avatar {
+    -webkit-print-color-adjust:exact;
   }
 
   div.ve-design, table, tbody {
