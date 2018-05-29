@@ -85,12 +85,12 @@
                                 <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
                                     <div class="avatars collapse in" v-if="meetingHasParticipants(meeting)">
-                                        <div>
-                                            <span v-for="(participant, index) in participants(meeting)"
+                                        <div v-if="meeting.meetingParticipants">
+                                            <span v-for="(participant, index) in (showMore[meeting.id] ? participants(meeting) : participants(meeting).slice(0, 3))"
                                                 :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
-                                            <button v-if="participants && participants.length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">
+                                            <button v-if="participants(meeting).length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">
                                                 <span v-if="!showMore[meeting.id]" class="more">{{ translateText('message.more') }} +</span>
                                                 <span v-if="showMore[meeting.id]" class="less">{{ translateText('message.less') }} -</span>
                                             </button>
@@ -260,16 +260,11 @@ export default {
             this.sendMeetingNotifications(this.meetingId);
             this.showNotificationModal = false;
         },
-        participants(meeting) {
-            let participants = meeting.meetingParticipants.filter((item) => {
+        participants: (meeting) => meeting
+            .meetingParticipants
+            .filter((item) => {
                 return item.isPresent === true;
-            });
-            if (this.showMore[meeting.id]) {
-                return participants;
-            } else {
-                return participants.slice(0, 3);
-            }
-        },
+            }),
         setShowMore(meetingId, value) {
             this.showMore[meetingId] = value;
             this.$forceUpdate();
