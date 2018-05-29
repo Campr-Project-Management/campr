@@ -28,6 +28,7 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
 use AppBundle\Entity\Risk;
 use AppBundle\Entity\RiskStatus;
+use AppBundle\Entity\RiskStrategy;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\Subteam;
 use AppBundle\Entity\TeamInvite;
@@ -1983,7 +1984,13 @@ class ProjectController extends ApiController
      */
     public function riskStrategiesAction(Project $project)
     {
-        return $this->createApiResponse($project->getRiskStrategies());
+        $riskStrategies = $this
+            ->getEntityManager()
+            ->getRepository(RiskStrategy::class)
+            ->findAll()
+        ;
+
+        return $this->createApiResponse($riskStrategies);
     }
 
     /**
