@@ -25,7 +25,7 @@ class DistributionListController extends BaseController
      *
      * @Route("/list", name="app_admin_distribution_list_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */
