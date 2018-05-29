@@ -536,7 +536,7 @@ export default {
                 infos: this.infos,
                 meetingParticipants: this.selectedParticipants.map(participant => {
                     return {
-                        user: participant.id,
+                        user: participant.user,
                         isPresent: participant.isPresent,
                         inDistributionList: participant.inDistributionList,
                     };
@@ -609,6 +609,7 @@ export default {
 
                             this.selectedParticipants.push({
                                 id: user.id,
+                                user: user.id,
                                 userFullName: user.firstName + ' ' + user.lastName,
                                 userAvatar: user.avatarUrl,
                                 departments: projectUser.length ? projectUser[0].projectDepartmentNames : [],
