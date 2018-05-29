@@ -25,7 +25,7 @@ class NoteController extends BaseController
      *
      * @Route("/list", name="app_admin_note_list")
      * @Method("GET")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */

@@ -22,7 +22,7 @@ class InfoController extends ApiController
     /**
      * @Route("", name="app_admin_info_list")
      * @Method({"GET"})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction()
     {
