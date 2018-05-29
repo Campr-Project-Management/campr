@@ -106,7 +106,7 @@ export default {
 
             return {
                 potentialCost: this.opportunitiesStats.opportunity_data.costSavings,
-                potentialDelay: this.opportunitiesStats.opportunity_data.timeSaving,
+                potentialTime: this.opportunitiesStats.opportunity_data.timeSaving,
                 measuresCount: this.opportunitiesStats.measure_data.measuresNumber,
                 measuresCost: this.opportunitiesStats.measure_data.totalCost,
             };
