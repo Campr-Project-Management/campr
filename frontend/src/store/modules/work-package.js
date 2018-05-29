@@ -16,6 +16,18 @@ const getters = {
 
 const actions = {
     /**
+     * Get one work package by ID
+     * @param {Number} id
+     * @return {Promise}
+     */
+    getWorkPackage({}, id) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_workpackage_get', {id}))
+        ;
+    },
+
+    /**
      * Get all work packages for a project
      * @param {function} commit
      * @param {Number} projectId
