@@ -134,6 +134,7 @@
                                     type="number"
                                     :label="translate('placeholder.potential_time_savings')"
                                     v-model="timeSavings" :content="timeSavings"
+                                    v-bind:css="{marginBottom: 0}"
                                 />
                                 <error
                                     v-if="validationMessages.timeSavings && validationMessages.timeSavings.length"
