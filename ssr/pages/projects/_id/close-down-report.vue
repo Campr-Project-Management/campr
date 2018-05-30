@@ -151,7 +151,7 @@
                                         <td>
                                             {{ action.responsibilityFullName }}
                                             &nbsp;
-                                            <div class="avatar" v-tooltip.top-center="action.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
+                                            <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
                                         </td>
                                     </tr>
                                 </template>
@@ -298,6 +298,14 @@ export default {
     @import '../../../../frontend/src/css/page-section';
     @import '../../../../frontend/src/css/_variables';
     @import '../../../../frontend/src/css/_mixins';
+
+    @media print {
+        h3, h4 {
+            border-bottom: 1px solid #646EA0;
+            padding-bottom: 10px;
+            font-size: 11px;
+        }
+    }
 
     .members-big {
         margin: 1.9em 0 0;
