@@ -16,6 +16,11 @@
                     <strong>{{ flash_message }}</strong>
                 </div>
             {% endfor %}
+            {% for flash_message in app.session.flashBag.get('failed') %}
+                <div id="general-alert" class="alert alert-danger m-t-15">
+                    <strong>{{ flash_message }}</strong>
+                </div>
+            {% endfor %}
             <div id="delete-item-alert" class="alert alert-success m-t-15 hidden">
                 <strong>
                     {{ 'success.resource.delete.from_data_table'|trans({}, 'flashes') }}

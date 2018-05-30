@@ -109,7 +109,7 @@ $(function () {
                                     swal({
                                         type: 'error',
                                         title: 'Deleted!',
-                                        text: '<strong>' + data.message + '</strong>',
+                                        text: data.message,
                                         timer: 2500,
                                         showConfirmButton: false
                                     });
