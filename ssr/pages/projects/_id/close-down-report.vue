@@ -121,7 +121,7 @@
                 <div class="col-md-12">
                     <h3>{{ translateText('message.remaining_action') }}</h3>
                     <div class="table-wrapper" v-if="closeDownActions">
-                        <table class="table table-striped table-responsive" v-if="closeDownActions.items && closeDownActions.items.length > 0">
+                        <table class="table table-striped" v-if="closeDownActions.items && closeDownActions.items.length > 0">
                             <tbody>
                                 <template v-for="action in closeDownActions.items">
                                     <tr :key="`action-hr-${action.id}`">
@@ -199,17 +199,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="project-acceptance">
-                                <div class="signature-holder"></div>
-                            </div>
+
+                    <div class="hr small"></div>
+
+                    <div class="row margintop40">
+                        <div class="half half-left">
+                            <h3>{{ translateText('message.project_manager_signature') }}</h3>
                         </div>
-                        <div class="col-md-6">
-                            <div class="project-acceptance">
-                                <div class="signature-holder"></div>
-                            </div>
+                        <div class="half half-right">
+                            <h3>{{ translateText('message.project_sponsor_signature') }}</h3>
                         </div>
+
+                        <div class="clear-fix"></div>
                     </div>
                 </div>
             </div>
@@ -304,6 +305,28 @@ export default {
             border-bottom: 1px solid #646EA0;
             padding-bottom: 10px;
             font-size: 11px;
+        }
+    }
+
+    .half-left {
+        float: left;
+    }
+    .half-right {
+        float: right;
+    }
+    .half {
+        width: 45%;
+        text-align: center;
+        height: 160px;
+        line-height: 40px;
+        border-bottom: 1px solid #191E37;
+
+        h3 {
+            height: 40px;
+            line-height: 40px;
+            margin-top: 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #191E37;
         }
     }
 
