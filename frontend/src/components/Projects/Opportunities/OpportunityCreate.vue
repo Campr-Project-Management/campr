@@ -124,13 +124,22 @@
                                         :currency="projectCurrencySymbol"
                                         :label="translate('placeholder.potential_savings')"
                                         v-model="costSavings" />
+                                    <error
+                                        v-if="validationMessages.costSavings && validationMessages.costSavings.length"
+                                        v-for="message in validationMessages.costSavings"
+                                        :message="message" />
                             </div>
                             <div class="col-md-4">
                                 <input-field
-                                    type="text"
+                                    type="number"
                                     :label="translate('placeholder.potential_time_savings')"
                                     v-model="timeSavings" :content="timeSavings"
+                                    v-bind:css="{marginBottom: 0}"
                                 />
+                                <error
+                                    v-if="validationMessages.timeSavings && validationMessages.timeSavings.length"
+                                    v-for="message in validationMessages.timeSavings"
+                                    :message="message" />
                             </div>
                             <div class="col-md-4">
                                 <select-field 
@@ -490,8 +499,8 @@ export default {
             priority: null,
             title: '',
             description: '',
-            costSavings: '',
-            timeSavings: '',
+            costSavings: 0,
+            timeSavings: 0,
             days: '',
             schedule: {
                 dueDate: new Date(),
