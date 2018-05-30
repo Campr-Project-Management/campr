@@ -132,6 +132,7 @@
                                 <input-field
                                     class="time-delay"
                                     type="number"
+                                    v-bind:css="{marginBottom: 0}"
                                     v-model.number="timeDelay"
                                     :content="timeDelay"
                                     :label="translate('placeholder.potential_time_delay')" />
@@ -593,6 +594,5 @@ export default {
     .time-delay {
         text-overflow: ellipsis;
         white-space: nowrap;
-        overflow: hidden;
     }
 </style>

@@ -80,6 +80,8 @@ not_blank:
     expiry_date: Expiry date should not be empty.
     currency: Please select a currency
     distribution_list: Please select at least one distribution list
+    cost_savings: Potential savings should not be blank.
+    time_savings: Potential time savings should not be blank.
 
 not_null:
     driver: You must select a driver
@@ -153,6 +155,12 @@ greater_than_or_equal:
     probability: The probability field should contain numbers greater than or equal to 0
     scheduled_finish_at: The Base Start Date should be before the Base Finish Date
     forecast_finish_at: The Forecast Start Date should be before the Forecast Finish Date
+
+greater_than:
+    cost: The cost field should contain numbers greater the 0
+    delay: The delay field should contain numbers greater the 0
+    time_savings: The potential time savings  field should contain numbers greater the 0
+    cost_savings: The potential savings  field should contain numbers greater the 0
 
 invite:
     yourself: You are already part of the team.
