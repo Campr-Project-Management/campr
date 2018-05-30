@@ -27,7 +27,7 @@ export const createFormData = (data) => {
         formData.append('location', data.location);
     }
 
-    if (data.distributionLists.length) {
+    if (data.distributionLists && data.distributionLists.length) {
         for (let i = 0; i < data.distributionLists.length; i++) {
             formData.append('distributionLists[' + i + ']', data.distributionLists[i] ? data.distributionLists[i].key : null);
         }
@@ -93,12 +93,8 @@ export const createFormData = (data) => {
     if (data.meetingParticipants) {
         for (let i = 0; i < data.meetingParticipants.length; i++) {
             formData.append('meetingParticipants[' + i + '][user]', data.meetingParticipants[i].user);
-            if (data.meetingParticipants[i].isPresent) {
-                formData.append('meetingParticipants[' + i + '][isPresent]', 1);
-            }
-            if (data.meetingParticipants[i].inDistributionList) {
-                formData.append('meetingParticipants[' + i + '][inDistributionList]', 1);
-            }
+            formData.append('meetingParticipants[' + i + '][isPresent]', data.meetingParticipants[i].isPresent ? 1 : 'false');
+            formData.append('meetingParticipants[' + i + '][inDistributionList]', data.meetingParticipants[i].inDistributionList ? 1 : 'false');
         }
     }
 
