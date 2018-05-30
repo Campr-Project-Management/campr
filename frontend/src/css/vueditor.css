@@ -8,8 +8,13 @@
         background: none !important;
         /*min-height: 50px !important;*/
     }
+
     .ve-design {
         margin-top: 15px !important;
+    }
+
+    .vueditor-header {
+        left: 0px !important;
     }
 }
 
