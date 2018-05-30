@@ -819,12 +819,6 @@ export default {
                 )
             ;
         },
-        setParticipantsActivePage(page) {
-            this.participantsActivePage = page;
-            this.displayedParticipants = this.participants.slice(((page - 1) * this.participantsPerPage), page * this.participantsPerPage);
-
-            this.$forceUpdate();
-        },
         distributionListUpdated(distributionList) {
             this.details.distributionList = {key: distributionList.id, label: distributionList.name};
         },
@@ -941,7 +935,6 @@ export default {
             showDeleteInfoModal: false,
             editInfoObject: {},
             participants: [],
-            displayedParticipants: [],
             decisionDescriptionEditor: null,
             todoDescriptionEditor: null,
             infoDescriptionEditor: null,
@@ -1016,12 +1009,6 @@ export default {
                     'path': item.path,
                 };
             });
-
-            // this.selectedParticipants = this.meeting.meetingParticipants.map(mp => {
-            //     return {
-            //         user: mp.user,
-            //     };
-            // });
         },
         showSaved(value) {
             if (value === false) {
