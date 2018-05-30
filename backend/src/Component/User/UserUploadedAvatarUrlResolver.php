@@ -37,6 +37,17 @@ class UserUploadedAvatarUrlResolver implements UserAvatarUrlResolverInterface
      */
     public function resolve(User $user): string
     {
-        return (string) $this->storage->resolveUri($user, 'avatarFile');
+        $avatar = (string) $this->storage->resolveUri($user, 'avatarFile');
+
+        if (empty($avatar)) {
+            return $avatar;
+        }
+
+        return sprintf(
+            '%s://%s%s',
+            $this->router->getContext()->getScheme(),
+            $this->router->getContext()->getHost(),
+            $avatar
+        );
     }
 }
