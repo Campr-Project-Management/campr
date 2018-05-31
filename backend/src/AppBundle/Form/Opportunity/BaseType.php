@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -108,12 +107,6 @@ class BaseType extends AbstractType
                                 'message' => 'not_blank.cost_savings',
                             ]
                         ),
-                        new GreaterThan(
-                            [
-                                'value' => 0,
-                                'message' => 'greater_than.cost_savings',
-                            ]
-                        ),
                     ],
                 ]
             )
@@ -126,12 +119,6 @@ class BaseType extends AbstractType
                         new NotBlank(
                             [
                                 'message' => 'not_blank.time_savings',
-                            ]
-                        ),
-                        new GreaterThan(
-                            [
-                                'value' => 0,
-                                'message' => 'greater_than.time_savings',
                             ]
                         ),
                     ],
