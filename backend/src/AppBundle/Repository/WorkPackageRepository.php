@@ -798,7 +798,7 @@ class WorkPackageRepository extends BaseRepository
         $qb = $this
             ->createQueryBuilder('wp')
             ->select('COUNT(wp.id)')
-            ->andWhere('wp.type = :type')
+            ->andWhere('wp.type = :type AND wp.parent IS NULL')
             ->setParameter('type', $type)
         ;
 
