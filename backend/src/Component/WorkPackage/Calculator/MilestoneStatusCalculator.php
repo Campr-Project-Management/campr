@@ -11,14 +11,19 @@ class MilestoneStatusCalculator extends PhaseStatusCalculator
      *
      * @return array
      */
-    protected function getStatusesCounts(WorkPackage $workPackage)
+    protected function getStatusesCodes(WorkPackage $workPackage): array
     {
-        $data = [];
+        $codes = [];
         foreach ($this->getStatuses() as $status) {
-            $data[$status->getCode()] = $this->workPackageRepository->getStatusCountByMilestone($workPackage, $status);
+            $count = $this->workPackageRepository->getStatusCountByPhase($workPackage, $status);
+            if (!$count) {
+                continue;
+            }
+
+            $codes[] = $status->getCode();
         }
 
-        return $data;
+        return $codes;
     }
 
     /**

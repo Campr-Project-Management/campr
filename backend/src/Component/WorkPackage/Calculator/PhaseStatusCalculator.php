@@ -101,7 +101,7 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
      *
      * @return array
      */
-    protected function getStatusesCodes(WorkPackage $workPackage)
+    protected function getStatusesCodes(WorkPackage $workPackage): array
     {
         $codes = [];
         foreach ($this->getStatuses() as $status) {
