@@ -15,7 +15,7 @@ class MilestoneStatusCalculator extends PhaseStatusCalculator
     {
         $codes = [];
         foreach ($this->getStatuses() as $status) {
-            $count = $this->workPackageRepository->getStatusCountByPhase($workPackage, $status);
+            $count = $this->workPackageRepository->getStatusCountByMilestone($workPackage, $status);
             if (!$count) {
                 continue;
             }
