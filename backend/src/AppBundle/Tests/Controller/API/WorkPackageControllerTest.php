@@ -44,7 +44,7 @@ class WorkPackageControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $content);
     }
 
     /**

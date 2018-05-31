@@ -124,6 +124,10 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
     private function calculateStatus(WorkPackage $workPackage)
     {
         $codes = $this->getStatusesCodes($workPackage);
+        if (empty($codes)) {
+            return null;
+        }
+
         $code = $this->calculateStatusCode($codes);
 
         return $this->findStatusByCode($code);
