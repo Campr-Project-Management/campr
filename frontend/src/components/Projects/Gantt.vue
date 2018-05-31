@@ -54,7 +54,15 @@ export default {
     },
     name: 'gantt',
     methods: {
-        ...mapActions(['getGanttData', 'clearGanttData', 'getProjectById', 'importTask', 'getWorkPackageStatuses', 'patchWorkPackage']),
+        ...mapActions([
+            'getGanttData',
+            'clearGanttData',
+            'getProjectById',
+            'importTask',
+            'getWorkPackageStatuses',
+            'patchWorkPackage',
+            'getWorkPackage',
+        ]),
 
         ganttConfigure() {
             gantt.config.auto_scheduling_descendant_links = false;
@@ -492,6 +500,8 @@ export default {
                                 task.readonly = false;
                                 gantt.updateTask(id);
 
+                                this.updateBranch(task);
+
                                 this.updateGanttMap();
 
                                 gantt.scrollTo(x, y);
@@ -521,6 +531,8 @@ export default {
 
                                 task.readonly = false;
                                 gantt.updateTask(id);
+
+                                this.updateBranch(task);
 
                                 this.updateGanttMap();
 
@@ -559,6 +571,25 @@ export default {
             );
 
             // this.updateGanttMap();
+        },
+        updateBranch(task) {
+            while (task.parent) {
+                this
+                    .getWorkPackage(task.parent)
+                    .then(
+                        (response) => {
+                            const wp = this.wp2task(response.data);
+                            const t = gantt.getTask(response.data.id);
+
+                            t.progress = wp.progress;
+                            gantt.updateTask(t.id);
+                        },
+                        () => {}
+                    )
+                ;
+
+                task = gantt.getTask(task.parent);
+            }
         },
         range(start, finish) {
             const out = [];

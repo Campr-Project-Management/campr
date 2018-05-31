@@ -26,7 +26,7 @@ class PortfolioController extends BaseController
      *
      * @Route("/list", name="app_admin_portfolio_list")
      * @Method("GET")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */
