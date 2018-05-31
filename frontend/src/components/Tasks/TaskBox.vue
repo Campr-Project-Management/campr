@@ -17,7 +17,7 @@
                 <div class="status-boxes">
                     <span
                             v-for="cs in colorStatuses"
-                            :key="cs.id"
+                            :key="task.id+'-'+cs.id"
                             class="status-box"
                             :style="{ background: statusColor(cs) }"
                             v-tooltip="hasColorStatus(cs) && colorStatusTooltip">
