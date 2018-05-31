@@ -25,18 +25,18 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
             WorkPackageStatus::CODE_PENDING,
             [
                 WorkPackageStatus::CODE_OPEN,
+            ],
+            WorkPackageStatus::CODE_PENDING,
+        ],
+        [
+            WorkPackageStatus::CODE_PENDING,
+            [
+                WorkPackageStatus::CODE_OPEN,
                 WorkPackageStatus::CODE_ONGOING,
                 WorkPackageStatus::CODE_COMPLETED,
                 WorkPackageStatus::CODE_CLOSED,
             ],
             WorkPackageStatus::CODE_ONGOING,
-        ],
-        [
-            WorkPackageStatus::CODE_PENDING,
-            [
-                WorkPackageStatus::OPEN,
-            ],
-            WorkPackageStatus::CODE_PENDING,
         ],
         [
             WorkPackageStatus::CODE_COMPLETED,
@@ -101,14 +101,19 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
      *
      * @return array
      */
-    protected function getStatusesCounts(WorkPackage $workPackage)
+    protected function getStatusesCodes(WorkPackage $workPackage)
     {
-        $data = [];
+        $codes = [];
         foreach ($this->getStatuses() as $status) {
-            $data[$status->getCode()] = $this->workPackageRepository->getStatusCountByPhase($workPackage, $status);
+            $count = $this->workPackageRepository->getStatusCountByPhase($workPackage, $status);
+            if (!$count) {
+                continue;
+            }
+
+            $codes[] = $status->getCode();
         }
 
-        return $data;
+        return $codes;
     }
 
     /**
@@ -118,44 +123,49 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
      */
     private function calculateStatus(WorkPackage $workPackage)
     {
-        $statusesCounts = $this->getStatusesCounts($workPackage);
-        $statusesCounts = array_filter(
-            $statusesCounts,
-            function ($count) {
-                return $count > 0;
-            }
-        );
+        $codes = $this->getStatusesCodes($workPackage);
+        $code = $this->calculateStatusCode($codes);
 
-        if (1 === count($statusesCounts)) {
-            $code = key($statusesCounts);
-
-            return $this->findStatusByCode($code);
-        }
-
-        foreach (self::$rules as $rule) {
-            if ($this->hasStatus($statusesCounts, $rule[0]) && $this->hasStatus($statusesCounts, ...$rule[1])) {
-                return $this->findStatusByCode($rule[2]);
-            }
-        }
-
-        return null;
+        return $this->findStatusByCode($code);
     }
 
     /**
-     * @param array  $statusesCounts
-     * @param string ...$codes
+     * @param array $codes
      *
-     * @return bool
+     * @return string
      */
-    private function hasStatus(array $statusesCounts, string ...$codes): bool
+    private function calculateStatusCode(array $codes): string
     {
-        foreach ($codes as $code) {
-            if (isset($statusesCounts[$code]) && $statusesCounts[$code] > 0) {
-                return true;
-            }
+        $codes = array_unique($codes);
+        Assert::notEmpty($codes);
+
+        if (1 === count($codes)) {
+            return array_shift($codes);
         }
 
-        return false;
+        foreach (self::$rules as $rule) {
+            if (!in_array($rule[0], $codes)) {
+                continue;
+            }
+
+            $diff = array_diff(
+                array_filter(
+                    $codes,
+                    function (string $code) use ($rule) {
+                        return $code !== $rule[0];
+                    }
+                ),
+                $rule[1]
+            );
+
+            if (!empty($diff)) {
+                continue;
+            }
+
+            return $rule[2];
+        }
+
+        return WorkPackageStatus::CODE_OPEN;
     }
 
     /**
