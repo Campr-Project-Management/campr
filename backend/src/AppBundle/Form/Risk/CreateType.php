@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use AppBundle\Form\Measure\BaseType as MeasureBaseType;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -78,12 +77,6 @@ class CreateType extends AbstractType
                     new NotBlank([
                         'message' => 'not_blank.cost',
                     ]),
-                    new GreaterThan(
-                        [
-                            'value' => 0,
-                            'message' => 'greater_than.cost',
-                        ]
-                    ),
                 ],
             ])
             ->add('delay', TextType::class, [
@@ -92,12 +85,6 @@ class CreateType extends AbstractType
                     new NotBlank([
                         'message' => 'not_blank.delay',
                     ]),
-                    new GreaterThan(
-                        [
-                            'value' => 0,
-                            'message' => 'greater_than.delay',
-                        ]
-                    ),
                 ],
             ])
             ->add('delayUnit', ChoiceType::class, [
