@@ -173,7 +173,8 @@ export default {
         },
         isInactive(meeting) {
             let currentDate = moment();
-            let meetingDate = moment(meeting.date);
+            let date = meeting.date.split(' ');
+            let meetingDate = moment(date[0] + ' ' + meeting.start);
 
             return meetingDate < currentDate;
         },
