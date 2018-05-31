@@ -26,7 +26,7 @@ class DayController extends BaseController
      *
      * @Route("/list", name="app_admin_day_list")
      * @Method("GET")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */
