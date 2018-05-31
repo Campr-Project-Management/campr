@@ -20,7 +20,7 @@ class DashboardController extends Controller
      * The dashboard page where the user's lands whe going first time int admin tool.
      *
      * @Route("", name="app_admin_dashboard", options={"expose"=true})
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      *
      * @return Response
      */

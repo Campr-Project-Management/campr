@@ -3,6 +3,7 @@
 namespace MainBundle\Security;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -69,6 +70,10 @@ class TeamVoter extends Voter
             return false;
         }
 
+        if ($user->isAdmin()) {
+            return true;
+        }
+
         switch ($attribute) {
             case self::EDIT:
                 return $this->canEdit($subject, $user);
@@ -93,11 +98,17 @@ class TeamVoter extends Voter
     {
         $members = $team->getTeamMembers();
 
-        foreach ($members as $member) {
-            $userMember = $member->getUser() === $user ? $member : null;
-        }
+        $userMember = $members
+            ->filter(function (TeamMember $teamMember) use ($user) {
+                return $teamMember->getUser() === $user;
+            })
+            ->first()
+        ;
 
-        return $team->getUser() === $user || ($userMember && $userMember->hasRole(User::ROLE_SUPER_ADMIN));
+        return $team->getUser() === $user
+            || ($userMember && $userMember->hasRole(User::ROLE_SUPER_ADMIN))
+            || ($userMember && $userMember->hasRole(User::ROLE_ADMIN))
+        ;
     }
 
     /**
