@@ -185,7 +185,7 @@ export default {
                     case 0:
                         url = router
                             .resolve({
-                                name: 'project-phases-edit-phase',
+                                name: 'project-phases-view-phase',
                                 params: {
                                     id: d.data.project,
                                     phaseId: d.data.id,
@@ -197,7 +197,7 @@ export default {
                     case 1:
                         url = router
                             .resolve({
-                                name: 'project-milestones-edit-milestone',
+                                name: 'project-phases-view-milestone',
                                 params: {
                                     id: d.data.project,
                                     milestoneId: d.data.id,
@@ -209,7 +209,7 @@ export default {
                     case 2:
                         url = router
                             .resolve({
-                                name: 'project-task-management-edit',
+                                name: 'project-task-management-view',
                                 params: {
                                     id: d.data.project,
                                     taskId: d.data.id,
