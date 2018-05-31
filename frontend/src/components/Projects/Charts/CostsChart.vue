@@ -9,6 +9,10 @@
     </div>
 </template>
 
+<style lang="css">
+    svg > g:last-child > g:last-child { pointer-events: none }
+</style>
+
 <script>
     import _ from 'lodash';
     import {costChart as colors} from '../../../util/colors';
