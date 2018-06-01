@@ -167,12 +167,12 @@ class CreateType extends AbstractType
                 [
                     'required' => false,
                     'class' => ProjectStatus::class,
-                    'choice_label' => 'name',
                     'query_builder' => function (EntityRepository $er) use ($self, $entity) {
                         return $self->findRelatedEntities($er, $entity);
                     },
                     'placeholder' => 'placeholder.project_status',
                     'translation_domain' => 'messages',
+                    'choice_translation_domain' => 'messages',
                 ]
             )
             ->add(
