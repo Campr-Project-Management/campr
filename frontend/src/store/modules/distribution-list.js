@@ -33,7 +33,6 @@ const actions = {
             .get(Routing.generate('app_api_distribution_list_get', {id}))
             .then(
                 (response) => {
-                    console.log('getDistributionList', response.data);
                     commit(types.SET_DISTRIBUTION_LIST, response.data);
 
                     return response;
