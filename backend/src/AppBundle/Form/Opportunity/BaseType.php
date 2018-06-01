@@ -182,6 +182,7 @@ class BaseType extends AbstractType
                     'choice_label' => 'name',
                     'placeholder' => 'placeholder.name',
                     'translation_domain' => 'messages',
+                    'choice_translation_domain' => 'messages',
                 ]
             )
             ->add(
@@ -193,6 +194,7 @@ class BaseType extends AbstractType
                     'choice_label' => 'name',
                     'placeholder' => 'placeholder.name',
                     'translation_domain' => 'messages',
+                    'choice_translation_domain' => 'messages',
                 ]
             )
             ->add(

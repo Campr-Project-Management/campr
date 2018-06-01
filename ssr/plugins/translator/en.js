@@ -548,7 +548,6 @@ module.exports = function (Translator) {
     Translator.add("message.resource_chart", "Resource Chart", "messages", "en");
     Translator.add("message.project_contract", "Project Contract", "messages", "en");
     Translator.add("message.project_description", "Project Description", "messages", "en");
-    Translator.add("message.project_start_event", "Project Start Event", "messages", "en");
     Translator.add("message.project_objectives", "Project Objectives", "messages", "en");
     Translator.add("message.project_organization", "Project Organization", "messages", "en");
     Translator.add("message.new_objective_title", "New Objective Title", "messages", "en");
@@ -1326,6 +1325,7 @@ module.exports = function (Translator) {
     Translator.add("label.select_informed_users", "Select informed users", "messages", "en");
     Translator.add("label.select_sci_users", "Select support, consulted & informed users", "messages", "en");
     Translator.add("label.export_task", "Export task", "messages", "en");
+    Translator.add("label.project_start_event", "Project Start Event", "messages", "en");
     Translator.add("label.avoid", "Avoid", "messages", "en");
     Translator.add("label.transfer", "Transfer", "messages", "en");
     Translator.add("label.mitigate", "Mitigate", "messages", "en");
