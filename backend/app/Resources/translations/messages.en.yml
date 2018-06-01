@@ -291,7 +291,6 @@ message:
     resource_chart: Resource Chart
     project_contract: Project Contract
     project_description: Project Description
-    project_start_event: Project Start Event
     project_objectives: Project Objectives
     project_organization: Project Organization
     new_objective_title: New Objective Title
@@ -1199,6 +1198,7 @@ label:
     select_informed_users: Select informed users
     select_sci_users: Select support, consulted & informed users
     export_task: Export task
+    project_start_event: Project Start Event
     # risk strategy
     avoid: Avoid
     transfer: Transfer

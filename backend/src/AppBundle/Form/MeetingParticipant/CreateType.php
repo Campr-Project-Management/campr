@@ -27,6 +27,7 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.meeting',

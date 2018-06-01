@@ -268,7 +268,7 @@ class RiskControllerTest extends BaseController
         $this->assertContains('data-column-id="riskCategoryName"', $crawler->html());
         $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
         $this->assertContains('data-column-id="dueDate"', $crawler->html());
-        $this->assertContains('data-column-id="status"', $crawler->html());
+        $this->assertContains('data-column-id="statusName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 
