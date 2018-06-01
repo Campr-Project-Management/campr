@@ -17,8 +17,12 @@ class BaseCreateType extends AbstractType
             ->add('meeting')
             ->add('topic')
             ->add('description')
-            ->add('infoStatus')
-            ->add('infoCategory')
+            ->add('infoStatus', null, [
+                'choice_translation_domain' => 'messages',
+            ])
+            ->add('infoCategory', null, [
+                'choice_translation_domain' => 'messages',
+            ])
             ->add('responsibility')
             ->add('dueDate', DateTimeType::class, [
                 'widget' => 'single_text',

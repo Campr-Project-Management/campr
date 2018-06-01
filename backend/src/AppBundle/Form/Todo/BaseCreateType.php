@@ -33,6 +33,7 @@ class BaseCreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('title', TextType::class, [
                 'required' => true,
@@ -73,6 +74,7 @@ class BaseCreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('todoCategory', EntityType::class, [
                 'class' => TodoCategory::class,
