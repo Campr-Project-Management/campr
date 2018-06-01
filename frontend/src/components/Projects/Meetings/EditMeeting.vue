@@ -18,6 +18,19 @@
             v-bind:deleteInfoModal="showDeleteInfoModal"
             v-bind:infoObject="editInfoObject"
             v-on:input="setModals" />
+        <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
+            <p class="modal-title">{{ translate('message.delete_meeting') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+            </div>
+        </modal>
+
+        <edit-distribution-list-modal
+            v-if="editDistributionListModal"
+            @close="editDistributionListModal = null"
+            v-on:distributionListUpdated="distributionListUpdated"
+            :distribution-id="editDistributionListModal" />
         <!-- /// End Modals /// -->
 
         <div class="col-md-6">
@@ -39,10 +52,10 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <multi-select-field
+                                <select-field
                                     v-bind:title="translate('placeholder.distribution_list')"
                                     v-bind:options="distributionListsForSelect"
-                                    v-model="details.distributionLists" />
+                                    v-model="details.distributionList"/>
                                 <error at-path="distributionLists"/>
                             </div>
                             <div class="col-md-6">
@@ -495,7 +508,12 @@
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="margintop20 text-right">
-                    <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
+                    <a @click="saveMeeting()" class="btn-rounded btn-auto">{{ translate('button.save_meeting') }}</a>
+                    <a @click="newMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.new_meeting') }}</a>
+                    <a @click="deleteMeetingModal = true" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_meeting') }}</a>
+                </div>
+                <div class="margintop20 text-right">
+                    <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</a>
                 </div>
                 <!-- /// End Header /// -->
 
@@ -508,12 +526,7 @@
                     </div>-->
                 </div>
 
-                <meeting-participants
-                    v-bind:meetingParticipants="displayedParticipants"
-                    v-bind:participants="participants"
-                    v-bind:participantsPages="participantsPages"
-                    v-bind:participantsPerPage="participantsPerPage"
-                    v-bind:createMeeting="false" />
+                <meeting-participants v-model="selectedParticipants" />
             </div>
         </div>
 
@@ -542,6 +555,8 @@ import Error from '../../_common/_messages/Error.vue';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import Editor from '../../_common/Editor';
+import Modal from '../../_common/Modal';
+import EditDistributionListModal from '../../_common/EditDistributionListModal';
 
 export default {
     components: {
@@ -561,13 +576,15 @@ export default {
         MeetingParticipants,
         Error,
         AlertModal,
+        Modal,
+        EditDistributionListModal,
     },
     methods: {
         ...mapActions([
             'getDistributionLists', 'getMeetingCategories', 'getInfoStatuses', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
             'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo', 'getMeetingParticipants',
-            'getInfoCategories',
+            'getInfoCategories', 'deleteProjectMeeting',
         ]),
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
@@ -749,17 +766,39 @@ export default {
             this.showDeleteInfoModal = true;
             this.editInfoObject = {id: info.id, meeting: this.$route.params.meetingId};
         },
-        saveMeeting: function() {
+        newMeeting() {
+            router.push({
+                name: 'project-meetings-create-meeting',
+                params: {
+                    id: this.$route.params.id,
+                },
+            });
+        },
+        deleteMeeting() {
+            this.deleteMeetingModal = false;
+            this.deleteProjectMeeting(this.$route.params.meetingId);
+        },
+        saveMeeting() {
             let data = {
                 name: this.name,
-                distributionLists: this.details.distributionLists,
+                distributionLists: this.details.distributionList
+                    ? [this.details.distributionList]
+                    : null,
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
                 start: this.schedule.startTime,
                 end: this.schedule.endTime,
                 location: this.location,
                 medias: this.medias,
+                meetingParticipants: this.selectedParticipants.map(participant => {
+                    return {
+                        user: participant.user,
+                        isPresent: participant.isPresent,
+                        inDistributionList: participant.inDistributionList,
+                    };
+                }),
             };
+
             this
                 .editProjectMeeting({
                     id: this.$route.params.meetingId,
@@ -779,6 +818,9 @@ export default {
                     }
                 )
             ;
+        },
+        distributionListUpdated(distributionList) {
+            this.details.distributionList = {key: distributionList.id, label: distributionList.name};
         },
     },
     computed: {
@@ -834,7 +876,7 @@ export default {
                 endTime: null,
             },
             details: {
-                distributionLists: [],
+                distributionList: null,
                 category: null,
             },
             agenda: {
@@ -893,84 +935,61 @@ export default {
             showDeleteInfoModal: false,
             editInfoObject: {},
             participants: [],
-            displayedParticipants: [],
             decisionDescriptionEditor: null,
             todoDescriptionEditor: null,
             infoDescriptionEditor: null,
             DECISION_VALIDATION_ORIGIN: 'decision',
             TODO_VALIDATION_ORIGIN: 'todo',
             INFO_VALIDATION_ORIGIN: 'info',
+            selectedParticipants: [],
+            deleteMeetingModal: false,
+            editDistributionListModal: null,
         };
     },
     watch: {
-        details: {
+        'details.distributionList': {
             handler: function(value) {
-                let users = [];
-                this.getMeetingParticipants({id: this.$route.params.meetingId});
-                this.meetingParticipants.map(function(item) {
-                    users.push({
-                        id: item.user,
-                        fullName: item.userFullName,
-                        avatar: item.userAvatar,
-                        departments: item.userDepartmentNames,
-                        isPresent: item.isPresent,
-                    });
-                });
+                this.selectedParticipants = this
+                    .selectedParticipants
+                    .filter(participant => participant.isPresent || participant.inDistributionList);
 
-                this.lists = this.distributionLists.filter((item) => {
-                    for (let i = 0; i < this.details.distributionLists.length; i++) {
-                        if (item.id === this.details.distributionLists[i].key) {
-                            return true;
-                        }
-                    }
-                    return false;
-                });
+                if (!value || !value.key) {
+                    return;
+                }
 
-                this.lists.map((item) => {
-                    let existingUser = users.find((participant) => {
-                        return participant.id === item.createdBy;
-                    });
-                    if (!existingUser) {
-                        users.push({
-                            id: item.createdBy,
-                            fullName: item.createdByFullName,
-                            avatar: item.createdByAvatar,
-                            departments: item.createdByDepartmentNames,
-                        });
+                this.distributionLists.forEach(distributionList => {
+                    if (value.key !== distributionList.id) {
+                        return;
                     }
-                    item.users.map((user) => {
-                        let projectUser = user.projectUsers.filter((item) => {
-                            return item.project !== this.$route.params.id;
-                        });
-                        let existingUser = users.find((participant) => {
-                            return participant.id === user.id;
-                        });
-                        if (!existingUser && projectUser.length > 0) {
-                            users.push({
-                                id: user.id,
-                                fullName: user.firstName + ' ' + user.lastName,
-                                avatar: user.avatarUrl,
-                                departments: projectUser[0].projectDepartmentNames,
+
+                    distributionList
+                        .users
+                        .filter(u => this.selectedParticipants.map(sp => sp.user).indexOf(u.id) === -1)
+                        .forEach(user => {
+                            let projectUser = user.projectUsers.filter((item) => {
+                                return item.project !== this.$route.params.id;
                             });
-                        }
-                    });
-                });
+                            let participant = this.meeting.meetingParticipants.filter(mp => mp.user === user.id);
 
-                this.participants = users;
-                this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
-                this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
+                            this.selectedParticipants.push({
+                                user: user.id,
+                                userFullName: user.firstName + ' ' + user.lastName,
+                                userAvatar: user.avatarUrl,
+                                departments: projectUser.length ? projectUser[0].projectDepartmentNames : [],
+                                isPresent: participant.length && participant[0].isPresent,
+                                inDistributionList: participant.length && participant[0].inDistributionList,
+                            });
+                        });
+                });
             },
             deep: true,
         },
         meeting(value) {
             this.name = this.meeting.name;
             if (this.meeting.distributionLists.length > 0) {
-                let selectedList = [];
-                this.meeting.distributionLists.map(function(item) {
-                    selectedList.push({'key': item.id, 'label': item.name});
-                });
-                this.details.distributionLists = selectedList;
-            };
+                let item = this.meeting.distributionLists[0];
+                this.details.distributionList = {'key': item.id, 'label': item.name};
+            }
             this.details.category = this.meeting.meetingCategory
                 ? {key: this.meeting.meetingCategory, label: this.meeting.meetingCategoryName}
                 : null
@@ -1108,7 +1127,7 @@ export default {
         width: 30px;
         height: 30px;
         display: inline-block;
-        margin: 0 10px 0 0;  
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;

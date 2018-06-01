@@ -21,19 +21,24 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['skip_meeting'] !== true) {
+            $builder
+                ->add('meeting', EntityType::class, [
+                    'class' => Meeting::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.meeting',
+                    'translation_domain' => 'messages',
+                    'choice_translation_domain' => 'messages',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'not_blank.meeting',
+                        ]),
+                    ],
+                ])
+            ;
+        }
+
         $builder
-            ->add('meeting', EntityType::class, [
-                'class' => Meeting::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.meeting',
-                'translation_domain' => 'messages',
-                'choice_translation_domain' => 'messages',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.meeting',
-                    ]),
-                ],
-            ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'username',
@@ -61,6 +66,9 @@ class CreateType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => MeetingParticipant::class,
+            'skip_meeting' => false,
         ]);
+
+        $resolver->setAllowedTypes('skip_meeting', 'bool');
     }
 }

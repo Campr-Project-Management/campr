@@ -32,13 +32,29 @@
                         </div>
                     </div>
                     <!-- /// End Header /// -->
+                    <table class="table table-striped table-responsive rasci-table">
+                        <thead>
+                            <tr>
+                                <th class="task-number" width="10%">{{ translateText('table_header_cell.task_number') }}</th>
+                                <th>{{ translateText('table_header_cell.task_title') }}</th>
+                                <th v-for="(user, userIndex) in users"
+                                    :key="user.id"
+                                    :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
+                                    <div
+                                        class="avatar"
+                                        v-tooltip.top-center="user.firstName + ' ' + user.lastName"
+                                        :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
+                                </th>                                  
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
         
                 <!-- /// RASCI /// -->
                 <table class="table table-striped table-responsive rasci-table">
                     <thead>
                         <tr>
-                            <th class="task-number">{{ translateText('table_header_cell.task_number') }}</th>
+                            <th class="task-number" width="10%">{{ translateText('table_header_cell.task_number') }}</th>
                             <th>{{ translateText('table_header_cell.task_title') }}</th>
                             <th v-for="(user, userIndex) in users"
                                 :key="user.id"
@@ -47,20 +63,19 @@
                                     class="avatar"
                                     v-tooltip.top-center="user.firstName + ' ' + user.lastName"
                                     :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
-                            </th>
-                            <th class="rasci-cell last-cell"></th>                                  
+                            </th>                                  
                         </tr>
-                    </thead>
+                    </thead>                  
                     <tbody>
                         <tr v-for="(workPackage, rasciIndex) in workPackages"
                             :key="workPackage.id"
                             :class="{'active-row': activeRow === rasciIndex}"
                             v-on:mouseover="activeRow = rasciIndex"
                             v-on:mouseout="activeRow = null">
-                            <td v-if="workPackage.type !== 2">
+                            <td v-if="workPackage.type !== 2" @click.stop="closeRasciModal" ref="closeModal">
                                 {{ repeat('&nbsp', workPackage.type * 6) }}{{ workPackage.name }}
                             </td>
-                            <td class="task-number" v-if="workPackage.type === 2">
+                            <td class="task-number" width="10%" v-if="workPackage.type === 2" @click.stop="closeRasciModal" ref="closeModal">
                                 <span class="light-color">
                                     <template v-if="workPackage.hasPhase || workPackage.hasMilestone">
                                         {{ repeat('&nbsp', workPackage.type * 6) }}#{{ workPackage.id }}
@@ -70,7 +85,7 @@
                                     </template>
                                 </span>
                             </td>
-                            <td>
+                            <td @click.stop="closeRasciModal" ref="closeModal">
                                 <span v-if="workPackage.type === 2">
                                      <router-link
                                             :to="{name: 'project-task-management-view', params: { id: workPackage.project, taskId: workPackage.id }}">
@@ -81,8 +96,8 @@
                             <td v-for="(user, userIndex) in workPackage.rasci"
                                 v-on:mouseover="activeCell = workPackage.type === 2 && userIndex"
                                 v-on:mouseout="activeCell = null"
-                                v-on:keyup.esc="activeElement=''"
-                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
+                                :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}"
+                                @click.stop="closeRasciModal" ref="closeModal">
                                 <responsibility-select
                                         v-if="workPackage.type === 2"
                                         :last="userIndex + 1 === workPackage.rasci.length"
@@ -90,10 +105,9 @@
                                         :value="user.data"
                                         v-bind:activeElem="activeElement"
                                         :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
-                                        @handleClick="openRasciModal(generateElementKey(workPackage.name + workPackage.id + userIndex) )"
+                                        @handleClick="activeElement = $event"
                                         @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
                             </td>
-                            <td class="rasci-cell last-cell"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,6 +119,7 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
+
 export default {
     components: {
         ResponsibilitySelect,
@@ -143,13 +158,12 @@ export default {
             string = string.replace(/\s+/g, '-');
             return string;
         },
-        openRasciModal(elementHash) {
-            this.activeElement = elementHash;
-        },
         closeRasciModal(event) {
-            if(event.keyCode == 27) {
-                this.activeElement = '';
-            }
+            this.$refs.closeModal.map((item) => {
+                if(item == event.target) {
+                    this.activeElement = '';
+                }
+            });
         },
     },
     computed: {
@@ -163,10 +177,6 @@ export default {
     },
     created() {
         this.loadRasci();
-        window.addEventListener('keyup', this.closeRasciModal);
-    },
-    destroyed() {
-        window.removeEventListener('keyup', this.closeRasciModal);
     },
     data() {
         return {
@@ -191,12 +201,24 @@ export default {
         top: 0;
         transition: all 0.2s, ease-in;
         z-index: 2;
+        padding: 0;
+        margin-bottom: -50px;
     }
+
+    .rasci-matrix + .rasci-table {
+        margin-bottom: 30px;
+
+        thead {
+            visibility: hidden;
+        }
+    }
+
     .rasci-legend {
         .rasci-legend-item {
             display: flex;
             align-items: center;
             margin-right: 30px;
+            margin-bottom: 15px;
 
             span {
                 text-transform: uppercase;
@@ -211,7 +233,7 @@ export default {
         overflow: hidden;
         position: relative;
         z-index: 1;
-        margin-bottom: 30px;
+        table-layout: fixed;
 
         tr,
         th,
@@ -222,11 +244,15 @@ export default {
         th.rasci-cell,
         td.rasci-cell {
             vertical-align: middle;
+            box-sizing: content-box;
+            font-size: 0;
 
             .rasci-select,
             .avatar {
                 position: relative;
                 z-index: 1;
+                margin: 0;
+                padding: 0;
             }
 
             .rasci-select {
@@ -255,7 +281,8 @@ export default {
     }
 
     .task-number {
-        width: 5%;
+        width: 10%;
+        box-sizing: content-box;
     }
 
     .rasci-cell {
