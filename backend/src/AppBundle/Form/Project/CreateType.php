@@ -140,9 +140,6 @@ class CreateType extends AbstractType
                     'required' => false,
                     'class' => ProjectCategory::class,
                     'choice_label' => 'name',
-                    'query_builder' => function (EntityRepository $er) use ($self, $entity) {
-                        return $self->findRelatedEntities($er, $entity);
-                    },
                     'placeholder' => 'placeholder.project_category',
                     'translation_domain' => 'messages',
                 ]
@@ -154,9 +151,6 @@ class CreateType extends AbstractType
                     'required' => false,
                     'class' => ProjectScope::class,
                     'choice_label' => 'name',
-                    'query_builder' => function (EntityRepository $er) use ($self, $entity) {
-                        return $self->findRelatedEntities($er, $entity);
-                    },
                     'placeholder' => 'placeholder.project_scope',
                     'translation_domain' => 'messages',
                 ]
