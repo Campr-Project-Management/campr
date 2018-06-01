@@ -18,16 +18,14 @@
                 <div class="form">
                     <!-- /// Phase Name /// -->
                     <input-field type="text" v-bind:label="translateText('placeholder.phase_name')" v-model="name" v-bind:content="name" />
-                    <error
-                        v-if="validationMessages.name && validationMessages.name.length"
-                        v-for="message in validationMessages.name"
-                        :message="message" />
+                    <error at-path="name"/>
                     <!-- /// End Phase Name /// -->
 
                     <!-- /// Phase Description /// -->
                     <editor
                         v-model="content"
                         :label="'placeholder.phase_description'"/>
+                    <error at-path="content"/>
                     <!-- /// End Phase Description /// -->
 
                     <hr class="double">
@@ -68,7 +66,7 @@
 
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <member-search
                                         v-model="details.responsible"
                                         v-bind:placeholder="translateText('placeholder.responsible')"
@@ -76,41 +74,38 @@
 
                                 <error at-path="responsibility" />
                             </div>
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="translateText('label.status')"
-                                    v-bind:options="workPackageStatusesForSelect"
-                                    v-model="details.status"
-                                    v-bind:currentOption="details.status" />
-                            </div>
                         </div>
                     </div>
                     <!-- /// End Phase Details /// -->
 
                     <hr class="double">
-                    
-                    <!-- /// Is Subphase /// -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="checkbox-input clearfix">
-                                <input id="is-subphase" type="checkbox" v-model="visibleSubphase">
-                                <label for="is-subphase" class="no-margin-bottom">{{ translateText('label.phase_is_subphase') }}</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6 margintop20" v-if="visibleSubphase">
-                            <div class="form-group last-form-group">
-                                <select-field
-                                    v-bind:title="translateText('label.parent_phase')"
-                                    v-if="projectPhases.items && projectPhases.items.length > 0"
-                                    v-bind:options="projectPhasesForSelect"
-                                    v-model="details.parent"
-                                    v-bind:currentOption="details.parent"/>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /// End Is Subphase /// -->
 
-                    <hr class="double">
+                    <template v-if="projectPhasesForSelect">
+                        <!-- /// Is Subphase /// -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="checkbox-input clearfix">
+                                    <input id="is-subphase" type="checkbox" v-model="visibleSubphase">
+                                    <label for="is-subphase" class="no-margin-bottom">{{ translateText('label.phase_is_subphase') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-md-12" v-if="visibleSubphase">
+                                <div class="form-group last-form-group">
+                                    <select-field
+                                            :title="translateText('label.parent_phase')"
+                                            :options="projectPhasesForSelect"
+                                            v-model="details.parent"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /// End Is Subphase /// -->
+
+                        <hr class="double">
+                    </template>
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">

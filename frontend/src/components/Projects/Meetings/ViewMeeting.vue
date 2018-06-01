@@ -85,15 +85,15 @@
                     </div>
                     <!-- /// End Header /// -->
                 </div>
-                
-        
+
+
                 <!-- /// Meeting Location /// -->
                 <h3>{{ translateText('message.location') }}</h3>
                 <p>{{ meeting.location }}</p>
                 <!-- /// End Meeting Location /// -->
-        
+
                 <hr class="double">
-                
+
                 <!-- /// Meeting Objectives /// -->
                 <h3>{{ translateText('message.objectives') }}</h3>
                 <ul class="action-list" v-if="meeting.meetingObjectives">
@@ -108,9 +108,9 @@
                     </li>
                 </ul>
                 <!-- /// End Meeting Objectives /// -->
-        
+
                 <hr class="double">
-        
+
                 <!-- /// Meeting Agenda /// -->
                 <h3>{{ translateText('message.agenda') }}</h3>
                 <div class="overflow-hidden">
@@ -161,9 +161,9 @@
                     </div>
                 </div>
                 <!-- /// End Meeting Agenda /// -->
-        
+
                 <hr class="double">
-        
+
                 <!-- /// Meeting Documents /// -->
                 <h3>{{ translateText('message.documents') }}</h3>
                 <ul class="attachments" v-if="meeting.medias">
@@ -172,9 +172,9 @@
                     </li>
                 </ul>
                 <!-- /// End Meeting Documents /// -->
-        
+
                 <hr class="double">
-                
+
                 <!-- /// Decisions /// -->
                 <h3>{{ translateText('message.decisions') }}</h3>
 
@@ -202,9 +202,9 @@
                     <!-- /// End Decision /// -->
                 </div>
                 <!-- /// End Decisions /// -->
-        
+
                 <hr class="double">
-        
+
                 <!-- /// ToDos /// -->
                 <h3>{{ translateText('message.todos') }}</h3>
 
@@ -232,9 +232,9 @@
                     <!-- /// End ToDo /// -->
                 </div>
                 <!-- /// End ToDos /// -->
-        
+
                 <hr class="double">
-        
+
                 <!-- /// Infos /// -->
                 <h3>{{ translateText('message.infos') }}</h3>
 
@@ -281,7 +281,7 @@
                         </div>
                     </div>
                     <!-- /// End Header /// -->
-        
+
                     <div class="flex flex-v-center flex-space-between">
                         <div>
                             <h3>{{ translateText('message.participants') }}</h3>
@@ -292,15 +292,11 @@
                         </div>
                     </div>
 
-                    <meeting-participants
-                        v-bind:meetingParticipants="displayedParticipants"
-                        v-bind:participants="participants"
-                        v-bind:participantsPages="participantsPages"
-                        v-bind:participantsPerPage="participantsPerPage" />
+                    <meeting-participants v-model="selectedParticipants" />
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="text-right footer-buttons">
@@ -333,6 +329,7 @@ import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
 import VueTimepicker from 'vue2-timepicker';
 import datepicker from '../../_common/_form-components/Datepicker';
+// import {createFormData} from '../../../helpers/meeting';
 
 export default {
     components: {
@@ -481,12 +478,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            meeting: 'meeting',
-            meetingAgendas: 'meetingAgendas',
-            distributionLists: 'distributionLists',
-            meetingParticipants: 'meetingParticipants',
-        }),
+        ...mapGetters(['meeting', 'meetingAgendas', 'distributionLists']),
     },
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});
@@ -504,8 +496,6 @@ export default {
             projectId: this.$route.params.id,
             meetingId: this.$route.params.meetingId,
             agendasActivePage: 1,
-            participantsPages: 0,
-            participantsPerPage: 10,
             showPresent: null,
             showEditObjectiveModal: false,
             showDeleteObjectiveModal: false,
@@ -527,65 +517,24 @@ export default {
             date: new Date(),
             startTime: {},
             endTime: {},
-            participants: [],
-            displayedParticipants: [],
+            selectedParticipants: [],
             showNotificationModal: false,
         };
     },
     watch: {
         meeting(value) {
-            let users = [];
-            this.meetingParticipants.map(function(item) {
-                users.push({
-                    id: item.user,
-                    fullName: item.userFullName,
-                    avatar: item.userAvatar,
-                    departments: item.userDepartmentNames,
-                    isPresent: item.isPresent,
-                });
-            });
-            this.lists = this.distributionLists.filter((item) => {
-                for (let i = 0; i < this.meeting.distributionLists.length; i++) {
-                    if (item.id === this.meeting.distributionLists[i].id) {
-                        return true;
-                    }
-                }
-                return false;
+            this.selectedParticipants = value.meetingParticipants.map(mp => {
+                return {
+                    user: mp.user,
+                    userFullName: mp.userFullName,
+                    userAvatar: mp.userAvatar,
+                    departments: mp.userDepartmentNames,
+                    isPresent: mp.isPresent,
+                    inDistributionList: mp.inDistributionList,
+                    meetingParticipantId: mp.id,
+                };
             });
 
-            this.lists.map((item) => {
-                let existingUser = users.find((participant) => {
-                    return participant.id === item.createdBy;
-                });
-                if (!existingUser) {
-                    users.push({
-                        id: item.createdBy,
-                        fullName: item.createdByFullName,
-                        avatar: item.createdByAvatar,
-                        departments: item.createdByDepartmentNames,
-                    });
-                }
-                item.users.map((user) => {
-                    let projectUser = user.projectUsers.filter((item) => {
-                        return item.project !== this.$route.params.id;
-                    });
-                    let existingUser = users.find((participant) => {
-                        return participant.id === user.id;
-                    });
-                    if (!existingUser && projectUser.length > 0) {
-                        users.push({
-                            id: user.id,
-                            fullName: user.firstName + ' ' + user.lastName,
-                            avatar: user.avatarUrl,
-                            departments: projectUser[0].projectDepartmentNames,
-                        });
-                    }
-                });
-            });
-
-            this.participants = users;
-            this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
-            this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
             this.date = moment(this.meeting.date).toDate();
             this.startTime = {
                 HH: moment(this.meeting.start, 'HH:mm').format('HH'),
@@ -595,6 +544,33 @@ export default {
                 HH: moment(this.meeting.end, 'HH:mm').format('HH'),
                 mm: moment(this.meeting.end, 'HH:mm').format('mm'),
             };
+        },
+        selectedParticipants: {
+            handler(nv, ov) {
+                if (nv.length !== ov.length) {
+                    return; // we're only interested in state changes not the first time things are added
+                }
+
+                let data = {
+                    meetingParticipants: nv.map(participant => {
+                        return {
+                            user: participant.user,
+                            isPresent: participant.isPresent,
+                            inDistributionList: participant.inDistributionList,
+                        };
+                    }),
+                };
+
+                this
+                    .editProjectMeeting({
+                        id: this.$route.params.meetingId,
+                        data,
+                        // prevents issues with the switches going crazy from side to side if you click too quickly
+                        skipCommit: true,
+                    })
+                ;
+            },
+            deep: true,
         },
     },
 };
@@ -620,7 +596,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -695,7 +671,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    }  
+    }
 
     .avatars {
         > div {
@@ -721,18 +697,18 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    } 
+    }
 
     .topic {
         white-space: normal;
         text-transform: none;
-    } 
+    }
 
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 10px 0 0;  
+        display: inline-block;
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -754,7 +730,7 @@ export default {
             .entry-title {
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                font-size: 10px;  
+                font-size: 10px;
                 margin-bottom: 10px;
 
                 h4 {
@@ -893,6 +869,6 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 </style>

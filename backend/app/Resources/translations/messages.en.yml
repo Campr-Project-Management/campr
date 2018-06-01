@@ -1250,6 +1250,7 @@ button:
     edit_meeting: Edit Meeting
     send_notifications: Send Notifications
     edit_distribution_list: Edit Distribution List
+    save_distribution_list: Save Distribution List
     save_meeting: Save Meeting
     done: Done
     add_new_measure: Add New Measure
