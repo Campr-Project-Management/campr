@@ -28,7 +28,7 @@
                 </div>
                 <div class="card-body m-t-0 card-padding">
                     {{ form_start(
-                    form,
+                        form,
                         {
                             'method': 'POST',
                             'action': path('app_admin_risk_edit', {'id': id}),
@@ -39,13 +39,7 @@
                             },
                         }
                     ) }}
-                    {% if form.vars.valid == false %}
-                        <div class="alert alert-danger">
-                            {% for field in form.children %}
-                                {{ form_errors(field) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    {{ form_errors(form.title) }}
                     {{ form_widget(
                         form.title,
                         {
@@ -55,6 +49,7 @@
                             'label': 'label.title'|trans
                         }
                     ) }}
+                    {{ form_errors(form.description) }}
                     {{ form_widget(
                         form.description,
                         {
@@ -64,6 +59,7 @@
                             'label': 'label.description'|trans
                         }
                     ) }}
+                    {{ form_errors(form.project) }}
                     {{ form_widget(
                         form.project,
                         {
@@ -73,6 +69,7 @@
                             'label': 'label.project'|trans
                         }
                     ) }}
+                    {{ form_errors(form.impact) }}
                     {{ form_widget(
                         form.impact,
                         {
@@ -82,6 +79,7 @@
                             'label': 'label.impact'|trans
                         }
                     ) }}
+                    {{ form_errors(form.probability) }}
                     {{ form_widget(
                         form.probability,
                         {
@@ -91,6 +89,7 @@
                             'label': 'label.probability'|trans
                         }
                     ) }}
+                    {{ form_errors(form.cost) }}
                     {{ form_widget(
                         form.cost,
                         {
@@ -100,6 +99,7 @@
                             'label': ('label.cost'|trans ~ ' (' ~ form.vars.value|app_currency_symbol ~ ')')
                         }
                     ) }}
+                    {{ form_errors(form.delay) }}
                     {{ form_widget(
                         form.delay,
                         {
@@ -109,6 +109,7 @@
                             'label': 'label.delay'|trans
                         }
                     ) }}
+                    {{ form_errors(form.delayUnit) }}
                     {{ form_widget(
                         form.delayUnit,
                         {
@@ -118,6 +119,7 @@
                             'label': 'label.delay_unit'|trans
                         }
                     ) }}
+                    {{ form_errors(form.priority) }}
                     {{ form_widget(
                         form.priority,
                         {
@@ -127,6 +129,7 @@
                             'label': 'label.priority'|trans
                         }
                     ) }}
+                    {{ form_errors(form.riskStrategy) }}
                     {{ form_widget(
                         form.riskStrategy,
                         {
@@ -136,6 +139,7 @@
                             'label': 'label.strategy'|trans
                         }
                     ) }}
+                    {{ form_errors(form.riskCategory) }}
                     {{ form_widget(
                         form.riskCategory,
                         {
@@ -145,6 +149,7 @@
                             'label': 'label.category'|trans
                         }
                     ) }}
+                    {{ form_errors(form.responsibility) }}
                     {{ form_widget(
                         form.responsibility,
                         {
@@ -164,6 +169,7 @@
                             'label': 'label.due_date'|trans
                         }
                     ) }}
+                    {{ form_errors(form.riskStatus) }}
                     {{ form_widget(
                         form.riskStatus,
                         {

@@ -22,10 +22,16 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $modules = [];
+
+        foreach (ProjectModuleTypeEnum::ELEMENTS as $key => $elem) {
+            $modules[$elem['title']] = $key;
+        }
+
         $builder
             ->add('module', ChoiceType::class, [
                 'required' => true,
-                'choices' => array_keys(ProjectModuleTypeEnum::ELEMENTS),
+                'choices' => $modules,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.module',
@@ -35,6 +41,8 @@ class CreateType extends AbstractType
                         'message' => 'invalid.module',
                     ]),
                 ],
+                'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('isEnabled', CheckboxType::class)
             ->add('isRequired', CheckboxType::class)

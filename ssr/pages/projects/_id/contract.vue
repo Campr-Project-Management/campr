@@ -44,7 +44,7 @@
                 <!-- /// Project Start Event /// -->
                 <div class="col-md-6">
                     <div class="vueditor-holder">
-                        <div class="vueditor-header">{{ translateText('message.project_start_event') }}</div>
+                        <div class="vueditor-header">{{ translateText('label.project_start_event') }}</div>
                         <div class="vueditor campr-editor">
                             <div class="ve-toolbar">
                                 <br>

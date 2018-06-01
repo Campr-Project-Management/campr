@@ -130,6 +130,7 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.risk_strategy',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('riskCategory', EntityType::class, [
                 'class' => RiskCategory::class,
@@ -156,6 +157,7 @@ class CreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('measures', CollectionType::class, [
                 'entry_type' => MeasureBaseType::class,
