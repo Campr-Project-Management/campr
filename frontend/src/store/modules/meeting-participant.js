@@ -25,10 +25,10 @@ const actions = {
             }, (response) => {
             });
     },
-    updateParticipantPresent({commit}, data) {
+    updateParticipant({commit}, {id, data}) {
         Vue.http
-            .post(
-                Routing.generate('app_api_meeting_participant_update', {'id': data.meeting}),
+            .patch(
+                Routing.generate('app_api_meeting_participant_update', {'id': id}),
                 data
             ).then((response) => {
             }, (response) => {

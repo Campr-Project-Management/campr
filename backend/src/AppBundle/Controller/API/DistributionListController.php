@@ -21,7 +21,7 @@ class DistributionListController extends ApiController
     /**
      * Get DistributionList by id.
      *
-     * @Route("/{id}", name="app_api_distribution_list_get")
+     * @Route("/{id}", name="app_api_distribution_list_get", options={"expose"=true})
      * @Method({"GET"})
      *
      * @param DistributionList $distributionList
@@ -110,6 +110,11 @@ class DistributionListController extends ApiController
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($data['user']);
+
+        if ($distributionList->getUsers()->contains($user)) {
+            return $this->createApiResponse($distributionList, Response::HTTP_ACCEPTED);
+        }
+
         if ($user) {
             $distributionList->addUser($user);
             $em->persist($distributionList);
@@ -142,11 +147,24 @@ class DistributionListController extends ApiController
     public function removeUserAction(Request $request, DistributionList $distributionList)
     {
         $data = $request->request->all();
+        $em = $this->getDoctrine()->getManager();
+
+        if (isset($data['users']) && is_array($data['users'])) {
+            foreach ($distributionList->getUsers() as $user) {
+                if (in_array($user->getId(), $data['users'])) {
+                    $distributionList->removeUser($user);
+                }
+            }
+            $em->persist($distributionList);
+            $em->flush();
+
+            return $this->createApiResponse($distributionList, Response::HTTP_ACCEPTED);
+        }
+
         if (!isset($data['user'])) {
             return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
-        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($data['user']);
         if ($user) {
             $distributionList->removeUser($user);
