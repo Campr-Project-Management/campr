@@ -26,6 +26,7 @@ class AdminType extends CreateType
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
             ])
+            ->remove('measures')
         ;
     }
 

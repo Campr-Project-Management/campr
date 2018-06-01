@@ -82,6 +82,7 @@ class CreateType extends AbstractType
                         'choice_label' => 'name',
                         'placeholder' => 'placeholder.project_role',
                         'translation_domain' => 'messages',
+                        'choice_translation_domain' => 'messages',
                         'query_builder' => $qb,
                     ]);
                 }
