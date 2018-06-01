@@ -1,5 +1,11 @@
 <template>
     <div class="row">
+        <edit-distribution-list-modal
+            v-if="editDistributionListModal"
+            @close="editDistributionListModal = null"
+            v-on:distributionListUpdated="distributionListUpdated"
+            :distribution-id="editDistributionListModal" />
+
         <div class="col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
@@ -21,10 +27,10 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-6">
-                                <multi-select-field
-                                        :title="translate('placeholder.distribution_list')"
-                                        :options="distributionListsForSelect"
-                                        v-model="details.distributionLists"/>
+                                <select-field
+                                    v-bind:title="translate('placeholder.distribution_list')"
+                                    v-bind:options="distributionListsForSelect"
+                                    v-model="details.distributionList"/>
                                 <error at-path="distributionLists"/>
                             </div>
                             <div class="col-md-6">
@@ -397,6 +403,9 @@
                 <div class="margintop20 text-right">
                     <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                 </div>
+                <div class="margintop20 text-right">
+                    <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</a>
+                </div>
                 <!-- /// End Header /// -->
 
                 <div class="flex flex-v-center flex-space-between">
@@ -408,13 +417,7 @@
                     </div>-->
                 </div>
 
-                <meeting-participants
-                    v-bind:meetingParticipants="displayedParticipants"
-                    v-bind:participants="participants"
-                    v-bind:participantsPages="participantsPages"
-                    v-bind:participantsPerPage="participantsPerPage"
-                    v-bind:createMeeting="true"
-                    @input="addMeetingParticipant" />
+                <meeting-participants v-model="selectedParticipants" />
             </div>
         </div>
 
@@ -439,6 +442,7 @@ import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
 import MeetingParticipants from './MeetingParticipants';
+import EditDistributionListModal from '../../_common/EditDistributionListModal';
 
 export default {
     components: {
@@ -454,6 +458,7 @@ export default {
         Error,
         Editor,
         MeetingParticipants,
+        EditDistributionListModal,
     },
     methods: {
         ...mapActions([
@@ -515,7 +520,9 @@ export default {
         },
         saveMeeting() {
             let data = {
-                distributionLists: this.details.distributionLists,
+                distributionLists: this.details.distributionList
+                    ? [this.details.distributionList]
+                    : null,
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
                 start: this.schedule.startTime,
@@ -527,12 +534,19 @@ export default {
                 decisions: this.decisions,
                 todos: this.todos,
                 infos: this.infos,
+                meetingParticipants: this.selectedParticipants.map(participant => {
+                    return {
+                        user: participant.user,
+                        isPresent: participant.isPresent,
+                        inDistributionList: participant.inDistributionList,
+                    };
+                }),
             };
 
-            if (this.details.distributionLists.length > 0) {
+            if (data.distributionLists && data.distributionLists.length > 0) {
                 data.name = '';
-                const length = this.details.distributionLists.length;
-                this.details.distributionLists.map((item, index) => {
+                const length = data.distributionLists.length;
+                data.distributionLists.map((item, index) => {
                     data.name += index !== length - 1 ? item.label + '|' : item.label;
                 });
             }
@@ -546,17 +560,7 @@ export default {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
                     } else {
-                        if (this.selectedParticipants.length > 0) {
-                            this.updateParticipantsPresent({
-                                meeting: response.body.id,
-                                participants: this.selectedParticipants,
-                            })
-                            .then((response) => {
-                                this.showSaved = true;
-                            });
-                        } else {
-                            this.showSaved = true;
-                        }
+                        this.showSaved = true;
                     }
                 },
                 () => {
@@ -564,22 +568,8 @@ export default {
                 })
             ;
         },
-        addMeetingParticipant(value) {
-            let existingUser = this.selectedParticipants.find((user) => {
-                return user.user === value.user;
-            });
-            if (!existingUser) {
-                this.selectedParticipants.push({
-                    user: value.user,
-                    isPresent: true,
-                });
-            } else {
-                this.selectedParticipants.filter((item) => {
-                    if (item.user === value.user) {
-                        item.isPresent = false;
-                    }
-                });
-            }
+        distributionListUpdated(distributionList) {
+            this.details.distributionList = {key: distributionList.id, label: distributionList.name};
         },
     },
     computed: {
@@ -594,49 +584,49 @@ export default {
         ]),
     },
     watch: {
-        details: {
+        'details.distributionList': {
             handler: function(value) {
-                let users = [];
-                this.lists = this.distributionLists.filter((item) => {
-                    for (let i = 0; i < this.details.distributionLists.length; i++) {
-                        if (item.id === this.details.distributionLists[i].key) {
-                            return true;
-                        }
+                this.selectedParticipants = this
+                    .selectedParticipants
+                    .filter(participant => participant.isPresent || participant.inDistributionList);
+
+                if (!value || !value.key) {
+                    return;
+                }
+
+                this.distributionLists.forEach(distributionList => {
+                    if (value.key !== distributionList.id) {
+                        return;
                     }
-                    return false;
-                });
 
-                this.lists.map((item) => {
-                    item.users.map((user) => {
-                        let projectUser = user.projectUsers.filter((item) => {
-                            return item.project !== this.$route.params.id;
-                        });
-                        if (projectUser.length > 0) {
-                            users.push({
-                                id: user.id,
-                                fullName: user.firstName + ' ' + user.lastName,
-                                avatar: user.avatarUrl,
-                                departments: projectUser[0].projectDepartmentNames,
+                    distributionList
+                        .users
+                        .filter(u => this.selectedParticipants.map(sp => sp.id).indexOf(u.id) === -1)
+                        .forEach(user => {
+                            let projectUser = user.projectUsers.filter((item) => {
+                                return item.project !== this.$route.params.id;
                             });
-                        }
-                    });
-                });
 
-                this.participants = users;
-                this.displayedParticipants = this.participants.slice(0, this.participantsPerPage);
-                this.participantsPages = Math.ceil(this.participants.length / this.participantsPerPage);
+                            this.selectedParticipants.push({
+                                id: user.id,
+                                user: user.id,
+                                userFullName: user.firstName + ' ' + user.lastName,
+                                userAvatar: user.avatarUrl,
+                                departments: projectUser.length ? projectUser[0].projectDepartmentNames : [],
+                                isPresent: false,
+                                inDistributionList: false,
+                            });
+                        });
+                });
             },
             deep: true,
         },
         meeting(value) {
             this.name = this.meeting.name;
             if (this.meeting.distributionLists.length > 0) {
-                let selectedList = [];
-                this.meeting.distributionLists.map(function(item) {
-                    selectedList.push({'key': item.id, 'label': item.name});
-                });
-                this.details.distributionLists = selectedList;
-            };
+                let item = this.meeting.distributionLists[0];
+                this.details.distributionList = {'key': item.id, 'label': item.name};
+            }
         },
         showSaved(value) {
             if (value === false) {
@@ -688,9 +678,10 @@ export default {
                 },
             },
             details: {
-                distributionLists: [],
+                distributionList: null,
                 category: null,
             },
+            editDistributionListModal: null,
         };
     },
 };
