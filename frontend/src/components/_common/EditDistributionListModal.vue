@@ -104,7 +104,7 @@ export default {
                 if (projectUser) {
                     out = out.concat(projectUser.projectRoleNames).map(this.translate);
                     if (projectUser.company) {
-                        out.append(projectUser.company);
+                        out.push(projectUser.company);
                     }
                 }
             }
