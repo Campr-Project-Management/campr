@@ -13,13 +13,7 @@
                     <modal v-if="showRescheduleModal" @close="cancelRescheduleModal" v-bind:hasSpecificClass="true">
                         <p class="modal-title">{{ translate('message.reschedule_todo') }}</p>
                         <div class="form-group last-form-group">
-                            <div class="col-md-4">
-                                <div class="input-holder">
-                                    <label class="active">{{ translate('label.select_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="rescheduleObj.date" format="dd-MM-yyyy" :value="rescheduleObj.date"></datepicker>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="input-holder">
                                     <label class="active">{{ translate('label.select_due_date') }}</label>
                                     <datepicker :clear-button="false" v-model="rescheduleObj.dueDate" format="dd-MM-yyyy" :value="rescheduleObj.dueDate"></datepicker>
@@ -43,7 +37,7 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{todo.date | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 <div>
@@ -133,14 +127,12 @@ export default {
             let data = {
                 id: this.$route.params.todoId,
                 dueDate: moment(this.rescheduleObj.dueDate).format('DD-MM-YYYY'),
-                date: moment(this.rescheduleObj.date).format('DD-MM-YYYY'),
             };
             this.editTodo(data);
             this.showRescheduleModal = false;
         },
         cancelRescheduleModal: function() {
             this.showRescheduleModal = false;
-            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
             this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
@@ -156,7 +148,6 @@ export default {
     },
     watch: {
         todo(val) {
-            this.rescheduleObj.date = this.todo.date ? moment(this.todo.date).toDate() : null;
             this.rescheduleObj.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
         },
     },
@@ -165,7 +156,6 @@ export default {
             showDeleteModal: false,
             showRescheduleModal: false,
             rescheduleObj: {
-                date: moment().toDate(),
                 dueDate: moment().toDate(),
             },
         };

@@ -31,8 +31,6 @@ class TodoControllerTest extends BaseController
         $this->assertContains('name="create[description]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_date"', $crawler->html());
-        $this->assertContains('name="create[date]"', $crawler->html());
         $this->assertContains('id="create_dueDate"', $crawler->html());
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_status"', $crawler->html());
@@ -201,8 +199,6 @@ class TodoControllerTest extends BaseController
         $this->assertContains('name="create[description]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_date"', $crawler->html());
-        $this->assertContains('name="create[date]"', $crawler->html());
         $this->assertContains('id="create_dueDate"', $crawler->html());
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_status"', $crawler->html());
@@ -267,7 +263,6 @@ class TodoControllerTest extends BaseController
         $this->assertContains('data-column-id="title"', $crawler->html());
         $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="responsibilityFullName"', $crawler->html());
-        $this->assertContains('data-column-id="date"', $crawler->html());
         $this->assertContains('data-column-id="dueDate"', $crawler->html());
         $this->assertContains('data-column-id="statusName"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
