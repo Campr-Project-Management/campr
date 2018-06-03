@@ -89,15 +89,6 @@ class Todo
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
-     */
-    private $date;
-
-    /**
-     * @var \DateTime
-     *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
-     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
@@ -219,30 +210,6 @@ class Todo
     public function getShowInStatusReport()
     {
         return $this->showInStatusReport;
-    }
-
-    /**
-     * Set date.
-     *
-     * @param \DateTime $date
-     *
-     * @return Todo
-     */
-    public function setDate(\DateTime $date = null)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date.
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
