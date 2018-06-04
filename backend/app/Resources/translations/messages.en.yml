@@ -72,6 +72,7 @@ message:
     project_decisions: Project Decisions
     decisions: Decisions
     expiry_date: Expiry Date
+    expired_at: Expired At
     back_to_infos: Back to Infos
     create_new_info: Create New Info
     edit_info: Edit Info
