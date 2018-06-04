@@ -401,8 +401,7 @@
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
                                     <h4>{{ info.topic }}</h4> |
-                                    {{ translate('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
-                                    {{ translate('message.status') }}: <b v-if="info.infoStatus">{{ translate(info.infoStatusName) }}</b><b v-else>-</b>
+                                    {{ translate('message.expiry_date') }}: <b :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</b> |
                                     {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
@@ -411,7 +410,10 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :name="info.responsibilityFullName"
+                                        :url="info.responsibilityAvatarUrl"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
@@ -448,8 +450,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
+                                    <label class="active">{{ translate('label.expiry_date') }}</label>
+                                    <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                             </div>
@@ -457,17 +459,6 @@
                     </div>
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    v-bind:title="'label.select_status'"
-                                    v-bind:options="infoStatusesForDropdown"
-                                    v-model="info.infoStatus"
-                                    v-bind:currentOption="info.infoStatus" />
-                                 <error
-                                    v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.infoStatus && validationMessages.infoStatus.length"
-                                    v-for="message in validationMessages.infoStatus"
-                                    :message="message" />
-                            </div>
                             <div class="col-md-6">
                                 <select-field
                                     v-bind:title="'label.category'"
@@ -557,9 +548,11 @@ import router from '../../../router';
 import Editor from '../../_common/Editor';
 import Modal from '../../_common/Modal';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         Editor,
         InputField,
         SelectField,
@@ -581,7 +574,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getDistributionLists', 'getMeetingCategories', 'getInfoStatuses', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
+            'getDistributionLists', 'getMeetingCategories', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
             'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo', 'getMeetingParticipants',
             'getInfoCategories', 'deleteProjectMeeting',
@@ -738,8 +731,7 @@ export default {
                 topic: this.info.topic,
                 description: this.info.description,
                 responsibility: this.info.responsibility.length ? this.info.responsibility[0] : null,
-                dueDate: moment(this.info.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                infoStatus: this.info.infoStatus ? this.info.infoStatus.key : null,
+                expiresAt: this.$formatToSQLDate(this.info.expiresAt),
                 infoCategory: this.info.infoCategory ? this.info.infoCategory.key : null,
                 meeting: this.$route.params.meetingId,
             };
@@ -756,8 +748,7 @@ export default {
                 description: info.description,
                 responsibility: [info.responsibility],
                 responsibilityFullName: info.responsibilityFullName,
-                dueDate: info.dueDate ? moment(info.dueDate).toDate() : new Date(),
-                infoStatus: {key: info.infoStatus, label: info.infoStatusName},
+                expiresAt: info.expiresAt ? moment(info.expiresAt).toDate() : new Date(),
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
             };
@@ -827,7 +818,6 @@ export default {
         ...mapGetters({
             distributionListsForSelect: 'distributionListsForSelect',
             meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            infoStatusesForDropdown: 'infoStatusesForDropdown',
             infoCategoriesForDropdown: 'infoCategoriesForDropdown',
             todoStatusesForSelect: 'todoStatusesForSelect',
             meeting: 'meeting',
@@ -849,7 +839,6 @@ export default {
         this.getMeetingParticipants({id: this.$route.params.meetingId});
         this.getMeetingCategories();
         this.getTodoStatuses();
-        this.getInfoStatuses();
         this.getInfoCategories();
         this.getProjectMeeting(this.$route.params.meetingId);
         this.getMeetingAgendas({
@@ -909,8 +898,7 @@ export default {
                 topic: null,
                 description: null,
                 responsibility: [],
-                dueDate: new Date(),
-                infoStatus: null,
+                expiresAt: new Date(),
                 infoCategory: null,
             },
             decisionDescription: '',
@@ -1028,7 +1016,6 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
-    @import '../../../css/common';
 
     .title {
         position: relative;

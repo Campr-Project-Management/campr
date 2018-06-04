@@ -30,3 +30,10 @@ services:
              - '@app.resolver.user_uploaded_avatar_url'
         tags:
             - { name: jms_serializer.event_subscriber }
+
+    app.serializer.listener.info:
+        class: AppBundle\Serializer\EventListener\InfoSubscriber
+        arguments:
+             - '@app.resolver.user_avatar_url'
+        tags:
+            - { name: jms_serializer.event_subscriber }

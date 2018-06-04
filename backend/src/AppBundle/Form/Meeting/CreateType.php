@@ -18,15 +18,17 @@ class CreateType extends BaseCreateType
     {
         parent::buildForm($builder, $options);
 
-        $builder
-            ->add('project', EntityType::class, [
+        $builder->add(
+            'project',
+            EntityType::class,
+            [
                 'class' => Project::class,
                 'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
-            ])
-        ;
+            ]
+        );
     }
 
     /**
@@ -34,9 +36,11 @@ class CreateType extends BaseCreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Meeting::class,
-            'allow_extra_fields' => true,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Meeting::class,
+                'allow_extra_fields' => true,
+            ]
+        );
     }
 }
