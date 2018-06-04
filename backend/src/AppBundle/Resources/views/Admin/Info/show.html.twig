@@ -43,10 +43,6 @@
                                     <td>{{ info.meeting|default('-') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>{{ 'table_header_cell.info_status'|trans }}</th>
-                                    <td>{{ info.infoStatus|trans }}</td>
-                                </tr>
-                                <tr>
                                     <th>{{ 'table_header_cell.info_category'|trans }}</th>
                                     <td>{{ info.infoCategory|trans }}</td>
                                 </tr>
@@ -61,7 +57,7 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.expiry_date'|trans }}</th>
-                                    <td>{{ info.dueDate ? info.dueDate|date('Y-m-d') : '-' }}</td>
+                                    <td>{{ info.expiresAt ? info.expiresAt|date('Y-m-d') : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'table_header_cell.responsibility'|trans }}</th>
