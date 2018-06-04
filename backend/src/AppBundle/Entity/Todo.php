@@ -132,11 +132,22 @@ class Todo
     private $updatedAt;
 
     /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="change", field="status")
+     *
+     * @ORM\Column(name="status_updated_at", type="datetime", nullable=false)
+     */
+    private $statusUpdatedAt;
+
+    /**
      * Todo constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->statusUpdatedAt = new \DateTime();
     }
 
     /**
@@ -565,5 +576,21 @@ class Todo
     public function getTodoCategoryName()
     {
         return $this->todoCategory ? $this->todoCategory->getName() : null;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStatusUpdatedAt(): \DateTime
+    {
+        return $this->statusUpdatedAt;
+    }
+
+    /**
+     * @param \DateTime $statusUpdatedAt
+     */
+    public function setStatusUpdatedAt(\DateTime $statusUpdatedAt = null)
+    {
+        $this->statusUpdatedAt = $statusUpdatedAt;
     }
 }
