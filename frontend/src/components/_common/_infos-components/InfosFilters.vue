@@ -1,20 +1,16 @@
 <template>
     <div class="filters">
-        <span class="title">{{ translateText('message.filter_by') }}</span>
+        <span class="title">{{ translate('message.filter_by') }}</span>
         <div class="dropdowns">            
             <member-search
                 v-model="user"
-                v-bind:placeholder="translateText('placeholder.responsible')"
+                v-bind:placeholder="translate('placeholder.responsible')"
                 v-bind:singleSelect="true"></member-search>
             <dropdown
-                v-bind:title="translateText('message.category')"
+                v-bind:title="translate('message.category')"
                 v-bind:options="infoCategoriesForDropdown"
                 :selectedValue="setFiltersInfoCategory"></dropdown>
-            <dropdown
-                v-bind:title="translateText('message.status')"
-                v-bind:options="infoStatusesForDropdown"
-                :selectedValue="setFiltersInfoStatus"></dropdown>
-            <button v-on:click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translateText('filter.clear') }}</button>
+            <button v-on:click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('filter.clear') }}</button>
         </div>
     </div>
 </template>
@@ -31,16 +27,9 @@ export default {
     },
     created() {
         this.getInfoCategories();
-        this.getInfoStatuses();
     },
     methods: {
-        ...mapActions(['getInfoCategories', 'getInfoStatuses']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
-        setFiltersInfoStatus(val) {
-            this.$emit('set-info-status', val);
-        },
+        ...mapActions(['getInfoCategories']),
         setFiltersInfoCategory(val) {
             this.$emit('set-info-category', val);
         },
@@ -49,7 +38,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters(['infoCategoriesForDropdown', 'infoStatusesForDropdown']),
+        ...mapGetters(['infoCategoriesForDropdown']),
     },
     watch: {
         user(val) {
