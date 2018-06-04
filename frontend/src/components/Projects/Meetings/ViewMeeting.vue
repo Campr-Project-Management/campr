@@ -244,7 +244,13 @@
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
-                                {{ translateText('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
+                                <template v-if="info.isExpired">
+                                    {{ translateText('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
+                                </template>
+                                <template v-else>
+                                    {{ translateText('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
+                                </template> |
+
                                 {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
