@@ -3,6 +3,8 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Info;
+use AppBundle\Entity\InfoCategory;
+use AppBundle\Entity\Project;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,22 +19,24 @@ class LoadInfoData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        /** @var Project $project */
         $project = $this->getReference('project1');
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
-        $dueDate = new \DateTime('2017-05-01');
+        $expiresAt = new \DateTime('2017-05-01');
 
         for ($i = 1; $i <= 2; ++$i) {
-            $info = (new Info())
-                ->setTopic('note'.$i)
-                ->setDescription('description'.$i)
-                ->setDueDate($dueDate)
-                ->setProject($project)
-                ->setMeeting($meeting)
-                ->setInfoStatus($this->getReference('infoStatus'.$i))
-                ->setInfoCategory($this->getReference('infoCategory'.$i))
-                ->setResponsibility($responsible)
-            ;
+            /** @var InfoCategory $category */
+            $category = $this->getReference('infoCategory'.$i);
+
+            $info = new Info();
+            $info->setTopic('note'.$i);
+            $info->setDescription('description'.$i);
+            $info->setProject($project);
+            $info->setMeeting($meeting);
+            $info->setInfoCategory($category);
+            $info->setResponsibility($responsible);
+            $info->setExpiresAt($expiresAt);
 
             $manager->persist($info);
         }
