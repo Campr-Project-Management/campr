@@ -18,7 +18,6 @@ class InfoRepository extends BaseRepository
         );
 
         $infoCategory = $this->getIntParam($filters, 'info_category', 0);
-        $infoStatus = $this->getIntParam($filters, 'info_status', 0);
         $user = $this->getIntParam($filters, 'user', 0);
 
         if ($infoCategory) {
@@ -26,15 +25,6 @@ class InfoRepository extends BaseRepository
                 $qb->expr()->in(
                     'i.infoCategory',
                     (array) $infoCategory
-                )
-            );
-        }
-
-        if ($infoStatus) {
-            $qb->andWhere(
-                $qb->expr()->in(
-                    'i.infoStatus',
-                    (array) $infoStatus
                 )
             );
         }
