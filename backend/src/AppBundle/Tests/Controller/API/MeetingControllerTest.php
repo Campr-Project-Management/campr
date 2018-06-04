@@ -63,6 +63,7 @@ class MeetingControllerTest extends BaseController
 
         foreach ($actual['infos'] as $key => $info) {
             $responseContent['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['infos'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
             $responseContent['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
         }
@@ -248,17 +249,15 @@ class MeetingControllerTest extends BaseController
                             'projectName' => 'project1',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
-                            'infoStatus' => 6,
-                            'infoStatusName' => 'Info Status 1',
-                            'infoStatusColor' => '#000000',
                             'infoCategory' => 11,
                             'infoCategoryName' => 'Info Category 1',
                             'id' => 1,
                             'topic' => 'note1',
                             'description' => 'description1',
-                            'dueDate' => '2017-05-01 00:00:00',
+                            'expiresAt' => '2017-05-01',
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
+                            'isExpired' => true,
                         ],
                         [
                             'responsibility' => 4,
@@ -269,17 +268,15 @@ class MeetingControllerTest extends BaseController
                             'projectName' => 'project1',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
-                            'infoStatus' => 7,
-                            'infoStatusName' => 'Info Status 2',
-                            'infoStatusColor' => '#000000',
                             'infoCategory' => 12,
                             'infoCategoryName' => 'Info Category 2',
                             'id' => 2,
                             'topic' => 'note2',
                             'description' => 'description2',
-                            'dueDate' => '2017-05-01 00:00:00',
+                            'expiresAt' => '2017-05-01',
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
+                            'isExpired' => true,
                         ],
                     ],
                     'distributionLists' => [],
