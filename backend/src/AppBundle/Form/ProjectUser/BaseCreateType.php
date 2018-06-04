@@ -11,6 +11,7 @@ use AppBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -38,6 +39,9 @@ class BaseCreateType extends AbstractType
             ->add('showInResources', CheckboxType::class)
             ->add('showInRasci', CheckboxType::class)
             ->add('showInOrg', CheckboxType::class)
+            ->add('rate', NumberType::class, [
+                'required' => false,
+            ])
             ->add('projectRoles', EntityType::class, [
                 'class' => ProjectRole::class,
                 'required' => false,
