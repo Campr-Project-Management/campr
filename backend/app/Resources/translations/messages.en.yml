@@ -1767,7 +1767,7 @@ email:
                 second: If you don't have an account with this email please make one in order to accept invitation.
                 third: Please click on the following
                 link: invitation
-        meeting_notification: You have been invited to a meeting. Here are the meeeting informations:
+        meeting_notification: You have been invited to a meeting. Here are the meeting informations:
         starts_at: Starts at
         ends_at: Ends at
         status_report: New status report
