@@ -35,9 +35,10 @@
                             <h4>
                                 {{ translate('message.created') }}:
                                 <b>{{ info.createdAt | date }}</b> |
-                                {{ translate('message.expiry_date') }}:
 
-                                <b :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</b>
+                                <span v-if="info.isExpired">{{ translate('message.expired_at') }}</span>
+                                <span v-else>{{ translate('message.expiry_date') }}: </span>
+                                <b :class="{'middle-color': info.isExpired}">{{ info.expiresAt | date }}</b>
                             </h4>
 
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
