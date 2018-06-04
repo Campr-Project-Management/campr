@@ -38,7 +38,7 @@
                             <tr v-if="infos && infos.length" v-for="info in infos">
                                 <td>{{ info.id }}</td>
                                 <td>{{ translate(info.infoCategoryName) }}</td>
-                                <td :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</td>
+                                <td :class="{'middle-color': info.isExpired}">{{ info.expiresAt | date }}</td>
                                 <td class="cell-wrap">{{ info.topic }}</td>
                                 <td>
                                     <user-avatar
