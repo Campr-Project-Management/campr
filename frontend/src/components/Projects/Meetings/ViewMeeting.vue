@@ -245,7 +245,6 @@
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
                                 {{ translateText('message.due_date') }}: <b>{{ info.dueDate | moment('DD.MM.YYYY') }}</b> |
-                                {{ translateText('message.status') }}: <b v-if="info.infoStatus">{{ translateText(info.infoStatusName) }}</b><b v-else>-</b>
                                 {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
@@ -445,8 +444,7 @@ export default {
                 description: info.description,
                 responsibility: [info.responsibility],
                 responsibilityFullName: info.responsibilityFullName,
-                dueDate: info.dueDate ? moment(info.dueDate).toDate() : new Date(),
-                infoStatus: {key: info.infoStatus, label: info.infoStatusName},
+                expiresAt: info.expiresAt ? moment(info.expiresAt).toDate() : new Date(),
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
             };

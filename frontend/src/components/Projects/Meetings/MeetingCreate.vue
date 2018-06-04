@@ -340,29 +340,20 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translate('label.due_date') }}</label>
-                                        <datepicker v-model="info.dueDate" format="dd-MM-yyyy" />
+                                        <label class="active">{{ translate('label.expiry_date') }}</label>
+                                        <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
+                                    <error
+                                            v-if="validationMessages.infos[index.toString()].expiresAt && validationMessages.infos[index.toString()].expiresAt.length"
+                                            v-for="(message, index) in validationMessages.infos[index.toString()].expiresAt"
+                                            :key="`info-expiresAt-${index}`"
+                                            :message="message" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group last-form-group">
-                                <div class="col-md-6">
-                                    <select-field
-                                        :title="translate('label.select_status')"
-                                        :options="infoStatusesForDropdown"
-                                        v-model="info.infoStatus"
-                                        v-bind:currentOption="info.infoStatus" />
-                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.infos[index.toString()].infoStatus && validationMessages.infos[index.toString()].infoStatus.length"
-                                            v-for="(message, index) in validationMessages.infos[index.toString()].infoStatus"
-                                            :key="`info-infoStatus-${index}`"
-                                            :message="message" />
-                                    </div>
-                                </div>
                                 <div class="col-md-6">
                                     <select-field
                                         :title="'label.category'"
@@ -464,7 +455,6 @@ export default {
         ...mapActions([
             'getDistributionLists',
             'getMeetingCategories',
-            'getInfoStatuses',
             'getInfoCategories',
             'getTodoStatuses',
             'createProjectMeeting',
@@ -513,8 +503,7 @@ export default {
                 topic: '',
                 description: '',
                 responsible: [],
-                dueDate: new Date(),
-                infoStatus: {label: this.translate('label.select_status')},
+                expiresAt: new Date(),
                 infoCategory: {label: this.translate('label.category')},
             });
         },
@@ -533,7 +522,11 @@ export default {
                 medias: this.medias,
                 decisions: this.decisions,
                 todos: this.todos,
-                infos: this.infos,
+                infos: this.infos.map((info) => {
+                    return Object.assign({}, info, {
+                        expiresAt: this.$formatToSQLDate(info.expiresAt),
+                    });
+                }),
                 meetingParticipants: this.selectedParticipants.map(participant => {
                     return {
                         user: participant.user,
@@ -580,7 +573,6 @@ export default {
             'todoStatusesForSelect',
             'distributionLists',
             'validationMessages',
-            'infoStatusesForDropdown',
         ]),
     },
     watch: {
@@ -644,7 +636,6 @@ export default {
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getInfoCategories();
-        this.getInfoStatuses();
     },
     mounted() {
         this.addObjective();
@@ -689,10 +680,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../css/_mixins';
-    @import '../../../css/_variables';
-    @import '../../../css/common';
-
     .title {
         position: relative;
         top: 15px;

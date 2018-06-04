@@ -18,11 +18,11 @@
                     <!-- /// Info Category /// -->
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <select-field
-                                    :title="translate('label.category')"
-                                    :options="infoCategoriesForDropdown"
-                                    v-model="infoCategory"/>
+                                        :title="translate('label.category')"
+                                        :options="infoCategoriesForDropdown"
+                                        v-model="infoCategory"/>
                                 <error at-path="infoCategory"/>
                             </div>
                         </div>
@@ -54,8 +54,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
-                                    <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
+                                    <label class="active">{{ translate('label.expiry_date') }}</label>
+                                    <datepicker v-model="expiresAt" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
                                 <error at-path="dueDate"/>
@@ -63,19 +63,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <select-field
-                                    :title="translate('label.select_status')"
-                                    :options="infoStatusesForDropdown"
-                                    v-model="infoStatus"/>
-                                <error at-path="infoStatus"/>
-                            </div>
-                        </div>
-                    </div>     
-
-                    <hr class="double">               
+                    <hr class="double">
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
@@ -121,7 +109,6 @@ export default {
     methods: {
         ...mapActions([
             'getInfoCategories',
-            'getInfoStatuses',
             'clearInfo',
             'getInfo',
             'createInfo',
@@ -132,12 +119,9 @@ export default {
             const data = {
                 topic: this.topic,
                 description: this.description,
-                dueDate: this.$formatToSQLDate(this.dueDate),
+                expiresAt: this.$formatToSQLDate(this.expiresAt),
                 infoCategory: this.infoCategory && this.infoCategory.key
                     ? this.infoCategory.key
-                    : null,
-                infoStatus: this.infoStatus && this.infoStatus.key
-                    ? this.infoStatus.key
                     : null,
                 responsibility: this.responsibility && this.responsibility.length
                     ? this.responsibility[0]
@@ -189,25 +173,20 @@ export default {
             if (val) {
                 this.topic = val.topic;
                 this.description = val.description;
-                this.dueDate = val.dueDate ? moment(val.dueDate).toDate() : null;
+                this.expiresAt = val.expiresAt ? moment(val.expiresAt).toDate() : null;
                 this.infoCategory = {
                     key: val.infoCategory,
                     label: this.translate(val.infoCategoryName),
-                };
-                this.infoStatus = {
-                    key: val.infoStatus,
-                    label: this.translate(val.infoStatusName),
                 };
                 this.responsibility = [val.responsibility];
             }
         },
     },
     computed: {
-        ...mapGetters(['info', 'infoCategoriesForDropdown', 'infoStatusesForDropdown', 'validationMessages']),
+        ...mapGetters(['info', 'infoCategoriesForDropdown', 'validationMessages']),
     },
     created() {
         this.getInfoCategories();
-        this.getInfoStatuses();
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
         }
@@ -222,9 +201,8 @@ export default {
             showSaved: false,
             topic: '',
             description: '',
-            dueDate: null,
+            expiresAt: null,
             infoCategory: null,
-            infoStatus: null,
             responsibility: [],
         };
     },

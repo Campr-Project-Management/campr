@@ -1722,6 +1722,7 @@ table_header_cell:
     info_status: Info status
     info_category: Info Category
     currency: Currency
+    expires_at: Expires At
 
 link:
     home: Home
