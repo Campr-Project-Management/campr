@@ -251,7 +251,7 @@ export default {
         }
 
         .irs-line {
-            background: $darkColor !important;
+            background: $darkerColor !important;
             border: none !important;
         }
 
