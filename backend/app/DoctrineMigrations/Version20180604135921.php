@@ -1,0 +1,36 @@
+<?php
+
+namespace Application\Migrations;
+
+use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\DBAL\Schema\Schema;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+class Version20180604135921 extends AbstractMigration
+{
+    /**
+     * @param Schema $schema
+     */
+    public function up(Schema $schema)
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE todo ADD status_updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP()');
+        $this->addSql('UPDATE todo SET status_updated_at = updated_at WHERE updated_at IS NOT NULL');
+        $this->addSql('UPDATE todo SET status_updated_at = created_at WHERE created_at IS NOT NULL');
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function down(Schema $schema)
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+
+        $this->addSql('ALTER TABLE todo DROP status_updated_at');
+    }
+}
