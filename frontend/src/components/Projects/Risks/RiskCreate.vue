@@ -524,8 +524,9 @@ export default {
         },
         riskImpact: function(value) {
             this.updateGridView();
-            this.riskImpact = value;
-            return value;
+        },
+        riskProbability: function(value) {
+            this.updateGridView();
         },
     },
 };
