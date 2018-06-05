@@ -474,7 +474,7 @@ export default {
             this.editProjectMeeting(data);
         },
         sendNotifications: function() {
-            this.sendMeetingNotifications(this.$route.params.id);
+            this.sendMeetingNotifications(this.$route.params.meetingId);
             this.showNotificationModal = false;
         },
         downloadMedia: function(media) {
