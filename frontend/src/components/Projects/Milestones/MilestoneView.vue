@@ -174,10 +174,6 @@ export default {
             margin-bottom: 40px;
         }
 
-        .input-holder {
-            margin-bottom: 30px;
-        }
-
         .main-list .member {
             border-top: 1px solid $darkColor;
         }
