@@ -58,11 +58,6 @@ class BaseCreateType extends AbstractType
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
-            ->add('date', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
             ->add('dueDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
