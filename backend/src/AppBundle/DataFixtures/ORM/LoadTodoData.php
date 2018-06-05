@@ -30,7 +30,6 @@ class LoadTodoData extends AbstractFixture implements OrderedFixtureInterface
                 ->setMeeting($meeting)
                 ->setDescription('description for todo'.$i)
                 ->setResponsibility($responsible)
-                ->setDate($date)
                 ->setDueDate($dueDate)
             ;
             $manager->persist($todo);
