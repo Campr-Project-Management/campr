@@ -30,6 +30,7 @@
                                 <th class="cell-auto">{{ translate('table_header_cell.id') }}</th>
                                 <th class="cell-auto">{{ translate('table_header_cell.event') }}</th>
                                 <th class="cell-auto">{{ translate('table_header_cell.category') }}</th>
+                                <th class="cell-auto">{{ translate('table_header_cell.status') }}</th>
                                 <th class="cell-auto">{{ translate('table_header_cell.due_date') }}</th>
                                 <th>{{ translate('table_header_cell.title') }}</th>
                                 <th>{{ translate('table_header_cell.responsible') }}</th>
@@ -41,10 +42,18 @@
                                 <td>{{ decision.id }}</td>
                                 <td>{{ decision.meetingName }}</td>
                                 <td>{{ decision.decisionCategoryName }}</td>
+                                <td>
+                                    <span v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</span>
+                                    <span v-else class="danger-color">{{ translate('choices.undone') }}</span>
+                                </td>
                                 <td>{{ decision.dueDate | date }}</td>
                                 <td class="cell-wrap">{{ decision.title }}</td>
                                 <td class="text-center">
-                                    <div class="avatar" v-tooltip.top-center="decision.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                                    <user-avatar
+                                            size="small"
+                                            :name="decision.responsibilityFullName"
+                                            :tooltip="decision.responsibilityFullName"
+                                            :url="decision.responsibilityAvatarUrl"/>
                                 </td>
                                 <td>
                                     <div class="text-right">
@@ -82,9 +91,11 @@ import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../_common/Modal';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         DecisionsFilters,
         ViewIcon,
         EditIcon,
