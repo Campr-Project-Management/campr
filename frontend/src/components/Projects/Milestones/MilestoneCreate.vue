@@ -37,16 +37,8 @@
                         <div class="row">
                             <div class="form-group last-form-group">
                                 <div class="col-md-6">
-                                    <div class="input-holder right" :class="{disabledpicker: isEdit }">
-                                        <label class="active">{{ translateText('label.base_start_date') }}</label>
-                                        <datepicker v-model="schedule.scheduledStartAt" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
-                                    </div>
-                                    <error at-path="scheduledStartAt"/>
-                                </div>
-                                <div class="col-md-6">
                                     <div class="input-holder right">
-                                        <label class="active">{{ translateText('label.base_end_date') }}</label>
+                                        <label class="active">{{ translateText('label.base_due_date') }}</label>
                                         <datepicker v-model="schedule.scheduledFinishAt" format="dd-MM-yyyy" />
                                         <calendar-icon fill="middle-fill"/>
                                     </div>
@@ -146,7 +138,6 @@ export default {
                 name: this.name,
                 type: 1,
                 content: this.content,
-                scheduledStartAt: moment(this.schedule.scheduledStartAt).format('DD-MM-YYYY'),
                 scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
                 responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
@@ -181,7 +172,6 @@ export default {
     watch: {
         milestone(value) {
             this.name = this.milestone.name;
-            this.schedule.scheduledStartAt = new Date(this.milestone.scheduledStartAt);
             this.schedule.scheduledFinishAt = new Date(this.milestone.scheduledFinishAt);
             this.details.status = this.milestone.workPackageStatus
                 ? {key: this.milestone.workPackageStatus, label: this.translateText(this.milestone.workPackageStatusName)}
@@ -212,7 +202,6 @@ export default {
             name: '',
             content: '',
             schedule: {
-                scheduledStartAt: new Date(),
                 scheduledFinishAt: new Date(),
             },
             details: {

@@ -22,7 +22,8 @@
                     :forecast-duration-days="item.forecastDurationDays"
                     :actual-start-at="item.actualStartAt"
                     :actual-finish-at="item.actualFinishAt"
-                    :actual-duration-days="item.actualDurationDays"/>
+                    :actual-duration-days="item.actualDurationDays"
+                    :show-due-schedule="showDueSchedule"/>
         </div>
         <div class="status">
             <p>
@@ -65,6 +66,9 @@
             ]),
             avatarUrl() {
                 return this.projectUserAvatarByUserId(this.item.responsibility);
+            },
+            showDueSchedule() {
+                return this.type === 'milestone';
             },
         },
     };
