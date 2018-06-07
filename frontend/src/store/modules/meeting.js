@@ -57,13 +57,17 @@ const actions = {
      * @param {integer} id
      */
     deleteProjectMeeting({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_meeting_delete', {id: id})
-            ).then((response) => {
-                commit(types.DELETE_PROJECT_MEETING, {id});
-            }, (response) => {
-            });
+        Vue
+            .http
+            .delete(Routing.generate('app_api_meeting_delete', {id: id}))
+            .then(
+                () => {
+                    commit(types.DELETE_PROJECT_MEETING, {id});
+                    router.push({name: 'project-meetings'});
+                },
+                () => {}
+            )
+        ;
     },
     /**
      * Edit a subteam
@@ -141,20 +145,6 @@ const actions = {
                     let meeting = response.data;
                     commit(types.SET_MEETING, {meeting});
                 }
-            }, (response) => {
-            });
-    },
-    /**
-     * Delete meeting
-     * @param {function} commit
-     * @param {integer} id
-     */
-    deleteProjectMeeting({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_meeting_delete', {id: id})
-            ).then((response) => {
-                router.push({name: 'project-meetings'});
             }, (response) => {
             });
     },
