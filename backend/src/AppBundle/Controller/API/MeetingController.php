@@ -23,16 +23,12 @@ use AppBundle\Form\MeetingAgenda\CreateType as MeetingAgendaType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\Todo\CreateType as TodoType;
 use AppBundle\Form\Note\CreateType as NoteType;
-use AppBundle\Form\MeetingParticipant\CreateType as MeetingParticipantType;
 
 /**
  * @Route("/api/meetings")
  */
 class MeetingController extends ApiController
 {
-    const ENTITY_CLASS = MeetingParticipant::class;
-    const FORM_CLASS = MeetingParticipantType::class;
-
     /**
      * Retrieve Meeting information.
      *
@@ -357,31 +353,6 @@ class MeetingController extends ApiController
     public function participantsAction(Meeting $meeting)
     {
         return $this->createApiResponse($meeting->getMeetingParticipants(), Response::HTTP_OK);
-    }
-
-    /**
-     * Update meeting participant.
-     *
-     * @Route("/{id}/participant-update", name="app_api_meeting_participant_update", options={"expose"=true})
-     * @Method({"POST", "PATCH"})
-     *
-     * @param Request            $request
-     * @param MeetingParticipant $meetingParticipant
-     *
-     * @return JsonResponse
-     */
-    public function meetingParticipantsUpdateAction(Request $request, MeetingParticipant $meetingParticipant)
-    {
-        $form = $this->getForm($meetingParticipant, ['method' => $request->getMethod(), 'csrf_protection' => false]);
-        $this->processForm($request, $form, false);
-
-        if ($form->isValid()) {
-            $this->persistAndFlush($meetingParticipant);
-
-            return $this->createApiResponse($meetingParticipant, Response::HTTP_ACCEPTED);
-        }
-
-        return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
     }
 
     /**
