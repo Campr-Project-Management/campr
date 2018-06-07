@@ -576,7 +576,7 @@ export default {
         ...mapActions([
             'getDistributionLists', 'getMeetingCategories', 'getProjectMeeting', 'createMeetingObjective', 'getTodoStatuses',
             'createProjectMeeting', 'getMeetingAgendas', 'editProjectMeeting', 'editMeetingObjective', 'deleteMeetingObjective',
-            'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo', 'getMeetingParticipants',
+            'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo',
             'getInfoCategories', 'deleteProjectMeeting',
         ]),
         getDuration: function(startDate, endDate) {
@@ -836,7 +836,6 @@ export default {
     },
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});
-        this.getMeetingParticipants({id: this.$route.params.meetingId});
         this.getMeetingCategories();
         this.getTodoStatuses();
         this.getInfoCategories();
@@ -969,6 +968,22 @@ export default {
                             });
                         });
                 });
+
+                this
+                    .meeting
+                    .meetingParticipants
+                    .filter(mp => this.selectedParticipants.map(sp => sp.user).indexOf(mp.user) === -1)
+                    .forEach(mp => {
+                        this.selectedParticipants.push({
+                            user: mp.user,
+                            userFullName: mp.userFullName,
+                            userAvatar: mp.userAvatar,
+                            departments: mp.userDepartmentNames,
+                            isPresent: mp.isPresent,
+                            inDistributionList: mp.inDistributionList,
+                        });
+                    })
+                ;
             },
             deep: true,
         },
