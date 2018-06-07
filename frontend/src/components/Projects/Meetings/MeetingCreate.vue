@@ -459,7 +459,6 @@ export default {
             'getTodoStatuses',
             'createProjectMeeting',
             'emptyValidationMessages',
-            'updateParticipantsPresent',
         ]),
         setMedias(value) {
             this.medias = value;

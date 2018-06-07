@@ -129,6 +129,8 @@ export default {
                         },
                         () => {}
                     );
+            } else {
+                this.$emit('close');
             }
         },
     },
