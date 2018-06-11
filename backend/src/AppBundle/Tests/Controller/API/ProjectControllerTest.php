@@ -1224,6 +1224,7 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
             $responseContent['items'][0]['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['items'][0]['infos'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
         }
 
         foreach ($actual['items'][0]['medias'] as $key => $info) {
@@ -1381,7 +1382,6 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'todo1',
                                     'description' => 'description for todo1',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
                                 ],
@@ -1400,7 +1400,6 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'todo2',
                                     'description' => 'description for todo2',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
                                 ],
@@ -1415,17 +1414,15 @@ class ProjectControllerTest extends BaseController
                                     'projectName' => 'project1',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
-                                    'infoStatus' => 6,
-                                    'infoStatusName' => 'Info Status 1',
-                                    'infoStatusColor' => '#000000',
                                     'infoCategory' => 11,
                                     'infoCategoryName' => 'Info Category 1',
                                     'id' => 1,
                                     'topic' => 'note1',
                                     'description' => 'description1',
-                                    'dueDate' => '2017-05-01 00:00:00',
+                                    'expiresAt' => '2017-05-01',
                                     'createdAt' => date('Y-m-d H:i:s'),
                                     'updatedAt' => date('Y-m-d H:i:s'),
+                                    'isExpired' => true,
                                 ],
                                 [
                                     'responsibility' => 4,
@@ -1436,17 +1433,15 @@ class ProjectControllerTest extends BaseController
                                     'projectName' => 'project1',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
-                                    'infoStatus' => 7,
-                                    'infoStatusName' => 'Info Status 2',
-                                    'infoStatusColor' => '#000000',
                                     'infoCategory' => 12,
                                     'infoCategoryName' => 'Info Category 2',
                                     'id' => 2,
                                     'topic' => 'note2',
                                     'description' => 'description2',
-                                    'dueDate' => '2017-05-01 00:00:00',
+                                    'expiresAt' => '2017-05-01',
                                     'createdAt' => date('Y-m-d H:i:s'),
                                     'updatedAt' => date('Y-m-d H:i:s'),
+                                    'isExpired' => true,
                                 ],
                             ],
                             'distributionLists' => [],
@@ -1572,13 +1567,21 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
 
         foreach ($responseArray['items'] as $key => $info) {
             $responseContent['items'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['items'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
             $responseContent['items'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][$key]['updatedAt'] = $info['updatedAt'];
         }
@@ -1609,15 +1612,13 @@ class ProjectControllerTest extends BaseController
                             'projectName' => 'project1',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
-                            'infoStatus' => 6,
-                            'infoStatusName' => 'Info Status 1',
-                            'infoStatusColor' => '#000000',
                             'infoCategory' => 11,
                             'infoCategoryName' => 'Info Category 1',
                             'id' => 1,
                             'topic' => 'note1',
                             'description' => 'description1',
-                            'dueDate' => '2017-05-01 00:00:00',
+                            'expiresAt' => '2017-05-01',
+                            'isExpired' => true,
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
                         ],
@@ -1630,15 +1631,13 @@ class ProjectControllerTest extends BaseController
                             'projectName' => 'project1',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
-                            'infoStatus' => 7,
-                            'infoStatusName' => 'Info Status 2',
-                            'infoStatusColor' => '#000000',
                             'infoCategory' => 12,
                             'infoCategoryName' => 'Info Category 2',
                             'id' => 2,
                             'topic' => 'note2',
                             'description' => 'description2',
-                            'dueDate' => '2017-05-01 00:00:00',
+                            'expiresAt' => '2017-05-01',
+                            'isExpired' => true,
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
                         ],
@@ -1669,13 +1668,21 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/projects/1/infos', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/projects/1/infos',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
         $responseContent['id'] = $responseArray['id'];
         $responseContent['createdAt'] = $responseArray['createdAt'];
         $responseContent['updatedAt'] = $responseArray['updatedAt'];
+        $responseContent['responsibilityAvatarUrl'] = $responseArray['responsibilityAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1692,7 +1699,6 @@ class ProjectControllerTest extends BaseController
                 [
                     'topic' => 'note project 1',
                     'description' => 'description text',
-                    'infoStatus' => 1,
                     'infoCategory' => 1,
                     'responsibility' => 1,
                 ],
@@ -1707,17 +1713,15 @@ class ProjectControllerTest extends BaseController
                     'projectName' => 'project1',
                     'meeting' => null,
                     'meetingName' => null,
-                    'infoStatus' => 1,
-                    'infoStatusName' => 'label.published',
-                    'infoStatusColor' => '#5FC3A5',
                     'infoCategory' => 1,
                     'infoCategoryName' => 'label.production',
                     'id' => 3,
                     'topic' => 'note project 1',
                     'description' => 'description text',
-                    'dueDate' => null,
+                    'expiresAt' => null,
                     'createdAt' => '2018-02-16 04:14:42',
                     'updatedAt' => '2018-02-16 04:14:42',
+                    'isExpired' => false,
                 ],
             ],
         ];
@@ -2722,7 +2726,6 @@ class ProjectControllerTest extends BaseController
                         'title' => 'todo1',
                         'description' => 'description for todo1',
                         'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
                     ],
@@ -2741,7 +2744,6 @@ class ProjectControllerTest extends BaseController
                         'title' => 'todo2',
                         'description' => 'description for todo2',
                         'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
                     ],
@@ -2806,7 +2808,6 @@ class ProjectControllerTest extends BaseController
                     'title' => 'do this',
                     'description' => 'descript',
                     'showInStatusReport' => false,
-                    'date' => null,
                     'dueDate' => null,
                 ],
             ],

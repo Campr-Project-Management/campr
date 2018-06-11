@@ -403,15 +403,6 @@ export default {
             this.activeItem.isActive = true;
             this.setPriority(this.gridData[index].type);
         },
-        getCurrencySymbol: function(label) {
-            let symbols = {
-                'USD': '$',
-                'EUR': '€',
-                'GBP': '₤',
-            };
-
-            return symbols[label];
-        },
         setPriority: function(type) {
             const priorityNames = {
                 'very-low': {name: 'message.very_low', color: 'ro-very-low-priority', value: 0},
@@ -533,8 +524,9 @@ export default {
         },
         riskImpact: function(value) {
             this.updateGridView();
-            this.riskImpact = value;
-            return value;
+        },
+        riskProbability: function(value) {
+            this.updateGridView();
         },
     },
 };

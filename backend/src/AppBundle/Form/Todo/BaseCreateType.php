@@ -33,6 +33,7 @@ class BaseCreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('title', TextType::class, [
                 'required' => true,
@@ -57,11 +58,6 @@ class BaseCreateType extends AbstractType
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
             ])
-            ->add('date', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
             ->add('dueDate', DateType::class, [
                 'required' => false,
                 'widget' => 'single_text',
@@ -73,6 +69,7 @@ class BaseCreateType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.status',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('todoCategory', EntityType::class, [
                 'class' => TodoCategory::class,

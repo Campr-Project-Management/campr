@@ -27,7 +27,7 @@ export const createFormData = (data) => {
         formData.append('location', data.location);
     }
 
-    if (data.distributionLists.length) {
+    if (data.distributionLists && data.distributionLists.length) {
         for (let i = 0; i < data.distributionLists.length; i++) {
             formData.append('distributionLists[' + i + ']', data.distributionLists[i] ? data.distributionLists[i].key : null);
         }
@@ -84,9 +84,16 @@ export const createFormData = (data) => {
             formData.append('infos[' + i + '][topic]', data.infos[i].topic);
             formData.append('infos[' + i + '][description]', data.infos[i].description);
             formData.append('infos[' + i + '][responsibility]', data.infos[i].responsible.length > 0 ? data.infos[i].responsible[0] : null);
-            formData.append('infos[' + i + '][dueDate]', moment(data.infos[i].dueDate).format('DD-MM-YYYY'));
-            formData.append('infos[' + i + '][infoStatus]', data.infos[i].infoStatus ? data.infos[i].infoStatus.key : null);
+            formData.append('infos[' + i + '][expiresAt]', data.infos[i].expiresAt);
             formData.append('infos[' + i + '][infoCategory]', data.infos[i].infoCategory ? data.infos[i].infoCategory.key : null);
+        }
+    }
+
+    if (data.meetingParticipants) {
+        for (let i = 0; i < data.meetingParticipants.length; i++) {
+            formData.append('meetingParticipants[' + i + '][user]', data.meetingParticipants[i].user);
+            formData.append('meetingParticipants[' + i + '][isPresent]', data.meetingParticipants[i].isPresent ? 1 : 'false');
+            formData.append('meetingParticipants[' + i + '][inDistributionList]', data.meetingParticipants[i].inDistributionList ? 1 : 'false');
         }
     }
 

@@ -137,7 +137,7 @@ export default {
                 }
                 users.push(user);
             });
-            this.noData = users.length === 0 ? true : false;
+            this.noData = users.length === 0;
 
             return users;
         },

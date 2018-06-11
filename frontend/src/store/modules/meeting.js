@@ -57,13 +57,17 @@ const actions = {
      * @param {integer} id
      */
     deleteProjectMeeting({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_meeting_delete', {id: id})
-            ).then((response) => {
-                commit(types.DELETE_PROJECT_MEETING, {id});
-            }, (response) => {
-            });
+        Vue
+            .http
+            .delete(Routing.generate('app_api_meeting_delete', {id: id}))
+            .then(
+                () => {
+                    commit(types.DELETE_PROJECT_MEETING, {id});
+                    router.push({name: 'project-meetings'});
+                },
+                () => {}
+            )
+        ;
     },
     /**
      * Edit a subteam
@@ -72,57 +76,34 @@ const actions = {
      * @return {object}
      */
     editProjectMeeting({commit}, data) {
-        if (data.withPost) {
-            return Vue.http
-                .post(
-                    Routing.generate('app_api_meeting_edit', {id: data.id}),
-                    data.data
-                ).then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            const {messages} = response.body;
-                            commit(types.SET_VALIDATION_MESSAGES, {messages});
-                        } else {
-                            commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+        const method = data.withPost ? 'post' : 'patch';
 
-                            let meeting = response.body;
-                            let id = data.id;
+        return Vue
+            .http[method](
+                Routing.generate('app_api_meeting_edit', {id: data.id}),
+                data.data
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+
+                        let meeting = response.body;
+                        let id = data.id;
+                        if (!data.skipCommit || data.skipCommit !== true) {
                             commit(types.EDIT_PROJECT_MEETING, {id, meeting});
                         }
-
-                        return response;
-                    },
-                    (response) => {
-                        return response;
                     }
-                )
-            ;
-        } else {
-            return Vue.http
-                .patch(
-                    Routing.generate('app_api_meeting_edit', {id: data.id}),
-                    JSON.stringify(data)
-                ).then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            const {messages} = response.body;
-                            commit(types.SET_VALIDATION_MESSAGES, {messages});
-                        } else {
-                            commit(types.SET_VALIDATION_MESSAGES, {messages: []});
 
-                            let meeting = response.body;
-                            let id = data.id;
-                            commit(types.EDIT_PROJECT_MEETING, {id, meeting});
-                        }
-
-                        return response;
-                    },
-                    (response) => {
-                        return response;
-                    }
-                )
-            ;
-        }
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            )
+        ;
     },
     /**
      * Creates a new project meeting
@@ -164,20 +145,6 @@ const actions = {
                     let meeting = response.data;
                     commit(types.SET_MEETING, {meeting});
                 }
-            }, (response) => {
-            });
-    },
-    /**
-     * Delete meeting
-     * @param {function} commit
-     * @param {integer} id
-     */
-    deleteProjectMeeting({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_meeting_delete', {id: id})
-            ).then((response) => {
-                router.push({name: 'project-meetings'});
             }, (response) => {
             });
     },
