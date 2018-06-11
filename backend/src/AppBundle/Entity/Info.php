@@ -82,22 +82,11 @@ class Info
     /**
      * @var \DateTime
      *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      *
-     * @ORM\Column(name="due_date", type="date", nullable=true)
+     * @ORM\Column(name="expires_at", type="date", nullable=true)
      */
-    private $dueDate;
-
-    /**
-     * @var InfoStatus
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\InfoStatus")
-     * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="info_status_id", referencedColumnName="id", nullable=false)
-     * })
-     * @Assert\NotBlank(message="not_blank.info_status")
-     * @Serializer\Exclude()
-     */
-    private $infoStatus;
+    private $expiresAt;
 
     /**
      * @var \DateTime
@@ -175,30 +164,6 @@ class Info
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set expiryDate.
-     *
-     * @param \DateTime $dueDate
-     *
-     * @return Info
-     */
-    public function setDueDate(\DateTime $dueDate = null)
-    {
-        $this->dueDate = $dueDate;
-
-        return $this;
-    }
-
-    /**
-     * Get expiryDate.
-     *
-     * @return \DateTime
-     */
-    public function getDueDate()
-    {
-        return $this->dueDate;
     }
 
     /**
@@ -398,30 +363,6 @@ class Info
     }
 
     /**
-     * Set infoStatus.
-     *
-     * @param InfoStatus $infoStatus
-     *
-     * @return Info
-     */
-    public function setInfoStatus(InfoStatus $infoStatus)
-    {
-        $this->infoStatus = $infoStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get infoStatus.
-     *
-     * @return InfoStatus
-     */
-    public function getInfoStatus()
-    {
-        return $this->infoStatus;
-    }
-
-    /**
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      */
@@ -471,42 +412,6 @@ class Info
 
     /**
      * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("infoStatus")
-     */
-    public function getInfoStatusId()
-    {
-        return $this->infoStatus
-            ? $this->infoStatus->getId()
-            : null
-        ;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("infoStatusName")
-     */
-    public function getInfoStatusName()
-    {
-        return $this->infoStatus
-            ? $this->infoStatus->getName()
-            : null
-        ;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("infoStatusColor")
-     */
-    public function getInfoStatusColor()
-    {
-        return $this->infoStatus
-            ? $this->infoStatus->getColor()
-            : '#ffffff'
-        ;
-    }
-
-    /**
-     * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("infoCategory")
      */
     public function getInfoCategoryId()
@@ -527,5 +432,40 @@ class Info
             ? $this->infoCategory->getName()
             : null
         ;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param \DateTime|null $expiresAt
+     */
+    public function setExpiresAt(\DateTime $expiresAt = null)
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        $expiresAt = $this->getExpiresAt();
+        if (!$expiresAt) {
+            return false;
+        }
+
+        $expiresAt->setTime(23, 59, 59);
+        $now = new \DateTime();
+        $now->setTime(23, 59, 59);
+
+        return $expiresAt < $now;
     }
 }

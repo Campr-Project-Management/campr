@@ -175,8 +175,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="input-holder right">
-                            <label class="active">{{ translateText('label.due_date') }}</label>
-                            <datepicker v-model="editInfoObject.dueDate" format="dd-MM-yyyy" />
+                            <label class="active">{{ translateText('label.expiry_date') }}</label>
+                            <datepicker v-model="editInfoObject.expiresAt" format="dd-MM-yyyy" />
                             <calendar-icon fill="middle-fill"/>
                         </div>
                     </div>
@@ -184,14 +184,7 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <div class="col-md-6">
-                        <select-field
-                            v-bind:title="translateText('label.select_status')"
-                            v-bind:options="infoStatusesForDropdown"
-                            v-model="editInfoObject.infoStatus"
-                            v-bind:currentOption="editInfoObject.infoStatus" />
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <select-field
                             v-bind:title="translateText('label.category')"
                             v-bind:options="infoCategoriesForDropdown"
@@ -298,9 +291,9 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getInfoStatuses', 'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
+            'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
             'editMeetingAgenda', 'deleteMeetingAgenda', 'editDecision', 'deleteDecision', 'editTodo', 'deleteTodo',
-            'editInfo', 'deleteInfo', 'getInfoStatuses', 'getInfoCategories',
+            'editInfo', 'deleteInfo', 'getInfoCategories',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -357,12 +350,7 @@ export default {
             this.$emit('input', this.showDeleteTodoModal);
         },
         saveInfo: function() {
-            // this.editInfoObject.description = this.$refs.editInfoDescription.getContent();
-            this.editInfoObject.dueDate = moment(this.editInfoObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
-            this.editInfoObject.infoStatus = this.editInfoObject.infoStatus
-                ? this.editInfoObject.infoStatus.key
-                : null
-            ;
+            this.editInfoObject.expiresAt = this.$formatToSQLDate(this.editInfoObject.expiresAt);
             this.editInfoObject.infoCategory = this.editInfoObject.infoCategory
                 ? this.editInfoObject.infoCategory.key
                 : null
@@ -384,15 +372,12 @@ export default {
     },
     computed: {
         ...mapGetters({
-            infoStatusesForSelect: 'infoStatusesForSelect',
             todoStatusesForSelect: 'todoStatusesForSelect',
-            infoStatusesForDropdown: 'infoStatusesForDropdown',
             infoCategoriesForDropdown: 'infoCategoriesForDropdown',
         }),
     },
     created() {
         this.getTodoStatuses();
-        this.getInfoStatuses();
         this.getInfoCategories();
     },
     data() {

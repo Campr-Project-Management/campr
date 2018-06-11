@@ -89,15 +89,6 @@ class Todo
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
-     */
-    private $date;
-
-    /**
-     * @var \DateTime
-     *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
-     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
@@ -132,11 +123,22 @@ class Todo
     private $updatedAt;
 
     /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="change", field="status")
+     *
+     * @ORM\Column(name="status_updated_at", type="datetime", nullable=false)
+     */
+    private $statusUpdatedAt;
+
+    /**
      * Todo constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->statusUpdatedAt = new \DateTime();
     }
 
     /**
@@ -219,30 +221,6 @@ class Todo
     public function getShowInStatusReport()
     {
         return $this->showInStatusReport;
-    }
-
-    /**
-     * Set date.
-     *
-     * @param \DateTime $date
-     *
-     * @return Todo
-     */
-    public function setDate(\DateTime $date = null)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date.
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
@@ -565,5 +543,21 @@ class Todo
     public function getTodoCategoryName()
     {
         return $this->todoCategory ? $this->todoCategory->getName() : null;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStatusUpdatedAt(): \DateTime
+    {
+        return $this->statusUpdatedAt;
+    }
+
+    /**
+     * @param \DateTime $statusUpdatedAt
+     */
+    public function setStatusUpdatedAt(\DateTime $statusUpdatedAt = null)
+    {
+        $this->statusUpdatedAt = $statusUpdatedAt;
     }
 }

@@ -387,6 +387,7 @@ class Meeting
     public function addMeetingParticipant(MeetingParticipant $meetingParticipant)
     {
         $this->meetingParticipants[] = $meetingParticipant;
+        $meetingParticipant->setMeeting($this);
 
         return $this;
     }
@@ -399,6 +400,7 @@ class Meeting
     public function removeMeetingParticipant(MeetingParticipant $meetingParticipant)
     {
         $this->meetingParticipants->removeElement($meetingParticipant);
+        $meetingParticipant->setMeeting(null);
     }
 
     /**

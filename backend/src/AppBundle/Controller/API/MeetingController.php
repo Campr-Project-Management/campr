@@ -10,7 +10,6 @@ use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
@@ -354,44 +353,6 @@ class MeetingController extends ApiController
     public function participantsAction(Meeting $meeting)
     {
         return $this->createApiResponse($meeting->getMeetingParticipants(), Response::HTTP_OK);
-    }
-
-    /**
-     * Update meeting participant.
-     *
-     * @Route("/{id}/participant", name="app_api_meeting_participant_update", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Meeting $meeting
-     *
-     * @return JsonResponse
-     */
-    public function participantsUpdateAction(Request $request, Meeting $meeting)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $data = $request->request->all();
-        if (isset($data['user']) && isset($data['isPresent'])) {
-            $user = $em->getRepository(User::class)->find($data['user']);
-            $meetingParticipant = $em->getRepository(MeetingParticipant::class)->findOneBy([
-                'meeting' => $meeting,
-                'user' => $user,
-            ]);
-            if ($meetingParticipant) {
-                $meetingParticipant->setIsPresent($data['isPresent']);
-            } else {
-                $meetingParticipant = (new MeetingParticipant())
-                    ->setMeeting($meeting)
-                    ->setUser($user)
-                    ->setIsPresent($data['isPresent'])
-                ;
-            }
-            $this->persistAndFlush($meetingParticipant);
-
-            return $this->createApiResponse($meetingParticipant, Response::HTTP_ACCEPTED);
-        }
-
-        return $this->createApiResponse(null, Response::HTTP_BAD_REQUEST);
     }
 
     /**

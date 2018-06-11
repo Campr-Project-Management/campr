@@ -7,7 +7,7 @@
         consulted: value === 'consulted',
         informed: value === 'informed',
         disabled: disabled,
-        active: activeElem === elementKey,
+        active: active === elementKey,
         last: last,
         'second-to-last': secondToLast,
     }"  @click="handleClick" :key="elementKey">
@@ -69,11 +69,18 @@
         methods: {
             handleClick() {
                 if (!this.disabled) {
-                    this.$emit('handleClick', this.key);
+                    this.active = false;
+                    this.$emit('handleClick', this.elementKey);
                 }
             },
             onClick(value) {
+                this.active = false;
                 this.$emit('input', value);
+            },
+        },
+        watch: {
+            activeElem(value) {
+                this.active = this.activeElem;
             },
         },
         data() {
@@ -97,13 +104,13 @@
         position: relative;
         display: inline-block;
         width: 30px;
-        height: 30px;
+        height: 40px;
         box-sizing: content-box;
 
         li {
             position: absolute;
-            top: 3px;
-            left: 3px;
+            top: 5px;
+            left: 0;
             z-index: -1;
             @include translate(0, 0);
             @include opacity(0);
