@@ -65,4 +65,13 @@ abstract class BaseController extends Controller
 
         return new JsonResponse($serializedData, $statusCode);
     }
+
+    protected function createdTranslatedAccessDeniedException(string $message)
+    {
+        throw $this->createAccessDeniedException(
+            $this
+                ->get('translator')
+                ->trans($message)
+        );
+    }
 }
