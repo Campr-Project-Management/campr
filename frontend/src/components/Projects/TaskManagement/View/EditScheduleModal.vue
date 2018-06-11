@@ -5,6 +5,8 @@
                 v-model="scheduleModel"
                 :editable-base="false"
                 :editable-forecast="true"/>
+        
+        <hr class="double">
 
         <div class="flex flex-space-between">
             <a
