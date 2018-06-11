@@ -62,6 +62,11 @@ class WorkPackageRepository extends BaseRepository
                 ->orWhere('iu.id = :user')
                 ->orWhere('cu.id = :user')
                 ->orWhere('su.id = :user');
+
+            // Exclude closed tasks
+            $qb
+                ->andWhere('wp.workPackageStatus != :workPackageStatus')
+                ->setParameter('workPackageStatus', WorkPackageStatus::CLOSED);
         }
 
         if (isset($criteria['project'])) {
@@ -71,9 +76,16 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
+        if (isset($criteria['colorStatus'])) {
+            $qb
+                ->andWhere('wp.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $criteria['colorStatus'])
+            ;
+        }
+
         if (isset($criteria['status'])) {
             $qb
-                ->andWhere('wp.colorStatus = :status')
+                ->andWhere('wp.workPackageStatus = :status')
                 ->setParameter('status', $criteria['status'])
             ;
         }
@@ -92,7 +104,7 @@ class WorkPackageRepository extends BaseRepository
         }
 
         if (isset($criteria['recent'])) {
-            $qb->orderBy('wp.updatedAt', 'DESC');
+            $qb->orderBy('wp.forecastStartAt', 'DESC');
         }
 
         return $qb;
