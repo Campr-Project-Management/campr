@@ -105,9 +105,9 @@ class CreateType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                    'label.role.user' => 'ROLE_USER',
-                    'label.role.admin' => 'ROLE_ADMIN',
-                    'label.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    'ROLE_USER' => 'ROLE_USER',
+                    'ROLE_ADMIN' => 'ROLE_ADMIN',
+                    'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
                 ],
                 'translation_domain' => 'messages',
             ))

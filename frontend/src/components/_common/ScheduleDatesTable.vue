@@ -3,31 +3,32 @@
         <thead>
         <tr>
             <th>{{ translate('table_header_cell.schedule') }}</th>
-            <th>{{ translate('table_header_cell.start') }}</th>
-            <th>{{ translate('table_header_cell.finish') }}</th>
-            <th>{{ translate('table_header_cell.duration') }}</th>
+            <th v-if="!showDueSchedule">{{ translate('table_header_cell.start') }}</th>
+            <th v-if="!showDueSchedule">{{ translate('table_header_cell.finish') }}</th>
+            <th v-if="showDueSchedule">{{ translate('table_header_cell.due_date') }}</th>
+            <th v-if="!showDueSchedule">{{ translate('table_header_cell.duration') }}</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>{{ translate('table_header_cell.base') }}</td>
-            <td>{{ baseStartAt | date }}</td>
+            <td v-if="!showDueSchedule">{{ baseStartAt | date }}</td>
             <td>{{ baseFinishAt | date }}</td>
-            <td>{{ baseDurationDays > 0 ? (baseDurationDays | formatNumber) : '-' }}
+            <td v-if="!showDueSchedule">{{ baseDurationDays > 0 ? (baseDurationDays | formatNumber) : '-' }}
             </td>
         </tr>
         <tr :style="{color: forecastRowColor}">
             <td>{{ translate('table_header_cell.forecast') }}</td>
-            <td>{{ forecastStartAt | date }}</td>
+            <td v-if="!showDueSchedule">{{ forecastStartAt | date }}</td>
             <td>{{ forecastFinishAt | date }}</td>
-            <td>{{ forecastDurationDays > 0 ? (forecastDurationDays | formatNumber) : '-' }}
+            <td v-if="!showDueSchedule">{{ forecastDurationDays > 0 ? (forecastDurationDays | formatNumber) : '-' }}
             </td>
         </tr>
         <tr :style="{color: actualRowColor}">
             <td>{{ translate('table_header_cell.actual') }}</td>
-            <td>{{ actualStartAt | date }}</td>
+            <td v-if="!showDueSchedule">{{ actualStartAt | date }}</td>
             <td>{{ actualFinishAt | date }}</td>
-            <td>{{ actualDurationDays > 0 ? (actualDurationDays | formatNumber) : '-' }}
+            <td v-if="!showDueSchedule">{{ actualDurationDays > 0 ? (actualDurationDays | formatNumber) : '-' }}
             </td>
         </tr>
         </tbody>
@@ -73,6 +74,11 @@
                 default: 0,
             },
             activityCompleted: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            showDueSchedule: {
                 type: Boolean,
                 required: false,
                 default: false,

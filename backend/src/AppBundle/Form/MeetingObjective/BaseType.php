@@ -34,6 +34,7 @@ class BaseType extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
         ;
     }

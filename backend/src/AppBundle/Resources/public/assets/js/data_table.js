@@ -47,6 +47,12 @@ $(function () {
                 }
 
                 return  commands;
+            },
+            'translate': function (column, row) {
+                return Translator.trans(row[column.id]);
+            },
+            'module-translate': function (column, row) {
+                return Translator.trans('modules.' + row[column.id] + '.title');
             }
         }
     }).on('loaded.rs.jquery.bootgrid', function () {

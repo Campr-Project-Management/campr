@@ -6,20 +6,19 @@
 
         <div class="row" v-if="info">
             <modal v-if="rescheduleModal" @close="rescheduleModal = false" v-bind:hasSpecificClass="true">
-                <p class="modal-title">{{ translateText('message.reschedule_info') }}</p>
+                <p class="modal-title">{{ translate('message.reschedule_info') }}</p>
                 <div class="form-group last-form-group">
                     <div class="col-md-12">
                         <div class="input-holder">
-                            <label class="active">{{ translateText('label.due_date') }}</label>
+                            <label class="active">{{ translate('label.expiry_date') }}</label>
                             <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
                         </div>
                     </div>
                 </div>
-                <hr class="double">
 
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="rescheduleInfo()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleInfo()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                 </div>
             </modal>
             <div class="col-md-6">
@@ -36,20 +35,23 @@
                             <h4>
                                 {{ translate('message.created') }}:
                                 <b>{{ info.createdAt | date }}</b> |
-                                {{ translate('message.due_date') }}:
 
-                                <b>{{ info.dueDate | date }}</b> |
-                                {{ translate('message.status') }}:
-                                <b :style="{color: info.infoStatusColor}">{{ translate(info.infoStatusName) }}</b></h4>
+                                <span v-if="info.isExpired">{{ translate('message.expired_at') }}</span>
+                                <span v-else>{{ translate('message.expiry_date') }}: </span>
+                                <b :class="{'middle-color': info.isExpired}">{{ info.expiresAt | date }}</b>
+                            </h4>
 
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                                <user-avatar
+                                        :name="info.responsibilityFullName"
+                                        :url="info.responsibilityAvatarUrl"
+                                        :tooltip="info.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
                                 </div>
                             </div>
-                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -114,9 +116,11 @@ import {mapActions, mapGetters} from 'vuex';
 import Modal from '../../_common/Modal';
 import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         EditIcon,
         DeleteIcon,
         Switches,
@@ -145,14 +149,11 @@ export default {
                 ;
             }
         },
-        translateText: function(text) {
-            return this.translate(text);
-        },
         rescheduleInfo: function() {
             this.rescheduleModal = false;
             const id = this.$route.params.infoId;
             const data = {
-                dueDate: moment(this.date).format('DD-MM-YYYY'),
+                expiresAt: moment(this.date).format('DD-MM-YYYY'),
             };
             this.editInfo({id, data});
         },

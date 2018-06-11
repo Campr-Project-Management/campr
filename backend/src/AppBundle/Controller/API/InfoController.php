@@ -7,6 +7,7 @@ use AppBundle\Form\Info\ApiCreateType;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,6 +22,10 @@ class InfoController extends ApiController
     /**
      * @Route("/{id}", name="app_api_infos_get", options={"expose": true})
      * @Method({"GET"})
+     *
+     * @param Info $info
+     *
+     * @return JsonResponse
      */
     public function getAction(Info $info)
     {
@@ -30,6 +35,11 @@ class InfoController extends ApiController
     /**
      * @Route("/{id}", name="app_api_infos_edit", options={"expose": true})
      * @Method({"PATCH", "PUT"})
+     *
+     * @param Request $request
+     * @param Info    $info
+     *
+     * @return JsonResponse
      */
     public function editAction(Request $request, Info $info)
     {
@@ -54,6 +64,10 @@ class InfoController extends ApiController
     /**
      * @Route("/{id}", name="app_api_infos_delete", options={"expose": true})
      * @Method({"DELETE"})
+     *
+     * @param Info $info
+     *
+     * @return JsonResponse
      */
     public function deleteAction(Info $info)
     {

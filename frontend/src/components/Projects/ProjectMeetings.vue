@@ -84,13 +84,16 @@
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
                                 <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
                                 <td>
-                                    <div class="avatars collapse in" v-if="meeting.meetingParticipants.length > 0">
-                                        <div>
-                                            <span v-for="(participant, index) in participants(meeting)"
+                                    <div class="avatars collapse in" v-if="meetingHasParticipants(meeting)">
+                                        <div v-if="meeting.meetingParticipants">
+                                            <span v-for="(participant, index) in (showMore[meeting.id] ? participants(meeting) : participants(meeting).slice(0, 3))"
                                                 :key="index">
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
-                                            <button type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])"><span v-if="!showMore[meeting.id]" class="more">{{ translateText('message.more') }} +</span><span v-if="showMore[meeting.id]" class="less">{{ translateText('message.less') }} -</span></button>
+                                            <button v-if="participants(meeting).length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">
+                                                <span v-if="!showMore[meeting.id]" class="more">{{ translateText('message.more') }} +</span>
+                                                <span v-if="showMore[meeting.id]" class="less">{{ translateText('message.less') }} -</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </td>
@@ -173,7 +176,8 @@ export default {
         },
         isInactive(meeting) {
             let currentDate = moment();
-            let meetingDate = moment(meeting.date);
+            let date = meeting.date.split(' ');
+            let meetingDate = moment(date[0] + ' ' + meeting.start);
 
             return meetingDate < currentDate;
         },
@@ -257,16 +261,25 @@ export default {
             this.sendMeetingNotifications(this.meetingId);
             this.showNotificationModal = false;
         },
-        participants(meeting) {
-            if (this.showMore[meeting.id]) {
-                return meeting.meetingParticipants;
-            } else {
-                return meeting.meetingParticipants.slice(0, 3);
-            }
-        },
+        participants: (meeting) => meeting
+            .meetingParticipants
+            .filter((item) => {
+                return item.isPresent === true;
+            }),
         setShowMore(meetingId, value) {
             this.showMore[meetingId] = value;
             this.$forceUpdate();
+        },
+        meetingHasParticipants(meeting) {
+            if (meeting.meetingParticipants.length) {
+                let participants = meeting.meetingParticipants.filter((participant) => {
+                    return participant.isPresent === true;
+                });
+                if (participants.length) {
+                    return true;
+                }
+            }
+            return false;
         },
     },
     created() {
