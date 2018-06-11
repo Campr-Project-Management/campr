@@ -16,7 +16,6 @@ import evaluationObjective from './modules/evaluation-objective';
 import gantt from './modules/gantt';
 import infoCategory from './modules/info-category';
 import info from './modules/info';
-import infoStatus from './modules/info-status';
 import lesson from './modules/lesson';
 import loader from './modules/loader';
 import measure from './modules/measure';
@@ -89,7 +88,6 @@ export default new Vuex.Store({
         gantt,
         info,
         infoCategory,
-        infoStatus,
         lesson,
         loader,
         measure,

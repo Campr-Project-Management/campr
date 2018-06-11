@@ -10,7 +10,6 @@ const state = {
     infosFilters: {
         // actual filters
         user: null,
-        infoStatus: null,
         infoCategory: null,
         // pagination stuff
         currentPage: 1,
@@ -121,10 +120,6 @@ const actions = {
             params.user = state.infosFilters.user;
         }
 
-        if (state.infosFilters && state.infosFilters.infoStatus) {
-            params.info_status = state.infosFilters.infoStatus;
-        }
-
         if (state.infosFilters && state.infosFilters.infoCategory) {
             params.info_category = state.infosFilters.infoCategory;
         }
@@ -169,9 +164,6 @@ const actions = {
     setInfoFiltersUser({commit}, {user}) {
         commit(types.SET_INFOS_FILTERS_USER, {user});
     },
-    setInfoFiltersInfoStatus({commit}, {infoStatus}) {
-        commit(types.SET_INFOS_FILTERS_INFO_STATUS, {infoStatus});
-    },
     setInfoFiltersInfoCategory({commit}, {infoCategory}) {
         commit(types.SET_INFOS_FILTERS_INFO_CATEGORY, {infoCategory});
     },
@@ -180,7 +172,6 @@ const actions = {
     },
     clearFilters({commit}) {
         commit(types.SET_INFOS_FILTERS_USER, {user: null});
-        commit(types.SET_INFOS_FILTERS_INFO_STATUS, {infoStatus: null});
         commit(types.SET_INFOS_FILTERS_INFO_CATEGORY, {infoCategory: null});
     },
 };
@@ -195,9 +186,6 @@ const mutations = {
     },
     [types.SET_INFOS_FILTERS_USER](state, {user}) {
         state.infosFilters.user = user;
-    },
-    [types.SET_INFOS_FILTERS_INFO_STATUS](state, {infoStatus}) {
-        state.infosFilters.infoStatus = infoStatus;
     },
     [types.SET_INFOS_FILTERS_INFO_CATEGORY](state, {infoCategory}) {
         state.infosFilters.infoCategory = infoCategory;

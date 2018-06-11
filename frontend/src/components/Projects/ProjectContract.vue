@@ -46,7 +46,7 @@
                     <editor
                         id="projectStartEvent"
                         v-model="projectStartEvent"
-                        :label="'message.project_start_event'"/>
+                        :label="'label.project_start_event'"/>
                 </div>
                 <!-- /// End Project Start Event /// -->
             </div>

@@ -2,12 +2,13 @@
 
 namespace AppBundle\Form\WorkPackage;
 
-use AppBundle\Entity\WorkPackageStatus;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\User;
@@ -56,13 +57,6 @@ class MilestoneType extends BaseType
                 ]
             )
             ->add(
-                'workPackageStatus',
-                EntityType::class,
-                [
-                    'class' => WorkPackageStatus::class,
-                ]
-            )
-            ->add(
                 'phase',
                 EntityType::class,
                 [
@@ -70,6 +64,18 @@ class MilestoneType extends BaseType
                 ]
             )
             ->add('isKeyMilestone', CheckboxType::class)
+        ;
+
+        $builder
+            ->addEventListener(
+                FormEvents::POST_SET_DATA,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+                    if ($form->has('scheduledStartAt')) {
+                        $form->get('scheduledStartAt')->setData($form->getData()->getScheduledFinishAt());
+                    }
+                }
+            )
         ;
     }
 

@@ -72,6 +72,7 @@ message:
     project_decisions: Project Decisions
     decisions: Decisions
     expiry_date: Expiry Date
+    expired_at: Expired At
     back_to_infos: Back to Infos
     create_new_info: Create New Info
     edit_info: Edit Info
@@ -291,7 +292,6 @@ message:
     resource_chart: Resource Chart
     project_contract: Project Contract
     project_description: Project Description
-    project_start_event: Project Start Event
     project_objectives: Project Objectives
     project_organization: Project Organization
     new_objective_title: New Objective Title
@@ -1199,6 +1199,7 @@ label:
     select_informed_users: Select informed users
     select_sci_users: Select support, consulted & informed users
     export_task: Export task
+    project_start_event: Project Start Event
     # risk strategy
     avoid: Avoid
     transfer: Transfer
@@ -1250,6 +1251,7 @@ button:
     edit_meeting: Edit Meeting
     send_notifications: Send Notifications
     edit_distribution_list: Edit Distribution List
+    save_distribution_list: Save Distribution List
     save_meeting: Save Meeting
     done: Done
     add_new_measure: Add New Measure
@@ -1721,6 +1723,7 @@ table_header_cell:
     info_status: Info status
     info_category: Info Category
     currency: Currency
+    expires_at: Expires At
 
 link:
     home: Home
@@ -1766,7 +1769,7 @@ email:
                 second: If you don't have an account with this email please make one in order to accept invitation.
                 third: Please click on the following
                 link: invitation
-        meeting_notification: You have been invited to a meeting. Here are the meeeting informations:
+        meeting_notification: You have been invited to a meeting. Here are the meeting informations:
         starts_at: Starts at
         ends_at: Ends at
         status_report: New status report
