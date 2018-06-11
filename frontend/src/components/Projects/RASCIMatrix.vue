@@ -106,7 +106,8 @@
                                         v-bind:activeElem="activeElement"
                                         :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
                                         @handleClick="activeElement = $event"
-                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
+                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"
+                                        @close="deleteRasciData({project: workPackage.project, user: user.user, workPackage: workPackage.id})"/>
                             </td>
                         </tr>
                     </tbody>
@@ -125,7 +126,7 @@ export default {
         ResponsibilitySelect,
     },
     methods: {
-        ...mapActions(['getRasci', 'setRasci']),
+        ...mapActions(['getRasci', 'setRasci', 'deleteRasci']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -136,6 +137,12 @@ export default {
                     this.activeElement = '';
                 }
             }, (userObj, data));
+        },
+        deleteRasciData: function({project, user, workPackage}) {
+            this.deleteRasci({project, user, workPackage}).then(() => {
+                this.loadRasci();
+                this.activeElement = '';
+            });
         },
         repeat(str, count) {
             let c = 0;
