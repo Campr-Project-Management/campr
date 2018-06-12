@@ -391,6 +391,7 @@ message:
     all_projects_filter: All Projects
     all_customers: All Customers
     all_statuses: All Statuses
+    all_conditions: All Conditions
     all_scheduels: All Schedules
     internal_resources: Internal Resources
     external_resources: External Resources
