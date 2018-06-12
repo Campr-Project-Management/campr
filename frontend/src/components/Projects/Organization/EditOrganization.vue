@@ -453,9 +453,10 @@
                 this.createSubteam(data).then((response) => {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
-                    } else if (this.subteams.items.length > this.subteams.pageSize) {
+                    }
+                    this.subteamName = null;
+                    if (this.subteams.items.length > this.subteams.pageSize) {
                         this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-                        this.subteamName = null;
                     }
                 }).catch((response) => {
                     this.showFailed = true;
