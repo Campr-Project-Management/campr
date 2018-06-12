@@ -42,7 +42,6 @@
                         {% if form.vars.valid == false %}
                             <div class="alert alert-danger">
                                 {% for field in form.children %}
-
                                     {{ form_errors(field) }}
                                 {% endfor %}
                             </div>
@@ -120,6 +119,13 @@
                             {
                                 'attr': {'class': 'selectpicker'},
                                 'label': 'label.portfolio'|trans,
+                            }
+                        ) }}
+                        {{ form_widget(
+                            form.trafficLight,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.traffic_light'|trans,
                             }
                         ) }}
                         {{ form_widget(

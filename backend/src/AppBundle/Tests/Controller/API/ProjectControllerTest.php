@@ -11,6 +11,7 @@ use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
 use AppBundle\Entity\WorkPackage;
+use Component\TrafficLight\TrafficLight;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,26 +52,34 @@ class ProjectControllerTest extends BaseController
         $responseContent['createdAt'] = $project['createdAt'];
         $responseContent['updatedAt'] = $project['updatedAt'];
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful(), 'Response is not successfully');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
+            $this->assertEquals($responseContent, $project, 'Wrong response content');
+        } finally {
+            $project = $this
+                ->em
+                ->getRepository(Project::class)
+                ->find($project['id'])
+            ;
+            if ($project) {
+                $this->em->remove($project);
+            }
 
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->find($project['id'])
-        ;
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy([
-                'user' => $user,
-                'project' => $project,
-            ])
-        ;
-        $this->em->remove($projectUser);
-        $this->em->remove($project);
-        $this->em->flush();
+            $projectUser = $this
+                ->em
+                ->getRepository(ProjectUser::class)
+                ->findOneBy([
+                    'user' => $user,
+                    'project' => $project,
+                ])
+            ;
+            if ($projectUser) {
+                $this->em->remove($projectUser);
+            }
+
+            $this->em->flush();
+        }
     }
 
     /**
@@ -88,9 +97,7 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'colorStatus' => null,
-                    'colorStatusColor' => null,
-                    'colorStatusName' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'company' => null,
                     'companyName' => null,
                     'projectComplexity' => null,
@@ -365,7 +372,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 2,
                     'companyName' => 'company2',
-                    'projectColorStatus' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -391,10 +398,6 @@ class ProjectControllerTest extends BaseController
                     'programmeName' => null,
                     'projectModules' => [],
                     'isNew' => false,
-                    'colorStatus' => null,
-                    'colorStatusName' => null,
-                    'colorStatusColor' => null,
-                    'overallStatus' => 2,
                     'scheduledStartAt' => null,
                     'scheduledFinishAt' => null,
                     'scheduledDurationDays' => 0,
@@ -1781,8 +1784,8 @@ class ProjectControllerTest extends BaseController
             );
             $response = $this->client->getResponse();
 
-            $this->assertEquals($isResponseSuccessful, $response->isClientError());
-            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($isResponseSuccessful, $response->isClientError(), 'Client error');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
             $actual = json_decode($response->getContent(), true);
             $this->assertEquals($responseContent, $actual);
         } finally {
@@ -1852,8 +1855,8 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError(), 'Client error');
+        $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
         $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
@@ -1951,7 +1954,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 1,
                     'companyName' => 'company1',
-                    'projectColorStatus' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -1977,10 +1980,6 @@ class ProjectControllerTest extends BaseController
                     'programmeName' => null,
                     'projectModules' => ['project-module1', 'project-module2', 'project-module3'],
                     'isNew' => false,
-                    'colorStatus' => 5,
-                    'colorStatusName' => 'color-status2',
-                    'colorStatusColor' => 'green',
-                    'overallStatus' => 2,
                     'scheduledStartAt' => date('Y-m-d', time()),
                     'scheduledFinishAt' => date('Y-m-d', time() + (4 * 3600 * 24)),
                     'scheduledDurationDays' => 5,

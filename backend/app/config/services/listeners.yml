@@ -92,7 +92,6 @@ services:
         class: AppBundle\EventListener\ProjectListener
         tags :
             - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: postLoad }
         arguments:
             - '@security.token_storage'
             - '@translator'
