@@ -14,8 +14,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class ApiType extends CreateType
 {
+    /**
+     * @var TokenStorage
+     */
     private $tokenStorage;
 
+    /**
+     * ApiType constructor.
+     *
+     * @param TokenStorage $tokenStorage
+     */
     public function __construct(TokenStorage $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
@@ -31,12 +39,16 @@ class ApiType extends CreateType
 
         $builder
             ->add('configuration')
-            ->add('projectModules', CollectionType::class, [
-                'required' => false,
-                'entry_type' => ProjectModuleCreateType::class,
-                'allow_add' => true,
-                'by_reference' => false,
-            ])
+            ->add(
+                'projectModules',
+                CollectionType::class,
+                [
+                    'required' => false,
+                    'entry_type' => ProjectModuleCreateType::class,
+                    'allow_add' => true,
+                    'by_reference' => false,
+                ]
+            )
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
@@ -55,12 +67,10 @@ class ApiType extends CreateType
                     if ($form->has('favorite')) {
                         $form->get('favorite')->getData()
                             ? $data->addUserFavorite($this->tokenStorage->getToken()->getUser())
-                            : $data->removeUserFavorite($this->tokenStorage->getToken()->getUser())
-                        ;
+                            : $data->removeUserFavorite($this->tokenStorage->getToken()->getUser());
                     }
                 }
-            )
-        ;
+            );
     }
 
     /**
@@ -68,10 +78,12 @@ class ApiType extends CreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Project::class,
-            'allow_extra_fields' => true,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Project::class,
+                'allow_extra_fields' => true,
+                'csrf_protection' => false,
+            ]
+        );
     }
 }
