@@ -11,6 +11,7 @@ class PDF
 {
     const CONTRACT_URL = 'projects/%id%/contract';
     const PROJECT_CLOSE_DOWN_URL = 'projects/%id%/close-down-report';
+    const MEETING_URL = 'meetings/%id%';
 
     /** @var RequestStack */
     private $requestStack;
@@ -102,5 +103,10 @@ class PDF
     public function getProjectCloseDownPDF(int $id)
     {
         return $this->run(self::PROJECT_CLOSE_DOWN_URL, ['%id%' => $id]);
+    }
+
+    public function getMeetingPDF(int $id)
+    {
+        return $this->run(self::MEETING_URL, ['%id%' => $id]);
     }
 }
