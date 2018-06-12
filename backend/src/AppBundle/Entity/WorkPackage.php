@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints\WorkPackageNonSelfReferencing;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
@@ -19,6 +20,7 @@ use AppBundle\Validator\Constraints\WorkPackageForecastDates;
  * @WorkPackageAssignments()
  * @WorkPackageScheduledDates(groups={"create"})
  * @WorkPackageForecastDates(groups={"edit"})
+ * @WorkPackageNonSelfReferencing()
  */
 class WorkPackage
 {
