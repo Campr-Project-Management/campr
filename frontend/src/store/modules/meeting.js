@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
+import _ from 'lodash';
 
 const state = {
     projectMeetings: [],
@@ -263,20 +264,16 @@ const mutations = {
      * @param {array} decision
      */
     [types.EDIT_MEETING_DECISION](state, {decision}) {
-        if (state.meeting.decisions) {
-            state.meeting.decisions.map(item => {
-                if (item.id === decision.id) {
-                    item.title = decision.title;
-                    item.description = decision.description;
-                    item.responsibility = decision.responsibility;
-                    item.responsibilityAvatar = decision.responsibilityAvatar;
-                    item.responsibilityFullName = decision.responsibilityFullName;
-                    item.dueDate = decision.dueDate;
-                    item.status = decision.status;
-                    item.statusName = decision.statusName;
-                }
-            });
+        if (!state.meeting.decisions) {
+            return;
         }
+
+        let index = _.findIndex(state.meeting.decisions, (item) => item.id === decision.id);
+        if (index < 0) {
+            return;
+        }
+
+        Vue.set(state.meeting.decisions, index, decision);
     },
     /**
      * Delete meeting decision
