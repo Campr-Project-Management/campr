@@ -2,8 +2,8 @@
 
 namespace Component\Project;
 
-use Component\Currency\CurrencyAwareInterface;
-use Component\Model\FileSystemAwareInterface;
+use Component\Currency\Model\CurrencyAwareInterface;
+use Component\Resource\Model\FileSystemAwareInterface;
 
 interface ProjectInterface extends CurrencyAwareInterface, FileSystemAwareInterface
 {

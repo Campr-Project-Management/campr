@@ -1,6 +1,6 @@
 <?php
 
-namespace Component\Model\Opportunity;
+namespace Component\Opportunity\Model;
 
 trait OpportunityPriorityTrait
 {
