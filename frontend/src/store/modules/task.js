@@ -38,6 +38,9 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
+        if (state.taskFilters && state.taskFilters.colorStatus) {
+            paramObject.params.colorStatus = state.taskFilters.colorStatus;
+        }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;
         }
@@ -89,6 +92,9 @@ const actions = {
         };
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
+        }
+        if (state.taskFilters && state.taskFilters.colorStatus) {
+            paramObject.params.colorStatus = state.taskFilters.colorStatus;
         }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;

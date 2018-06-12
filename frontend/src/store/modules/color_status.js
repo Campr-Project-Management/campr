@@ -10,7 +10,7 @@ const getters = {
     colorStatuses: state => state.colorStatuses,
     greenColorStatus: state => state.greenColorStatus,
     colorStatusesForSelect: state =>
-        [{'key': '', 'label': Translator.trans('message.all_statuses')}].concat(
+        [{'key': '', 'label': Translator.trans('message.all_conditions')}].concat(
             state.colorStatuses.map(colorStatus => ({'key': colorStatus.id, 'label': colorStatus.name}))
         ),
 };
