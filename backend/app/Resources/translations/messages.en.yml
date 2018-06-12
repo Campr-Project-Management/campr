@@ -1831,6 +1831,8 @@ choices:
     days: Days
     weeks: Weeks
     months: Months
+    done: Done
+    undone: Undone
 
 roles:
     project_sponsor: Project Sponsor

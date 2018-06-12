@@ -199,6 +199,10 @@ p {
     color: $lightColor !important;
 }
 
+.success-color {
+    color: $secondColor !important;
+}
+
 .warning-color {
     color: $warningColor !important;
 }
@@ -1156,4 +1160,23 @@ hr {
 
 .no-results {
     color: $grayColor;
+}
+
+.modal {
+    .modal-title {
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 18px;
+        letter-spacing: 1.8px;
+        font-weight: 300;
+        margin-bottom: 40px;
+    }
+
+    .main-list .member {
+        border-top: 1px solid $darkColor;
+    }
+
+    .results {
+        width: 600px;
+    }
 }
