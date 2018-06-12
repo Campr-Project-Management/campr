@@ -190,42 +190,10 @@
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
                     <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
-                        <input-field type="text" :label="translate('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
-                        <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
-                        <error
-                            v-if="validationMessages.decisions[index.toString()].title && validationMessages.decisions[index.toString()].title.length"
-                            v-for="(message, index) in validationMessages.decisions[index.toString()].title"
-                            :key="`decision-title-${index}`"
-                            :message="message" />
-                        </div>
-                        <div class="form-group">
-                            <editor
-                                :id="`decision-description-${index}`"
-                                height="200px"
-                                label="placeholder.decision_description"
-                                v-model="decision.description" />
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="decision.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
-                                    <div v-if="validationMessages.decisions && validationMessages.decisions[index.toString()]">
-                                    <error
-                                        v-if="validationMessages.decisions[index.toString()].responsibility && validationMessages.decisions[index.toString()].responsibility.length"
-                                        v-for="(message, index) in validationMessages.decisions[index.toString()].responsibility"
-                                        :key="`decision-responsible-${index}`"
-                                        :message="message" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-holder right">
-                                        <label class="active">{{ translate('label.due_date') }}</label>
-                                        <datepicker v-model="decision.dueDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <meeting-decision-form
+                                :key="index"
+                                v-model="decisions[index]"
+                                :error-messages="decisionErrors(index)"/>
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
@@ -434,9 +402,11 @@ import Editor from '../../_common/Editor';
 import router from '../../../router';
 import MeetingParticipants from './MeetingParticipants';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
+import MeetingDecisionForm from './Form/DecisionForm';
 
 export default {
     components: {
+        MeetingDecisionForm,
         InputField,
         SelectField,
         datepicker,
@@ -484,7 +454,8 @@ export default {
             this.decisions.push({
                 title: '',
                 description: '',
-                responsible: [],
+                responsibility: null,
+                done: false,
                 dueDate: new Date(),
             });
         },
@@ -572,7 +543,24 @@ export default {
             'todoStatusesForSelect',
             'distributionLists',
             'validationMessages',
+            'validationMessagesFor',
+            'decisionsStatusesForSelect',
         ]),
+        decisionsStatusesOptions() {
+            return this.decisionsStatusesForSelect.map((option) => {
+                return Object.assign({}, option, {label: this.translate(option.label)});
+            });
+        },
+        decisionErrors() {
+            return (index) => {
+                let messages = this.validationMessagesFor('decisions');
+                if (!messages) {
+                    return {};
+                }
+
+                return messages[index] ? messages[index] : {};
+            };
+        },
     },
     watch: {
         'details.distributionList': {
