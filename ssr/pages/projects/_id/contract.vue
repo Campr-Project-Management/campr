@@ -211,6 +211,9 @@ import Vue from 'vue';
 import moment from 'moment';
 
 export default {
+    validate({params}) {
+        return /^\d+$/.test(params.id);
+    },
     components: {
         // DragBox,
         CalendarIcon,
