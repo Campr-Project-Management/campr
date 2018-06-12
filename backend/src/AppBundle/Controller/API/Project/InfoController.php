@@ -30,9 +30,9 @@ class InfoController extends ApiController
     public function infosAction(Request $request, Project $project)
     {
         $queryBuilder = $this
-            ->getDoctrine()
-            ->getRepository(Info::class)
+            ->get('app.repository.info')
             ->getQueryBuilderByProjectAndFilters($project, $request->query)
+            ->addOrderBy('i.expiresAt', 'desc')
         ;
 
         $page = $request->query->get('page', 1);
