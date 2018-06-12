@@ -31,6 +31,7 @@
                 <div class="col-md-6">
                     <member-search
                             v-model="lazyValue.responsibility"
+                            v-bind:selectedUser="lazyValue.responsibilityFullName"
                             :placeholder="translate('placeholder.responsible')"
                             :singleSelect="true"
                             @input="onInput"/>

@@ -246,10 +246,6 @@ export default {
             }
         }
 
-        .search {
-            margin-top: 30px;
-        }
-
         .main-list .member {
             border-top: 1px solid $darkColor;
         }

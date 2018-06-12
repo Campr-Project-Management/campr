@@ -414,7 +414,7 @@ export default {
                 id: decision.id,
                 title: decision.title,
                 description: decision.description,
-                responsibility: [decision.responsibility],
+                responsibility: decision.responsibility,
                 responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 status: {key: decision.status, label: decision.statusName},
