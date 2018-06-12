@@ -53,14 +53,20 @@ class WorkPackageRepository extends BaseRepository
         }
 
         if (isset($criteria['recent'])) {
-            $startDate = new \DateTime('first day of this month');
-            $endDate = new \DateTime('last day of this month');
             $qb
-                ->andWhere('wp.createdAt >= :startDate')
-                ->setParameter('startDate', $startDate)
-                ->andWhere('wp.createdAt <= :endDate')
-                ->setParameter('endDate', $endDate)
-            ;
+                ->leftJoin('wp.informedUsers', 'iu')
+                ->leftJoin('wp.consultedUsers', 'cu')
+                ->leftJoin('wp.supportUsers', 'su');
+            $qb
+                ->orWhere('wp.accountability = :user')
+                ->orWhere('iu.id = :user')
+                ->orWhere('cu.id = :user')
+                ->orWhere('su.id = :user');
+
+            // Exclude closed tasks
+            $qb
+                ->andWhere('wp.workPackageStatus != :workPackageStatus')
+                ->setParameter('workPackageStatus', WorkPackageStatus::CLOSED);
         }
 
         if (isset($criteria['project'])) {
@@ -70,9 +76,16 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
+        if (isset($criteria['colorStatus'])) {
+            $qb
+                ->andWhere('wp.colorStatus = :colorStatus')
+                ->setParameter('colorStatus', $criteria['colorStatus'])
+            ;
+        }
+
         if (isset($criteria['status'])) {
             $qb
-                ->andWhere('wp.colorStatus = :status')
+                ->andWhere('wp.workPackageStatus = :status')
                 ->setParameter('status', $criteria['status'])
             ;
         }
@@ -88,6 +101,10 @@ class WorkPackageRepository extends BaseRepository
                 ->setFirstResult($criteria['pageSize'] * ($criteria['page'] - 1))
                 ->setMaxResults($criteria['pageSize'])
             ;
+        }
+
+        if (isset($criteria['recent'])) {
+            $qb->orderBy('wp.forecastStartAt', 'DESC');
         }
 
         return $qb;
