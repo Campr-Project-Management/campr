@@ -478,7 +478,7 @@
         <div class="col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
-                <div class="margintop20 text-right">
+                <div class="margintop20 text-right buttons">
                     <a @click="saveMeeting()" class="btn-rounded btn-auto">{{ translate('button.save_meeting') }}</a>
                     <a @click="newMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.new_meeting') }}</a>
                     <a @click="deleteMeetingModal = true" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_meeting') }}</a>
