@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Utils\ProcessManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,32 +43,34 @@ class DumpRoutesCommand extends ContainerAwareCommand
 
         $env = $this->getContainer()->getParameter('kernel.environment');
 
+        $processes = [];
+
         if ($slugs) {
             foreach ($slugs as $slug) {
-                $this->runCommand(sprintf(
+                $processes[] = $this->newProcess(sprintf(
                     'fos:js-routing:dump --env=%2$s_%1$s --target=web/static/js/fos_js_routes_%2$s.js',
                     $env,
                     $slug
                 ));
             }
         } else {
-            $this->runCommand(sprintf('fos:js-routing:dump --env=%s --target=web/static/js/fos_js_routes.js', $env));
+            $processes[] = $this->newProcess(sprintf('fos:js-routing:dump --env=%s --target=web/static/js/fos_js_routes.js', $env));
             $slugs = $this->getSlugs();
             foreach ($slugs as $slug) {
-                $this->runCommand(sprintf(
+                $processes[] = $this->newProcess(sprintf(
                     'fos:js-routing:dump --env=%2$s_%1$s --target=web/static/js/fos_js_routes_%2$s.js',
                     $env,
                     $slug
                 ));
             }
         }
+
+        $this->output->writeln(ProcessManager::runParallel($processes, count($processes)));
     }
 
-    private function runCommand($cmd)
+    private function newProcess($cmd)
     {
-        $process = new Process($this->consolePath.' '.$cmd, $this->workDir);
-        $process->run();
-        $this->output->writeln($process->getOutput());
+        return new Process($this->consolePath.' '.$cmd, $this->workDir);
     }
 
     private function getSlugs()
