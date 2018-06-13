@@ -112,3 +112,9 @@ invite.yourself: 'Sie sind bereits Teil dieses Teams.'
 invite.team_member: 'Ein Nutzer mit dieser E-Mail ist bereits Teil dieses Teams.'
 invitation.sent: 'Sie haben bereits eine Einladung and diese E-Mail verschickt.'
 flash.registration_success: 'Sie haben sich erfolgreich registriert. Bitte überprüfen Sie Ihr E-Mail-Postfach nach der E-Mail mit dem Aktivierungslink.'
+
+self_reference:
+    work_package:
+        parent: You cannot self reference this work package as a parent.
+        milestone: You cannot self reference this work package as a milestone.
+        phase: You cannot self reference this work package as a phase.

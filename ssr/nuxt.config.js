@@ -26,7 +26,8 @@ module.exports = {
         '~/plugins/translator',
         '~/plugins/vue-charts',
         '~/plugins/vueditor',
-        '~/plugins/vue-moment'
+        '~/plugins/vue-moment',
+        '~/plugins/date',
     ],
     /*
     ** CSS
