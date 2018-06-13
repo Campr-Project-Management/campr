@@ -246,7 +246,10 @@ export default {
                 start: this.startTime.HH + ':' + this.startTime.mm,
                 end: this.endTime.HH + ':' + this.endTime.mm,
             };
-            this.editProjectMeeting(data);
+            this.editProjectMeeting({
+                id: this.meetingId,
+                data,
+            });
             this.showRescheduleModal = false;
         },
         initSendNotifications(meeting) {
