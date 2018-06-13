@@ -57,9 +57,6 @@ class BooleanToStringTransformer implements DataTransformerInterface
         }
 
         $comparisons = [
-            $value === 0,
-            $value === '0',
-            $value === false,
             $value === 1,
             $value === '1',
             $value === true,
