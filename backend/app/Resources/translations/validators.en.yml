@@ -175,3 +175,9 @@ flash:
 work_package:
     assignment:
         already_used: '%name% already have a role assigned on this task'
+
+self_reference:
+    work_package:
+        parent: You cannot self reference this work package as a parent.
+        milestone: You cannot self reference this work package as a milestone.
+        phase: You cannot self reference this work package as a phase.

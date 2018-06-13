@@ -30,7 +30,7 @@
                     <input-field type="text" v-bind:label="translateText('placeholder.topic')" v-model="editAgendaObject.topic" v-bind:content="editAgendaObject.topic" />
                 </div>
                 <div class="row">
-                    <div class="form-group form-group">
+                    <div class="form-group">
                         <div class="col-md-4">
                             <member-search v-bind:selectedUser="editAgendaObject.responsibilityFullName" v-model="editAgendaObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                         </div>
@@ -65,33 +65,16 @@
         <!-- /// Decisions /// -->
         <modal v-if="showEditDecisionModal" @close="showEditDecisionModal = false; $emit('input', showEditDecisionModal);">
             <p class="modal-title">{{ translateText('message.edit_decision') }}</p>
-            <input-field type="text" v-bind:label="translateText('placeholder.decision_title')" v-model="editDecisionObject.title" v-bind:content="editDecisionObject.title" />
-            <div class="form-group">
-                <editor
-                    height="200px"
-                    :id="`editDecisionObject-${editDecisionObject.id}`"
-                    label="placeholder.decision_description"
-                    v-model="editDecisionObject.description" />
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <div class="col-md-6">
-                        <member-search v-bind:selectedUser="editDecisionObject.responsibilityFullName" v-model="editDecisionObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-holder right">
-                            <label class="active">{{ translateText('label.due_date') }}</label>
-                            <datepicker v-model="editDecisionObject.dueDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <meeting-decision-form
+                    v-model="editDecisionObject"
+                    :error-messages="editDecisionErrors"/>
+
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditDecisionModal = false; $emit('input', showEditDecisionModal);" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="saveDecision()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
+
         <modal v-if="showDeleteDecisionModal" @close="showDeleteDecisionModal = false; $emit('input', showDeleteDecisionModal);">
             <p class="modal-title">{{ translateText('message.delete_decision') }}</p>
             <div class="flex flex-space-between">
@@ -221,6 +204,8 @@ import moment from 'moment';
 import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
+import Error from '../../_common/_messages/Error';
+import MeetingDecisionForm from './Form/DecisionForm';
 
 export default {
     props: [
@@ -231,6 +216,8 @@ export default {
         'editInfoModal', 'deleteInfoModal', 'infoObject',
     ],
     components: {
+        MeetingDecisionForm,
+        Error,
         InputField,
         SelectField,
         datepicker,
@@ -268,7 +255,8 @@ export default {
             this.showDeleteDecisionModal = this.deleteDecisionModal;
         },
         decisionObject(value) {
-            this.editDecisionObject = this.decisionObject;
+            this.editDecisionObject = Object.assign({}, value);
+            this.editDecisionErrors = {};
         },
         editTodoModal(value) {
             this.showEditTodoModal = this.editTodoModal;
@@ -321,14 +309,21 @@ export default {
             this.showDeleteAgendaModal = false;
             this.$emit('input', this.showDeleteAgendaModal);
         },
-        saveDecision: function() {
-            // this.editDecisionObject.description = this.$refs.editDecisionDescription.getContent();
-            this.editDecisionObject.dueDate = moment(this.editDecisionObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY');
-            this.editDecisionObject.status = this.editDecisionObject.status.key;
-            this.editDecisionObject.responsibility = this.editDecisionObject.responsibility.length > 0 ? this.editDecisionObject.responsibility[0] : null,
-            this.editDecision(this.editDecisionObject);
-            this.showEditDecisionModal = false;
-            this.$emit('input', this.showEditDecisionModal);
+        saveDecision() {
+            let data = Object.assign({}, this.editDecisionObject, {
+                dueDate: moment(this.editDecisionObject.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                date: moment(this.editDecisionObject.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                done: this.editDecisionObject.done,
+                responsibility: this.editDecisionObject.responsibility,
+            });
+
+            this.editDecision(data).then(() => {
+                this.showEditDecisionModal = false;
+                this.editDecisionErrors = {};
+                this.$emit('input', this.showEditDecisionModal);
+            }).catch((response) => {
+                this.editDecisionErrors = response.body.messages;
+            });
         },
         deleteMeetingDecision: function() {
             this.deleteDecision(this.editDecisionObject);
@@ -371,10 +366,10 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            todoStatusesForSelect: 'todoStatusesForSelect',
-            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
-        }),
+        ...mapGetters([
+            'todoStatusesForSelect',
+            'infoCategoriesForDropdown',
+        ]),
     },
     created() {
         this.getTodoStatuses();
@@ -403,6 +398,7 @@ export default {
             showEditInfoModal: false,
             showDeleteInfoModal: false,
             editInfoObject: {},
+            editDecisionErrors: {},
         };
     },
 };
