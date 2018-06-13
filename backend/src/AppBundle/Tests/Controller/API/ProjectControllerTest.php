@@ -1214,12 +1214,17 @@ class ProjectControllerTest extends BaseController
         foreach ($actual['items'][0]['meetingAgendas'] as $key => $agenda) {
             $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
         }
+
         foreach ($actual['items'][0]['decisions'] as $key => $decision) {
             $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
+            $responseContent['items'][0]['decisions'][$key]['responsibilityAvatarUrl'] = $decision['responsibilityAvatarUrl'];
+            $responseContent['items'][0]['decisions'][$key]['createdAt'] = $decision['createdAt'];
         }
+
         foreach ($actual['items'][0]['todos'] as $key => $todo) {
             $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
         }
+
         foreach ($actual['items'][0]['infos'] as $key => $info) {
             $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
@@ -1344,9 +1349,10 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'decision1',
                                     'description' => 'description1',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
+                                    'isDone' => false,
+                                    'done' => false,
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1361,9 +1367,10 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'decision2',
                                     'description' => 'description2',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
+                                    'isDone' => false,
+                                    'done' => false,
                                 ],
                             ],
                             'todos' => [

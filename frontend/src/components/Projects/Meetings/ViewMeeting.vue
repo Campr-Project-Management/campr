@@ -258,7 +258,7 @@
                                 <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
                             </div>
                         </div>
-                        <div class="entry-responsible flex flex-v-center">
+                        <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
                             <div>
                                 {{ translateText('message.responsible') }}:
