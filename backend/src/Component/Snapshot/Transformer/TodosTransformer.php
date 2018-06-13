@@ -4,7 +4,6 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class TodosTransformer extends AbstractTransformer
 {
@@ -31,7 +30,7 @@ class TodosTransformer extends AbstractTransformer
     protected function doTransform($project)
     {
         return [
-            'items' => $this->getItems($project->getTodos()),
+            'items' => $this->getItems($project->getTodos()->toArray()),
         ];
     }
 
@@ -46,11 +45,11 @@ class TodosTransformer extends AbstractTransformer
     }
 
     /**
-     * @param Todo[]|ArrayCollection $todos
+     * @param Todo[] $todos
      *
      * @return array
      */
-    private function getItems($todos): array
+    private function getItems(array $todos): array
     {
         $items = [];
 
@@ -77,6 +76,7 @@ class TodosTransformer extends AbstractTransformer
             'title' => $todo->getTitle(),
             'description' => $todo->getDescription(),
             'dueDate' => $this->dateTransformer->transform($todo->getDueDate()),
+            'createdAt' => $this->dateTransformer->transform($todo->getCreatedAt()),
             'categoryId' => $todo->getTodoCategoryId(),
             'categoryName' => $todo->getTodoCategoryName(),
             'responsibilityId' => $todo->getResponsibilityId(),

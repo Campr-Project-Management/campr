@@ -228,6 +228,9 @@ import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
 
 export default {
+    validate({params}) {
+        return /^\d+$/.test(params.id);
+    },
     components: {
         CalendarIcon,
         Datepicker,

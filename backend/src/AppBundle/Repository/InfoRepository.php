@@ -3,10 +3,17 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class InfoRepository extends BaseRepository
 {
+    /**
+     * @param Project      $project
+     * @param ParameterBag $filters
+     *
+     * @return QueryBuilder
+     */
     public function getQueryBuilderByProjectAndFilters(Project $project, ParameterBag $filters)
     {
         $qb = $this->createQueryBuilder('i');

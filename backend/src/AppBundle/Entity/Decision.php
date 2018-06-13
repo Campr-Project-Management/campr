@@ -79,15 +79,6 @@ class Decision
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
-     * @ORM\Column(name="date", type="date", nullable=true)
-     */
-    private $date;
-
-    /**
-     * @var \DateTime
-     *
-     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
-     *
      * @ORM\Column(name="due_date", type="date", nullable=true)
      */
     private $dueDate;
@@ -105,7 +96,7 @@ class Decision
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
@@ -122,11 +113,29 @@ class Decision
     private $updatedAt;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="done", type="boolean", nullable=false, options={"default": false})
+     */
+    private $done;
+
+    /**
+     * @var \DateTime
+     *
+     * @Serializer\Exclude()
+     * @Gedmo\Timestampable(on="change", field="done", value="1")
+     *
+     * @ORM\Column(name="done_at", type="datetime", nullable=true)
+     */
+    private $doneAt;
+
+    /**
      * Decision constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->done = false;
     }
 
     /**
@@ -209,30 +218,6 @@ class Decision
     public function getShowInStatusReport()
     {
         return $this->showInStatusReport;
-    }
-
-    /**
-     * Set date.
-     *
-     * @param \DateTime $date
-     *
-     * @return Decision
-     */
-    public function setDate(\DateTime $date = null)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date.
-     *
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
     }
 
     /**
@@ -499,5 +484,39 @@ class Decision
     public function getDecisionCategoryName()
     {
         return $this->decisionCategory ? $this->decisionCategory->getName() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isDone(): bool
+    {
+        return $this->done;
+    }
+
+    /**
+     * @param bool $done
+     */
+    public function setDone(bool $done): void
+    {
+        $this->done = $done;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDoneAt()
+    {
+        return $this->doneAt;
+    }
+
+    /**
+     * @param \DateTime $doneAt
+     */
+    public function setDoneAt(\DateTime $doneAt): void
+    {
+        $this->doneAt = $doneAt;
     }
 }

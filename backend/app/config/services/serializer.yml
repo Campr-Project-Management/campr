@@ -37,3 +37,10 @@ services:
              - '@app.resolver.user_avatar_url'
         tags:
             - { name: jms_serializer.event_subscriber }
+
+    app.serializer.listener.decision:
+        class: AppBundle\Serializer\EventListener\DecisionSubscriber
+        arguments:
+             - '@app.resolver.user_avatar_url'
+        tags:
+            - { name: jms_serializer.event_subscriber }

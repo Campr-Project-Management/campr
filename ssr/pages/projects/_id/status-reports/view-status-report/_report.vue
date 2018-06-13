@@ -490,6 +490,9 @@ import AlertModal from '../../_common/AlertModal.vue';
 */
 
 export default {
+    validate({params}) {
+        return /^\d+$/.test(params.id);
+    },
     components: {
         CircleChart,
         // RiskSummary,
