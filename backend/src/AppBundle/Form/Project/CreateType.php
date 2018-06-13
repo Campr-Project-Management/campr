@@ -11,6 +11,8 @@ use AppBundle\Entity\ProjectComplexity;
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\Currency\CurrencyChoiceType;
+use AppBundle\Form\TrafficLight\TrafficLightType;
+use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -52,7 +54,7 @@ class CreateType extends AbstractType
                     ],
                 ]
             )
-            ->add('projectColorStatus', TextType::class)
+            ->add('trafficLight', TrafficLightType::class)
             ->add(
                 'number',
                 TextType::class,
