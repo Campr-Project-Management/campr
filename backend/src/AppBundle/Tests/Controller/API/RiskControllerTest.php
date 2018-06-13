@@ -44,7 +44,7 @@ class RiskControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $risk);
     }
 
     /**
@@ -76,15 +76,17 @@ class RiskControllerTest extends BaseController
                     'title' => 'title1',
                     'description' => 'description1',
                     'impact' => 10,
+                    'impactIndex' => 3,
                     'probability' => 10,
+                    'probabilityIndex' => 0,
                     'cost' => 1,
                     'potentialCost' => 0.1,
                     'delay' => 1,
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
                     'potentialDelay' => 0.1,
                     'potentialDelayHours' => round(0.1 * 24, 2),
-                    'priority' => 'priority1',
-                    'priorityName' => '',
+                    'priority' => 1,
+                    'priorityName' => 'low',
                     'measures' => [],
                     'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',
@@ -169,17 +171,15 @@ class RiskControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
-        $risk = (new Risk())
-            ->setTitle('risk3')
-            ->setImpact(10)
-            ->setProbability(10)
-            ->setDescription('description3')
-            ->setCost(3)
-            ->setDelay(3)
-            ->setDelayUnit(TimeUnitAwareInterface::DAYS)
-        ;
-
-        $risk->setPriority('priority3');
+        $risk = new Risk();
+        $risk->setTitle('risk3');
+        $risk->setDescription('description3');
+        $risk->setCost(3);
+        $risk->setDelay(3);
+        $risk->setDelayUnit(TimeUnitAwareInterface::DAYS);
+        $risk->setImpact(10);
+        $risk->setProbability(10);
+        $risk->setPriority(3);
 
         $this->em->persist($risk);
         $this->em->flush();
@@ -253,7 +253,7 @@ class RiskControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $risk);
     }
 
     /**
@@ -283,15 +283,17 @@ class RiskControllerTest extends BaseController
                     'title' => 'title2',
                     'description' => 'description2',
                     'impact' => 20,
+                    'impactIndex' => 3,
                     'probability' => 20,
+                    'probabilityIndex' => 0,
                     'cost' => 1,
                     'potentialCost' => 0.2,
                     'delay' => 1,
                     'potentialDelay' => 0.2,
                     'potentialDelayHours' => round(0.2 * 24, 2),
                     'delayUnit' => TimeUnitAwareInterface::DAYS,
-                    'priority' => 'priority2',
-                    'priorityName' => '',
+                    'priority' => 2,
+                    'priorityName' => 'medium',
                     'measures' => [],
                     'measuresTotalCost' => 0,
                     'dueDate' => '2017-03-03 00:00:00',
