@@ -1,6 +1,6 @@
 <?php
 
-namespace Component\Currency;
+namespace Component\Currency\Model;
 
 interface CurrencyAwareInterface
 {
