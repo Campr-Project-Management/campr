@@ -135,7 +135,7 @@
                         <div class="row">
                             <div class="form-group form-group">
                                 <div class="col-md-4">
-                                    <member-search singleSelect="false" v-model="agenda.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="agenda.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
                                     <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].responsibility && validationMessages.meetingAgendas[index.toString()].responsibility.length"
@@ -231,7 +231,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="todo.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="todo.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
                                     <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                                     <error
                                         v-if="validationMessages.todos[index.toString()].responsibility && validationMessages.todos[index.toString()].responsibility.length"
@@ -297,7 +297,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
-                                    <member-search singleSelect="false" v-model="info.responsible" :placeholder="translate('placeholder.search_members')"></member-search>
+                                    <member-search singleSelect="false" v-model="info.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                     <error
                                         v-if="validationMessages.infos[index.toString()].responsibility && validationMessages.infos[index.toString()].responsibility.length"
