@@ -148,7 +148,7 @@ class BaseType extends AbstractType
             )
             ->add(
                 'priority',
-                TextType::class,
+                IntegerType::class,
                 [
                     'required' => true,
                     'constraints' => [
