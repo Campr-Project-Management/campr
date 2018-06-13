@@ -2,13 +2,13 @@
 
 namespace Component\Form\Extension\DataTransformer;
 
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer as BTST;
 
 /**
  * The BooleanToStringTransformer is quite spastic some times and fucks up with "multipart/form-data" OR PATCH requests.
  */
-class BooleanToStringTransformer extends BTST
+class BooleanToStringTransformer implements DataTransformerInterface
 {
     /**
      * @var string
@@ -30,7 +30,15 @@ class BooleanToStringTransformer extends BTST
      */
     public function transform($value)
     {
-        return parent::transform($value);
+        if (null === $value) {
+            return;
+        }
+
+        if (!is_bool($value)) {
+            throw new TransformationFailedException('Expected a Boolean.');
+        }
+
+        return $value ? $this->trueValue : null;
     }
 
     /**
@@ -44,25 +52,20 @@ class BooleanToStringTransformer extends BTST
             return false;
         }
 
-        if (is_bool($value)) {
-            return $value;
-        }
-
         if (!is_string($value)) {
             throw new TransformationFailedException('Expected a string.');
         }
 
-        switch ($value) {
-            case 0:
-            case '0':
-            case 'false':
-                return false;
-            case 1:
-            case '1':
-            case 'true':
-                return true;
-            default:
-                return $value === $this->trueValue;
-        }
+        $comparisons = [
+            $value === 0,
+            $value === '0',
+            $value === false,
+            $value === 1,
+            $value === '1',
+            $value === true,
+            $value === $this->trueValue,
+        ];
+
+        return in_array(true, $comparisons, true);
     }
 }
