@@ -93,6 +93,7 @@ const actions = {
 
                         let meeting = response.body;
                         let id = data.id;
+
                         if (!data.skipCommit || data.skipCommit !== true) {
                             commit(types.EDIT_PROJECT_MEETING, {id, meeting});
                         }
@@ -202,7 +203,8 @@ const mutations = {
             state.projectMeetings.items = state.projectMeetings.items.map((item) => {
                 return item.id === id ? meeting : item;
             });
-        } else if (state.meeting) {
+        }
+        if (state.meeting) {
             state.meeting = meeting;
         }
     },
