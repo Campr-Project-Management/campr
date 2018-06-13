@@ -6,7 +6,7 @@
                 <div class="col-md-4">
                     <select-field
                             :allow-clear="true"
-                            :title="translate('label.asignee')"
+                            :title="translate('label.responsible')"
                             :options="responsibilityOptions"
                             :value="value.responsibility"
                             :disabled="disabled"
