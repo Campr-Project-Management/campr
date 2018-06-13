@@ -4,6 +4,7 @@ namespace Component\Snapshot;
 
 use AppBundle\Entity\Project;
 use Component\Snapshot\Transformer\TransformerInterface;
+use Component\Snapshot\Model\SnapshotInterface;
 
 class ProjectSnapshotFactory
 {

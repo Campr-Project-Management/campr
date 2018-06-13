@@ -2,8 +2,8 @@
 
 namespace AppBundle\Twig;
 
-use Component\Currency\CurrencyAwareInterface;
-use Component\Currency\CurrencyInterface;
+use Component\Currency\Model\CurrencyAwareInterface;
+use Component\Currency\Model\CurrencyInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
 

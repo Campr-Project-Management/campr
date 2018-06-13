@@ -1218,6 +1218,7 @@ label:
     not_taken: Not Taken
     taken: Taken
     currency: Currency
+    traffic_light: Traffic Light
 
 button:
     restore: Restore
@@ -1852,10 +1853,10 @@ todo_status:
     on_hold: On hold
     discontinued: Discontinued
 
-project_color_status: 
-    on_track: On track
-    warning: Warning
-    critical: Critical
+traffic_light:
+    red: Critical
+    yellow: Warning
+    green: On Track
 
 filter:
     clear: Clear filters
