@@ -73,7 +73,7 @@ class PDF
 
     private function run($url, $params)
     {
-        $tmpFile = tempnam('/tmp', basename($url));
+        $tmpFile = tempnam('/tmp', md5($url));
 
         $query = [
             'host' => $this->requestStack->getMasterRequest()->getHttpHost(),
