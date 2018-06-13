@@ -13,6 +13,10 @@ const state = {
     tasksFilters: {},
     allTasks: [],
     tasksPageSize: 0,
+    rasciTasks: [],
+    rasciTasksCount: 0,
+    rasciTasksPageSize: 0,
+    filteredRasciTasks: [],
 };
 
 const getters = {
@@ -22,6 +26,9 @@ const getters = {
     tasksPerPage: state => state.tasksPageSize,
     allTasks: state => state.allTasks,
     taskHistory: state => state.taskHistory,
+    rasciTasks: state => state.rasciTasks,
+    rasciTasksCount: state => state.rasciTasksCount,
+    rasciTasksPerPage: state => state.rasciTasksPageSize,
 };
 
 const actions = {
@@ -108,6 +115,40 @@ const actions = {
                 if (response.status === 200) {
                     let tasks = response.data;
                     commit(types.SET_TASKS, {tasks});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Gets user rasci tasks from the API and commits SET_USER_RASCI_TASKS mutation
+     * @param {function} commit
+     * @param {array} data
+     */
+    getUserRasciTasks({commit}, data) {
+        let paramObject = {
+            params: {
+                userRasci: true,
+                type: 2,
+            },
+        };
+        if (data && data.queryParams && data.queryParams.page !== undefined) {
+            paramObject.params.page = data.queryParams.page;
+        }
+        if (state.taskFilters && state.taskFilters.colorStatus) {
+            paramObject.params.colorStatus = state.taskFilters.colorStatus;
+        }
+        if (state.taskFilters && state.taskFilters.status) {
+            paramObject.params.status = state.taskFilters.status;
+        }
+        if (state.taskFilters && state.taskFilters.project) {
+            paramObject.params.project = state.taskFilters.project;
+        }
+        Vue.http
+            .get(Routing.generate('app_api_workpackage_list'), paramObject)
+            .then((response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_USER_RASCI_TASKS, {tasks});
                 }
             }, (response) => {
             });
@@ -415,6 +456,17 @@ const mutations = {
         state.tasksCount = tasks.totalItems;
         state.tasksPageSize = tasks.pageSize;
         state.filteredTasks = JSON.parse(JSON.stringify(tasks));
+    },
+    /**
+     * Sets user rasci tasks to state
+     * @param {Object} state
+     * @param {array} tasks
+     */
+    [types.SET_USER_RASCI_TASKS](state, {tasks}) {
+        state.rasciTasks = tasks.items;
+        state.rasciTasksCount = tasks.totalItems;
+        state.rasciTasksPageSize = tasks.pageSize;
+        state.filteredRasciTasks = JSON.parse(JSON.stringify(tasks));
     },
     /**
      * Sets task to state
