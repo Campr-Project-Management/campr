@@ -440,6 +440,7 @@ message:
     label_none: None
     condition: Condition
     change_accountable: Change Accountable
+    change_responsible: Change Responsible
     uploading_file_failed: There was an error while uploading the file
     delete_file_failed: There was an error while deleting the file
     wbs: WBS
