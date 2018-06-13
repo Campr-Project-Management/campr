@@ -11,8 +11,6 @@ use Symfony\Component\Process\Process;
 
 class DumpRoutesCommand extends ContainerAwareCommand
 {
-    const PARALLEL = 4;
-
     private $workDir;
 
     private $consolePath;
@@ -67,7 +65,7 @@ class DumpRoutesCommand extends ContainerAwareCommand
             }
         }
 
-        $this->output->writeln(ProcessManager::runParallel($processes, self::PARALLEL));
+        $this->output->writeln(ProcessManager::runParallel($processes, count($processes)));
     }
 
     private function newProcess($cmd)
