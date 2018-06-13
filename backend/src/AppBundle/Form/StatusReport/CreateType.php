@@ -3,6 +3,7 @@
 namespace AppBundle\Form\StatusReport;
 
 use AppBundle\Entity\StatusReport;
+use AppBundle\Form\TrafficLight\TrafficLightType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +20,7 @@ class CreateType extends AbstractType
     {
         $builder
             ->add('projectActionNeeded', CheckboxType::class)
+            ->add('projectTrafficLight', TrafficLightType::class)
             ->add('comment', TextType::class)
         ;
     }

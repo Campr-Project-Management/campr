@@ -2,6 +2,8 @@
 
 namespace Component\Snapshot;
 
+use Component\Snapshot\Model\SnapshotInterface;
+
 class Snapshot implements SnapshotInterface
 {
     /**
