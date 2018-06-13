@@ -674,6 +674,7 @@ export default {
                 title: decision.title,
                 description: decision.description,
                 responsibility: decision.responsibility,
+                responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 date: decision.date ? moment(decision.date).toDate() : new Date(),
                 done: decision.done,
