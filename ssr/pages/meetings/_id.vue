@@ -39,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for='(participant, index) in meeting.meetingParticipants' :key="`participant-${participant.user}`">
+                    <tr v-for='participant in meeting.meetingParticipants' :key="`participant-${participant.user}`">
                         <td>
                             <div class="avatars flex flex-v-center">
                                 <div>
@@ -49,7 +49,9 @@
                             </div>
                         </td>
                         <td>
-                            <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
+                            <span v-for="(department, index) in participant.departments" :key="`participant-department-${index}`">
+                                {{ department }}<span v-if="index < participant.departments.length - 1">,</span>
+                            </span>
                         </td>
                         <td>
                             <span v-if="participant.isPresent">yes</span>
