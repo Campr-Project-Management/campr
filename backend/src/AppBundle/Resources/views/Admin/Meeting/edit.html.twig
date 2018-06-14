@@ -57,6 +57,24 @@
                         }
                     ) }}
                     {{ form_widget(
+                        form.meetingCategory,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'label.meeting_category'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
+                        form.distributionLists,
+                        {
+                            'attr': {
+                                'class': 'selectpicker',
+                            },
+                            'label': 'label.distribution_list'|trans,
+                        }
+                    ) }}
+                    {{ form_widget(
                         form.name,
                         {
                             'attr': {
