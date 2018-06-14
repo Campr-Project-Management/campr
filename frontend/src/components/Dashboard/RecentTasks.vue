@@ -25,7 +25,7 @@ export default {
         SmallTaskBox,
     },
     methods: {
-        ...mapActions(['getUserRasciTasks', 'getColorStatuses', 'setFilters']),
+        ...mapActions(['getTasks', 'getColorStatuses', 'setFilters']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -36,9 +36,10 @@ export default {
             this.getRecentTasksData();
         },
         getRecentTasksData: function() {
-            this.getUserRasciTasks({
+            this.getTasks({
                 queryParams: {
                     page: this.activePage,
+                    userRasci: this.userRasci,
                 },
             });
         },
@@ -49,7 +50,7 @@ export default {
         this.getColorStatuses();
     },
     computed: mapGetters({
-        tasks: 'rasciTasks',
+        tasks: 'tasks',
         count: 'count',
         colorStatuses: 'colorStatuses',
         user: 'user',
@@ -57,6 +58,7 @@ export default {
     data() {
         return {
             activePage: 1,
+            userRasci: true,
         };
     },
 };
