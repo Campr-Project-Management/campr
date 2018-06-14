@@ -472,6 +472,7 @@ export default {
             this.opportunityProbability = this.opportunity.probability;
             this.costSavings = this.opportunity.costSavings;
             this.timeSavings = this.opportunity.timeSavings;
+            this.schedule.dueDate = this.opportunity.dueDate ? moment(this.opportunity.dueDate).toDate() : null;
             this.details.time = this.opportunity.timeUnit
                 ? {key: this.opportunity.timeUnit, label: this.translate(this.opportunity.timeUnit)}
                 : null
