@@ -25,7 +25,7 @@ export default {
         SmallTaskBox,
     },
     methods: {
-        ...mapActions(['getUserRasciTasks', 'getColorStatuses', 'getProjects', 'setFilters']),
+        ...mapActions(['getUserRasciTasks', 'getColorStatuses', 'setFilters']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -46,11 +46,10 @@ export default {
     created() {
         this.setFilters({clear: true});
         this.getRecentTasksData();
-        this.getProjects();
         this.getColorStatuses();
     },
     computed: mapGetters({
-        tasks: 'tasks',
+        tasks: 'rasciTasks',
         count: 'count',
         colorStatuses: 'colorStatuses',
         user: 'user',

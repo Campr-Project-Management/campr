@@ -16,7 +16,11 @@
                 <div class="widget">
                     <h3>{{ translate('message.overall_status') }}</h3>
                     <div class="flex flex-center">
-                        <traffic-light :status="projectTrafficLight" size="large"/>
+                        <traffic-light
+                                :value="projectTrafficLight"
+                                size="large"
+                                :editable="editable"
+                                @input="onTrafficLightUpdate"/>
                     </div>
 
                     <h4>{{ translate('message.tasks_status') }}</h4>
@@ -135,7 +139,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
-                    <traffic-light :status="projectTrafficLight"/>
+                    <traffic-light :value="projectTrafficLight"/>
 
                     <br/>
 
@@ -152,7 +156,7 @@
             <div class="col-md-12">
                 <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
                 <div class="marginbottom20">
-                    <traffic-light :status="internalCostsTrafficLight"/>
+                    <traffic-light :value="internalCostsTrafficLight"/>
                 </div>
 
                 <chart :data="internalCostsGraphData"/>
@@ -165,7 +169,7 @@
             <div class="col-md-12">
                 <h3 class="margintop0">{{ translate('message.external_costs') }}</h3>
                 <div class="marginbottom20">
-                    <traffic-light :status="externalCostsTrafficLight"/>
+                    <traffic-light :value="externalCostsTrafficLight"/>
                 </div>
 
                 <chart :data="externalCostsGraphData"/>
@@ -295,6 +299,13 @@
 
                 this.$emit('input', Object.assign({}, this.value, {comment: value}));
             },
+            onTrafficLightUpdate(value) {
+                if (!this.editable) {
+                    return;
+                }
+
+                this.$emit('input', Object.assign({}, this.value, {projectTrafficLight: value}));
+            },
         },
         computed: {
             ...mapGetters([
@@ -305,11 +316,11 @@
             projectName() {
                 return this.report.projectName;
             },
-            projectTrafficLight() {
-                return this.snapshot.trafficLight;
-            },
             weekNumber() {
                 return this.report.weekNumber;
+            },
+            projectTrafficLight() {
+                return this.editable ? this.value.projectTrafficLight : this.report.projectTrafficLight;
             },
             snapshot() {
                 return this.report.information;

@@ -414,7 +414,7 @@ export default {
                 id: decision.id,
                 title: decision.title,
                 description: decision.description,
-                responsibility: [decision.responsibility],
+                responsibility: decision.responsibility,
                 responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 status: {key: decision.status, label: decision.statusName},
@@ -471,7 +471,12 @@ export default {
                 start: this.startTime.HH + ':' + this.startTime.mm,
                 end: this.endTime.HH + ':' + this.endTime.mm,
             };
-            this.editProjectMeeting(data);
+            this
+                .editProjectMeeting({
+                    id: this.$route.params.meetingId,
+                    data,
+                })
+            ;
         },
         sendNotifications: function() {
             this.sendMeetingNotifications(this.$route.params.meetingId);
@@ -538,7 +543,6 @@ export default {
                     meetingParticipantId: mp.id,
                 };
             });
-
             this.date = moment(this.meeting.date).toDate();
             this.startTime = {
                 HH: moment(this.meeting.start, 'HH:mm').format('HH'),

@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
-use Component\Model\SnapshotAwareInterface;
-use Component\Snapshot\Snapshot;
-use Component\Snapshot\SnapshotInterface;
+use Component\Resource\Model\SnapshotAwareInterface;
+use Component\Snapshot\Model\Snapshot;
+use Component\Snapshot\Model\SnapshotInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
