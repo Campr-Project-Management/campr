@@ -35,7 +35,7 @@ export default {
         Pagination,
     },
     methods: {
-        ...mapActions(['getUserRasciTasks', 'getColorStatuses', 'setFilters']),
+        ...mapActions(['getTasks', 'getColorStatuses', 'setFilters']),
         changePage(page) {
             this.activePage = page;
             this.getTasksData();
@@ -50,9 +50,10 @@ export default {
             this.getTasksData();
         },
         getTasksData: function() {
-            this.getUserRasciTasks({
+            this.getTasks({
                 queryParams: {
                     page: this.activePage,
+                    userRasci: this.userRasci,
                 },
             });
         },
@@ -65,9 +66,9 @@ export default {
     computed: {
         ...mapGetters({
             user: 'user',
-            tasks: 'rasciTasks',
-            count: 'rasciTasksCount',
-            tasksPerPage: 'rasciTasksPerPage',
+            tasks: 'tasks',
+            count: 'tasksCount',
+            tasksPerPage: 'tasksPerPage',
             colorStatuses: 'colorStatuses',
         }),
         pages: function() {
@@ -78,6 +79,7 @@ export default {
         return {
             items: [],
             activePage: 1,
+            userRasci: true,
         };
     },
 };
