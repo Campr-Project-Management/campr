@@ -26,6 +26,11 @@ class WBSService
         $this->workPackageProgressCalculator = $workPackageProgressCalculator;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function getData(Project $project)
     {
         return [
@@ -33,9 +38,7 @@ class WBSService
             'name' => (string) $project,
             'children' => $this->getProjectChildren($project),
             'progress' => round($this->progressCalculator->calculate($project)),
-            'colorStatus' => $project->getColorStatusId(),
-            'colorStatusName' => $project->getColorStatusName(),
-            'colorStatusColor' => $project->getColorStatusColor(),
+            'trafficLight' => $project->getTrafficLight(),
         ];
     }
 
