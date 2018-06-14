@@ -117,7 +117,4 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .input-holder {
-        margin-top: 2em;
-    }
 </style>
