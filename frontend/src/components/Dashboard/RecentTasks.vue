@@ -25,7 +25,7 @@ export default {
         SmallTaskBox,
     },
     methods: {
-        ...mapActions(['getRecentTasks', 'getColorStatuses', 'getProjects', 'setFilters']),
+        ...mapActions(['getRecentTasks', 'getColorStatuses', 'setFilters']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -46,7 +46,6 @@ export default {
     created() {
         this.setFilters({clear: true});
         this.getRecentTasksData();
-        this.getProjects();
         this.getColorStatuses();
     },
     computed: mapGetters({
