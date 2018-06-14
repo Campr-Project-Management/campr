@@ -1,8 +1,8 @@
 <?php
 
-namespace Component\Model;
+namespace Component\Resource\Model;
 
-use Component\Snapshot\SnapshotInterface;
+use Component\Snapshot\Model\SnapshotInterface;
 
 interface SnapshotAwareInterface
 {

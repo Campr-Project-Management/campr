@@ -23,6 +23,7 @@
 <script>
     import {mapGetters, mapActions} from 'vuex';
     import StatusReport from './Create/StatusReport';
+    import tl from '../../../util/traffic-light';
 
     export default {
         name: 'status-report-create',
@@ -56,6 +57,7 @@
             generatedStatusReport() {
                 this.editableData.projectActionNeeded = this.generatedStatusReport.projectActionNeeded;
                 this.editableData.comment = this.generatedStatusReport.comment;
+                this.editableData.projectTrafficLight = this.generatedStatusReport.projectTrafficLight;
             },
         },
         data() {
@@ -64,6 +66,7 @@
                 editableData: {
                     projectActionNeeded: false,
                     comment: null,
+                    projectTrafficLight: tl.TrafficLight.GREEN,
                 },
             };
         },
