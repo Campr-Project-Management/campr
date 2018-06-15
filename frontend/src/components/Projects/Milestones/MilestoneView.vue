@@ -46,7 +46,8 @@
                                 :forecast-duration-days="milestone.forecastDurationDays"
                                 :actual-start-at="milestone.actualStartAt"
                                 :actual-finish-at="milestone.actualFinishAt"
-                                :actual-duration-days="milestone.actualDurationDays"/>
+                                :actual-duration-days="milestone.actualDurationDays"
+                                :show-due-schedule="true"/>
                     </div>
 
                     <hr>
@@ -171,10 +172,6 @@ export default {
             letter-spacing: 1.8px;
             font-weight: 300;
             margin-bottom: 40px;
-        }
-
-        .input-holder {
-            margin-bottom: 30px;
         }
 
         .main-list .member {

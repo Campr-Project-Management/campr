@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- /// Task Assignee /// -->
-        <h3>{{ translate('message.asignee')}}</h3>
+        <h3>{{ translate('message.responsible')}}</h3>
         <div class="row">
             <div class="col-lg-7">
                 <div class="flex flex-v-center" v-if="responsibilityUser">
@@ -18,7 +18,7 @@
             </div>
             <div class="col-lg-5">
                 <select-field
-                        :title="translate('message.change_assignee')"
+                        :title="translate('message.change_responsible')"
                         :options="responsibilityOptions"
                         :value="value.responsibility"
                         :disabled="disabled"

@@ -53,6 +53,7 @@ export default {
             this.getTasks({
                 queryParams: {
                     page: this.activePage,
+                    userRasci: this.userRasci,
                 },
             });
         },
@@ -78,6 +79,7 @@ export default {
         return {
             items: [],
             activePage: 1,
+            userRasci: true,
         };
     },
 };

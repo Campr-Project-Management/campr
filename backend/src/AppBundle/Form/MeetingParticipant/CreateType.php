@@ -53,9 +53,15 @@ class CreateType extends AbstractType
             ->add('remark', TextType::class, [
                 'required' => false,
             ])
-            ->add('isExcused', CheckboxType::class)
-            ->add('isPresent', CheckboxType::class)
-            ->add('inDistributionList', CheckboxType::class)
+            ->add('isExcused', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('isPresent', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('inDistributionList', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 

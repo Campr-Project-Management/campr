@@ -1,6 +1,6 @@
 <?php
 
-namespace Component\Model;
+namespace Component\Resource\Model;
 
 interface TimestampableInterface
 {

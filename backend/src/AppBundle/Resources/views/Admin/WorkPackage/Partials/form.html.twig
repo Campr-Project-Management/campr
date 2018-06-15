@@ -14,13 +14,6 @@
         },
 }
 ) }}
-{% if form.vars.valid == false %}
-    <div class="alert alert-danger">
-        {% for field in form.children %}
-            {{ form_errors(field) }}
-        {% endfor %}
-    </div>
-{% endif %}
 
 {{ form_widget(
     form.name,
@@ -31,6 +24,7 @@
         'label': 'label.name'|trans
     }
 ) }}
+{{ form_errors(form.name) }}
 {{ form_widget(
     form.type,
     {
@@ -40,6 +34,7 @@
         'label': 'label.type'|trans
     }
 ) }}
+{{ form_errors(form.type) }}
 {{ form_widget(
     form.workPackageStatus,
     {
@@ -58,6 +53,7 @@
         'label': 'label.progress'|trans,
     }
 ) }}
+{{ form_errors(form.progress) }}
 {{ form_widget(
     form.duration,
     {
@@ -67,6 +63,7 @@
         'label': 'label.duration'|trans,
     }
 ) }}
+{{ form_errors(form.duration) }}
 {{ form_widget(
     form.phase,
     {
@@ -76,6 +73,7 @@
         'label': 'label.phase'|trans
     }
 ) }}
+{{ form_errors(form.phase) }}
 {{ form_widget(
     form.milestone,
     {
@@ -85,6 +83,7 @@
         'label': 'label.milestone'|trans
     }
 ) }}
+{{ form_errors(form.milestone) }}
 {{ form_widget(
     form.parent,
     {
@@ -94,6 +93,7 @@
         'label': 'label.parent'|trans
     }
 ) }}
+{{ form_errors(form.parent) }}
 {{ form_widget(
     form.workPackageCategory,
     {
@@ -103,6 +103,7 @@
         'label': 'label.workpackage_category'|trans
     }
 ) }}
+{{ form_errors(form.workPackageCategory) }}
 {{ form_widget(
     form.colorStatus,
     {
@@ -112,6 +113,7 @@
         'label': 'label.color'|trans
     }
 ) }}
+{{ form_errors(form.colorStatus) }}
 {{ form_widget(
     form.responsibility,
     {
@@ -121,6 +123,7 @@
         'label': 'label.responsible'|trans
     }
 ) }}
+{{ form_errors(form.responsibility) }}
 {{ form_widget(
     form.project,
     {
@@ -130,6 +133,7 @@
         'label': 'label.project'|trans
     }
 ) }}
+{{ form_errors(form.project) }}
 {{ form_widget(
     form.dependencies,
     {
@@ -140,6 +144,7 @@
         'label': 'label.dependencies'|trans,
     }
 ) }}
+{{ form_errors(form.dependencies) }}
 {{ form_widget(
     form.labels,
     {
@@ -150,6 +155,7 @@
         'label': 'label.labels'|trans,
     }
 ) }}
+{{ form_errors(form.labels) }}
 {{ form_widget(
     form.calendar,
     {
@@ -159,6 +165,7 @@
         'label': 'label.calendar'|trans
     }
 ) }}
+{{ form_errors(form.calendar) }}
 {{ form_widget(
     form.scheduledStartAt,
     {
@@ -169,6 +176,7 @@
         'label': 'label.schedule_start'|trans
     }
 ) }}
+{{ form_errors(form.scheduledStartAt) }}
 {{ form_widget(
     form.scheduledFinishAt,
     {
@@ -179,6 +187,7 @@
         'label': 'label.schedule_finish'|trans
 }
 ) }}
+{{ form_errors(form.scheduledFinishAt) }}
 {{ form_widget(
     form.forecastStartAt,
     {
@@ -189,6 +198,7 @@
         'label': 'label.forecast_start'|trans
     }
 ) }}
+{{ form_errors(form.forecastStartAt) }}
 {{ form_widget(
     form.forecastFinishAt,
     {
@@ -199,6 +209,7 @@
         'label': 'label.forecast_finish'|trans
 }
 ) }}
+{{ form_errors(form.forecastFinishAt) }}
 {{ form_widget(
     form.actualStartAt,
     {
@@ -209,6 +220,7 @@
         'label': 'label.actual_start'|trans
     }
 ) }}
+{{ form_errors(form.actualStartAt) }}
 {{ form_widget(
     form.actualFinishAt,
     {
@@ -219,6 +231,7 @@
         'label': 'label.actual_finish'|trans
     }
 ) }}
+{{ form_errors(form.actualFinishAt) }}
 {{ form_widget(
     form.content,
     {
@@ -228,6 +241,7 @@
         'label': 'label.content'|trans
     }
 ) }}
+{{ form_errors(form.content) }}
 {{ form_widget(
     form.results,
     {
@@ -237,6 +251,7 @@
         'label': 'label.results'|trans
     }
 ) }}
+{{ form_errors(form.results) }}
 {{ form_widget(
 form.isKeyMilestone,
     {
@@ -247,6 +262,7 @@ form.isKeyMilestone,
     'label': 'label.is_key_milestone'|trans
 }
 ) }}
+{{ form_errors(form.isKeyMilestone) }}
 
 {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
