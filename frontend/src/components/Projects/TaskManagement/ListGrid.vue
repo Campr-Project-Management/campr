@@ -26,7 +26,7 @@
             <dropdown
                     ref="assignee"
                     :selectedValue="selectAssignee"
-                    :title="translate('message.assignee')"
+                    :title="translate('message.responsible')"
                     :options="projectUsersForSelect"/>
             <dropdown
                     ref="statuses"

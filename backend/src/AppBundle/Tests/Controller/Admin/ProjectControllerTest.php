@@ -6,7 +6,7 @@ use AppBundle\Entity\Currency;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
-use Component\Currency\CurrencyInterface;
+use Component\Currency\Model\CurrencyInterface;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;

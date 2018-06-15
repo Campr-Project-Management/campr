@@ -65,14 +65,14 @@ export default {
     },
 
     mounted() {
-        if(this.emitOnMount) {
+        if (this.emitOnMount) {
             this.$emit('input', this.enabled = !!this.selected);
         }
     },
 
     watch: {
         enabled(val) {
-            if(this.modelChanged) {
+            if (this.modelChanged) {
                 this.modelChanged(val);
             }
             this.$emit('input', val);

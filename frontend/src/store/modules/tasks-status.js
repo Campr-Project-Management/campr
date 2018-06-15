@@ -8,6 +8,13 @@ const state = {
 const getters = {
     taskStatuses: state => state.taskStatuses,
     taskStatusesCount: state => state.taskStatuses.totalItems,
+    taskStatusesForSelect: (state) => {
+        return state.taskStatuses.filter(item => !!item.visible).
+            map((item) => ({
+                key: item.id,
+                label: Vue.translate(item.name),
+            }));
+    },
 };
 
 const actions = {

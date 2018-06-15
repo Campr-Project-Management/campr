@@ -2,43 +2,91 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
-const DECISION_VALIDATION_ORIGIN = 'decision';
-
 const state = {
     currentDecision: {},
     decisions: [],
     decisionFilters: {},
+    decisionsStatuses: [
+        {
+            value: false,
+            name: 'undone',
+        },
+        {
+            value: true,
+            name: 'done',
+        },
+    ],
 };
 
 const getters = {
     decisions: state => state.decisions,
     currentDecision: state => state.currentDecision,
     decisionFilters: state => state.decisionFilters,
+    decisionsStatuses: state => state.decisionsStatuses,
+    decisionsStatusesForSelect: ({}, getters) => {
+        return getters.decisionsStatuses.map((status) => {
+            return {
+                key: status.value,
+                label: `choices.${status.name}`,
+            };
+        });
+    },
+    decisionStatusByValue: ({}, getters) => (value) => {
+        return getters.decisionsStatuses.find((status) => status.value === value);
+    },
+    decisionStatusByValueForSelect: ({}, getters) => (value) => {
+        let status = getters.decisionStatusByValue(value);
+        if (!status) {
+            return {};
+        }
+
+        return {
+            key: status.value,
+            label: `choices.${status.name}`,
+        };
+    },
+    currentDecisionStatus: ({}, getters) => {
+        if (!getters.currentDecision.id) {
+            return;
+        }
+
+        return getters.decisionStatusByValue(getters.currentDecision.done);
+    },
+    currentDecisionStatusForSelect({}, getters) {
+        if (!getters.currentDecisionStatus) {
+            return {};
+        }
+
+        return {
+            key: getters.currentDecisionStatus.value,
+            label: `choices.${getters.currentDecisionStatus.name}`,
+        };
+    },
 };
 const actions = {
     /**
      * Creates a new decision
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createMeetingDecision({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_meeting_decisions_create', {'id': data.id}),
-                data
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_ORIGIN, DECISION_VALIDATION_ORIGIN);
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    let decision = response.data;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.SET_VALIDATION_ORIGIN, '');
-                    commit(types.ADD_MEETING_DECISION, {decision});
-                }
-            }, (response) => {
-            });
+        return Vue.http.post(
+            Routing.generate('app_api_meeting_decisions_create',
+                {'id': data.id}),
+            data,
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                throw response;
+            }
+
+            let decision = response.data;
+            commit(types.ADD_MEETING_DECISION, {decision});
+
+            return response;
+        }, (response) => {
+            return response;
+        });
     },
     /**
      * Creates a new meeting per project
@@ -78,10 +126,8 @@ const actions = {
             ).then((response) => {
                 let decision = response.data;
                 if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    throw response;
                 } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                     if (decision.meeting && !data.redirect) {
                         commit(types.EDIT_MEETING_DECISION, {decision});
                         commit(types.SET_DECISION, {decision});

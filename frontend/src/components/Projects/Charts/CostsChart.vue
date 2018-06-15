@@ -1,16 +1,16 @@
 <template>
-    <div>
+    <div class="cost-charts">
         <vue-chart
-                chart-type="ColumnChart"
-                :columns="columns"
-                :rows="data | transform"
-                :options="chartOptions">
+            chart-type="ColumnChart"
+            :columns="columns"
+            :rows="data | transform"
+            :options="chartOptions">
         </vue-chart>
     </div>
 </template>
 
 <style lang="css">
-    svg > g:last-child > g:last-child { pointer-events: none }
+    div.cost-charts svg > g:last-child > g:last-child { pointer-events: none }
 </style>
 
 <script>
