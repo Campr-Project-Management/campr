@@ -26,7 +26,7 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: error
+            action_level: warning
             handler:      nested
         nested:
             type:  stream

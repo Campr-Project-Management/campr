@@ -11,6 +11,7 @@ use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
 use AppBundle\Entity\WorkPackage;
+use Component\TrafficLight\TrafficLight;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,26 +52,34 @@ class ProjectControllerTest extends BaseController
         $responseContent['createdAt'] = $project['createdAt'];
         $responseContent['updatedAt'] = $project['updatedAt'];
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful(), 'Response is not successfully');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
+            $this->assertEquals($responseContent, $project, 'Wrong response content');
+        } finally {
+            $project = $this
+                ->em
+                ->getRepository(Project::class)
+                ->find($project['id'])
+            ;
+            if ($project) {
+                $this->em->remove($project);
+            }
 
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->find($project['id'])
-        ;
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy([
-                'user' => $user,
-                'project' => $project,
-            ])
-        ;
-        $this->em->remove($projectUser);
-        $this->em->remove($project);
-        $this->em->flush();
+            $projectUser = $this
+                ->em
+                ->getRepository(ProjectUser::class)
+                ->findOneBy([
+                    'user' => $user,
+                    'project' => $project,
+                ])
+            ;
+            if ($projectUser) {
+                $this->em->remove($projectUser);
+            }
+
+            $this->em->flush();
+        }
     }
 
     /**
@@ -88,9 +97,7 @@ class ProjectControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'colorStatus' => null,
-                    'colorStatusColor' => null,
-                    'colorStatusName' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'company' => null,
                     'companyName' => null,
                     'projectComplexity' => null,
@@ -365,7 +372,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 2,
                     'companyName' => 'company2',
-                    'projectColorStatus' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -391,10 +398,6 @@ class ProjectControllerTest extends BaseController
                     'programmeName' => null,
                     'projectModules' => [],
                     'isNew' => false,
-                    'colorStatus' => null,
-                    'colorStatusName' => null,
-                    'colorStatusColor' => null,
-                    'overallStatus' => 2,
                     'scheduledStartAt' => null,
                     'scheduledFinishAt' => null,
                     'scheduledDurationDays' => 0,
@@ -1215,12 +1218,17 @@ class ProjectControllerTest extends BaseController
         foreach ($actual['items'][0]['meetingAgendas'] as $key => $agenda) {
             $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
         }
+
         foreach ($actual['items'][0]['decisions'] as $key => $decision) {
             $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
+            $responseContent['items'][0]['decisions'][$key]['responsibilityAvatarUrl'] = $decision['responsibilityAvatarUrl'];
+            $responseContent['items'][0]['decisions'][$key]['createdAt'] = $decision['createdAt'];
         }
+
         foreach ($actual['items'][0]['todos'] as $key => $todo) {
             $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
         }
+
         foreach ($actual['items'][0]['infos'] as $key => $info) {
             $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
@@ -1345,9 +1353,10 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'decision1',
                                     'description' => 'description1',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
+                                    'isDone' => false,
+                                    'done' => false,
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1362,9 +1371,10 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'decision2',
                                     'description' => 'description2',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
+                                    'isDone' => false,
+                                    'done' => false,
                                 ],
                             ],
                             'todos' => [
@@ -1383,7 +1393,6 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'todo1',
                                     'description' => 'description for todo1',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
                                 ],
@@ -1402,7 +1411,6 @@ class ProjectControllerTest extends BaseController
                                     'title' => 'todo2',
                                     'description' => 'description for todo2',
                                     'showInStatusReport' => false,
-                                    'date' => '2017-01-01 00:00:00',
                                     'dueDate' => '2017-05-01 00:00:00',
                                     'responsibilityAvatar' => '',
                                 ],
@@ -1777,8 +1785,8 @@ class ProjectControllerTest extends BaseController
             );
             $response = $this->client->getResponse();
 
-            $this->assertEquals($isResponseSuccessful, $response->isClientError());
-            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($isResponseSuccessful, $response->isClientError(), 'Client error');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
             $actual = json_decode($response->getContent(), true);
             $this->assertEquals($responseContent, $actual);
         } finally {
@@ -1848,8 +1856,8 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals($isResponseSuccessful, $response->isClientError(), 'Client error');
+        $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Wrong status code');
         $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
@@ -1947,7 +1955,7 @@ class ProjectControllerTest extends BaseController
                 [
                     'company' => 1,
                     'companyName' => 'company1',
-                    'projectColorStatus' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'projectManager' => null,
                     'projectManagerName' => null,
                     'projectManagers' => [],
@@ -1973,10 +1981,6 @@ class ProjectControllerTest extends BaseController
                     'programmeName' => null,
                     'projectModules' => ['project-module1', 'project-module2', 'project-module3'],
                     'isNew' => false,
-                    'colorStatus' => 5,
-                    'colorStatusName' => 'color-status2',
-                    'colorStatusColor' => 'green',
-                    'overallStatus' => 2,
                     'scheduledStartAt' => date('Y-m-d', time()),
                     'scheduledFinishAt' => date('Y-m-d', time() + (4 * 3600 * 24)),
                     'scheduledDurationDays' => 5,
@@ -2733,7 +2737,6 @@ class ProjectControllerTest extends BaseController
                         'title' => 'todo1',
                         'description' => 'description for todo1',
                         'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
                     ],
@@ -2752,7 +2755,6 @@ class ProjectControllerTest extends BaseController
                         'title' => 'todo2',
                         'description' => 'description for todo2',
                         'showInStatusReport' => false,
-                        'date' => '2017-01-01 00:00:00',
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
                     ],
@@ -2817,7 +2819,6 @@ class ProjectControllerTest extends BaseController
                     'title' => 'do this',
                     'description' => 'descript',
                     'showInStatusReport' => false,
-                    'date' => null,
                     'dueDate' => null,
                 ],
             ],

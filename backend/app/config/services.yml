@@ -425,3 +425,9 @@ services:
         class: Component\Snapshot\ProjectSnapshotFactory
         arguments:
           - '@app.snapshot.transformer.project'
+
+### FORM ###
+    app.form.extension.checkbox_type_extension:
+        class: Component\Form\Extension\CheckboxTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\CheckboxType }

@@ -33,27 +33,32 @@
         <!-- /// SUBTEAM MODALS /// -->
         <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false">
             <p class="modal-title">{{ translate('message.edit_subteam') }}</p>
-            <input-field
-                    v-model="editSubteamName"
-                    :content="editSubteamName"
-                    type="text"
-                    :label="translate('label.subteam_name')"/>
-            <multi-select-field
-                    :title="translate('label.select_users')"
-                    :options="projectUsersForSelect"
-                    v-model="editSubteamMembers"/>
-            <br/>
-            <select-field
-                    :title="translate('roles.team_leader')"
-                    :options="editSubteamMembers"
-                    :current-option="editSubteamLead"
-                    v-model="editSubteamLead"/>
-            <br/>
-            <select-field
-                    :title="translate('label.select_department')"
-                    :options="projectDepartmentsForSelect"
-                    v-model="editSubteamDepartment"/>
-            <br/>
+            <div class="form-group">
+                <input-field
+                        v-model="editSubteamName"
+                        :content="editSubteamName"
+                        type="text"
+                        :label="translate('label.subteam_name')"/>
+            </div>
+            <div class="form-group">
+                <multi-select-field
+                        :title="translate('label.select_users')"
+                        :options="projectUsersForSelect"
+                        v-model="editSubteamMembers"/>
+            </div>
+            <div class="form-group">
+                <select-field
+                        :title="translate('roles.team_leader')"
+                        :options="editSubteamMembers"
+                        :current-option="editSubteamLead"
+                        v-model="editSubteamLead"/>
+            </div>
+            <div class="form-group">
+                <select-field
+                        :title="translate('label.select_department')"
+                        :options="projectDepartmentsForSelect"
+                        v-model="editSubteamDepartment"/>
+            </div>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{
                     translate('button.cancel') }}</a>
@@ -448,9 +453,10 @@
                 this.createSubteam(data).then((response) => {
                     if (response.body && response.body.error && response.body.messages) {
                         this.showFailed = true;
-                    } else if (this.subteams.items.length > this.subteams.pageSize) {
+                    }
+                    this.subteamName = null;
+                    if (this.subteams.items.length > this.subteams.pageSize) {
                         this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-                        this.subteamName = null;
                     }
                 }).catch((response) => {
                     this.showFailed = true;

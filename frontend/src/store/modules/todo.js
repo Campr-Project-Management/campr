@@ -90,11 +90,11 @@ const actions = {
                 }
 
                 const todo = response.body;
+                commit(types.SET_TODO, {todo});
                 if (todo.meeting) {
                     commit(types.EDIT_MEETING_TODO, {todo});
                 } else {
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.SET_TODO, {todo});
                     router.push({name: 'project-todos'});
                 }
 

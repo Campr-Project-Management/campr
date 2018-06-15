@@ -121,23 +121,22 @@
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
                         <hr>
 
-                        <h4 class="widget-title" v-if="projectColorStatuses && projectColorStatuses.length">
+                        <h4 class="widget-title">
                             {{ translateText('message.project_condition') }} -
-                            <b v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" :style="{color: projectColorStatus.color}"> {{ translateText(projectColorStatus.name) }} </b>
+                            <b
+                                    v-for="(tl, index) in trafficLights"
+                                    :key="index"
+                                    :style="{color: tl.getColor()}"> {{ translate(tl.getLabel()) }} </b>
                         </h4>
 
-                        <div class="status-boxes flex flex-v-center" v-if="projectColorStatuses && projectColorStatuses.length && userIsManager">
-                            <div v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.projectColorStatus === projectColorStatus.name ? projectColorStatus.color : null)}"  v-on:click="updateProjectColorStatus(projectColorStatus)"></div>
-                        </div>
-
-                        <div class="status-boxes flex flex-v-center" v-if="projectColorStatuses && projectColorStatuses.length && !userIsManager">
-                            <div v-for="(projectColorStatus, index) in projectColorStatuses" :key="index" class="status-box" :style="{backgroundColor: (project.projectColorStatus === projectColorStatus.name ? projectColorStatus.color : null)}"></div>
-                        </div>
-
-                        <hr v-if="projectColorStatuses && projectColorStatuses.length">
+                        <traffic-light
+                                :value="projectTrafficLight"
+                                size="small"
+                                :editable="true"
+                                @input="onUpdateProjectTrafficLight"/>
+                        <hr/>
 
                         <!-- /// End Project Condition /// -->
-
                         <a
                             class="btn-rounded btn-md btn-empty btn-auto"
                             v-if="contract && contract.id"
@@ -153,7 +152,11 @@
                     <div class="widget-content">
                         <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
                         <div>
-                            <small-task-box v-for="(task, index) in tasks" :key="index" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></small-task-box>
+                            <small-task-box
+                                    v-for="(task, index) in tasks"
+                                    :key="index"
+                                    v-bind:task="task"
+                                    v-bind:colorStatuses="colorStatuses"/>
                         </div>
                         <div class="margintop20 buttons">
                             <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
@@ -205,9 +208,12 @@ import SmallTaskBox from '../Dashboard/SmallTaskBox';
 import AlertModal from '../_common/AlertModal.vue';
 import moment from 'moment';
 import * as projectStatus from '../../store/modules/project-status';
+import TrafficLight from '../_common/TrafficLight';
+import tl from '../../util/traffic-light';
 
 export default {
     components: {
+        TrafficLight,
         CircleChart,
         SmallTaskBox,
         moment,
@@ -221,7 +227,6 @@ export default {
             'getProjectUsers',
             'getTasksForSchedule',
             'getColorStatuses',
-            'getProjectColorStatuses',
             'getTasksStatus',
             'closeProject',
             'editProject',
@@ -229,18 +234,12 @@ export default {
         translateText(text) {
             return this.translate(text);
         },
-        getDuration(startDate, endDate) {
-            let end = moment(endDate);
-            let start = moment(startDate);
-            let diff = end.diff(start, 'days');
-
-            return !isNaN(diff) ? diff + 1 : '-';
-        },
-        updateProjectColorStatus(projectColorStatus) {
+        onUpdateProjectTrafficLight(trafficLight) {
             this.editProject({
-                projectColorStatus: projectColorStatus.name,
+                trafficLight: trafficLight,
                 projectId: this.$route.params.id,
             });
+            this.projectTrafficLight = trafficLight;
         },
         doCloseProject() {
             const {id} = this.project;
@@ -271,17 +270,12 @@ export default {
         if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
             this.getColorStatuses();
         }
-        if (!this.$store.state.projectColorStatus ||
-            (this.$store.state.projectColorStatus.projectColorStatuses && this.$store.state.projectColorStatus.projectColorStatuses.length === 0)) {
-            this.getProjectColorStatuses();
-        }
     },
     computed: {
         ...mapGetters({
             project: 'project',
             tasks: 'tasks',
             colorStatuses: 'colorStatuses',
-            projectColorStatuses: 'projectColorStatuses',
             projectSponsors: 'projectSponsors',
             projectManagers: 'projectManagers',
             tasksForSchedule: 'tasksForSchedule',
@@ -289,17 +283,6 @@ export default {
             contract: 'currentContract',
             localUser: 'localUser',
         }),
-        userIsManager() {
-            let isManager = false;
-
-            this.projectManagers.forEach((item, index) => {
-                if(item.user == this.localUser.id) {
-                    isManager = true;
-                }
-            });
-
-            return isManager;
-        },
         projectContractId() {
             if (this.contract && this.contract.id) {
                 return this.contract.id;
@@ -307,15 +290,20 @@ export default {
 
             return null;
         },
-        projectContract() {
-            if (this.contract && this.contract.id) {
-                return this.contract;
-            }
-
-            return null;
-        },
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.projectContractId});
+        },
+        trafficLights() {
+            return [
+                tl.TrafficLight.createGreen(),
+                tl.TrafficLight.createYellow(),
+                tl.TrafficLight.createRed(),
+            ];
+        },
+    },
+    watch: {
+        project(value) {
+            this.projectTrafficLight = value && value.trafficLight;
         },
     },
     data() {
@@ -324,6 +312,7 @@ export default {
             showFailed: false,
             activePage: 1,
             projectStatus,
+            projectTrafficLight: tl.TrafficLight.GREEN,
         };
     },
 };
@@ -334,7 +323,6 @@ export default {
     @import '../../css/_mixins';
     @import '../../css/_variables';
     @import '../../css/page-section';
-    @import '../../css/common';
 
     .widget-grid {
         display: flex;

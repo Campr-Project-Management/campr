@@ -127,7 +127,6 @@ class ProjectTransformer extends AbstractTransformer
                 'code' => $project->getCurrency()->getCode(),
                 'symbol' => $project->getCurrency()->getSymbol(),
             ],
-            'trafficLight' => $project->getTrafficLight(),
             'schedule' => $this->getScheduleData($project),
             'tasks' => $this->tasksTransformer->transform($project),
             'phases' => $this->phasesTransformer->transform($project),
