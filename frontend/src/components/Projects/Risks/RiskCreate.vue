@@ -503,6 +503,7 @@ export default {
             this.riskProbability = this.risk.probability;
             this.cost = this.risk.cost;
             this.timeDelay = this.risk.delay;
+            this.schedule.dueDate = this.risk.dueDate ? moment(this.risk.dueDate).toDate() : null;
             this.details.time = this.risk.delayUnit
                 ? {key: this.risk.delayUnit, label: this.translate(this.risk.delayUnit)}
                 : null
