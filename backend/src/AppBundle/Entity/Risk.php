@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Component\Model\Opportunity\OpportunityPriorityTrait;
-use Component\Model\PriorityAwareInterface;
+use Component\Opportunity\Model\OpportunityPriorityTrait;
+use Component\Resource\Model\PriorityAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
 use Component\TimeUnit\TimeUnitAwareInterface;

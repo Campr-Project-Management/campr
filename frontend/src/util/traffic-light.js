@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {getTrafficLightColorByStatus} from './colors';
 
 /**
  * Traffic Light
@@ -40,10 +41,24 @@ export class TrafficLight {
     }
 
     /**
+     * @return {string}
+     */
+    getColor() {
+        return getTrafficLightColorByStatus(this.value);
+    }
+
+    /**
      * @return {int}
      */
     getValue() {
         return this.value;
+    }
+
+    /**
+     * @return {string}
+     */
+    getLabel() {
+        return `traffic_light.${this.getCode()}`;
     }
 }
 

@@ -203,7 +203,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12">
-                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.search_members')"></member-search>
+                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.responsible')"></member-search>
                             </div>
                         </div>
                     </div>
@@ -472,6 +472,7 @@ export default {
             this.opportunityProbability = this.opportunity.probability;
             this.costSavings = this.opportunity.costSavings;
             this.timeSavings = this.opportunity.timeSavings;
+            this.schedule.dueDate = this.opportunity.dueDate ? moment(this.opportunity.dueDate).toDate() : null;
             this.details.time = this.opportunity.timeUnit
                 ? {key: this.opportunity.timeUnit, label: this.translate(this.opportunity.timeUnit)}
                 : null

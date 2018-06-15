@@ -63,9 +63,9 @@ export const createFormData = (data) => {
         for (let i = 0; i < data.decisions.length; i++) {
             formData.append('decisions[' + i + '][title]', data.decisions[i].title);
             formData.append('decisions[' + i + '][description]', data.decisions[i].description);
-            formData.append('decisions[' + i + '][responsibility]', data.decisions[i].responsible.length > 0 ? data.decisions[i].responsible[0] : null);
+            formData.append('decisions[' + i + '][done]', data.decisions[i].done);
+            formData.append('decisions[' + i + '][responsibility]', data.decisions[i].responsibility);
             formData.append('decisions[' + i + '][dueDate]', moment(data.decisions[i].dueDate).format('DD-MM-YYYY'));
-            formData.append('decisions[' + i + '][status]', data.decisions[i].status ? data.decisions[i].status.key : null);
         }
     }
 
