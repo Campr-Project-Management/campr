@@ -452,6 +452,7 @@ message:
     clear_selection: Clear selection
     loading_more_tasks: Loading more tasks...
     not_enough_data: Not enough data.
+    rate: Rate
 
 menu:
     users: Users
