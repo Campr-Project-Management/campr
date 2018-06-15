@@ -2113,7 +2113,10 @@ class ProjectController extends ApiController
         $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
         if ($rasci) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($rasci);
+            $postEventName = RasciEvents::POST_REMOVE;
+            $event = new RasciEvent($rasci);
+            $rasciRepo->remove($rasci);
+            $this->dispatchEvent($postEventName, $event);
             $em->flush();
         }
 
