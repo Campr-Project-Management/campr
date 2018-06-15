@@ -288,6 +288,10 @@ class MeetingParticipant
     {
         if ($this->user) {
             foreach ($this->user->getProjectUsers() as $projectUser) {
+                if (!$this->getMeeting()) {
+                    continue;
+                }
+
                 if ($projectUser->getProject() === $this->getMeeting()->getProject()) {
                     return $projectUser->getProjectDepartmentNames();
                 }
