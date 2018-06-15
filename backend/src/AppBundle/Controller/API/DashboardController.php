@@ -24,7 +24,7 @@ class DashboardController extends ApiController
     public function sidebarAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $wpTotal = $em->getRepository(WorkPackage::class)->countTotalByUserAndFilters($this->getUser(), ['type' => WorkPackage::TYPE_TASK]);
+        $wpTotal = $em->getRepository(WorkPackage::class)->countTotalByUserAndFilters($this->getUser(), ['type' => WorkPackage::TYPE_TASK, 'userRasci' => true]);
         $projectTotal = $em->getRepository(Project::class)->countTotalByUserAndFilters($this->getUser());
 
         return $this->createApiResponse([

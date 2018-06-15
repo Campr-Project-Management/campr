@@ -4,7 +4,7 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\FileSystem;
 use AppBundle\Repository\FileSystemRepository;
-use Component\Model\FileSystemAwareInterface;
+use Component\Resource\Model\FileSystemAwareInterface;
 
 class FileSystemResolver
 {

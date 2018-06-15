@@ -38,6 +38,9 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
+        if (state.taskFilters && state.taskFilters.colorStatus) {
+            paramObject.params.colorStatus = state.taskFilters.colorStatus;
+        }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;
         }
@@ -87,8 +90,14 @@ const actions = {
                 type: 2,
             },
         };
+        if (data && data.queryParams && data.queryParams.userRasci !== undefined) {
+            paramObject.params.userRasci = data.queryParams.userRasci;
+        }
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
+        }
+        if (state.taskFilters && state.taskFilters.colorStatus) {
+            paramObject.params.colorStatus = state.taskFilters.colorStatus;
         }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;

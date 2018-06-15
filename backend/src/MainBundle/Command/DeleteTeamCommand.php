@@ -28,6 +28,7 @@ class DeleteTeamCommand extends ContainerAwareCommand
 
         if (count($teams) === 0) {
             $output->writeln('<info>Nothing to clean up.</info>');
+
             return;
         }
 

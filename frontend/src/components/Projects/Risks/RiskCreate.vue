@@ -206,7 +206,7 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12 member-search-container">
-                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.search_members')"></member-search>
+                                <member-search singleSelect="false" v-model="memberList" :placeholder="translate('placeholder.responsible')"></member-search>
                             </div>
                         </div>
                     </div>
@@ -503,6 +503,7 @@ export default {
             this.riskProbability = this.risk.probability;
             this.cost = this.risk.cost;
             this.timeDelay = this.risk.delay;
+            this.schedule.dueDate = this.risk.dueDate ? moment(this.risk.dueDate).toDate() : null;
             this.details.time = this.risk.delayUnit
                 ? {key: this.risk.delayUnit, label: this.translate(this.risk.delayUnit)}
                 : null
