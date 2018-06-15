@@ -2,7 +2,7 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="statusesOptions" :selectedValue="selectStatus"></dropdown>
+            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="taskStatusesForSelect" :selectedValue="selectStatus"></dropdown>
             <dropdown ref="colorStatuses" v-bind:title="translateText('message.condition')" v-bind:options="colorStatuses" :selectedValue="selectColorStatus"></dropdown>
             <dropdown ref="projects" v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
@@ -56,10 +56,8 @@ export default {
             colorStatuses: 'colorStatusesForSelect',
             taskStatuses: 'taskStatuses',
             user: 'user',
+            taskStatusesForSelect: 'taskStatusesForSelect',
         }),
-        statusesOptions() {
-            return this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
-        },
     },
     data: function() {
         return {
