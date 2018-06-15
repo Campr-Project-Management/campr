@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Component\Currency\CurrencyInterface;
-use Component\Model\TimestampableTrait;
+use Component\Currency\Model\CurrencyInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Intl;
 use Doctrine\ORM\Mapping as ORM;

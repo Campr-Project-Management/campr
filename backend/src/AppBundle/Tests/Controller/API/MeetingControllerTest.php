@@ -48,6 +48,8 @@ class MeetingControllerTest extends BaseController
 
         foreach ($actual['decisions'] as $key => $decision) {
             $responseContent['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
+            $responseContent['decisions'][$key]['responsibilityAvatarUrl'] = $decision['responsibilityAvatarUrl'];
+            $responseContent['decisions'][$key]['createdAt'] = $decision['createdAt'];
         }
 
         foreach ($actual['todos'] as $key => $todo) {
@@ -174,10 +176,11 @@ class MeetingControllerTest extends BaseController
                             'decisionCategory' => null,
                             'decisionCategoryName' => null,
                             'id' => 1,
+                            'isDone' => false,
+                            'done' => false,
                             'title' => 'decision1',
                             'description' => 'description1',
                             'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
                         ],
@@ -191,10 +194,11 @@ class MeetingControllerTest extends BaseController
                             'decisionCategory' => null,
                             'decisionCategoryName' => null,
                             'id' => 2,
+                            'isDone' => false,
+                            'done' => false,
                             'title' => 'decision2',
                             'description' => 'description2',
                             'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
                         ],
@@ -215,7 +219,6 @@ class MeetingControllerTest extends BaseController
                             'title' => 'todo1',
                             'description' => 'description for todo1',
                             'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
                         ],
@@ -234,7 +237,6 @@ class MeetingControllerTest extends BaseController
                             'title' => 'todo2',
                             'description' => 'description for todo2',
                             'showInStatusReport' => false,
-                            'date' => '2017-01-01 00:00:00',
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
                         ],

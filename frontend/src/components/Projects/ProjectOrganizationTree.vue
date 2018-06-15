@@ -264,10 +264,10 @@ export default {
                     }
 
                     uMediaData += `
-                            <a href="${item}" target="_blank" style="margin: 0 3px;">
-                                ${socialIcons[key]}
-                            </a>
-                        `;
+                        <a href="${item}" target="_blank" style="margin: 0 3px;">
+                            ${socialIcons[key]}
+                        </a>
+                    `;
                 });
 
                 if (uMediaData !== '') {
@@ -279,13 +279,13 @@ export default {
                 }
 
                 teamList += `
-                        <li ${attributes}>
-                            <img class="avatar" src="${avatar}" alt="${u.fullName}" ${attributes} />
-                            <span class="name" ${attributes}>${u.fullName}</span>
-                            ${uTitles}
-                            ${uMediaData}
-                        </li>
-                    `;
+                    <li ${attributes}>
+                        <img class="avatar" src="${avatar}" alt="${u.fullName}" ${attributes} />
+                        <span class="name" ${attributes}>${u.fullName}</span>
+                        ${uTitles}
+                        ${uMediaData}
+                    </li>
+                `;
             });
             teamList += '</ul>';
 
@@ -601,22 +601,6 @@ export default {
 
         &.big {
             width: 200px;
-        }
-
-        &.first-member-badge {
-            &:before {
-                display: none;
-            }
-        }
-
-        &:before {
-            content: '';
-            width: 1px;
-            height: 30px;
-            background-color: $middleColor;
-            position: absolute;
-            top: -40px;
-            left: 50%;
         }
     }
 

@@ -28,6 +28,11 @@
                 type: String,
                 required: false,
             },
+            context: {
+                type: Object,
+                required: false,
+                default: () => {},
+            },
         },
         computed: {
             ...mapGetters([
@@ -47,7 +52,13 @@
                     return [];
                 }
 
-                return this.validationMessagesFor(this.atPath);
+                return function(path, context) {
+                    try {
+                        return eval(`this.${path}`);
+                    } catch (e) {
+                        return [];
+                    }
+                }.call(this.validationMessages, this.atPath, this.context);
             },
         },
     };

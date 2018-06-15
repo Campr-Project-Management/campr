@@ -455,8 +455,8 @@ export default {
             };
 
             this.statusColor = {
-                id: this.task.colorStatus,
-                name: this.task.colorStatusName,
+                id: this.task.colorStatus ? this.task.colorStatus : this.greenColorStatus.id,
+                name: this.task.colorStatusName ? this.task.colorStatusName : this.greenColorStatus.name,
             };
 
             this.details = {

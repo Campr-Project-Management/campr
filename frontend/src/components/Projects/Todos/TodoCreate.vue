@@ -49,12 +49,12 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translate('label.date') }}</label>
-                                    <datepicker v-model="date" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
-                                </div>
-                                <error at-path="date"/>
+                                <member-search
+                                        :selectedUser="responsibilityFullName"
+                                        v-model="responsibility"
+                                        :placeholder="translate('placeholder.responsible')"
+                                        :singleSelect="true"></member-search>
+                                <error at-path="responsiblity"/>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
@@ -69,14 +69,6 @@
 
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
-                                <member-search
-                                        :selectedUser="responsibilityFullName"
-                                        v-model="responsibility"
-                                        :placeholder="translate('placeholder.responsible')"
-                                        :singleSelect="true"></member-search>
-                                <error at-path="responsiblity"/>
-                            </div>
                             <div class="col-md-6">
                                 <select-field
                                     :title="translate('placeholder.status')"
@@ -145,7 +137,6 @@ export default {
                     title: this.title,
                     responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                     dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
-                    date: this.dueDate ? moment(this.date).format('DD-MM-YYYY') : null,
                     description: this.description,
                     status: this.status ? this.status.key : null,
                     todoCategory: this.todoCategory ? this.todoCategory.key : null,
@@ -169,7 +160,6 @@ export default {
                 title: this.title,
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                 dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
-                date: this.dueDate ? moment(this.date).format('DD-MM-YYYY') : null,
                 description: this.description,
                 status: this.status.key,
                 todoCategory: this.todoCategory.key,
@@ -217,7 +207,6 @@ export default {
             this.title = this.todo.title;
             this.description = this.todo.description;
             this.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
-            this.date = this.todo.date ? moment(this.todo.date).toDate() : null;
             this.responsibility = [this.todo.responsibility];
             this.responsibilityFullName = this.todo.responsibilityFullName;
             this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
@@ -230,7 +219,6 @@ export default {
             title: '',
             description: '',
             dueDate: null,
-            date: null,
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
