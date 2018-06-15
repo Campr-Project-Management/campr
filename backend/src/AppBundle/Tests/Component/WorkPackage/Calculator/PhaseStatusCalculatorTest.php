@@ -90,7 +90,7 @@ class PhaseStatusCalculatorTest extends \PHPUnit_Framework_TestCase
                 [
                     WorkPackageStatus::CODE_PENDING,
                     WorkPackageStatus::CODE_OPEN,
-                    WorkPackageStatus::CODE_OPEN
+                    WorkPackageStatus::CODE_OPEN,
                 ],
                 WorkPackageStatus::CODE_PENDING,
             ],

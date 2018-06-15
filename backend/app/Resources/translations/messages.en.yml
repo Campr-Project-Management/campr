@@ -391,6 +391,7 @@ message:
     all_projects_filter: All Projects
     all_customers: All Customers
     all_statuses: All Statuses
+    all_conditions: All Conditions
     all_scheduels: All Schedules
     internal_resources: Internal Resources
     external_resources: External Resources
@@ -439,6 +440,7 @@ message:
     label_none: None
     condition: Condition
     change_accountable: Change Accountable
+    change_responsible: Change Responsible
     uploading_file_failed: There was an error while uploading the file
     delete_file_failed: There was an error while deleting the file
     wbs: WBS
@@ -1035,6 +1037,7 @@ label:
     meeting: Meeting
     meetings: Meetings
     meeting_name: Meeting name
+    meeting_category: Meeting Category
     title: Title
     date: Date
     show_in_status_report: Show In Status Report
@@ -1217,6 +1220,7 @@ label:
     not_taken: Not Taken
     taken: Taken
     currency: Currency
+    traffic_light: Traffic Light
 
 button:
     restore: Restore
@@ -1830,6 +1834,8 @@ choices:
     days: Days
     weeks: Weeks
     months: Months
+    done: Done
+    undone: Undone
 
 roles:
     project_sponsor: Project Sponsor
@@ -1849,10 +1855,10 @@ todo_status:
     on_hold: On hold
     discontinued: Discontinued
 
-project_color_status: 
-    on_track: On track
-    warning: Warning
-    critical: Critical
+traffic_light:
+    red: Critical
+    yellow: Warning
+    green: On Track
 
 filter:
     clear: Clear filters

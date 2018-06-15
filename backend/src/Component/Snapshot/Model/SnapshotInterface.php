@@ -1,6 +1,6 @@
 <?php
 
-namespace Component\Snapshot;
+namespace Component\Snapshot\Model;
 
 interface SnapshotInterface
 {
