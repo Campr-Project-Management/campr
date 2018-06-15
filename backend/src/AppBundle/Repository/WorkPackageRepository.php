@@ -52,7 +52,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['recent'])) {
+        if (isset($criteria['userRasci'])) {
             $qb
                 ->leftJoin('wp.informedUsers', 'iu')
                 ->leftJoin('wp.consultedUsers', 'cu')
@@ -62,11 +62,6 @@ class WorkPackageRepository extends BaseRepository
                 ->orWhere('iu.id = :user')
                 ->orWhere('cu.id = :user')
                 ->orWhere('su.id = :user');
-
-            // Exclude closed tasks
-            $qb
-                ->andWhere('wp.workPackageStatus != :workPackageStatus')
-                ->setParameter('workPackageStatus', WorkPackageStatus::CLOSED);
         }
 
         if (isset($criteria['project'])) {
@@ -103,8 +98,20 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['recent'])) {
-            $qb->orderBy('wp.forecastStartAt', 'DESC');
+        if (isset($criteria['userRasci'])) {
+            // Exclude closed tasks
+            $qb
+                ->andWhere('wp.workPackageStatus != :workPackageStatus')
+                ->setParameter('workPackageStatus', WorkPackageStatus::CLOSED);
+
+            $statuses = array(
+                WorkPackageStatus::ONGOING,
+                WorkPackageStatus::PENDING,
+                WorkPackageStatus::COMPLETED,
+                WorkPackageStatus::OPEN,
+            );
+            $qb->addOrderBy('FIELD(wp.workPackageStatus, '.implode(',', $statuses).')');
+            $qb->addOrderBy('wp.forecastStartAt', 'DESC');
         }
 
         return $qb;
