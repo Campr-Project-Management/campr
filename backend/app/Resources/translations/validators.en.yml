@@ -82,6 +82,7 @@ not_blank:
     distribution_list: Please select at least one distribution list
     cost_savings: Potential savings should not be blank.
     time_savings: Potential time savings should not be blank.
+    meeting_category: The meeting category field should not be blank.
 
 not_null:
     driver: You must select a driver

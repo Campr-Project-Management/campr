@@ -31,6 +31,13 @@ class BaseCreateType extends AbstractType
                     'choice_label' => 'name',
                     'placeholder' => 'placeholder.category',
                     'translation_domain' => 'messages',
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.meeting_category',
+                            ]
+                        ),
+                    ],
                 ]
             )
             ->add(
