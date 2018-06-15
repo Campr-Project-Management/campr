@@ -1037,6 +1037,7 @@ label:
     meeting: Meeting
     meetings: Meetings
     meeting_name: Meeting name
+    meeting_category: Meeting Category
     title: Title
     date: Date
     show_in_status_report: Show In Status Report
