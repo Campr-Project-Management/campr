@@ -82,3 +82,9 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\StatusReport }
+
+    app.repository.info:
+        class: AppBundle\Repository\InfoRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Info }

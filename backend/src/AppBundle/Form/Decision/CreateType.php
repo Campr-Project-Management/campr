@@ -26,59 +26,94 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.title',
-                    ]),
-                ],
-            ])
-            ->add('description', TextareaType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.description',
-                    ]),
-                ],
-            ])
-            ->add('decisionCategory', EntityType::class, [
-                'class' => DecisionCategory::class,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.decision_category',
-                'translation_domain' => 'messages',
-            ])
-            ->add('date', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            ->add('dueDate', DateType::class, [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy',
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
-            ])
-            ->add('meeting', EntityType::class, [
-                'class' => Meeting::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.meeting',
-                'translation_domain' => 'messages',
-            ])
-            ->add('responsibility', EntityType::class, [
-                'class' => User::class,
-                'required' => false,
-                'choice_label' => 'username',
-                'placeholder' => 'placeholder.user',
-                'translation_domain' => 'messages',
-            ])
+            ->add(
+                'title',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.title',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'description',
+                TextareaType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.description',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'decisionCategory',
+                EntityType::class,
+                [
+                    'class' => DecisionCategory::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.decision_category',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'dueDate',
+                DateType::class,
+                [
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                ]
+            )
+            ->add(
+                'project',
+                EntityType::class,
+                [
+                    'class' => Project::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.project',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'meeting',
+                EntityType::class,
+                [
+                    'class' => Meeting::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.meeting',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'responsibility',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                    'required' => false,
+                    'choice_label' => 'username',
+                    'placeholder' => 'placeholder.user',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'done',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'label.done',
+                ]
+            )
             ->add('showInStatusReport', CheckboxType::class)
         ;
     }
@@ -88,10 +123,12 @@ class CreateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Decision::class,
-            'allow_extra_fields' => true,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Decision::class,
+                'allow_extra_fields' => true,
+                'csrf_protection' => false,
+            ]
+        );
     }
 }

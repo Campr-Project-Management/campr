@@ -2,7 +2,6 @@
 
 namespace AppBundle\EventListener;
 
-use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
@@ -25,6 +24,7 @@ class ProjectListener
      * ProjectListener constructor.
      *
      * @param TokenStorageInterface $tokenStorage
+     * @param TranslatorInterface   $translator
      */
     public function __construct(TokenStorageInterface $tokenStorage, TranslatorInterface $translator)
     {
@@ -38,7 +38,7 @@ class ProjectListener
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if ($entity instanceof Project && $this->tokenStorage->getToken() !== null) {
+        if ($entity instanceof Project && null !== $this->tokenStorage->getToken()) {
             $user = $this->tokenStorage->getToken()->getUser();
             $em = $args->getEntityManager();
 
@@ -87,21 +87,6 @@ class ProjectListener
         }
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function postLoad(\Doctrine\ORM\Event\LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        if (!($entity instanceof Project)) {
-            return;
-        }
-
-        $em = $args->getEntityManager();
-        $colorStatus = $em->getRepository(ColorStatus::class)->findOneByProject($entity);
-        $entity->setColorStatus($colorStatus);
-    }
-
     private function getTasksFromTranslation()
     {
         /** @var \Symfony\Component\Translation\MessageCatalogue $catalogue */
@@ -115,7 +100,7 @@ class ProjectListener
         foreach ($keys as $key) {
             $parts = explode('.', $key);
 
-            if (count($parts) !== 3) {
+            if (3 !== count($parts)) {
                 continue;
             }
 

@@ -2,7 +2,8 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
+            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="taskStatusesForSelect" :selectedValue="selectStatus"></dropdown>
+            <dropdown ref="colorStatuses" v-bind:title="translateText('message.condition')" v-bind:options="colorStatuses" :selectedValue="selectColorStatus"></dropdown>
             <dropdown ref="projects" v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
@@ -19,9 +20,12 @@ export default {
         Dropdown,
     },
     methods: {
-        ...mapActions(['getProjectsForDropdown', 'setProjectFilters', 'clearProjects']),
+        ...mapActions(['getProjectsForDropdown', 'setProjectFilters', 'clearProjects', 'getTaskStatuses']),
         translateText: function(text) {
             return this.translate(text);
+        },
+        selectColorStatus: function(value) {
+            this.updateFilters('colorStatus', value);
         },
         selectStatus: function(value) {
             this.updateFilters('status', value);
@@ -31,7 +35,10 @@ export default {
         },
         clearFilters: function() {
             this.updateFilters('clear', true);
-            this.$refs.statuses.resetCustomTitle();
+            this.$refs.colorStatuses.resetCustomTitle();
+            if (this.$refs.statuses) {
+                this.$refs.statuses.resetCustomTitle();
+            }
             this.$refs.projects.resetCustomTitle();
         },
     },
@@ -39,12 +46,17 @@ export default {
         this.clearProjects();
         this.setProjectFilters({clear: true});
         this.getProjectsForDropdown();
+        if (!this.statuses || !this.statuses.length) {
+            this.getTaskStatuses();
+        }
     },
     computed: {
         ...mapGetters({
             projectsForFilter: 'projectsForFilter',
-            statuses: 'colorStatusesForSelect',
+            colorStatuses: 'colorStatusesForSelect',
+            taskStatuses: 'taskStatuses',
             user: 'user',
+            taskStatusesForSelect: 'taskStatusesForSelect',
         }),
     },
     data: function() {

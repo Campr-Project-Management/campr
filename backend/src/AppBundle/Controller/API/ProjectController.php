@@ -600,6 +600,7 @@ class ProjectController extends ApiController
      * @Route("/{id}/project-users", name="app_api_project_project_users", options={"expose"=true})
      * @Method({"GET"})
      *
+     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
@@ -610,7 +611,9 @@ class ProjectController extends ApiController
         $projectUserRepo = $this->getDoctrine()->getRepository(ProjectUser::class);
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.users_per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.users_per_page'
+            );
             $result = $projectUserRepo->getQueryByUserFullName($project, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $projectUserRepo->countTotalByProjectAndFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
@@ -619,11 +622,13 @@ class ProjectController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => isset($filters['search'])
-                ? $projectUserRepo->getQueryByUserFullName($project, $filters)->getQuery()->getResult()
-                : $project->getProjectUsers(),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => isset($filters['search'])
+                    ? $projectUserRepo->getQueryByUserFullName($project, $filters)->getQuery()->getResult()
+                    : $project->getProjectUsers(),
+            ]
+        );
     }
 
     /**

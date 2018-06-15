@@ -253,15 +253,21 @@
                         <div class="entry" v-for="decision in meeting.decisions">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
-                                    <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="decision.status">{{ decision.statusName }}</b><b v-else>-</b>
+                                    <h4>{{ decision.title }}</h4>
+                                    | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                    | {{ translate('message.status') }}:
+                                    <b v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</b>
+                                    <b v-else class="danger-color">{{ translate('choices.undone') }}</b>
                                 </div>
                                 <div class="entry-buttons">
                                     <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
                                     <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
-                            <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                            <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
+                                <user-avatar
+                                        :name="decision.responsibilityFullName"
+                                        :url="decision.responsibilityAvatarUrl"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
@@ -272,39 +278,13 @@
                         <!-- /// End Decision /// -->
                     </div>
 
-                    <input-field type="text" v-bind:label="translate('placeholder.decision_title')" v-model="decision.title" :content="decision.title" />
-                    <error
-                        v-if="validationOrigin == DECISION_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
-                        v-for="message in validationMessages.title"
-                        :message="message" />
-                    <div class="form-group">
-                        <editor
-                            id="decision-description"
-                            height="200px"
-                            label="placeholder.decision_description"
-                            v-model="decision.description" />
-                    </div>
-                    <error
-                        v-if="validationOrigin == DECISION_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
-                        v-for="message in validationMessages.description"
-                        :message="message" />
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <member-search v-model="decision.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="decision.dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <meeting-decision-form
+                            v-model="decision"
+                            :error-messages="decisionErrors"/>
+
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-md-offset-6">
                                 <div class="flex flex-direction-reverse">
                                     <a @click="addDecision()" class="btn-rounded btn-auto">{{ translate('message.add_new_decision') }}</a>
                                 </div>
@@ -498,7 +478,7 @@
         <div class="col-md-6">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
-                <div class="margintop20 text-right">
+                <div class="margintop20 text-right buttons">
                     <a @click="saveMeeting()" class="btn-rounded btn-auto">{{ translate('button.save_meeting') }}</a>
                     <a @click="newMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.new_meeting') }}</a>
                     <a @click="deleteMeetingModal = true" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_meeting') }}</a>
@@ -549,9 +529,11 @@ import Editor from '../../_common/Editor';
 import Modal from '../../_common/Modal';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import UserAvatar from '../../_common/UserAvatar';
+import MeetingDecisionForm from './Form/DecisionForm';
 
 export default {
     components: {
+        MeetingDecisionForm,
         UserAvatar,
         Editor,
         InputField,
@@ -667,17 +649,23 @@ export default {
             this.showDeleteAgendaModal = true;
             this.editAgendaObject = {id: agenda.id};
         },
-        addDecision: function() {
-            this.createMeetingDecision({
+        addDecision() {
+            let data = {
                 id: this.$route.params.meetingId,
                 title: this.decision.title,
                 description: this.decision.description,
-                responsibility: this.decision.responsibility.length > 0 ? this.decision.responsibility[0] : null,
+                done: this.decision.done,
+                responsibility: this.decision.responsibility,
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
-                status: this.decision.status ? this.decision.status.key : null,
+                date: moment(this.decision.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+            };
+
+            this.createMeetingDecision(data).then(() => {
+                this.decisionErrors = {};
+                this.decision = this.defaultDecision;
+            }).catch((response) => {
+                this.decisionErrors = response.body.messages;
             });
-            this.decision.responsibility = [];
-            this.decision.title = null;
         },
         initEditDecision: function(decision) {
             this.showEditDecisionModal = true;
@@ -685,11 +673,11 @@ export default {
                 id: decision.id,
                 title: decision.title,
                 description: decision.description,
-                responsibility: [decision.responsibility],
+                responsibility: decision.responsibility,
                 responsibilityFullName: decision.responsibilityFullName,
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
-                status: {key: decision.status, label: decision.statusName},
-                meeting: this.$route.params.meetingId,
+                date: decision.date ? moment(decision.date).toDate() : new Date(),
+                done: decision.done,
             };
         },
         initDeleteDecision: function(decision) {
@@ -815,18 +803,19 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            distributionListsForSelect: 'distributionListsForSelect',
-            meetingCategoriesForSelect: 'meetingCategoriesForSelect',
-            infoCategoriesForDropdown: 'infoCategoriesForDropdown',
-            todoStatusesForSelect: 'todoStatusesForSelect',
-            meeting: 'meeting',
-            meetingAgendas: 'meetingAgendas',
-            distributionLists: 'distributionLists',
-            meetingParticipants: 'meetingParticipants',
-            validationMessages: 'validationMessages',
-            validationOrigin: 'validationOrigin',
-        }),
+        ...mapGetters([
+            'distributionListsForSelect',
+            'meetingCategoriesForSelect',
+            'infoCategoriesForDropdown',
+            'todoStatusesForSelect',
+            'meeting',
+            'meetingAgendas',
+            'distributionLists',
+            'meetingParticipants',
+            'validationMessages',
+            'validationOrigin',
+            'decisionStatusByValue',
+        ]),
         agendasPerPage: function() {
             return this.meetingAgendas.pageSize;
         },
@@ -848,6 +837,15 @@ export default {
         });
     },
     data() {
+        let defaultDecision = {
+            title: null,
+            description: null,
+            responsibility: null,
+            dueDate: new Date(),
+            date: new Date(),
+            done: false,
+        };
+
         return {
             showSaved: false,
             showFailed: false,
@@ -879,13 +877,9 @@ export default {
                     mm: null,
                 },
             },
-            decision: {
-                title: null,
-                description: null,
-                responsibility: [],
-                dueDate: new Date(),
-                status: null,
-            },
+            defaultDecision: defaultDecision,
+            decision: defaultDecision,
+            decisionErrors: {},
             todo: {
                 title: null,
                 description: null,
@@ -1253,3 +1247,4 @@ export default {
       }
     }
 </style>
+

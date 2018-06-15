@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use Component\Currency\CurrencyInterface;
+use Component\Currency\Model\CurrencyInterface;
 use Component\Project\ProjectInterface;
 use Component\TrafficLight\TrafficLight;
 use Doctrine\Common\Collections\Criteria;
@@ -49,11 +49,13 @@ class Project implements ProjectInterface
     private $number;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="project_color_status", nullable=true, type="string", length=255)
+     * @ORM\Column(name="traffic_light", type="integer", options={"default": 2})
+     * @Assert\NotNull()
+     * @Assert\Choice({0, 1, 2})
      */
-    private $projectColorStatus;
+    private $trafficLight;
 
     /**
      * @var string
@@ -477,13 +479,6 @@ class Project implements ProjectInterface
     private $projectDepartments;
 
     /**
-     * @var ColorStatus
-     *
-     * @Serializer\Exclude()
-     */
-    private $colorStatus;
-
-    /**
      * @var ArrayCollection|StatusReport[]
      *
      * @Serializer\Exclude()
@@ -571,8 +566,12 @@ class Project implements ProjectInterface
         $this->statusReportConfigs = new ArrayCollection();
         $this->projectCloseDowns = new ArrayCollection();
         $this->projectRoles = new ArrayCollection();
+        $this->trafficLight = TrafficLight::GREEN;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->name;
@@ -634,30 +633,6 @@ class Project implements ProjectInterface
     public function getNumber()
     {
         return $this->number;
-    }
-
-    /**
-     * Get projectColorStatus.
-     *
-     * @return string
-     */
-    public function getProjectColorStatus()
-    {
-        return $this->projectColorStatus;
-    }
-
-    /**
-     * Set projectColorStatus.
-     *
-     * @param string $projectColorStatus
-     *
-     * @return Project
-     */
-    public function setProjectColorStatus($projectColorStatus)
-    {
-        $this->projectColorStatus = $projectColorStatus;
-
-        return $this;
     }
 
     /**
@@ -2560,9 +2535,9 @@ class Project implements ProjectInterface
     }
 
     /**
-     * Remove StatusReportConfig.
-     *
      * @param StatusReportConfig $statusReportConfig
+     *
+     * @return $this
      */
     public function removeStatusReportConfig(StatusReportConfig $statusReportConfig)
     {
@@ -2606,9 +2581,9 @@ class Project implements ProjectInterface
     }
 
     /**
-     * Remove riskStatus.
-     *
      * @param Status $riskStatus
+     *
+     * @return $this
      */
     public function removeRiskStatus(Status $riskStatus)
     {
@@ -2660,9 +2635,9 @@ class Project implements ProjectInterface
     }
 
     /**
-     * Remove projectDepartment.
-     *
      * @param ProjectDepartment $projectDepartment
+     *
+     * @return $this
      */
     public function removeProjectDepartment(ProjectDepartment $projectDepartment)
     {
@@ -2672,96 +2647,19 @@ class Project implements ProjectInterface
     }
 
     /**
-     * @param ColorStatus|null $colorStatus
-     *
-     * @return Project
-     */
-    public function setColorStatus(ColorStatus $colorStatus = null)
-    {
-        $this->colorStatus = $colorStatus;
-
-        return $this;
-    }
-
-    /**
-     * @return ColorStatus|null
-     */
-    public function getColorStatus()
-    {
-        return $this->colorStatus;
-    }
-
-    /**
-     * @return null|int
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatus")
-     */
-    public function getColorStatusId()
-    {
-        return $this->colorStatus
-            ? $this->colorStatus->getId()
-            : null
-        ;
-    }
-
-    /**
-     * @return null|string
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusName")
-     */
-    public function getColorStatusName()
-    {
-        return $this->colorStatus
-            ? $this->colorStatus->getName()
-            : null
-        ;
-    }
-
-    /**
-     * @return null|string
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusColor")
-     */
-    public function getColorStatusColor()
-    {
-        return $this->colorStatus
-            ? $this->colorStatus->getColor()
-            : null
-        ;
-    }
-
-    /**
-     * Returns the project overall status.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("overallStatus")
-     *
-     * @return string
-     */
-    public function getOverallStatus()
-    {
-        $status = TrafficLight::GREEN;
-        foreach ($this->workPackages as $wp) {
-            $colorStatus = $wp->getColorStatus();
-            if ($colorStatus) {
-                if (ColorStatus::STATUS_IN_PROGRESS === $colorStatus->getName()) {
-                    $status = TrafficLight::YELLOW;
-                } elseif (ColorStatus::STATUS_NOT_STARTED === $colorStatus->getName()) {
-                    $status = TrafficLight::RED;
-                    break;
-                }
-            }
-        }
-
-        return $status;
-    }
-
-    /**
      * @return int
      */
     public function getTrafficLight()
     {
-        return $this->getOverallStatus();
+        return (int) $this->trafficLight;
+    }
+
+    /**
+     * @param int|null $trafficLight
+     */
+    public function setTrafficLight(int $trafficLight = null)
+    {
+        $this->trafficLight = $trafficLight;
     }
 
     /**

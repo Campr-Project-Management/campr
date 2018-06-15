@@ -4,8 +4,6 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\Todo;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class DecisionsTransformer extends AbstractTransformer
 {
@@ -32,7 +30,7 @@ class DecisionsTransformer extends AbstractTransformer
     protected function doTransform($project)
     {
         return [
-            'items' => $this->getItems($project->getDecisions()),
+            'items' => $this->getItems($project->getDecisions()->toArray()),
         ];
     }
 
@@ -47,11 +45,11 @@ class DecisionsTransformer extends AbstractTransformer
     }
 
     /**
-     * @param Decision[]|ArrayCollection $todos
+     * @param Decision[] $decisions
      *
      * @return array
      */
-    private function getItems($decisions): array
+    private function getItems(array $decisions): array
     {
         $items = [];
 
@@ -76,6 +74,7 @@ class DecisionsTransformer extends AbstractTransformer
             'meetingName' => $decision->getMeetingName(),
             'description' => $decision->getDescription(),
             'dueDate' => $this->dateTransformer->transform($decision->getDueDate()),
+            'createdAt' => $this->dateTransformer->transform($decision->getCreatedAt()),
             'categoryId' => $decision->getDecisionCategoryId(),
             'categoryName' => $decision->getDecisionCategoryName(),
             'responsibilityId' => $decision->getResponsibilityId(),

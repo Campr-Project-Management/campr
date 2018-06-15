@@ -553,32 +553,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-    @import '../../../css/_variables';
-
-    .modal {
-        .modal-title {
-            text-transform: uppercase;
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 1.8px;
-            font-weight: 300;
-            margin-bottom: 40px;
-        }
-
-        .input-holder {
-            margin-bottom: 30px;
-        }
-
-        .main-list .member {
-            border-top: 1px solid $darkColor;
-        }
-
-        .results {
-            width: 600px;
-        }
-    }
-
+<style scoped lang="scss">
     .tooltip {
         .tooltip-content {
             text-transform: none;
