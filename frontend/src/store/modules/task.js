@@ -90,6 +90,9 @@ const actions = {
                 type: 2,
             },
         };
+        if (data && data.queryParams && data.queryParams.userRasci !== undefined) {
+            paramObject.params.userRasci = data.queryParams.userRasci;
+        }
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
