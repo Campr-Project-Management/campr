@@ -151,9 +151,20 @@ export default {
         },
         updateSelected() {
             let users = [];
+            let selectedUsers = this.selectedUsers;
             this.items.map(function(user) {
                 if (user.checked) {
                     users.push(user.user);
+                } else if (selectedUsers.length > 0) {
+                    let index = selectedUsers.indexOf(user.user);
+                    if (index > -1) {
+                        selectedUsers.splice(index, 1);
+                    }
+                }
+            });
+            selectedUsers.map(function(id) {
+                if (users.indexOf(id) === -1) {
+                    users.push(id);
                 }
             });
             this.selectedUsers = users;
@@ -195,7 +206,7 @@ export default {
             }
 
             for (let i = 0; i < this.value.length; i++) {
-                if (this.users[i] && this.value[i] !== this.users[i].id) {
+                if (!this.value.includes(this.users[i].id)) {
                     return false;
                 }
             }
