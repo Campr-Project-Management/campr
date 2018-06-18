@@ -135,6 +135,9 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
+        if (data && data.queryParams && data.queryParams.favorites !== undefined) {
+            paramObject.params.favorites = data.queryParams.favorites;
+        }
         if (state.projectFilters && state.projectFilters.status) {
             paramObject.params.status = state.projectFilters.status;
         }
