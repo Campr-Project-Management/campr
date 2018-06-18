@@ -39,7 +39,6 @@ class RasciWorkPackageSync
     public function sync(Rasci $rasci): bool
     {
         $this->removeAnyUserAssignmentsToWorkPackage($rasci->getWorkPackage(), $rasci->getUser());
-
         $updated = $this->syncResponsible($rasci);
         $updated = $this->syncAccountable($rasci) || $updated;
         $updated = $this->syncSupport($rasci) || $updated;
@@ -47,6 +46,14 @@ class RasciWorkPackageSync
         $updated = $this->syncInformed($rasci) || $updated;
 
         return $updated;
+    }
+
+    /**
+     * @param Rasci $rasci
+     */
+    public function syncRemoveRasci(Rasci $rasci)
+    {
+        $this->removeUserAssignmentToWorkPackage($rasci);
     }
 
     /**
@@ -148,6 +155,39 @@ class RasciWorkPackageSync
         $this->workPackageRepository->add($wp);
 
         return true;
+    }
+
+    /**
+     * @param Rasci $rasci
+     * @param User  $user
+     */
+    private function removeUserAssignmentToWorkPackage(Rasci $rasci)
+    {
+        $wp = $rasci->getWorkPackage();
+        $user = $rasci->getUser();
+
+        if ($rasci->isAccountable()) {
+            if ($wp->getAccountability() === $user) {
+                $wp->setAccountability(null);
+            }
+        }
+
+        if ($rasci->isResponsible()) {
+            if ($wp->getResponsibility() === $user) {
+                $wp->setResponsibility(null);
+            }
+        }
+
+        if ($rasci->isSupport()) {
+            $wp->removeSupportUser($user);
+        }
+        if ($rasci->isConsulted()) {
+            $wp->removeConsultedUser($user);
+        }
+        if ($rasci->isInformed()) {
+            $wp->removeInformedUser($user);
+        }
+        $this->workPackageRepository->add($wp);
     }
 
     /**

@@ -32,6 +32,7 @@ class RasciSubscriber implements EventSubscriberInterface
         return [
             RasciEvents::POST_CREATE => 'onPostCreate',
             RasciEvents::POST_UPDATE => 'onPostUpdate',
+            RasciEvents::POST_REMOVE => 'onPostRemove',
         ];
     }
 
@@ -51,5 +52,14 @@ class RasciSubscriber implements EventSubscriberInterface
     {
         $rasci = $event->getRasci();
         $this->rasciWorkPackageSync->sync($rasci);
+    }
+
+    /*
+     * @param RasciEvent $event
+     */
+    public function onPostRemove(RasciEvent $event)
+    {
+        $rasci = $event->getRasci();
+        $this->rasciWorkPackageSync->syncRemoveRasci($rasci);
     }
 }
