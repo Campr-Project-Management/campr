@@ -98,6 +98,7 @@ class BaseCreateType extends AbstractType
                 DateTimeType::class,
                 [
                     'widget' => 'single_text',
+                    'format' => 'HH:mm',
                     'constraints' => [
                         new NotBlank(
                             [
@@ -112,6 +113,7 @@ class BaseCreateType extends AbstractType
                 DateTimeType::class,
                 [
                     'widget' => 'single_text',
+                    'format' => 'HH:mm',
                     'constraints' => [
                         new NotBlank(
                             [
