@@ -320,7 +320,7 @@ export default {
         selectedDistribution(value) {
             let distribution = [];
             let selected = this.selectedDistribution;
-            this.project.projectUsers.map(function(user) {
+            this.projectUsers.items.map(function(user) {
                 if (selected.indexOf(user.user) > -1) distribution.push(user);
             });
             this.distributionLists = distribution;
