@@ -44,7 +44,17 @@ class ProjectRepository extends BaseRepository
             ->leftJoin('p.projectUsers', 'pu')
             ->where('pu.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('p.createdAt', 'DESC')
+        ;
+
+        if (isset($filters['favorites'])) {
+            $qb
+                ->leftJoin('p.userFavorites', 'f')
+                ->addOrderBy('f.id', 'DESC')
+            ;
+        }
+
+        $qb
+            ->addOrderBy('p.createdAt', 'DESC')
         ;
 
         if ($select) {
