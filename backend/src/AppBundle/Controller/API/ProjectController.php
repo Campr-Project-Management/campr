@@ -2032,20 +2032,12 @@ class ProjectController extends ApiController
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
         if ($workPackage->getProject() !== $project) {
-            throw $this->createAccessDeniedException(
-                $this
-                    ->get('translator')
-                    ->trans('exception.workpackage_must_belong_to_project')
-            );
+            $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
         }
 
         $projectUser = $user->getProjectUser($project);
-        if (!$project->hasProjectUser($projectUser)) {
-            throw $this->createAccessDeniedException(
-                $this
-                    ->get('translator')
-                    ->trans('exception.user_must_be_part_of_the_project')
-            );
+        if (!$projectUser) {
+            $this->createdTranslatedAccessDeniedException('exception.user_must_be_part_of_the_project');
         }
 
         /** @var RasciRepository $rasciRepo */
@@ -2089,6 +2081,46 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * @Route("/{id}/rasci/{workPackage}/user/{user}", name="app_api_project_rasci_delete", options={"expose"=true})
+     * @ParamConverter("id", class="AppBundle\Entity\Project")
+     * @ParamConverter("workPackage", class="AppBundle\Entity\WorkPackage", options={"id"="workPackage"})
+     * @ParamConverter("user", class="AppBundle\Entity\User", options={"id"="user"})
+     * @Method({"DELETE"})
+     *
+     * @param Request     $request
+     * @param Project     $project
+     * @param WorkPackage $workPackage
+     * @param User        $user
+     *
+     * @return JsonResponse
+     */
+    public function deleteRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
+    {
+        if ($workPackage->getProject() !== $project) {
+            $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
+        }
+
+        $projectUser = $user->getProjectUser($project);
+        if (!$projectUser) {
+            $this->createdTranslatedAccessDeniedException('exception.user_must_be_part_of_the_project');
+        }
+
+        /** @var RasciRepository $rasciRepo */
+        $rasciRepo = $this->get('app.repository.rasci');
+        $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
+        if ($rasci) {
+            $em = $this->getDoctrine()->getManager();
+            $postEventName = RasciEvents::POST_REMOVE;
+            $event = new RasciEvent($rasci);
+            $rasciRepo->remove($rasci);
+            $this->dispatchEvent($postEventName, $event);
+            $em->flush();
+        }
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
