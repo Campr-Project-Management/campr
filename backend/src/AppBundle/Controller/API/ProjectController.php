@@ -1568,19 +1568,14 @@ class ProjectController extends ApiController
      * @Route("/{id}/risks", name="app_api_project_risks", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function risksAction(Request $request, Project $project)
+    public function risksAction(Project $project)
     {
         return $this->createApiResponse(
-            $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository(Risk::class)
-                ->findFiltered($project, $request->query->all())
+            $this->get('app.repository.risk')->findBy(['project' => $project])
         );
     }
 
@@ -1624,19 +1619,14 @@ class ProjectController extends ApiController
      * @Route("/{id}/opportunities", name="app_api_project_opportunities", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function opportunitiesAction(Request $request, Project $project)
+    public function opportunitiesAction(Project $project)
     {
         return $this->createApiResponse(
-            $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository(Opportunity::class)
-                ->findFiltered($project, $request->query->all())
+            $this->get('app.repository.opportunity')->findBy(['project' => $project])
         );
     }
 

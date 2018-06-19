@@ -2,18 +2,17 @@
     <div>
         <h3 class="marginbottom20 margintop0">{{ translate('message.opportunities') }}</h3>
         <div class="ro-grid-wrapper clearfix">
-            <risk-grid
-                    :grid-data="value.grid"
-                    :is-risk="false"
-                    :clickable="false"/>
+            <opportunity-matrix
+                    :labels="matrixLabels"
+                    :show-summary="false"/>
 
             <h4>{{ translate('message.top_opportunity') }}:</h4>
-            <div class="ro-main ro-main-opportunity" v-if="value.top">
+            <div class="uppercase" v-if="value.top">
                 <b>{{ value.top.title }}</b>
 
                 <span class="ro-main-stats">|
                     <template v-if="value.top.priorityName">
-                        <b :class="value.top.priorityName">
+                        <b :style="{color: topPriorityColor}">
                             {{ translate('message.priority') }}: {{ translate(`message.${value.top.priorityName}`) }}
                         </b>|
                     </template>
@@ -47,10 +46,11 @@
 </template>
 
 <script>
-    import RiskGrid from '../../Risks/RiskGrid';
     import OpportunitySummary from '../../Opportunities/OpportunitySummary';
     import UserAvatar from '../../../_common/UserAvatar';
     import {mapGetters} from 'vuex';
+    import OpportunityMatrix from '../../RiskManagement/OpportunityMatrix';
+    import {riskManagement} from '../../../../util/colors';
 
     export default {
         name: 'status-report-opportunities-grid',
@@ -59,7 +59,7 @@
                 type: Object,
                 required: true,
                 default: () => ({
-                    top_risk: {
+                    top: {
                         title: null,
                         priorityName: null,
                         opportunityStrategyName: null,
@@ -69,7 +69,8 @@
                         responsibilityFullName: null,
                         responsibilityAvatar: null,
                     },
-                    grid: [],
+                    items: [],
+                    summary: {},
                 }),
             },
             currency: {
@@ -79,7 +80,7 @@
             },
         },
         components: {
-            RiskGrid,
+            OpportunityMatrix,
             OpportunitySummary,
             UserAvatar,
         },
@@ -87,6 +88,33 @@
             ...mapGetters([
                 'projectUserAvatarByUserId',
             ]),
+            matrixLabels() {
+                if (!this.value.items) {
+                    return [];
+                }
+
+                let labels = {};
+                this.value.items.forEach((value) => {
+                    let key = `${value.impactIndex}-${value.probabilityIndex}`;
+                    if (!labels[key]) {
+                        labels[key] = {
+                            position: [value.impactIndex, value.probabilityIndex],
+                            text: 0,
+                        };
+                    }
+
+                    labels[key].text++;
+                });
+
+                return Object.values(labels);
+            },
+            topPriorityColor() {
+                if (!this.value.top) {
+                    return;
+                }
+
+                return riskManagement.opportunity.getColorByPriority(this.value.top.priority);
+            },
         },
     };
 </script>
@@ -96,69 +124,12 @@
     @import '../../../../css/_mixins';
 
     .ro-grid-wrapper {
-        .ro-grid {
-            width: 100%;
-            float: none;
-        }
-
-        .ro-list {
-            width: 100%;
-            float: none;
-        }
-
         .ro-summary {
             font-size: 0.875em;
             margin-top: 5px;
             padding-top: 5px;
             padding-bottom: 0;
             border-top: 1px solid $darkColor;
-        }
-
-        .ro-reprezentative {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid $darkColor;
-        }
-
-        .ro-main {
-            margin-top: 10px;
-
-            .ro-main-stats {
-                text-transform: uppercase;
-            }
-
-            &.ro-main-opportunity {
-                .ro-main-stats {
-                    .very_high {
-                        color: $secondDarkColor;
-                    }
-                    .high {
-                        color: $secondColor;
-                    }
-                    .medium {
-                        color: $warningColor;
-                    }
-                    .low {
-                        color: $dangerColor;
-                    }
-                    .very_low {
-                        color: $dangerDarkColor;
-                    }
-                }
-            }
-        }
-    }
-
-    .entry-responsible {
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-size: 10px;
-        line-height: 1.5em;
-        margin: 20px 0;
-
-        b {
-            display: block;
-            font-size: 12px;
         }
     }
 </style>
