@@ -54,9 +54,9 @@
                 return this.letterAvatarSizes[this.size];
             },
         },
-        watch: {
-            url(value) {
-                this.lazyUrl = value;
+        methods: {
+            setLazyUrl(url) {
+                this.lazyUrl = url;
                 if (!this.lazyUrl) {
                     return;
                 }
@@ -67,6 +67,14 @@
                 image.onerror = () => {
                     this.lazyUrl = null;
                 };
+            },
+        },
+        created() {
+            this.setLazyUrl(this.url);
+        },
+        watch: {
+            url(value) {
+                this.setLazyUrl(value);
             },
         },
         data() {
