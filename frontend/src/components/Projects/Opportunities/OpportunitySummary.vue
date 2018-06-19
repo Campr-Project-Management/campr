@@ -84,7 +84,6 @@ export default {
         p {
             line-height: 1.5em;
             color: $lightColor;
-            display: block;
             border-bottom: 1px solid $darkColor;
             padding-bottom: 5px;
             margin-bottom: 5px;

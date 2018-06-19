@@ -5,12 +5,12 @@ namespace Component\Resource\Model;
 interface PriorityAwareInterface
 {
     /**
-     * @param int|string|null $priority
+     * @param int $priority
      */
-    public function setPriority($priority = null);
+    public function setPriority(int $priority = null);
 
     /**
-     * @return int|string|null
+     * @return int
      */
     public function getPriority();
 }

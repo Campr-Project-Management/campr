@@ -29,6 +29,11 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
     const PRIORITY_HIGH = 3;
     const PRIORITY_VERY_HIGH = 4;
 
+    const THRESHOLD_VERY_LOW = [0, 25];
+    const THRESHOLD_LOW = [25, 50];
+    const THRESHOLD_HIGH = [50, 75];
+    const THRESHOLD_VERY_HIGH = [75, 101];
+
     /**
      * @var int
      *
@@ -61,20 +66,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @ORM\Column(name="description", type="text")
      */
     private $description;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="impact", type="integer")
-     */
-    private $impact;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="probability", type="integer")
-     */
-    private $probability;
 
     /**
      * @var string
@@ -345,54 +336,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
     public function getDelay()
     {
         return $this->delay;
-    }
-
-    /**
-     * Set impact.
-     *
-     * @param int $impact
-     *
-     * @return Risk
-     */
-    public function setImpact($impact)
-    {
-        $this->impact = $impact;
-
-        return $this;
-    }
-
-    /**
-     * Get impact.
-     *
-     * @return int
-     */
-    public function getImpact()
-    {
-        return $this->impact;
-    }
-
-    /**
-     * Set probability.
-     *
-     * @param int $probability
-     *
-     * @return Risk
-     */
-    public function setProbability($probability)
-    {
-        $this->probability = $probability;
-
-        return $this;
-    }
-
-    /**
-     * Get probability.
-     *
-     * @return string
-     */
-    public function getProbability()
-    {
-        return $this->probability;
     }
 
     /**
