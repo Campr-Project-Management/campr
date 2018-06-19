@@ -7,30 +7,21 @@
                 <div class="col-md-6">
                     <div class="input-holder right">
                         <label class="active">{{ label.base_start_date }}</label>
-                        <datepicker
+                        <date-field
                                 :value="value.baseStartDate"
-                                format="dd-MM-yyyy"
                                 @input="onInput('baseStartDate', $event)"/>
-                        <calendar-icon fill="middle-fill"/>
                     </div>
-                    <error
-                            v-if="validationMessages.scheduledStartAt && validationMessages.scheduledStartAt.length"
-                            v-for="message in validationMessages.scheduledStartAt"
-                            :message="message"/>
+                    <error at-path="scheduledStartAt"/>
                 </div>
                 <div class="col-md-6">
                     <div class="input-holder right">
                         <label class="active">{{ label.base_end_date }}</label>
-                        <datepicker
+                        <date-field
                                 :value="value.baseEndDate"
                                 format="dd-MM-yyyy"
                                 @input="onInput('baseEndDate', $event)"/>
-                        <calendar-icon fill="middle-fill"/>
                     </div>
-                    <error
-                            v-if="validationMessages.scheduledFinishAt && validationMessages.scheduledFinishAt.length"
-                            v-for="message in validationMessages.scheduledFinishAt"
-                            :message="message"/>
+                    <error at-path="scheduledFinishAt"/>
                 </div>
             </div>
         </div>
@@ -40,30 +31,22 @@
                 <div class="col-md-6">
                     <div class="input-holder right">
                         <label class="active">{{ label.forecast_start_date }}</label>
-                        <datepicker
+                        <date-field
                                 :value="value.forecastStartDate"
                                 format="dd-MM-yyyy"
                                 @input="onInput('forecastStartDate', $event)"/>
-                        <calendar-icon fill="middle-fill"/>
                     </div>
-                    <error
-                            v-if="validationMessages.forecastStartAt && validationMessages.forecastStartAt.length"
-                            v-for="message in validationMessages.forecastStartAt"
-                            :message="message"/>
+                    <error at-path="forecastStartAt"/>
                 </div>
                 <div class="col-md-6">
                     <div class="input-holder right">
                         <label class="active">{{ label.forecast_end_date }}</label>
-                        <datepicker
+                        <date-field
                                 :value="value.forecastEndDate"
                                 format="dd-MM-yyyy"
                                 @input="onInput('forecastEndDate', $event)"/>
-                        <calendar-icon fill="middle-fill"/>
                     </div>
-                    <error
-                            v-if="validationMessages.forecastFinishAt && validationMessages.forecastFinishAt.length"
-                            v-for="message in validationMessages.forecastFinishAt"
-                            :message="message"/>
+                    <error at-path="forecastFinishAt"/>
                 </div>
             </div>
         </div>
@@ -72,18 +55,17 @@
 
 <script>
     import InputField from '../../../_common/_form-components/InputField';
-    import CalendarIcon from '../../../_common/_icons/CalendarIcon';
-    import datepicker from '../../../_common/_form-components/Datepicker';
     import Error from '../../../_common/_messages/Error.vue';
     import Switches from '../../../3rdparty/vue-switches';
     import {mapActions, mapGetters} from 'vuex';
+    import DateField from '../../../_common/_form-components/DateField';
 
     export default {
         name: 'schedule',
         props: {
             value: {
                 type: Object,
-                required: true,
+                required: false,
             },
             editableBase: {
                 type: Boolean,
@@ -97,9 +79,8 @@
             },
         },
         components: {
+            DateField,
             InputField,
-            CalendarIcon,
-            datepicker,
             Error,
             Switches,
         },
@@ -143,3 +124,4 @@
         },
     };
 </script>
+

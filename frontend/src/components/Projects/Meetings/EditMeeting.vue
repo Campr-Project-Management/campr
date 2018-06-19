@@ -78,8 +78,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
-                                    <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="schedule.meetingDate"/>
                                 </div>
                                 <error at-path="date"/>
                             </div>
@@ -346,8 +345,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="todo.dueDate"/>
                                 </div>
                             </div>
                         </div>
@@ -431,8 +429,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.expiry_date') }}</label>
-                                    <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="info.expiresAt"/>
                                 </div>
                             </div>
                         </div>
@@ -509,8 +506,6 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
 import EditIcon from '../../_common/_icons/EditIcon';
@@ -530,16 +525,16 @@ import Modal from '../../_common/Modal';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import UserAvatar from '../../_common/UserAvatar';
 import MeetingDecisionForm from './Form/DecisionForm';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         MeetingDecisionForm,
         UserAvatar,
         Editor,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         MeetingAttachments,
         EditIcon,

@@ -16,7 +16,7 @@
                             <div class="col-md-12">
                                 <div class="input-holder">
                                     <label class="active">{{ translate('label.select_due_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="rescheduleObj.dueDate" format="dd-MM-yyyy" :value="rescheduleObj.dueDate"></datepicker>
+                                    <date-field v-model="rescheduleObj.dueDate" />
                                 </div>
                             </div>
                         </div>
@@ -95,14 +95,14 @@ import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import {mapGetters, mapActions} from 'vuex';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
-import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         RescheduleIcon,
         Modal,
-        datepicker,
     },
     methods: {
         ...mapActions([
