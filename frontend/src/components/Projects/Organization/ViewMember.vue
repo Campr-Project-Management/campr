@@ -71,7 +71,7 @@
                 <h3>{{ translateText('table_header_cell.distribution_lists') }}</h3>
                 <div class="row">
                     <div class="col-md-4" v-for="dl in distributionLists">
-                        <h4>{{ dl.name }}</h4>
+                        <h4>{{ translate(dl.name) }}</h4>
                         <div class="flex flex-v-center">
                             <switches :modelChanged="updateDistributionItem(member, dl)" v-model="inDistribution" :selected="inDistributionList(member, dl)"></switches>
                         </div>
@@ -119,7 +119,7 @@
                                     <path class="st0" d="M8,0.4c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S12.4,0.4,8,0.4z M3.7,7.4l2.9,1.5l-2.9,1.7V7.4z M12.3,12.1H3.7v-0.7l3.6-2.1L8,9.6l0.8-0.4l3.6,2.1V12.1z M12.3,10.6L9.5,8.9l2.9-1.5V10.6z M12.3,5.9L8,8.1L3.7,5.9V4.7h8.7V5.9z"
                                       />
                                 </svg>
-                                {{ translateText('label.email') }}: 
+                                {{ translateText('label.email') }}:
                                 <a :href="'mailto:' + member.userEmail">
                                     {{ member.userEmail }}
                                 </a>
@@ -134,8 +134,8 @@
                     </div>
                 </div>
                 <!-- /// End Distribution Lists /// -->
-            </div> 
-        </div>               
+            </div>
+        </div>
     </div>
 </template>
 
