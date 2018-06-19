@@ -13,8 +13,8 @@
             </div>
             <p>{{ translate('message.potential_cost') }}: <b v-if="item.cost">{{ item.potentialCost | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.potential_time_delay') }}: <b v-if="item.delay">{{ item.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.strategy') }}: <b v-if="item.riskStrategyName">{{ item.riskStrategyName }}</b><b v-else>-</b></p>
+            <p>{{ translate('message.priority') }}: <b :style="{color: getPriorityColor(item.priority)}">{{ translate(`message.${item.priorityName}`) }}</b></p>
+            <p>{{ translate('message.strategy') }}: <b v-if="item.riskStrategyName">{{ translate(item.riskStrategyName) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.status') }}: <b>{{ item.statusName ? translate(item.statusName) : '-' }}</b></p>
         </div>
     </div>
@@ -23,6 +23,7 @@
 <script>
     import {mapGetters} from 'vuex';
     import UserAvatar from '../../_common/UserAvatar';
+    import {riskManagement} from '../../../util/colors';
 
     export default {
         components: {UserAvatar},
@@ -37,6 +38,11 @@
             ...mapGetters([
                 'projectCurrencySymbol',
             ]),
+        },
+        methods: {
+            getPriorityColor(priority) {
+                return riskManagement.risk.getColorByPriority(priority);
+            },
         },
     };
 </script>
