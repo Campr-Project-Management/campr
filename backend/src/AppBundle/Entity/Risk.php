@@ -32,7 +32,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
     const THRESHOLD_VERY_LOW = [0, 25];
     const THRESHOLD_LOW = [25, 50];
     const THRESHOLD_HIGH = [50, 75];
-    const THRESHOLD_VERY_HIGH = [75, 100];
+    const THRESHOLD_VERY_HIGH = [75, 101];
 
     /**
      * @var int
