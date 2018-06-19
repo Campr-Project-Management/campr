@@ -40,11 +40,12 @@
                                 <th v-for="(user, userIndex) in users"
                                     :key="user.id"
                                     :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                    <div
-                                        class="avatar"
-                                        v-tooltip.top-center="user.firstName + ' ' + user.lastName"
-                                        :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
-                                </th>                                  
+                                    <user-avatar
+                                            size="small"
+                                            :name="`${user.firstName} ${user.lastName}`"
+                                            :url="getUserAvatar(user)"
+                                            :tooltip="`${user.firstName} ${user.lastName}`"/>
+                                </th>
                             </tr>
                         </thead>
                     </table>
@@ -59,11 +60,12 @@
                             <th v-for="(user, userIndex) in users"
                                 :key="user.id"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                <div
-                                    class="avatar"
-                                    v-tooltip.top-center="user.firstName + ' ' + user.lastName"
-                                    :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
-                            </th>                                  
+                                <user-avatar
+                                        size="small"
+                                        :name="`${user.firstName} ${user.lastName}`"
+                                        :url="getUserAvatar(user)"
+                                        :tooltip="`${user.firstName} ${user.lastName}`"/>
+                            </th>
                         </tr>
                     </thead>                  
                     <tbody>
@@ -120,9 +122,11 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         ResponsibilitySelect,
     },
     methods: {
@@ -254,8 +258,7 @@ export default {
             box-sizing: content-box;
             font-size: 0;
 
-            .rasci-select,
-            .avatar {
+            .rasci-select {
                 position: relative;
                 z-index: 1;
                 margin: 0;
@@ -269,8 +272,7 @@ export default {
             }
 
             &:hover {               
-                .rasci-select,
-                .avatar {
+                .rasci-select {
                     z-index: 2;
                 }
             }
@@ -300,13 +302,5 @@ export default {
         &:last-child {
             padding-right: 30px
         }
-    }
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
-        background-size: cover;
-        display: inline-block;
     }
 </style>
