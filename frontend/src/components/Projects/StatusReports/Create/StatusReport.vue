@@ -213,7 +213,6 @@
     import 'jquery-match-height/jquery.matchHeight.js';
     import CircleChart from '../../../_common/_charts/CircleChart';
     import Chart from '.././../Charts/CostsChart.vue';
-    import RiskGrid from '../../Risks/RiskGrid';
     import RiskList from '../../Risks/RiskList';
     import OpportunityList from '../../Opportunities/OpportunityList';
     import RiskSummary from '../../Risks/RiskSummary';
@@ -260,7 +259,6 @@
             StatusReportTodos,
             ProgressBarChart,
             CircleChart,
-            RiskGrid,
             RiskList,
             RiskSummary,
             OpportunitySummary,
@@ -403,9 +401,9 @@
                 return data;
             },
             opportunitiesGrid() {
-                let data = {
+                return {
                     top: this.snapshot.opportunities.topItem,
-                    grid: [],
+                    items: this.snapshot.opportunities.items,
                     summary: {
                         potentialCost: this.snapshot.opportunities.total.potentialCost,
                         potentialDelay: this.snapshot.opportunities.total.potentialDelay,
@@ -413,27 +411,11 @@
                         measuresCost: this.snapshot.opportunities.total.measuresCost,
                     },
                 };
-
-                for (let i = 4; i >= 1; i--) {
-                    for (let j = 1; j <= 4; j++) {
-                        data.grid.push(
-                            {
-                                probability: j,
-                                impact: i,
-                                number: this.snapshot.opportunities.grid[j + '-' + i],
-                                type: this.opportunityTypes[i - 1][j - 1],
-                                isActive: false,
-                            },
-                        );
-                    }
-                }
-
-                return data;
             },
             risksGrid() {
-                let data = {
+                return {
                     top: this.snapshot.risks.topItem,
-                    grid: [],
+                    items: this.snapshot.risks.items,
                     summary: {
                         potentialCost: this.snapshot.risks.total.potentialCost,
                         potentialDelay: this.snapshot.risks.total.potentialDelay,
@@ -441,22 +423,6 @@
                         measuresCost: this.snapshot.risks.total.measuresCost,
                     },
                 };
-
-                for (let i = 4; i >= 1; i--) {
-                    for (let j = 1; j <= 4; j++) {
-                        data.grid.push(
-                            {
-                                probability: j,
-                                impact: i,
-                                number: this.snapshot.risks.grid[j + '-' + i],
-                                type: this.riskTypes[i - 1][j - 1],
-                                isActive: false,
-                            },
-                        );
-                    }
-                }
-
-                return data;
             },
             todosItems() {
                 return this.snapshot.todos.items;
@@ -506,18 +472,6 @@
                 options: {
                     backgroundColor: '#191E37',
                 },
-                riskTypes: [
-                    ['very-low', 'very-low', 'low', 'medium'],
-                    ['very-low', 'low', 'medium', 'high'],
-                    ['low', 'medium', 'high', 'very-high'],
-                    ['medium', 'high', 'very-high', 'very-high'],
-                ],
-                opportunityTypes: [
-                    ['very-high', 'very-high', 'high', 'medium'],
-                    ['very-high', 'high', 'medium', 'low'],
-                    ['high', 'medium', 'low', 'very-low'],
-                    ['medium', 'low', 'very-low', 'very-low'],
-                ],
             };
         },
     };
