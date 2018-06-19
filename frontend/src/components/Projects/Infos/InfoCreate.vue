@@ -58,7 +58,7 @@
                                     <datepicker v-model="expiresAt" format="dd-MM-yyyy" />
                                     <calendar-icon fill="middle-fill"/>
                                 </div>
-                                <error at-path="dueDate"/>
+                                <error at-path="expiresAt"/>
                             </div>
                         </div>
                     </div>
