@@ -2,9 +2,7 @@
     <div class="ro-list">
         <div class="ro-list-item" v-for="item in list">
             <div class="flex">
-                <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">
-                    {{ item.title }}
-                </router-link>
+                <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">{{ item.title }}</router-link>
                 <user-avatar
                         size="very-small"
                         :name="item.responsibilityFullName"
@@ -13,9 +11,9 @@
             </div>
             <p>{{ translate('message.potential_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.priority') }}: <b v-if="item.priority">{{ item.priority }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ item.opportunityStrategyName }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.status') }}: <b v-if="item.opportunityStatusName">{{ item.opportunityStatusName }}</b><b v-else>-</b></p>
+            <p>{{ translate('message.priority') }}: <b :style="{color: getPriorityColor(item.priority)}">{{ translate(`message.${item.priorityName}`) }}</b></p>
+            <p>{{ translate('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ translate(item.opportunityStrategyName) }}</b><b v-else>-</b></p>
+            <p>{{ translate('message.status') }}: <b v-if="item.opportunityStatusName">{{ translate(item.opportunityStatusName) }}</b><b v-else>-</b></p>
         </div>
     </div>
 </template>
@@ -23,6 +21,7 @@
 <script>
     import {mapGetters} from 'vuex';
     import UserAvatar from '../../_common/UserAvatar';
+    import {riskManagement} from '../../../util/colors';
 
     export default {
         components: {UserAvatar},
@@ -37,6 +36,11 @@
             ...mapGetters([
                 'projectCurrencySymbol',
             ]),
+        },
+        methods: {
+            getPriorityColor(priority) {
+                return riskManagement.opportunity.getColorByPriority(priority);
+            },
         },
     };
 </script>
