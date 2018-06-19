@@ -29,6 +29,11 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
     const PRIORITY_HIGH = 3;
     const PRIORITY_VERY_HIGH = 4;
 
+    const THRESHOLD_VERY_LOW = [0, 25];
+    const THRESHOLD_LOW = [25, 50];
+    const THRESHOLD_HIGH = [50, 75];
+    const THRESHOLD_VERY_HIGH = [75, 100];
+
     /**
      * @var int
      *
@@ -61,20 +66,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @ORM\Column(name="description", type="text")
      */
     private $description;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="impact", type="integer")
-     */
-    private $impact;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="probability", type="integer")
-     */
-    private $probability;
 
     /**
      * @var string
@@ -335,54 +326,6 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
     public function getTimeSavings()
     {
         return $this->timeSavings;
-    }
-
-    /**
-     * Set impact.
-     *
-     * @param int $impact
-     *
-     * @return Opportunity
-     */
-    public function setImpact($impact)
-    {
-        $this->impact = $impact;
-
-        return $this;
-    }
-
-    /**
-     * Get impact.
-     *
-     * @return int
-     */
-    public function getImpact()
-    {
-        return $this->impact;
-    }
-
-    /**
-     * Set probability.
-     *
-     * @param int $probability
-     *
-     * @return Opportunity
-     */
-    public function setProbability($probability)
-    {
-        $this->probability = $probability;
-
-        return $this;
-    }
-
-    /**
-     * Get probability.
-     *
-     * @return string
-     */
-    public function getProbability()
-    {
-        return $this->probability;
     }
 
     /**
