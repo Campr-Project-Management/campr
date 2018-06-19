@@ -34,7 +34,7 @@
                 required: false,
                 default: 'normal',
                 validate(value) {
-                    return ['small', 'normal', 'medium', 'large'].indexOf(value) >= 0;
+                    return ['very-small', 'small', 'normal', 'medium', 'large'].indexOf(value) >= 0;
                 },
             },
             ratio: {
@@ -54,10 +54,9 @@
                 return this.letterAvatarSizes[this.size];
             },
         },
-        watch: {
-            url(value) {
-                this.lazyUrl = value;
-
+        methods: {
+            setLazyUrl(url) {
+                this.lazyUrl = url;
                 if (!this.lazyUrl) {
                     return;
                 }
@@ -70,9 +69,18 @@
                 };
             },
         },
+        created() {
+            this.setLazyUrl(this.url);
+        },
+        watch: {
+            url(value) {
+                this.setLazyUrl(value);
+            },
+        },
         data() {
             return {
                 letterAvatarSizes: {
+                    'very-small': 20,
                     'small': 30,
                     'normal': 40,
                     'medium': 50,
@@ -80,6 +88,7 @@
                 },
                 lazyUrl: this.url,
                 sizes: {
+                    'very-small': 20,
                     'small': 30,
                     'normal': 40,
                     'medium': 50,
@@ -100,6 +109,16 @@
 
         .avatar-image {
             @include border-radius(50%);
+        }
+
+        &.very-small {
+            width: 20px;
+            height: 20px;
+
+            .avatar-image {
+                width: 20px;
+                height: 20px;
+            }
         }
 
         &.small {
