@@ -7,8 +7,11 @@
                 <div class="dropdowns">
                     <div class="flex flex-space-between dates">
                         <div class="input-holder">
-                            <datepicker :placeholder="translateText('label.date')" @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
-                            <calendar-icon fill="middle-fill"/>
+                            <date-field
+                                    :placeholder="translateText('label.date')"
+                                    @cleared="clearDate()"
+                                    :clear-button="true"
+                                    v-model="date"/>
                         </div>
                     </div>
                 </div>
@@ -19,15 +22,13 @@
 
 <script>
     import MemberSearch from '../../_common/MemberSearch';
-    import CalendarIcon from '../../_common/_icons/CalendarIcon';
-    import datepicker from '../_form-components/Datepicker';
     import moment from 'moment';
+    import DateField from '../_form-components/DateField';
 
     export default {
         props: ['updateFilters'],
         components: {
-            CalendarIcon,
-            datepicker,
+            DateField,
             MemberSearch,
         },
         methods: {
