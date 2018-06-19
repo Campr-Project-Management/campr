@@ -53,8 +53,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
-                                    <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="schedule.meetingDate"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -243,8 +242,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translate('label.due_date') }}</label>
-                                        <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="todo.dueDate"/>
                                     </div>
                                 </div>
                             </div>
@@ -309,8 +307,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translate('label.expiry_date') }}</label>
-                                        <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="info.expiresAt"/>
                                     </div>
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
@@ -392,8 +389,6 @@
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
 import Timepicker from '../../_common/_form-components/Timepicker';
@@ -406,14 +401,14 @@ import router from '../../../router';
 import MeetingParticipants from './MeetingParticipants';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import MeetingDecisionForm from './Form/DecisionForm';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         MeetingDecisionForm,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         MeetingAttachments,
         Timepicker,

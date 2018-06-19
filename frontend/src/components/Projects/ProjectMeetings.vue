@@ -14,7 +14,7 @@
                 <div class="col-md-4">
                     <div class="input-holder">
                         <label class="active">{{ translateText('label.select_date') }}</label>
-                        <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                        <date-field v-model="date"/>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -146,11 +146,12 @@ import RescheduleIcon from '../_common/_icons/RescheduleIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import Modal from '../_common/Modal';
-import datepicker from '../_common/_form-components/Datepicker';
 import VueTimepicker from 'vue2-timepicker';
+import DateField from '../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         MeetingsFilters,
         ViewIcon,
         EditIcon,
@@ -160,7 +161,6 @@ export default {
         DeleteIcon,
         moment,
         Modal,
-        datepicker,
         VueTimepicker,
     },
     methods: {

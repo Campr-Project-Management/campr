@@ -221,8 +221,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.due_date') }}</label>
-                                        <datepicker v-model="actionDueDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="actionDueDate"/>
                                     </div>
                                 </div>
                             </div>
@@ -306,9 +305,7 @@ import Vue from 'vue';
 import {mapGetters, mapActions} from 'vuex';
 import DragBox from './TaskManagement/DragBox.vue';
 import InputField from '../_common/_form-components/InputField.vue';
-import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
 import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
-import datepicker from '../_common/_form-components/Datepicker';
 import moment from 'moment';
 import ViewIcon from '../_common/_icons/ViewIcon';
 import EditIcon from '../_common/_icons/EditIcon';
@@ -318,13 +315,13 @@ import Error from '../_common/_messages/Error.vue';
 import AlertModal from '../_common/AlertModal.vue';
 import Modal from '../_common/Modal';
 import Editor from '../_common/Editor';
+import DateField from '../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         DragBox,
-        datepicker,
         InputField,
-        CalendarIcon,
         DownloadbuttonIcon,
         moment,
         ViewIcon,
