@@ -16,7 +16,7 @@
                             :name="item.userFullName"/>
                     <div class="member-info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description">{{ item.projectRoleNames }}</p>
+                        <p class="description" v-for="role in item.projectRoleNames">{{ translate(role) }}</p>
                     </div>
                 </div>
             </div>
@@ -395,7 +395,7 @@ export default {
                 .member-info {
                     p {
                         margin: 0;
-                        text-transform: uppercase;                    
+                        text-transform: uppercase;
                     }
 
                     .title {
