@@ -19,6 +19,7 @@ class Version20180618124903 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE opportunity CHANGE priority priority INT NOT NULL');
+        $this->addSql('UPDATE risk SET priority = REPLACE(priority, "priority", "") WHERE priority LIKE "priority%"');
         $this->addSql('ALTER TABLE risk CHANGE priority priority INT NOT NULL');
     }
 
