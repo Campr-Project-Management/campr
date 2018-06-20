@@ -35,6 +35,7 @@ RUN apt-get install -y \
     php7.1-curl \
     php7.1-cgi \
     php7.1-dev \
+    php7.1-dom \
     php7.1-fpm \
     php7.1-gd \
     php7.1-gmp \

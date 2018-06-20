@@ -42,7 +42,7 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translate('message.back_to_meetings') }}
                         </router-link>
-                        <h1>{{ translate('message.edit') }} <b>{{ meeting.name }}</b></h1>
+                        <h1>{{ translate('message.edit') }} <b>{{ translateMeetingName(meeting.name) }}</b></h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -561,6 +561,13 @@ export default {
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo',
             'getInfoCategories', 'deleteProjectMeeting',
         ]),
+        translateMeetingName(name) {
+            return name
+                .split('|')
+                .map(i => this.translate(i))
+                .join(' | ')
+            ;
+        },
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
