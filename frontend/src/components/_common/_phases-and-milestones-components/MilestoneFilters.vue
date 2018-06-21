@@ -10,13 +10,13 @@
             </div>
             <select-field
                 v-if="projectPhases.items && projectPhases.items.length"
-                v-bind:title="'Phase'"
+                v-bind:title="translateText('label.phase')"
                 v-bind:options="projectPhasesForSelect"
                 v-model="phaseModel"
                 v-bind:currentOption="phaseModel" />
             <select-field
                 v-if="!boardView"
-                v-bind:title="translateText('message.status')"
+                v-bind:title="translateText('label.status')"
                 v-bind:options="workPackageStatusesForMilestone"
                 v-model="statusModel"
                 v-bind:currentOption="statusModel" />
@@ -70,11 +70,9 @@ export default {
         },
         clearFilters: function() {
             this.clearDueDate();
-            this.$refs.phases.resetCustomTitle();
             this.statusModel = null;
             this.phaseModel = null;
             this.responsibleModel = null;
-            this.$refs.responsibles.resetCustomTitle();
             this.clearAllFilters(true);
         },
     },
