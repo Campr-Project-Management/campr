@@ -37,7 +37,7 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b></h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                                 <div>
@@ -60,7 +60,7 @@
                         <div class="buttons">
                             <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                                 {{ translate('button.edit_todo') }}
-                            </router-link>    
+                            </router-link>
                             <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                                 {{ translate('button.new_todo') }}
                             </router-link>
@@ -78,7 +78,7 @@
                     <div class="buttons">
                         <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                             {{ translate('button.edit_todo') }}
-                        </router-link> 
+                        </router-link>
                         <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                             {{ translate('button.new_todo') }}
                         </router-link>
@@ -183,7 +183,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -211,8 +211,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 10px 0 0;  
+        display: inline-block;
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -265,7 +265,7 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 
     .buttons {

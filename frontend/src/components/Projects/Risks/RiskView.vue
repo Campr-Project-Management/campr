@@ -85,8 +85,8 @@
                     <div class="col-md-12">
                         <div class="ro-info">
                             <p>{{ translate('message.priority') }}: <b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
-                            <p>{{ translate('message.strategy') }}: <b>{{ risk.riskStrategyName }}</b></p>
-                            <p>{{ translate('message.status') }}: <b>{{ risk.statusName }}</b></p>
+                            <p>{{ translate('message.strategy') }}: <b v-if="risk.riskStrategyName">{{ translate(risk.riskStrategyName) }}</b><b v-else>-</b></p>
+                            <p>{{ translate('message.status') }}: <b v-if="risk.statusName">{{ translate(risk.statusName) }}</b><b v-else>-</b></p>
                         </div>
 
                         <div class="ro-info">

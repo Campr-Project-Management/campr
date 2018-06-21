@@ -72,6 +72,7 @@ class DecisionsTransformer extends AbstractTransformer
             'title' => $decision->getTitle(),
             'meetingId' => $decision->getMeetingId(),
             'meetingName' => $decision->getMeetingName(),
+            'isDone' => $decision->isDone(),
             'description' => $decision->getDescription(),
             'dueDate' => $this->dateTransformer->transform($decision->getDueDate()),
             'createdAt' => $this->dateTransformer->transform($decision->getCreatedAt()),
