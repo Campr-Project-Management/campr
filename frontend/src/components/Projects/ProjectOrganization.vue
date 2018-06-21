@@ -8,18 +8,6 @@
                 v-for="message in validationMessages.name"
                 :message="message" />
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
-            <div class="members main-list">
-                <div class="member flex member-row"  v-for="item in distributionLists">
-                    <user-avatar
-                            size="small"
-                            :url="item.userAvatar"
-                            :name="item.userFullName"/>
-                    <div class="member-info">
-                        <p class="title">{{ item.userFullName }}</p>
-                        <p class="description" v-for="role in item.projectRoleNames">{{ translate(role) }}</p>
-                    </div>
-                </div>
-            </div>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_distribution') }} +</a>
@@ -348,6 +336,12 @@ export default {
 
     .modal .modal-inner {
         width: 600px;
+
+        .results.team {
+            width: 600px;
+            position: relative;
+            top: 0 !important;
+        }
     }
 
     .actions {
@@ -413,6 +407,8 @@ export default {
 
         .results {
             width: 600px;
+            position: relative;
+            top: 0 !important;
         }
     }
 
@@ -543,6 +539,7 @@ export default {
 
     .search {
         position: relative;
+        margin-bottom: 30px;
 
         .scroll-list {
             max-height: 200px;
