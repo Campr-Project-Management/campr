@@ -433,8 +433,8 @@
             },
             pmData: function() {
                 let items = [];
-                if (this.allProjectPhases && this.allProjectPhases.items) {
-                    items = items.concat(this.allProjectPhases.items.map((item) => {
+                if (this.projectPhases && this.projectPhases.items) {
+                    items = items.concat(this.projectPhases.items.map((item) => {
                         return {
                             id: item.id,
                             group: 0,
