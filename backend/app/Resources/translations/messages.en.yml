@@ -432,6 +432,7 @@ message:
     edit_external_costs: Edit external cost
     edit_internal_costs: Edit internal cost
     reschedule_todo: Reschedule todo
+    reschedule_info: Reschedule info
     edit_forecast_total: Edit forecast total
     edit_actual_total: Edit actual total
     confirm_open_task: Are you sure you wan to open this task ?
