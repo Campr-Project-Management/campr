@@ -1,6 +1,6 @@
 <template>
     <div class="editor" :class="{disabled: disabled}">
-        <span class="label" v-if="label">{{ label | trans }}</span>
+        <span class="label" v-if="label">{{ translate(label) }}</span>
         <vue-editor
             :id="id"
             :value="value"

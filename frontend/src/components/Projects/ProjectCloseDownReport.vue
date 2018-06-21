@@ -45,7 +45,7 @@
                         :class="{disabledpicker: projectCloseDown.frozen}"
                         id="overallImpression"
                         v-model="overallImpression"
-                        :label="'placeholder.overall_impression'" />
+                        :label="'message.overall_impression'" />
                 </div>
                 <!-- End Overall Impression -->
             </div>
