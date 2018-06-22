@@ -40,16 +40,14 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.base_start_date') }}</label>
-                                        <datepicker v-model="schedule.baseStartDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="schedule.baseStartDate" />
                                     </div>
                                     <error at-path="scheduledStartAt" />
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.base_end_date') }}</label>
-                                        <datepicker v-model="schedule.baseEndDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="schedule.baseEndDate" />
                                     </div>
                                     <error at-path="scheduledFinishAt" />
                                 </div>
@@ -125,20 +123,18 @@
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import MemberSearch from '../../_common/MemberSearch';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     name: 'project-phase-create',
     components: {
+        DateField,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         Error,
         Editor,
         MemberSearch,

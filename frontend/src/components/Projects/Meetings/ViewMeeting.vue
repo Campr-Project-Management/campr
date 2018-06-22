@@ -33,7 +33,7 @@
                     <div class="col-md-4">
                         <div class="input-holder">
                             <label class="active">{{ translateText('label.select_date') }}</label>
-                            <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                            <date-field v-model="date"/>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -333,11 +333,11 @@ import MeetingParticipants from './MeetingParticipants';
 import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
 import VueTimepicker from 'vue2-timepicker';
-import datepicker from '../../_common/_form-components/Datepicker';
-// import {createFormData} from '../../../helpers/meeting';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         EditIcon,
         DeleteIcon,
         Switches,
@@ -348,7 +348,6 @@ export default {
         Modal,
         Editor,
         VueTimepicker,
-        datepicker,
     },
     methods: {
         ...mapActions([
