@@ -119,7 +119,7 @@ export default {
             const data = {
                 topic: this.topic,
                 description: this.description,
-                expiresAt: this.$formatToSQLDate(this.expiresAt),
+                expiresAt: this.expiresAt ? moment(this.expiresAt).format('DD-MM-YYYY') : null,
                 infoCategory: this.infoCategory && this.infoCategory.key
                     ? this.infoCategory.key
                     : null,
