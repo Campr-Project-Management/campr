@@ -61,7 +61,7 @@
     "vue2-dragula": "2.4.4",
     "vue2-editor": "^2.4.2",
     "vue2-timepicker": "github:dilibau/vue2-timepicker",
-    "vuejs-datepicker": "0.6.5",
+    "vuejs-datepicker": "^1.4.0",
     "vuex": "3.0.1",
     "vuex-router-sync": "3.0.0"
   },

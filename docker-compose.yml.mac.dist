@@ -18,6 +18,7 @@ services:
             - "80:80"
             - "8080:8080"
             - "443:443"
+            - "3000:3000"
         env_file: config/docker/.env
         extra_hosts:
             - "dev.campr.biz:127.0.0.1"
