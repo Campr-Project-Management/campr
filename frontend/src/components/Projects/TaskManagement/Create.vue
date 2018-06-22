@@ -293,7 +293,7 @@ export default {
         },
         onInternalCostAdded() {
             this.internalCosts.items.push({
-                resource: '',
+                resource: {label: this.translate('label.cost_item')},
                 quantity: 1,
                 duration: 1,
                 rate: 0,
