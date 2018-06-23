@@ -46,7 +46,7 @@ class ProjectRepository extends BaseRepository
             ->setParameter('user', $user)
         ;
 
-        if (isset($filters['favorites'])) {
+        if (isset($filters['favorites']) && $filters['favorites']) {
             $qb
                 ->leftJoin('p.userFavorites', 'f')
                 ->addOrderBy('f.id', 'DESC')
