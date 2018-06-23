@@ -45,7 +45,11 @@
             <div>{{ translateText('label.no_data') }}</div>
         </div>
         <p v-if="usersList && usersList.length" v-for="user in usersList" class="selected-item">
-            {{ user.firstName }} {{ user.lastName }}
+            <user-avatar
+                size="small"
+                :url="user.avatarUrl"
+                :name="user.userFullName"/>
+            <span>{{ user.firstName }} {{ user.lastName }}</span>
             <a @click="removeSelectedOption(user.id)"> <i class="fa fa-times"></i></a>
         </p>
     </div>
@@ -56,8 +60,12 @@ import VueTypeahead from 'vue-typeahead';
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
 import _ from 'lodash';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
+    components: {
+        UserAvatar,
+    },
     extends: VueTypeahead,
     props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
     computed: {
@@ -385,16 +393,26 @@ export default {
     }
 
     .selected-item {
-        padding: 11px 20px 9px;
+        padding: 0 0 0 10px;
         background-color: $fadeColor;
         margin-top: 3px;
-        color: $secondColor;
+        color: $whiteColor;
         position: relative;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+
+        span {
+            position: relative;
+            top: 2px;
+        }
 
         i.fa {
             position: absolute;
             right: 20px;
-            top: 13px;
+            top: 50%;
+            margin-top: -5px;
             color: $dangerColor;
             cursor: pointer;
             @include transition(opacity, 0.2s, ease-in);

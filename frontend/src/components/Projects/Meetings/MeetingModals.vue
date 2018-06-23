@@ -102,8 +102,7 @@
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.due_date') }}</label>
-                            <datepicker v-model="editTodoObject.dueDate" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill"/>
+                            <date-field v-model="editTodoObject.dueDate"/>
                         </div>
                     </div>
                 </div>
@@ -159,8 +158,7 @@
                     <div class="col-md-6">
                         <div class="input-holder right">
                             <label class="active">{{ translateText('label.expiry_date') }}</label>
-                            <datepicker v-model="editInfoObject.expiresAt" format="dd-MM-yyyy" />
-                            <calendar-icon fill="middle-fill"/>
+                            <date-field v-model="editInfoObject.expiresAt"/>
                         </div>
                     </div>
                 </div>
@@ -195,8 +193,6 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import {mapGetters, mapActions} from 'vuex';
 import VueTimepicker from 'vue2-timepicker';
@@ -206,6 +202,7 @@ import Editor from '../../_common/Editor';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import Error from '../../_common/_messages/Error';
 import MeetingDecisionForm from './Form/DecisionForm';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     props: [
@@ -216,12 +213,11 @@ export default {
         'editInfoModal', 'deleteInfoModal', 'infoObject',
     ],
     components: {
+        DateField,
         MeetingDecisionForm,
         Error,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         VueTimepicker,
         moment,

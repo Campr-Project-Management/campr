@@ -106,9 +106,11 @@
         display: inline-block;
         position: relative;
         margin: 5px;
+        line-height: 0;
 
         .avatar-image {
             @include border-radius(50%);
+            object-fit: cover;
         }
 
         &.very-small {
