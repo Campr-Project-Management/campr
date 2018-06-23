@@ -11,11 +11,11 @@
                     <div class="col-md-12">
                         <div class="input-holder">
                             <label class="active">{{ translate('label.expiry_date') }}</label>
-                            <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                            <date-field v-model="date"/>
                         </div>
                     </div>
                 </div>
-
+                <hr class="double">
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
                     <a href="javascript:void(0)" @click="rescheduleInfo()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
@@ -114,12 +114,13 @@ import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../../_common/Modal';
-import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
 import UserAvatar from '../../_common/UserAvatar';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         UserAvatar,
         EditIcon,
         DeleteIcon,
@@ -127,7 +128,6 @@ export default {
         RescheduleIcon,
         DownloadbuttonIcon,
         Modal,
-        datepicker,
     },
     created() {
         this.getInfo(this.$route.params.infoId);

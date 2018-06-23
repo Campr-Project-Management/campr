@@ -152,7 +152,6 @@
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import UploadIcon from '../../_common/_icons/UploadIcon';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import Schedule from './Create/Schedule';
 import InternalCosts from './Create/InternalCosts';
 import ExternalCosts from './Create/ExternalCosts';
@@ -162,7 +161,6 @@ import Condition from './Create/Condition';
 import TaskDetails from './Create/Details';
 import TaskAssignments from './Create/Assignments';
 import Attachments from './Create/Attachments';
-import datepicker from '../../_common/_form-components/Datepicker';
 import Switches from '../../3rdparty/vue-switches';
 import Editor from '../../_common/Editor.vue';
 import Error from '../../_common/_messages/Error.vue';
@@ -179,8 +177,6 @@ export default {
         InputField,
         SelectField,
         UploadIcon,
-        CalendarIcon,
-        datepicker,
         Switches,
         Schedule,
         InternalCosts,
@@ -293,7 +289,7 @@ export default {
         },
         onInternalCostAdded() {
             this.internalCosts.items.push({
-                resource: '',
+                resource: {label: this.translate('label.cost_item')},
                 quantity: 1,
                 duration: 1,
                 rate: 0,

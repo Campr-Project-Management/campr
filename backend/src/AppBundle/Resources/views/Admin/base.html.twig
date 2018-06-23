@@ -105,10 +105,12 @@
                 $('[data-toggle="tooltip"]').tooltip();
             });
             $('.date-picker').datetimepicker({
-                format: 'DD-MM-YYYY'
+                format: 'DD-MM-YYYY',
+                debug: true,
             });
             $('.datetime-picker').datetimepicker({
-                format: 'DD-MM-YYYY HH:mm:SS'
+                format: 'DD-MM-YYYY HH:mm:SS',
+                debug: true,
             });
         </script>
     {% endblock %}

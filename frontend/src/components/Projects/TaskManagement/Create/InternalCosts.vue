@@ -9,6 +9,8 @@
                             :title="translate('label.cost_item')"
                             :options="resourcesForSelect"
                             :value="{key: item.resource}"
+                            :currentOption="item.resource"
+                            v-model="item.resource"
                             @input="onItemUpdate('resource', index, $event)" />
                         <error
                             v-if="getValidationMessages(index, 'resource').length"
