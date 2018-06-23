@@ -40,8 +40,7 @@
                 <div class="col-md-6">
                     <div class="input-holder right">
                         <label class="active">{{ translate('label.due_date') }}</label>
-                        <datepicker v-model="lazyValue.dueDate" format="dd-MM-yyyy" @input="onInput"/>
-                        <calendar-icon fill="middle-fill"/>
+                        <date-field v-model="lazyValue.dueDate" @input="onInput"/>
                     </div>
                     <error :message="errorMessages.dueDate"/>
                 </div>
@@ -67,13 +66,12 @@
     import {mapGetters} from 'vuex';
     import InputField from '../../../_common/_form-components/InputField';
     import SelectField from '../../../_common/_form-components/SelectField';
-    import datepicker from '../../../_common/_form-components/Datepicker';
-    import CalendarIcon from '../../../_common/_icons/CalendarIcon';
     import MemberSearch from '../../../_common/MemberSearch';
     import MultiSelectField from '../../../_common/_form-components/MultiSelectField';
     import Error from '../../../_common/_messages/Error.vue';
     import Editor from '../../../_common/Editor';
     import moment from 'moment';
+    import DateField from '../../../_common/_form-components/DateField';
 
     export default {
         name: 'meeting-decision-form',
@@ -98,10 +96,9 @@
             },
         },
         components: {
+            DateField,
             InputField,
             SelectField,
-            datepicker,
-            CalendarIcon,
             MemberSearch,
             MultiSelectField,
             Error,

@@ -153,8 +153,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="schedule.dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="schedule.dueDate"/>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -257,15 +256,15 @@ import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
 import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import RiskMatrix from '../RiskManagement/RiskMatrix';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         RiskMatrix,
         InputField,
         RangeSlider,
@@ -273,8 +272,6 @@ export default {
         IndicatorIcon,
         MemberSearch,
         SelectField,
-        datepicker,
-        CalendarIcon,
         moment,
         Error,
         Editor,
