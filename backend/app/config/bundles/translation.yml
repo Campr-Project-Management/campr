@@ -1,0 +1,37 @@
+translation_adapter_loco:
+    index_parameter: 'id' # 'text' or 'name'. Leave blank for "auto"  See https://localise.biz/api/docs/export/exportlocale
+    projects:
+        flashes: # readonly TziqfcENoNCCH3d7fhjsCLiIlEneVjQZ
+            api_key: 5XcyuutmWtJUKKToQbb4fKGEa-i0Pmal8
+            domains: [flashes]
+        messages: # readonly 89dBhV2p1AbAv2A_GVnZt0fEWoo9s_i0
+            api_key: hQXVdhn-9q6MMVnIX6rnyJQqkP12zLrh4
+            domains: [messages]
+        tasks: # rMf45brNT90Chl9iSktkhFJER3r_wj0J
+            api_key: x3FML06A2H1_3ItDo-0QgtjyzhFO7BsDI
+            domains: [tasks]
+        validators: # readonly oBv57J-26cK6uFKi06msBPAwvaNB2Snq
+            api_key: xjWpkrz2cOE7k5FGNpuB7VrLJroXakvXs
+            domains: [validators]
+
+
+# https://github.com/php-translation/symfony-bundle/issues/224
+translation:
+    symfony_profiler:
+        enabled: false
+    webui:
+        enabled: false
+    locales: '%managed_locales%'
+    default_locale: '%locale%'
+    configs:
+        app:
+            dirs: ["%kernel.root_dir%/Resources/views", "%kernel.root_dir%/../src"]
+            excluded_dirs: [cache, data, logs]
+            output_format: yml
+            excluded_names:
+                - 'config.js.twig'
+                - 'getTranslations.js.twig'
+                - 'config.ssr.twig'
+                - 'getTranslations.ssr.twig'
+            output_dir: "%kernel.root_dir%/Resources/translations"
+            remote_storage: ["php_translation.adapter.loco"]

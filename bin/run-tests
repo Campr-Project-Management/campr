@@ -4,6 +4,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$DIR/setup-tests"
 
-bash "$DIR/phpunit" backend/src
+bash "$DIR/phpunit" backend/src/MainBundle/Tests/Controller/TeamControllerTest.php
 
 rm -rf backend/src/AppBundle/Tests/Resources/files/

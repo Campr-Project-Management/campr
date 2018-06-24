@@ -17,7 +17,7 @@ services:
     main.form.locale_type:
         class: MainBundle\Form\LocaleType
         arguments:
-            - '@lexik_translation.locale.manager'
+            - '%managed_locales%'
         tags:
             - { name: form.type }
 
@@ -52,9 +52,12 @@ services:
 
     main.listener.locale:
         class: MainBundle\EventListener\LocaleListener
-        arguments: ['%kernel.default_locale%']
+        arguments:
+            - '@security.token_storage'
+            - '@translator'
+            - '%kernel.default_locale%'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 15 }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 4 }
 
 ### VOTERS ###
     main.team_voter:
