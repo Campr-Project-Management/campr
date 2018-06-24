@@ -12,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,13 +20,18 @@ use AppBundle\Entity\User;
 use Symfony\Component\Validator\Constraints\Regex;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
+/**
+ * Class AccountType.
+ */
 class AccountType extends AbstractType
 {
+    /**
+     * @var GoogleAuthenticator
+     */
     private $googleAuthenticator;
 
     /**
-     * AccountType constructor
-     * .
+     * AccountType constructor.
      *
      * @param GoogleAuthenticator $googleAuthenticator
      */

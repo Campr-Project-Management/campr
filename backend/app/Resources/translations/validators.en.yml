@@ -1,184 +1,130 @@
-not_blank:
-    per_day: Per day field should not be blank
-    minutes_interval: Minutes interval field should not be blank
-    priority: The priority field should not be blank
-    probability: The probability field should not be blank
-    name: The name field should not be blank
-    impact: The impact field should not be blank
-    number: The number field should not be blank
-    sequence: The sequence field should not be blank
-    username: The username field should not be blank
-    email: The email field should not be blank
-    password: Password fields should not be blank
-    first_name: The first name field should not be blank
-    last_name: The last name field should not be blank
-    full_name: Please enter your full name!
-    data: The data field should not be blank
-    puid: PUID should not be blank
-    progress: The progress field should not be blank
-    user: The name field should not be blank. Choose one user
-    project: The project field should not be blank. Choose one project
-    abbreviation: The abbreviation should not be blank
-    module: The module field should not be blank
-    color: The color field should not be blank
-    title: The title field should not be blank
-    description: The description field should not be blank
-    cost: The cost field should not be blank
-    budget: The budget field should not be blank
-    delay: The delay field should not be blank
-    priority: The priority field should not be blank
-    measure: The measure field should not be blank
-    topic: The topic field should not be blank
-    start: The start field should not be blank
-    end: The end field should not be blank
-    duration: The duration field should not be blank
-    date: The date field should not be blank
-    location: The location field should not be blank
-    objectives: The objectives field should not be blank
-    type: The type field should not be blank
-    working: The working field should not be blank
-    milestone: The milestone field should not be blank
-    work_percent: The work complete percent field should not be blank
-    unit: The unit field should not be blank
-    value: The value field should not be blank
-    meeting_name: The meeting name should not be blank
-    schedule: The schedule field should not be blank. Choose one schedule
-    content: The content field should not be blank
-    day: The day field should not be blank
-    from_time: The from time field should not be blank
-    path: The path field should not be empty
-    key: The key field should not be blank
-    secret: The secret field should not be blank
-    token: The token field should not be blank
-    token_secret: The token secret field should not be blank
-    meeting: A meeting should be selected
-    file: You must select a file
-    meeting_participant:
-        user: An user should be selected
-    workspace:
-        name: Workspace name should not be blank.
-        slug: Please enter a slug!
-    payment_method: Please enter a payment method name!
-    subject: Please enter a subject!
-    message: Please enter a message!
-    module: The module name should not be blank.
-    configuration: Project configuration should not be blank.
-    rate: The rate should not be blank.
-    quantity: The quantity should not be blank.
-    project_role: The project role should not be blank.
-    subteam:
-        name: The subteam name should not be blank.
-    subteam_member:
-        user: You must select a user.
-        subteam: You must select a subteam.
-    subteam_role:
-        name: The subteam role name must not be empty.
-    comment:
-        body: The body of the comment cannot be blank
-    info_category: Category should be empty.
-    info_status: Status should be empty.
-    expiry_date: Expiry date should not be empty.
-    currency: Please select a currency
-    distribution_list: Please select at least one distribution list
-    cost_savings: Potential savings should not be blank.
-    time_savings: Potential time savings should not be blank.
-    meeting_category: The meeting category field should not be blank.
-
-not_null:
-    driver: You must select a driver
-    filesystem: You must select a filesystem
-    company: You must select a company
-    author: You must select an author
-    currency: You must select a currency
-    delay_unit: You must select a delay unit
-    time_unit: You must select a time unit
-
-unique:
-    name: That name is taken
-    code: Code is already in use
-    username: The username is already used
-    email: The email is already used
-    number: That number is taken
-    workspace:
-        name: Workspace name already used.
-        slug: Workspace slug already used.
-    currency:
-        code: Currency code already used
-
-invalid:
-    sequence: The sequence field should contain numbers greater than or equal to 0
-    email: Invalid email provided
-    progress: The progress field should contain numbers greater than or equal to 0
-    duration: The duration field should contain numbers greater than or equal to 0
-    rate: The rate field should contain positive numbers with precision 10 and 2 decimals at most
-    image: Uploaded file must be an image!
-    slug: The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or '-' characters
-    module: Invalid module name provided
-    milestone:
-        work_package_status: A milestone can have only the Opened and Completed statuses
-    full_name: The full name must contain a first and last name
-    cost:
-        value_exceeds_parent_costs: Adding and extra cost of %cost_actual_value% will exced the total cost of the parent task.
-    work_package:
-        duration:  Adding and extra duration of %duration% will exceds the total duration of the parent task.
-        scheduled_start_at: Changing the Base Start date to %date% exceds the base start date of it's parent %parent%
-        scheduled_finish_at: Changing the Base Finish date to %date% exceds the base end date of it's parent %parent%
-        forecast_start_at: Changing the Forecast Start date to %date% exceds the forecast start date of it's parent %parent%
-        forecast_finish_at: Changing the Forecast Finish date to %date% exceds the forecast end date of it's parent %parent%
-
-format:
-    color: 'Invalid color format. Should be a valid RGB color starting with a "#" and followed by 6 characters from a to z and 0 to 9. E.g.: #abc123, #123456, #ffffff'
-
-used:
-    team:
-        slug: Slug was already used for this team!
-
-regex:
-    password: Password must contain 1 upper case letter, 1 lower case letter, and 1 number
-
-match:
-    password: The password fields do not match
-
-length:
-    project_number: Your project number cannot be longer than 128 characters
-    color: The color field should have maximum 7 characters
-    number: Your project number cannot be longer than 128 characters
-
-greater_than_or_equal:
-    per_day: Per day field should contain numbers greater than or equal to 0
-    minutes_interval: Minutes interval field should contain numbers greater than or equal to 0
-    milestone: The milestone field should contain numbers greater than or equal to 0
-    work_percent: The work percent field should contain numbers greater than or equal to 0
-    type: The type field should contain numbers greater than or equal to 0
-    unit: The unit field should contain numbers greater than or equal to 0
-    cost: The cost field should contain numbers greater than or equal to 0
-    impact: The impact field should contain numbers greater than or equal to 0
-    probability: The probability field should contain numbers greater than or equal to 0
-    scheduled_finish_at: The Base Start Date should be before the Base Finish Date
-    forecast_finish_at: The Forecast Start Date should be before the Forecast Finish Date
-
-greater_than:
-    cost: The cost field should contain numbers greater the 0
-    delay: The delay field should contain numbers greater the 0
-    time_savings: The potential time savings  field should contain numbers greater the 0
-    cost_savings: The potential savings  field should contain numbers greater the 0
-
-invite:
-    yourself: You are already part of the team.
-    team_member: User with this email is already part of the team.
-
-invitation:
-    sent: You already sent an invitation to this email.
-
-flash:
-    registration_success: You have successfuly registered. Please check your email for the activation link.
-
-work_package:
-    assignment:
-        already_used: '%name% already have a role assigned on this task'
-
-self_reference:
-    work_package:
-        parent: You cannot self reference this work package as a parent.
-        milestone: You cannot self reference this work package as a milestone.
-        phase: You cannot self reference this work package as a phase.
+flash.registration_success: 'You have successfuly registered. Please check your email for the activation link.'
+format.color: 'Invalid color format. Should be a valid RGB color starting with a "#" and followed by 6 characters from a to z and 0 to 9. E.g.: #abc123, #123456, #ffffff'
+greater_than_or_equal.cost: 'The cost field should contain numbers greater than or equal to 0'
+greater_than_or_equal.forecast_finish_at: 'The Forecast Start Date should be before the Forecast Finish Date'
+greater_than_or_equal.impact: 'The impact field should contain numbers greater than or equal to 0'
+greater_than_or_equal.milestone: 'The milestone field should contain numbers greater than or equal to 0'
+greater_than_or_equal.minutes_interval: 'Minutes interval field should contain numbers greater than or equal to 0'
+greater_than_or_equal.per_day: 'Per day field should contain numbers greater than or equal to 0'
+greater_than_or_equal.probability: 'The probability field should contain numbers greater than or equal to 0'
+greater_than_or_equal.scheduled_finish_at: 'The Base Start Date should be before the Base Finish Date'
+greater_than_or_equal.type: 'The type field should contain numbers greater than or equal to 0'
+greater_than_or_equal.unit: 'The unit field should contain numbers greater than or equal to 0'
+greater_than_or_equal.work_percent: 'The work percent field should contain numbers greater than or equal to 0'
+invalid.cost.value_exceeds_parent_costs: 'Adding and extra cost of %cost_actual_value% will exced the total cost of the parent task.'
+invalid.duration: 'The duration field should contain numbers greater than or equal to 0'
+invalid.email: 'Invalid email provided'
+invalid.full_name: 'The full name must contain a first and last name'
+invalid.image: 'Uploaded file must be an image!'
+invalid.milestone.work_package_status: 'A milestone can have only the Opened and Completed statuses'
+invalid.module: 'Invalid module name provided'
+invalid.progress: 'The progress field should contain numbers greater than or equal to 0'
+invalid.rate: 'The rate field should contain positive numbers with precision 10 and 2 decimals at most'
+invalid.sequence: 'The sequence field should contain numbers greater than or equal to 0'
+invalid.slug: 'The slug is invalid. Slug must start/end only with alphanumeric values and contain alphanumeric or ''-'' characters'
+invalid.work_package.duration: 'Adding and extra duration of %duration% will exceds the total duration of the parent task.'
+invalid.work_package.forecast_finish_at: 'Changing the Forecast Finish date to %date% exceds the forecast end date of it''s parent %parent%'
+invalid.work_package.forecast_start_at: 'Changing the Forecast Start date to %date% exceds the forecast start date of it''s parent %parent%'
+invalid.work_package.scheduled_finish_at: 'Changing the Base Finish date to %date% exceds the base end date of it''s parent %parent%'
+invalid.work_package.scheduled_start_at: 'Changing the Base Start date to %date% exceds the base start date of it''s parent %parent%'
+invitation.sent: 'You already sent an invitation to this email.'
+invite.team_member: 'User with this email is already part of the team.'
+invite.yourself: 'You are already part of the team.'
+length.color: 'The color field should have maximum 7 characters'
+length.number: 'Your project number cannot be longer than 128 characters'
+length.project_number: 'Your project number cannot be longer than 128 characters'
+match.password: 'The password fields do not match'
+not_blank.abbreviation: 'The abbreviation should not be blank'
+not_blank.budget: 'The budget field should not be blank'
+not_blank.color: 'The color field should not be blank'
+not_blank.comment.body: 'The body of the comment cannot be blank'
+not_blank.configuration: 'Project configuration should not be blank.'
+not_blank.content: 'The content field should not be blank'
+not_blank.cost: 'The cost field should not be blank'
+not_blank.currency: 'Please select a currency'
+not_blank.data: 'The data field should not be blank'
+not_blank.date: 'The date field should not be blank'
+not_blank.day: 'The day field should not be blank'
+not_blank.delay: 'The delay field should not be blank'
+not_blank.description: 'The description field should not be blank'
+not_blank.distribution_list: 'Please select at least one distribution list'
+not_blank.duration: 'The duration field should not be blank'
+not_blank.email: 'The email field should not be blank'
+not_blank.end: 'The end field should not be blank'
+not_blank.expiry_date: 'Expiry date should not be empty.'
+not_blank.file: 'You must select a file'
+not_blank.first_name: 'The first name field should not be blank'
+not_blank.from_time: 'The from time field should not be blank'
+not_blank.full_name: 'Please enter your full name!'
+not_blank.impact: 'The impact field should not be blank'
+not_blank.info_category: 'Category should be empty.'
+not_blank.info_status: 'Status should be empty.'
+not_blank.key: 'The key field should not be blank'
+not_blank.last_name: 'The last name field should not be blank'
+not_blank.location: 'The location field should not be blank'
+not_blank.measure: 'The measure field should not be blank'
+not_blank.meeting: 'A meeting should be selected'
+not_blank.meeting_name: 'The meeting name should not be blank'
+not_blank.meeting_participant.user: 'An user should be selected'
+not_blank.message: 'Please enter a message!'
+not_blank.milestone: 'The milestone field should not be blank'
+not_blank.minutes_interval: 'Minutes interval field should not be blank'
+not_blank.module: 'The module name should not be blank.'
+not_blank.name: 'The name field should not be blank'
+not_blank.number: 'The number field should not be blank'
+not_blank.objectives: 'The objectives field should not be blank'
+not_blank.password: 'Password fields should not be blank'
+not_blank.path: 'The path field should not be empty'
+not_blank.payment_method: 'Please enter a payment method name!'
+not_blank.per_day: 'Per day field should not be blank'
+not_blank.priority: 'The priority field should not be blank'
+not_blank.probability: 'The probability field should not be blank'
+not_blank.progress: 'The progress field should not be blank'
+not_blank.project: 'The project field should not be blank. Choose one project'
+not_blank.project_role: 'The project role should not be blank.'
+not_blank.puid: 'PUID should not be blank'
+not_blank.quantity: 'The quantity should not be blank.'
+not_blank.rate: 'The rate should not be blank.'
+not_blank.schedule: 'The schedule field should not be blank. Choose one schedule'
+not_blank.secret: 'The secret field should not be blank'
+not_blank.sequence: 'The sequence field should not be blank'
+not_blank.start: 'The start field should not be blank'
+not_blank.subject: 'Please enter a subject!'
+not_blank.subteam.name: 'The subteam name should not be blank.'
+not_blank.subteam_member.subteam: 'You must select a subteam.'
+not_blank.subteam_member.user: 'You must select a user.'
+not_blank.subteam_role.name: 'The subteam role name must not be empty.'
+not_blank.team.name: 'Team name cannot be blank.'
+not_blank.team.slug: 'Team Slug cannot be blank!'
+not_blank.title: 'The title field should not be blank'
+not_blank.token: 'The token field should not be blank'
+not_blank.token_secret: 'The token secret field should not be blank'
+not_blank.topic: 'The topic field should not be blank'
+not_blank.type: 'The type field should not be blank'
+not_blank.unit: 'The unit field should not be blank'
+not_blank.user: 'The name field should not be blank. Choose one user'
+not_blank.username: 'The username field should not be blank'
+not_blank.value: 'The value field should not be blank'
+not_blank.work_percent: 'The work complete percent field should not be blank'
+not_blank.working: 'The working field should not be blank'
+not_blank.workspace.name: 'Workspace name should not be blank.'
+not_blank.workspace.slug: 'Please enter a slug!'
+not_null.author: 'You must select an author'
+not_null.company: 'You must select a company'
+not_null.currency: 'You must select a currency'
+not_null.delay_unit: 'You must select a delay unit'
+not_null.driver: 'You must select a driver'
+not_null.filesystem: 'You must select a filesystem'
+not_null.time_unit: 'You must select a time unit'
+regex.password: 'Password must contain 1 upper case letter, 1 lower case letter, and 1 number'
+unique.currency.code: 'Currency code already used'
+unique.email: 'The email is already used'
+unique.name: 'That name is taken'
+unique.number: 'That number is taken'
+unique.team.name: 'This Teamname is already in use.'
+unique.team.slug: 'This Team Slug is already in use.'
+unique.username: 'The username is already used'
+unique.workspace.name: 'Workspace name already used.'
+unique.workspace.slug: 'Workspace slug already used.'
+used.team.slug: 'Slug was already used for this team!'
+work_package.assignment.already_used: '%name% already have a role assigned on this task'

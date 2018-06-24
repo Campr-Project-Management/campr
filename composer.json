@@ -17,7 +17,11 @@
         }
     },
     "repositories": {
-        "packagist": { "url": "https://packagist.org", "type": "composer" }
+        "packagist": { "url": "https://packagist.org", "type": "composer" },
+        "php-translation/extractor": {
+            "type": "vcs",
+            "url": "https://github.com/DiliBau/extractor"
+        }
     },
     "require": {
         "php": ">=7.1",
@@ -66,7 +70,12 @@
         "cangelis/pdf": "^2.2",
         "webmozart/assert": "^1.3",
         "pagerfanta/pagerfanta": "^1.0",
-        "beberlei/DoctrineExtensions": "^1.0"
+        "beberlei/DoctrineExtensions": "^1.0",
+        "php-translation/loco-adapter": "^0.7.0",
+        "php-translation/symfony-bundle": "^0.7.0",
+        "php-translation/extractor": "^1.5.3",
+        "php-http/httplug-bundle": "^1.10",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
