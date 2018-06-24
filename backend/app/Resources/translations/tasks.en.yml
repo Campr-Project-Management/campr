@@ -1,98 +1,10 @@
-task:
-    read_me:
-        title: "Read Me"
-        description: >
-            <p>Congratulations - your project is successfully created! CAMPR is an intuitive program that you will love to work with and this introduction describes how to utilize the tools to make your experience with CAMPR as convenient as possible.</p>
-
-            <p>CAMPR knows that every project is different and allows you to customize your settings to optimize your work. Our ADMIN SECTION is available to you as a project manager. Here you can configure the settings which are relevant for your project. It's best to set up things up before the project starts, but of course, changes or additions are possible at any time during your project.</p>
-
-            <p>You will notice that some entries are already predefined, but you can personalize your settings in the ADMIN SECTION to your own needs regarding your individual project environment. Completing the next four tasks optimizes your CAMPR settings to your project needs:</p>
-
-            <ul>
-                <li>Project Settings</li>
-                <li>Organization</li>
-                <li>Costs</li>
-                <li>Nice to have</li>
-            </ul>
-
-            <p>It's best to change your settings right away, but as mentioned before, you can always go back and make changes. These default tasks disappear automatically after 5 days. Incidentally, they have no influence on the degree of completion of your project - they are only memory aids.</p>
-
-            <p>
-                <a href="/assets/tasks/en/big/Task-Read-Me-Workspace-Super-Admin.jpg" target="_blank">
-                    <img src="/assets/tasks/en/Task-Read-Me-Workspace-Super-Admin.jpg" alt="Task-Read-Me-Workspace-Super-Admin" />
-                </a>
-            </p>
-
-            <p>You can access the ADMIN SECTION as a project manager by using the ADMIN button in your workspace or via the menu in the upper right corner.</p>
-
-            <p>
-                <a href="/assets/tasks/en/big/Task-Read-Me-Dashboard-Super-Admin.jpg" target="_blank">
-                    <img src="/assets/tasks/en/Task-Read-Me-Dashboard-Super-Admin.jpg" alt="Task-Read-Me-Dashboard-Super-Admin" />
-                </a>
-            </p>
-
-            <p><strong>And now have fun with CAMPR!</strong></p>
-
-    project_settings:
-        title: "Project Settings"
-        description: >
-            <p>Here you’ll find important settings for your project which you can adjust to meet your organizational or PMO standards.</p>
-
-            <p>
-                <a href="/assets/tasks/en/big/Task-Project-Settings-Step-1.jpg" target="_blank">
-                    <img src="/assets/tasks/en/Task-Project-Settings-Step-1.jpg" alt="Task-Project-Settings-Step-1" />
-                </a>
-            </p>
-
-            <p>
-                <a href="/assets/tasks/en/big/Task-Project-Settings-Step-2.jpg" target="_blank">
-                    <img src="/assets/tasks/en/Task-Project-Settings-Step-2.jpg" alt="Task-Project-Settings-Step-2" />
-                </a>
-            </p>
-
-            <p><strong>Customer:</strong> Who is the actual customer of your project? E.g. an internal department or an external customer?</p>
-
-            <p><strong>Program:</strong> Is your project part of a bigger scale conglomeration of multiple projects with similar goals? Here you can group your project to the program by entering the program name.</p>
-
-            <p><strong>Portfolio:</strong> Do you manage multiple projects that belong to a common strategy with high importance for your company or your customers? Then enter the name of the portfolio here.</p>
-
-            <p>How is your project integrated into your organization? What is the scope of your project? Use our predefined values or create your own.</p>
-
-            <p><strong>Category:</strong> Is your project a customer project? Or do you manage a project for a department within your organization?</p>
-
-            <p><strong>Scope:</strong> What is the scope of the project? Does it impact your department only, the entire location or the global structure of your organization?</p>
-
-    organization:
-        title: "Organization"
-        description: >
-            <p>Let's come to the most important success factor for the project - your team.</p>
-
-            <p><strong>Department:</strong> Enter the names of the individual departments or external teams which become part of your project organization.</p>
-
-            <p><strong>Subteams:</strong> Define here the individual teams within your department.</p>
-
-            <p><strong>Company:</strong> What is your company's name or that of one of your (external) partners?</p>
-
-            <p>The creation of Departments or Subteams can be set up later within the module ORGANIZATION.</p>
-
-    cost_groups_and_resources:
-        title: "Cost Groups and Resources"
-        description: >
-            <p>This task deals with the cost and resource management within your project. The costs and resources are precisely defined.</p>
-
-            <p><strong>Internal Costs:</strong> Here you define the cost groups of your organization. This involves actual costs of your internal project members to cover their contribution to your project.</p>
-
-            <p><strong>External Costs:</strong> Define the cost groups for your external expenses. This can be external project members which are temporarily joining your endeavor as well as services and goods to accomplish your targets.</p>
-
-    nice_to_have:
-        title: "Nice to have"
-        description: >
-            <p>To make your work in a complex environment with multiple projects and multitudinous tasks more visual, you can assign colored labels. In the ADMIN SECTION you can name and define the colors of as many labels as you need.</p>
-
-            <p>
-                <a href="/assets/tasks/en/big/Task-Project-Labels.jpg" target="_blank">
-                    <img src="/assets/tasks/en/Task-Project-Labels.jpg" alt="Task-Read-Me-Dashboard-Super-Admin" />
-                </a>
-            </p>
-
-            <p><strong>Label:</strong> Give a name to a label, define a color and assign it to project or task in order to keep the overview about your stuff.</p>
+task.cost_groups_and_resources.description: "<p>This task deals with the cost and resource management within your project. The costs and resources are precisely defined.</p>\n<p><strong>Internal Costs:</strong> Here you define the cost groups of your organization. This involves actual costs of your internal project members to cover their contribution to your project.</p>\n<p><strong>External Costs:</strong> Define the cost groups for your external expenses. This can be external project members which are temporarily joining your endeavor as well as services and goods to accomplish your targets.</p>\n"
+task.cost_groups_and_resources.title: 'Cost Groups and Resources'
+task.nice_to_have.description: "<p>To make your work in a complex environment with multiple projects and multitudinous tasks more visual, you can assign colored labels. In the ADMIN SECTION you can name and define the colors of as many labels as you need.</p>\n<p>\n    <a href=\"/assets/tasks/en/big/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"/assets/tasks/en/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" />\n    </a>\n</p>\n<p><strong>Label:</strong> Give a name to a label, define a color and assign it to project or task in order to keep the overview about your stuff.</p>\n"
+task.nice_to_have.title: 'Nice to have'
+task.organization.description: "<p>Let's come to the most important success factor for the project - your team.</p>\n<p><strong>Department:</strong> Enter the names of the individual departments or external teams which become part of your project organization.</p>\n<p><strong>Subteams:</strong> Define here the individual teams within your department.</p>\n<p><strong>Company:</strong> What is your company's name or that of one of your (external) partners?</p>\n<p>The creation of Departments or Subteams can be set up later within the module ORGANIZATION.</p>\n"
+task.organization.title: Organization
+task.project_settings.description: "<p>Here you’ll find important settings for your project which you can adjust to meet your organizational or PMO standards.</p>\n<p>\n    <a href=\"/assets/tasks/en/big/Task-Project-Settings-Step-1.jpg\" target=\"_blank\">\n        <img src=\"/assets/tasks/en/Task-Project-Settings-Step-1.jpg\" alt=\"Task-Project-Settings-Step-1\" />\n    </a>\n</p>\n<p>\n    <a href=\"/assets/tasks/en/big/Task-Project-Settings-Step-2.jpg\" target=\"_blank\">\n        <img src=\"/assets/tasks/en/Task-Project-Settings-Step-2.jpg\" alt=\"Task-Project-Settings-Step-2\" />\n    </a>\n</p>\n<p><strong>Customer:</strong> Who is the actual customer of your project? E.g. an internal department or an external customer?</p>\n<p><strong>Program:</strong> Is your project part of a bigger scale conglomeration of multiple projects with similar goals? Here you can group your project to the program by entering the program name.</p>\n<p><strong>Portfolio:</strong> Do you manage multiple projects that belong to a common strategy with high importance for your company or your customers? Then enter the name of the portfolio here.</p>\n<p>How is your project integrated into your organization? What is the scope of your project? Use our predefined values or create your own.</p>\n<p><strong>Category:</strong> Is your project a customer project? Or do you manage a project for a department within your organization?</p>\n<p><strong>Scope:</strong> What is the scope of the project? Does it impact your department only, the entire location or the global structure of your organization?</p>\n"
+task.project_settings.title: 'Project Settings'
+task.read_me.description: "<p>Congratulations - your project is successfully created! CAMPR is an intuitive program that you will love to work with and this introduction describes how to utilize the tools to make your experience with CAMPR as convenient as possible.</p>\n<p>CAMPR knows that every project is different and allows you to customize your settings to optimize your work. Our ADMIN SECTION is available to you as a project manager. Here you can configure the settings which are relevant for your project. It's best to set up things up before the project starts, but of course, changes or additions are possible at any time during your project.</p>\n<p>You will notice that some entries are already predefined, but you can personalize your settings in the ADMIN SECTION to your own needs regarding your individual project environment. Completing the next four tasks optimizes your CAMPR settings to your project needs:</p>\n<ul>\n    <li>Project Settings</li>\n    <li>Organization</li>\n    <li>Costs</li>\n    <li>Nice to have</li>\n</ul>\n<p>It's best to change your settings right away, but as mentioned before, you can always go back and make changes. These default tasks disappear automatically after 5 days. Incidentally, they have no influence on the degree of completion of your project - they are only memory aids.</p>\n<p>\n    <a href=\"/assets/tasks/en/big/Task-Read-Me-Workspace-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"/assets/tasks/en/Task-Read-Me-Workspace-Super-Admin.jpg\" alt=\"Task-Read-Me-Workspace-Super-Admin\" />\n    </a>\n</p>\n<p>You can access the ADMIN SECTION as a project manager by using the ADMIN button in your workspace or via the menu in the upper right corner.</p>\n<p>\n    <a href=\"/assets/tasks/en/big/Task-Read-Me-Dashboard-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"/assets/tasks/en/Task-Read-Me-Dashboard-Super-Admin.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" />\n    </a>\n</p>\n<p><strong>And now have fun with CAMPR!</strong></p>\n"
+task.read_me.title: 'Read Me'

@@ -1,1919 +1,2086 @@
-ROLE_SUPER_ADMIN: Super Admin
 ROLE_ADMIN: Admin
+ROLE_SUPER_ADMIN: 'Super Admin'
 ROLE_USER: User
-
-message:
-    access_denied: Access Denied
-    user_invited_to_project: User has been invited to the project. The next time when they login they will have access to the project.
-    user_added_to_project: User has been added to the project.
-    user_blocked: User blocked
-    member: member
-    members: members
-    roles: Roles
-    campr_moto: Campr - The tool for industrious people
-    error: Error!
-    costs_chart: Costs Chart
-    reschedule_remaining_action: Reschedule remaining action
-    delete_remaining_action: Delete remaining action
-    edit_evaluation: Edit evaluation
-    edit_lesson: Edit lesson
-    edit_milestone: Edit milestone
-    per_day_reports_exceeded: You exceeded the number of reports per day. Please check with your manager.
-    minutes_under_interval: You cannot generate another report due to time interval restriction. Please check with your manager.
-    email_report: Are you sure you want to email thie status report?
-    project_trend: Project Trend
-    edit_remaining_action: Edit Remaining Action
-    view_remaining_action: View Remaining Action
-    back_to: Back To
-    project_acceptance: Project Acceptance
-    add_new_action: Add New Action
-    remaining_action: Remaining Action
-    project_management: Project Management
-    organization_context: Organization Context
-    performance_schedule: Performance Schedule
-    reflection: Reflection
-    add_new_lesson: Add New Lesson
-    add_new_evaluation_objective: Add New Evaluation Objective
-    new_lesson: New Lesson
-    new_evaluation_objective: New Evaluation Objective
-    lessons_learned: Lessons Learned
-    evaluation_objectives: Evaluation Objectives
-    overall_impression: Overall Impression
-    close_down_report: Close Down Report
-    rasci_matrix: RASCI Matrix
-    edit_team_member: Edit team member
-    delete_team_member: Delete team member
-    no_managers: There are no managers defined on this project. Please set up managers in order to asign them to this department.
-    contract_frozen: Project contract is frozen
-    work_package_dependency_constraint: Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!
-    top_opportunity: Top Opportunity
-    top_risk: Top Risk
-    week: Week
-    opportunities: Opportunities
-    phases_and_milestones: Phases and Milestones
-    costs_progress: Costs Progress
-    task_progress: Task Progress
-    overall_progress: Overall Progress
-    danger: Critical
-    warning: Warning
-    actual_schedule: Actual Schedule
-    forecast_schedule: Forecast Schedule
-    base_schedule: Base Schedule
-    current_date: Current Date
-    project_trend: Project Trend
-    action_needed: Action Needed
-    tasks_condition: Tasks Condition
-    tasks_status: Tasks Status
-    overall_status: Overall Status
-    delete_decision: Delete decision
-    reschedule_decision: Reschedule Decision
-    back_to_decisions: Back to Decisions
-    create_new_decision: Create New Decision
-    project_decisions: Project Decisions
-    decisions: Decisions
-    expiry_date: Expiry Date
-    expired_at: Expired At
-    back_to_infos: Back to Infos
-    create_new_info: Create New Info
-    edit_info: Edit Info
-    project_infos: Project Infos
-    infos: Infos
-    delete_objective: Delete objective
-    edit_agenda: Edit Agenda
-    delete_agenda: Delete agenda
-    edit_decision: Edit Decision
-    delete_decision: Delete Decision
-    edit_phase: Edit Phase
-    subteam: Subteam
-    department: Department
-    company: Company
-    role: Role
-    saved: Saved!
-    unable_to_save: Unable to save.
-    project_closed: Project has been closed.
-    created: Created
-    back_to_todos: Back to Todos
-    delete_todo: Delete Todo
-    edit_todo: Edit Todo
-    view_todo: View Todo
-    create_new_todo: Create New Todo
-    project_todos: Project Todos
-    delete_meeting: Delete Meeting
-    to: to
-    from: from
-    min: Min
-    starting_on: Starting On
-    by_phase: By Phase
-    by_department: By Department
-    delete_opportunity: Delete Opoortunity
-    delete_risk: Delete Risk
-    edit_measure: Edit Measure
-    download_attachment: Download Attachment
-    edit_risk: Edit Risk
-    edit_opportunity: Edit Opportunity
-    budget_calculation_opportunity: Budget is calculated as Probability times Potential Savings
-    time_calculation_opportunity: Time Saved is calculated as Probability times Potential Time Savings
-    budget_calculation_risk: Budget is calculated as Probability times Potential Costs
-    time_calculation_risk: Time Saved is calculated as Probability times Potential Time Delays
-    average_impact_opportunity: Average Impact Value of all opportunities is
-    average_probability_opportunity: Average Probability Value of all opportunities is
-    average_impact_risks: Average Impact Value of all risks is
-    average_probability_risks: Average Probability Value of all risks is
-    participants: Participants
-    delete: Delete
-    new_objective: New Objective
-    save_schedule: Save Schedule
-    documents: Documents
-    add_new_info: Add New Info
-    add_new_todo: Add New Todo
-    add_new_decision: Add New Decision
-    add_new_topic: Add New Topic
-    agenda: Agenda
-    add_new_objective: Add New Objective
-    objectives: Objectives
-    location: Location
-    budget_calculation: Budget is calculated as Probability times Potential Savings
-    time_calculation: Time Saved is calculated as Probability times Potential Time Savings
-    average_impact: Average Impact Value of all opportunities is
-    average_probability: Average Probability Value of all opportunities is
-    delete_meeting: Delete Meeting
-    reschedule_meeting: Reschedule Meeting
-    send_notifications: Send Notifications
-    back_to_meetings: Back to Meetings
-    print_meeting: Print Meeting
-    edit_meeting: Edit Meeting
-    view_meeting: View Meeting
-    view_decision: View Decision
-    less: less
-    more: more
-    event: Event
-    create_new_meeting: Create New Meeting
-    project_meetings: Project Meetings
-    cost: Cost
-    close: Close
-    alert: Alert
-    new_comment: New Comment
-    add_comment: Add Comment
-    commented: commented
-    comment: Comment
-    minute_ago: minute ago
-    minutes_ago: minutes ago
-    hour_ago: hour ago
-    hours_ago: hours ago
-    day_ago: day ago
-    days_ago: days ago
-    responsible: Responsible
-    edit: Edit
-    edited: edited
-    by: by
-    created_on: created on
-    added_a_measure: added a measure
-    measures_cost: Measures Cost
-    measures: Measures
-    due_date: Due Date
-    budget_saved: Budget Saved
-    new_opportunity: New Opportunity
-    new_risk: New Risk
-    potential_savings: Potential Savings
-    potential_time_savings: Potential Time Savings
-    total_potential_savings: Total Potential Savings
-    total_potential_time_savings: Total Potential Time Savings
-    project_opportunities: Project Opportunities
-    project_risks: Project Risks
-    total_potential_cost: Total Potential Cost
-    total_potential_delay: Total Potential Delay
-    total_number_of_measures: Total Number of Measures
-    total_cost_of_measures: Total Cost of Measures
-    potential_cost: Potential Cost
-    potential_time_delay: Potential Time Delay
-    strategy: Strategy
-    very_high: Very High
-    high: High
-    medium: Medium
-    low: Low
-    very_low: Very Low
-    time_saved: Time Saved
-    impact: Impact
-    delay: Delay
-    budget: Budget
-    probability: Probability
-    priority: Priority
-    create_new_risk: Create New Risk
-    create_new_opportunity: Create New Opportunity
-    back_to_risks_and_opportunities: Back to Risks & Opportunities
-    total_tasks: Total tasks
-    project_status: Project Status
-    project_condition: Project Condition
-    project_schedule: Project Schedule
-    approved_on: Approved On
-    project_summary: Project Summary
-    parent_phase: Parent Phase
-    first_task: First Task
-    last_task: Last Task
-    project_phases: Project Phases
-    project_milestones: Project Milestones
-    phase_responsible: Phase Responsible
-    milestone_responsible: Milestone Responsible
-    edit_organization: Edit Organization
-    project_roles: Project Roles
-    delete_subteam: Delete Subteam
-    delete_phase: Delete Phase
-    delete_milestone: Delete Milestone
-    edit_subteam: Edit Subteam
-    back_to_organization: Back to Project Organization
-    back_to_phases_and_milestones: Back to Phases & Milestones
-    create_new_phase: Create new phase
-    create_new_milestone: Create new milestone
-    automatic_phase_schedule_note: Calculated based on the Start Date of the first Task/Milestone and the Finish Date of the last Task/Milestone added to this phase.
-    manual_phase_schedule_note_first: Add manual dates for Base and Forecast schedule.
-    manual_phase_schedule_note_second: Base Start Date and Base Finish Date are overwritten by the automatically calculated dates.
-    details: Details
-    start_date: Start Date
-    finish_date: Finish Date
-    milestone_schedule_note: Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.
-    create_new_team_member: Create new team member
-    add_avatar_image: Add avatar image
-    delete_department: Are you sure you want to delete selected department?
-    delete_info: Are you sure you want to delete selected info?
-    edit_department: Edit Department
-    displaying: Displaying
-    results_out_of: results out of
-    edit_project_organization: Edit Project Organization
-    dashboard: Dashboard
-    filter_by: Filter By
-    customer: Customer
-    project_manager: Project Manager
-    project_manager_signature: Project Manager Signature
-    project_managers: Project Manager(s)
-    project_sponsor: Sponsor
-    project_sponsor_signature: Project Sponsor Signature
-    programme: Programme
-    status: Status
-    schedule: Schedule
-    project: Project
-    hi: Hi
-    projects: Projects
-    tasks: Tasks
-    project_dashboard: Project Dashboard
-    contract: Contract
-    organization: Organization
-    plan: Plan
-    task_management: Task Management
-    phases_milestones: Phases & Milestones
-    risks_oportunities: Risks & Oportunities
-    communication: Communication
-    control_measures: Control Measures
-    create_new_status_report: Create New Status Report
-    project_status_reports: Project Status Reports
-    status_reports: Status Reports
-    status_report: Status Report
-    meetings: Meetings
-    infos: Infos
-    todos: Todos
-    notes: Notes
-    close_down_project: Close Down Project
-    recent_projects: My Recent Projects
-    all_projects: View all my Projects
-    my_projects: My Projects
-    new_project: New Project
-    recent_tasks: My Recent Tasks
-    all_tasks: View all my Tasks
-    my_tasks: My Tasks
-    new_task: New Task
-    started_on: Started on
-    progress: Progress
-    new_message: New
-    task_status: Task Status
-    cost_status: Cost Status
-    add_project_notes:
-    year: Year
-    sales: Sales
-    expenses: Expenses
-    resource_chart: Resource Chart
-    project_contract: Project Contract
-    project_description: Project Description
-    project_objectives: Project Objectives
-    project_organization: Project Organization
-    new_objective_title: New Objective Title
-    new_objective_description: New Objective Description
-    add_objective: Add new objective
-    edit_objective: Edit objective
-    project_limitations: Project Limitations
-    new_project_limitation: New Project Limitation
-    add_limitation: Add new limitation
-    edit_limitation: Edit limitation
-    project_deliverables: Project Deliverables
-    new_project_deliverable: New Project Deliverable
-    add_deliverable: Add new deliverable
-    edit_deliverable: Edit deliverable
-    sponsors_managers: Sponsors & Managers
-    edit_sponsors_managers: Edit Sponsors & Managers
-    team_members: Team Members
-    edit_team_members: Edit Team Members
-    project_resources: Project Resources
-    projcet_costs: Project Costs
-    project_create_wizard: Project Creation Wizard
-    project_create_step1: 'Step 1: General Info'
-    project_create_step2: 'Step 2: Project Worthiness Analysis'
-    project_create_step3: 'Step 3: Project Builder'
-    project_name: Project Name
-    project_number: Project No.
-    project_logo: Add Project Logo
-    project_portfolio: Project is part of a portfolio
-    add_portfolio: Add New Portfolio
-    project_programme: Project is part of a programme
-    add_programme: Add New Programme
-    project_duration: Project Duration
-    project_budget: Project Budget
-    project_involved: Project Involved
-    team_members_involved: Team Members Involved
-    departments_involved: Departments Involved
-    strategical_meaning: Strategical Meaning
-    risks: Risks
-    category: Category
-    scope: Scope
-    project_size: Project Size
-    medium: Medium
-    recommended_modules: based on your estimations we recommend the following modules
-    not_recommended_modules: we don’t recommend using the remaining modules but you can still activate them
-    rasci_matrix: Rasci Matrix
-    task_chart: Task Chart
-    gantt_chart: Gantt Chart
-    context: Context
-    decisions: Decisions
-    start: Start
-    finish: Finish
-    duration: Duration
-    schedule_base: Schedule Base
-    schedule_forecast: Schedule Forecast
-    yes: Yes
-    no: No
-    click: Click
-    here: Here
-    homepage: Homepage
-    impersonate: You are currently logged in as
-    return: to return to your original user.
-    no_chat_rooms: Chat list is empty for this project
-    no_private_messages: There are no private messages on this project
-    your_teams: Your teams
-    your_workspaces: Your workspaces
-    teams: Teams you are a part of
-    workspaces: Workspaces you are a part of
-    invoce: Invoice for payment:
-    reset_password: Please enter your email address to reset the account password. An email will be sent with instructions.
-    wait: Please wait...
-    edit_task_labels: Edit Task Labels
-    new_label: New Label
-    edit_label: Edit Label
-    open_tasks: Open Tasks
-    view_grid: View Grid
-    view_board: View Board
-    label_note: 'Note: the Label text color is white so pick a background color that makes it easy to read the white text above it.'
-    create_new_task: Create New Task
-    import_task: Import Task
-    import_tasks: Import Tasks
-    task_schedule: Task Schedule
-    task_details: Task Details
-    task_assignments: Task Assignments
-    back_to_task_management: Back to Task management
-    back_to_task_view: Back to Task View
-    subtasks_summary: '%completed_tasks% of %total_tasks%'
-    planning: Planning
-    subtasks: Subtasks
-    project_tasks: Project Tasks
-    edit_labels: Edit Labels
-    edit_task: Edit Task
-    close_task: Close Task
-    delete_task: Delete Task
-    import_project: Import project
-    export_project: Export project
-    all_programmes: All Programmes
-    all_projects_filter: All Projects
-    all_customers: All Customers
-    all_statuses: All Statuses
-    all_conditions: All Conditions
-    all_scheduels: All Schedules
-    internal_resources: Internal Resources
-    external_resources: External Resources
-    total: Total
-    select_portfolio: Select Portfolio
-    select_programme: Select Programme
-    select_customer: Select Customer
-    manual_schedule: Manual Schedule
-    automatic_schedule: Automatic Schedule
-    manual_schedule_note: Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.
-    automatic_schedule_note: Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.
-    internal_costs: Internal Costs
-    project_currency: Project Currency
-    external_costs: External Costs
-    asignee: Asignee
-    assignee: Assignee
-    note: Note:
-    opex_capex_note: If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.
-    capex: Capex
-    capex_subtotal: Capex Subtotal
-    opex_subtotal: Opex Subtotal
-    attachments: Attachments
-    view_team: View Team
-    close_team: Close Team
-    departments: Departments
-    assigned_to: assigned task to
-    has_edited_task: has edited task
-    has_commented_task: has commented task
-    new_comment: New Comment
-    this_task_part_of: This task is part of
-    this_task_has_no_planning: This task has no planning data configured
-    task_completion: Task completion
-    task_condition: Task condition
-    add_internal_costs: Add internal costs
-    add_external_costs: Add external costs
-    delete_external_cost: Delete this external cost ?
-    delete_internal_cost: Delete this internal cost ?
-    edit_external_costs: Edit external cost
-    edit_internal_costs: Edit internal cost
-    reschedule_todo: Reschedule todo
-    reschedule_info: Reschedule info
-    edit_forecast_total: Edit forecast total
-    edit_actual_total: Edit actual total
-    confirm_open_task: Are you sure you wan to open this task ?
-    confirm_close_task: Are you sure you wan to close this task ?
-    select_phase_milestone: Select a phase&milestone
-    label_none: None
-    condition: Condition
-    change_accountable: Change Accountable
-    change_responsible: Change Responsible
-    uploading_file_failed: There was an error while uploading the file
-    delete_file_failed: There was an error while deleting the file
-    wbs: WBS
-    days: Days
-    weeks: Weeks
-    months: Months
-    no_results: No results
-    currency: Currency
-    clear_selection: Clear selection
-    loading_more_tasks: Loading more tasks...
-    not_enough_data: Not enough data.
-
-menu:
-    users: Users
-    workspaces: Workspaces
-    deleted_workspaces: Deleted Workspaces
-    workspaces: Workspaces
-    payment_methods: Payment Methods
-    payments: Payments
-    account: Account
-    settings: Settings
-    contact: Contact
-    admin: Admin
-
-title:
-    meta_description: Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.
-    members: Members
-    departments: Departments
-    subteams: Subteams
-    add_distribution_list: Add Distribution List
-    homepage_main: Campr Main Site
-    homepage: Campr Admin
-    header: Administration
-    my_account: My Account
-    account_activation: Account activation
-    reset: Please enter your email address to reset the account password. An email will be sent with instructions.
-    risk_and_opportunities: Risk & Opportunities
-    workspace_member:
-        for: Members of
-        create: Create new member
-        edit: Edit
-    status_report:
-        list: Status Report
-    project_close_down:
-        list: Project Close Down
-        create: Create new project close down
-        edit: Edit project close down
-    evaluation_objective:
-        list: Evaluation Objective
-        create: Create new Evaluation Objective
-        edit: Edit Evaluation Objective
-    lesson:
-        list: Lesson
-        create: Create new lesson
-        edit: Edit lesson
-    close_down_action:
-        list: Close Down Action
-        create: Create new close down action
-        edit: Edit close down action
-    status_report_config:
-        list: Status Report Config
-        create: Create new status report config
-        edit: Edit status report config
-    user:
-        list: Users
-        create: Create new user
-        edit: Edit user
-        invite: Invite user
-    risk_status:
-        list: Risk Status
-        create: Create new risk status
-        edit: Edit risk status
-    schedule:
-        list: Schedule
-        create: Create new schedule
-        edit: Edit schedule
-    rasci:
-        list: Rasci
-        create: Create new rasci
-        edit: Edit rasci
-    workpackage:
-        list: Work Package
-        create: Create new work package
-        edit: Edit work package
-    portfolio:
-        list: Portfolio
-        create: Create new portfolio
-        edit: Edit portfolio
-    project:
-        list: Project
-        create: Create new project
-        edit: Edit project
-    file:
-        list: File
-        upload: Upload new file
-        edit: Edit media file
-    project_category:
-        list: Category
-        create: Create new project category
-        edit: Edit project category
-    project_complexity:
-        list: Complexity
-        create: Create new project complexity
-        edit: Edit project complexity
-    project_cost_type:
-        list: Cost type
-        create: Create new project cost type
-        edit: Edit project cost type
-    project_department:
-        list: Department
-        create: Create new project department
-        edit: Edit project department
-    project_module:
-        list: Module
-        create: Create new project module
-        edit: Edit project module
-    project_role:
-        list: Role
-        create: Create new project role
-        edit: Edit project role
-    project_scope:
-        list: Scope
-        create: Create new project scope
-        edit: Edit project scope
-    project_status:
-        list: Status
-        create: Create new project status
-        edit: Edit project status
-    project_team:
-        list: Team
-        create: Create new project team
-        edit: Edit project team
-    project_user:
-        list: User
-        create: Create new project user
-        edit: Edit project user
-    project_work_cost_type:
-        list: Work cost type
-        create: Create new project work cost type
-        edit: Edit project work cost type
-    color_status:
-        list: Color status
-        create: Create new color status
-        edit: Edit color status
-    risk:
-        list: Risk
-        create: Create new risk
-        edit: Edit risk
-    risk_category:
-        list: Risk category
-        create: Create new risk category
-        edit: Edit risk category
-    risk_strategy:
-        list: Risk Strategy
-        create: Create new risk strategy
-        edit: Edit risk strategy
-    opportunity:
-        list: Opportunity
-        create: Create new opportunity
-        edit: Edit opportunity
-    opportunity_strategy:
-        list: Opportunity Strategy
-        create: Create new opportunity strategy
-        edit: Edit opportunity strategy
-    opportunity_status:
-        list: Opportunity Status
-        create: Create new opportunity status
-        edit: Edit opportunity status
-    measure:
-        list: Measure
-        create: Create new measure
-        edit: Edit measure
-    todo:
-        list: Todo
-        create: Create new todo
-        edit: Edit todo
-    unit:
-        list: Unit
-        create: Create new unit
-        edit: Edit unit
-    wppcwct:
-        list: Work package project work cost type
-        create: Create new work package project work cost type
-        edit: Edit work package project work cost type
-    impact:
-        list: Impact
-        create: Create new impact
-        edit: Edit impact
-    meeting_agenda:
-        list: Meeting agenda
-        create: Create new meeting agenda
-        edit: Edit meeting agenda
-    meeting_participant:
-        list: Meeting participant
-        create: Create new meeting participant
-        edit: Edit meeting participant
-    meeting:
-        list: Meeting
-        create: Create new meeting
-        edit: Edit meeting
-    meeting_category:
-        list: Meeting category
-        create: Create new meeting category
-        edit: Edit meeting category
-    meeting_objective:
-        list: Meeting objective
-        create: Create new meeting objective
-        edit: Edit meeting objective
-    note:
-        list: Note
-        create: Create new note
-        edit: Edit note
-    calendar:
-        list: Calendar
-        create: Create new calendar
-        edit: Edit calendar
-    day:
-        list: Day
-        create: Create new day
-        edit: Edit day
-    working_time:
-        list: Working time
-        create: Create new working time
-        edit: Edit working time
-    assignment:
-        list: Assignment
-        create: Create new assignment
-        edit: Edit assignment
-    timephase:
-        list: Timephase
-        create: Create new timephase
-        edit: Edit timephase
-    company:
-        list: Company
-        create: Create new company
-        edit: Edit company
-    decision:
-        list: Decision
-        create: Create new decision
-        edit: Edit decision
-    distribution_list:
-        list: Distribution list
-        create: Create new distribution list
-        edit: Edit distribution list
-    communication:
-        list: Communication
-        create: Create new communication
-        edit: Edit communication
-    document:
-        list: Document
-        create: Create new document
-        edit: Edit document
-    filesystem:
-        list: File system
-        create: Create new file system
-        edit: Edit file system
-    media:
-        list: Media
-        upload: Upload new file
-        edit: Edit media file
-    label:
-        list: Label
-        create: Create new label
-        edit: Edit label
-    messages: Messages
-    workspace:
-        list: Workspace list
-        create: Create new workspace
-        edit: Edit workspace
-    team_member:
-        for: Team member list for
-        list: Team member list
-        create: Create new team member
-        edit: Edit team member
-    payment:
-        list: Payments
-    payment_method:
-        list: Payment method list
-        create: Create new Payment Method
-        edit: Edit payment method
-    contact: Send us a message
-    contract:
-        list: Contract
-        create: Create Contract
-        edit: Edit Contract
-    workpackage_category:
-        list: Work Package Category
-        create: Create Work Package Category
-        edit: Edit Work Package Category
-    workpackage_status:
-        list: Work Package Status
-        create: Create Work Package Status
-        edit: Edit Work Package Status
-    programme:
-        list: Programme
-        create: Create Programme
-        edit: Edit Programme
-    project_objective:
-        list: Objective
-        create: Create Project Objective
-        edit: Edit Project Objective
-    project_limitation:
-        list: Limitation
-        create: Create Project Limitation
-        edit: Edit Project Limitation
-    project_deliverable:
-        list: Deliverable
-        create: Create Project Deliverable
-        edit: Edit Project Deliverable
-    resource:
-        list: Resource
-        create: Create Resource
-        edit: Edit Resource
-    cost:
-        list: Cost
-        create: Create Cost
-        edit: Edit Cost
-    external_cost:
-        list: External Cost
-        create: Create Cost
-        edit: Edit Cost
-    internal_cost:
-        list: Internal Cost
-        create: Create Cost
-        edit: Edit Cost
-    dashboard: Dashboard
-    subteam:
-        list: Subteam
-        create: Create Subteam
-        edit: Edit Subteam
-    subteam_role:
-        list: Subteam Role
-        create: Create Subteam Role
-        edit: Edit Subteam Role
-    subteam_member:
-        list: Subteam Member
-        create: Create Subteam Member
-        edit: Edit Subteam Member
-    decision_status:
-        list: Decision Status
-        create: Create Decision Status
-        edit: Edit Decision Status
-    decision_category:
-        list: Decision Category
-        create: Create Decision Category
-        edit: Edit Decision Category
-    todo_status:
-        list: Todo Status
-        create: Create Todo Status
-        edit: Edit Todo Status
-    todo_category:
-        list: Todo Category
-        create: Create Todo Category
-        edit: Edit Todo Category
-    note_status:
-        list: Note Status
-        create: Create Note Status
-        edit: Edit Note Status
-    info:
-        list: Info
-        create: Create new info
-        edit: Edit info
-    info_status:
-        list: Info status
-        create: Create new info status
-        edit: Edit info status
-    info_category:
-        list: Info category
-        create: Create new info category
-        edit: Edit info category
-    project_add_error: There where some errors while saving the project
-    status:
-        edit: Edit
-
-subtitle:
-    project_close_down: List of project close downs
-    evaluation_objective: List of evaluation objectives
-    lesson: List of lessons
-    close_down_action: List of close down actions
-    status_report_config: List of status report configs
-    status_report: List of status reports
-    decision_status: List of decision statuses
-    decision_category: List of decision categories
-    note_status: List of note statuses
-    todo_status: List of todo statuses
-    meeting_category: List of meeting categories
-    meeting_objective: List of meeting objectives
-    measure: Measure
-    opportunity_strategy: List of opportunity strategies
-    opportunity_status: List of opportunity statuses
-    opportunity: List of opportunities
-    resource: List of resources
-    cost: List of costs
-    user: List of users
-    status: List of statuses
-    schedule: List of schedules
-    rasci: List of rasci
-    workpackage: List of workpackages
-    portfolio: List of portfolios
-    project: List of projects
-    file: List of project files
-    project_category: List of project categories
-    project_complexity: List of project complexities
-    project_cost_type: List of project cost types
-    project_department: List of project departments
-    project_module: List of project modules
-    project_role: List of project roles
-    project_scope: List of project scopes
-    project_status: List of projects statuses
-    project_team: List of project teams
-    project_user: List of project users
-    project_work_cost_type: List of project work cost types
-    color_status: List of color statuses
-    risk: List of risks
-    risk_category: List of risk categories
-    risk_strategy: List of risk strategies
-    todo: List of todos
-    todo_category: List of todo categories
-    unit: List of units
-    wppcwct: List of Work Package Project Work Cost Type
-    impact: List of impacts
-    meeting_agenda: List of meeting agendas
-    meeting_participant: List of meeting participants
-    meeting: List of meetings
-    note: List of notes
-    calendar: List of calendars
-    day: List of days
-    working_time: List of working times
-    assignment: List of assignments
-    timephase: List of timephases
-    company: List of companies
-    decision: List of decisions
-    distribution_list: List of distribution lists
-    communication: List of communications
-    document: List of documents
-    filesystem: List of file systems
-    media: List of project files
-    label: List of project labels
-    contract: List of contracts
-    workpackage_category: List of work package categories
-    workpackage_status: List of work package statuses
-    programme: List of programmes
-    project_objective: List of project objectives
-    project_limitation: List of project limitations
-    project_deliverable: List of project deliverables
-    dashboard: Welcome to the admin area!
-    subteam: List of subteams
-    subteam_role: List of subteam roles
-    subteam_member: List of subteam members
-    task_schedule: Task schedule
-    task_precedesor: Task predecesor
-    risk_status: List of Risk Statuses
-
-label:
-    approved_at: Approved At
-    clear: Clear
-    not_approved: Not approved
-    invite_workspace_member: Invite member to workspace
-    status_report_distribution: Status Report Distribution
-    edit_topic: Edit topic
-    delete_topic: Delete topic
-    view_status_report: View Status Report
-    email_status_report: Email Status Report
-    download_status_report: Download Status Report
-    project_close_down: Project Close Down
-    overall_impression: Overall Impression
-    performance_schedule: Performance Schedule
-    organization_context: Organization Context
-    project_management: Project Management
-    project_sponsors: Project Sponsors
-    project_managers: Project Managers
-    is_default: Is default
-    minutes_interval: Minutes Interval
-    per_day: Per Day
-    top_risk: Top Risk
-    top_opportunity: Top Opportunity
-    status_report: Status Report
-    frozen: Frozen
-    not_started: Not Started
-    in_progress: In progress
-    pending: Pending
-    open: Open
-    closed: Closed
-    freezed: Freezed
-    trend: Trend
-    event: Event
-    time: Time
-    new_role: New Role
-    expiry_date: Expiry Date
-    select_status: Select Status
-    finish_time: Finish Time
-    start_time: Start Time
-    select_date: Select Date
-    distribution_list: Distribution List
-    time_unit: Time Unit
-    delay_unit: Delay Unit
-    opportunity_status: Opportunity Status
-    opportunity_strategy: Opportunity Strategy
-    currency: Currency
-    risk: Risk
-    opportunity: Opportunity
-    probability: Probability
-    time_savings: Time Savings
-    phase_is_subphase: This is a subphase
-    parent_phase: Select parent phase
-    select_users: Select Users
-    select_department: Select Department
-    subteam_name: Subteam Name
-    select_managers: Select Managers
-    select_members: Select Members
-    department_name: Department Name
-    new_subteam: New Subteam
-    resource: Resource
-    cost_item: Cost Item
-    quantity: Quantity
-    username: Username
-    email: Email
-    password:
-        first: Password
-        repeat: Repeat password
-    first_name: First name
-    last_name: Last name
-    phone: Phone
-    locale: Language
-    avatar: Avatar
-    roles: Roles
-    enabled: Enabled
-    suspended: Suspended
-    role:
-        user: ROLE_USER
-        admin: ROLE_ADMIN
-        superadmin: ROLE_SUPER_ADMIN
-        team_member: ROLE_TEAM_MEMBER
-        team_owner: ROLE_TEAM_OWNER
-    name: Name
-    workpackage: Work Package
-    user: User
-    puid: Puid
-    parent: Parent
-    color_status: Color Status
-    responsible: Responsible
-    progress: Progress
-    duration: Duration
-    project: Project
-    label: Label
-    labels: Labels
-    calendar: Calendar
-    schedule_start: Scheduled Start At
-    schedule_finish: Scheduled Finish At
-    forecast_start: Forecast Start At
-    forecast_finish: Forecast Finish At
-    actual_start: Actual Start At
-    actual_finish: Actual Finish At
-    content: Content
-    results: Results
-    is_key_milestone: Key milestone
-    data: Data
-    description: Description
-    filesystem: Filesystem
-    number: Number
-    sponsor: Sponsor
-    manager: Manager
-    company: Company
-    project_complexity: Project Complexity
-    project_category: Project Category
-    project_scope: Project Scope
-    status: Status
-    portfolio: Portfolio
-    sequence: Sequence
-    abbreviation: Abbreviation
-    rate: Rate
-    project_work_cost_type: Project Work Cost Type
-    module: Module
-    required: Required
-    printable: Printable
-    lead: Lead
-    project_role: Project Role
-    project_department: Project Department
-    project_team: Project Team
-    show_in_resources: Show In Resources
-    show_in_rasci: Show In Rasci
-    show_in_org: Show In Org
-    show_in_status: Show in status report
-    impact: Impact
-    cost: Cost
-    budget: Budget
-    delay: Delay
-    priority: Priority
-    strategy: Strategy
-    category: Category
-    measure: Measure
-    due_date: Due Date
-    create: Create
-    meeting: Meeting
-    meetings: Meetings
-    meeting_name: Meeting name
-    meeting_category: Meeting Category
-    title: Title
-    date: Date
-    show_in_status_report: Show In Status Report
-    projectworkcosttype: Project Work Cost Type
-    base: Base
-    change: Change
-    actual: Actual
-    remaining: Remaining
-    forecast: Forecast
-    is_generic: Generic
-    is_inactive: Inactive
-    is_enterprise: Enterprise
-    is_cost_resource: Cost resource
-    is_budget: Budget
-    is_visible: Visible
-    start: Start
-    end: End
-    duration: Duration
-    remark: Remark
-    is_present: Is Present
-    is_excused: Is Excused
-    in_distribution_list: In Distribution List
-    location: Location
-    objectives: Objectives
-    note_title: Title
-    baseline: Is Baseline
-    based: Is Based
-    type: Type
-    working: Working
-    day: Day
-    from_time: From Time
-    to_time: To Time
-    wppwct: Work Package Project Work Cost Type
-    milestone: Milestone
-    started_at: Started At
-    finished_at: Finished At
-    percent_work: Percent Work
-    confirmed: Confirmed
-    type: Type
-    assignment: Assignment
-    unit: Unit
-    value: Value
-    field_title: Title
-    due_date: Due Date
-    responsibility: Responsibility
-    schedule: Schedule
-    participants: Participants
-    file: Document file
-    driver: Driver
-    color: Color
-    path: Path
-    dropbox:
-        key: Dropbox key
-        secret: Dropbox secret
-        token: Dropbox token
-        token_secret: Dropbox token secret
-    topic: Topic
-    logo: Logo
-    team_members: Team members
-    team: Team
-    token: Token
-    slug: Slug
-    facebook: Facebook
-    twitter: Twitter
-    instagram: Instagram
-    gplus: Google+
-    linked_in: LinkedIn
-    medium: Medium
-    subject: Subject
-    message: Message
-    full_name: Full name
-    firstname: First name
-    lastname: Last name
-    proposed_start_date: Proposed Start Date
-    proposed_end_date: Proposed End Date
-    forecast_start_date: Forecast Start Date
-    forecast_end_date: Forecast End Date
-    base_start_date: Base Start Date
-    base_end_date: Base End Date
-    base_due_date: Base Due Date
-    forecast_due_date: Forecast Due Date
-    select_phase: Select Phase
-    edit_phase: Edith Phase
-    edit_milestone: Edith Milestone
-    created_by: Created By
-    two_factor_auth: Two Factor Authentication
-    closed: Closed
-    open: Open
-    pending: Pending
-    ongoing: Ongoing
-    completed: Completed
-    asignee: asignee
-    phase: Phase
-    subtask_description: Subtask Description
-    search_for_tasks: Search for tasks
-    default: Default
-    workpackage_category: Work Package Category
-    workpackage_status: Work Package Status
-    programme: Programme
-    dependencies: Dependencies
-    dependants: Dependants
-    contract: Contract
-    task_title: Task Title
-    task_description: Task Description
-    resource: Resource
-    daily_rate: Daily Rate
-    qty: Qty.
-    days: Days
-    hours: Hours
-    weeks: Weeks
-    months: Months
-    internal_cost_subtotal: Subtotal
-    internal_costs_total: Base Total
-    forecast_total: Forecast Total
-    actual_total: Actual Total
-    cost_description: Cost Description
-    external_cost_qty: Qty.
-    external_cost_unit_rate: Unit Rate
-    external_cost_total: Base Total
-    custom: Custom
-    external_costs_forecast: Forecast
-    external_costs_atual: Actual
-    duration_in_days: Duration in Days
-    select_successors: Select Successors
-    select_predecessors: Select Predecessors
-    distribution_list_title: Distribution List Title
-    dashboard:
-        number_of_projects: Number of projects
-        number_of_tasks: Number of tasks
-        number_of_users: Number of users
-    subteam_members: Subteam Members
-    subteam: Subteam
-    subteam_roles: Subteam Roles
-    schedule: Schedule
-    change_status: Change Status
-    change_assignee: Change Assignee
-    select_due_date: Select Due Date
-    production: Production
-    logistics: Logistics
-    quality_management: Quality Management
-    human_resources: Human Resources
-    purchasing: Purchasing
-    maintenance: Maintenance
-    assembly: Assembly
-    tooling: Tooling
-    process_engineering: Process Engineering
-    industrialization: Industrialization
-    initiated: Initiated
-    ongoing: Ongoing
-    on_hold: On Hold
-    published: Published
-    expired: Expired
-    info_status: Info status
-    info_category: Info category
-    users: Users
-    loading: Loading
-    no_data: No data
-    add: Add +
-    accountable: Accountable
-    select_support_users: Select support users
-    select_consulted_users: Select consulted users
-    select_informed_users: Select informed users
-    select_sci_users: Select support, consulted & informed users
-    export_task: Export task
-    project_start_event: Project Start Event
-    # risk strategy
-    avoid: Avoid
-    transfer: Transfer
-    mitigate: Mitigate
-    accept: Accept
-    # risk status
-    not_entered: Not Entered
-    entered: Entered
-    # opportunity strategy
-    exploit: Exploit
-    share: Share
-    enhance: Enhance
-    ignore: Ignore
-    # opportunity status
-    not_taken: Not Taken
-    taken: Taken
-    currency: Currency
-    traffic_light: Traffic Light
-
-button:
-    restore: Restore
-    back_to_workspace: Back to Workspace
-    edit_member: Edit Member
-    clear_filters: Clear Filters
-    delete_remaining_action: Delete Remaining Action
-    new_remaining_action: New Remaining Action
-    view_remaining_action: View Remaining Action
-    edit_remaining_action: Edit Remaining Action
-    add_new_remaining_action: Add New Remaining Action
-    freeze_contract: Freeze Contract
-    email_status_report: Email Status Report
-    delete_decision: Delete Decision
-    new_decision: New Decision
-    edit_decision: Edit Decision
-    create_decision: Create Decision
-    new_task: New task
-    delete_info: Delete Info
-    new_info: New Info
-    edit_info: Edit Info
-    view_info: View Info
-    create_info: Create Info
-    delete_todo: Delete Todo
-    reschedule_todo: Reschedule todo
-    new_todo: New Todo
-    edit_todo: Edit Todo
-    create_todo: Create Todo
-    reschedule: Reschedule
-    delete_meeting: Delete Meeting
-    new_meeting: New Meeting
-    edit_meeting: Edit Meeting
-    send_notifications: Send Notifications
-    edit_distribution_list: Edit Distribution List
-    save_distribution_list: Save Distribution List
-    save_meeting: Save Meeting
-    done: Done
-    add_new_measure: Add New Measure
-    view_all_tasks: View all tasks
-    view_tasks_board: View tasks board
-    print_project_handbook: Print Project Handbook
-    print_project_contract: Print Project Contract
-    close_project: Close Project
-    delete_phase: Delete Phase
-    delete_milestone: Delete Milestone
-    add_new_phase: Add New Phase
-    add_new_milestone: Add New Milestone
-    create_phase: Create Phase
-    create_milestone: Create Milestone
-    edit_phase: Edit Phase
-    edit_milestone: Edit Milestone
-    edit_subteam: Edit Subteam
-    save_member: Save Member
-    add_new_subteam: Add new Subteam
-    add_another_role: Add another role
-    add_another_department: Add another department
-    add_another_subteam: Add another subteam
-    edit_department: Edit Department
-    add_new_department: Add New Department
-    add_subteam_member: Add subteam member
-    add_subteam_child: Add subteam
-    add_subteam_role: Add role
-    show_selected: Show Selected
-    create_distribution: Create Distribution List
-    sign_in: Sign In
-    login: Login
-    logout: Logout
-    register: Register
-    forgot_password: Forgot Password
-    create: Create
-    edit: Edit
-    view: View
-    save_changes: Save changes
-    save: Save
-    send: Send
-    back_to_list: Back to list
-    delete: Delete
-    select_file: Select File
-    change: Change
-    toggle: Toggle Navigation
-    send_invitation: Send invitation
-    invite_user: Invite user
-    download_pdf: Download PDF
-    next_step: Next Step
-    previous_step: Previous Step
-    start_project: Start Project
-    analyze: Analyze
-    cancel: Cancel
-    create_label: Create Label
-    add_new_subtask: Add new subtask
-    create_task: Create Task
-    edit_task: Edit Task
-    start_task: Start Task
-    show_results: Show Results
-    import: Import
-    add_internal_cost: Add internal cost
-    add_external_cost: Add external cost
-    add_attachment: Add attachment
-    edit_label: Edit Label
-    comment: Comment
-    edit_schedule: Edit Schedule
-    save_status: Save Status
-    save_todo: Save Todo
-
-checkbox:
-    checked: Yes
-    unchecked: No
-
-add:
-    project_close_down: Add new project close down
-    evaluation_objective: Add new evaluation objective
-    lesson: Add new lesson
-    close_down_action: Add new close down action
-    status_report_config: Add new status report config
-    decision_status: Add new decision status
-    decision_category: Add new decision category
-    todo_status: Add new todo status
-    todo_category: Add new todo category
-    note_status: Add new note status
-    meeting_category: Add new meeting category
-    meeting_objective: Add new meeting objective
-    measure: Add new measure
-    opportunity_strategy: Add new opportunity strategy
-    opportunity_status: Add new opportunity status
-    opportunity: Add new opportunity
-    resource: Add new resource
-    cost: Add new cost
-    user: Add new user
-    status: Add new status
-    schedule: Add new schedule
-    rasci: Add new rasci
-    workpackage: Add new workpackage
-    portfolio: Add new portfolio
-    project: Add new project
-    project_category: Add new project category
-    project_complexity: Add new project complexity
-    project_cost_type: Add new project cost type
-    project_department: Add new project department
-    project_module: Add new project module
-    project_role: Add new project role
-    project_scope: Add new project scope
-    project_status: Add new project status
-    project_team: Add new project team
-    project_user: Add new project user
-    project_work_cost_type: Add new project work cost type
-    color_status: Add new color status
-    risk: Add new risk
-    risk_category: Add new risk category
-    risk_strategy: Add new risk strategy
-    risk_status: Add new risk status
-    todo: Add todo
-    unit: Add unit
-    wppcwct: Add Work Package Project Work Cost Type
-    impact: Add new impact
-    meeting_agenda: Add new meeting agenda
-    meeting_participant: Add new meeting participant
-    meeting: Add new meeting
-    note: Add new note
-    calendar: Add new calendar
-    day: Add new day
-    working_time: Add new working time
-    assignment: Add new assignment
-    timephase: Add new timephase
-    company: Add new company
-    decision: Add new decision
-    distribution_list: Add new distribution list
-    communication: Add new communication
-    document: Add new document
-    filesystem: Add new filesystem
-    label: Add new label
-    contract: Add new contract
-    workpackage_category: Add new work package category
-    workpackage_status: Add new work package status
-    programme: Add new programme
-    project_objective: Add new project objective
-    project_limitation: Add new project limitation
-    project_deliverable: Add new project deliverable
-    subteam: Add new subteam
-    subteam_role: Add new subteam role
-    subteam_member: Add new subteam member
-
-placeholder:
-    title: Title
-    comment: Comment
-    info_topic: Info Topic
-    todo_topic: Todo Topic
-    measure_description: Measure description
-    info_description: Info Description
-    todo_description: Todo Description
-    action: Action
-    decision_description: Decision Description
-    decision_title: Decision Title
-    responsible: Responsible
-    topic: Topic
-    objective: Objective
-    location: Location
-    opportunity_strategy: Opportunity Strategy
-    opportunity_status: Opportunity Status
-    rist_strategy: Risk Strategy
-    risk_status: Risk Status
-    measure_title: Measure Title
-    currency: Currency
-    time_unit: Time Unit
-    delay_unit: Delay Unit
-    measure_cost: Measure Cost
-    new_measure: New Measure
-    potential_time_delay: Potential Time Delay
-    potential_cost: Potential Cost
-    potential_time_savings: Potential Time Savings
-    potential_savings: Potential Savings
-    risk_description: Risk Description
-    risk_title: Risk Title
-    opportunity_description: Opportunity Description
-    opportunity_title: Opportunity Title
-    risk: Risk
-    opportunity: Opportunity
-    phase_name: Phase Name
-    phase_description: Phase Description
-    milestone_name: Milestone Name
-    milestone_description: Milestone Description
-    first_name: First Name
-    last_name: Last Name
-    username: Username
-    new_department: New Department
-    search_resources: Search for resources
-    search_members: Seach For Members
-    user: Choose one user
-    sponsor: Choose one sponsor
-    manager: Choose one manager
-    status: Choose one status
-    schedule: Choose schedule
-    workpackage: Choose one workpackage
-    portfolio: Choose one portfolio
-    project: Choose one project
-    project_category: Choose one project category
-    project_complexity: Choose one project complexity
-    project_department: Choose one project department
-    project_role: Choose one project role
-    project_scope: Choose one project scope
-    project_status: Choose one project_status
-    project_team: Choose one project team
-    project_user: Choose one project user
-    project_work_cost_type: Choose one project work cost type
-    color_status: Choose one color status
-    risk_category: Choose one risk category
-    risk_strategy: Choose one risk strategy
-    wppcwct: Choose one work package project work cost type
-    impact: Choose impact
-    meeting: Choose one meeting
-    meetings: Choose one or more meetings
-    calendar: Choose calendar
-    day: Choose one day
-    assignment: Choose one assignment
-    company_choose: Choose one company
-    decision: Choose one decision
-    distribution_list: Choose one distribution list
-    contract: Choose one contract
-    driver:
-        local: Local
-        dropbox: Dropbox
-    name: Name
-    number: Number
-    description: Description
-    sequence: Sequence
-    abbreviation: Abbreviation
-    rate: Rate
-    module: Module
-    actions: Actions
-    filesystem: Select filesystem
-    adapter: Select driver
-    labe: Label
-    label_title: Label Title
-    label_description: Label Description
-    label_color: Label Color
-    workpackage_category: Work Package Category
-    workpackage_status: Work Package Status
-    programme: Programme
-    type: Type
-    milestone: Milestone
-    phase: Phase
-    role: Role
-    company: Company
-    department: Department
-    subteam: Subteam
-    subteam_role: Subteam Role
-    email: Email
-    phone: Phone
-    facebook: Facebook
-    twitter: Twitter
-    linked_in: Linked In
-    gplus: Google Plus
-    category: Choose a category
-    todo_category: Todo Category
-    select_currency: Select currency
-
-table_header_cell:
-    avatar: Avatar
-    per_day: Per Day
-    minutes_interval: Minutes Interval
-    is_default: Is default
-    status_report: Status Report
-    week: Week
-    task_title: Task Title
-    task_number: Task No.
-    frozen: Frozen
-    expiry_date: Expiry Date
-    distribution_list: Distribution List
-    present: Present
-    team_member: Team Member
-    event: Event
-    risk: Risk
-    opportunity: Opportunity
-    comments: Comments
-    probability: Probability
-    cost_savings: Cost Savings
-    time_savings: Time Savings
-    automatic: Automatic
-    base_due_date: Base Due Date
-    forecast_due_date: Forecast Due Date
-    actual_due_date: Actual Due Date
-    base_schedule: Base Schedule
-    forecast_schedule: Forecast Schedule
-    actual_schedule: Actual Schedule
-    subteam_name: Subteam Name
-    team_leader: Team Leader
-    actions: Actions
-    no_of_members: No. of Members
-    managers: Managers
-    department_name: Department Name
-    rate: Rate
-    quantity: Quantity
-    rasci: Rasci
-    org: Org
-    distribution_lists: Distribution Lists
-    subteam: Subteam
-    contact: Contact
-    department: Department
-    role: Role
-    resource: Resource
-    id: Id
-    puid: Puid
-    username: Username
-    user: User
-    users: Users
-    sponsor: Sponsor
-    manager: Manager
-    responsible: Responsible
-    company: Company
-    project: Project
-    project_complexity: Project Complexity
-    project_category: Project Category
-    project_scope: Project Scope
-    project_role: Project Roles
-    project_department: Project Departments
-    project_team: Project Team
-    project_teams: Project Teams
-    project_work_cost_type: Project Work Cost Type
-    project_member: Project Member
-    status: Status
-    portfolio: Portfolio
-    workpackage: Work Package
-    workpackages: Work Packages
-    wppwct: Work Package Project Work Cost Type
-    wppwcts: Work Package Project Work Cost Types
-    projectworkcosttype: Project Work Cost Type
-    name: Name
-    full_name: Full name
-    email: Email
-    phone: Phone
-    enabled: Enabled
-    required: Required
-    printable: Printable
-    suspended: Suspended
-    roles: Roles
-    data: Data
-    color_status: Color Status
-    progress: Progress
-    schedule_start: Schedule Start
-    schedule_finish: Schedule Finish
-    forecast_start: Forecast Start
-    forecast_finish: Forecast Finish
-    actual_start: Actual Start
-    actual_finish: Actual Finish
-    content: Content
-    results: Results
-    is_key_milestone: Is Key Milestone
-    description: Description
-    created_at: Created At
-    updated_at: Updated At
-    deleted_at: Deleted At
-    number: Number
-    approved_at: Approved at
-    status_updated_at: Status updated at
-    sequence: Sequence
-    abbreviation: Abbreviation
-    rate: Rate
-    module: Module
-    lead: Lead
-    show_in_resources: Show In Resources
-    show_in_rasci: Show In Rasci
-    show_in_org: Show In Org
-    color: Color
-    title: Title
-    impact: Impact
-    cost: Cost
-    budget: Budget
-    delay: Delay
-    priority: Priority
-    strategy: Strategy
-    category: Category
-    measure: Measure
-    responsible: Responsible
-    date: Date
-    due_date: Due Date
-    meeting: Meeting
-    meeting_name: Meeting name
-    report_status: Show in status report
-    calendar: Calendar
-    base: Base
-    change: Change
-    actual: Actual
-    remaining: Remaining
-    forecast: Forecast
-    is_generic: Is Generic
-    is_inactive: Is Inactive
-    is_enterprise: Is Enterprise
-    is_cost_resource: Is Cost Resource
-    is_budget: Is Budget
-    visible: Visible
-    topic: Topic
-    start: Start
-    finish: Finish
-    end: End
-    remark: Remark
-    is_present: Is Present
-    is_excused: Is Excused
-    in_distribution_list: In Distribution List
-    location: Location
-    objectives: Objectives
-    participants: Meeting Participants
-    agendas: Meeting Agendas
-    decisions: Decisions
-    todos: TODOs
-    notes: Notes
-    infos: Infos
-    medias: Medias
-    show_in_report: Show in status report
-    is_based: Is Based
-    is_baseline: Is Baseline
-    type: Type
-    working: Working
-    working_times: Working Times
-    day: Calendar - Day
-    from_time: From Time
-    to_time: To Time
-    phase: Phase
-    milestone: Milestone
-    percent_complete: Percent Complete
-    confirmed: Confirmed
-    started_at: Started At
-    finished_at: Finished At
-    timephases: Timephases
-    workpackage_assignment: Work Package Assignment
-    unit: Unit
-    value: Value
-    finished_at: Finished At
-    responsibility: Responsibility
-    show_in_status_report: Show in status report
-    participants: Participants
-    meetings: Meetings
-    created_by: Created by
-    schedule: Schedule
-    file: File
-    driver: Driver
-    config: Config
-    filesystem: Filesystem
-    path: Path
-    mime: Mime Type
-    size: File size
-    parent: Parent
-    children: Children
-    duration: Duration
-    duration_in_days: Duration in days
-    lead_checked: Is Lead
-    lead_not_checked: Is Not Lead
-    payment_method: Payment Method
-    method: Method
-    team: Team
-    token: Token
-    roles: Roles
-    logo: Logo
-    slug: Slug
-    members: Members
-    proposed_start_date: Proposed Start Date
-    proposed_end_date: Proposed End Date
-    forecast_start_date: Forecast Start Date
-    forecast_end_date: Forecast End Date
-    workpackage_category: Work Package Category
-    workpackage_status: Work Package Status
-    contract: Contract
-    subteam_members: Subteam Members
-    subteam_roles: Subteam Roles
-    subteam_parent: Subteam parent
-    info_status: Info status
-    info_category: Info Category
-    currency: Currency
-    expires_at: Expires At
-
-link:
-    home: Home
-    dashboad: Dashboard
-    admin_dashboard: Admin Tool
-    reports: Reports
-    support: Support
-    contact: Contact
-    account: Account
-    back_to_campr: Back to Campr.biz
-    logout: Logout
-
-not_found:
-    general: Resource not found!
-    user: User not found
-    email_user: Requested user email not found
-    team: Team not found
-
-email:
-    subject:
-        user:
-            register: Campr - Account registration
-            activation: Campr - Account activation code
-            reset: Campr - Reset account password
-        invoice: Campr - Payment Invoice
-        contact: Campr contact
-        workspace_member:
-            invite: Campr - Workspace member invitation
-        general: Subject
-        new_meeting_notification: You have a new meeting notification
-        status_report: Campr Status Report
-    message:
-        user:
-            register: To activate your account click the following
-            activation: Your activation code has been reseted. To activate your account click on the following
-            reset: To reset your password click on the following
-            credential: Your credentials are
-        invoice: You have your invoice for payment %payment% attached in this email.
-        contact: Message
-        workspace_member:
-            invite:
-                first: You are invited to be part of the workspace %team_name%.
-                second: If you don't have an account with this email please make one in order to accept invitation.
-                third: Please click on the following
-                link: invitation
-        meeting_notification: You have been invited to a meeting. Here are the meeting informations:
-        starts_at: Starts at
-        ends_at: Ends at
-        status_report: New status report
-    expiration:
-        user:
-            activation: The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days
-            reset: The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days
-    from:
-        contact: There is a new contact message from:
-    general:
-        link: link
-        hello: Hello
-        email: Email
-        password: Password
-        plain_password: Your password is
-
-authentication:
-    account_disabled: Account disabled
-    bad_credentials: Bad credentials
-    token_returned: Token returned
-
-token:
-    used: Token already used.
-    expired: Token expired.
-    invalid: Invalid token.
-
-site:
-    disabled: Site disabled.
-
-exception:
-    progress_change_for_tasks_only: You can only change progress of tanks.
-    cannot_invite_yourself: You cannot invite yourself.
-    workpackage_must_belong_to_project: Workpackage must belong to the project.
-    user_must_be_part_of_the_project: User must be part of the project.
-    user:
-        already_member_of_workspace: This user is already a part of this team.
-        already_member_of_project: This user is already a part of this project.
-        unable_to_create: Unable to create user.
-    add:
-        team: Please add one team as option parameter
-        user: Please add one user as option parameter
-
-copyright: Copyright &copy; %year% Campr
-
-bad_request: Bad request!
-
-choices:
-    red: Red
-    yellow: Yellow
-    green: Green
-    phase: Phase
-    milestone: Milestone
-    task: Task
-    dollar: Dollar
-    euro: Euro
-    pound: Pound
-    hours: Hours
-    days: Days
-    weeks: Weeks
-    months: Months
-    done: Done
-    undone: Undone
-
-roles:
-    project_sponsor: Project Sponsor
-    project_manager: Project Manager
-    team_leader: Team Leader
-    team_member: Team Member
-
-color_status:
-    not_started: Critical
-    in_progress: Warning
-    finished: On track
-
-todo_status:
-    initiated: Initiated
-    ongoing: Ongoing
-    finished: Finished
-    on_hold: On hold
-    discontinued: Discontinued
-
-traffic_light:
-    red: Critical
-    yellow: Warning
-    green: On Track
-
-filter:
-    clear: Clear filters
-
-modules:
-    contract:
-        title: Contract
-        description: The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.
-    organization:
-        title: Organization
-        description: The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites.
-    phases_and_milestones:
-        title: Phases & Milestones
-        description: Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.
-    task_management:
-        title: Task Management
-        description: The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are a geographical area, engineering discipline, technology, or the time needed to accomplish them.
-    internal_costs:
-        title: Internal Costs
-        description: Keeping track of the project costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest.
-    external_costs:
-        title: External Costs
-        description: Resource planning allows you to calculate the necessary personnel usage per work package.
-    risks_and_opportunities:
-        title: Risks & Oportunities
-        description: Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to react proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.
-    gantt_chart:
-        title: Gantt chart
-        description: The Gantt Chart is a standard visualization of all phases, work packages, tasks and milestones on a timeline according to the planned project execution. All items have dedicated start and finish date and are displayed in individual bars on the time axis. Correlations between those items, such as predecessor and successor tasks, can be defined and are displayed as well.
-    rasci_matrix:
-        title: Rasci matrix
-        description: >
-            A responsibility assignment matrix describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes.
-            RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportable, Consulted, and Informed.
-    wbs:
-        title: WBS
-        description: The Work Breakdown Structure (WBS) is a deliverable-oriented breakdown of a project into smaller components. A work breakdown structure is a key project deliverable that organizes the team's work into manageable sections. This module visualizes the breakdown in a “tree”- structure starting with the project phases and work packages, tasks, and milestones in the branches. The structure can be manipulated within the module for restructuring purposes.
-    meetings:
-        title: Meetings
-        description: CAMPR supports you in the coordination of meetings with project participants. You can create invitations for meetings, schedule your meetings, and can keep track on them. Also, meeting minutes can be entered in a structured form and send out to all relevant meeting participants according to predefined distribution lists.
-    todos:
-        title: Todos
-        description: The central to-do list is used to document the agreed or necessary to-dos during your project.
-    infos:
-        title: Infos
-        description: With the "Info"-module, you can document general information related to your project or your team. Information such as changes to the project scope, new team members joining, new events planned, etc.
-    decisions:
-        title: Decisions
-        description: In the "Decisions"-module, you can document the decisions made during project execution.
-    status_report:
-        title: Status Report
-        description: The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions.
-    close_down_project:
-        title: Close Down Project
-        description: The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.
-
-unknown_route: I don't know where you want to go.
+activation.activated: 'Your account has been activated!'
+activation.expired: 'Activation token has expired!'
+activation.not_found: 'No account activation found!'
+activation.resend: 'Click here to resend the activation token'
+add.assignment: 'Add new assignment'
+add.calendar: 'Add new calendar'
+add.close_down_action: 'Add new close down action'
+add.color_status: 'Add new color status'
+add.communication: 'Add new communication'
+add.company: 'Add new company'
+add.contract: 'Add new contract'
+add.cost: 'Add new cost'
+add.day: 'Add new day'
+add.decision: 'Add new decision'
+add.decision_category: 'Add new decision category'
+add.decision_status: 'Add new decision status'
+add.distribution_list: 'Add new distribution list'
+add.document: 'Add new document'
+add.evaluation_objective: 'Add new evaluation objective'
+add.filesystem: 'Add new filesystem'
+add.impact: 'Add new impact'
+add.label: 'Add new label'
+add.lesson: 'Add new lesson'
+add.measure: 'Add new measure'
+add.meeting: 'Add new meeting'
+add.meeting_agenda: 'Add new meeting agenda'
+add.meeting_category: 'Add new meeting category'
+add.meeting_objective: 'Add new meeting objective'
+add.meeting_participant: 'Add new meeting participant'
+add.note: 'Add new note'
+add.note_status: 'Add new note status'
+add.opportunity: 'Add new opportunity'
+add.opportunity_status: 'Add new opportunity status'
+add.opportunity_strategy: 'Add new opportunity strategy'
+add.portfolio: 'Add new portfolio'
+add.programme: 'Add new programme'
+add.project: 'Add new project'
+add.project_category: 'Add new project category'
+add.project_close_down: 'Add new project close down'
+add.project_complexity: 'Add new project complexity'
+add.project_cost_type: 'Add new project cost type'
+add.project_deliverable: 'Add new project deliverable'
+add.project_department: 'Add new project department'
+add.project_limitation: 'Add new project limitation'
+add.project_module: 'Add new project module'
+add.project_objective: 'Add new project objective'
+add.project_role: 'Add new project role'
+add.project_scope: 'Add new project scope'
+add.project_status: 'Add new project status'
+add.project_team: 'Add new project team'
+add.project_user: 'Add new project user'
+add.project_work_cost_type: 'Add new project work cost type'
+add.rasci: 'Add new RASCI'
+add.resource: 'Add new resource'
+add.risk: 'Add new risk'
+add.risk_category: 'Add new risk category'
+add.risk_status: 'Add new risk status'
+add.risk_strategy: 'Add new risk strategy'
+add.schedule: 'Add new schedule'
+add.status: 'Add new status'
+add.status_report_config: 'Add new status report config'
+add.subteam: 'Add new subteam'
+add.subteam_member: 'Add new subteam member'
+add.subteam_role: 'Add new subteam role'
+add.timephase: 'Add new time phase'
+add.todo: 'Add todo'
+add.todo_category: 'Add new todo category'
+add.todo_status: 'Add new todo status'
+add.unit: 'Add unit'
+add.user: 'Add new user'
+add.working_time: 'Add new working time'
+add.workpackage: 'Add new workpackage'
+add.workpackage_category: 'Add new work package category'
+add.workpackage_status: 'Add new work package status'
+add.wppcwct: 'Add Work Package Project Work Cost Type'
+authentication.account_disabled: 'Account disabled'
+authentication.bad_credentials: 'Bad credentials'
+authentication.token_returned: 'Token returned'
+bad_request: 'Bad request!'
+button.add_another_department: 'Add another department'
+button.add_another_role: 'Add another role'
+button.add_another_subteam: 'Add another subteam'
+button.add_attachment: 'Add attachment'
+button.add_external_cost: 'Add external cost'
+button.add_internal_cost: 'Add internal cost'
+button.add_new_department: 'Add New Department'
+button.add_new_measure: 'Add New Measure'
+button.add_new_milestone: 'Add New Milestone'
+button.add_new_phase: 'Add New Phase'
+button.add_new_remaining_action: 'Add New Action'
+button.add_new_subtask: 'Add new subtask'
+button.add_new_subteam: 'Add new Subteam'
+button.add_subteam_child: 'Add subteam'
+button.add_subteam_member: 'Add subteam member'
+button.add_subteam_role: 'Add role'
+button.analyze: Analyze
+button.back_to_list: 'Back to list'
+button.back_to_workspace: 'Back to Workspace'
+button.cancel: Cancel
+button.change: Change
+button.clear_filters: 'Clear Filters'
+button.close_project: 'Close Project'
+button.comment: Comment
+button.create: Create
+button.create_decision: 'Create Decision'
+button.create_distribution: 'Create Distribution List'
+button.create_info: 'Create Info'
+button.create_label: 'Create Label'
+button.create_milestone: 'Create Milestone'
+button.create_phase: 'Create Phase'
+button.create_task: 'Create Task'
+button.create_todo: 'Create Todo'
+button.delete: Delete
+button.delete_decision: 'Delete Decision'
+button.delete_info: 'Delete Info'
+button.delete_meeting: 'Delete Meeting'
+button.delete_milestone: 'Delete Milestone'
+button.delete_phase: 'Delete Phase'
+button.delete_remaining_action: 'Delete Remaining Action'
+button.delete_todo: 'Delete Todo'
+button.done: Done
+button.download_pdf: 'Download PDF'
+button.edit: Edit
+button.edit_decision: 'Edit Decision'
+button.edit_department: 'Edit Department'
+button.edit_distribution_list: 'Edit Distribution List'
+button.edit_info: 'Edit Info'
+button.edit_label: 'Edit Label'
+button.edit_meeting: 'Edit Meeting'
+button.edit_member: 'Edit Member'
+button.edit_milestone: 'Edit Milestone'
+button.edit_phase: 'Edit Phase'
+button.edit_remaining_action: 'Edit Action'
+button.edit_schedule: 'Edit Schedule'
+button.edit_subteam: 'Edit Subteam'
+button.edit_task: 'Edit Task'
+button.edit_todo: 'Edit Todo'
+button.email_status_report: 'Email Status Report'
+button.forgot_password: 'Forgot Password'
+button.freeze_contract: 'Freeze Contract'
+button.import: Import
+button.invite_user: 'Invite user'
+button.login: Login
+button.logout: Logout
+button.new_decision: 'New Decision'
+button.new_info: 'New Info'
+button.new_meeting: 'New Meeting'
+button.new_remaining_action: 'New Action'
+button.new_task: 'New task'
+button.new_todo: 'New Todo'
+button.next_step: 'Next Step'
+button.previous_step: 'Previous Step'
+button.print_project_contract: 'Print Project Contract'
+button.print_project_handbook: 'Print Project Handbook'
+button.register: Register
+button.reschedule: Reschedule
+button.reschedule_todo: 'Reschedule todo'
+button.restore: Restore
+button.save: Save
+button.save_changes: 'Save changes'
+button.save_meeting: 'Save Meeting'
+button.save_member: 'Save Member'
+button.save_status: 'Save Status'
+button.save_todo: 'Save Todo'
+button.select_file: 'Select File'
+button.send: Send
+button.send_invitation: 'Send invitation'
+button.send_notifications: 'Send Notifications'
+button.show_results: 'Show Results'
+button.show_selected: 'Show Selected'
+button.sign_in: 'Sign In'
+button.start_project: 'Start Project'
+button.start_task: 'Start Task'
+button.toggle: 'Toggle Navigation'
+button.view: View
+button.view_all_tasks: 'View all tasks'
+button.view_info: 'View Info'
+button.view_remaining_action: 'View Remaining Action'
+button.view_tasks_board: 'View tasks board'
+checkbox.checked: 'Yes'
+checkbox.unchecked: 'No'
+choices.days: Days
+choices.dollar: Dollar
+choices.euro: Euro
+choices.green: Green
+choices.hours: Hours
+choices.milestone: Milestone
+choices.months: Months
+choices.phase: Phase
+choices.pound: Pound
+choices.red: Red
+choices.task: Task
+choices.weeks: Weeks
+choices.yellow: Yellow
+color_status.finished: 'On track'
+color_status.in_progress: Warning
+color_status.not_started: Critical
+copyright: 'Copyright &copy; %year% Campr'
+email.expiration.user.activation: 'The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
+email.expiration.user.reset: 'The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
+email.from.contact: 'There is a new contact message from:'
+email.general.email: Email
+email.general.hello: Hello
+email.general.link: link
+email.general.password: Password
+email.general.plain_password: 'Your password is'
+email.message.contact: Message
+email.message.ends_at: 'Ends at'
+email.message.invoice: 'You have your invoice for payment %payment% attached in this email.'
+email.message.meeting_notification: 'You have been invited to a meeting. Here are the meeeting informations:'
+email.message.starts_at: 'Starts at'
+email.message.status_report: 'New status report'
+email.message.user.activation: 'Your activation code has been reseted. To activate your account click on the following'
+email.message.user.credential: 'Your credentials are'
+email.message.user.register: 'To activate your account click the following'
+email.message.user.reset: 'To reset your password click on the following'
+email.message.workspace_member.invite.first: 'You are invited to be part of the workspace %team_name%.'
+email.message.workspace_member.invite.link: invitation
+email.message.workspace_member.invite.second: 'If you don''t have an account with this email please make one in order to accept invitation.'
+email.message.workspace_member.invite.third: 'Please click on the following'
+email.subject.contact: 'Campr contact'
+email.subject.general: Subject
+email.subject.invoice: 'CAMPR - Payment Invoice'
+email.subject.new_meeting_notification: 'You have a new meeting notification'
+email.subject.status_report: 'Campr Status Report'
+email.subject.user.activation: 'Campr - Account activation code'
+email.subject.user.register: 'Campr - Account registration'
+email.subject.user.reset: 'Campr - Reset account password'
+email.subject.workspace_member.invite: 'CAMPR - Workspace member invitation'
+exception.add.team: 'Please add one team as option parameter'
+exception.add.user: 'Please add one user as option parameter'
+exception.cannot_invite_yourself: 'You cannot invite yourself.'
+exception.progress_change_for_tasks_only: 'You can only change progress of tasks.'
+exception.user.already_member_of_project: 'This user is already a part of this project.'
+exception.user.already_member_of_workspace: 'This user is already a part of this team.'
+exception.user.unable_to_create: 'Unable to create user.'
+exception.user_must_be_part_of_the_project: 'User must be part of the project.'
+exception.workpackage_must_belong_to_project: 'Workpackage must belong to the project.'
+failed.calendar.delete.dependency_constraint: 'Calendar cannot be deleted because there are other entities that are depending on it!'
+failed.calendar.delete.generic: 'There was an error when deleting this calendar.'
+failed.day.delete.dependency_constraint: 'Day cannot be deleted because there are other entities that are depending on it!'
+failed.day.delete.generic: 'There was an error when deleting this day.'
+failed.media.delete.first: 'File with ID'
+failed.media.delete.general: 'File delete failed. Filesystem cannot be reached or file does not exist in it'
+failed.media.delete.second: 'cannot be deleted. Filesystem cannot be reached or file does not exist in it'
+failed.media.upload: 'File upload failed. Filesystem cannot be reached.'
+failed.meeting_category.delete.dependency_constraint: 'Meeting Category cannot be deleted because there are other entities that are depending on it!'
+failed.meeting_category.delete.generic: 'There was an error when deleting this meeting category.'
+failed.opportunity_strategy.delete.dependency_constraint: 'Opportunity Strategy cannot be deleted because there are other entities that are depending on it!'
+failed.opportunity_strategy.delete.generic: 'There was an error when deleting this opportunity strategy.'
+failed.portofolio.delete.dependency_constraint: 'Portofolio cannot be deleted because there are other entities that are depending on it!'
+failed.portofolio.delete.generic: 'There was an error when deleting this portofolio.'
+failed.project.delete.dependency_constraint: 'Project cannot be deleted because there are other entities that are depending on it!'
+failed.project.delete.generic: 'An error occurred deleting the project.'
+failed.project_category.delete.dependency_constraint: 'Project category cannot be deleted because there are other entities that are depending on it!'
+failed.project_category.delete.generic: 'There was an error when deleting this project category.'
+failed.project_complexity.delete.dependency_constraint: 'Project complexity cannot be deleted because there are other entities that are depending on it!'
+failed.project_complexity.delete.generic: 'There was an error when deleting a project complexity.'
+failed.project_scope.delete.dependency_constraint: 'Project scope cannot be deleted because there are other entities that are depending on it!'
+failed.project_scope.delete.generic: 'There was an error when deleting this project scope.'
+failed.project_status.delete.dependency_constraint: 'Project status cannot be deleted because there are other entities that are depending on it!'
+failed.project_status.delete.generic: 'There was an error when deleting this project status.'
+failed.project_team.delete.dependency_constraint: 'Project team cannot be deleted because there are other entities that are depending on it!'
+failed.project_team.delete.generic: 'There was an error when deleting this project team.'
+failed.risk_strategy.delete.dependency_constraint: 'Risk Strategy cannot be deleted because there are other entities that are depending on it!'
+failed.risk_strategy.delete.generic: 'There was an error when deleting this risk strategy.'
+failed.team_member.invitation.denied: 'The invitation was sent to user with email %user_email%. If you don''t have an account with this email, make one.'
+failed.team_member.remove.not_part_of_the_team: 'User %team_member_name% is not part of the team %team_name%.'
+failed.team_member.remove.yourself: 'You are not able to remove yourself from the %team_name%.'
+failed.user.delete.superadmin: 'You cannot delete other SUPER ADMIN user!'
+failed.user.delete.yourself: 'You cannot delete yourself!'
+failed.user.edit.superadmin: 'You cannot edit another SUPER ADMIN profile!'
+failed.workpackage.delete.dependency_constraint: 'Work package cannot be deleted because there are other entities that are depending on it!'
+failed.workpackage.delete.generic: 'There was an error when deleting this workpackage.'
+filter.clear: 'Clear filters'
+label.abbreviation: Abbreviation
+label.accept: Accept
+label.accountable: Accountable
+label.actual: Actual
+label.actual_finish: 'Actual Finish At'
+label.actual_start: 'Actual Start At'
+label.actual_total: 'Actual Total'
+label.add: 'Add +'
+label.approved_at: 'Approved At'
+label.asignee: assignee
+label.assembly: Assembly
+label.assignment: Assignment
+label.avatar: Avatar
+label.avoid: Avoid
+label.base: Base
+label.base_due_date: 'Base Due Date'
+label.base_end_date: 'Base End Date'
+label.base_start_date: 'Base Start Date'
+label.based: 'Is Based'
+label.baseline: 'Is Baseline'
+label.budget: Budget
+label.calendar: Calendar
+label.category: Category
+label.change: Change
+label.change_assignee: 'Change Assignee'
+label.change_status: 'Change Status'
+label.clear: Clear
+label.closed: Closed
+label.color: Color
+label.color_status: 'Color Status'
+label.company: Company
+label.completed: Completed
+label.confirmed: Confirmed
+label.content: Content
+label.contract: Contract
+label.cost: Cost
+label.cost_description: 'Cost Description'
+label.cost_item: 'Cost Item'
+label.create: Create
+label.created_by: 'Created By'
+label.currency: Currency
+label.custom: Custom
+label.daily_rate: 'Daily Rate'
+label.dashboard.number_of_projects: 'Number of projects'
+label.dashboard.number_of_tasks: 'Number of tasks'
+label.dashboard.number_of_users: 'Number of users'
+label.data: Data
+label.date: Date
+label.day: Day
+label.days: Days
+label.default: Default
+label.delay: Delay
+label.delay_unit: 'Delay Unit'
+label.delete_topic: 'Delete topic'
+label.department_name: 'Department Name'
+label.dependants: Dependants
+label.dependencies: Dependencies
+label.description: Description
+label.distribution_list: 'Distribution List'
+label.distribution_list_title: 'Distribution List Title'
+label.download_status_report: 'Download Status Report'
+label.driver: Driver
+label.dropbox.key: 'Dropbox key'
+label.dropbox.secret: 'Dropbox secret'
+label.dropbox.token: 'Dropbox token'
+label.dropbox.token_secret: 'Dropbox token secret'
+label.due_date: 'Due Date'
+label.duration: Duration
+label.duration_in_days: 'Duration in Days'
+label.edit_milestone: 'Edit Milestone'
+label.edit_phase: 'Edit Phase'
+label.edit_topic: 'Edit topic'
+label.email: Email
+label.email_status_report: 'Email Status Report'
+label.enabled: Enabled
+label.end: End
+label.enhance: Enhance
+label.entered: Entered
+label.event: Event
+label.expired: Expired
+label.expiry_date: 'Expiry Date'
+label.exploit: Exploit
+label.export_task: 'Export task'
+label.external_cost_qty: Qty.
+label.external_cost_total: 'Base Total'
+label.external_cost_unit_rate: 'Unit Rate'
+label.external_costs_atual: Actual
+label.external_costs_forecast: Forecast
+label.facebook: Facebook
+label.field_title: Title
+label.file: 'Document file'
+label.filesystem: Filesystem
+label.finish_time: 'Finish Time'
+label.finished_at: 'Finished At'
+label.first_name: 'First name'
+label.firstname: 'First name'
+label.forecast: Forecast
+label.forecast_due_date: 'Forecast Due Date'
+label.forecast_end_date: 'Forecast End Date'
+label.forecast_finish: 'Forecast Finish At'
+label.forecast_start: 'Forecast Start At'
+label.forecast_start_date: 'Forecast Start Date'
+label.forecast_total: 'Forecast Total'
+label.freezed: Frozen
+label.from_time: 'From Time'
+label.frozen: Frozen
+label.full_name: 'Full name'
+label.gplus: Google+
+label.hours: Hours
+label.human_resources: 'Human Resources'
+label.ignore: Ignore
+label.impact: Impact
+label.in_distribution_list: 'In Distribution List'
+label.in_progress: 'In progress'
+label.industrialization: Industrialization
+label.info_category: 'Info category'
+label.info_status: 'Info status'
+label.initiated: Initiated
+label.instagram: Instagram
+label.internal_cost_subtotal: Subtotal
+label.internal_costs_total: 'Base Total'
+label.invite_workspace_member: 'Invite member to workspace'
+label.is_budget: Budget
+label.is_cost_resource: 'Cost resource'
+label.is_default: 'Is default'
+label.is_enterprise: Enterprise
+label.is_excused: 'Is Excused'
+label.is_generic: Generic
+label.is_inactive: Inactive
+label.is_key_milestone: 'Key milestone'
+label.is_present: 'Is Present'
+label.is_visible: Visible
+label.label: Label
+label.labels: Labels
+label.last_name: 'Last name'
+label.lastname: 'Last name'
+label.lead: Lead
+label.linked_in: LinkedIn
+label.loading: Loading
+label.locale: Language
+label.location: Location
+label.logistics: Logistics
+label.logo: Logo
+label.maintenance: Maintenance
+label.manager: Manager
+label.measure: Measure
+label.medium: Medium
+label.meeting: Meeting
+label.meeting_name: 'Meeting name'
+label.meetings: Meetings
+label.message: Message
+label.milestone: Milestone
+label.minutes_interval: 'Minutes Interval'
+label.mitigate: Mitigate
+label.module: Module
+label.months: Months
+label.name: Name
+label.new_role: 'New Role'
+label.new_subteam: 'New Subteam'
+label.no_data: 'No data'
+label.not_approved: 'Not approved'
+label.not_entered: 'Not Entered'
+label.not_started: 'Not Started'
+label.not_taken: 'Not Taken'
+label.note_title: Title
+label.number: Number
+label.objectives: Objectives
+label.on_hold: 'On Hold'
+label.ongoing: Ongoing
+label.open: Open
+label.opportunity: Opportunity
+label.opportunity_status: 'Opportunity Status'
+label.opportunity_strategy: 'Opportunity Strategy'
+label.organization_context: 'Organization Context'
+label.overall_impression: 'Overall Impression'
+label.parent: Parent
+label.parent_phase: 'Select parent phase'
+label.participants: Participants
+label.password.first: Password
+label.password.repeat: 'Repeat password'
+label.path: Path
+label.pending: Pending
+label.per_day: 'Per Day'
+label.percent_work: 'Percent Work'
+label.performance_schedule: 'Performance Schedule'
+label.phase: Phase
+label.phase_is_subphase: 'This is a subphase'
+label.phone: Phone
+label.portfolio: Portfolio
+label.printable: Printable
+label.priority: Priority
+label.probability: Probability
+label.process_engineering: 'Process Engineering'
+label.production: Production
+label.programme: Programme
+label.progress: Progress
+label.project: Project
+label.project_category: 'Project Category'
+label.project_close_down: 'Project Close Down'
+label.project_complexity: 'Project Complexity'
+label.project_department: 'Project Department'
+label.project_management: 'Project Management'
+label.project_managers: 'Project Managers'
+label.project_role: 'Project Role'
+label.project_scope: 'Project Scope'
+label.project_sponsors: 'Project Sponsors'
+label.project_team: 'Project Team'
+label.project_work_cost_type: 'Project Work Cost Type'
+label.projectworkcosttype: 'Project Work Cost Type'
+label.proposed_end_date: 'Proposed End Date'
+label.proposed_start_date: 'Proposed Start Date'
+label.published: Published
+label.puid: Puid
+label.purchasing: Purchasing
+label.qty: Qty.
+label.quality_management: 'Quality Management'
+label.quantity: Quantity
+label.rate: Rate
+label.remaining: Remaining
+label.remark: Remark
+label.required: Required
+label.resource: Resource
+label.responsibility: Responsibility
+label.responsible: Responsible
+label.results: Results
+label.risk: Risk
+label.role.admin: ROLE_ADMIN
+label.role.superadmin: ROLE_SUPER_ADMIN
+label.role.team_member: ROLE_TEAM_MEMBER
+label.role.team_owner: ROLE_TEAM_OWNER
+label.role.user: ROLE_USER
+label.roles: Roles
+label.schedule: Schedule
+label.schedule_finish: 'Scheduled Finish At'
+label.schedule_start: 'Scheduled Start At'
+label.search_for_tasks: 'Search for tasks'
+label.select_consulted_users: 'Select consulted users'
+label.select_date: 'Select Date'
+label.select_department: 'Select Department'
+label.select_due_date: 'Select Due Date'
+label.select_informed_users: 'Select informed users'
+label.select_managers: 'Select Managers'
+label.select_members: 'Select Members'
+label.select_phase: 'Select Phase'
+label.select_predecessors: 'Select Predecessors'
+label.select_sci_users: 'Select support, consulted & informed users'
+label.select_status: 'Select Status'
+label.select_successors: 'Select Successors'
+label.select_support_users: 'Select support users'
+label.select_users: 'Select Users'
+label.sequence: Sequence
+label.share: Share
+label.show_in_org: 'Show In Org'
+label.show_in_rasci: 'Show In Rasci'
+label.show_in_resources: 'Show In Resources'
+label.show_in_status: 'Show in status report'
+label.show_in_status_report: 'Show In Status Report'
+label.slug: Slug
+label.sponsor: Sponsor
+label.start: Start
+label.start_time: 'Start Time'
+label.started_at: 'Started At'
+label.status: Status
+label.status_report: 'Status Report'
+label.status_report_distribution: 'Status Report Distribution'
+label.strategy: Strategy
+label.subject: Subject
+label.subtask_description: 'Subtask Description'
+label.subteam: Subteam
+label.subteam_members: 'Subteam Members'
+label.subteam_name: 'Subteam Name'
+label.subteam_roles: 'Subteam Roles'
+label.suspended: Suspended
+label.taken: Taken
+label.task_description: 'Task Description'
+label.task_title: 'Task Title'
+label.team: Team
+label.team_members: 'Team members'
+label.time: Time
+label.time_savings: 'Time Savings'
+label.time_unit: 'Time Unit'
+label.title: Title
+label.to_time: 'To Time'
+label.token: Token
+label.tooling: Tooling
+label.top_opportunity: 'Top Opportunity'
+label.top_risk: 'Top Risk'
+label.topic: Topic
+label.transfer: Transfer
+label.trend: Trend
+label.twitter: Twitter
+label.two_factor_auth: 'Two Factor Authentication'
+label.type: Type
+label.unit: Unit
+label.user: User
+label.username: Username
+label.users: Users
+label.value: Value
+label.view_status_report: 'View Status Report'
+label.weeks: Weeks
+label.working: Working
+label.workpackage: 'Work Package'
+label.workpackage_category: 'Work Package Category'
+label.workpackage_status: 'Work Package Status'
+label.wppwct: 'Work Package Project Work Cost Type'
+link.account: Account
+link.admin_dashboard: 'Admin Tool'
+link.back_to_campr: 'Back to Campr.biz'
+link.contact: Contact
+link.dashboad: Dashboard
+link.home: Home
+link.logout: Logout
+link.reports: Reports
+link.support: Support
+menu.account: Account
+menu.admin: Admin
+menu.contact: Contact
+menu.deleted_workspaces: 'Deleted Workspaces'
+menu.payment_methods: 'Payment Methods'
+menu.payments: Payments
+menu.settings: Settings
+menu.teams: Teams
+menu.users: Users
+menu.workspaces: Workspaces
+message.access_denied: 'Access Denied'
+message.action_needed: 'Action Needed'
+message.actual_schedule: 'On track'
+message.add_avatar_image: 'Add avatar image'
+message.add_comment: 'Add Comment'
+message.add_deliverable: 'Add new deliverable'
+message.add_external_costs: 'Add external costs'
+message.add_internal_costs: 'Add internal costs'
+message.add_limitation: 'Add new limitation'
+message.add_new_action: 'Add New Action'
+message.add_new_decision: 'Add New Decision'
+message.add_new_evaluation_objective: 'Add New Evaluation Objective'
+message.add_new_info: 'Add New Info'
+message.add_new_lesson: 'Add New Lesson'
+message.add_new_objective: 'Add New Objective'
+message.add_new_todo: 'Add New Todo'
+message.add_new_topic: 'Add New Topic'
+message.add_objective: 'Add new objective'
+message.add_portfolio: 'Add New Portfolio'
+message.add_programme: 'Add New Programme'
+message.added_a_measure: 'added a measure'
+message.agenda: Agenda
+message.alert: Alert
+message.all_customers: 'All Customers'
+message.all_programmes: 'All Programmes'
+message.all_projects: 'View all my Projects'
+message.all_projects_filter: 'All Projects'
+message.all_scheduels: 'All Schedules'
+message.all_statuses: 'All Statuses'
+message.all_tasks: 'View all my Tasks'
+message.approved_on: 'Approved On'
+message.asignee: Asignee
+message.assigned_to: 'assigned task to'
+message.assignee: Assignee
+message.attachments: Attachments
+message.automatic_phase_schedule_note: 'Calculated based on the Start Date of the first Task/Milestone and the Finish Date of the last Task/Milestone added to this phase.'
+message.automatic_schedule: 'Automatic Schedule'
+message.automatic_schedule_note: 'Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.'
+message.average_impact: 'Average Impact Value of all opportunities is'
+message.average_impact_opportunity: 'Average Impact Value of all opportunities is'
+message.average_impact_risks: 'Average Impact Value of all risks is'
+message.average_probability: 'Average Probability Value of all opportunities is'
+message.average_probability_opportunity: 'Average Probability Value of all opportunities is'
+message.average_probability_risks: 'Average Probability Value of all risks is'
+message.back_to: 'Back To'
+message.back_to_decisions: 'Back to Decisions'
+message.back_to_infos: 'Back to Infos'
+message.back_to_meetings: 'Back to Meetings'
+message.back_to_organization: 'Back to Project Organization'
+message.back_to_phases_and_milestones: 'Back to Phases & Milestones'
+message.back_to_risks_and_opportunities: 'Back to Risks & Opportunities'
+message.back_to_task_management: 'Back to Task management'
+message.back_to_task_view: 'Back to Task View'
+message.back_to_todos: 'Back to Todos'
+message.base_schedule: 'Base Schedule'
+message.budget: Budget
+message.budget_calculation: 'Budget is calculated as Probability times Potential Savings'
+message.budget_calculation_opportunity: 'Budget is calculated as Probability times Potential Savings'
+message.budget_calculation_risk: 'Budget is calculated as Probability times Potential Costs'
+message.budget_saved: 'Budget Saved'
+message.by: by
+message.by_department: 'By Department'
+message.by_phase: 'By Phase'
+message.campr_moto: 'Campr - The tool for industrious people'
+message.capex: Capex
+message.capex_subtotal: 'Capex Subtotal'
+message.category: Category
+message.change_accountable: 'Change Accountable'
+message.clear_selection: 'Clear selection'
+message.click: Click
+message.close: Close
+message.close_down_project: 'Close Down Project'
+message.close_down_report: 'Close Down Report'
+message.close_task: 'Close Task'
+message.close_team: 'Close Team'
+message.comment: Comment
+message.commented: commented
+message.communication: Communication
+message.company: Company
+message.condition: Condition
+message.confirm_close_task: 'Are you sure you wan to close this task ?'
+message.confirm_open_task: 'Are you sure you wan to open this task ?'
+message.context: Context
+message.contract: Contract
+message.contract_frozen: 'Project contract is frozen'
+message.control_measures: 'Control Measures'
+message.cost: Cost
+message.cost_status: 'Cost Status'
+message.costs: Costs
+message.costs_chart: 'Costs Chart'
+message.costs_chart_by_department: 'Costs By Department'
+message.costs_chart_by_phase: 'Costs By Phase'
+message.costs_progress: 'Costs Progress'
+message.create_new_decision: 'Create New Decision'
+message.create_new_info: 'Create New Info'
+message.create_new_meeting: 'Create New Meeting'
+message.create_new_milestone: 'Create new milestone'
+message.create_new_opportunity: 'Create New Opportunity'
+message.create_new_phase: 'Create new phase'
+message.create_new_risk: 'Create New Risk'
+message.create_new_status_report: 'Create New Status Report'
+message.create_new_task: 'Create New Task'
+message.create_new_team_member: 'Create new team member'
+message.create_new_todo: 'Create New Todo'
+message.created: Created
+message.created_on: 'created on'
+message.currency: Currency
+message.current_date: 'Current Date'
+message.customer: Customer
+message.danger: Critical
+message.dashboard: Dashboard
+message.day_ago: 'day ago'
+message.days: Days
+message.days_ago: 'days ago'
+message.decisions: Decisions
+message.delay: Delay
+message.delete: Delete
+message.delete_agenda: 'Delete agenda'
+message.delete_decision: 'Delete decision'
+message.delete_department: 'Are you sure you want to delete selected department?'
+message.delete_external_cost: 'Delete this external cost ?'
+message.delete_file_failed: 'There was an error while deleting the file'
+message.delete_info: 'Are you sure you want to delete selected info?'
+message.delete_internal_cost: 'Delete this internal cost ?'
+message.delete_meeting: 'Delete Meeting'
+message.delete_milestone: 'Delete Milestone'
+message.delete_objective: 'Delete objective'
+message.delete_opportunity: 'Delete Opoortunity'
+message.delete_phase: 'Delete Phase'
+message.delete_remaining_action: 'Delete remaining action'
+message.delete_risk: 'Delete Risk'
+message.delete_subteam: 'Delete Subteam'
+message.delete_task: 'Delete Task'
+message.delete_team_member: 'Delete team member'
+message.delete_todo: 'Delete Todo'
+message.department: Department
+message.departments: Departments
+message.departments_involved: 'Departments Involved'
+message.details: Details
+message.displaying: Displaying
+message.documents: Documents
+message.download_attachment: 'Download Attachment'
+message.due_date: 'Due Date'
+message.duration: Duration
+message.edit: Edit
+message.edit_actual_total: 'Edit actual total'
+message.edit_agenda: 'Edit Agenda'
+message.edit_decision: 'Edit Decision'
+message.edit_deliverable: 'Edit deliverable'
+message.edit_department: 'Edit Department'
+message.edit_evaluation: 'Edit evaluation'
+message.edit_external_costs: 'Edit external cost'
+message.edit_forecast_total: 'Edit forecast total'
+message.edit_info: 'Edit Info'
+message.edit_internal_costs: 'Edit internal cost'
+message.edit_label: 'Edit Label'
+message.edit_labels: 'Edit Labels'
+message.edit_lesson: 'Edit lesson'
+message.edit_limitation: 'Edit limitation'
+message.edit_measure: 'Edit Measure'
+message.edit_meeting: 'Edit Meeting'
+message.edit_milestone: 'Edit milestone'
+message.edit_objective: 'Edit objective'
+message.edit_opportunity: 'Edit Opportunity'
+message.edit_organization: 'Edit Organization'
+message.edit_phase: 'Edit Phase'
+message.edit_project_organization: 'Edit Project Organization'
+message.edit_remaining_action: 'Edit Remaining Action'
+message.edit_risk: 'Edit Risk'
+message.edit_sponsors_managers: 'Edit Sponsors & Managers'
+message.edit_subteam: 'Edit Subteam'
+message.edit_task: 'Edit Task'
+message.edit_task_labels: 'Edit Task Labels'
+message.edit_team_member: 'Edit team member'
+message.edit_team_members: 'Edit Team Members'
+message.edit_todo: 'Edit Todo'
+message.edited: edited
+message.email_report: 'Are you sure you want to email thie status report?'
+message.error: Error!
+message.evaluation_objectives: 'Evaluation Objectives'
+message.event: Event
+message.expenses: Expenses
+message.expiry_date: 'Expiry Date'
+message.export_project: 'Export project'
+message.external_costs: 'External Costs'
+message.external_resources: 'External Resources'
+message.filter_by: 'Filter By'
+message.finish: Finish
+message.finish_date: 'Finish Date'
+message.first_task: 'First Task'
+message.forecast_schedule: 'Forecast Schedule'
+message.from: from
+message.gantt_chart: 'Gantt Chart'
+message.has_commented_task: 'has commented task'
+message.has_edited_task: 'has edited task'
+message.here: Here
+message.hi: Hi
+message.high: High
+message.homepage: Homepage
+message.hour_ago: 'hour ago'
+message.hours_ago: 'hours ago'
+message.impact: Impact
+message.impersonate: 'You are currently logged in as'
+message.import_project: 'Import project'
+message.import_task: 'Import Task'
+message.import_tasks: 'Import Tasks'
+message.infos: Infos
+message.internal_costs: 'Internal Costs'
+message.internal_resources: 'Internal Resources'
+message.invoce: 'Invoice for payment:'
+message.label_none: None
+message.label_note: 'Note: the Label text color is white so pick a background color that makes it easy to read the white text above it.'
+message.last_task: 'Last Task'
+message.less: less
+message.lessons_learned: 'Lessons Learned'
+message.loading_more_tasks: 'Loading more tasks...'
+message.location: Location
+message.low: Low
+message.manual_phase_schedule_note_first: 'Add manual dates for Base and Forecast schedule.'
+message.manual_phase_schedule_note_second: 'Base Start Date and Base Finish Date are overwritten by the automatically calculated dates.'
+message.manual_schedule: 'Manual Schedule'
+message.manual_schedule_note: 'Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.'
+message.measures: Measures
+message.measures_cost: 'Measures Cost'
+message.medium: Medium
+message.meetings: Meetings
+message.member: member
+message.members: members
+message.milestone_responsible: 'Milestone Responsible'
+message.milestone_schedule_note: 'Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.'
+message.min: Min
+message.minute_ago: 'minute ago'
+message.minutes_ago: 'minutes ago'
+message.minutes_under_interval: 'You cannot generate another report due to time interval restriction. Please check with your manager.'
+message.months: Months
+message.more: more
+message.my_projects: 'My Projects'
+message.my_tasks: 'My Tasks'
+message.new_comment: 'New Comment'
+message.new_evaluation_objective: 'New Evaluation Objective'
+message.new_label: 'New Label'
+message.new_lesson: 'New Lesson'
+message.new_message: New
+message.new_objective: 'New Objective'
+message.new_objective_description: 'New Objective Description'
+message.new_objective_title: 'New Objective Title'
+message.new_opportunity: 'New Opportunity'
+message.new_project: 'New Project'
+message.new_project_deliverable: 'New Project Deliverable'
+message.new_project_limitation: 'New Project Limitation'
+message.new_risk: 'New Risk'
+message.new_task: 'New Task'
+message.no: 'No'
+message.no_chat_rooms: 'Chat list is empty for this project'
+message.no_managers: 'There are no managers defined on this project. Please set up managers in order to asign them to this department.'
+message.no_private_messages: 'There are no private messages on this project'
+message.no_results: 'No results'
+message.not_recommended_modules: 'we don’t recommend using the remaining modules but you can still activate them'
+message.note: 'Note:'
+message.notes: Notes
+message.objectives: Objectives
+message.open_tasks: 'Open Tasks'
+message.opex_capex_note: 'If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.'
+message.opex_subtotal: 'Opex Subtotal'
+message.opportunities: Opportunities
+message.organization: Organization
+message.organization_context: 'Organization Context'
+message.overall_impression: 'Overall Impression'
+message.overall_progress: 'Overall Progress'
+message.overall_status: 'Overall Status'
+message.parent_phase: 'Parent Phase'
+message.participants: Participants
+message.per_day_reports_exceeded: 'You exceeded the number of reports per day. Please check with your manager.'
+message.performance_schedule: 'Performance Schedule'
+message.phase_responsible: 'Phase Responsible'
+message.phases_and_milestones: 'Phases and Milestones'
+message.phases_milestones: 'Phases & Milestones'
+message.plan: Plan
+message.planning: Planning
+message.potential_cost: 'Potential Cost'
+message.potential_savings: 'Potential Savings'
+message.potential_time_delay: 'Potential Time Delay'
+message.potential_time_savings: 'Potential Time Savings'
+message.print_meeting: 'Print Meeting'
+message.priority: Priority
+message.probability: Probability
+message.programme: Programme
+message.progress: Progress
+message.projcet_costs: 'Project Costs'
+message.project: Project
+message.project_acceptance: 'Project Acceptance'
+message.project_budget: 'Project Budget'
+message.project_closed: 'Project has been closed.'
+message.project_condition: 'Project Condition'
+message.project_contract: 'Project Contract'
+message.project_create_step1: 'Step 1: General Info'
+message.project_create_step2: 'Step 2: Project Worthiness Analysis'
+message.project_create_step3: 'Step 3: Project Builder'
+message.project_create_wizard: 'Project Creation Wizard'
+message.project_currency: 'Project Currency'
+message.project_dashboard: 'Project Dashboard'
+message.project_decisions: 'Project Decisions'
+message.project_deliverables: 'Project Deliverables'
+message.project_description: 'Project Description'
+message.project_duration: 'Project Duration'
+message.project_infos: 'Project Infos'
+message.project_involved: 'Project Involved'
+message.project_limitations: 'Project Limitations'
+message.project_logo: 'Add Project Logo'
+message.project_management: 'Project Management'
+message.project_manager: 'Project Manager'
+message.project_manager_signature: 'Project Manager Signature'
+message.project_managers: 'Project Manager(s)'
+message.project_meetings: 'Project Meetings'
+message.project_milestones: 'Project Milestones'
+message.project_name: 'Project Name'
+message.project_number: 'Project No.'
+message.project_objectives: 'Project Objectives'
+message.project_opportunities: 'Project Opportunities'
+message.project_organization: 'Project Organization'
+message.project_phases: 'Project Phases'
+message.project_portfolio: 'Project is part of a portfolio'
+message.project_programme: 'Project is part of a programme'
+message.project_resources: 'Project Resources'
+message.project_risks: 'Project Risks'
+message.project_roles: 'Project Roles'
+message.project_schedule: 'Project Schedule'
+message.project_size: 'Project Size'
+message.project_sponsor: Sponsor
+message.project_sponsor_signature: 'Project Sponsor Signature'
+message.project_start_event: 'Project Start Event'
+message.project_status: 'Project Status'
+message.project_status_reports: 'Project Status Reports'
+message.project_summary: 'Project Summary'
+message.project_tasks: 'Project Tasks'
+message.project_todos: 'Project Todos'
+message.project_trend: 'Project Trend'
+message.projects: Projects
+message.rasci_matrix: 'RASCI Matrix'
+message.recent_projects: 'My Recent Projects'
+message.recent_tasks: 'My Recent Tasks'
+message.recommended_modules: 'based on your estimations we recommend the following modules'
+message.reflection: Reflection
+message.remaining_action: 'Remaining Action'
+message.reschedule_decision: 'Reschedule Decision'
+message.reschedule_meeting: 'Reschedule Meeting'
+message.reschedule_remaining_action: 'Reschedule remaining action'
+message.reschedule_todo: 'Reschedule todo'
+message.reset_password: 'Please enter your email address to reset the account password. An email will be sent with instructions.'
+message.resource_chart: 'Resource Chart'
+message.resources: Resources
+message.resources_chart_by_department: 'Resources By Department'
+message.resources_chart_by_phase: 'Resources By Phase'
+message.responsible: Responsible
+message.results_out_of: 'results out of'
+message.return: 'to return to your original user.'
+message.risks: Risks
+message.risks_oportunities: 'Risks & Oportunities'
+message.role: Role
+message.roles: Roles
+message.sales: Sales
+message.save_schedule: 'Save Schedule'
+message.saved: Saved!
+message.schedule: Schedule
+message.schedule_base: 'Schedule Base'
+message.schedule_forecast: 'Schedule Forecast'
+message.scope: Scope
+message.select_customer: 'Select Customer'
+message.select_phase_milestone: 'Select a phase&milestone'
+message.select_portfolio: 'Select Portfolio'
+message.select_programme: 'Select Programme'
+message.send_notifications: 'Send Notifications'
+message.sponsors_managers: 'Sponsors & Managers'
+message.start: Start
+message.start_date: 'Start Date'
+message.started_on: 'Started on'
+message.starting_on: 'Starting On'
+message.status: Status
+message.status_report: 'Status Report'
+message.status_reports: 'Status Reports'
+message.strategical_meaning: 'Strategical Meaning'
+message.strategy: Strategy
+message.subtasks: Subtasks
+message.subtasks_summary: '%completed_tasks% of %total_tasks%'
+message.subteam: Subteam
+message.task_assignments: 'Task Assignments'
+message.task_chart: 'Task Chart'
+message.task_completion: 'Task completion'
+message.task_condition: 'Task condition'
+message.task_details: 'Task Details'
+message.task_management: 'Task Management'
+message.task_progress: 'Task Progress'
+message.task_schedule: 'Task Schedule'
+message.task_status: 'Task Status'
+message.tasks: Tasks
+message.tasks_condition: 'Tasks Condition'
+message.tasks_status: 'Tasks Status'
+message.team_members: 'Team Members'
+message.team_members_involved: 'Team Members Involved'
+message.teams: 'Teams you are a part of'
+message.this_task_has_no_planning: 'This task has no planning data configured'
+message.this_task_part_of: 'This task is part of'
+message.time_calculation: 'Time Saved is calculated as Probability times Potential Time Savings'
+message.time_calculation_opportunity: 'Time Saved is calculated as Probability times Potential Time Savings'
+message.time_calculation_risk: 'Time Saved is calculated as Probability times Potential Time Delays'
+message.time_saved: 'Time Saved'
+message.to: to
+message.todos: Todos
+message.top_opportunity: 'Top Opportunity'
+message.top_risk: 'Top Risk'
+message.total: Total
+message.total_cost_of_measures: 'Total Cost of Measures'
+message.total_number_of_measures: 'Total Number of Measures'
+message.total_potential_cost: 'Total Potential Cost'
+message.total_potential_delay: 'Total Potential Delay'
+message.total_potential_savings: 'Total Potential Savings'
+message.total_potential_time_savings: 'Total Potential Time Savings'
+message.total_tasks: 'Total tasks'
+message.unable_to_save: 'Unable to save.'
+message.uploading_file_failed: 'There was an error while uploading the file'
+message.user_added_to_project: 'User has been added to the project.'
+message.user_blocked: 'User blocked'
+message.user_invited_to_project: 'User has been invited to the project. The next time when they login they will have access to the project.'
+message.very_high: 'Very High'
+message.very_low: 'Very Low'
+message.view_board: 'View Board'
+message.view_decision: 'View Decision'
+message.view_grid: 'View Grid'
+message.view_meeting: 'View Meeting'
+message.view_remaining_action: 'View Remaining Action'
+message.view_team: 'View Team'
+message.view_todo: 'View Todo'
+message.wait: 'Please wait...'
+message.warning: Warning
+message.wbs: WBS
+message.week: Week
+message.weeks: Weeks
+message.work_package_dependency_constraint: 'Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!'
+message.workspaces: 'Workspaces you are a part of'
+message.year: Year
+message.yes: 'Yes'
+message.your_teams: 'Your teams'
+message.your_workspaces: 'Your workspaces'
+modules.close_down_project.description: 'The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.'
+modules.close_down_project.title: 'Close Down Project'
+modules.contract.description: 'The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.'
+modules.contract.title: Contract
+modules.decisions.description: 'In the "Decisions"-module, you can document the decisions made during project execution.'
+modules.decisions.title: Decisions
+modules.external_costs.description: 'Resource planning allows you to calculate the necessary personnel usage per work package.'
+modules.external_costs.title: 'External Costs'
+modules.gantt_chart.description: 'The Gantt Chart is a standard visualization of all phases, work packages, tasks and milestones on a timeline according to the planned project execution. All items have dedicated start and finish date and are displayed in individual bars on the time axis. Correlations between those items, such as predecessor and successor tasks, can be defined and are displayed as well.'
+modules.gantt_chart.title: 'Gantt chart'
+modules.infos.description: 'With the "Info"-module, you can document general information related to your project or your team. Information such as changes to the project scope, new team members joining, new events planned, etc.'
+modules.infos.title: Infos
+modules.internal_costs.description: 'Keeping track of the project costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest.'
+modules.internal_costs.title: 'Internal Costs'
+modules.meetings.description: 'CAMPR supports you in the coordination of meetings with project participants. You can create invitations for meetings, schedule your meetings, and can keep track on them. Also, meeting minutes can be entered in a structured form and send out to all relevant meeting participants according to predefined distribution lists.'
+modules.meetings.title: Meetings
+modules.organization.description: 'The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites.'
+modules.organization.title: Organization
+modules.phases_and_milestones.description: 'Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.'
+modules.phases_and_milestones.title: 'Phases & Milestones'
+modules.rasci_matrix.description: 'A responsibility assignment matrix describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes. RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportable, Consulted, and Informed.'
+modules.rasci_matrix.title: 'Rasci matrix'
+modules.risks_and_opportunities.description: 'Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to react proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.'
+modules.risks_and_opportunities.title: 'Risks & Oportunities'
+modules.status_report.description: 'The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions.'
+modules.status_report.title: 'Status Report'
+modules.task_management.description: 'The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are a geographical area, engineering discipline, technology, or the time needed to accomplish them.'
+modules.task_management.title: 'Task Management'
+modules.todos.description: 'The central to-do list is used to document the agreed or necessary to-dos during your project.'
+modules.todos.title: Todos
+modules.wbs.description: 'The Work Breakdown Structure (WBS) is a deliverable-oriented breakdown of a project into smaller components. A work breakdown structure is a key project deliverable that organizes the team''s work into manageable sections. This module visualizes the breakdown in a “tree”- structure starting with the project phases and work packages, tasks, and milestones in the branches. The structure can be manipulated within the module for restructuring purposes.'
+modules.wbs.title: WBS
+not_found.email_user: 'Requested user email not found'
+not_found.general: 'Resource not found!'
+not_found.team: 'Team not found'
+not_found.user: 'User not found'
+placeholder.abbreviation: Abbreviation
+placeholder.action: Action
+placeholder.actions: Actions
+placeholder.adapter: 'Select source'
+placeholder.assignment: 'Choose one assignment'
+placeholder.calendar: 'Choose calendar'
+placeholder.category: 'Choose a category'
+placeholder.color_status: 'Choose one color status'
+placeholder.comment: Comment
+placeholder.company: Company
+placeholder.company_choose: 'Choose one company'
+placeholder.contract: 'Choose one contract'
+placeholder.currency: Currency
+placeholder.day: 'Choose one day'
+placeholder.decision: 'Choose one decision'
+placeholder.decision_description: 'Decision Description'
+placeholder.decision_title: 'Decision Title'
+placeholder.delay_unit: 'Delay Unit'
+placeholder.department: Department
+placeholder.description: Description
+placeholder.distribution_list: 'Choose one distribution list'
+placeholder.driver.dropbox: Dropbox
+placeholder.driver.local: Local
+placeholder.email: Email
+placeholder.facebook: Facebook
+placeholder.filesystem: 'Select filesystem'
+placeholder.first_name: 'First Name'
+placeholder.gplus: 'Google Plus'
+placeholder.impact: 'Choose impact'
+placeholder.info_description: 'Info Description'
+placeholder.info_topic: 'Info Topic'
+placeholder.labe: Label
+placeholder.label_color: 'Label Color'
+placeholder.label_description: 'Label Description'
+placeholder.label_title: 'Label Title'
+placeholder.last_name: 'Last Name'
+placeholder.linked_in: 'Linked In'
+placeholder.location: Location
+placeholder.manager: 'Choose one manager'
+placeholder.measure_cost: 'Measure Cost'
+placeholder.measure_description: 'Measure description'
+placeholder.measure_title: 'Measure Title'
+placeholder.meeting: 'Choose one meeting'
+placeholder.meetings: 'Choose one or more meetings'
+placeholder.milestone: Milestone
+placeholder.milestone_description: 'Milestone Description'
+placeholder.milestone_name: 'Milestone Name'
+placeholder.module: Module
+placeholder.name: Name
+placeholder.new_department: 'New Department'
+placeholder.new_measure: 'New Measure'
+placeholder.number: Number
+placeholder.objective: Objective
+placeholder.opportunity: Opportunity
+placeholder.opportunity_description: 'Opportunity Description'
+placeholder.opportunity_status: 'Opportunity Status'
+placeholder.opportunity_strategy: 'Opportunity Strategy'
+placeholder.opportunity_title: 'Opportunity Title'
+placeholder.phase: Phase
+placeholder.phase_description: 'Phase Description'
+placeholder.phase_name: 'Phase Name'
+placeholder.phone: Phone
+placeholder.portfolio: 'Choose one portfolio'
+placeholder.potential_cost: 'Potential Cost'
+placeholder.potential_savings: 'Potential Savings'
+placeholder.potential_time_delay: 'Potential Time Delay'
+placeholder.potential_time_savings: 'Potential Time Savings'
+placeholder.programme: Programme
+placeholder.project: 'Choose one project'
+placeholder.project_category: 'Choose one project category'
+placeholder.project_complexity: 'Choose one project complexity'
+placeholder.project_department: 'Choose one project department'
+placeholder.project_role: 'Choose one project role'
+placeholder.project_scope: 'Choose one project scope'
+placeholder.project_status: 'Choose one project status'
+placeholder.project_team: 'Choose one project team'
+placeholder.project_user: 'Choose one project user'
+placeholder.project_work_cost_type: 'Choose one project work cost type'
+placeholder.rate: Rate
+placeholder.responsible: Responsible
+placeholder.risk: Risk
+placeholder.risk_category: 'Choose one risk category'
+placeholder.risk_description: 'Risk Description'
+placeholder.risk_status: 'Risk Status'
+placeholder.risk_strategy: 'Choose one risk strategy'
+placeholder.risk_title: 'Risk Title'
+placeholder.rist_strategy: 'Risk Strategy'
+placeholder.role: Role
+placeholder.schedule: 'Choose schedule'
+placeholder.search_members: 'Seach For Members'
+placeholder.search_resources: 'Search for resources'
+placeholder.select_currency: 'Select currency'
+placeholder.sequence: Sequence
+placeholder.sponsor: 'Choose one sponsor'
+placeholder.status: 'Choose one status'
+placeholder.subteam: Subteam
+placeholder.subteam_role: 'Subteam Role'
+placeholder.time_unit: 'Time Unit'
+placeholder.title: Title
+placeholder.todo_category: 'Todo Category'
+placeholder.todo_description: 'Todo Description'
+placeholder.todo_topic: 'Todo Topic'
+placeholder.topic: Topic
+placeholder.twitter: Twitter
+placeholder.type: Type
+placeholder.user: 'Choose one user'
+placeholder.username: Username
+placeholder.workpackage: 'Choose one workpackage'
+placeholder.workpackage_category: 'Work Package Category'
+placeholder.workpackage_status: 'Work Package Status'
+placeholder.wppcwct: 'Choose one work package project work cost type'
+project_color_status.critical: Critical
+project_color_status.on_track: 'On track'
+project_color_status.warning: Warning
+reset.expired: 'Reset token expired!'
+reset.not_found: 'No reset token found!'
+roles.project_manager: 'Project Manager'
+roles.project_sponsor: 'Project Sponsor'
+roles.team_leader: 'Team Leader'
+roles.team_member: 'Team Member'
+site.disabled: 'Site disabled.'
+subtitle.assignment: 'List of assignments'
+subtitle.calendar: 'List of calendars'
+subtitle.close_down_action: 'List of close down actions'
+subtitle.color_status: 'List of color statuses'
+subtitle.communication: 'List of communications'
+subtitle.company: 'List of companies'
+subtitle.contract: 'List of contracts'
+subtitle.cost: 'List of costs'
+subtitle.dashboard: 'Welcome to the admin area!'
+subtitle.day: 'List of days'
+subtitle.decision: 'List of decisions'
+subtitle.decision_category: 'List of decision categories'
+subtitle.decision_status: 'List of decision statuses'
+subtitle.distribution_list: 'List of distribution lists'
+subtitle.document: 'List of documents'
+subtitle.evaluation_objective: 'List of evaluation objectives'
+subtitle.file: 'List of project files'
+subtitle.filesystem: 'List of file systems'
+subtitle.impact: 'List of impacts'
+subtitle.label: 'List of project labels'
+subtitle.lesson: 'List of lessons'
+subtitle.measure: Measure
+subtitle.media: 'List of project files'
+subtitle.meeting: 'List of meetings'
+subtitle.meeting_agenda: 'List of meeting agendas'
+subtitle.meeting_category: 'List of meeting categories'
+subtitle.meeting_objective: 'List of meeting objectives'
+subtitle.meeting_participant: 'List of meeting participants'
+subtitle.note: 'List of notes'
+subtitle.note_status: 'List of note statuses'
+subtitle.opportunity: 'List of opportunities'
+subtitle.opportunity_status: 'List of opportunity statuses'
+subtitle.opportunity_strategy: 'List of opportunity strategies'
+subtitle.portfolio: 'List of portfolios'
+subtitle.programme: 'List of programmes'
+subtitle.project: 'List of projects'
+subtitle.project_category: 'List of project categories'
+subtitle.project_close_down: 'List of project close downs'
+subtitle.project_complexity: 'List of project complexities'
+subtitle.project_cost_type: 'List of project cost types'
+subtitle.project_deliverable: 'List of project deliverables'
+subtitle.project_department: 'List of project departments'
+subtitle.project_limitation: 'List of project limitations'
+subtitle.project_module: 'List of project modules'
+subtitle.project_objective: 'List of project objectives'
+subtitle.project_role: 'List of project roles'
+subtitle.project_scope: 'List of project scopes'
+subtitle.project_status: 'List of projects statuses'
+subtitle.project_team: 'List of project teams'
+subtitle.project_user: 'List of project users'
+subtitle.project_work_cost_type: 'List of project work cost types'
+subtitle.rasci: 'List of rasci'
+subtitle.resource: 'List of resources'
+subtitle.risk: 'List of risks'
+subtitle.risk_category: 'List of risk categories'
+subtitle.risk_status: 'List of Risk Statuses'
+subtitle.risk_strategy: 'List of risk strategies'
+subtitle.schedule: 'List of schedules'
+subtitle.status: 'List of statuses'
+subtitle.status_report: 'List of status reports'
+subtitle.status_report_config: 'List of status report configs'
+subtitle.subteam: 'List of subteams'
+subtitle.subteam_member: 'List of subteam members'
+subtitle.subteam_role: 'List of subteam roles'
+subtitle.task_precedesor: 'Task predecesor'
+subtitle.task_schedule: 'Task schedule'
+subtitle.timephase: 'List of time phases'
+subtitle.todo: 'List of todos'
+subtitle.todo_category: 'List of todo categories'
+subtitle.todo_status: 'List of todo statuses'
+subtitle.unit: 'List of units'
+subtitle.user: 'List of users'
+subtitle.working_time: 'List of working times'
+subtitle.workpackage: 'List of workpackages'
+subtitle.workpackage_category: 'List of work package categories'
+subtitle.workpackage_status: 'List of work package statuses'
+subtitle.wppcwct: 'List of Work Package Project Work Cost Type'
+success.account.edit: 'Your account was succesfully edited!'
+success.assignment.create: 'Assignment successfully created!'
+success.assignment.delete.from_data_table: 'Assignment with ID'
+success.assignment.delete.from_edit: 'Assignment successfully deleted!'
+success.assignment.edit: 'Assignment successfully edited!'
+success.calendar.create: 'Calendar successfully created!'
+success.calendar.delete.from_data_table: 'Calendar with ID'
+success.calendar.delete.from_edit: 'Calendar successfully deleted!'
+success.calendar.edit: 'Calendar successfully edited!'
+success.chat_messages.delete: 'Ankündigungen erfolgreich gelöscht!'
+success.close_down_action.create: 'Close Down Action successfully created!'
+success.close_down_action.delete.from_data_table: 'Close Down Action config with ID'
+success.close_down_action.delete.from_edit: 'Close Down Action successfully deleted!'
+success.close_down_action.edit: 'Close Down Action successfully edited!'
+success.color_status.create: 'Color status successfully created!'
+success.color_status.delete.from_data_table: 'Color status with ID'
+success.color_status.delete.from_edit: 'Color status successfully deleted!'
+success.color_status.edit: 'Color status successfully edited!'
+success.communication.create: 'Communication successfully created!'
+success.communication.delete.from_data_table: 'Communication with ID'
+success.communication.delete.from_edit: 'Communication successfully deleted!'
+success.communication.edit: 'Communication successfully edited!'
+success.company.create: 'Company successfully created!'
+success.company.delete.from_data_table: 'Company with ID'
+success.company.delete.from_edit: 'Company successfully deleted!'
+success.company.edit: 'Company successfully edited!'
+success.contact.message.sent: 'Message succesfully sent!'
+success.contract.create: 'Contract successfully created!'
+success.contract.delete.from_data_table: 'Contract with ID'
+success.contract.delete.from_edit: 'Contract successfully deleted!'
+success.contract.edit: 'Contract successfully edited!'
+success.cost.create: 'Cost successfully created!'
+success.cost.delete.from_data_table: 'Cost with ID'
+success.cost.delete.from_edit: 'Cost successfully deleted!'
+success.cost.edit: 'Cost successfully edited!'
+success.day.create: 'Day successfully created!'
+success.day.delete.from_data_table: 'Day with ID'
+success.day.delete.from_edit: 'Day successfully deleted!'
+success.day.edit: 'Day successfully edited!'
+success.decision.create: 'Decision successfully created!'
+success.decision.delete.from_data_table: 'Decision with ID'
+success.decision.delete.from_edit: 'Decision successfully deleted!'
+success.decision.edit: 'Decision successfully edited!'
+success.decision_category.create: 'Decision Category successfully created!'
+success.decision_category.delete.from_data_table: 'Decision Category with ID'
+success.decision_category.delete.from_edit: 'Decision Category successfully deleted!'
+success.decision_category.edit: 'Decision Category successfully edited!'
+success.decision_status.create: 'Decision Status successfully created!'
+success.decision_status.delete.from_data_table: 'Decision Status with ID'
+success.decision_status.delete.from_edit: 'Decision Status successfully deleted!'
+success.decision_status.edit: 'Decision Status successfully edited!'
+success.delete_common: 'successfully deleted!'
+success.distribution_list.create: 'Distribution list successfully created!'
+success.distribution_list.delete.from_data_table: 'Distribution list with ID'
+success.distribution_list.delete.from_edit: 'Distribution list successfully deleted!'
+success.distribution_list.edit: 'Verteilerliste erfolgreich bearbeitet!'
+success.evaluation_objective.create: 'Evaluation Objective successfully created!'
+success.evaluation_objective.delete.from_data_table: 'Evaluation Objective config with ID'
+success.evaluation_objective.delete.from_edit: 'Evaluation Objective successfully deleted!'
+success.evaluation_objective.edit: 'Evaluation Objective successfully edited!'
+success.filesystem.create: 'File System successfully created!'
+success.filesystem.delete.from_data_table: 'File System with ID'
+success.filesystem.delete.from_edit: 'File System successfully deleted!'
+success.filesystem.edit: 'File System successfully edited!'
+success.impact.create: 'Impact successfully created!'
+success.impact.delete.from_data_table: 'Impact with ID'
+success.impact.delete.from_edit: 'Impact successfully deleted!'
+success.impact.edit: 'Impact successfully edited!'
+success.info.create: 'Info successfully created!'
+success.info.delete.from_data_table: 'Info with ID'
+success.info.delete.from_edit: 'Info successfully deleted!'
+success.info.edit: 'Info successfully edited!'
+success.info_category.create: 'Info category successfully created!'
+success.info_category.delete.from_data_table: 'Info category with ID'
+success.info_category.delete.from_edit: 'Info category successfully deleted!'
+success.info_category.edit: 'Info category successfully edited!'
+success.info_status.create: 'Info status successfully created!'
+success.info_status.delete.from_data_table: 'Info status with ID'
+success.info_status.delete.from_edit: 'Info status successfully deleted!'
+success.info_status.edit: 'Info status successfully edited!'
+success.label.create: 'Label successfully created!'
+success.label.delete.from_data_table: 'Label with ID'
+success.label.delete.from_edit: 'Label successfully deleted!'
+success.label.edit: 'Label successfully edited!'
+success.lesson.create: 'Lesson successfully created!'
+success.lesson.delete.from_data_table: 'Lesson config with ID'
+success.lesson.delete.from_edit: 'Lesson successfully deleted!'
+success.lesson.edit: 'Lesson successfully edited!'
+success.measure.create: 'Measure successfully created!'
+success.measure.delete.from_data_table: 'Measure with ID'
+success.measure.delete.from_edit: 'Measure successfully deleted!'
+success.measure.edit: 'Measure successfully edited!'
+success.media.delete.from_data_table: 'File with ID'
+success.media.delete.from_edit: 'Media file successfully deleted!'
+success.media.edit: 'Media file successfully edited!'
+success.media.upload: 'Media file successfully created!'
+success.meeting.create: 'Meeting successfully created!'
+success.meeting.delete.from_data_table: 'Meeting with ID'
+success.meeting.delete.from_edit: 'Meeting successfully deleted!'
+success.meeting.edit: 'Meeting successfully edited!'
+success.meeting_agenda.create: 'Meeting agenda successfully created!'
+success.meeting_agenda.delete.from_data_table: 'Meeting agenda with ID'
+success.meeting_agenda.delete.from_edit: 'Meeting agenda successfully deleted!'
+success.meeting_agenda.edit: 'Meeting agenda successfully edited!'
+success.meeting_category.create: 'Meeting Category successfully created!'
+success.meeting_category.delete.from_data_table: 'Meeting Category with ID'
+success.meeting_category.delete.from_edit: 'Meeting Category successfully deleted!'
+success.meeting_category.edit: 'Meeting Category successfully edited!'
+success.meeting_objective.create: 'Meeting Objective successfully created!'
+success.meeting_objective.delete.from_data_table: 'Meeting Objective with ID'
+success.meeting_objective.delete.from_edit: 'Meeting Objective successfully deleted!'
+success.meeting_objective.edit: 'Meeting Objective successfully edited!'
+success.meeting_participant.create: 'Meeting participant successfully created!'
+success.meeting_participant.delete.from_data_table: 'Meeting participant with ID'
+success.meeting_participant.delete.from_edit: 'Meeting participant successfully deleted!'
+success.meeting_participant.edit: 'Meeting participant successfully edited!'
+success.note.create: 'Note successfully created!'
+success.note.delete.from_data_table: 'Notiz mit ID'
+success.note.delete.from_edit: 'Note successfully deleted!'
+success.note.edit: 'Note successfully edited!'
+success.note_status.create: 'Note Status successfully created!'
+success.note_status.delete.from_data_table: 'Note Status with ID'
+success.note_status.delete.from_edit: 'Note Status successfully deleted!'
+success.note_status.edit: 'Note Status successfully edited!'
+success.opportunity.create: 'Opportunity successfully created!'
+success.opportunity.delete.from_data_table: 'Opportunity with ID'
+success.opportunity.delete.from_edit: 'Opportunity successfully deleted!'
+success.opportunity.edit: 'Opportunity successfully edited!'
+success.opportunity_status.create: 'Opportunity Status successfully created!'
+success.opportunity_status.delete.from_data_table: 'Opportunity Status with ID'
+success.opportunity_status.delete.from_edit: 'Opportunity Status successfully deleted!'
+success.opportunity_status.edit: 'Opportunity Status successfully edited!'
+success.opportunity_strategy.create: 'Opportunity Strategy successfully created!'
+success.opportunity_strategy.delete.from_data_table: 'Opportunity Strategy with ID'
+success.opportunity_strategy.delete.from_edit: 'Opportunity Strategy successfully deleted!'
+success.opportunity_strategy.edit: 'Opportunity Strategy successfully edited!'
+success.payment_method.create: 'Payment method successfully created!'
+success.payment_method.delete: 'Payment method successfully deleted!'
+success.payment_method.edit: 'Payment method successfully edited!'
+success.portfolio.create: 'Portfolio successfully created!'
+success.portfolio.delete.from_data_table: 'Portfolio with ID'
+success.portfolio.delete.from_edit: 'Portfolio successfully deleted!'
+success.portfolio.edit: 'Portfolio successfully edited!'
+success.programme.create: 'Programme successfully created!'
+success.programme.delete.from_data_table: 'Programme with ID'
+success.programme.delete.from_edit: 'Programme successfully deleted!'
+success.programme.edit: 'Programme successfully edited!'
+success.project.create: 'Project successfully created!'
+success.project.delete.from_data_table: 'Project with ID'
+success.project.delete.from_edit: 'Projekt erfolgreich gelöscht!'
+success.project.edit: 'Project successfully edited!'
+success.project.import: 'Import project started. Project will be imported soon.'
+success.project_category.create: 'Project category successfully created!'
+success.project_category.delete.from_data_table: 'Project category with ID'
+success.project_category.delete.from_edit: 'Project category successfully deleted!'
+success.project_category.edit: 'Project category successfully edited!'
+success.project_close_down.create: 'Project Close Down successfully created!'
+success.project_close_down.delete.from_data_table: 'Project Close Down config with ID'
+success.project_close_down.delete.from_edit: 'Project Close Down successfully deleted!'
+success.project_close_down.edit: 'Project Close Down successfully edited!'
+success.project_complexity.create: 'Projektkomplexität erfolgreich erstellt!'
+success.project_complexity.delete.from_data_table: 'Project complexity with ID'
+success.project_complexity.delete.from_edit: 'Project complexity successfully deleted!'
+success.project_complexity.edit: 'Project complexity successfully edited!'
+success.project_cost_type.create: 'Project cost type successfully created!'
+success.project_cost_type.delete.from_data_table: 'Project cost type with ID'
+success.project_cost_type.delete.from_edit: 'Project cost type successfully deleted!'
+success.project_cost_type.edit: 'Project cost type successfully edited!'
+success.project_deliverable.create: 'Project Deliverable successfully created!'
+success.project_deliverable.delete.from_data_table: 'Project Deliverable with ID'
+success.project_deliverable.delete.from_edit: 'Project Deliverable successfully deleted!'
+success.project_deliverable.edit: 'Project Deliverable successfully edited!'
+success.project_department.create: 'Project department successfully created!'
+success.project_department.delete.from_data_table: 'Project department with ID'
+success.project_department.delete.from_edit: 'Project department successfully deleted!'
+success.project_department.edit: 'Project department successfully edited!'
+success.project_limitation.create: 'Project Limitation successfully created!'
+success.project_limitation.delete.from_data_table: 'Project Objective with ID'
+success.project_limitation.delete.from_edit: 'Project Limitation successfully deleted!'
+success.project_limitation.edit: 'Project Limitation successfully edited!'
+success.project_module.create: 'Project module successfully created!'
+success.project_module.delete.from_data_table: 'Project module with ID'
+success.project_module.delete.from_edit: 'Project module successfully deleted!'
+success.project_module.edit: 'Project module successfully edited!'
+success.project_objective.create: 'Project Objective successfully created!'
+success.project_objective.delete.from_data_table: 'Project Objective with ID'
+success.project_objective.delete.from_edit: 'Project Objective successfully deleted!'
+success.project_objective.edit: 'Project Objective successfully edited!'
+success.project_role.create: 'Project role successfully created!'
+success.project_role.delete.from_data_table: 'Project role with ID'
+success.project_role.delete.from_edit: 'Project role successfully deleted!'
+success.project_role.edit: 'Project role successfully edited!'
+success.project_scope.create: 'Project scope successfully created!'
+success.project_scope.delete.from_data_table: 'Project scope with ID'
+success.project_scope.delete.from_edit: 'Project scope successfully deleted!'
+success.project_scope.edit: 'Project scope successfully edited!'
+success.project_status.create: 'Project status successfully created!'
+success.project_status.delete.from_data_table: 'Project status with ID'
+success.project_status.delete.from_edit: 'Project status successfully deleted!'
+success.project_status.edit: 'Project status successfully edited!'
+success.project_team.create: 'Project team successfully created!'
+success.project_team.delete.from_data_table: 'Project team with ID'
+success.project_team.delete.from_edit: 'Project team successfully deleted!'
+success.project_team.edit: 'Project team successfully edited!'
+success.project_user.create: 'Project user successfully created!'
+success.project_user.delete.from_data_table: 'Project user with ID'
+success.project_user.delete.from_edit: 'Project user successfully deleted!'
+success.project_user.edit: 'Project user successfully edited!'
+success.project_work_cost_type.create: 'Project work cost type successfully created!'
+success.project_work_cost_type.delete.from_data_table: 'Project work cost type with ID'
+success.project_work_cost_type.delete.from_edit: 'Project work cost type successfully deleted!'
+success.project_work_cost_type.edit: 'Project work cost type successfully edited!'
+success.rasci.create: 'Rasci successfully created!'
+success.rasci.delete.from_data_table: 'Rasci with ID'
+success.rasci.delete.from_edit: 'Rasci successfully deleted!'
+success.rasci.edit: 'Rasci successfully edited!'
+success.resource.create: 'Resource successfully created!'
+success.resource.delete.from_data_table: 'Resource with ID'
+success.resource.delete.from_edit: 'Resource successfully deleted!'
+success.resource.edit: 'Resource successfully edited!'
+success.risk.create: 'Risk successfully created!'
+success.risk.delete.from_data_table: 'Risk with ID'
+success.risk.delete.from_edit: 'Risk successfully deleted!'
+success.risk.edit: 'Risk successfully edited!'
+success.risk_category.create: 'Risk category successfully created!'
+success.risk_category.delete.from_data_table: 'Risk category with ID'
+success.risk_category.delete.from_edit: 'Risk category successfully deleted!'
+success.risk_category.edit: 'Risk category successfully edited!'
+success.risk_strategy.create: 'Risk strategy successfully created!'
+success.risk_strategy.delete.from_data_table: 'Risk strategy with ID'
+success.risk_strategy.delete.from_edit: 'Risk strategy successfully deleted!'
+success.risk_strategy.edit: 'Risk strategy successfully edited!'
+success.schedule.create: 'Schedule successfully created!'
+success.schedule.delete.from_data_table: 'Schedule with ID'
+success.schedule.delete.from_edit: 'Schedule successfully deleted!'
+success.schedule.edit: 'Schedule successfully edited!'
+success.status.create: 'Status successfully created!'
+success.status.delete.from_data_table: 'Status with ID'
+success.status.delete.from_edit: 'Status successfully deleted!'
+success.status.edit: 'Status successfully edited!'
+success.status_report.delete.from_data_table: 'Status report Status with ID'
+success.status_report.delete.from_edit: 'Status report successfully deleted!'
+success.status_report_config.create: 'Status report config successfully created!'
+success.status_report_config.delete.from_data_table: 'Status report config with ID'
+success.status_report_config.delete.from_edit: 'Status report config successfully deleted!'
+success.status_report_config.edit: 'Status report config successfully edited!'
+success.subteam.create: 'Subteam successfully created!'
+success.subteam.delete.from_data_table: 'Subteam with ID'
+success.subteam.delete.from_edit: 'Subteam successfully deleted!'
+success.subteam.edit: 'Subteam successfully edited!'
+success.subteam_member.create: 'Subteam Member successfully created!'
+success.subteam_member.delete.from_data_table: 'Subteam Member with ID'
+success.subteam_member.delete.from_edit: 'Subteam Member successfully deleted!'
+success.subteam_member.edit: 'Subteam Member successfully edited!'
+success.subteam_role.create: 'Subteam Role successfully created!'
+success.subteam_role.delete.from_data_table: 'Subteam Role with ID'
+success.subteam_role.delete.from_edit: 'Subteam Role successfully deleted!'
+success.subteam_role.edit: 'Subteam Role successfully edited!'
+success.team.create: 'Team successfully created! Login into team section will be available in a few moments after the database queries are executed.'
+success.team.delete: 'Team successfully deleted!'
+success.team.edit: 'Team successfully edited!'
+success.team_member.create: 'Team member successfully created!'
+success.team_member.delete: 'Team member successfully deleted!'
+success.team_member.edit: 'Team member successfully edited!'
+success.team_member.invitation.accepted: 'Congratulation! You are now part of the team %team_name%.'
+success.team_member.invite: 'New invitation sent to user with email %user_email%.'
+success.team_member.remove: 'User %team_member_name% has been removed from the team %team_name%.'
+success.timephase.create: 'Timephase successfully created!'
+success.timephase.delete.from_data_table: 'Timephase with ID'
+success.timephase.delete.from_edit: 'Timephase successfully deleted!'
+success.timephase.edit: 'Timephase successfully edited!'
+success.todo.create: 'Todo successfully created!'
+success.todo.delete.from_data_table: 'Todo with ID'
+success.todo.delete.from_edit: 'Todo successfully deleted!'
+success.todo.edit: 'Todo successfully edited!'
+success.todo_category.create: 'Todo Category successfully created!'
+success.todo_category.delete.from_data_table: 'Todo Category with ID'
+success.todo_category.delete.from_edit: 'Todo Category successfully deleted!'
+success.todo_category.edit: 'Todo Category successfully edited!'
+success.todo_status.create: 'Todo Status successfully created!'
+success.todo_status.delete.from_data_table: 'Todo Status with ID'
+success.todo_status.delete.from_edit: 'Todo Status successfully deleted!'
+success.todo_status.edit: 'Todo Status successfully edited!'
+success.unit.create: 'Unit successfully created!'
+success.unit.delete.from_data_table: 'Unit with ID'
+success.unit.delete.from_edit: 'Unit successfully deleted!'
+success.unit.edit: 'Unit successfully edited!'
+success.user.create: 'User successfully created!'
+success.user.delete.from_data_table: 'User with ID'
+success.user.delete.from_edit: 'User successfully deleted!'
+success.user.edit: 'User successfully edited!'
+success.working_time.create: 'Working time successfully created!'
+success.working_time.delete.from_data_table: 'Working time with ID'
+success.working_time.delete.from_edit: 'Working time successfully deleted!'
+success.working_time.edit: 'Working time successfully edited!'
+success.workpackage.create: 'Work package successfully created!'
+success.workpackage.delete.from_data_table: 'Work package with ID'
+success.workpackage.delete.from_edit: 'Work package successfully deleted!'
+success.workpackage.edit: 'Work package successfully edited!'
+success.workpackage_category.create: 'Work package category successfully created!'
+success.workpackage_category.delete.from_data_table: 'WorkPackageCategory with ID'
+success.workpackage_category.delete.from_edit: 'Work package category successfully deleted!'
+success.workpackage_category.edit: 'Work package category successfully edited!'
+success.workpackage_status.create: 'Work Package Status successfully created!'
+success.workpackage_status.delete.form_data_table: 'Work Package Status with ID'
+success.workpackage_status.delete.from_edit: 'Work Package Status successfully deleted!'
+success.workpackage_status.edit: 'Work Package successfully edited!'
+success.wppcwct.create: 'Work Package Project Work Cost Type successfully created!'
+success.wppcwct.delete.from_data_table: 'Work Package Project Work Cost Type with ID'
+success.wppcwct.delete.from_edit: 'Work Package Project Work Cost Type successfully deleted!'
+success.wppcwct.edit: 'Work Package Project Work Cost Type successfully edited!'
+table_header_cell.abbreviation: Abbreviation
+table_header_cell.actions: Actions
+table_header_cell.actual: Actual
+table_header_cell.actual_due_date: 'Actual Due Date'
+table_header_cell.actual_finish: 'Actual Finish'
+table_header_cell.actual_schedule: 'Actual Schedule'
+table_header_cell.actual_start: 'Actual Start'
+table_header_cell.agendas: 'Meeting Agendas'
+table_header_cell.approved_at: 'Approved at'
+table_header_cell.automatic: Automatic
+table_header_cell.avatar: Avatar
+table_header_cell.base: Base
+table_header_cell.base_due_date: 'Base Due Date'
+table_header_cell.base_schedule: 'Base Schedule'
+table_header_cell.budget: Budget
+table_header_cell.calendar: Calendar
+table_header_cell.category: Category
+table_header_cell.change: Change
+table_header_cell.children: Children
+table_header_cell.color: Color
+table_header_cell.color_status: 'Color Status'
+table_header_cell.comments: Comments
+table_header_cell.company: Company
+table_header_cell.config: Config
+table_header_cell.confirmed: Confirmed
+table_header_cell.contact: Contact
+table_header_cell.content: Content
+table_header_cell.contract: Contract
+table_header_cell.cost: Cost
+table_header_cell.cost_savings: 'Cost Savings'
+table_header_cell.created_at: 'Created At'
+table_header_cell.created_by: 'Created by'
+table_header_cell.currency: Currency
+table_header_cell.data: Data
+table_header_cell.date: Date
+table_header_cell.day: 'Calendar - Day'
+table_header_cell.decisions: Decisions
+table_header_cell.delay: Delay
+table_header_cell.deleted_at: 'Deleted At'
+table_header_cell.department: Department
+table_header_cell.department_name: 'Department Name'
+table_header_cell.description: Description
+table_header_cell.distribution_list: 'Distribution List'
+table_header_cell.distribution_lists: 'Distribution Lists'
+table_header_cell.driver: Driver
+table_header_cell.due_date: 'Due Date'
+table_header_cell.duration: Duration
+table_header_cell.duration_in_days: 'Duration in days'
+table_header_cell.email: Email
+table_header_cell.enabled: Enabled
+table_header_cell.end: End
+table_header_cell.event: Event
+table_header_cell.expiry_date: 'Expiry Date'
+table_header_cell.file: File
+table_header_cell.filesystem: Filesystem
+table_header_cell.finish: Finish
+table_header_cell.finished_at: 'Finished At'
+table_header_cell.forecast: Forecast
+table_header_cell.forecast_due_date: 'Forecast Due Date'
+table_header_cell.forecast_end_date: 'Forecast End Date'
+table_header_cell.forecast_finish: 'Forecast Finish'
+table_header_cell.forecast_schedule: 'Forecast Schedule'
+table_header_cell.forecast_start: 'Forecast Start'
+table_header_cell.forecast_start_date: 'Forecast Start Date'
+table_header_cell.from_time: 'From Time'
+table_header_cell.frozen: Frozen
+table_header_cell.full_name: 'Full name'
+table_header_cell.id: Id
+table_header_cell.impact: Impact
+table_header_cell.in_distribution_list: 'In Distribution List'
+table_header_cell.info_category: 'Info Category'
+table_header_cell.info_status: 'Info status'
+table_header_cell.infos: Infos
+table_header_cell.is_based: 'Is Based'
+table_header_cell.is_baseline: 'Is Baseline'
+table_header_cell.is_budget: 'Is Budget'
+table_header_cell.is_cost_resource: 'Is Cost Resource'
+table_header_cell.is_default: 'Is default'
+table_header_cell.is_enterprise: 'Is Enterprise'
+table_header_cell.is_excused: 'Is Excused'
+table_header_cell.is_generic: 'Is Generic'
+table_header_cell.is_inactive: 'Is Inactive'
+table_header_cell.is_key_milestone: 'Is Key Milestone'
+table_header_cell.is_present: 'Is Present'
+table_header_cell.lead: Lead
+table_header_cell.lead_checked: 'Is Lead'
+table_header_cell.lead_not_checked: 'Is Not Lead'
+table_header_cell.location: Location
+table_header_cell.logo: Logo
+table_header_cell.manager: Manager
+table_header_cell.managers: Managers
+table_header_cell.measure: Measure
+table_header_cell.medias: Medias
+table_header_cell.meeting: Meeting
+table_header_cell.meeting_name: 'Meeting name'
+table_header_cell.meetings: Meetings
+table_header_cell.members: Members
+table_header_cell.method: Method
+table_header_cell.milestone: Milestone
+table_header_cell.mime: 'Mime Type'
+table_header_cell.minutes_interval: 'Minutes Interval'
+table_header_cell.module: Module
+table_header_cell.name: Name
+table_header_cell.no_of_members: 'No. of Members'
+table_header_cell.notes: Notes
+table_header_cell.number: Number
+table_header_cell.objectives: Objectives
+table_header_cell.opportunity: Opportunity
+table_header_cell.org: Org
+table_header_cell.parent: Parent
+table_header_cell.participants: 'Meeting Participants'
+table_header_cell.path: Path
+table_header_cell.payment_method: 'Payment Method'
+table_header_cell.per_day: 'Per Day'
+table_header_cell.percent_complete: 'Percent Complete'
+table_header_cell.phase: Phase
+table_header_cell.phone: Phone
+table_header_cell.portfolio: Portfolio
+table_header_cell.present: Present
+table_header_cell.printable: Printable
+table_header_cell.priority: Priority
+table_header_cell.probability: Probability
+table_header_cell.progress: Progress
+table_header_cell.project: Project
+table_header_cell.project_category: 'Project Category'
+table_header_cell.project_complexity: 'Project Complexity'
+table_header_cell.project_department: 'Project Departments'
+table_header_cell.project_member: 'Project Member'
+table_header_cell.project_role: 'Project Roles'
+table_header_cell.project_scope: 'Project Scope'
+table_header_cell.project_team: 'Project Team'
+table_header_cell.project_teams: 'Project Teams'
+table_header_cell.project_work_cost_type: 'Project Work Cost Type'
+table_header_cell.projectworkcosttype: 'Project Work Cost Type'
+table_header_cell.proposed_end_date: 'Proposed End Date'
+table_header_cell.proposed_start_date: 'Proposed Start Date'
+table_header_cell.puid: Puid
+table_header_cell.quantity: Quantity
+table_header_cell.rasci: Rasci
+table_header_cell.rate: Rate
+table_header_cell.remaining: Remaining
+table_header_cell.remark: Remark
+table_header_cell.report_status: 'Show in status report'
+table_header_cell.required: Required
+table_header_cell.resource: Resource
+table_header_cell.responsibility: Responsibility
+table_header_cell.responsible: Responsible
+table_header_cell.results: Results
+table_header_cell.risk: Risk
+table_header_cell.role: Role
+table_header_cell.roles: Roles
+table_header_cell.schedule: Schedule
+table_header_cell.schedule_finish: 'Schedule Finish'
+table_header_cell.schedule_start: 'Schedule Start'
+table_header_cell.sequence: Sequence
+table_header_cell.show_in_org: 'Show In Org'
+table_header_cell.show_in_rasci: 'Show In Rasci'
+table_header_cell.show_in_report: 'Show in status report'
+table_header_cell.show_in_resources: 'Show In Resources'
+table_header_cell.show_in_status_report: 'Show in status report'
+table_header_cell.size: 'File size'
+table_header_cell.slug: Slug
+table_header_cell.sponsor: Sponsor
+table_header_cell.start: Start
+table_header_cell.started_at: 'Started At'
+table_header_cell.status: Status
+table_header_cell.status_report: 'Status Report'
+table_header_cell.status_updated_at: 'Status updated at'
+table_header_cell.strategy: Strategy
+table_header_cell.subteam: Subteam
+table_header_cell.subteam_members: 'Subteam Members'
+table_header_cell.subteam_name: 'Subteam Name'
+table_header_cell.subteam_parent: 'Subteam parent'
+table_header_cell.subteam_roles: 'Subteam Roles'
+table_header_cell.suspended: Suspended
+table_header_cell.task_number: 'Task No.'
+table_header_cell.task_title: 'Task Title'
+table_header_cell.team: Team
+table_header_cell.team_leader: 'Team Leader'
+table_header_cell.team_member: 'Team Member'
+table_header_cell.time_savings: 'Time Savings'
+table_header_cell.timephases: 'Time phases'
+table_header_cell.title: Title
+table_header_cell.to_time: 'To Time'
+table_header_cell.todos: TODOs
+table_header_cell.token: Token
+table_header_cell.topic: Topic
+table_header_cell.type: Type
+table_header_cell.unit: Unit
+table_header_cell.updated_at: 'Updated At'
+table_header_cell.user: User
+table_header_cell.username: Username
+table_header_cell.users: Users
+table_header_cell.value: Value
+table_header_cell.visible: Visible
+table_header_cell.week: Week
+table_header_cell.working: Working
+table_header_cell.working_times: 'Working Times'
+table_header_cell.workpackage: 'Work Package'
+table_header_cell.workpackage_assignment: 'Work Package Assignment'
+table_header_cell.workpackage_category: 'Work Package Category'
+table_header_cell.workpackage_status: 'Work Package Status'
+table_header_cell.workpackages: 'Work Packages'
+table_header_cell.wppwct: 'Work Package Project Work Cost Type'
+table_header_cell.wppwcts: 'Work Package Project Work Cost Types'
+title.account_activation: 'Account activation'
+title.add_distribution_list: 'Add Distribution List'
+title.assignment.create: 'Create new assignment'
+title.assignment.edit: 'Edit assignment'
+title.assignment.list: Assignment
+title.calendar.create: 'Create new calendar'
+title.calendar.edit: 'Edit calendar'
+title.calendar.list: Calendar
+title.close_down_action.create: 'Create new close down action'
+title.close_down_action.edit: 'Edit close down action'
+title.close_down_action.list: 'Close Down Action'
+title.color_status.create: 'Create new color status'
+title.color_status.edit: 'Edit color status'
+title.color_status.list: 'Color status'
+title.communication.create: 'Create new communication'
+title.communication.edit: 'Edit communication'
+title.communication.list: Communication
+title.company.create: 'Create new company'
+title.company.edit: 'Edit company'
+title.company.list: Company
+title.contact: 'Send us a message'
+title.contract.create: 'Create Contract'
+title.contract.edit: 'Edit Contract'
+title.contract.list: Contract
+title.cost.create: 'Create Cost'
+title.cost.edit: 'Edit Cost'
+title.cost.list: Cost
+title.dashboard: Dashboard
+title.day.create: 'Create new day'
+title.day.edit: 'Edit day'
+title.day.list: Day
+title.decision.create: 'Create new decision'
+title.decision.edit: 'Edit decision'
+title.decision.list: Decision
+title.decision_category.create: 'Create Decision Category'
+title.decision_category.edit: 'Edit Decision Category'
+title.decision_category.list: 'Decision Category'
+title.decision_status.create: 'Create Decision Status'
+title.decision_status.edit: 'Edit Decision Status'
+title.decision_status.list: 'Decision Status'
+title.departments: Departments
+title.distribution_list.create: 'Create new distribution list'
+title.distribution_list.edit: 'Edit distribution list'
+title.distribution_list.list: 'Distribution list'
+title.document.create: 'Create new document'
+title.document.edit: 'Edit document'
+title.document.list: Document
+title.evaluation_objective.create: 'Create new Evaluation Objective'
+title.evaluation_objective.edit: 'Edit Evaluation Objective'
+title.evaluation_objective.list: 'Evaluation Objective'
+title.external_cost.create: 'Create Cost'
+title.external_cost.edit: 'Edit Cost'
+title.external_cost.list: 'External Cost'
+title.file.edit: 'Edit media file'
+title.file.list: File
+title.file.upload: 'Upload new file'
+title.filesystem.create: 'Create new file system'
+title.filesystem.edit: 'Edit file system'
+title.filesystem.list: 'File system'
+title.header: Administration
+title.homepage: 'Campr Admin'
+title.homepage_main: 'Campr Main Site'
+title.impact.create: 'Create new impact'
+title.impact.edit: 'Edit impact'
+title.impact.list: Impact
+title.info.create: 'Create new info'
+title.info.edit: 'Edit info'
+title.info.list: Info
+title.info_category.create: 'Create new info category'
+title.info_category.edit: 'Edit info category'
+title.info_category.list: 'Info category'
+title.info_status.create: 'Create new info status'
+title.info_status.edit: 'Edit info status'
+title.info_status.list: 'Info status'
+title.internal_cost.create: 'Create Cost'
+title.internal_cost.edit: 'Edit Cost'
+title.internal_cost.list: 'Internal Cost'
+title.label.create: 'Create new label'
+title.label.edit: 'Edit label'
+title.label.list: Label
+title.lesson.create: 'Create new lesson'
+title.lesson.edit: 'Edit lesson'
+title.lesson.list: Lesson
+title.measure.create: 'Create new measure'
+title.measure.edit: 'Edit measure'
+title.measure.list: Measure
+title.media.edit: 'Edit media file'
+title.media.list: Media
+title.media.upload: 'Upload new file'
+title.meeting.create: 'Create new meeting'
+title.meeting.edit: 'Edit meeting'
+title.meeting.list: Meeting
+title.meeting_agenda.create: 'Create new meeting agenda'
+title.meeting_agenda.edit: 'Edit meeting agenda'
+title.meeting_agenda.list: 'Meeting agenda'
+title.meeting_category.create: 'Create new meeting category'
+title.meeting_category.edit: 'Edit meeting category'
+title.meeting_category.list: 'Meeting category'
+title.meeting_objective.create: 'Create new meeting objective'
+title.meeting_objective.edit: 'Edit meeting objective'
+title.meeting_objective.list: 'Meeting objective'
+title.meeting_participant.create: 'Create new meeting participant'
+title.meeting_participant.edit: 'Edit meeting participant'
+title.meeting_participant.list: 'Meeting participant'
+title.members: Members
+title.messages: Messages
+title.meta_description: 'Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
+title.my_account: 'My Account'
+title.note.create: 'Create new note'
+title.note.edit: 'Edit note'
+title.note.list: Note
+title.note_status.create: 'Create Note Status'
+title.note_status.edit: 'Edit Note Status'
+title.note_status.list: 'Note Status'
+title.opportunity.create: 'Create new opportunity'
+title.opportunity.edit: 'Edit opportunity'
+title.opportunity.list: Opportunity
+title.opportunity_status.create: 'Create new opportunity status'
+title.opportunity_status.edit: 'Edit opportunity status'
+title.opportunity_status.list: 'Opportunity Status'
+title.opportunity_strategy.create: 'Create new opportunity strategy'
+title.opportunity_strategy.edit: 'Edit opportunity strategy'
+title.opportunity_strategy.list: 'Opportunity Strategy'
+title.payment.list: Payments
+title.payment_method.create: 'Create new Payment Method'
+title.payment_method.edit: 'Edit payment method'
+title.payment_method.list: 'Payment method list'
+title.portfolio.create: 'Create new portfolio'
+title.portfolio.edit: 'Edit portfolio'
+title.portfolio.list: Portfolio
+title.programme.create: 'Create Programme'
+title.programme.edit: 'Edit Programme'
+title.programme.list: Programme
+title.project.create: 'Create new project'
+title.project.edit: 'Edit project'
+title.project.list: Project
+title.project_add_error: 'Errors occurred while saving the project'
+title.project_category.create: 'Create new project category'
+title.project_category.edit: 'Edit project category'
+title.project_category.list: Category
+title.project_close_down.create: 'Create new project close down'
+title.project_close_down.edit: 'Edit project close down'
+title.project_close_down.list: 'Project Close Down'
+title.project_complexity.create: 'Create new project complexity'
+title.project_complexity.edit: 'Edit project complexity'
+title.project_complexity.list: Complexity
+title.project_cost_type.create: 'Create new project cost type'
+title.project_cost_type.edit: 'Edit project cost type'
+title.project_cost_type.list: 'Cost type'
+title.project_deliverable.create: 'Create Project Deliverable'
+title.project_deliverable.edit: 'Edit Project Deliverable'
+title.project_deliverable.list: Deliverable
+title.project_department.create: 'Create new project department'
+title.project_department.edit: 'Edit project department'
+title.project_department.list: Department
+title.project_limitation.create: 'Create Project Limitation'
+title.project_limitation.edit: 'Edit Project Limitation'
+title.project_limitation.list: Limitation
+title.project_module.create: 'Create new project module'
+title.project_module.edit: 'Edit project module'
+title.project_module.list: Module
+title.project_objective.create: 'Create Project Objective'
+title.project_objective.edit: 'Edit Project Objective'
+title.project_objective.list: Objective
+title.project_role.create: 'Create new project role'
+title.project_role.edit: 'Edit project role'
+title.project_role.list: Role
+title.project_scope.create: 'Create new project scope'
+title.project_scope.edit: 'Edit project scope'
+title.project_scope.list: Scope
+title.project_status.create: 'Create new project status'
+title.project_status.edit: 'Edit project status'
+title.project_status.list: Status
+title.project_team.create: 'Create new project team'
+title.project_team.edit: 'Edit project team'
+title.project_team.list: Team
+title.project_user.create: 'Create new project user'
+title.project_user.edit: 'Edit project user'
+title.project_user.list: User
+title.project_work_cost_type.create: 'Create new project work cost type'
+title.project_work_cost_type.edit: 'Edit project work cost type'
+title.project_work_cost_type.list: 'Work cost type'
+title.rasci.create: 'Create new rasci'
+title.rasci.edit: 'Edit rasci'
+title.rasci.list: Rasci
+title.reset: 'Please enter your email address to reset the account password. An email will be sent with instructions.'
+title.resource.create: 'Create Resource'
+title.resource.edit: 'Edit Resource'
+title.resource.list: Resource
+title.risk.create: 'Create new risk'
+title.risk.edit: 'Edit risk'
+title.risk.list: Risk
+title.risk_and_opportunities: 'Risk & Opportunities'
+title.risk_category.create: 'Create new risk category'
+title.risk_category.edit: 'Edit risk category'
+title.risk_category.list: 'Risk category'
+title.risk_status.create: 'Create new risk status'
+title.risk_status.edit: 'Edit risk status'
+title.risk_status.list: 'Risk Status'
+title.risk_strategy.create: 'Create new risk strategy'
+title.risk_strategy.edit: 'Edit risk strategy'
+title.risk_strategy.list: 'Risk Strategy'
+title.schedule.create: 'Create new schedule'
+title.schedule.edit: 'Edit schedule'
+title.schedule.list: Schedule
+title.status.edit: Edit
+title.status_report.list: 'Status Report'
+title.status_report_config.create: 'Create new status report config'
+title.status_report_config.edit: 'Edit status report config'
+title.status_report_config.list: 'Status Report Config'
+title.subteam.create: 'Create Subteam'
+title.subteam.edit: 'Edit Subteam'
+title.subteam.list: Subteam
+title.subteam_member.create: 'Create Subteam Member'
+title.subteam_member.edit: 'Edit Subteam Member'
+title.subteam_member.list: 'Subteam Member'
+title.subteam_role.create: 'Create Subteam Role'
+title.subteam_role.edit: 'Edit Subteam Role'
+title.subteam_role.list: 'Subteam Role'
+title.subteams: Subteams
+title.team.create: 'Create new team'
+title.team.edit: 'Edit team'
+title.team.list: 'Team list'
+title.team_member.create: 'Create new team member'
+title.team_member.edit: 'Edit team member'
+title.team_member.for: 'Team member list for'
+title.team_member.list: 'Team member list'
+title.timephase.create: 'Create new timephase'
+title.timephase.edit: 'Edit timephase'
+title.timephase.list: Timephase
+title.todo.create: 'Create new todo'
+title.todo.edit: 'Edit todo'
+title.todo.list: Todo
+title.todo_category.create: 'Create Todo Category'
+title.todo_category.edit: 'Edit Todo Category'
+title.todo_category.list: 'Todo Category'
+title.todo_status.create: 'Create Todo Status'
+title.todo_status.edit: 'Edit Todo Status'
+title.todo_status.list: 'Todo Status'
+title.unit.create: 'Create new unit'
+title.unit.edit: 'Edit unit'
+title.unit.list: Unit
+title.user.create: 'Create new user'
+title.user.edit: 'Edit user'
+title.user.invite: 'Invite user'
+title.user.list: Users
+title.working_time.create: 'Create new working time'
+title.working_time.edit: 'Edit working time'
+title.working_time.list: 'Working time'
+title.workpackage.create: 'Create new work package'
+title.workpackage.edit: 'Edit work package'
+title.workpackage.list: 'Work Package'
+title.workpackage_category.create: 'Create Work Package Category'
+title.workpackage_category.edit: 'Edit Work Package Category'
+title.workpackage_category.list: 'Work Package Category'
+title.workpackage_status.create: 'Create Work Package Status'
+title.workpackage_status.edit: 'Edit Work Package Status'
+title.workpackage_status.list: 'Work Package Status'
+title.workspace.create: 'Create new workspace'
+title.workspace.edit: 'Edit workspace'
+title.workspace.list: 'Workspace list'
+title.workspace_member.create: 'Create new member'
+title.workspace_member.edit: Edit
+title.workspace_member.for: 'Members of'
+title.wppcwct.create: 'Create new work package project work cost type'
+title.wppcwct.edit: 'Edit work package project work cost type'
+title.wppcwct.list: 'Work package project work cost type'
+todo_status.discontinued: Discontinued
+todo_status.finished: Finished
+todo_status.initiated: Initiated
+todo_status.on_hold: 'On hold'
+todo_status.ongoing: Ongoing
+token.expired: 'Token expired.'
+token.invalid: 'Invalid token.'
+token.used: 'Token already used.'
+unknown_route: 'I don''t know where you want to go.'
+message.expired_at: 'Expired At'
+message.all_conditions: 'All Conditions'
+message.change_responsible: 'Change Responsible'
+message.not_enough_data: 'Not enough data.'
+label.meeting_category: 'Meeting Category'
+label.project_start_event: 'Project Start Event'
+label.traffic_light: 'Traffic Light'
+button.save_distribution_list: 'Save Distribution List'
+table_header_cell.expires_at: 'Expires At'
+choices.done: Done
+choices.undone: Undone
+traffic_light.red: Critical
+traffic_light.yellow: Warning
+traffic_light.green: 'On Track'
+message.reschedule_info: 'Reschedule info'
