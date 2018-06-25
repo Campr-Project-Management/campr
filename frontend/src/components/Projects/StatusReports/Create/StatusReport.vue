@@ -118,7 +118,7 @@
                     <circle-chart
                             :bgStrokeColor="options.backgroundColor"
                             :percentage="progress.tasks"
-                            :title="translate('message.task_progress')"
+                            :title="translate('message.task_status')"
                             class="left center-content"/>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                     <circle-chart
                             :bgStrokeColor="options.backgroundColor"
                             :percentage="progress.costs"
-                            :title="translate('message.costs_progress')"
+                            :title="translate('message.cost_status')"
                             class="left center-content"/>
                 </div>
             </div>
@@ -386,8 +386,8 @@
             },
             progress() {
                 return {
-                    tasks: this.snapshot.tasks.progress,
-                    costs: this.snapshot.costs.progress,
+                    tasks: Math.round(this.snapshot.tasks.progress),
+                    costs: Math.round(this.snapshot.costs.progress),
                 };
             },
             internalCostsTrafficLight() {
