@@ -117,6 +117,15 @@
                 <div class="status">
                     <circle-chart
                             :bgStrokeColor="options.backgroundColor"
+                            :percentage="projectScheduledProgress"
+                            :title="translate('message.planned_progress')"
+                            class="left center-content"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status">
+                    <circle-chart
+                            :bgStrokeColor="options.backgroundColor"
                             :percentage="progress.tasks"
                             :title="translate('message.task_status')"
                             class="left center-content"/>
@@ -400,6 +409,9 @@
                     tasks: Math.round(this.snapshot.tasks.progress),
                     costs: Math.round(this.snapshot.costs.progress),
                 };
+            },
+            projectScheduledProgress() {
+                return this.snapshot.scheduledProgress;
             },
             internalCostsTrafficLight() {
                 return this.snapshot.costs.internal.total.trafficLight;

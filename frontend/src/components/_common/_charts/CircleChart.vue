@@ -32,9 +32,12 @@ export default {
             default: 0,
         },
         bgStrokeColor: {
-            default() {
-                return '#232D4B';
-            },
+            type: String,
+            default: '#232D4B',
+        },
+        fgStrokeColor: {
+            type: String,
+            default: '#5FC3A5',
         },
     },
     methods: {
@@ -107,7 +110,7 @@ export default {
                     .datum({endAngle: 0})
                     .attr('fill', 'transparent')
                     .attr('stroke-width', 1)
-                    .attr('stroke', '#5FC3A5')
+                    .attr('stroke', this.fgStrokeColor)
                     .attr('d', d => arc(d))
                 ;
 
