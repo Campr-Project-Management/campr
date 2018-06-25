@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\TodoStatus;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Repository\Traits\ProjectSortingTrait;
 use AppBundle\Repository\Traits\UserSortingTrait;
@@ -89,5 +90,35 @@ class TodoRepository extends BaseRepository
     {
         $this->setProjectOrder($orderBy, $qb);
         $this->setUserOrder($orderBy, $qb);
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getAllForStatusReport(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        $date = new \DateTime('-6 days');
+
+        return $qb
+            ->innerJoin('o.status', 's')
+            ->andWhere(
+                $expr->orX(
+                    $expr->notIn('s.code', [TodoStatus::CODE_DISCONTINUED, TodoStatus::CODE_FINISHED]),
+                    $expr->andX(
+                        $expr->in('s.code', [TodoStatus::CODE_DISCONTINUED, TodoStatus::CODE_FINISHED]),
+                        $expr->gte('o.statusUpdatedAt', $expr->literal($date->format('Y-m-d 00:00:00')))
+                    )
+                )
+            )
+            ->andWhere('o.project = :project')
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

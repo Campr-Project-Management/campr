@@ -560,4 +560,30 @@ class Todo
     {
         $this->statusUpdatedAt = $statusUpdatedAt;
     }
+
+    /**
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        $status = $this->getStatus();
+        if (!$status) {
+            return false;
+        }
+
+        return $status->isFinished();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOpen(): bool
+    {
+        $status = $this->getStatus();
+        if (!$status) {
+            return false;
+        }
+
+        return $status->isOpen();
+    }
 }
