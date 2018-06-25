@@ -444,13 +444,6 @@ class Project implements ProjectInterface
     private $decisions;
 
     /**
-     * @var ArrayCollection|OpportunityStatus[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStatus", mappedBy="project")
-     */
-    private $opportunityStatuses;
-
-    /**
      * @var ArrayCollection|OpportunityStrategy[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project")
@@ -557,7 +550,6 @@ class Project implements ProjectInterface
         $this->risks = new ArrayCollection();
         $this->opportunities = new ArrayCollection();
         $this->decisions = new ArrayCollection();
-        $this->opportunityStatuses = new ArrayCollection();
         $this->opportunityStrategies = new ArrayCollection();
         $this->riskStrategies = new ArrayCollection();
         $this->riskStatuses = new ArrayCollection();
@@ -2374,42 +2366,6 @@ class Project implements ProjectInterface
     public function setShortNote($shortNote)
     {
         $this->shortNote = $shortNote;
-    }
-
-    /**
-     * Add opportunityStatus.
-     *
-     * @param OpportunityStatus $opportunityStatus
-     *
-     * @return Project
-     */
-    public function addOpportunityStatus(OpportunityStatus $opportunityStatus)
-    {
-        $this->opportunityStatuses[] = $opportunityStatus;
-
-        return $this;
-    }
-
-    /**
-     * Remove opportunityStatus.
-     *
-     * @param OpportunityStatus $opportunityStatus
-     */
-    public function removeOpportunityStatus(OpportunityStatus $opportunityStatus)
-    {
-        $this->opportunityStatuses->removeElement($opportunityStatus);
-
-        return $this;
-    }
-
-    /**
-     * Get opportunityStatuses.
-     *
-     * @return ArrayCollection|OpportunityStatus[]
-     */
-    public function getOpportunityStatuses()
-    {
-        return $this->opportunityStatuses;
     }
 
     /**
