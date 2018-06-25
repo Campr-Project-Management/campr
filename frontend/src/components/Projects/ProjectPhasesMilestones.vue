@@ -441,7 +441,7 @@
                             content: item.name,
                             start: new Date(item.actualStartAt || item.scheduledStartAt || item.forecastStartAt),
                             end: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
-                            value: item.workPackageStatus,
+                            value: item.progress,
                             data: item,
                         };
                     }));
@@ -454,7 +454,7 @@
                             group: 1,
                             content: item.name,
                             start: new Date(item.actualFinishAt || item.scheduledFinishAt || item.forecastFinishAt),
-                            value: item.workPackageStatus,
+                            value: item.progress,
                             className: item.isKeyMilestone ? 'key-milestone' : '',
                             data: item,
                         };
