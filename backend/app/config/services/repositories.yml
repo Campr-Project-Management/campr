@@ -88,3 +88,21 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Info }
+
+    app.repository.todo:
+        class: AppBundle\Repository\TodoRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Todo }
+
+    app.repository.decisions:
+        class: AppBundle\Repository\DecisionRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Decision }
+
+    app.repository.infos:
+        class: AppBundle\Repository\InfoRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Info }
