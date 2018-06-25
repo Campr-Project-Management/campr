@@ -1,569 +1,374 @@
-success:
-    registration_success: Thank you for registering. Please check your email for the activation link.
-    delete_common: successfully deleted!
-    account:
-        edit: Your account was succesfully edited!
-    project_close_down:
-        create: Project Close Down successfully created!
-        edit: Project Close Down successfully edited!
-        delete:
-            from_edit: Project Close Down successfully deleted!
-            from_data_table: Project Close Down config with ID
-    evaluation_objective:
-        create: Evaluation Objective successfully created!
-        edit: Evaluation Objective successfully edited!
-        delete:
-            from_edit: Evaluation Objective successfully deleted!
-            from_data_table: Evaluation Objective config with ID
-    lesson:
-        create: Lesson successfully created!
-        edit: Lesson successfully edited!
-        delete:
-            from_edit: Lesson successfully deleted!
-            from_data_table: Lesson config with ID
-    close_down_action:
-        create: Close Down Action successfully created!
-        edit: Close Down Action successfully edited!
-        delete:
-            from_edit: Close Down Action successfully deleted!
-            from_data_table: Close Down Action config with ID
-    decision_status:
-        create: Decision Status successfully created!
-        edit: Decision Status successfully edited!
-        delete:
-            from_edit: Decision Status successfully deleted!
-            from_data_table: Decision Status with ID
-    status_report:
-        delete:
-            from_edit: Status report successfully deleted!
-            from_data_table: Status report Status with ID
-    status_report_config:
-        create: Status report config successfully created!
-        edit: Status report config successfully edited!
-        delete:
-            from_edit: Status report config successfully deleted!
-            from_data_table: Status report config with ID
-    todo_status:
-        create: Todo Status successfully created!
-        edit: Todo Status successfully edited!
-        delete:
-            from_edit: Todo Status successfully deleted!
-            from_data_table: Todo Status with ID
-    todo_category:
-        create: Todo Category successfully created!
-        edit: Todo Category successfully edited!
-        delete:
-            from_edit: Todo Category successfully deleted!
-            from_data_table: Todo Category with ID        
-    note_status:
-        create: Note Status successfully created!
-        edit: Note Status successfully edited!
-        delete:
-            from_edit: Note Status successfully deleted!
-            from_data_table: Note Status with ID
-    meeting_category:
-        create: Meeting Category successfully created!
-        edit: Meeting Category successfully edited!
-        delete:
-            from_edit: Meeting Category successfully deleted!
-            from_data_table: Meeting Category with ID
-    meeting_objective:
-        create: Meeting Objective successfully created!
-        edit: Meeting Objective successfully edited!
-        delete:
-            from_edit: Meeting Objective successfully deleted!
-            from_data_table: Meeting Objective with ID
-    assignment:
-        create: Assignment successfully created!
-        edit: Assignment successfully edited!
-        delete:
-            from_edit: Assignment successfully deleted!
-            from_data_table: Assignment with ID
-    resource:
-        create: Resource successfully created!
-        edit: Resource successfully edited!
-        delete:
-            from_edit: Resource successfully deleted!
-            from_data_table: Resource with ID
-    cost:
-        create: Cost successfully created!
-        edit: Cost successfully edited!
-        delete:
-            from_edit: Cost successfully deleted!
-            from_data_table: Cost with ID
-    calendar:
-        create: Calendar successfully created!
-        edit: Calendar successfully edited!
-        delete:
-            from_edit: Calendar successfully deleted!
-            from_data_table: Calendar with ID
-    color_status:
-        create: Color status successfully created!
-        edit: Color status successfully edited!
-        delete:
-            from_edit: Color status successfully deleted!
-            from_data_table: Color status with ID
-    communication:
-        create: Communication successfully created!
-        edit: Communication successfully edited!
-        delete:
-            from_edit: Communication successfully deleted!
-            from_data_table: Communication with ID
-    company:
-        create: Company successfully created!
-        edit: Company successfully edited!
-        delete:
-            from_edit: Company successfully deleted!
-            from_data_table: Company with ID
-    day:
-        create: Day successfully created!
-        edit: Day successfully edited!
-        delete:
-            from_edit: Day successfully deleted!
-            from_data_table: Day with ID
-    decision:
-        create: Decision successfully created!
-        edit: Decision successfully edited!
-        delete:
-            from_edit: Decision successfully deleted!
-            from_data_table: Decision with ID
-    decision_category:
-        create: Decision Category successfully created!
-        edit: Decision Category successfully edited!
-        delete:
-            from_edit: Decision Category successfully deleted!
-            from_data_table: Decision Category with ID
-    distribution_list:
-        create: Distribution list successfully created!
-        edit: Distribution list successfully edited!
-        delete:
-            from_edit: Distribution list successfully deleted!
-            from_data_table: Distribution list with ID
-    filesystem:
-        create: FileSystem successfully created!
-        edit: File System successfully edited!
-        delete:
-            from_edit: File System successfully deleted!
-            from_data_table: File System with ID
-    impact:
-        create: Impact successfully created!
-        edit: Impact successfully edited!
-        delete:
-            from_edit: Impact successfully deleted!
-            from_data_table: Impact with ID
-    label:
-        create: Label successfully created!
-        edit: Label successfully edited!
-        delete:
-            from_edit: Label successfully deleted!
-            from_data_table: Label with ID
-    media:
-        upload: Media file successfully created!
-        edit: Media file successfully edited!
-        delete:
-            from_edit: Media file successfully deleted!
-            from_data_table: File with ID
-    meeting_agenda:
-        create: Meeting agenda successfully created!
-        edit: Meeting agenda successfully edited!
-        delete:
-            from_edit: Meeting agenda successfully deleted!
-            from_data_table: Meeting agenda with ID
-    meeting_participant:
-        create: Meeting participant successfully created!
-        edit: Meeting participant successfully edited!
-        delete:
-            from_edit: Meeting participant successfully deleted!
-            from_data_table: Meeting participant with ID
-    meeting:
-        create: Meeting successfully created!
-        edit: Meeting successfully edited!
-        delete:
-            from_edit: Meeting successfully deleted!
-            from_data_table: Meeting with ID
-    note:
-        create: Note successfully created!
-        edit: Note successfully edited!
-        delete:
-            from_edit: Note successfully deleted!
-            from_data_table: Note with ID
-    portfolio:
-        create: Portfolio successfully created!
-        edit: Portfolio successfully edited!
-        delete:
-            from_edit: Portfolio successfully deleted!
-            from_data_table: Portfolio with ID
-    project:
-        create: Project successfully created!
-        edit: Project successfully edited!
-        delete:
-            from_edit: Project successfully deleted!
-            from_data_table: Project with ID
-        import: Import project started. Project will be imported soon.
-    chat_messages:
-        delete: Messages successfully deleted!
-    project_category:
-        create: Project category successfully created!
-        edit: Project category successfully edited!
-        delete:
-            from_edit: Project category successfully deleted!
-            from_data_table: Project category with ID
-    project_complexity:
-        create: Project complexity successfully created!
-        edit: Project complexity successfully edited!
-        delete:
-            from_edit: Project complexity successfully deleted!
-            from_data_table: Project complexity with ID
-    project_cost_type:
-        create: Project cost type successfully created!
-        edit: Project cost type successfully edited!
-        delete:
-            from_edit: Project cost type successfully deleted!
-            from_data_table: Project cost type with ID
-    project_department:
-        create: Project department successfully created!
-        edit: Project department successfully edited!
-        delete:
-            from_edit: Project department successfully deleted!
-            from_data_table: Project department with ID
-    project_module:
-        create: Project module successfully created!
-        edit: Project module successfully edited!
-        delete:
-            from_edit: Project module successfully deleted!
-            from_data_table: Project module with ID
-    project_role:
-        create: Project role successfully created!
-        edit: Project role successfully edited!
-        delete:
-            from_edit: Project role successfully deleted!
-            from_data_table: Project role with ID
-    project_scope:
-        create: Project scope successfully created!
-        edit: Project scope successfully edited!
-        delete:
-            from_edit: Project scope successfully deleted!
-            from_data_table: Project scope with ID
-    project_status:
-        create: Project status successfully created!
-        edit: Project status successfully edited!
-        delete:
-            from_edit: Project status successfully deleted!
-            from_data_table: Project status with ID
-    project_team:
-        create: Project team successfully created!
-        edit: Project team successfully edited!
-        delete:
-            from_edit: Project team successfully deleted!
-            from_data_table: Project team with ID
-    project_user:
-        create: Project user successfully created!
-        edit: Project user successfully edited!
-        delete:
-            from_edit: Project user successfully deleted!
-            from_data_table: Project user with ID
-    project_work_cost_type:
-        create: Project work cost type successfully created!
-        edit: Project work cost type successfully edited!
-        delete:
-            from_edit: Project work cost type successfully deleted!
-            from_data_table: Project work cost type with ID
-    rasci:
-        create: Rasci successfully created!
-        edit: Rasci successfully edited!
-        delete:
-            from_edit: Rasci successfully deleted!
-            from_data_table: Rasci with ID
-    risk_category:
-        create: Risk category successfully created!
-        edit: Risk category successfully edited!
-        delete:
-            from_edit: Risk category successfully deleted!
-            from_data_table: Risk category with ID
-    risk:
-        create: Risk successfully created!
-        edit: Risk successfully edited!
-        delete:
-            from_edit: Risk successfully deleted!
-            from_data_table: Risk with ID
-    risk_strategy:
-        create: Risk strategy successfully created!
-        edit: Risk strategy successfully edited!
-        delete:
-            from_edit: Risk strategy successfully deleted!
-            from_data_table: Risk strategy with ID
-    risk_status:
-        create: Risk status successfully created!
-        edit: Risk status successfully edited!
-        delete:
-            from_edit: Risk status successfully deleted!
-            from_data_table: Risk status with ID
-    schedule:
-        create: Schedule successfully created!
-        edit: Schedule successfully edited!
-        delete:
-            from_edit: Schedule successfully deleted!
-            from_data_table: Schedule with ID
-    status:
-        create: Status successfully created!
-        edit: Status successfully edited!
-        delete:
-            from_edit: Status successfully deleted!
-            from_data_table: Status with ID
-    timephase:
-        create: Timephase successfully created!
-        edit: Timephase successfully edited!
-        delete:
-            from_edit: Timephase successfully deleted!
-            from_data_table: Timephase with ID
-    todo:
-        create: Todo successfully created!
-        edit: Todo successfully edited!
-        delete:
-            from_edit: Todo successfully deleted!
-            from_data_table: Todo with ID
-    unit:
-        create: Unit successfully created!
-        edit: Unit successfully edited!
-        delete:
-            from_edit: Unit successfully deleted!
-            from_data_table: Unit with ID
-    user:
-        create: User successfully created!
-        edit: User successfully edited!
-        delete:
-            from_edit: User successfully deleted!
-            from_data_table: User with ID
-    workpackage:
-        create: WorkPackage successfully created!
-        edit: WorkPackage successfully edited!
-        delete:
-            from_edit: WorkPackage successfully deleted!
-            from_data_table: WorkPackage with ID
-    workpackage_status:
-        create: Work Package Status successfully created!
-        edit: Work Package successfully edited!
-        delete:
-            from_edit: Work Package successfully deleted!
-            form_data_table: Work Package with ID
-    wppcwct:
-        create: Work Package Project Work Cost Type successfully created!
-        edit: Work Package Project Work Cost Type successfully edited!
-        delete:
-            from_edit: Work Package Project Work Cost Type successfully deleted!
-            from_data_table: Work Package Project Work Cost Type with ID
-    working_time:
-        create: Working time successfully created!
-        edit: Working time successfully edited!
-        delete:
-            from_edit: Working time successfully deleted!
-            from_data_table: Working time with ID
-    workspace:
-        create: Workspace successfully created! Login into Workspace will be available in a few moments after the database queries are executed.
-        edit: Workspace successfully edited!
-        delete: Workspace successfully deleted!
-    workspace_member:
-        create: Workspace member successfully created!
-        edit: Workspace member successfully edited!
-        delete: Workspace member successfully deleted!
-        invite: New invitation sent to user with email %user_email%.
-        invitation:
-            already_a_member: The invite user is already a member.
-            already_accepted: The invitation you're trying to accept has already been accepted or does not exist.
-            accepted: Congratulation! You are now part of the workspace %team_name%.
-            new_user: >
-                Congratulation! You are now part of the workspace %team_name%.
-                Your user user has been created and the login information has been emailed to you.
-        remove: User %team_member_name% has been removed from the workspace %team_name%.
-    payment_method:
-        create: Payment method successfully created!
-        edit: Payment method successfully edited!
-        delete: Payment method successfully deleted!
-    contract:
-        create: Contract successfully created!
-        edit: Contract successfully edited!
-        delete:
-            from_edit: Contract successfully deleted!
-            from_data_table: Contract with ID
-    contact:
-        message:
-            sent: Message succesfully sent!
-    workpackage_category:
-        create: WorkPackageCategory successfully created!
-        edit: WorkPackageCategory successfully edited!
-        delete:
-            from_edit: WorkPackageCategory successfully deleted!
-            from_data_table: WorkPackageCategory with ID
-    programme:
-        create: Programme successfully created!
-        edit: Programme successfully edited!
-        delete:
-            from_edit: Programme successfully deleted!
-            from_data_table: Programme with ID
-    project_objective:
-        create: Project Objective successfully created!
-        edit: Project Objective successfully edited!
-        delete:
-            from_edit: Project Objective successfully deleted!
-            from_data_table: Project Objective with ID
-    project_limitation:
-        create: Project Limitation successfully created!
-        edit: Project Limitation successfully edited!
-        delete:
-            from_edit: Project Limitation successfully deleted!
-            from_data_table: Project Objective with ID
-    project_deliverable:
-        create: Project Deliverable successfully created!
-        edit: Project Deliverable successfully edited!
-        delete:
-            from_edit: Project Deliverable successfully deleted!
-            from_data_table: Project Deliverable with ID
-    subteam:
-        create: Subteam successfully created!
-        edit: Subteam successfully edited!
-        delete:
-            from_edit: Subteam successfully deleted!
-            from_data_table: Subteam with ID
-    subteam_role:
-        create: Subteam Role successfully created!
-        edit: Subteam Role successfully edited!
-        delete:
-            from_edit: Subteam Role successfully deleted!
-            from_data_table: Subteam Role with ID
-    subteam_member:
-        create: Subteam Member successfully created!
-        edit: Subteam Member successfully edited!
-        delete:
-            from_edit: Subteam Member successfully deleted!
-            from_data_table: Subteam Member with ID
-    opportunity:
-        create: Opportunity successfully created!
-        edit: Opportunity successfully edited!
-        delete:
-            from_edit: Opportunity successfully deleted!
-            from_data_table: Opportunity with ID
-    opportunity_strategy:
-        create: Opportunity Strategy successfully created!
-        edit: Opportunity Strategy successfully edited!
-        delete:
-            from_edit: Opportunity Strategy successfully deleted!
-            from_data_table: Opportunity Strategy with ID
-    opportunity_status:
-        create: Opportunity Status successfully created!
-        edit: Opportunity Status successfully edited!
-        delete:
-            from_edit: Opportunity Status successfully deleted!
-            from_data_table: Opportunity Status with ID
-    measure:
-        create: Measure successfully created!
-        edit: Measure successfully edited!
-        delete:
-            from_edit: Measure successfully deleted!
-            from_data_table: Measure with ID
-    info:
-        create: Info successfully created!
-        edit: Info successfully edited!
-        delete:
-            from_edit: Info successfully deleted!
-            from_data_table: Info with ID
-    info_status:
-        create: Info status successfully created!
-        edit: Info status successfully edited!
-        delete:
-            from_edit: Info status successfully deleted!
-            from_data_table: Info status with ID
-    info_category:
-        create: Info category successfully created!
-        edit: Info category successfully edited!
-        delete:
-            from_edit: Info category successfully deleted!
-            from_data_table: Info category with ID
-
-failed:
-    media:
-        upload: File upload failed. Filesystem cannot be reached.
-        delete:
-            general: File delete failed. Filesystem cannot be reached or file does not exist in it
-            first: File with ID
-            second: cannot be deleted. Filesystem cannot be reached or file does not exist in it
-    user:
-        edit:
-            superadmin: You cannot edit other SUPER ADMIN profile!
-        delete:
-            yourself: You cannot delete yourself!
-            superadmin: You cannot delete other SUPER ADMIN user!
-    workspace:
-        invitation:
-            denied: The invitation was sent to user with email %user_email%. If you don't have an account with this email, make one.
-        remove:
-            yourself: You are not able to remove yourself from the %team_name%.
-            not_part_of_the_team: User %team_member_name% is not part of the workspace %team_name%.
-    project:
-        delete:
-            generic: There was an error  when deleting a project.
-            dependency_constraint: Project cannot be deleted because there are other entities that are depending on it!
-    project_complexity:
-        delete:
-            generic: There was an error  when deleting a project complexity.
-            dependency_constraint: Project complexity cannot be deleted because there are other entities that are depending on it!
-    project_status:
-        delete:
-            generic: There was an error  when deleting this project status.
-            dependency_constraint: Project status cannot be deleted because there are other entities that are depending on it!
-    project_category:
-        delete:
-            generic: There was an error  when deleting this project category.
-            dependency_constraint: Project category cannot be deleted because there are other entities that are depending on it!
-    project_scope:
-        delete:
-            generic: There was an error  when deleting this project scope.
-            dependency_constraint: Project scope cannot be deleted because there are other entities that are depending on it!
-    project_team:
-        delete:
-            generic: There was an error  when deleting this project team.
-            dependency_constraint: Project team cannot be deleted because there are other entities that are depending on it!
-    resource:
-        delete:
-            generic: There was an error when deleting this resource.
-            dependency_constraint: Resource cannot be deleted because there are other entities that are depending on it!
-    calendar:
-        delete:
-            generic: There was an error  when deleting this calendar.
-            dependency_constraint: Calendar cannot be deleted because there are other entities that are depending on it!
-    day:
-        delete:
-            generic: There was an error  when deleting this day.
-            dependency_constraint: Day cannot be deleted because there are other entities that are depending on it!
-    portofolio:
-        delete:
-            generic: There was an error  when deleting this portofolio.
-            dependency_constraint: Portofolio cannot be deleted because there are other entities that are depending on it!
-    workpackage:
-        delete:
-            generic: There was an error  when deleting this workpackage.
-            dependency_constraint: WorkPackage cannot be deleted because there are other entities that are depending on it!
-    risk_strategy:
-        delete:
-            generic: There was an error  when deleting this risk strategy.
-            dependency_constraint: Risk Strategy  cannot be deleted because there are other entities that are depending on it!
-    opportunity_strategy:
-        delete:
-            generic: There was an error  when deleting this opportunity strategy.
-            dependency_constraint: Opportunity Strategy  cannot be deleted because there are other entities that are depending on it!
-    meeting_category:
-        delete:
-            generic: There was an error  when deleting this meeting category.
-            dependency_constraint: Meeting Category cannot be deleted because there are other entities that are depending on it!
-
-activation:
-    not_found: No account activation found!
-    activated: Your account has been activated!
-    expired: Activation token has expired!
-    resend: Click here to resend the activation token
-
-reset:
-    not_found: No reset token found!
-    expired: Reset token expired!
-
-registration:
-    disabled: Registration is currently disabled.
+activation.activated: 'Your account has been activated!'
+activation.expired: 'Activation token has expired!'
+activation.not_found: 'No account activation found!'
+activation.resend: 'Click here to resend the activation token'
+failed.calendar.delete.dependency_constraint: 'Calendar cannot be deleted because there are other entities that are depending on it!'
+failed.calendar.delete.generic: 'There was an error  when deleting this calendar.'
+failed.day.delete.dependency_constraint: 'Day cannot be deleted because there are other entities that are depending on it!'
+failed.day.delete.generic: 'There was an error  when deleting this day.'
+failed.media.delete.first: 'File with ID'
+failed.media.delete.general: 'File delete failed. Filesystem cannot be reached or file does not exist in it'
+failed.media.delete.second: 'cannot be deleted. Filesystem cannot be reached or file does not exist in it'
+failed.media.upload: 'File upload failed. Filesystem cannot be reached.'
+failed.meeting_category.delete.dependency_constraint: 'Meeting Category cannot be deleted because there are other entities that are depending on it!'
+failed.meeting_category.delete.generic: 'There was an error  when deleting this meeting category.'
+failed.opportunity_strategy.delete.dependency_constraint: 'Opportunity Strategy  cannot be deleted because there are other entities that are depending on it!'
+failed.opportunity_strategy.delete.generic: 'There was an error  when deleting this opportunity strategy.'
+failed.portofolio.delete.dependency_constraint: 'Portofolio cannot be deleted because there are other entities that are depending on it!'
+failed.portofolio.delete.generic: 'There was an error  when deleting this portofolio.'
+failed.project.delete.dependency_constraint: 'Project cannot be deleted because there are other entities that are depending on it!'
+failed.project.delete.generic: 'There was an error  when deleting a project.'
+failed.project_category.delete.dependency_constraint: 'Project category cannot be deleted because there are other entities that are depending on it!'
+failed.project_category.delete.generic: 'There was an error  when deleting this project category.'
+failed.project_complexity.delete.dependency_constraint: 'Project complexity cannot be deleted because there are other entities that are depending on it!'
+failed.project_complexity.delete.generic: 'There was an error  when deleting a project complexity.'
+failed.project_scope.delete.dependency_constraint: 'Project scope cannot be deleted because there are other entities that are depending on it!'
+failed.project_scope.delete.generic: 'There was an error  when deleting this project scope.'
+failed.project_status.delete.dependency_constraint: 'Project status cannot be deleted because there are other entities that are depending on it!'
+failed.project_status.delete.generic: 'There was an error  when deleting this project status.'
+failed.project_team.delete.dependency_constraint: 'Project team cannot be deleted because there are other entities that are depending on it!'
+failed.project_team.delete.generic: 'There was an error  when deleting this project team.'
+failed.risk_strategy.delete.dependency_constraint: 'Risk Strategy  cannot be deleted because there are other entities that are depending on it!'
+failed.risk_strategy.delete.generic: 'There was an error  when deleting this risk strategy.'
+failed.team_member.invitation.denied: 'An invitation was sent to the user with the email %user_email%. '
+failed.team_member.remove.not_part_of_the_team: 'User %team_member_name% is not part of the team %team_name%.'
+failed.team_member.remove.yourself: 'You cannot remove yourself from the team %team_name%.'
+failed.user.delete.superadmin: 'You cannot delete other SUPER ADMIN user!'
+failed.user.delete.yourself: 'You cannot delete yourself!'
+failed.user.edit.superadmin: 'You cannot edit other SUPER ADMIN profile!'
+failed.workpackage.delete.dependency_constraint: 'WorkPackage cannot be deleted because there are other entities that are depending on it!'
+failed.workpackage.delete.generic: 'There was an error  when deleting this workpackage.'
+failed.workspace.invitation.denied: 'The invitation was sent to user with email %user_email%. If you don''t have an account with this email, please create one.'
+failed.workspace.remove.not_part_of_the_team: 'User %team_member_name% is not part of the workspace %team_name%.'
+failed.workspace.remove.yourself: 'You are not able to remove yourself from the %team_name%.'
+registration.disabled: 'Registration is currently disabled.'
+reset.expired: 'Reset token expired!'
+reset.not_found: 'No reset token found!'
+success.account.edit: 'Your account was succesfully edited!'
+success.assignment.create: 'Assignment successfully created!'
+success.assignment.delete.from_data_table: 'Assignment with ID'
+success.assignment.delete.from_edit: 'Assignment successfully deleted!'
+success.assignment.edit: 'Assignment successfully edited!'
+success.calendar.create: 'Calendar successfully created!'
+success.calendar.delete.from_data_table: 'Calendar with ID'
+success.calendar.delete.from_edit: 'Calendar successfully deleted!'
+success.calendar.edit: 'Calendar successfully edited!'
+success.chat_messages.delete: 'Messages successfully deleted!'
+success.close_down_action.create: 'Close Down Action successfully created!'
+success.close_down_action.delete.from_data_table: 'Close Down Action config with ID'
+success.close_down_action.delete.from_edit: 'Close Down Action successfully deleted!'
+success.close_down_action.edit: 'Close Down Action successfully edited!'
+success.color_status.create: 'Color status successfully created!'
+success.color_status.delete.from_data_table: 'Color status with ID'
+success.color_status.delete.from_edit: 'Color status successfully deleted!'
+success.color_status.edit: 'Color status successfully edited!'
+success.communication.create: 'Communication successfully created!'
+success.communication.delete.from_data_table: 'Communication with ID'
+success.communication.delete.from_edit: 'Communication successfully deleted!'
+success.communication.edit: 'Communication successfully edited!'
+success.company.create: 'Company successfully created!'
+success.company.delete.from_data_table: 'Company with ID'
+success.company.delete.from_edit: 'Company successfully deleted!'
+success.company.edit: 'Company successfully edited!'
+success.contact.message.sent: 'Message succesfully sent!'
+success.contract.create: 'Contract successfully created!'
+success.contract.delete.from_data_table: 'Contract with ID'
+success.contract.delete.from_edit: 'Contract successfully deleted!'
+success.contract.edit: 'Contract successfully edited!'
+success.cost.create: 'Cost successfully created!'
+success.cost.delete.from_data_table: 'Cost with ID'
+success.cost.delete.from_edit: 'Cost successfully deleted!'
+success.cost.edit: 'Cost successfully edited!'
+success.day.create: 'Day successfully created!'
+success.day.delete.from_data_table: 'Day with ID'
+success.day.delete.from_edit: 'Day successfully deleted!'
+success.day.edit: 'Day successfully edited!'
+success.decision.create: 'Decision successfully created!'
+success.decision.delete.from_data_table: 'Decision with ID'
+success.decision.delete.from_edit: 'Decision successfully deleted!'
+success.decision.edit: 'Decision successfully edited!'
+success.decision_category.create: 'Decision Category successfully created!'
+success.decision_category.delete.from_data_table: 'Decision Category with ID'
+success.decision_category.delete.from_edit: 'Decision Category successfully deleted!'
+success.decision_category.edit: 'Decision Category successfully edited!'
+success.decision_status.create: 'Decision Status successfully created!'
+success.decision_status.delete.from_data_table: 'Decision Status with ID'
+success.decision_status.delete.from_edit: 'Decision Status successfully deleted!'
+success.decision_status.edit: 'Decision Status successfully edited!'
+success.delete_common: 'successfully deleted!'
+success.distribution_list.create: 'Distribution list successfully created!'
+success.distribution_list.delete.from_data_table: 'Distribution list with ID'
+success.distribution_list.delete.from_edit: 'Distribution list successfully deleted!'
+success.distribution_list.edit: 'Distribution list successfully edited!'
+success.evaluation_objective.create: 'Evaluation Objective successfully created!'
+success.evaluation_objective.delete.from_data_table: 'Evaluation Objective config with ID'
+success.evaluation_objective.delete.from_edit: 'Evaluation Objective successfully deleted!'
+success.evaluation_objective.edit: 'Evaluation Objective successfully edited!'
+success.filesystem.create: 'FileSystem successfully created!'
+success.filesystem.delete.from_data_table: 'File System with ID'
+success.filesystem.delete.from_edit: 'File System successfully deleted!'
+success.filesystem.edit: 'File System successfully edited!'
+success.impact.create: 'Impact successfully created!'
+success.impact.delete.from_data_table: 'Impact with ID'
+success.impact.delete.from_edit: 'Impact successfully deleted!'
+success.impact.edit: 'Impact successfully edited!'
+success.info.create: 'Info successfully created!'
+success.info.delete.from_data_table: 'Info with ID'
+success.info.delete.from_edit: 'Info successfully deleted!'
+success.info.edit: 'Info successfully edited!'
+success.info_category.create: 'Info category successfully created!'
+success.info_category.delete.from_data_table: 'Info category with ID'
+success.info_category.delete.from_edit: 'Info category successfully deleted!'
+success.info_category.edit: 'Info category successfully edited!'
+success.info_status.create: 'Info status successfully created!'
+success.info_status.delete.from_data_table: 'Info status with ID'
+success.info_status.delete.from_edit: 'Info status successfully deleted!'
+success.info_status.edit: 'Info status successfully edited!'
+success.label.create: 'Label successfully created!'
+success.label.delete.from_data_table: 'Label with ID'
+success.label.delete.from_edit: 'Label successfully deleted!'
+success.label.edit: 'Label successfully edited!'
+success.lesson.create: 'Lesson successfully created!'
+success.lesson.delete.from_data_table: 'Lesson config with ID'
+success.lesson.delete.from_edit: 'Lesson successfully deleted!'
+success.lesson.edit: 'Lesson successfully edited!'
+success.measure.create: 'Measure successfully created!'
+success.measure.delete.from_data_table: 'Measure with ID'
+success.measure.delete.from_edit: 'Measure successfully deleted!'
+success.measure.edit: 'Measure successfully edited!'
+success.media.delete.from_data_table: 'File with ID'
+success.media.delete.from_edit: 'Media file successfully deleted!'
+success.media.edit: 'Media file successfully edited!'
+success.media.upload: 'Media file successfully created!'
+success.meeting.create: 'Meeting successfully created!'
+success.meeting.delete.from_data_table: 'Meeting with ID'
+success.meeting.delete.from_edit: 'Meeting successfully deleted!'
+success.meeting.edit: 'Meeting successfully edited!'
+success.meeting_agenda.create: 'Meeting agenda successfully created!'
+success.meeting_agenda.delete.from_data_table: 'Meeting agenda with ID'
+success.meeting_agenda.delete.from_edit: 'Meeting agenda successfully deleted!'
+success.meeting_agenda.edit: 'Meeting agenda successfully edited!'
+success.meeting_category.create: 'Meeting Category successfully created!'
+success.meeting_category.delete.from_data_table: 'Meeting Category with ID'
+success.meeting_category.delete.from_edit: 'Meeting Category successfully deleted!'
+success.meeting_category.edit: 'Meeting Category successfully edited!'
+success.meeting_objective.create: 'Meeting Objective successfully created!'
+success.meeting_objective.delete.from_data_table: 'Meeting Objective with ID'
+success.meeting_objective.delete.from_edit: 'Meeting Objective successfully deleted!'
+success.meeting_objective.edit: 'Meeting Objective successfully edited!'
+success.meeting_participant.create: 'Meeting participant successfully created!'
+success.meeting_participant.delete.from_data_table: 'Meeting participant with ID'
+success.meeting_participant.delete.from_edit: 'Meeting participant successfully deleted!'
+success.meeting_participant.edit: 'Meeting participant successfully edited!'
+success.note.create: 'Note successfully created!'
+success.note.delete.from_data_table: 'Note with ID'
+success.note.delete.from_edit: 'Note successfully deleted!'
+success.note.edit: 'Note successfully edited!'
+success.note_status.create: 'Note Status successfully created!'
+success.note_status.delete.from_data_table: 'Note Status with ID'
+success.note_status.delete.from_edit: 'Note Status successfully deleted!'
+success.note_status.edit: 'Note Status successfully edited!'
+success.opportunity.create: 'Opportunity successfully created!'
+success.opportunity.delete.from_data_table: 'Opportunity with ID'
+success.opportunity.delete.from_edit: 'Opportunity successfully deleted!'
+success.opportunity.edit: 'Opportunity successfully edited!'
+success.opportunity_status.create: 'Opportunity Status successfully created!'
+success.opportunity_status.delete.from_data_table: 'Opportunity Status with ID'
+success.opportunity_status.delete.from_edit: 'Opportunity Status successfully deleted!'
+success.opportunity_status.edit: 'Opportunity Status successfully edited!'
+success.opportunity_strategy.create: 'Opportunity Strategy successfully created!'
+success.opportunity_strategy.delete.from_data_table: 'Opportunity Strategy with ID'
+success.opportunity_strategy.delete.from_edit: 'Opportunity Strategy successfully deleted!'
+success.opportunity_strategy.edit: 'Opportunity Strategy successfully edited!'
+success.payment_method.create: 'Payment method successfully created!'
+success.payment_method.delete: 'Payment method successfully deleted!'
+success.payment_method.edit: 'Payment method successfully edited!'
+success.portfolio.create: 'Portfolio successfully created!'
+success.portfolio.delete.from_data_table: 'Portfolio with ID'
+success.portfolio.delete.from_edit: 'Portfolio successfully deleted!'
+success.portfolio.edit: 'Portfolio successfully edited!'
+success.programme.create: 'Programme successfully created!'
+success.programme.delete.from_data_table: 'Programme with ID'
+success.programme.delete.from_edit: 'Programme successfully deleted!'
+success.programme.edit: 'Programme successfully edited!'
+success.project.create: 'Project successfully created!'
+success.project.delete.from_data_table: 'Project with ID'
+success.project.delete.from_edit: 'Project successfully deleted!'
+success.project.edit: 'Project successfully edited!'
+success.project.import: 'Import project started. Project will be imported soon.'
+success.project_category.create: 'Project category successfully created!'
+success.project_category.delete.from_data_table: 'Project category with ID'
+success.project_category.delete.from_edit: 'Project category successfully deleted!'
+success.project_category.edit: 'Project category successfully edited!'
+success.project_close_down.create: 'Project Close Down successfully created!'
+success.project_close_down.delete.from_data_table: 'Project Close Down config with ID'
+success.project_close_down.delete.from_edit: 'Project Close Down successfully deleted!'
+success.project_close_down.edit: 'Project Close Down successfully edited!'
+success.project_complexity.create: 'Project complexity successfully created!'
+success.project_complexity.delete.from_data_table: 'Project complexity with ID'
+success.project_complexity.delete.from_edit: 'Project complexity successfully deleted!'
+success.project_complexity.edit: 'Project complexity successfully edited!'
+success.project_cost_type.create: 'Project cost type successfully created!'
+success.project_cost_type.delete.from_data_table: 'Project cost type with ID'
+success.project_cost_type.delete.from_edit: 'Project cost type successfully deleted!'
+success.project_cost_type.edit: 'Project cost type successfully edited!'
+success.project_deliverable.create: 'Project Deliverable successfully created!'
+success.project_deliverable.delete.from_data_table: 'Project Deliverable with ID'
+success.project_deliverable.delete.from_edit: 'Project Deliverable successfully deleted!'
+success.project_deliverable.edit: 'Project Deliverable successfully edited!'
+success.project_department.create: 'Project department successfully created!'
+success.project_department.delete.from_data_table: 'Project department with ID'
+success.project_department.delete.from_edit: 'Project department successfully deleted!'
+success.project_department.edit: 'Project department successfully edited!'
+success.project_limitation.create: 'Project Limitation successfully created!'
+success.project_limitation.delete.from_data_table: 'Project Objective with ID'
+success.project_limitation.delete.from_edit: 'Project Limitation successfully deleted!'
+success.project_limitation.edit: 'Project Limitation successfully edited!'
+success.project_module.create: 'Project module successfully created!'
+success.project_module.delete.from_data_table: 'Project module with ID'
+success.project_module.delete.from_edit: 'Project module successfully deleted!'
+success.project_module.edit: 'Project module successfully edited!'
+success.project_objective.create: 'Project Objective successfully created!'
+success.project_objective.delete.from_data_table: 'Project Objective with ID'
+success.project_objective.delete.from_edit: 'Project Objective successfully deleted!'
+success.project_objective.edit: 'Project Objective successfully edited!'
+success.project_role.create: 'Project role successfully created!'
+success.project_role.delete.from_data_table: 'Project role with ID'
+success.project_role.delete.from_edit: 'Project role successfully deleted!'
+success.project_role.edit: 'Project role successfully edited!'
+success.project_scope.create: 'Project scope successfully created!'
+success.project_scope.delete.from_data_table: 'Project scope with ID'
+success.project_scope.delete.from_edit: 'Project scope successfully deleted!'
+success.project_scope.edit: 'Project scope successfully edited!'
+success.project_status.create: 'Project status successfully created!'
+success.project_status.delete.from_data_table: 'Project status with ID'
+success.project_status.delete.from_edit: 'Project status successfully deleted!'
+success.project_status.edit: 'Project status successfully edited!'
+success.project_team.create: 'Project team successfully created!'
+success.project_team.delete.from_data_table: 'Project team with ID'
+success.project_team.delete.from_edit: 'Project team successfully deleted!'
+success.project_team.edit: 'Project team successfully edited!'
+success.project_user.create: 'Project user successfully created!'
+success.project_user.delete.from_data_table: 'Project user with ID'
+success.project_user.delete.from_edit: 'Project user successfully deleted!'
+success.project_user.edit: 'Project user successfully edited!'
+success.project_work_cost_type.create: 'Project work cost type successfully created!'
+success.project_work_cost_type.delete.from_data_table: 'Project work cost type with ID'
+success.project_work_cost_type.delete.from_edit: 'Project work cost type successfully deleted!'
+success.project_work_cost_type.edit: 'Project work cost type successfully edited!'
+success.rasci.create: 'Rasci successfully created!'
+success.rasci.delete.from_data_table: 'Rasci with ID'
+success.rasci.delete.from_edit: 'Rasci successfully deleted!'
+success.rasci.edit: 'Rasci successfully edited!'
+success.registration_success: 'Thank you for registering. Please check your email for the activation link.'
+success.resource.create: 'Resource successfully created!'
+success.resource.delete.from_data_table: 'Resource with ID'
+success.resource.delete.from_edit: 'Resource successfully deleted!'
+success.resource.edit: 'Resource successfully edited!'
+success.risk.create: 'Risk successfully created!'
+success.risk.delete.from_data_table: 'Risk with ID'
+success.risk.delete.from_edit: 'Risk successfully deleted!'
+success.risk.edit: 'Risk successfully edited!'
+success.risk_category.create: 'Risk category successfully created!'
+success.risk_category.delete.from_data_table: 'Risk category with ID'
+success.risk_category.delete.from_edit: 'Risk category successfully deleted!'
+success.risk_category.edit: 'Risk category successfully edited!'
+success.risk_status.create: 'Risk status successfully created!'
+success.risk_status.delete.from_data_table: 'Risk status with ID'
+success.risk_status.delete.from_edit: 'Risk status successfully deleted!'
+success.risk_status.edit: 'Risk status successfully edited!'
+success.risk_strategy.create: 'Risk strategy successfully created!'
+success.risk_strategy.delete.from_data_table: 'Risk strategy with ID'
+success.risk_strategy.delete.from_edit: 'Risk strategy successfully deleted!'
+success.risk_strategy.edit: 'Risk strategy successfully edited!'
+success.schedule.create: 'Schedule successfully created!'
+success.schedule.delete.from_data_table: 'Schedule with ID'
+success.schedule.delete.from_edit: 'Schedule successfully deleted!'
+success.schedule.edit: 'Schedule successfully edited!'
+success.status.create: 'Status successfully created!'
+success.status.delete.from_data_table: 'Status with ID'
+success.status.delete.from_edit: 'Status successfully deleted!'
+success.status.edit: 'Status successfully edited!'
+success.status_report.delete.from_data_table: 'Status report Status with ID'
+success.status_report.delete.from_edit: 'Status report successfully deleted!'
+success.status_report_config.create: 'Status report config successfully created!'
+success.status_report_config.delete.from_data_table: 'Status report config with ID'
+success.status_report_config.delete.from_edit: 'Status report config successfully deleted!'
+success.status_report_config.edit: 'Status report config successfully edited!'
+success.subteam.create: 'Subteam successfully created!'
+success.subteam.delete.from_data_table: 'Subteam with ID'
+success.subteam.delete.from_edit: 'Subteam successfully deleted!'
+success.subteam.edit: 'Subteam successfully edited!'
+success.subteam_member.create: 'Subteam Member successfully created!'
+success.subteam_member.delete.from_data_table: 'Subteam Member with ID'
+success.subteam_member.delete.from_edit: 'Subteam Member successfully deleted!'
+success.subteam_member.edit: 'Subteam Member successfully edited!'
+success.subteam_role.create: 'Subteam Role successfully created!'
+success.subteam_role.delete.from_data_table: 'Subteam Role with ID'
+success.subteam_role.delete.from_edit: 'Subteam Role successfully deleted!'
+success.subteam_role.edit: 'Subteam Role successfully edited!'
+success.team.create: 'Team successfully created! Login to team area will be available in a few moments after the data base queries are executed.'
+success.team.delete: 'Team successfully deleted.'
+success.team.edit: 'Team successfully edited.'
+success.team_member.create: 'Team member successfully created!'
+success.team_member.delete: 'Team member successfully deleted!'
+success.team_member.edit: 'Team member successfully edited!'
+success.team_member.invitation.accepted: 'Congratulations! You are no part of the team %team_name%.'
+success.team_member.invite: 'A new invitation was sent to the user with the email %user_email%.'
+success.team_member.remove: 'The user %team_member_name% was removed from the team %team_name%.'
+success.timephase.create: 'Timephase successfully created!'
+success.timephase.delete.from_data_table: 'Timephase with ID'
+success.timephase.delete.from_edit: 'Timephase successfully deleted!'
+success.timephase.edit: 'Timephase successfully edited!'
+success.todo.create: 'Todo successfully created!'
+success.todo.delete.from_data_table: 'Todo with ID'
+success.todo.delete.from_edit: 'Todo successfully deleted!'
+success.todo.edit: 'Todo successfully edited!'
+success.todo_category.create: 'Todo Category successfully created!'
+success.todo_category.delete.from_data_table: 'Todo Category with ID'
+success.todo_category.delete.from_edit: 'Todo Category successfully deleted!'
+success.todo_category.edit: 'Todo Category successfully edited!'
+success.todo_status.create: 'Todo Status successfully created!'
+success.todo_status.delete.from_data_table: 'Todo Status with ID'
+success.todo_status.delete.from_edit: 'Todo Status successfully deleted!'
+success.todo_status.edit: 'Todo Status successfully edited!'
+success.unit.create: 'Unit successfully created!'
+success.unit.delete.from_data_table: 'Unit with ID'
+success.unit.delete.from_edit: 'Unit successfully deleted!'
+success.unit.edit: 'Unit successfully edited!'
+success.user.create: 'User successfully created!'
+success.user.delete.from_data_table: 'User with ID'
+success.user.delete.from_edit: 'User successfully deleted!'
+success.user.edit: 'User successfully edited!'
+success.working_time.create: 'Working time successfully created!'
+success.working_time.delete.from_data_table: 'Working time with ID'
+success.working_time.delete.from_edit: 'Working time successfully deleted!'
+success.working_time.edit: 'Working time successfully edited!'
+success.workpackage.create: 'WorkPackage successfully created!'
+success.workpackage.delete.from_data_table: 'WorkPackage with ID'
+success.workpackage.delete.from_edit: 'WorkPackage successfully deleted!'
+success.workpackage.edit: 'WorkPackage successfully edited!'
+success.workpackage_category.create: 'WorkPackageCategory successfully created!'
+success.workpackage_category.delete.from_data_table: 'WorkPackageCategory with ID'
+success.workpackage_category.delete.from_edit: 'WorkPackageCategory successfully deleted!'
+success.workpackage_category.edit: 'WorkPackageCategory successfully edited!'
+success.workpackage_status.create: 'Work Package Status successfully created!'
+success.workpackage_status.delete.form_data_table: 'Work Package with ID'
+success.workpackage_status.delete.from_edit: 'Work Package successfully deleted!'
+success.workpackage_status.edit: 'Work Package successfully edited!'
+success.workspace.create: 'Workspace successfully created! Login into Workspace will be available in a few moments after the database queries are executed.'
+success.workspace.delete: 'Workspace successfully deleted!'
+success.workspace.edit: 'Workspace successfully edited!'
+success.workspace_member.create: 'Workspace member successfully created!'
+success.workspace_member.delete: 'Workspace member successfully deleted!'
+success.workspace_member.edit: 'Workspace member successfully edited!'
+success.workspace_member.invitation.accepted: 'Congratulation! You are now part of the workspace %team_name%.'
+success.workspace_member.invitation.already_a_member: 'The invite user is already a member.'
+success.workspace_member.invitation.already_accepted: 'The invitation you''re trying to accept has already been accepted or does not exist.'
+success.workspace_member.invitation.new_user: "Congratulation! You are now participant of the workspace %team_name%. Your user has been created and the login information has been emailed to you.\n"
+success.workspace_member.invite: 'New invitation sent to user with email %user_email%.'
+success.workspace_member.remove: 'User %team_member_name% has been removed from the workspace %team_name%.'
+success.wppcwct.create: 'Work Package Project Work Cost Type successfully created!'
+success.wppcwct.delete.from_data_table: 'Work Package Project Work Cost Type with ID'
+success.wppcwct.delete.from_edit: 'Work Package Project Work Cost Type successfully deleted!'
+success.wppcwct.edit: 'Work Package Project Work Cost Type successfully edited!'
