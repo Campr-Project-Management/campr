@@ -337,21 +337,33 @@
                 ];
             },
             tasksTrafficLightSeries() {
-                return [
-                    {
+                let data = [];
+
+                if (this.snapshot.tasks.total.trafficLight.green > 0) {
+                    data.push({
                         name: 'color_status.finished',
                         value: this.snapshot.tasks.total.trafficLight.green,
                         color: colors.trafficLight.green,
-                    }, {
+                    });
+                }
+
+                if (this.snapshot.tasks.total.trafficLight.yellow > 0) {
+                    data.push({
                         name: 'color_status.in_progress',
                         value: this.snapshot.tasks.total.trafficLight.yellow,
                         color: colors.trafficLight.yellow,
-                    }, {
+                    });
+                }
+
+                if (this.snapshot.tasks.total.trafficLight.red > 0) {
+                    data.push({
                         name: 'color_status.not_started',
                         value: this.snapshot.tasks.total.trafficLight.red,
                         color: colors.trafficLight.red,
-                    },
-                ];
+                    });
+                }
+
+                return data;
             },
             schedule() {
                 return {
