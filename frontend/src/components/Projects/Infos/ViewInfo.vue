@@ -15,7 +15,9 @@
                         </div>
                     </div>
                 </div>
+
                 <hr class="double">
+
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
                     <a href="javascript:void(0)" @click="rescheduleInfo()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
@@ -153,7 +155,7 @@ export default {
             this.rescheduleModal = false;
             const id = this.$route.params.infoId;
             const data = {
-                expiresAt: moment(this.date).format('DD-MM-YYYY'),
+                expiresAt: moment(this.rescheduleObj.expiresAt).format('DD-MM-YYYY'),
             };
             this.editInfo({id, data});
         },
@@ -161,12 +163,17 @@ export default {
     computed: {
         ...mapGetters(['info']),
     },
+    watch: {
+        info(val) {
+            this.rescheduleObj.expiresAt = this.info.expiresAt ? moment(this.info.expiresAt).toDate() : moment().toDate();
+        },
+    },
     data() {
         return {
             showPresent: '',
             distributionList: '',
             rescheduleModal: false,
-            date: new Date(),
+            rescheduleObj: {},
         };
     },
 };
