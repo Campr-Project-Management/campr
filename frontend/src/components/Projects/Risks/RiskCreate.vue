@@ -85,7 +85,7 @@
                             <div class="col-md-4">
                                 <money-field
                                         v-model.number="cost"
-                                        :label="translate('placeholder.potential_cost')"
+                                        :label="translate('label.cost')"
                                         :currency="projectCurrencySymbol"/>
                                 <error
                                     v-if="validationMessages.cost && validationMessages.cost.length"
@@ -99,7 +99,7 @@
                                     v-bind:css="{marginBottom: 0}"
                                     v-model.number="timeDelay"
                                     :content="timeDelay"
-                                    :label="translate('placeholder.potential_time_delay')" />
+                                    :label="translate('label.time_delay')" />
                                 <error
                                     v-if="validationMessages.delay && validationMessages.delay.length"
                                     v-for="message in validationMessages.delay"
@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translate('message.budget' )}}:
+                                    {{ translate('message.potential_cost' )}}:
                                     <b>{{ potentialCost | money({symbol: projectCurrencySymbol}) }}</b>
                                     <button type="button" class="btn btn-icon"
                                             v-tooltip.right-start="translate('message.budget_calculation_risk')">
@@ -132,7 +132,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translate('message.delay') }}:
+                                    {{ translate('message.potential_time_delay') }}:
                                     <b>{{ potentialDelay | formatNumber }} {{ timeUnit }}</b>
                                     <button type="button" class="btn btn-icon" v-tooltip.right-start="translate('message.time_calculation_risk')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
