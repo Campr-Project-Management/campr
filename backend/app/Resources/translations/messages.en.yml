@@ -2085,3 +2085,7 @@ traffic_light.yellow: Warning
 traffic_light.green: 'On Track'
 message.reschedule_info: 'Reschedule info'
 label.time_delay: 'Time Delay'
+label.cost_savings: 'Cost Savings'
+label.potential_cost_savings: 'Potential Cost Savings'
+label.potential_time_savings: 'Potential Time Savings'
+message.planned_progress: 'Planned Progress'
