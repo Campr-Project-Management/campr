@@ -2084,3 +2084,4 @@ traffic_light.red: Critical
 traffic_light.yellow: Warning
 traffic_light.green: 'On Track'
 message.reschedule_info: 'Reschedule info'
+label.time_delay: 'Time Delay'
