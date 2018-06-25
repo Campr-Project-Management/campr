@@ -5,6 +5,7 @@ imports:
     - { resource: bundles/gos_web_socket.yml }
     - { resource: bundles/vich_uploader.yml }
     - { resource: bundles/scheb_two_factor.yml }
+    - { resource: bundles/translation.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -132,8 +133,3 @@ bazinga_js_translation:
     locale_fallback: "%locale%"
     default_domain: messages
     active_locales: '%managed_locales%'
-
-# Lexik Translation Configuration
-lexik_translation:
-    fallback_locale: ["%locale%"] #default locale(s) to use
-    managed_locales: '%managed_locales%' #locales that the bundle has to manage
