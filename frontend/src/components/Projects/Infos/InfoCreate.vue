@@ -57,7 +57,7 @@
                                     <label class="active">{{ translate('label.expiry_date') }}</label>
                                     <date-field v-model="expiresAt"/>
                                 </div>
-                                <error at-path="dueDate"/>
+                                <error at-path="expiresAt"/>
                             </div>
                         </div>
                     </div>
