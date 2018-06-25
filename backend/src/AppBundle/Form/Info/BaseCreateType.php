@@ -34,7 +34,7 @@ class BaseCreateType extends AbstractType
                 DateType::class,
                 [
                     'widget' => 'single_text',
-                    'format' => 'dd-MM-yyyy',
+                    'format' => 'yyyy-MM-dd',
                 ]
             )
         ;
