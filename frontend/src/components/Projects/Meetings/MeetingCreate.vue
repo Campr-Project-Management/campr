@@ -121,6 +121,18 @@
                     <!-- /// Meeting Agenda /// -->
                     <h3>{{ translate('message.agenda') }}</h3>
                     <div v-for="(agenda, index) in agendas" :key="`agenda-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteAgenda(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <input-field type="text" :label="translate('placeholder.topic')" v-model="agenda.topic" :content="agenda.topic" />
                             <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
@@ -189,6 +201,18 @@
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
                     <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteDecision(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <meeting-decision-form
                             :key="index"
                             v-model="decisions[index]"
@@ -205,6 +229,18 @@
                     <!-- /// ToDos /// -->
                     <h3>{{ translate('message.todos') }}</h3>
                     <div v-for="(todo, index) in todos" :key="`todo-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteTodo(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="todo.title" :content="todo.title" />
                         <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                             <error
@@ -277,6 +313,18 @@
                     <!-- /// Infos /// -->
                     <h3>{{ translate('message.infos') }}</h3>
                     <div v-for="(info, index) in infos" :key="`info-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteInfo(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                             <error
@@ -389,6 +437,7 @@
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
+import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import MeetingAttachments from './MeetingAttachments';
 import Timepicker from '../../_common/_form-components/Timepicker';
@@ -407,6 +456,7 @@ export default {
     components: {
         DateField,
         MeetingDecisionForm,
+        DeleteIcon,
         InputField,
         SelectField,
         MemberSearch,
@@ -448,6 +498,12 @@ export default {
                 },
             });
         },
+        onDeleteAgenda(index) {
+            this.agendas = [
+                ...this.agendas.slice(0, index),
+                ...this.agendas.slice(index + 1),
+            ];
+        },
         addDecision() {
             this.decisions.push({
                 title: '',
@@ -456,6 +512,12 @@ export default {
                 done: false,
                 dueDate: new Date(),
             });
+        },
+        onDeleteDecision(index) {
+            this.decisions = [
+                ...this.decisions.slice(0, index),
+                ...this.decisions.slice(index + 1),
+            ];
         },
         addTodo() {
             this.todos.push({
@@ -466,6 +528,12 @@ export default {
                 status: {label: this.translate('label.select_status')},
             });
         },
+        onDeleteTodo(index) {
+            this.todos = [
+                ...this.todos.slice(0, index),
+                ...this.todos.slice(index + 1),
+            ];
+        },
         addInfo() {
             this.infos.push({
                 topic: '',
@@ -474,6 +542,12 @@ export default {
                 expiresAt: new Date(),
                 infoCategory: {label: this.translate('label.category')},
             });
+        },
+        onDeleteInfo(index) {
+            this.infos = [
+                ...this.infos.slice(0, index),
+                ...this.infos.slice(index + 1),
+            ];
         },
         saveMeeting() {
             let data = {
