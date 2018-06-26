@@ -143,7 +143,7 @@
             displayModule(module) {
                 return this.project && this.project.projectModules && (
                     this.project.projectModules.indexOf(module) !== -1
-                    || !this.project.projectModules.length
+                    && this.project.projectModules.length > 0
                 );
             },
         },
