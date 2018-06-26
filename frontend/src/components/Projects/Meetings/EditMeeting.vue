@@ -558,9 +558,11 @@ export default {
         ]),
         translateMeetingName(name) {
             return name
-                .split('|')
-                .map(i => this.translate(i))
-                .join(' | ')
+                ? name
+                    .split('|')
+                    .map(i => this.translate(i))
+                    .join(' | ')
+                : ''
             ;
         },
         getDuration: function(startDate, endDate) {
@@ -713,7 +715,7 @@ export default {
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
-            this.ditTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
+            this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
         },
         addInfo: function() {
             const data = {
