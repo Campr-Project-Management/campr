@@ -32,7 +32,8 @@
                     </div>
                 </div>
             </scrollbar>
-            <div class="flex">
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="$emit('close')" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="saveDistributionList()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_distribution_list') }}</a>
             </div>
         </div>
