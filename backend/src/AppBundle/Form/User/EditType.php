@@ -68,9 +68,9 @@ class EditType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'choices' => [
-                    'label.role.user' => 'ROLE_USER',
-                    'label.role.admin' => 'ROLE_ADMIN',
-                    'label.role.superadmin' => 'ROLE_SUPER_ADMIN',
+                    User::ROLE_USER => User::ROLE_USER,
+                    User::ROLE_ADMIN => User::ROLE_ADMIN,
+                    User::ROLE_SUPER_ADMIN => User::ROLE_SUPER_ADMIN,
                 ],
                 'translation_domain' => 'messages',
             ))

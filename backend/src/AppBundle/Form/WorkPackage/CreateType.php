@@ -112,6 +112,7 @@ class CreateType extends BaseType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.workpackage_category',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('colorStatus', EntityType::class, [
                 'class' => ColorStatus::class,
