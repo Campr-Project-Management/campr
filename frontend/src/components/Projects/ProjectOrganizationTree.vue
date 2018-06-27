@@ -121,14 +121,21 @@ export default {
                 .enter()
                 .append('g')
                 .attr('class', 'node')
-                .attr('transform', d => `translate(${d.x}, ${d.y})`)
+                .attr('transform', d => {
+                    const x = d.data.users
+                        ? d.x - ((d.data.users.length - 1) * (this.cellWidth / 2))
+                        : d.x;
+                    return `translate(${x}, ${d.y})`;
+                })
             ;
 
             canvasNodesEnter
                 .append('foreignObject')
                 .attr('y', 0)
                 .attr('x', 0)
-                .attr('width', d => this.cellWidth)
+                .attr('width', d => {
+                    return d.data.users ? d.data.users.length * this.cellWidth : this.cellWidth;
+                })
                 .attr('height', d => {
                     return this.cellHeights[d.depth] || this.defaultCellHeight;
                 })
@@ -138,9 +145,24 @@ export default {
                 .attr('style', d => {
                     const h = (this.cellHeights[d.depth] || this.defaultCellHeight);
 
-                    return `display: table-cell; vertical-align: middle; width: ${this.cellWidth}px; height: ${h}px; min-height: auto`;
+                    const width = d.data.users ? d.data.users.length * this.cellWidth : this.cellWidth;
+
+                    return `display: table-cell; vertical-align: middle; width: ${width}px; height: ${h}px; min-height: auto`;
                 })
-                .html(d => this.userTpl(d))
+                .html(d => {
+                    if (d.data && d.data.users) {
+                        let out = '';
+
+                        d.data.users.forEach(u => {
+                            out += this.userTpl({data: u});
+                        });
+
+                        return out;
+                    } else {
+                        return this.userTpl(d);
+                    }
+                })
+                // .html(d => this.userTpl(d))
                 .on('click', d => {
                     if (d.depth < this.collapsedNodeLevel) {
                         if (d.children) {
@@ -187,12 +209,22 @@ export default {
             let canvasNodesUpdate = canvasNodesEnter.merge(canvasNodes);
 
             canvasNodesUpdate
-                .attr('transform', d => `translate(${d.x}, ${d.y})`)
+                .attr('transform', d => {
+                    const x = d.data.users
+                        ? d.x - ((d.data.users.length - 1) * (this.cellWidth / 2))
+                        : d.x;
+                    return `translate(${x}, ${d.y})`;
+                })
             ;
 
             canvasNodes
                 .exit()
-                .attr('transform', d => `translate(${source.x}, ${source.y})`)
+                .attr('transform', d => {
+                    const x = d.data.users
+                        ? d.x - ((d.data.users.length - 1) * (this.cellWidth / 2))
+                        : d.x;
+                    return `translate(${x}, ${d.y})`;
+                })
                 .remove()
             ;
 
@@ -541,9 +573,9 @@ export default {
 
     .member-badge {
         text-align: center;
-        display: block;
+        display: inherit;
         margin: 5px auto;
-        width: 100%;
+        width: 222px;
 
         .social-links {
             position: inherit;
