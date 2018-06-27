@@ -157,6 +157,12 @@ class BaseType extends AbstractType
                                 'message' => 'not_blank.priority',
                             ]
                         ),
+                        new GreaterThanOrEqual(
+                            [
+                                'value' => 0,
+                                'message' => 'greater_than_or_equal.priority',
+                            ]
+                        ),
                     ],
                 ]
             )
