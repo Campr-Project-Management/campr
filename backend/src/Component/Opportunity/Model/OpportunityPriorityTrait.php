@@ -23,20 +23,20 @@ trait OpportunityPriorityTrait
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
      */
-    protected $priority;
+    private $priority;
 
     /**
      * @return int
      */
     public function getPriority()
     {
-        return (int) $this->priority;
+        return $this->priority;
     }
 
     /**
      * @param int $priority
      */
-    public function setPriority(int $priority = null)
+    public function setPriority($priority)
     {
         $this->priority = $priority;
     }

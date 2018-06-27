@@ -7,7 +7,7 @@ interface PriorityAwareInterface
     /**
      * @param int $priority
      */
-    public function setPriority(int $priority = null);
+    public function setPriority($priority);
 
     /**
      * @return int
