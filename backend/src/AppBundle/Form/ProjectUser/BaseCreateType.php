@@ -44,6 +44,7 @@ class BaseCreateType extends AbstractType
                 'multiple' => true,
                 'placeholder' => 'placeholder.project_role',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('projectCategory', EntityType::class, [
                 'class' => ProjectCategory::class,
