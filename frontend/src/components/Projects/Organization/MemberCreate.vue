@@ -63,7 +63,7 @@
                                     v-for="message in validationMessages.username"
                                     :message="message" />
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <multi-select-field
                                         v-bind:title="translateText('placeholder.role')"
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /// End Member Name & Role /// --> 
+                    <!-- /// End Member Name & Role /// -->
 
                     <hr class="double">
 
@@ -98,15 +98,15 @@
                                 <!--<a class="btn-rounded btn-empty btn-md btn-auto margintop20">{{ translateText('button.add_another_subteam') }}</a>-->
                             </div>
                         </div>
-                    </div> 
-                    <!-- /// End Member Name & Role /// --> 
+                    </div>
+                    <!-- /// End Member Name & Role /// -->
 
                     <hr class="double nomarginbottom">
 
                     <!-- /// Member Settings /// -->
                     <div class="row">
                         <div class="col-md-4">
-                            <h3>{{ translateText('message.resources') }}</h3>
+                            <h3>{{ translateText('label.show_in_resources') }}</h3>
                             <div class="flex flex-v-center">
                                 <switches v-model="resource" :selected="resource"></switches>
                             </div>
@@ -193,10 +193,10 @@
                         <a v-else @click="editMember" class="btn-rounded btn-auto second-bg">{{ translateText('button.edit_member') }}</a>
                     </div>
                     <!-- /// Actions /// -->
-                </div> 
+                </div>
             </div>
         </div>
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />               
+        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
