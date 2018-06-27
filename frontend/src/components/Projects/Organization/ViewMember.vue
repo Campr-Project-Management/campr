@@ -44,7 +44,7 @@
                 <!-- /// Member Settings /// -->
                 <div class="row">
                     <div class="col-md-4">
-                        <h3>{{ translateText('message.resources') }}</h3>
+                        <h3>{{ translateText('label.show_in_resources') }}</h3>
                         <div class="flex flex-v-center">
                             <switches @click.native="updateUserOption(member, 'resource')" v-model="showInResources" :selected="member.showInResources"></switches>
                         </div>
