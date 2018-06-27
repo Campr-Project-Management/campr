@@ -123,6 +123,7 @@
                 <a href="javascript:void(0)" @click="saveTodo()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
             </div>
         </modal>
+
         <modal v-if="showDeleteTodoModal" @close="showDeleteTodoModal = false; $emit('input', showDeleteTodoModal);">
             <p class="modal-title">{{ translateText('message.delete_todo') }}</p>
             <div class="flex flex-space-between">
