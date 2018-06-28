@@ -4,6 +4,7 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Project;
 use Component\Project\Calculator\DateRangeCalculatorInterface;
+use Component\Project\Calculator\ProjectProgressCalculatorInterface;
 
 class ProjectTransformer extends AbstractTransformer
 {
@@ -73,27 +74,34 @@ class ProjectTransformer extends AbstractTransformer
     private $infosTransformer;
 
     /**
+     * @var ProjectProgressCalculatorInterface
+     */
+    private $scheduledProgressCalculator;
+
+    /**
      * ProjectTransformer constructor.
      *
-     * @param TransformerInterface         $dateTransformer
-     * @param DateRangeCalculatorInterface $scheduledDatesCalculator
-     * @param DateRangeCalculatorInterface $forecastDatesCalculator
-     * @param DateRangeCalculatorInterface $actualDatesCalculator
-     * @param TransformerInterface         $tasksTransformer
-     * @param TransformerInterface         $costsTransformer
-     * @param TransformerInterface         $risksTransformer
-     * @param TransformerInterface         $opportunitiesTransformer
-     * @param TransformerInterface         $todosTransformer
-     * @param TransformerInterface         $decisionsTransformer
-     * @param TransformerInterface         $phasesTransformer
-     * @param TransformerInterface         $milestonesTransformer
-     * @param TransformerInterface         $infosTransformer
+     * @param TransformerInterface               $dateTransformer
+     * @param DateRangeCalculatorInterface       $scheduledDatesCalculator
+     * @param DateRangeCalculatorInterface       $forecastDatesCalculator
+     * @param DateRangeCalculatorInterface       $actualDatesCalculator
+     * @param ProjectProgressCalculatorInterface $scheduledProgressCalculator
+     * @param TransformerInterface               $tasksTransformer
+     * @param TransformerInterface               $costsTransformer
+     * @param TransformerInterface               $risksTransformer
+     * @param TransformerInterface               $opportunitiesTransformer
+     * @param TransformerInterface               $todosTransformer
+     * @param TransformerInterface               $decisionsTransformer
+     * @param TransformerInterface               $phasesTransformer
+     * @param TransformerInterface               $milestonesTransformer
+     * @param TransformerInterface               $infosTransformer
      */
     public function __construct(
         TransformerInterface $dateTransformer,
         DateRangeCalculatorInterface $scheduledDatesCalculator,
         DateRangeCalculatorInterface $forecastDatesCalculator,
         DateRangeCalculatorInterface $actualDatesCalculator,
+        ProjectProgressCalculatorInterface $scheduledProgressCalculator,
         TransformerInterface $tasksTransformer,
         TransformerInterface $costsTransformer,
         TransformerInterface $risksTransformer,
@@ -108,6 +116,7 @@ class ProjectTransformer extends AbstractTransformer
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
         $this->forecastDatesCalculator = $forecastDatesCalculator;
         $this->actualDatesCalculator = $actualDatesCalculator;
+        $this->scheduledProgressCalculator = $scheduledProgressCalculator;
 
         $this->tasksTransformer = $tasksTransformer;
         $this->costsTransformer = $costsTransformer;
@@ -135,6 +144,7 @@ class ProjectTransformer extends AbstractTransformer
                 'code' => $project->getCurrency()->getCode(),
                 'symbol' => $project->getCurrency()->getSymbol(),
             ],
+            'scheduledProgress' => $this->scheduledProgressCalculator->calculate($project),
             'schedule' => $this->getScheduleData($project),
             'tasks' => $this->tasksTransformer->transform($project),
             'phases' => $this->phasesTransformer->transform($project),
