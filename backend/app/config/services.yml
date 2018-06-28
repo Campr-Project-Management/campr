@@ -206,6 +206,11 @@ services:
             - '@app.repository.opportunity'
             - '@app.repository.measure'
 
+    app.calculator.project_scheduled_progress:
+        class: Component\Project\Calculator\ProjectScheduledProgressCalculator
+        arguments:
+            - '@app.calculator.project_scheduled_dates'
+
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
 
@@ -420,6 +425,7 @@ services:
             - '@app.calculator.project_scheduled_dates'
             - '@app.calculator.project_forecast_dates'
             - '@app.calculator.project_actual_dates'
+            - '@app.calculator.project_scheduled_progress'
             - '@app.snapshot.transformer.tasks'
             - '@app.snapshot.transformer.costs'
             - '@app.snapshot.transformer.risks'
