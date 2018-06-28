@@ -46,16 +46,6 @@ const actions = {
      * Set color status for work package
      * @param {function} commit
      * @param {Number} id
-     * @param {Number} colorStatus
-     * @return {object}
-     */
-    setWorkPackageColorStatus({commit}, {id, colorStatus}) {
-        return actions.patchWorkPackage({commit}, {id, data: {colorStatus}});
-    },
-    /**
-     * Set color status for work package
-     * @param {function} commit
-     * @param {Number} id
      * @param {Number} progress
      * @param {mixed} actualStartAt
      * @param {mixed} actualFinishAt

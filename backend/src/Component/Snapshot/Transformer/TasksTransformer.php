@@ -22,23 +22,23 @@ class TasksTransformer extends AbstractTransformer
     /**
      * @var WorkPackageTrafficLightTotalCalculator
      */
-    private $workPackageConditionTotalCountCalculator;
+    private $workPackageTrafficLightTotalCountCalculator;
 
     /**
      * TasksTransformer constructor.
      *
      * @param ProjectProgressCalculatorInterface     $projectProgressCalculator
      * @param WorkPackageStatusTotalCountCalculator  $workPackageTotalStatusCountCalculator
-     * @param WorkPackageTrafficLightTotalCalculator $workPackageConditionTotalCountCalculator
+     * @param WorkPackageTrafficLightTotalCalculator $workPackageTrafficLightTotalCalculator
      */
     public function __construct(
         ProjectProgressCalculatorInterface $projectProgressCalculator,
         WorkPackageStatusTotalCountCalculator $workPackageTotalStatusCountCalculator,
-        WorkPackageTrafficLightTotalCalculator $workPackageConditionTotalCountCalculator
+        WorkPackageTrafficLightTotalCalculator $workPackageTrafficLightTotalCalculator
     ) {
         $this->projectProgressCalculator = $projectProgressCalculator;
         $this->workPackageTotalStatusCountCalculator = $workPackageTotalStatusCountCalculator;
-        $this->workPackageConditionTotalCountCalculator = $workPackageConditionTotalCountCalculator;
+        $this->workPackageTrafficLightTotalCountCalculator = $workPackageTrafficLightTotalCalculator;
     }
 
     /**
@@ -49,7 +49,7 @@ class TasksTransformer extends AbstractTransformer
     protected function doTransform($project)
     {
         $statusCount = $this->workPackageTotalStatusCountCalculator->calculate($project);
-        $trafficLightTotal = $this->workPackageConditionTotalCountCalculator->calculate($project);
+        $trafficLightTotal = $this->workPackageTrafficLightTotalCountCalculator->calculate($project);
 
         return [
             'progress' => $this->projectProgressCalculator->calculate($project),
