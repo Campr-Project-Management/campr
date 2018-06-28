@@ -9,8 +9,8 @@
                         :url="item.responsibilityAvatar"
                         :tooltip="item.responsibilityFullName"/>
             </div>
-            <p>{{ translate('message.potential_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
+            <p>{{ translate('label.potential_cost_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
+            <p>{{ translate('label.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.priority') }}: <b :style="{color: getPriorityColor(item.priority)}">{{ translate(`message.${item.priorityName}`) }}</b></p>
             <p>{{ translate('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ translate(item.opportunityStrategyName) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.status') }}: <b v-if="item.opportunityStatusName">{{ translate(item.opportunityStatusName) }}</b><b v-else>-</b></p>

@@ -2327,6 +2327,7 @@ module.exports = function (Translator) {
     Translator.add("label.potential_cost_savings", "Potential Cost Savings", "messages", "en");
     Translator.add("label.potential_time_savings", "Potential Time Savings", "messages", "en");
     Translator.add("message.planned_progress", "Planned Progress", "messages", "en");
+    Translator.add("label.follow_up", "Follow-Up", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
