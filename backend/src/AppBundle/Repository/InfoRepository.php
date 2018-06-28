@@ -48,4 +48,25 @@ class InfoRepository extends BaseRepository
 
         return $qb;
     }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getAllForStatusReport(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $date = new \DateTime('-6 days');
+
+        return $qb
+            ->andWhere('o.project = :project')
+            ->andWhere('o.expiresAt >= :date')
+            ->setParameter('date', $date)
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

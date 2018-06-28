@@ -4,6 +4,7 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\Project;
+use AppBundle\Repository\DecisionRepository;
 
 class DecisionsTransformer extends AbstractTransformer
 {
@@ -13,13 +14,20 @@ class DecisionsTransformer extends AbstractTransformer
     private $dateTransformer;
 
     /**
+     * @var DecisionRepository
+     */
+    private $decisionRepository;
+
+    /**
      * TodosTransformer constructor.
      *
      * @param TransformerInterface $dateTransformer
+     * @param DecisionRepository   $decisionRepository
      */
-    public function __construct(TransformerInterface $dateTransformer)
+    public function __construct(TransformerInterface $dateTransformer, DecisionRepository $decisionRepository)
     {
         $this->dateTransformer = $dateTransformer;
+        $this->decisionRepository = $decisionRepository;
     }
 
     /**
@@ -30,7 +38,7 @@ class DecisionsTransformer extends AbstractTransformer
     protected function doTransform($project)
     {
         return [
-            'items' => $this->getItems($project->getDecisions()->toArray()),
+            'items' => $this->getItems($project),
         ];
     }
 
@@ -45,13 +53,14 @@ class DecisionsTransformer extends AbstractTransformer
     }
 
     /**
-     * @param Decision[] $decisions
+     * @param Project $project
      *
      * @return array
      */
-    private function getItems(array $decisions): array
+    private function getItems(Project $project): array
     {
         $items = [];
+        $decisions = $this->decisionRepository->getAllForStatusReport($project);
 
         foreach ($decisions as $decision) {
             $items[] = $this->getItem($decision);

@@ -205,6 +205,15 @@
                 <status-report-decisions :items="decisionsItems"/>
             </div>
         </div>
+
+        <hr class="double">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="margintop0">{{ translate('message.infos') }}</h3>
+                <status-report-infos :items="infosItems"/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -231,6 +240,7 @@
     import Error from '../../../_common/_messages/Error';
     import StatusReportSchedule from './Schedule';
     import StatusReportTimeline from './Timeline';
+    import StatusReportInfos from './Infos';
 
     export default {
         name: 'status-report',
@@ -251,6 +261,7 @@
             },
         },
         components: {
+            StatusReportInfos,
             StatusReportTimeline,
             StatusReportSchedule,
             Error,
@@ -441,6 +452,9 @@
             },
             decisionsItems() {
                 return this.snapshot.decisions.items;
+            },
+            infosItems() {
+                return this.snapshot.infos.items;
             },
             trendChartData() {
                 return this.statusReportTrendGraph.map(data => {
