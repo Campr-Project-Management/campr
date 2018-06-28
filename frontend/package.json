@@ -19,6 +19,7 @@
     "bootstrap": "3.3.7",
     "chart.js": "^2.7.2",
     "d3": "4.10.0",
+    "d3-context-menu": "^1.0.2",
     "deferred-callback-queue": "github:cristiandan/deferred-callback-queue",
     "dhtmlx-gantt": "4.1.0",
     "domenu": "github:cristiandan/domenu",

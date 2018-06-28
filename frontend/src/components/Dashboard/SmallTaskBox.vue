@@ -15,7 +15,9 @@
                     <p class="task-id">#{{ task.id }}</p>
                 </div>
                 <div class="status-boxes">
-                    <span v-for="cs in colorStatuses" class="status-box" v-bind:style="{ background: task.colorStatusName === cs.name ? task.colorStatusColor : '', cursor: 'default' }"></span>
+                    <traffic-light
+                            size="small"
+                            :value="task.trafficLight"/>
                 </div>
             </div>
             <div class="info">
@@ -39,34 +41,44 @@
             </div>
             <div class="status">
                 <p><span>{{ translate('message.status') }}:</span> {{ translate(task.workPackageStatusName) }}</p>
-                <bar-chart position="right" :percentage="task.progress" :color="task.colorStatusColor" v-bind:title-right="message.progress"></bar-chart>
+                <bar-chart
+                        position="right"
+                        :percentage="task.progress"
+                        :color="trafficLightColorByValue(task.trafficLight)"
+                        :title-right="translate(message.progress)"/>
             </div>
         </div>
         <task-label-bar
-          v-if="hasLabel"
-          :title="task.labelName"
-          :color="task.labelColor" />
+                v-if="hasLabel"
+                :title="task.labelName"
+                :color="task.labelColor"/>
     </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import BarChart from '../_common/_charts/BarChart';
 import TaskLabelBar from '../Tasks/TaskLabelBar';
+import TrafficLight from '../_common/TrafficLight';
 
 export default {
+    name: 'dashboard-small-task-box',
+    props: ['task'],
     components: {
+        TrafficLight,
         BarChart,
         TaskLabelBar,
     },
+    computed: {
+        ...mapGetters([
+            'trafficLightColorByValue',
+        ]),
+    },
     methods: {
-        translate(text) {
-            return window.Translator.trans(text);
-        },
         hasLabel() {
             return this.task.label && this.task.labelColor;
         },
     },
-    props: ['task', 'colorStatuses'],
     data() {
         return {
             message: {

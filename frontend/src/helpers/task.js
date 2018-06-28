@@ -49,8 +49,8 @@ export const createFormData = (data) => {
             (o) => formData.append('informedUsers[]', o.key));
     }
 
-    if (data.statusColor) {
-        formData.append('colorStatus', data.statusColor.id);
+    if (data.trafficLight != null) {
+        formData.append('trafficLight', data.trafficLight);
     }
 
     if (data.parent) {

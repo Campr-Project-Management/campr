@@ -12,8 +12,6 @@ Assignment.php
 >
 Calendar.php
 >
-ColorStatus.php
->
 Communication.php
 >
 Company.php
