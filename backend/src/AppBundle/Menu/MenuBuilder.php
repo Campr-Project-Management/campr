@@ -312,9 +312,6 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.opportunity_strategy.list', [], 'messages'), [
                 'route' => 'app_admin_opportunity_strategy_list',
             ])->getParent()
-            ->addChild($this->translator->trans('title.opportunity_status.list', [], 'messages'), [
-                'route' => 'app_admin_opportunity_status_list',
-            ])->getParent()
             ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
                 'route' => 'app_admin_measure_list',
             ])

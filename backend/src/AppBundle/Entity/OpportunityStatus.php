@@ -2,9 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\CodeAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as Serializer;
 
 /**
  * OpportunityStatus.
@@ -12,8 +12,9 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="opportunity_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @UniqueEntity(fields="code", message="unique.code")
  */
-class OpportunityStatus
+class OpportunityStatus implements CodeAwareInterface
 {
     /**
      * @var int
@@ -32,14 +33,11 @@ class OpportunityStatus
     private $name;
 
     /**
-     * @var Project
+     * @var string
      *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="opportunityStatuses")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
      */
-    private $project;
+    private $code;
 
     /**
      * Get id.
@@ -76,46 +74,18 @@ class OpportunityStatus
     }
 
     /**
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param Project $project
-     */
-    public function setProject(Project $project)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Returns project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
      * @return string
      */
-    public function getProjectId()
+    public function getCode(): string
     {
-        return $this->project ? $this->project->getId() : null;
+        return (string) $this->code;
     }
 
     /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
+     * @param string|null $code
      */
-    public function getProjectName()
+    public function setCode(string $code = null)
     {
-        return $this->project ? $this->project->getName() : null;
+        $this->code = $code;
     }
 }
