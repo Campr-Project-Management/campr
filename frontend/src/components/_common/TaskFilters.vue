@@ -1,11 +1,15 @@
 <template>
     <div class="filters">
-        <span class="title">{{ translateText('message.filter_by') }}</span>
+        <span class="title">{{ translate('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="taskStatusesForSelect" :selectedValue="selectStatus"></dropdown>
-            <dropdown ref="colorStatuses" v-bind:title="translateText('message.condition')" v-bind:options="colorStatuses" :selectedValue="selectColorStatus"></dropdown>
-            <dropdown ref="projects" v-bind:title="translateText('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
-            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
+            <dropdown ref="statuses" v-bind:title="translate('message.status')" v-bind:options="taskStatusesForSelect" :selectedValue="selectStatus"></dropdown>
+            <dropdown
+                    ref="trafficLights"
+                    :title="translate('message.condition')"
+                    :options="trafficLightsForSelect"
+                    :selectedValue="selectTrafficLight"/>
+            <dropdown ref="projects" v-bind:title="translate('message.project')" v-bind:options="projectsForFilter" :selectedValue="selectProject"></dropdown>
+            <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
     </div>
 </template>
@@ -21,11 +25,8 @@ export default {
     },
     methods: {
         ...mapActions(['getProjectsForDropdown', 'setProjectFilters', 'clearProjects', 'getTaskStatuses']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
-        selectColorStatus: function(value) {
-            this.updateFilters('colorStatus', value);
+        selectTrafficLight(value) {
+            this.updateFilters('trafficLight', value);
         },
         selectStatus: function(value) {
             this.updateFilters('status', value);
@@ -35,7 +36,7 @@ export default {
         },
         clearFilters: function() {
             this.updateFilters('clear', true);
-            this.$refs.colorStatuses.resetCustomTitle();
+            this.$refs.trafficLights.resetCustomTitle();
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
             }
@@ -51,13 +52,13 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            projectsForFilter: 'projectsForFilter',
-            colorStatuses: 'colorStatusesForSelect',
-            taskStatuses: 'taskStatuses',
-            user: 'user',
-            taskStatusesForSelect: 'taskStatusesForSelect',
-        }),
+        ...mapGetters([
+            'projectsForFilter',
+            'taskStatuses',
+            'user',
+            'taskStatusesForSelect',
+            'trafficLightsForSelect',
+        ]),
     },
     data: function() {
         return {

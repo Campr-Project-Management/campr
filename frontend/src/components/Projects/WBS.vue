@@ -11,39 +11,150 @@ import * as d3 from 'd3';
 import $ from 'jquery';
 import _ from 'lodash';
 import AlertModal from '../_common/AlertModal.vue';
-import router from '../../router';
-import moment from 'moment';
+import builderFactory from './WBS/WBSBuilder';
+// import router from '../../router';
+// import moment from 'moment';
 
+// const TASK_STATUS_OPEN = 1;
+// const TASK_STATUS_ONGOING = 3;
+// const TASK_STATUS_COMPLETED = 4;
 
-const TASK_STATUS_OPEN = 1;
-const TASK_STATUS_ONGOING = 3;
-const TASK_STATUS_COMPLETED = 4;
 
 export default {
     components: {
         AlertModal,
     },
     computed: {
-        ...mapGetters(['wbs', 'project', 'colorStatuses']),
+        ...mapGetters([
+            'wbs',
+            'project',
+            'trafficLightColorByValue',
+            'trafficLightLabelByValue',
+            'trafficLights',
+        ]),
     },
     methods: {
         ...mapActions([
             'getProjectById',
             'getWBSByProjectID',
-            'getColorStatuses',
-            'setWorkPackageColorStatus',
             'setWorkPackageProgress',
+            'patchTask',
+            'editProject',
         ]),
-        getTaskConditionColor(wp) {
-            const conditions = {
-                1: '#D8DAE5',
-                2: '#5FC3A5',
-                3: '#C87369',
-                4: '#197252',
-                5: '#000000',
-            };
-            // d.data.colorStatusColor || '#8794c4'
-            return conditions[wp.workPackageStatus] || '#8794c4';
+        getTrafficLightColor(wp) {
+            return this.trafficLightColorByValue(wp.trafficLight);
+        },
+        getContextMenu(node) {
+            if (!node.data.isTask && !node.data.isRoot) {
+                return [];
+            }
+
+            let menu = [];
+            if (node.data.isTask) {
+                menu.push({
+                    title: this.translate('message.task_progress'),
+                });
+
+                this.progressValues.forEach((value) => {
+                    menu.push({
+                        title: () => {
+                            let html = `${value}%`;
+                            let klass = '';
+                            if (value === node.data.progress) {
+                                html = '<i class="glyphicon glyphicon-ok"></i>' + html;
+                                klass = 'active';
+                            }
+
+                            return `<div class="menu-item ${klass}">${html}</div>`;
+                        },
+                        action: (d) => {
+                            this.setProgress(d.data, value);
+                        },
+                    });
+                });
+
+                menu.push({
+                    title: this.translate('message.task_condition'),
+                });
+            } else {
+                menu.push({
+                    title: this.translate('message.project_condition'),
+                });
+            }
+
+            this.trafficLights.forEach((tl) => {
+                menu.push({
+                    title: () => {
+                        let html = tl.getLabel();
+                        let klass = '';
+                        if (tl.getValue() === node.data.trafficLight) {
+                            html = '<i class="glyphicon glyphicon-ok"></i>' + html;
+                            klass = 'active';
+                        }
+
+                        return `<div class="menu-item ${klass}" style="color: ${tl.getColor()}">${html}</div>`;
+                    },
+                    action: (d) => {
+                        this.setTrafficLight(d.data, tl.getValue());
+                    },
+                });
+            });
+
+            return menu;
+        },
+        setProgress(entity, progress) {
+            if (!entity.isTask || entity.progress === progress) {
+                return;
+            }
+
+            // let actualStartAt = null;
+            // let actualFinishAt = null;
+            // if (progress === 100) {
+            //     actualFinishAt = moment().format('DD-MM-YYYY');
+            // } else if (progress === 0) {
+            //     actualStartAt = moment().format('DD-MM-YYYY');
+            // } else {
+            //     actualFinishAt = moment(entity.actualFinishAt).format('DD-MM-YYYY');
+            // }
+
+            this
+                .patchTask({
+                    data: {
+                        progress: progress,
+                        // workPackageStatus: entity.workPackageStatus,
+                        // actualStartAt: entity.actualStartAt,
+                        // actualFinishAt: entity.actualFinishAt,
+                    },
+                    taskId: entity.id,
+                })
+                .then(() => {
+                    this.getWBSByProjectID(this.$route.params.id);
+                })
+            ;
+        },
+        setTrafficLight(entity, trafficLight) {
+            if (entity.isTask) {
+                this
+                    .patchTask({
+                        data: {
+                            trafficLight: trafficLight,
+                        },
+                        taskId: entity.id,
+                    })
+                    .then(() => {
+                        this.getWBSByProjectID(this.$route.params.id);
+                    })
+                ;
+
+                return;
+            }
+
+            this
+                .editProject({projectId: entity.id, trafficLight: trafficLight})
+                .then(() => {
+                    this.getWBSByProjectID(this.$route.params.id);
+                })
+            ;
         },
         updateTree(source) {
             let treeData = this.tree(this.root);
@@ -56,576 +167,25 @@ export default {
                 d.x += 50;
             });
 
-            let canvasNodes = this.g
-                .selectAll('g.node')
-                .data(nodes, d => {
-                    return d.id || (d.id = (d.data.puid || d.data.id));
-                })
+            let builder = builderFactory();
+            builder.config.entityForegroundColor = this.getTrafficLightColor;
+            builder.config.svg = this.svg;
+            builder.$nodes = nodes;
+            builder.$root = source;
+
+            builder
+                .init()
+                .appendEntityWireframe()
+                .appendEntityLabel(this.updateTree)
+                .appendEntityTopMenu()
+                .appendTrafficLightLabel()
+                .appendProgressLabel()
+                .appendPUIDLabel()
+                .appendDates()
+                .addContextMenu(this.getContextMenu)
+                .addLinks(links)
+                .build()
             ;
-
-            let canvasNodesEnter = canvasNodes
-                .enter()
-                .append('g')
-                .attr('class', 'node')
-                .attr('transform', d => `translate(${d.y}, ${d.x})`)
-            ;
-
-            // display the box
-            canvasNodesEnter
-                .append('rect')
-                .attr('fill', '#191E37')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('width', 220)
-                .attr('height', 100)
-            ;
-
-            // draw the lines
-            canvasNodesEnter // side line left
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('x1', 30)
-                .attr('y1', 0)
-                .attr('x2', 30)
-                .attr('y2', 100)
-            ;
-
-            canvasNodesEnter // side line right
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('x1', 220 - 30)
-                .attr('y1', 0)
-                .attr('x2', 220 - 30)
-                .attr('y2', 100)
-            ;
-
-            canvasNodesEnter // right side splitter
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('x1', 220 - 30)
-                .attr('y1', 100 / 3)
-                .attr('x2', 220)
-                .attr('y2', 100 / 3)
-            ;
-
-            canvasNodesEnter // dates splitter top
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('x1', 30)
-                .attr('y1', 100 - 30)
-                .attr('x2', 220 - 30)
-                .attr('y2', 100 - 30)
-            ;
-
-            canvasNodesEnter // dates splitter center
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', 1)
-                .attr('x1', 220 / 2)
-                .attr('y1', 100 - 30)
-                .attr('x2', 220 / 2)
-                .attr('y2', 100)
-            ;
-
-            canvasNodesEnter // text - title
-                .append('foreignObject')
-                .attr('y', 0)
-                .attr('x', 30)
-                .attr('width', 220 - 60)
-                .attr('height', 100 - 30)
-                .append('xhtml:body')
-                .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                .attr('class', 'title-body')
-                .html(d => {
-                    // tables are supposed to be ugly, but god damn it they can be the prettiest thing when they work better than anything
-                    return `<table>
-                        <tr>
-                            <td>
-                                ${d.data.name}
-                            </td>
-                        </tr>
-                    </table>`;
-                })
-                .on('click', d => {
-                    if (d.children) {
-                        d._children = d.children;
-                        d.children = null;
-                    } else {
-                        d.children = d._children;
-                        d._children = null;
-                    }
-
-                    this.updateTree(d);
-                })
-            ;
-
-            canvasNodesEnter
-                .append('foreignObject')
-                .attr('x', 175)
-                .attr('y', 0)
-                .attr('width', 15)
-                .attr('height', 15)
-                .append('xhtml:body')
-                .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                .attr('class', 'node-link')
-                .html(d => {
-                    /*
-                        {
-                            path: 'phases-and-milestones/edit-milestone/:milestoneId',
-                            component: MilestoneCreate,
-                            name: 'project-milestones-edit-milestone',
-                        },
-                     */
-                    let url = '#';
-                    switch (d.data.type) {
-                    case 0:
-                        url = router
-                            .resolve({
-                                name: 'project-phases-view-phase',
-                                params: {
-                                    id: d.data.project,
-                                    phaseId: d.data.id,
-                                },
-                            })
-                            .href
-                        ;
-                        break;
-                    case 1:
-                        url = router
-                            .resolve({
-                                name: 'project-phases-view-milestone',
-                                params: {
-                                    id: d.data.project,
-                                    milestoneId: d.data.id,
-                                },
-                            })
-                            .href
-                        ;
-                        break;
-                    case 2:
-                        url = router
-                            .resolve({
-                                name: 'project-task-management-view',
-                                params: {
-                                    id: d.data.project,
-                                    taskId: d.data.id,
-                                },
-                            })
-                            .href
-                        ;
-                        break;
-                    default:
-                        url = router
-                            .resolve({
-                                name: 'project-dashboard',
-                                params: {
-                                    id: d.data.id,
-                                },
-                            })
-                            .href
-                        ;
-                        break;
-                    }
-
-                    return `<a href="${url}" target="_blank">\ue164</a>`;
-                })
-                .on('click', d => {
-                    d3.event.stopImmediatePropagation();
-                    d3.event.stopPropagation();
-                })
-            ;
-
-            // text - color status
-            canvasNodesEnter
-                .append('text')
-                .attr('class', 'color-status')
-                .attr('text-anchor', 'middle')
-                .attr('x', -(100 * 0.66))
-                .attr('y', 220 - 11)
-                .attr('fill', d => d.data.colorStatusColor || '#8794c4')
-                .attr('transform', 'rotate(-90)')
-                .text(d => {
-                    return d.data.colorStatusName
-                        ? this.translate(d.data.colorStatusName)
-                        : 'N/A'
-                    ;
-                })
-                .on('click', d => {
-                    if (d === this.root || d.data.type !== 2) {
-                        return;
-                    }
-
-                    nodes
-                        .filter(node => node !== d)
-                        .forEach(node => {
-                            node.showColorStatusSelector = false;
-                            node.showProgressSelector = false;
-                        })
-                    ;
-
-                    d.showColorStatusSelector = !d.showColorStatusSelector;
-                    d.showProgressSelector = false;
-
-                    this.updateTree(d);
-                })
-            ;
-
-            // text - progress
-            canvasNodesEnter
-                .append('text')
-                .attr('class', 'progress')
-                .attr('text-anchor', 'middle')
-                .attr('dy', '20px')
-                .attr('x', -(100 * 0.166))
-                .attr('y', 220 - 31)
-                .attr('fill', '#8794c4')
-                .attr('transform', 'rotate(-90)')
-                .text(d => {
-                    return (+d.data.progress || 0) + '%';
-                })
-                .on('click', d => {
-                    if (d === this.root || d.data.type !== 2) {
-                        return;
-                    }
-
-                    nodes
-                        .filter(node => node !== d)
-                        .forEach(node => {
-                            node.showColorStatusSelector = false;
-                            node.showProgressSelector = false;
-                        })
-                    ;
-
-                    d.showColorStatusSelector = false;
-                    d.showProgressSelector = !d.showProgressSelector;
-
-                    this.updateTree(this.root);
-                })
-            ;
-
-            // text - puid
-            canvasNodesEnter
-                .append('text')
-                .attr('class', 'puid')
-                .attr('text-anchor', 'middle')
-                .attr('dy', '20px')
-                .attr('x', -(100 * 0.5))
-                .attr('y', 0)
-                .attr('fill', '#8794c4')
-                .attr('transform', 'rotate(-90)')
-                .text(d => {
-                    return d.data.puid || d.data.id;
-                })
-            ;
-
-            // text - start date
-            canvasNodesEnter
-                .append('text')
-                .attr('class', 'start-date')
-                .attr('text-anchor', 'middle')
-                .attr('dy', '20px')
-                .attr('x', 70)
-                .attr('y', 68)
-                .attr('fill', '#8794c4')
-                .text(d => {
-                    return d.data.startDate;
-                })
-            ;
-
-            // text - end date
-            canvasNodesEnter
-                .append('text')
-                .attr('class', 'end-date')
-                .attr('text-anchor', 'middle')
-                .attr('dy', '20px')
-                .attr('x', 150)
-                .attr('y', 68)
-                .attr('fill', '#8794c4')
-                .text(d => {
-                    return d.data.endDate;
-                })
-            ;
-
-            // task started
-            canvasNodesEnter
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', d => [3, 4].indexOf(d.data.workPackageStatus) !== -1 ? 1 : 0)
-                .attr('x1', 0)
-                .attr('y1', 0)
-                .attr('x2', 220)
-                .attr('y2', 100)
-            ;
-
-            // task completed
-            canvasNodesEnter
-                .append('line')
-                .attr('stroke', d => this.getTaskConditionColor(d.data))
-                .attr('stroke-width', d => [4].indexOf(d.data.workPackageStatus) !== -1 ? 1 : 0)
-                .attr('x1', 0)
-                .attr('y1', 100)
-                .attr('x2', 220)
-                .attr('y2', 0)
-            ;
-
-            let canvasNodesUpdate = canvasNodesEnter.merge(canvasNodes);
-
-            canvasNodesUpdate
-                .attr('transform', d => `translate(${d.y}, ${d.x})`)
-            ;
-
-            canvasNodesUpdate
-                .select('circle.node')
-                .attr('r', 10)
-                .style('fill', d => {
-                    return d._children ? '#123456' : '#fff';
-                })
-                .attr('cursor', 'pointer')
-            ;
-
-            canvasNodes
-                .exit()
-                .attr('transform', d => `translate(${source.y}, ${source.x})`)
-                .remove()
-            ;
-
-            const progressValues = this.progressValues;
-            const colorStatuses = this.colorStatuses;
-            const translate = this.translate;
-            const setWorkPackageColorStatus = this.setWorkPackageColorStatus;
-            const setWorkPackageProgress = this.setWorkPackageProgress;
-            const getWBSByProjectID = this.getWBSByProjectID;
-            const projectId = this.project.id;
-            const doUpdate = () => {
-                this.updateTree(this.root);
-            };
-            const showErrorMessage = (msg) => {
-                this.showSaveFailed = true;
-                this.errorMessage = msg;
-            };
-
-            this.g
-                .selectAll('g.node')
-                .each(function(d) {
-                    let group = d3.select(this);
-
-                    if (d.showColorStatusSelector) {
-                        group
-                            .append('foreignObject')
-                            .attr('class', 'color-status-selector-fo')
-                            .attr('x', 220)
-                            .attr('y', 0)
-                            .append('xhtml:body')
-                            .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                            .attr('class', 'color-status-selector')
-                            .append('ul')
-                            .selectAll('li')
-                            .data(colorStatuses)
-                            .enter()
-                            .append('li')
-                            .html(x => translate(x.name))
-                            .attr('data-color-status', x => x.id)
-                            .attr('data-work-package', d.id)
-                            .attr('style', d => `color: ${d.color}`)
-                            .attr('class', x => {
-                                return x.id === d.data.colorStatus
-                                    ? 'active'
-                                    : ''
-                                ;
-                            })
-                            .on('click', x => {
-                                d.data.colorStatus = x.id;
-                                d.data.colorStatusName = x.name;
-                                d.showColorStatusSelector = false;
-
-                                // update lines to show color status
-                                // group
-                                //     .selectAll('line, rect')
-                                //     .attr('stroke', x.color)
-                                // ;
-                                group
-                                    .select('text.color-status')
-                                    .text(translate(x.name))
-                                    .attr('fill', x.color)
-                                ;
-
-                                doUpdate();
-
-                                setWorkPackageColorStatus({id: d.data.id, colorStatus: x.id})
-                                    .then(
-                                        (response) => {
-                                            getWBSByProjectID(projectId);
-
-                                            if (response.body.error) {
-                                                let messages = [];
-                                                _
-                                                    .keys(response.body.messages)
-                                                    .forEach(item => {
-                                                        messages = messages.concat(response.body.messages[item]);
-                                                    })
-                                                ;
-                                                showErrorMessage(messages.join('\n'));
-                                            }
-                                        },
-                                        () => {
-                                            showErrorMessage(translate('message.error'));
-
-                                            getWBSByProjectID(projectId);
-                                        }
-                                    )
-                                ;
-                            })
-                        ;
-                    } else {
-                        group
-                            .selectAll('foreignObject.color-status-selector-fo')
-                            .remove()
-                        ;
-                    }
-
-                    if (d.showProgressSelector) {
-                        group
-                            .append('foreignObject')
-                            .attr('class', 'progress-selector-fo')
-                            .attr('x', 220)
-                            .attr('y', 0)
-                            .append('xhtml:body')
-                            .attr('xmlns', 'http://www.w3.org/1999/xhtml')
-                            .attr('class', 'color-status-selector')
-                            .append('ul')
-                            .selectAll('li')
-                            .data(progressValues)
-                            .enter()
-                            .append('li')
-                            .html(x => `${x}%`)
-                            .attr('data-progress-value', x => x.id)
-                            .attr('data-work-package', d.id)
-                            .attr('class', x => {
-                                return x === d.data.progress
-                                    ? 'active'
-                                    : ''
-                                ;
-                            })
-                            .on('click', x => {
-                                d.data.progress = x;
-                                d.showProgressSelector = false;
-                                group.select('text.progress').text(x + '%');
-                                doUpdate();
-
-                                let actualStartAt = null;
-                                let actualFinishAt = null;
-                                let workPackageStatus = TASK_STATUS_OPEN;
-
-                                if (x > 0) {
-                                    actualStartAt = d.data.startDate !== 'N/A'
-                                        ? moment(d.data.startDate, 'DD/MM/YYYY').format('DD-MM-YYYY')
-                                        : moment().format('DD-MM-YYYY')
-                                    ;
-                                    workPackageStatus = TASK_STATUS_ONGOING;
-
-                                    if (x === 100) {
-                                        actualFinishAt = d.data.endDate !== 'N/A'
-                                            ? moment(d.data.endDate, 'DD/MM/YYYY').format('DD-MM-YYYY')
-                                            : moment().format('DD-MM-YYYY')
-                                        ;
-                                        workPackageStatus = TASK_STATUS_COMPLETED;
-                                    }
-                                }
-
-                                setWorkPackageProgress(
-                                    {
-                                        id: d.data.id,
-                                        progress: x,
-                                        actualStartAt,
-                                        actualFinishAt,
-                                        workPackageStatus,
-                                    })
-                                    .then(
-                                        (response) => {
-                                            getWBSByProjectID(projectId);
-
-                                            if (response.body.error) {
-                                                let messages = [];
-                                                _
-                                                    .keys(response.body.messages)
-                                                    .forEach(item => {
-                                                        messages = messages.concat(response.body.messages[item]);
-                                                    })
-                                                ;
-                                                showErrorMessage(messages.join('\n'));
-                                            }
-                                        },
-                                        () => {
-                                            showErrorMessage(translate('message.error'));
-
-                                            getWBSByProjectID(projectId);
-                                        }
-                                    )
-                                ;
-                            })
-                        ;
-                    } else {
-                        group
-                            .selectAll('foreignObject.progress-selector-fo')
-                            .remove()
-                        ;
-                    }
-                })
-            ;
-
-            let canvasLinks = this.g
-                .selectAll('path.link')
-                .data(links, d => d.id)
-            ;
-
-            let canvasLinksEnter = canvasLinks
-                .enter()
-                .insert('path', 'g')
-                .attr('class', 'link')
-                .attr('d', d => {
-                    const o = {
-                        x: source.x0,
-                        y: source.y0,
-                    };
-
-                    return this.diagonal(o, o);
-                })
-            ;
-
-            let canvasLinksUpdate = canvasLinksEnter.merge(canvasLinks);
-
-            canvasLinksUpdate
-                .attr('d', d => {
-                    return this.diagonal(d, d.parent);
-                })
-            ;
-
-            canvasLinks
-                .exit()
-                .attr('d', d => {
-                    const o = {x: source.x, y: source.y};
-
-                    return this.diagonal(o, o);
-                })
-                .remove()
-            ;
-
-            nodes.forEach(d => {
-                d.x0 = d.x;
-                d.y0 = d.y;
-            });
-        },
-        diagonal(dst, src) {
-            // curved lines yo!
-            return `
-                M ${src.y + 220} ${src.x + 50}
-                C ${(src.y + dst.y + 220) / 2} ${src.x + 50},
-                    ${(src.y + dst.y + 220) / 2} ${dst.x + 50},
-                    ${dst.y} ${dst.x + 50}`;
         },
         initialize() {
             this.initialized = true;
@@ -661,6 +221,10 @@ export default {
             const zoom = d3.zoom()
                 .scaleExtent([0.1, 4])
                 .on('zoom', () => {
+                    if (d3.zoomDisabled) {
+                        return;
+                    }
+
                     this.g.attr('transform', d3.event.transform);
                 })
             ;
@@ -672,7 +236,6 @@ export default {
             this.getProjectById(this.$route.params.id);
         }
         this.getWBSByProjectID(this.$route.params.id);
-        this.getColorStatuses();
     },
     watch: {
         wbs(value) {
@@ -680,7 +243,7 @@ export default {
                 this.wbsData = _.cloneDeep(value);
             }
 
-            if (this.wbsData && this.project.id && this.wbs && this.colorStatuses.length && !this.initialized) {
+            if (this.wbsData && this.project.id && this.wbs && !this.initialized) {
                 this.initialize();
             } else if (this.initialized && this.wbsData) {
                 this.g.selectAll('*').remove();
@@ -692,13 +255,8 @@ export default {
                 this.updateTree(this.root);
             }
         },
-        colorStatuses() {
-            if (this.wbsData && this.project.id && this.wbs && this.colorStatuses.length && !this.initialized) {
-                this.initialize();
-            }
-        },
         project() {
-            if (this.wbsData && this.project.id && this.wbs && this.colorStatuses.length && !this.initialized) {
+            if (this.wbsData && this.project.id && this.wbs && !this.initialized) {
                 this.initialize();
             }
         },
@@ -727,9 +285,13 @@ export default {
         };
     },
 };
+
 </script>
 
 <style lang="scss">
+    @import '../../css/mixins';
+    @import '../../css/variables';
+
     body {
         &.title-body {
             min-height: initial !important;
@@ -788,37 +350,8 @@ export default {
         }
     }
 
-    .node {
-        cursor: pointer;
-    }
-
     .overlay {
         background-color: #eeeeee;
-    }
-
-    .node circle {
-        fill: #fff;
-        stroke: steelblue;
-        stroke-width: 1.5px;
-    }
-
-    .node-link {
-        content: '\e164';
-        color: #ffffff;
-        background: transparent;
-        height: auto;
-        min-height: inherit;
-    }
-
-    .node text {
-        font-size: 10px;
-        font-weight: 400;
-    }
-
-    .node text.color-status {
-        font-size: 8px !important;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
     }
 
     .link {
@@ -827,7 +360,100 @@ export default {
         stroke-width: 1px;
     }
 
-    .title {
-        font-weight: bold;
+    .node {
+        cursor: pointer;
+
+        circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        text {
+            font-size: 10px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+
+            &.status {
+                font-size: 8px !important;
+                font-weight: bold;
+            }
+        }
+
+        a {
+            &:hover {
+                color: $middleColor;
+            }
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .top-menu {
+            color: #ffffff;
+            background: transparent;
+            height: auto;
+            min-height: inherit;
+            text-align: right;
+
+            a {
+                padding: 0 5px;
+            }
+        }
+    }
+
+    .d3-context-menu-theme {
+        position: absolute;
+        background-color: $semiDarkColor;
+        color: $lighterColor;
+        font-size: 12px;
+        min-width: 200px;
+        text-transform: uppercase;
+
+        @include box-shadow(0, 0, 20px, $darkerColor);
+
+        ul {
+            margin: 0;
+            padding: 5px;
+
+            list-style-type: none;
+
+            li {
+                padding: 0;
+                margin: 0;
+
+                .menu-item {
+                    padding: 10px 10px 10px 30px;
+                    margin: 0;
+
+                    &:hover:not(.is-header) {
+                        background-color: $fadeColor;
+                        cursor: pointer;
+                    }
+                    &.active {
+                        padding-left: 10px;
+
+                        i {
+                            margin-right: 7px;
+                        }
+                    }
+                }
+
+                &.is-header:not(.is-divider) {
+                    padding: 10px 10px;
+                    background-color: $darkColor;
+                    color: $middleColor;
+                }
+                &.is-divider {
+                    padding: 0;
+                    hr {
+                        padding: 0;
+                        margin: 5px 0;
+                    }
+                }
+            }
+        }
     }
 </style>

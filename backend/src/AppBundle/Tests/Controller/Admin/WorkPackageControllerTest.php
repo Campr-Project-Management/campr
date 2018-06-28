@@ -33,8 +33,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
         $this->assertContains('id="create_workPackageCategory"', $crawler->html());
         $this->assertContains('name="create[parent]"', $crawler->html());
-        $this->assertContains('id="create_colorStatus"', $crawler->html());
-        $this->assertContains('name="create[colorStatus]"', $crawler->html());
+        $this->assertContains('id="create_trafficLight"', $crawler->html());
+        $this->assertContains('name="create[trafficLight]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());
@@ -186,8 +186,8 @@ class WorkPackageControllerTest extends BaseController
         $this->assertContains('name="create[parent]"', $crawler->html());
         $this->assertContains('name="create[workPackageCategory]"', $crawler->html());
         $this->assertContains('id="create_workPackageCategory"', $crawler->html());
-        $this->assertContains('id="create_colorStatus"', $crawler->html());
-        $this->assertContains('name="create[colorStatus]"', $crawler->html());
+        $this->assertContains('id="create_trafficLight"', $crawler->html());
+        $this->assertContains('name="create[trafficLight]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());

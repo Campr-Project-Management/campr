@@ -43,10 +43,11 @@
                     :title="translate('message.responsible')"
                     :options="projectUsersForSelect"/>
             <dropdown
-                    ref="colorStatus"
-                    :selectedValue="selectColorStatus"
+                    ref="trafficLight"
+                    :selectedValue="selectTrafficLight"
                     :title="translate('message.condition')"
-                    :options="colorStatusesOptions"/>
+                    :options="trafficLightsForSelect"/>
+
             <!--To be added after disscusion about milestones-->
             <!--<dropdown title="Milestone" options=""></dropdown>-->
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translate('button.show_results') }}</a>
@@ -98,19 +99,14 @@ export default {
         }
 
         this.getProjectUsers({id: this.$route.params.id});
-        this.getColorStatuses();
     },
     computed: {
         ...mapGetters([
             'project',
             'taskStatuses',
             'projectUsersForSelect',
-            'colorStatusesForSelect',
-            'colorStatuses',
+            'trafficLightsForSelect',
         ]),
-        colorStatusesOptions() {
-            return this.colorStatusesForSelect.filter((status) => status.key);
-        },
     },
     methods: {
         ...mapActions([
@@ -118,17 +114,16 @@ export default {
             'getTaskStatuses',
             'setFilters',
             'getProjectUsers',
-            'getColorStatuses',
         ]),
-        selectColorStatus(colorStatus) {
-            this.filters.colorStatus = colorStatus;
-        },
         selectAssignee(assignee) {
             this.filters.assignee = assignee;
         },
+        selectTrafficLight(trafficLight) {
+            this.filters.trafficLight = trafficLight;
+        },
         clearFilters() {
             this.filters = {
-                colorStatus: null,
+                trafficLight: null,
                 assignee: null,
                 searchString: null,
             };
@@ -137,7 +132,7 @@ export default {
             if (this.$refs.statuses) {
                 this.$refs.statuses.resetCustomTitle();
             }
-            this.$refs.colorStatus.resetCustomTitle();
+            this.$refs.trafficLight.resetCustomTitle();
             this.criteria = this.filters;
         },
         filterTasks() {
@@ -148,12 +143,12 @@ export default {
         return {
             users: [],
             filters: {
-                colorStatus: null,
+                trafficLight: null,
                 assignee: null,
                 searchString: null,
             },
             criteria: {
-                colorStatus: null,
+                trafficLight: null,
                 assignee: null,
                 searchString: null,
             },

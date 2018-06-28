@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Project.
@@ -53,7 +54,7 @@ class Project implements ProjectInterface
      *
      * @ORM\Column(name="traffic_light", type="integer", options={"default": 2})
      * @Assert\NotNull()
-     * @Assert\Choice({0, 1, 2})
+     * @AppAssert\TrafficLight()
      */
     private $trafficLight;
 
