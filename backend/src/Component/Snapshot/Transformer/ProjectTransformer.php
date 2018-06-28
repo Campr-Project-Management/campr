@@ -68,6 +68,11 @@ class ProjectTransformer extends AbstractTransformer
     private $milestonesTransformer;
 
     /**
+     * @var TransformerInterface
+     */
+    private $infosTransformer;
+
+    /**
      * ProjectTransformer constructor.
      *
      * @param TransformerInterface         $dateTransformer
@@ -82,6 +87,7 @@ class ProjectTransformer extends AbstractTransformer
      * @param TransformerInterface         $decisionsTransformer
      * @param TransformerInterface         $phasesTransformer
      * @param TransformerInterface         $milestonesTransformer
+     * @param TransformerInterface         $infosTransformer
      */
     public function __construct(
         TransformerInterface $dateTransformer,
@@ -95,7 +101,8 @@ class ProjectTransformer extends AbstractTransformer
         TransformerInterface $todosTransformer,
         TransformerInterface $decisionsTransformer,
         TransformerInterface $phasesTransformer,
-        TransformerInterface $milestonesTransformer
+        TransformerInterface $milestonesTransformer,
+        TransformerInterface $infosTransformer
     ) {
         $this->dateTransformer = $dateTransformer;
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
@@ -110,6 +117,7 @@ class ProjectTransformer extends AbstractTransformer
         $this->decisionsTransformer = $decisionsTransformer;
         $this->phasesTransformer = $phasesTransformer;
         $this->milestonesTransformer = $milestonesTransformer;
+        $this->infosTransformer = $infosTransformer;
     }
 
     /**
@@ -136,6 +144,7 @@ class ProjectTransformer extends AbstractTransformer
             'opportunities' => $this->opportunitiesTransformer->transform($project),
             'decisions' => $this->decisionsTransformer->transform($project),
             'todos' => $this->todosTransformer->transform($project),
+            'infos' => $this->infosTransformer->transform($project),
         ];
 
         return $data;
