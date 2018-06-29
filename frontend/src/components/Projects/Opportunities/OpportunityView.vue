@@ -85,7 +85,7 @@
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translate('message.priority') }}: <b v-if="opportunity.priority">{{ translate(priorityLabel) }}</b><b v-else>-</b></p>
+                            <p>{{ translate('message.priority') }}: <b v-if="opportunity.priority || opportunity.priority === 0">{{ translate(priorityLabel) }}</b><b v-else>-</b></p>
                             <p>{{ translate('message.strategy') }}: <b v-if="opportunity.opportunityStrategyName">{{ translate(opportunity.opportunityStrategyName) }}</b><b v-else>-</b></p>
                             <p>{{ translate('message.status') }}: <b>{{ translate(opportunity.opportunityStatusName) }}</b></p>
                         </div>
@@ -433,7 +433,7 @@ export default {
             projectCurrencySymbol: 'projectCurrencySymbol',
         }),
         priorityLabel() {
-            return this.opportunity.priorityName.replace('-', '_');
+            return 'message.'.concat(this.opportunity.priorityName.replace('-', '_'));
         },
     },
     created() {
