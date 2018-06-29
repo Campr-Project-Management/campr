@@ -1755,9 +1755,9 @@ table_header_cell.status_report: Statusreport
 table_header_cell.status_updated_at: 'Status aktualisiert am'
 table_header_cell.strategy: Strategie
 table_header_cell.subteam: Team
-table_header_cell.subteam_members: Subteam-Mitglieder
+table_header_cell.subteam_members: Team-Mitglieder
 table_header_cell.subteam_name: Teamname
-table_header_cell.subteam_roles: Subteam-Rollen
+table_header_cell.subteam_roles: Team-Rollen
 table_header_cell.suspended: Ausgesetzt
 table_header_cell.task_number: 'Aufgabe Nr.'
 table_header_cell.task_title: 'Titel Aufgabe'
@@ -1775,7 +1775,7 @@ table_header_cell.type: Art
 table_header_cell.unit: Einheit
 table_header_cell.updated_at: 'Aktualisiert am'
 table_header_cell.user: Nutzer
-table_header_cell.username: Benutzername
+table_header_cell.username: Nutzername
 table_header_cell.users: Nutzer
 table_header_cell.value: Wert
 table_header_cell.visible: Sichtbar
@@ -1789,37 +1789,32 @@ table_header_cell.workpackage_status: 'Status Arbeitspaket'
 table_header_cell.workpackages: Arbeitspakete
 table_header_cell.wppwct: 'Art der Arbeitspaketkosten'
 table_header_cell.wppwcts: 'Art der Arbeitspaketkosten'
-title.account_activation: 'Account activation'
-title.add_distribution_list: 'Add Distribution List'
-title.assignment.create: 'Create new assignment'
-title.assignment.edit: 'Edit assignment'
-title.assignment.list: Assignment
-title.calendar.create: 'Create new calendar'
-title.calendar.edit: 'Edit calendar'
-title.calendar.list: Calendar
-title.close_down_action.create: 'Create new close down action'
-title.close_down_action.edit: 'Edit close down action'
-title.close_down_action.list: 'Close Down Action'
-title.color_status.create: 'Create new color status'
-title.color_status.edit: 'Edit color status'
-title.color_status.list: 'Color status'
-title.communication.create: 'Create new communication'
-title.communication.edit: 'Edit communication'
-title.communication.list: Communication
-title.company.create: 'Create new company'
-title.company.edit: 'Edit company'
-title.company.list: Company
-title.contact: 'Send us a message'
-title.contract.create: 'Create Contract'
-title.contract.edit: 'Edit Contract'
-title.contract.list: Contract
-title.cost.create: 'Create Cost'
-title.cost.edit: 'Edit Cost'
-title.cost.list: Cost
+title.account_activation: Accountaktivierung
+title.add_distribution_list: 'Verteilerliste hinzufügen'
+title.calendar.create: 'Neuen Kalender erstellen'
+title.calendar.edit: 'Kalender bearbeiten'
+title.calendar.list: Kalender
+title.close_down_action.create: 'Neue Abschlussmaßnahme erstellen'
+title.close_down_action.edit: 'Abschlussmaßnahme bearbeiten'
+title.close_down_action.list: Abschlussmaßnahme
+title.color_status.list: Farbstatus
+title.communication.create: 'Neue Mitteilung erstellen'
+title.communication.edit: 'Mitteilung bearbeiten'
+title.communication.list: Mitteilung
+title.company.create: 'Neues Unternehmen erstellen'
+title.company.edit: 'Unternehmen bearbeiten'
+title.company.list: Unternehmen
+title.contact: 'Senden Sie uns eine Nachricht'
+title.contract.create: 'Vertrag erstellen'
+title.contract.edit: 'Vertrag bearbeiten'
+title.contract.list: Vertrag
+title.cost.create: 'Kosten erstellen'
+title.cost.edit: 'Kosten bearbeiten'
+title.cost.list: Kosten
 title.dashboard: Dashboard
-title.day.create: 'Create new day'
-title.day.edit: 'Edit day'
-title.day.list: Day
+title.day.create: 'Neuen Tag erstellen'
+title.day.edit: 'Tag bearbeiten'
+title.day.list: Tag
 title.decision.create: 'Create new decision'
 title.decision.edit: 'Edit decision'
 title.decision.list: Decision
@@ -1866,77 +1861,74 @@ title.info_status.list: Info-Status
 title.internal_cost.create: 'Kosten erstellen'
 title.internal_cost.edit: 'Kosten bearbeiten'
 title.internal_cost.list: 'Interne Kosten'
-title.label.create: 'Create new label'
-title.label.edit: 'Edit label'
+title.label.create: 'Neues Label erstellen'
+title.label.edit: 'Label bearbeiten'
 title.label.list: Label
-title.lesson.create: 'Create new lesson'
-title.lesson.edit: 'Edit lesson'
-title.lesson.list: Lesson
-title.measure.create: 'Create new measure'
-title.measure.edit: 'Edit measure'
-title.measure.list: Measure
-title.media.edit: 'Edit media file'
-title.media.list: Media
-title.media.upload: 'Upload new file'
-title.meeting.create: 'Create new meeting'
-title.meeting.edit: 'Edit meeting'
+title.lesson.create: 'Neue Lektion erstellen'
+title.lesson.edit: 'Lektion bearbeiten'
+title.lesson.list: Lektion
+title.measure.create: 'Neue Maßnahme erstellen'
+title.measure.edit: 'Maßnahme bearbeiten'
+title.measure.list: Maßnahme
+title.media.list: Medien
+title.media.upload: 'Neue Datei hochladen'
+title.meeting.create: 'Neues Meeting erstellen'
+title.meeting.edit: 'Meeting bearbeiten'
 title.meeting.list: Meeting
-title.meeting_agenda.create: 'Create new meeting agenda'
-title.meeting_agenda.edit: 'Edit meeting agenda'
-title.meeting_agenda.list: 'Meeting agenda'
-title.meeting_category.create: 'Create new meeting category'
-title.meeting_category.edit: 'Edit meeting category'
-title.meeting_category.list: 'Meeting category'
-title.meeting_objective.create: 'Create new meeting objective'
-title.meeting_objective.edit: 'Edit meeting objective'
-title.meeting_objective.list: 'Meeting objective'
-title.meeting_participant.create: 'Create new meeting participant'
-title.meeting_participant.edit: 'Edit meeting participant'
-title.meeting_participant.list: 'Meeting participant'
+title.meeting_agenda.create: 'Neue Meetingagenda erstellen'
+title.meeting_agenda.edit: 'Meetingagenda bearbeiten'
+title.meeting_agenda.list: Meetingagenda
+title.meeting_category.create: 'Neue Meetingkategorie erstellen'
+title.meeting_category.edit: 'Meetingkategorie bearbeiten'
+title.meeting_category.list: Meetingkategorie
+title.meeting_objective.create: 'Neues Meetingziel erstellen'
+title.meeting_objective.edit: 'Meetingziel bearbeiten'
+title.meeting_objective.list: Meetingziel
+title.meeting_participant.create: 'Neuen Meetingteilnehmer erstellen'
+title.meeting_participant.edit: 'Meetingteilnehmer bearbeiten'
+title.meeting_participant.list: Meetingteilnehmer
 title.members: Mitglieder
-title.messages: Messages
-title.meta_description: 'Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
-title.my_account: 'My Account'
-title.note.create: 'Create new note'
-title.note.edit: 'Edit note'
-title.note.list: Note
+title.messages: Nachrichten
+title.my_account: 'Mein Account'
+title.note.create: 'Neue Notiz erstellen'
+title.note.edit: 'Notiz bearbeiten'
+title.note.list: Notiz
 title.note_status.create: 'Notizstatus erstellen'
 title.note_status.edit: 'Notizstatus bearbeiten'
 title.note_status.list: Notizstatus
-title.opportunity.create: 'Create new opportunity'
-title.opportunity.edit: 'Edit opportunity'
-title.opportunity.list: Opportunity
+title.opportunity.create: 'Neue Chance erstellen'
+title.opportunity.edit: 'Chance bearbeiten'
+title.opportunity.list: Chance
 title.opportunity_status.create: 'Create new opportunity status'
 title.opportunity_status.edit: 'Edit opportunity status'
 title.opportunity_status.list: 'Opportunity Status'
 title.opportunity_strategy.create: 'Create new opportunity strategy'
 title.opportunity_strategy.edit: 'Edit opportunity strategy'
 title.opportunity_strategy.list: 'Opportunity Strategy'
-title.payment.list: Payments
-title.payment_method.create: 'Create new Payment Method'
-title.payment_method.edit: 'Edit payment method'
-title.payment_method.list: 'Payment method list'
-title.portfolio.create: 'Create new portfolio'
-title.portfolio.edit: 'Edit portfolio'
+title.payment.list: Zahlungen
+title.payment_method.edit: 'Zahlungsmethode bearbeiten'
+title.payment_method.list: 'Liste Zahlungsmethoden'
+title.portfolio.create: 'Neues Portfolio erstellen'
+title.portfolio.edit: 'Portfolio bearbeiten'
 title.portfolio.list: Portfolio
-title.programme.create: 'Create Programme'
-title.programme.edit: 'Edit Programme'
-title.programme.list: Programme
-title.project.create: 'Create new project'
-title.project.edit: 'Edit project'
-title.project.list: Project
-title.project_add_error: 'Es sind Fehler beim speichern des Projektes aufgetreten.'
-title.project_category.create: 'Create new project category'
-title.project_category.edit: 'Edit project category'
-title.project_category.list: 'Project category'
-title.project_close_down.create: 'Create new project close down'
-title.project_close_down.edit: 'Edit project close down'
-title.project_close_down.list: 'Project Close Down'
-title.project_complexity.create: 'Create new project complexity'
-title.project_complexity.edit: 'Edit project complexity'
-title.project_complexity.list: 'Project complexity'
-title.project_cost_type.create: 'Create new project cost type'
-title.project_cost_type.edit: 'Edit project cost type'
+title.programme.create: 'Programm erstellen'
+title.programme.edit: 'Programm bearbeiten'
+title.programme.list: Programm
+title.project.create: 'Neues Projekt erstellen'
+title.project.edit: 'Projekt bearbeiten'
+title.project.list: Projekt
+title.project_add_error: 'Es sind Fehler beim Speichern des Projektes aufgetreten.'
+title.project_category.create: 'Neue Projektkategorie erstellen'
+title.project_category.edit: 'Projektkategorie bearbeiten'
+title.project_category.list: Kategorie
+title.project_close_down.create: 'Neuen Projektabschluss erstellen'
+title.project_close_down.edit: 'Projektabschluss bearbeiten'
+title.project_close_down.list: Projektabschluss
+title.project_complexity.create: 'Neue Projektkomplexität erstellen'
+title.project_complexity.edit: 'Projektkomplexität bearbeiten'
+title.project_complexity.list: Komplexität
+title.project_cost_type.create: 'Neuen Projektkostentyp erstellen'
+title.project_cost_type.edit: 'Projektkostentyp bearbeiten'
 title.project_cost_type.list: 'Project cost type'
 title.project_deliverable.create: 'Create Project Deliverable'
 title.project_deliverable.edit: 'Edit Project Deliverable'
@@ -1996,57 +1988,53 @@ title.schedule.edit: 'Edit schedule'
 title.schedule.list: Schedule
 title.status.edit: Bearbeiten
 title.status_report.list: 'Status Report'
-title.status_report_config.create: 'Create new status report config'
-title.status_report_config.edit: 'Edit status report config'
-title.status_report_config.list: 'Status Report Config'
-title.subteam.create: 'Create Subteam'
-title.subteam.edit: 'Edit Subteam'
-title.subteam.list: Subteam
+title.status_report_config.create: 'Neue Statusreport-Konfiguration erstellen'
+title.status_report_config.edit: 'Statusreport-Koniguration bearbeiten'
+title.status_report_config.list: Statusreport-Kofiguration
+title.subteam.create: 'Team erstellen'
+title.subteam.edit: 'Team bearbeiten'
+title.subteam.list: Team
 title.subteam_member.create: 'Teammitglied erstellen'
 title.subteam_member.edit: 'Teammitglied bearbeiten'
 title.subteam_member.list: Teammitglied
-title.subteam_role.create: 'Create Subteam Role'
+title.subteam_role.create: 'Teamrolle erstellen'
 title.subteam_role.edit: 'Teamrolle bearbeiten'
-title.subteam_role.list: 'Subteam Role'
-title.subteams: Subteams
+title.subteam_role.list: Teamrolle
+title.subteams: Teams
 title.team.create: 'Neues Team erstellen'
 title.team.edit: 'Team bearbeiten'
 title.team.list: Teamliste
-title.team_member.create: 'Create new team member'
-title.team_member.edit: 'Edit team member'
-title.team_member.for: 'Team member list for'
-title.team_member.list: 'Team member list'
-title.timephase.create: 'Create new timephase'
-title.timephase.edit: 'Edit timephase'
-title.timephase.list: Timephase
-title.todo.create: 'Create new todo'
-title.todo.edit: 'Edit todo'
-title.todo.list: Todo
+title.team_member.create: 'Neues Teammitglied erstellen'
+title.team_member.edit: 'Teammitglied bearbeiten'
+title.team_member.for: 'Teammitgliederliste für'
+title.todo.create: 'Neues To-Do erstellen'
+title.todo.edit: 'To-Do bearbeiten'
+title.todo.list: To-Do
 title.todo_category.create: 'To-Do-Kategorie erstellen'
 title.todo_category.edit: 'To-Do-Kategorie bearbeiten'
 title.todo_category.list: To-Do-Kategorie
 title.todo_status.create: 'To-Do-Status erstellen'
 title.todo_status.edit: 'To-Do-Status bearbeiten'
 title.todo_status.list: To-Do-Status
-title.unit.create: 'Create new unit'
-title.unit.edit: 'Edit unit'
-title.unit.list: Unit
-title.user.create: 'Create new user'
-title.user.edit: 'Edit user'
-title.user.invite: 'Invite user'
-title.user.list: Users
-title.working_time.create: 'Create new working time'
-title.working_time.edit: 'Edit working time'
-title.working_time.list: 'Working time'
-title.workpackage.create: 'Create new work package'
-title.workpackage.edit: 'Edit work package'
-title.workpackage.list: 'Work Package'
-title.workpackage_category.create: 'Create Work Package Category'
-title.workpackage_category.edit: 'Edit Work Package Category'
-title.workpackage_category.list: 'Work Package Category'
-title.workpackage_status.create: 'Create Work Package Status'
-title.workpackage_status.edit: 'Edit Work Package Status'
-title.workpackage_status.list: 'Work Package Status'
+title.unit.create: 'Neue Einheit erstellen'
+title.unit.edit: 'Einheit bearbeiten'
+title.unit.list: Einheit
+title.user.create: 'Neuen Nutzer erstellen'
+title.user.edit: 'Nutzer bearbeiten'
+title.user.invite: 'Nutzer einladen'
+title.user.list: Nutzer
+title.working_time.create: 'Neue Arbeitszeit erstellen'
+title.working_time.edit: 'Arbeitszeit bearbeiten'
+title.working_time.list: Arbeitszeit
+title.workpackage.create: 'Neues Arbeitspaket erstellen'
+title.workpackage.edit: 'Arbeitspaket bearbeiten'
+title.workpackage.list: Arbeitspaket
+title.workpackage_category.create: 'Arbeitspaketkategorie erstellen'
+title.workpackage_category.edit: 'Arbeitspaketkategorie bearbeiten'
+title.workpackage_category.list: Arbeitspaketkategorie
+title.workpackage_status.create: 'Arbeitspaketstatus erstellen'
+title.workpackage_status.edit: 'Arbeitspaketstatus bearbeiten'
+title.workpackage_status.list: Arbeitspaketstatus
 title.workspace.create: 'Neues Arbeitsumfeld erstellen'
 title.workspace.edit: 'Arbeitsumfeld bearbeiten'
 title.workspace.list: 'Liste Arbeitsumfelder'
@@ -2064,3 +2052,15 @@ todo_status.ongoing: Fortlaufend
 token.expired: 'Token abgelaufen.'
 token.invalid: 'Ungültiger Token.'
 token.used: 'Token wurde bereits genutzt.'
+message.expired_at: 'Endete am'
+message.change_responsible: 'Verantwortlichkeit ändern'
+message.not_enough_data: 'Nicht genügend Daten.'
+label.meeting_category: Meetingkategorie
+button.save_distribution_list: 'Verteilerliste speichern'
+table_header_cell.expires_at: 'Endet am'
+traffic_light.red: Kritisch
+traffic_light.yellow: Warnung
+label.cost_savings: Kosteneinsparungen
+label.potential_cost_savings: 'Potentielle Kosteneinsparungen'
+label.potential_time_savings: 'Potentielle Zeiteinsparungen'
+message.planned_progress: 'Geplanter Fortschritt'
