@@ -12,7 +12,6 @@ use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Opportunity;
-use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCloseDown;
@@ -1847,25 +1846,6 @@ class ProjectController extends ApiController
         ];
 
         return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * Get all opportunity statuses.
-     *
-     * @Route("/{id}/opportunity-statuses", name="app_api_project_opportunity_statuses", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function opportunityStatusesAction(Project $project)
-    {
-        $opportunityStatuses = $this
-            ->getEntityManager()
-            ->getRepository(OpportunityStatus::class)
-            ->findAllByProjectNullable($project)
-        ;
-
-        return $this->createApiResponse($opportunityStatuses);
     }
 
     /**

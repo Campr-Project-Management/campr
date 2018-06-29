@@ -120,6 +120,7 @@ class CreateType extends BaseType
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.color_status',
                 'translation_domain' => 'messages',
+                'choice_translation_domain' => 'messages',
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
