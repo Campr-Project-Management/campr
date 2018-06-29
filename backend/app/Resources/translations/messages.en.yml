@@ -2090,3 +2090,11 @@ label.potential_cost_savings: 'Potential Cost Savings'
 label.potential_time_savings: 'Potential Time Savings'
 message.planned_progress: 'Planned Progress'
 label.follow_up: Follow-Up
+menu.unaccepted_team_invites: 'Unaccepted Invites'
+label.resend: Resend
+message.removed_team_invites: '%count% invite(s) have been removed.'
+message.removed_invalid_team_invites: '%count% invalid invite(s) have been removed.'
+message.resent_team_invites: '%count% invite(s) have been resent.'
+action.select.all: 'Select All'
+action.select.none: 'Select None'
+action.select.invert: 'Invert Selection'
