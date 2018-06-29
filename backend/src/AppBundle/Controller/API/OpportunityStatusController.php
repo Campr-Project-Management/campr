@@ -20,6 +20,24 @@ class OpportunityStatusController extends ApiController
     const FORM_CLASS = BaseType::class;
 
     /**
+     * Get all opportunity statuses.
+     *
+     * @Route("/", name="app_api_opportunity_statuses", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function indexAction()
+    {
+        $opportunityStatuses = $this
+            ->get('app.repository.opportunity_status')
+            ->findAll()
+        ;
+
+        return $this->createApiResponse($opportunityStatuses);
+    }
+
+    /**
      * Create a new OpportunityStatus.
      *
      * @Route(name="app_api_opportunity_statuses_create", options={"expose"=true})
