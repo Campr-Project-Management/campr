@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
@@ -73,5 +74,13 @@ class TeamInviteRepository extends EntityRepository
         $qb->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @return TeamInvite[]
+     */
+    public function findUnaccepted()
+    {
+        return $this->findBy(['acceptedAt' => null]);
     }
 }
