@@ -470,7 +470,7 @@ export default {
             defaultCellHeight: 225,
             collapsedNodeLevel: 3,
             bigCellLimit: 2,
-            show: false,
+            show: true,
             dataAttributes: [],
             cellWidth: 222,
             cellHeight: 290,
