@@ -18,33 +18,39 @@
 
         <status-filters :updateFilters="applyFilters"></status-filters>
         <div class="status-reports-list margintop20">
-            <table class="table table-striped table-responsive">
-                <thead>
-                    <tr>
-                        <th>{{ translateText('table_header_cell.date') }}</th>  
-                        <th class="text-center">{{ translateText('table_header_cell.created_by') }}</th>                      
-                        <th>{{ translateText('table_header_cell.actions') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="report in statusReports.items">
-                        <td>{{ report.createdAt | date }} @ {{ report.createdAt | hour }}</td>
-                        <td class="small-avatar text-center">
-                            <user-avatar
-                                    size="small"
-                                    :url="report.createdByAvatar"
-                                    :name="report.createdByFullName"
-                                    :tooltip="report.createdByFullName"/>
-                        </td>
-                        <td>
-                            <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
-                            <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
-                            <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
-                            <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
-                        </td>                                
-                    </tr>
-                </tbody>
-            </table>
+            <scrollbar class="table-wrapper customScrollbar">
+                <div class="scroll-wrapper">
+                    <table class="table table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th>{{ translateText('table_header_cell.date') }}</th>  
+                                <th class="text-center">{{ translateText('table_header_cell.created_by') }}</th>                      
+                                <th>{{ translateText('table_header_cell.actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="report in statusReports.items">
+                                <td>{{ report.createdAt | date }} @ {{ report.createdAt | hour }}</td>
+                                <td class="small-avatar text-center">
+                                    <user-avatar
+                                            size="small"
+                                            :url="report.createdByAvatar"
+                                            :name="report.createdByFullName"
+                                            :tooltip="report.createdByFullName"/>
+                                </td>
+                                <td>
+                                    <div class="text-right">
+                                        <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
+                                        <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
+                                        <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
+                                    </div>
+                                </td>                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center" v-if="pages > 1">
                 <div class="pagination">
@@ -159,7 +165,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+    @import '../../css/variables';
     @import '../../css/mixins';
+    @import '../../css/common';
 
     .date-cell {
         width: 5%;
@@ -171,4 +179,8 @@ export default {
         @include border-radius(50%);
         background-size: cover;
     }  
+
+    .btn-icon {
+        cursor: pointer;
+    }
 </style>
