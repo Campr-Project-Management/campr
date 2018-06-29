@@ -93,4 +93,26 @@ class DecisionRepository extends BaseRepository
         $this->setUserOrder($orderBy, $qb);
         $this->setProjectOrder($orderBy, $qb);
     }
+
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getAllForStatusReport(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $date = new \DateTime('-6 days');
+        $date->setTime(0, 0, 0);
+
+        return $qb
+            ->andWhere('o.project = :project')
+            ->andWhere('(o.done <> 1 or (o.done = 1 and o.doneAt >= :date))')
+            ->setParameter('date', $date)
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

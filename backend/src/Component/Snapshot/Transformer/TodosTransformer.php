@@ -4,6 +4,7 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
+use AppBundle\Repository\TodoRepository;
 
 class TodosTransformer extends AbstractTransformer
 {
@@ -13,13 +14,20 @@ class TodosTransformer extends AbstractTransformer
     private $dateTransformer;
 
     /**
+     * @var TodoRepository
+     */
+    private $todoRepository;
+
+    /**
      * TodosTransformer constructor.
      *
      * @param TransformerInterface $dateTransformer
+     * @param TodoRepository       $todoRepository
      */
-    public function __construct(TransformerInterface $dateTransformer)
+    public function __construct(TransformerInterface $dateTransformer, TodoRepository $todoRepository)
     {
         $this->dateTransformer = $dateTransformer;
+        $this->todoRepository = $todoRepository;
     }
 
     /**
@@ -30,7 +38,7 @@ class TodosTransformer extends AbstractTransformer
     protected function doTransform($project)
     {
         return [
-            'items' => $this->getItems($project->getTodos()->toArray()),
+            'items' => $this->getItems($project),
         ];
     }
 
@@ -45,13 +53,14 @@ class TodosTransformer extends AbstractTransformer
     }
 
     /**
-     * @param Todo[] $todos
+     * @param Project $project
      *
      * @return array
      */
-    private function getItems(array $todos): array
+    private function getItems(Project $project): array
     {
         $items = [];
+        $todos = $this->todoRepository->getAllForStatusReport($project);
 
         foreach ($todos as $todo) {
             $items[] = $this->getItem($todo);
