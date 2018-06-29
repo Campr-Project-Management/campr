@@ -88,7 +88,7 @@
                             <div class="col-md-4">
                                 <money-field
                                         :currency="projectCurrencySymbol"
-                                        :label="translate('placeholder.potential_savings')"
+                                        :label="translate('label.cost_savings')"
                                         v-model="costSavings"/>
                                 <error
                                         v-if="validationMessages.costSavings && validationMessages.costSavings.length"
@@ -98,7 +98,7 @@
                             <div class="col-md-4">
                                 <input-field
                                         type="number"
-                                        :label="translate('placeholder.potential_time_savings')"
+                                        :label="translate('label.time_savings')"
                                         v-model="timeSavings" :content="timeSavings"
                                         v-bind:css="{marginBottom: 0}"
                                 />
@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translate('message.budget') }}: <b>{{ budget | money({symbol: projectCurrencySymbol}) }}</b>
+                                    {{ translate('label.potential_cost_savings') }}: <b>{{ budget | money({symbol: projectCurrencySymbol}) }}</b>
                                     <button type="button" class="btn btn-icon"
                                             v-tooltip.right-start="translate('message.budget_calculation_opportuntiy')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
@@ -133,7 +133,7 @@
                             </div>
                             <div class="col-md-6">
                                 <h4 class="light-color">
-                                    {{ translate('message.time_saved') }}: <b>{{ timeSaved | formatNumber }} {{ timeSavedUnit }}</b>
+                                    {{ translate('label.potential_time_savings') }}: <b>{{ timeSaved | formatNumber }} {{ timeSavedUnit }}</b>
                                     <button type="button" class="btn btn-icon"
                                             v-tooltip.right-start="translate('message.time_calculation_opportunity')">
                                         <tooltip-icon fill="light-fill"></tooltip-icon>
@@ -369,7 +369,7 @@
         created() {
             this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
             this.getOpportunityStrategies(this.$route.params.id);
-            this.getOpportunityStatuses(this.$route.params.id);
+            this.getOpportunityStatuses();
             if (this.$route.params.opportunityId) {
                 this.getProjectOpportunity(this.$route.params.opportunityId);
             }

@@ -117,6 +117,15 @@
                 <div class="status">
                     <circle-chart
                             :bgStrokeColor="options.backgroundColor"
+                            :percentage="projectScheduledProgress"
+                            :title="translate('message.planned_progress')"
+                            class="left center-content"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="status">
+                    <circle-chart
+                            :bgStrokeColor="options.backgroundColor"
                             :percentage="progress.tasks"
                             :title="translate('message.task_status')"
                             class="left center-content"/>
@@ -205,6 +214,15 @@
                 <status-report-decisions :items="decisionsItems"/>
             </div>
         </div>
+
+        <hr class="double">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="margintop0">{{ translate('message.infos') }}</h3>
+                <status-report-infos :items="infosItems"/>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -231,6 +249,7 @@
     import Error from '../../../_common/_messages/Error';
     import StatusReportSchedule from './Schedule';
     import StatusReportTimeline from './Timeline';
+    import StatusReportInfos from './Infos';
 
     export default {
         name: 'status-report',
@@ -251,6 +270,7 @@
             },
         },
         components: {
+            StatusReportInfos,
             StatusReportTimeline,
             StatusReportSchedule,
             Error,
@@ -390,6 +410,9 @@
                     costs: Math.round(this.snapshot.costs.progress),
                 };
             },
+            projectScheduledProgress() {
+                return this.snapshot.scheduledProgress;
+            },
             internalCostsTrafficLight() {
                 return this.snapshot.costs.internal.total.trafficLight;
             },
@@ -441,6 +464,9 @@
             },
             decisionsItems() {
                 return this.snapshot.decisions.items;
+            },
+            infosItems() {
+                return this.snapshot.infos.items;
             },
             trendChartData() {
                 return this.statusReportTrendGraph.map(data => {
