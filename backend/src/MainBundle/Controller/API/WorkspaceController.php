@@ -66,10 +66,6 @@ class WorkspaceController extends ApiController
                 $teamInvite->setEmail($email);
             }
 
-            $token = uniqid(rand(1000, 9999), true);
-            $teamInvite->setToken($token);
-            $teamInvite->setCreatedAt(new \DateTime());
-
             $em->persist($teamInvite);
             $em->flush();
 
@@ -79,7 +75,7 @@ class WorkspaceController extends ApiController
                 'info',
                 $email,
                 [
-                    'token' => $token,
+                    'token' => $teamInvite->getToken(),
                     'user_email' => $email,
                     'team' => $workspace,
                 ]
