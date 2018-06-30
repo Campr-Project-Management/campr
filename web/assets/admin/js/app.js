@@ -1282,6 +1282,8 @@ $(document).ready(function(){
     /*-----------------------------------------------------------
         Date Time Picker
     -----------------------------------------------------------*/
+    $('.date-time-picker, .time-picker, .date-picker').attr('autocomplete', 'off');
+
     //Date Time Picker
     if ($('.date-time-picker')[0]) {
 	   $('.date-time-picker').datetimepicker();
