@@ -370,6 +370,10 @@ class TeamControllerTest extends BaseController
 
     public function testInvitationSentOnInviteUserPage()
     {
+        $this->markTestSkipped();
+
+        return;
+
         $this->user = $this->createUser('teamowner', 'teamowner@trisoft.ro', 'Password1', ['ROLE_USER']);
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
