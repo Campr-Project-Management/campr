@@ -2,12 +2,14 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Services\WorkPackageRasciSync;
 use Component\Repository\RepositoryInterface;
 use Component\WorkPackage\WorkPackageEvents;
+use Predis\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,6 +36,16 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $workPackageStatusRepository;
 
     /**
+     * @var Client
+     */
+    private $redis;
+
+    /**
+     * @var string
+     */
+    private $env;
+
+    /**
      * WorkPackageSubscriber constructor.
      *
      * @param WorkPackageRasciSync     $workPackageRasciSync
@@ -45,12 +57,16 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         WorkPackageRasciSync $workPackageRasciSync,
         RepositoryInterface $workPackageRepository,
         RepositoryInterface $workPackageStatusRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        Client $redis,
+        string $env
     ) {
         $this->workPackageRasciSync = $workPackageRasciSync;
         $this->workPackageRepository = $workPackageRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->workPackageStatusRepository = $workPackageStatusRepository;
+        $this->redis = $redis;
+        $this->env = $env;
     }
 
     /**
@@ -85,6 +101,16 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->workPackageRasciSync->sync($wp);
 
         $this->workPackageRepository->add($wp);
+
+        if ($wp->getProject()) {
+            $this->redis->rpush(RedisQueueManagerCommand::DEFAULT, [
+                sprintf(
+                    '--env=%s app:update:puids %s',
+                    $this->env,
+                    $wp->getProjectId()
+                ),
+            ]);
+        }
     }
 
     /**
