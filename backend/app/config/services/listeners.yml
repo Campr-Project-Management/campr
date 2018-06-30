@@ -96,6 +96,14 @@ services:
             - '@security.token_storage'
             - '@translator'
 
+    app.subscriber.project_module:
+        class: AppBundle\EventListener\ProjectModuleSubscriber
+        arguments:
+            - '@app.service.workpackage_rasci_sync'
+            - '@app.repository.work_package'
+        tags:
+            - { name: kernel.event_subscriber }
+
     app.subscriber.work_package:
         class: AppBundle\EventListener\WorkPackageSubscriber
         arguments:
