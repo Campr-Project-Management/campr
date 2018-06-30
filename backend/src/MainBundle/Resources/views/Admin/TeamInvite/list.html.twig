@@ -37,37 +37,35 @@
                 <div class="table-wrapper table-responsive">
                     <table class="custom-table">
                         <thead>
-                        <tr>
-                            <th class="cell-auto">
-                                {{ 'table_header_cell.id'|trans }}
-                            </th>
-                            <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
-                            <th>{{ 'table_header_cell.team'|trans }}</th>
-                            <th>{{ 'table_header_cell.slug'|trans }}</th>
-                            <th>{{ 'table_header_cell.user'|trans }}</th>
-                            <th>{{ 'table_header_cell.created_at'|trans }}</th>
-                        </tr>
+                            <tr>
+                                <th class="cell-auto">
+                                    {{ 'table_header_cell.id'|trans }}
+                                </th>
+                                <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
+                                <th>{{ 'table_header_cell.team'|trans }}</th>
+                                <th>{{ 'table_header_cell.user'|trans }}</th>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for team_invite in team_invites %}
-                            <tr>
-                                <td>
-                                    {% set id = 'teamInvites_' ~ team_invite.id %}
-                                    <input type="checkbox" id="{{ id }}" name="teamInvites[]" value="{{ team_invite.id }}">
-                                </td>
-                                <td class="avatar text-center">
-                                    {% if team_invite.team and team_invite.team.logo %}
-                                        <div class="user-avatar-wrapper">
-                                            <img src="{{ vich_uploader_asset(team_invite.team, 'logoFile') }}">
-                                        </div>
-                                    {% endif %}
-                                </td>
-                                <td>{{ team_invite.team }}</td>
-                                <td></td>
-                                <td>{{ team_invite.user|default(team_invite.email) }}</td>
-                                <td>{{ team_invite.createdAt|date('Y-m-d H:i:s') }}</td>
-                            </tr>
-                        {% endfor %}
+                            {% for team_invite in team_invites %}
+                                <tr>
+                                    <td>
+                                        {% set id = 'teamInvites_' ~ team_invite.id %}
+                                        <input type="checkbox" id="{{ id }}" name="teamInvites[]" value="{{ team_invite.id }}">
+                                    </td>
+                                    <td class="avatar text-center">
+                                        {% if team_invite.team and team_invite.team.logo %}
+                                            <div class="user-avatar-wrapper">
+                                                <img src="{{ vich_uploader_asset(team_invite.team, 'logoFile') }}">
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ team_invite.team }}</td>
+                                    <td>{{ team_invite.user|default(team_invite.email) }}</td>
+                                    <td>{{ team_invite.createdAt|date('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -99,6 +97,7 @@
                     item.checked = true;
                 });
             });
+
             $('a[href="#none"]').click(function (e) {
                 e.preventDefault();
 
@@ -106,6 +105,7 @@
                     item.checked = false;
                 });
             });
+
             $('a[href="#invert"]').click(function (e) {
                 e.preventDefault();
 
