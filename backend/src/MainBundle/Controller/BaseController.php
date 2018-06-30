@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class BaseController extends Controller
 {
@@ -73,5 +75,24 @@ abstract class BaseController extends Controller
                 ->get('translator')
                 ->trans($message)
         );
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher(): EventDispatcherInterface
+    {
+        return $this->get('event_dispatcher');
+    }
+
+    /**
+     * @param string $name
+     * @param Event  $event
+     *
+     * @return Event
+     */
+    protected function dispatchEvent(string $name, Event $event): Event
+    {
+        return $this->getEventDispatcher()->dispatch($name, $event);
     }
 }
