@@ -1616,6 +1616,22 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @return array
+     */
+    public function getAllTasks()
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->where('o.type = :task')
+            ->orWhere('o.type = :tutorial')
+            ->setParameter('task', WorkPackage::TYPE_TASK)
+            ->setParameter('tutorial',  WorkPackage::TYPE_TUTORIAL)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param WorkPackage       $workPackage
      * @param WorkPackageStatus $status
      *
