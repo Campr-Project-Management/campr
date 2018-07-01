@@ -411,29 +411,22 @@ class MeetingController extends ApiController
      */
     public function notificationsAction(Meeting $meeting)
     {
-        $participants = $meeting->getMeetingParticipants();
-        $distributionLists = $meeting->getDistributionLists();
         $mailerService = $this->get('app.service.mailer');
-        foreach ($participants as $participant) {
-            $user = $participant->getUser();
-            $mailerService->sendEmail(
-                ':meeting:notification.html.twig',
-                'info',
-                $user->getEmail(),
-                ['meeting' => $meeting]
-            );
-        }
-        foreach ($distributionLists as $distributionList) {
-            $users = $distributionList->getUsers();
-            foreach ($users as $user) {
+
+        $meeting
+            ->getMeetingParticipants()
+            ->filter(function (MeetingParticipant $meetingParticipant) {
+                return $meetingParticipant->getInDistributionList() && $meetingParticipant->getUser();
+            })
+            ->map(function (MeetingParticipant $meetingParticipant) use ($mailerService) {
                 $mailerService->sendEmail(
                     ':meeting:notification.html.twig',
                     'info',
-                    $user->getEmail(),
-                    ['meeting' => $meeting]
+                    $meetingParticipant->getUser()->getEmail(),
+                    ['meeting' => $meetingParticipant->getMeeting()]
                 );
-            }
-        }
+            })
+        ;
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
