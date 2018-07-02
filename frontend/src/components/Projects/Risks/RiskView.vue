@@ -84,7 +84,7 @@
                 <div class="row ro-details">
                     <div class="col-md-12">
                         <div class="ro-info">
-                            <p>{{ translate('message.priority') }}: <b v-if="priority" :class="priority.color">{{ translate(priority.name) }}</b><b v-else>-</b></p>
+                            <p>{{ translate('message.priority') }}: <b v-if="risk.priority || risk.priority === 0">{{ translate(priorityLabel) }}</b><b v-else>-</b></p>
                             <p>{{ translate('message.strategy') }}: <b v-if="risk.riskStrategyName">{{ translate(risk.riskStrategyName) }}</b><b v-else>-</b></p>
                             <p>{{ translate('message.status') }}: <b v-if="risk.statusName">{{ translate(risk.statusName) }}</b><b v-else>-</b></p>
                         </div>
@@ -434,6 +434,9 @@ export default {
             measures: 'measures',
             projectCurrencySymbol: 'projectCurrencySymbol',
         }),
+        priorityLabel() {
+            return 'message.'.concat(this.risk.priorityName.replace('-', '_'));
+        },
     },
     created() {
         this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
