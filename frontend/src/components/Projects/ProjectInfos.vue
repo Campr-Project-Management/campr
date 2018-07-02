@@ -1,5 +1,12 @@
 <template>
     <div class="project-meetings page-section">
+        <modal v-if="showDeleteModal" @close="showDeleteModal = false">
+            <p class="modal-title">{{ translate('message.delete_info') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="removeInfo()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+            </div>
+        </modal>
         <div class="header flex flex-space-between">
             <h1>{{ translate('message.project_infos') }}</h1>
             <div class="flex flex-v-center">
@@ -55,7 +62,7 @@
                                         <router-link :to="{name: 'project-infos-edit', params: {projectId: info.project, infoId: info.id}}" class="btn-icon" v-tooltip.top-center="translate('button.edit_info')">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
-                                        <a href="javascript:void(0)" @click="tryDeleteInfo(info.id)" class="btn-icon" v-tooltip.top-center="translate('button.delete_info')">
+                                        <a href="javascript:void(0)" @click="initDeleteModal(info)" class="btn-icon" v-tooltip.top-center="translate('button.delete_info')">
                                             <delete-icon fill="danger-fill"></delete-icon>
                                         </a>
                                     </div>
@@ -84,6 +91,7 @@ import Pagination from '../_common/Pagination.vue';
 import {mapActions, mapGetters} from 'vuex';
 import _ from 'lodash';
 import UserAvatar from '../_common/UserAvatar';
+import Modal from '../_common/Modal';
 
 export default {
     components: {
@@ -93,6 +101,7 @@ export default {
         EditIcon,
         DeleteIcon,
         Pagination,
+        Modal,
     },
     created() {
         this.getInfosByProject({id: this.$route.params.id});
@@ -126,27 +135,29 @@ export default {
             this.clearFilters();
             this.getInfosByProject({id: this.$route.params.id});
         },
-        tryDeleteInfo(id) {
-            if (confirm(this.translate('message.delete_info'))) {
-                this
-                    .deleteInfo(id)
-                    .then(
-                        () => {
-                            this.getInfosByProject({id: this.$route.params.id});
-                        },
-                        () => {
-                            this.getInfosByProject({id: this.$route.params.id});
-                        }
-                    )
-                ;
+        removeInfo: function() {
+            if (this.infoId) {
+                this.deleteInfo({
+                    id: this.infoId,
+                });
+                this.getInfosByProject({id: this.$route.params.id});
+                this.showDeleteModal = false;
+                this.infoId = false;
             }
+        },
+        initDeleteModal: function(info) {
+            this.showDeleteModal = true;
+            this.infoId = info.id;
         },
     },
     computed: {
         ...mapGetters(['infos', 'infosFilters']),
     },
     data: function() {
-        return {};
+        return {
+            showDeleteModal: false,
+            infoId: null,
+        };
     },
 };
 </script>
