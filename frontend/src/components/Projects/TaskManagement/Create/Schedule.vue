@@ -8,8 +8,8 @@
                     <div class="input-holder right">
                         <label class="active">{{ label.base_start_date }}</label>
                         <date-field
-                                :value="value.baseStartDate"
-                                @input="onInput('baseStartDate', $event)"/>
+                            :value="value.baseStartDate"
+                            @input="onInput('baseStartDate', $event)"/>
                     </div>
                     <error at-path="scheduledStartAt"/>
                 </div>
@@ -17,9 +17,9 @@
                     <div class="input-holder right">
                         <label class="active">{{ label.base_end_date }}</label>
                         <date-field
-                                :value="value.baseEndDate"
-                                format="dd-MM-yyyy"
-                                @input="onInput('baseEndDate', $event)"/>
+                            :value="value.baseEndDate"
+                            format="dd-MM-yyyy"
+                            @input="onInput('baseEndDate', $event)"/>
                     </div>
                     <error at-path="scheduledFinishAt"/>
                 </div>
@@ -32,9 +32,9 @@
                     <div class="input-holder right">
                         <label class="active">{{ label.forecast_start_date }}</label>
                         <date-field
-                                :value="value.forecastStartDate"
-                                format="dd-MM-yyyy"
-                                @input="onInput('forecastStartDate', $event)"/>
+                            :value="value.forecastStartDate"
+                            format="dd-MM-yyyy"
+                            @input="onInput('forecastStartDate', $event)"/>
                     </div>
                     <error at-path="forecastStartAt"/>
                 </div>
@@ -42,9 +42,9 @@
                     <div class="input-holder right">
                         <label class="active">{{ label.forecast_end_date }}</label>
                         <date-field
-                                :value="value.forecastEndDate"
-                                format="dd-MM-yyyy"
-                                @input="onInput('forecastEndDate', $event)"/>
+                            :value="value.forecastEndDate"
+                            format="dd-MM-yyyy"
+                            @input="onInput('forecastEndDate', $event)"/>
                     </div>
                     <error at-path="forecastFinishAt"/>
                 </div>
