@@ -106,3 +106,8 @@ The command will generate/update the html files for all php classes inside the /
 * [Forms](backend/src/AppBundle/Resources/docs/Forms.md)
 * [Services](backend/src/AppBundle/Resources/docs/Services.md)
 * [Javascripts](backend/src/AppBundle/Resources/docs/Javascripts.md)
+
+
+**Misc information:**
+* [Microsoft Project - Task Element](https://msdn.microsoft.com/en-us/library/office/aa220054(v=office.11).aspx)
+  * contains information about child elements

@@ -1,16 +1,16 @@
 <template>
     <div>
         <date-picker
-                :inline="inline"
-                :monday-first="mondayFirst"
-                :format="format"
-                :value="value"
-                :disabled="disabled"
-                :clear-button="clearButton"
-                :placeholder="placeholder"
-                @input="onUpdate"
-                @cleared="onCleared"
-                @opened="onOpened"/>
+            :inline="inline"
+            :monday-first="mondayFirst"
+            :format="format"
+            :value="value"
+            :disabled="disabled"
+            :clear-button="clearButton"
+            :placeholder="placeholder"
+            @input="onUpdate"
+            @cleared="onCleared"
+            @opened="onOpened"/>
 
         <calendar-icon fill="middle-fill" v-if="!inline"/>
     </div>
@@ -40,7 +40,7 @@
             },
             disabled: {
                 type: Boolean,
-                default: false,
+                default: () => false,
             },
             clearButton: {
                 type: Boolean,
