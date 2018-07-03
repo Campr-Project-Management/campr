@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import {xml2WorkPackage} from '../../helpers/ms-project/task';
 import _ from 'lodash';
 
 const state = {
@@ -282,28 +283,18 @@ const actions = {
             }
         );
     },
-    // something is weird here :\
-    // getUsers({commit}) {
-    //     Vue.http
-    //         .post(
-    //             Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
-    //             data.data
-    //         ).then(
-    //         (response) => {
-    //             if (response.status === 200) {
-    //                 alert('Saved!');
-    //             } else {
-    //                 alert(response.status);
-    //             }
-    //         },
-    //         (response) => {
-    //             alert('Validation issues');
-    //             if (response.status === 400) {
-    //                 // implement system to dispay errors
-    //             }
-    //         }
-    //     );
-    // },
+
+    /**
+     * Imports a XML string into the store.
+     *
+     * @param {function} commit
+     * @param {string} xml
+     */
+    importXMLTask({commit}, xml) {
+        const task = xml2WorkPackage(xml);
+
+        commit(types.SET_TASK, {task});
+    },
 
     setFilters({commit}, filters) {
         commit(types.SET_TASKS_FILTERS, {filters});
