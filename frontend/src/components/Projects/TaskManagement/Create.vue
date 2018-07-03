@@ -11,7 +11,7 @@
                         </router-link>
                         <router-link
                             v-if="task.id && isEdit"
-                            class="small-link" 
+                            class="small-link"
                             :to="{name: 'project-task-management-view', params: {id: task.project, taskId: task.id}}">
                             <i class="fa fa-angle-left"></i>
                             {{ translate('message.back_to_task_view') }}
@@ -24,8 +24,12 @@
                         type="file"
                         name="importXmlFile"
                         style="display: none;"
+                        v-if="showImport"
                         v-on:change="uploadImportTaskFile" />
-                    <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
+                    <a
+                        class="btn-rounded btn-auto btn-empty flex"
+                        v-if="showImport"
+                        v-on:click="openFileSelection">
                         <span>{{ translate('message.import_task') }}</span>
                         <upload-icon></upload-icon>
                     </a>
@@ -62,19 +66,19 @@
                     <hr>
                     <!-- /// Task Schedule /// -->
                     <schedule
-                            v-model="schedule"
-                            :editable-base="!isEditBase"
-                            :editable-forecast="isEdit"
-                            v-on:input="updateSchedule"/>
+                        v-model="schedule"
+                        :editable-base="!isEditBase"
+                        :editable-forecast="isEdit"
+                        v-on:input="updateSchedule"/>
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
                     <internal-costs
-                            v-model="internalCosts"
-                            :validationMessages="internalValidationMessages"
-                            @add="onInternalCostAdded"/>
+                        v-model="internalCosts"
+                        :validationMessages="internalValidationMessages"
+                        @add="onInternalCostAdded"/>
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
@@ -191,17 +195,16 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(
-            [
-                'createNewTask',
-                'getTaskById',
-                'editTask',
-                'importTask',
-                'emptyValidationMessages',
-                'getProjectUnits',
-                'getGreenColorStatus',
-            ]
-        ),
+        ...mapActions([
+            'createNewTask',
+            'getTaskById',
+            'editTask',
+            'importTask',
+            'emptyValidationMessages',
+            'getProjectUnits',
+            'getGreenColorStatus',
+            'importXMLTask',
+        ]),
         createTask: function() {
             this
                 .createNewTask({
@@ -260,29 +263,30 @@ export default {
             document.getElementById('importXmlFile').click();
         },
         uploadImportTaskFile: function(e) {
-            let files = e.target.files || e.dataTransfer.files;
+            const files = e.target.files || e.dataTransfer.files;
             if (!files.length) {
                 return;
             }
-            let formData = new FormData();
-            formData.append('file', files[0]);
 
-            this.importTask({
-                data: formData,
-                projectId: this.$route.params.id,
-            })
-            .then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        this.showFailed = true;
-                    } else {
-                        this.showSaved = true;
-                    }
-                },
-                () => {
-                    this.showFailed = true;
-                }
-            );
+            const file = files[0];
+
+            if (!file.name.match(/^.+\.xml$/i)) {
+                alert('Please select an XML file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            const importXMLTask = this.importXMLTask;
+
+            reader.addEventListener('load', function() {
+                importXMLTask(this.result);
+            });
+
+            reader.addEventListener('error', () => {
+                alert('Something went wrong when reading the file. Please make sure it\'s a valid task XML exported from MS Project.');
+            });
+
+            reader.readAsText(file);
         },
         setMedias(value) {
             this.medias = value;
@@ -386,6 +390,12 @@ export default {
         isEdit() {
             return !!this.$route.params.taskId;
         },
+        showImport() {
+            return !this.isEdit
+                && typeof File !== 'undefined'
+                && typeof FileReader !== 'undefined'
+            ;
+        },
         isEditBase() {
             return this.task.scheduledStartAt && this.task.scheduledFinishAt && !!this.$route.params.taskId;
         },
@@ -467,17 +477,25 @@ export default {
             this.assignments = {
                 responsibility: this.task.responsibility && {key: this.task.responsibility},
                 accountability: this.task.accountability && {key: this.task.accountability},
-                supportUsers: this.task.supportUsers.map(user => ({key: user.id})),
-                consultedUsers: this.task.consultedUsers.map(user => ({key: user.id})),
-                informedUsers: this.task.informedUsers.map(user => ({key: user.id})),
+                supportUsers: this.task.supportUsers
+                    ? this.task.supportUsers.map(user => ({key: user.id}))
+                    : [],
+                consultedUsers: this.task.consultedUsers
+                    ? this.task.consultedUsers.map(user => ({key: user.id}))
+                    : [],
+                informedUsers: this.task.informedUsers
+                    ? this.task.informedUsers.map(user => ({key: user.id}))
+                    : [],
             };
 
             let children = [];
-            this.task.children.map(function(child) {
-                children.push({
-                    description: child.name,
+            if (this.task.children) {
+                this.task.children.map((child) => {
+                    children.push({
+                        description: child.name,
+                    });
                 });
-            });
+            }
             this.subtasks = children;
 
             if (!this.planning) {
@@ -506,38 +524,41 @@ export default {
 
             let internal = [];
             let external = [];
-            this.task.costs.map((cost) => {
-                if (cost.isInternal) {
-                    cost = _.merge(
+            if (this.task.costs) {
+                this.task.costs.map((cost) => {
+                    if (cost.isInternal) {
+                        cost = _.merge(
+                            {},
+                            cost,
+                            {
+                                resource: cost.resource
+                                    ? {
+                                        label: cost.resourceName,
+                                        key: cost.resource,
+                                    }
+                                    : null,
+                                project: this.$route.params.id ? this.$route.params.id : null,
+                                workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
+                            }
+                        );
+
+                        internal.push(cost);
+                        return;
+                    }
+
+                    external.push(_.merge(
                         {},
                         cost,
                         {
-                            resource: cost.resource
-                                ? {
-                                    label: cost.resourceName,
-                                    key: cost.resource,
-                                }
-                                : null,
-                            project: this.$route.params.id ? this.$route.params.id: null,
+                            selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                            customUnit: '',
+                            project: this.$route.params.id ? this.$route.params.id : null,
                             workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                        }
-                    );
+                        },
+                    ));
+                });
+            }
 
-                    internal.push(cost);
-                    return;
-                }
-
-                external.push(_.merge(
-                    {},
-                    cost,
-                    {
-                        selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
-                        customUnit: '',
-                        project: this.$route.params.id ? this.$route.params.id : null,
-                        workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                    },
-                ));
-            });
             this.internalCosts.items = internal;
             this.internalCosts.forecast = this.task.internalForecastCost;
             this.internalCosts.actual = this.task.internalActualCost;
@@ -546,7 +567,7 @@ export default {
             this.externalCosts.forecast = this.task.externalForecastCost;
             this.externalCosts.actual = this.task.externalActualCost;
 
-            this.medias = this.task.medias;
+            this.medias = this.task.medias ? this.task.medias : [];
         },
     },
     data() {
