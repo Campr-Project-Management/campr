@@ -1,31 +1,31 @@
 <template>
     <div class="project-meetings page-section">
         <modal v-if="showDeleteModal" @close="showDeleteModal = false">
-            <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
+            <p class="modal-title">{{ translate('message.delete_meeting') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
         </modal>
 
         <modal v-if="showRescheduleModal" @close="showRescheduleModal = false" v-bind:hasSpecificClass="true">
-            <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
+            <p class="modal-title">{{ translate('message.reschedule_meeting') }}</p>
             <div class="form-group last-form-group">
                 <div class="col-md-4">
                     <div class="input-holder">
-                        <label class="active">{{ translateText('label.select_date') }}</label>
+                        <label class="active">{{ translate('label.select_date') }}</label>
                         <date-field v-model="date"/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-holder">
-                        <label class="active">{{ translateText('label.start_time') }}</label>
+                        <label class="active">{{ translate('label.start_time') }}</label>
                         <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="input-holder">
-                        <label class="active">{{ translateText('label.finish_time') }}</label>
+                        <label class="active">{{ translate('label.finish_time') }}</label>
                         <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
                     </div>
                 </div>
@@ -33,23 +33,23 @@
             <hr class="double">
 
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                <a href="javascript:void(0)" @click="showRescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
             </div>
         </modal>
 
         <modal v-if="showNotificationModal" @close="showNotificationModal = false">
-            <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
+            <p class="modal-title">{{ translate('message.send_notifications') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
             </div>
         </modal>
 
         <div class="header flex flex-space-between">
-            <h1>{{ translateText('message.project_meetings') }}</h1>
+            <h1>{{ translate('message.project_meetings') }}</h1>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-meetings-create-meeting'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.create_new_meeting') }}</router-link>
+                <router-link :to="{name: 'project-meetings-create-meeting'}" class="btn-rounded btn-auto second-bg">{{ translate('message.create_new_meeting') }}</router-link>
             </div>
         </div>
 
@@ -65,13 +65,13 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>{{ translateText('table_header_cell.event') }}</th>
-                                <th>{{ translateText('table_header_cell.category') }}</th>
-                                <th>{{ translateText('table_header_cell.date') }}</th>
-                                <th>{{ translateText('table_header_cell.schedule') }}</th>
-                                <th>{{ translateText('table_header_cell.duration') }}</th>
-                                <th>{{ translateText('table_header_cell.participants') }}</th>
-                                <th>{{ translateText('table_header_cell.actions') }}</th>
+                                <th>{{ translate('table_header_cell.event') }}</th>
+                                <th>{{ translate('table_header_cell.category') }}</th>
+                                <th>{{ translate('table_header_cell.date') }}</th>
+                                <th>{{ translate('table_header_cell.schedule') }}</th>
+                                <th>{{ translate('table_header_cell.duration') }}</th>
+                                <th>{{ translate('table_header_cell.participants') }}</th>
+                                <th>{{ translate('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody v-if="projectMeetings">
@@ -82,7 +82,7 @@
                                 <td>{{ meeting.meetingCategoryName }}</td>
                                 <td>{{ meeting.date | moment('DD.MM.YYYY') }}</td>
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
-                                <td>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</td>
+                                <td>{{ getDuration(meeting.start, meeting.end) }}</td>
                                 <td>
                                     <div class="avatars collapse in" v-if="meetingHasParticipants(meeting)">
                                         <div v-if="meeting.meetingParticipants">
@@ -91,24 +91,24 @@
                                                 <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
                                             </span>
                                             <button v-if="participants(meeting).length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">
-                                                <span v-if="!showMore[meeting.id]" class="more">{{ translateText('message.more') }} +</span>
-                                                <span v-if="showMore[meeting.id]" class="less">{{ translateText('message.less') }} -</span>
+                                                <span v-if="!showMore[meeting.id]" class="more">{{ translate('message.more') }} +</span>
+                                                <span v-if="showMore[meeting.id]" class="less">{{ translate('message.less') }} -</span>
                                             </button>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link class="btn-icon" :to="{name: 'project-meetings-view-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translateText('message.view_meeting')">
+                                        <router-link class="btn-icon" :to="{name: 'project-meetings-view-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translate('message.view_meeting')">
                                             <view-icon fill="second-fill"></view-icon>
                                         </router-link>
-                                        <router-link class="btn-icon" :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translateText('message.edit_meeting')">
+                                        <router-link class="btn-icon" :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translate('message.edit_meeting')">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
-                                        <a @click="printMeeting(meeting)" class="btn-icon" v-tooltip.top-center="translateText('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                        <a @click="initSendNotifications(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
-                                        <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
-                                        <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                        <a @click="printMeeting(meeting)" class="btn-icon" v-tooltip.top-center="translate('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
+                                        <a @click="initSendNotifications(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
+                                        <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
                                 </td>
                             </tr>
@@ -128,7 +128,7 @@
                     </span>
                 </div>
                 <div>
-                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectMeetings.items.length }} {{ translateText('message.results_out_of') }} {{ projectMeetings.totalItems }}</span>
+                    <span class="pagination-info">{{ translate('message.displaying') }} {{ projectMeetings.items.length }} {{ translate('message.results_out_of') }} {{ projectMeetings.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -171,9 +171,6 @@ export default {
             'editProjectMeeting',
             'sendMeetingNotifications',
         ]),
-        translateText(text) {
-            return this.translate(text);
-        },
         isInactive(meeting) {
             let currentDate = moment();
             let date = meeting.date.split(' ');
@@ -185,7 +182,7 @@ export default {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
 
-            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+            return this.$humanizeDuration(end.diff(start, 'miliseconds'));
         },
         changePage(page) {
             this.activePage = page;

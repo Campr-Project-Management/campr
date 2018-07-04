@@ -153,15 +153,13 @@ const actions = {
     /**
      * Delete meeting
      * @param {function} commit
-     * @param {integer} id
+     * @param {int} id
+     * @return {object}
      */
     sendMeetingNotifications({commit}, id) {
-        Vue.http
-            .get(
-                Routing.generate('app_api_meeting_notifications', {id})
-            ).then((response) => {
-            }, (response) => {
-            });
+        return Vue.http.post(
+            Routing.generate('app_api_meeting_notifications', {id}),
+        );
     },
 };
 
