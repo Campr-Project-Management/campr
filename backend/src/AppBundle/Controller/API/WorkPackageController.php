@@ -203,7 +203,7 @@ class WorkPackageController extends ApiController
         $this->processForm(
             $request,
             $form,
-            in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
+            false
         );
 
         if (!$form->isValid()) {
