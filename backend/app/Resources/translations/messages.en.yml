@@ -680,8 +680,8 @@ message.commented: commented
 message.communication: Communication
 message.company: Company
 message.condition: Condition
-message.confirm_close_task: 'Are you sure you wan to close this task ?'
-message.confirm_open_task: 'Are you sure you wan to open this task ?'
+message.confirm_close_task: 'Are you sure you want to close this task ?'
+message.confirm_open_task: 'Are you sure you want to open this task ?'
 message.context: Context
 message.contract: Contract
 message.contract_frozen: 'Project contract is frozen'
@@ -777,7 +777,7 @@ message.edit_team_member: 'Edit team member'
 message.edit_team_members: 'Edit Team Members'
 message.edit_todo: 'Edit Todo'
 message.edited: edited
-message.email_report: 'Are you sure you want to email thie status report?'
+message.email_report: 'Are you sure you want to email this status report?'
 message.error: Error!
 message.evaluation_objectives: 'Evaluation Objectives'
 message.event: Event
@@ -2098,3 +2098,4 @@ message.resent_team_invites: '%count% invite(s) have been resent.'
 action.select.all: 'Select All'
 action.select.none: 'Select None'
 action.select.invert: 'Invert Selection'
+message.email_sent: '%count% email(s) sent.'
