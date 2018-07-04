@@ -2,11 +2,13 @@
     <div class="project-organization page-section">
         <modal v-if="showModal" @close="showModal = false">
             <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
-            <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
-            <error
-                v-if="validationMessages.name && validationMessages.name.length"
-                v-for="message in validationMessages.name"
-                :message="message" />
+            <div class="form-group">
+                <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
+                <error
+                    v-if="validationMessages.name && validationMessages.name.length"
+                    v-for="message in validationMessages.name"
+                    :message="message" />
+            </div>
             <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
@@ -374,10 +376,6 @@ export default {
             letter-spacing: 1.8px;
             font-weight: 300;
             margin-bottom: 40px;
-        }
-
-        .input-holder {
-            margin-bottom: 30px;
         }
 
         .main-list {
