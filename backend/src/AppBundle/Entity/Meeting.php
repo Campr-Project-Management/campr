@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Meeting.
@@ -76,6 +77,7 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="start", type="time")
+     * @Assert\Time()
      */
     private $start;
 
@@ -85,6 +87,8 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="end", type="time")
+     * @Assert\Time()
+     * @AppAssert\GreaterThan(propertyPath="start", message="invalid.end_time_greater_than_start_time")
      */
     private $end;
 
