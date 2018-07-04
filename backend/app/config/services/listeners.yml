@@ -82,12 +82,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    app.listener.work_package:
-        class: AppBundle\EventListener\WorkPackageListener
-        tags :
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }
-
     app.listener.project:
         class: AppBundle\EventListener\ProjectListener
         tags :
@@ -111,6 +105,8 @@ services:
             - '@app.repository.work_package'
             - '@app.repository.work_package_status'
             - '@event_dispatcher'
+            - '@redis.client'
+            - '%kernel.environment%'
         tags:
             - { name: kernel.event_subscriber }
 

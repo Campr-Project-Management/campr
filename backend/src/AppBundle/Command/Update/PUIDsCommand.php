@@ -4,7 +4,7 @@ namespace AppBundle\Command\Update;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
-use AppBundle\Helper\WorkPackageTreeBuilder;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,12 +12,22 @@ class PUIDsCommand extends BaseUpdateCommand
 {
     protected function configure()
     {
-        $this->setName('app:update:puids');
+        $this
+            ->setName('app:update:puids')
+            ->addArgument('project', InputArgument::OPTIONAL, 'Limit the update to 1 item')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $projects = $this->getEm()->getRepository(Project::class)->findAll();
+        if ($input->hasArgument('project')) {
+            $projects = $this->getEm()->getRepository(Project::class)->findBy([
+                'id' => $input->getArgument('project'),
+            ]);
+        } else {
+            $projects = $this->getEm()->getRepository(Project::class)->findAll();
+        }
+
         if (!$projects || !count($projects)) {
             $output->writeln('<comment>No projects found.</comment>');
 
@@ -29,23 +39,40 @@ class PUIDsCommand extends BaseUpdateCommand
         $this
             ->getEm()
             ->createQuery(sprintf(
-                'UPDATE %s AS wp SET wp.puid = wp.id',
+                'UPDATE %s AS wp SET wp.puid = CONCAT(NOW(), wp.id, RAND())',
                 WorkPackage::class
             ))
         ;
 
         foreach ($projects as $project) {
-            $stmt = $this
-                ->getEm()
-                ->getConnection()
-                ->prepare('SELECT * FROM work_package WHERE project_id = :project')
-            ;
+            $this->processProject($project);
+        }
+    }
 
-            $stmt->execute(['project' => $project->getId()]);
+    private function processProject(Project $project)
+    {
+        $this->output->writeln(sprintf(
+            '<info>Processing project #%d - %s</info>',
+            $project->getId(),
+            $project
+        ));
 
-            $tree = WorkPackageTreeBuilder::buildFromRawData($stmt->fetchAll());
+        $data = $this
+            ->getContainer()
+            ->get('app.service.wbs')
+            ->getData($project)
+        ;
 
-            array_walk($tree, [$this, 'updateWorkPackages']);
+        $this->calculatePUIDRecursive($data);
+    }
+
+    public function calculatePUIDRecursive(array $data)
+    {
+        $i = 0;
+        foreach ($data['children'] as $child) {
+            $child['puid'] = ++$i;
+            $this->updateWorkPackages($child);
+            $this->calculatePUIDRecursive($child);
         }
     }
 
@@ -58,16 +85,11 @@ class PUIDsCommand extends BaseUpdateCommand
             $item['id']
         ));
 
-        $sql = 'UPDATE work_package SET puid = ?, progress = ? WHERE id = ?';
+        $sql = 'UPDATE work_package SET puid = ? WHERE id = ?';
         $params = [
             $item['puid'],
-            $item['progress'],
             $item['id'],
         ];
         $this->getEm()->getConnection()->executeUpdate($sql, $params);
-
-        if (count($item['children'])) {
-            array_walk($item['children'], [$this, 'updateWorkPackages']);
-        }
     }
 }
