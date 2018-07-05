@@ -192,6 +192,7 @@ class WorkPackageController extends ApiController
             [
                 'csrf_protection' => false,
                 'method' => $request->getMethod(),
+                'validation_groups' => ['Default', 'edit'],
             ]
         );
 
@@ -200,11 +201,7 @@ class WorkPackageController extends ApiController
             $originalCosts->add($cost);
         }
 
-        $this->processForm(
-            $request,
-            $form,
-            false
-        );
+        $this->processForm($request, $form, $request->isMethod('POST'));
 
         if (!$form->isValid()) {
             $errors = $this->getFormErrors($form);
