@@ -44,6 +44,7 @@ const getters = {
     projectCostsAndResources: state => state.projectCostsAndResources,
     progresses: state => state.progresses,
     statusReportAvailability: state => state.statusReportAvailability,
+    projectMaxUploadFileSize: (state, getters) => getters.project.maxUploadFileSize,
 };
 
 const actions = {

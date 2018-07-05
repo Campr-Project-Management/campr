@@ -135,6 +135,7 @@ class ProjectControllerTest extends BaseController
                     'logo' => null,
                     'isClosed' => false,
                     'isCompleted' => false,
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
@@ -472,6 +473,7 @@ class ProjectControllerTest extends BaseController
                         'symbol' => '€',
                         'name' => 'Euro',
                     ],
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
@@ -2233,6 +2235,7 @@ class ProjectControllerTest extends BaseController
                         'symbol' => '€',
                         'name' => 'Euro',
                     ],
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
