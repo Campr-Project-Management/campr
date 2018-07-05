@@ -489,7 +489,14 @@ class ProjectController extends ApiController
     {
         $meeting = new Meeting();
         $meeting->setProject($project);
-        $form = $this->createForm(MeetingApiCreateType::class, $meeting, ['csrf_protection' => false]);
+        $form = $this->createForm(
+            MeetingApiCreateType::class,
+            $meeting,
+            [
+                'csrf_protection' => false,
+                'max_media_size' => $project->getMaxUploadFileSize(),
+            ]
+        );
         $this->processForm($request, $form);
 
         $em = $this->getDoctrine()->getManager();
@@ -1322,6 +1329,7 @@ class ProjectController extends ApiController
             $wp,
             [
                 'entity_manager' => $this->getDoctrine()->getManager(),
+                'max_media_size' => $project->getMaxUploadFileSize(),
             ]
         );
         $this->processForm($request, $form);

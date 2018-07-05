@@ -476,12 +476,15 @@
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-
+                    <h3>{{ translate('message.attachments') }}</h3>
                     <attachments
                             @input="onUpdateAttachments"
                             :disabled="disableAttachments"
-                            v-model="editableData.medias"/>
+                            v-model="editableData.medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Task Attachments /// -->
+
                     <hr class="double">
 
                     <!-- /// Task Labels /// -->
@@ -534,7 +537,7 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
 import TaskModals from './View/TaskModals';
-import Attachments from './Create/Attachments';
+import Attachments from '../../_common/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import SelectField from '../../_common/_form-components/SelectField';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -610,7 +613,19 @@ export default {
             'projectCurrencySymbol',
             'defaultTrafficLightValue',
             'trafficLights',
+            'validationMessagesFor',
+            'projectMaxUploadFileSize',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         isClosed() {
             return this.task.isClosed;
         },
@@ -816,28 +831,12 @@ export default {
                 medias: this.editableData.medias,
             };
 
-            this
-                .uploadAttachmentTask({
-                    data: createFormData(data),
-                    taskId: this.$route.params.taskId,
-                })
-                .then(
-                    (response) => {
-                        this.disableAttachments = false;
-
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.fileUploadErrorMessage = response.body.messages.medias;
-                            this.showFileUploadFailed = true;
-                            return;
-                        }
-
-                        if (response.status === 0) {
-                            this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
-                            this.showFileUploadFailed = true;
-                        }
-                    }
-                )
-            ;
+            this.uploadAttachmentTask({
+                data: createFormData(data),
+                taskId: this.$route.params.taskId,
+            }).then(() => {
+                this.disableAttachments = false;
+            });
         },
         translateText(text) {
             return this.translate(text);
