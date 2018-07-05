@@ -198,7 +198,7 @@ choices.yellow: Gelb
 color_status.finished: 'Im Plan'
 color_status.in_progress: Warnung
 color_status.not_started: Kritisch
-copyright: 'Copyright &copy; 2015 Material Admin'
+copyright: 'Copyright &copy; %year% CAMPR'
 email.expiration.user.activation: 'Der Aktivierungslink läuft in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.expiration.user.reset: 'Der Zurücksetzungstoken läuft in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.from.contact: 'Sie haben eine neue Nachricht von:'
@@ -264,7 +264,7 @@ failed.project_scope.delete.generic: 'Beim Löschen des Projektumfanges ist ein 
 failed.project_status.delete.dependency_constraint: 'Der Projektstatus kann nicht gelöscht werden, da andere Instanzen von ihm abhängig sind.'
 failed.project_status.delete.generic: 'Beim Löschen des Projektstatus ist ein Fehler aufgetreten.'
 failed.project_team.delete.dependency_constraint: 'Das Projektteam kann nicht gelöscht werden, da andere Instanzen von ihm abhängig sind.'
-failed.project_team.delete.generic: 'There was an error when deleting this project team.'
+failed.project_team.delete.generic: 'Beim Löschen des Projektteams ist ein Fehler aufgetreten.'
 failed.risk_strategy.delete.dependency_constraint: 'Die Risikostrategie kann nicht gelöscht werden, da andere Instanzen von ihr abhängig sind.'
 failed.risk_strategy.delete.generic: 'Beim Löschen der Risikostrategie ist ein Fehler aufgetreten.'
 failed.team_member.invitation.denied: 'Die Einladung wurde an den Nutzer mit der E-Mail %user_email% gesendet.'
@@ -590,456 +590,396 @@ link.reports: Reports
 link.support: Support
 menu.account: Account
 menu.admin: Admin
-menu.contact: Contact
+menu.contact: Kontakt
 menu.deleted_workspaces: 'Gelöschte Arbeitsbereiche'
-menu.payment_methods: 'Payment Methods'
-menu.payments: Payments
-menu.settings: Settings
+menu.payment_methods: Zahlungsmethoden
+menu.payments: Zahlungen
+menu.settings: Einstellungen
 menu.teams: Teams
-menu.users: Users
+menu.users: Nutzer
 menu.workspaces: Arbeitsbereiche
 message.access_denied: 'Zugriff verweigert'
-message.action_needed: 'Action Needed'
-message.actual_schedule: 'Actual Schedule'
-message.add_avatar_image: 'Add avatar image'
-message.add_comment: 'Add Comment'
-message.add_deliverable: 'Add new deliverable'
-message.add_external_costs: 'Add external costs'
-message.add_internal_costs: 'Add internal costs'
-message.add_limitation: 'Add new limitation'
-message.add_new_action: 'Add New Action'
-message.add_new_decision: 'Add New Decision'
-message.add_new_evaluation_objective: 'Add New Evaluation Objective'
-message.add_new_info: 'Add New Info'
-message.add_new_lesson: 'Add New Lesson'
-message.add_new_objective: 'Add New Objective'
-message.add_new_todo: 'Add New Todo'
-message.add_new_topic: 'Add New Topic'
-message.add_objective: 'Add new objective'
-message.add_portfolio: 'Add New Portfolio'
-message.add_programme: 'Add New Programme'
-message.added_a_measure: 'added a measure'
+message.actual_schedule: planmäßig
+message.add_avatar_image: 'Profilbild hinzufügen'
+message.add_comment: Kommentieren
+message.add_external_costs: 'Externe Kosten hinzufügen'
+message.add_internal_costs: 'Interne Kosten hinzufügen'
+message.add_limitation: 'Neue Limitierung hinzufügen'
+message.add_new_decision: 'Neue Entscheidung hinzufügen'
+message.add_new_info: 'Neue Info hinzufügen'
+message.add_new_lesson: 'Neue Lektion hinzufügen'
+message.add_new_objective: 'Neue Zielsetzung hinzufügen'
+message.add_new_todo: 'Neues To-Do hinzufügen'
+message.add_new_topic: 'Neues Thema hinzufügen'
+message.add_objective: 'Neue Zielsetzung hinzufügen'
+message.add_portfolio: 'Neues Portfolio hinzufügen'
+message.add_programme: 'Neues Programm hinzufügen'
 message.agenda: Agenda
-message.alert: Alert
-message.all_customers: 'All Customers'
-message.all_programmes: 'All Programmes'
-message.all_projects: 'View all my Projects'
-message.all_projects_filter: 'All Projects'
-message.all_scheduels: 'All Schedules'
-message.all_statuses: 'All Statuses'
-message.all_tasks: 'View all my Tasks'
-message.approved_on: 'Approved On'
-message.asignee: Asignee
-message.assigned_to: 'assigned task to'
+message.alert: Alarm
+message.all_customers: 'Alle Kunden'
+message.all_programmes: 'Alle Programme'
+message.all_projects: 'Alle meine Projekte anzeigen'
+message.all_projects_filter: 'Alle Projekte'
+message.all_scheduels: 'Alle Terminpläne'
+message.all_statuses: 'Alle Status'
+message.all_tasks: 'Alle meine Aufgaben anzeigen'
+message.approved_on: 'Genehmigt am'
+message.asignee: Beauftragter
+message.assigned_to: 'hat eine Aufgabe zugeteilt an'
 message.assignee: Beauftragter
-message.attachments: Attachments
-message.automatic_phase_schedule_note: 'Calculated based on the Start Date of the first Task/Milestone and the Finish Date of the last Task/Milestone added to this phase.'
-message.automatic_schedule: 'Automatic Schedule'
-message.automatic_schedule_note: 'Define a Predecessor or a Successor for this task, enter a time period, and the Base Start and Base Finish dates will be calculated automatically.'
-message.average_impact: 'Average Impact Value of all opportunities is'
-message.average_impact_opportunity: 'Average Impact Value of all opportunities is'
-message.average_impact_risks: 'Average Impact Value of all risks is'
-message.average_probability: 'Average Probability Value of all opportunities is'
-message.average_probability_opportunity: 'Average Probability Value of all opportunities is'
-message.average_probability_risks: 'Average Probability Value of all risks is'
-message.back_to: 'Back To'
-message.back_to_decisions: 'Back to Decisions'
-message.back_to_infos: 'Back to Infos'
-message.back_to_meetings: 'Back to Meetings'
-message.back_to_organization: 'Back to Project Organization'
-message.back_to_phases_and_milestones: 'Back to Phases & Milestones'
-message.back_to_risks_and_opportunities: 'Back to Risks & Opportunities'
-message.back_to_task_management: 'Back to task management'
+message.attachments: Anhänge
+message.automatic_phase_schedule_note: 'Auf Basis des Startdatums der ersten Aufgabe/des ersten Meilensteins und des Enddatums der letzten Aufgabe/des letzten Meilensteins kalkuliert.'
+message.automatic_schedule: 'Automatischer Terminplan'
+message.automatic_schedule_note: 'Definieren Sie einen Vorgänger und Nachfolger für diese Aufgabe und fügen Sie einen Zeitraum ein, um Basisstart- und -enddatum automatisch zu berechnen.'
+message.back_to: 'Zurück zu'
+message.back_to_decisions: 'Zurück zu Entscheidungen'
+message.back_to_infos: 'Zurück zu Infos'
+message.back_to_meetings: 'Zurück zu Meetings'
+message.back_to_organization: 'Zurück zur Projektorganisation'
+message.back_to_phases_and_milestones: 'Zurück zu Phasen & Meilensteine'
+message.back_to_risks_and_opportunities: 'Zurück zu Risiken und Chancen'
+message.back_to_task_management: 'Zurück zur Aufgabenverwaltung'
 message.back_to_task_view: 'Zurück zur Aufgabenansicht'
-message.back_to_todos: 'Back to Todos'
-message.base_schedule: 'Base Schedule'
+message.back_to_todos: 'Zurück zu To-Dos'
 message.budget: Budget
-message.budget_calculation: 'Budget is calculated as Probability times Potential Savings'
-message.budget_calculation_opportunity: 'Budget is calculated as Probability times Potential Savings'
-message.budget_calculation_risk: 'Budget is calculated as Probability times Potential Costs'
-message.budget_saved: 'Budget Saved'
+message.budget_saved: 'Budget gespeichert'
 message.by: by
-message.by_department: 'per Abteilung'
-message.by_phase: 'per Phase'
+message.by_department: 'pro Abteilung'
+message.by_phase: 'pro Phase'
 message.campr_moto: 'Campr - The tool for industrious people'
 message.capex: Capex
 message.capex_subtotal: 'Capex Subtotal'
-message.category: Category
-message.change_accountable: 'Change Accountable'
+message.category: Kategorie
 message.clear_selection: 'Auswahl löschen'
-message.click: Click
-message.close: Close
-message.close_down_project: 'Close Down Project'
-message.close_down_report: 'Close Down Report'
-message.close_task: 'Close Task'
+message.click: Klick
+message.close: Schließen
+message.close_down_project: Projektabschluss
+message.close_down_report: Abschlussbericht
+message.close_task: 'Aufgabe abschließen'
 message.close_team: 'Team schließen'
-message.comment: Comment
-message.commented: commented
-message.communication: Communication
-message.company: Company
-message.condition: Condition
-message.confirm_close_task: 'Are you sure you wan to close this task ?'
-message.confirm_open_task: 'Are you sure you wan to open this task ?'
-message.context: Context
-message.contract: Contract
-message.contract_frozen: 'Project contract is frozen'
-message.control_measures: 'Control Measures'
-message.cost: Cost
-message.cost_status: 'Cost Status'
+message.comment: Kommentieren
+message.commented: kommentiert
+message.communication: Ankündigung
+message.company: Unternehmen
+message.condition: Stand
+message.confirm_close_task: 'Sind Sie sicher, dass Sie diese Aufgabe schließen wollen?'
+message.confirm_open_task: 'Sind Sie sicher, dass Sie diese Aufgabe eröffnen wollen?'
+message.context: Kontext
+message.contract: Vertrag
+message.contract_frozen: 'Der Projektvertrag ist eingefroren'
+message.cost: Kosten
+message.cost_status: Kostenstatus
 message.costs: Kosten
-message.costs_chart: 'Costs Chart'
 message.costs_chart_by_department: 'Kosten pro Abteilung'
 message.costs_chart_by_phase: 'Kosten pro Phase'
-message.costs_progress: 'Costs Progress'
-message.create_new_decision: 'Create New Decision'
-message.create_new_info: 'Create New Info'
-message.create_new_meeting: 'Create New Meeting'
-message.create_new_milestone: 'Create new milestone'
-message.create_new_opportunity: 'Create New Opportunity'
-message.create_new_phase: 'Create new phase'
-message.create_new_risk: 'Create New Risk'
-message.create_new_status_report: 'Create New Status Report'
-message.create_new_task: 'Create New Task'
-message.create_new_team_member: 'Create new team member'
-message.create_new_todo: 'Create New Todo'
-message.created: Created
-message.created_on: 'created on'
+message.costs_progress: Kostenentwicklung
+message.create_new_decision: 'Neue Entscheidung erstellen'
+message.create_new_info: 'Neue Info erstellen'
+message.create_new_meeting: 'Neues Meeting erstellen'
+message.create_new_milestone: 'Neuen Meilenstein erstellen'
+message.create_new_opportunity: 'Neue Chance erstellen'
+message.create_new_phase: 'Neue Phase erstellen'
+message.create_new_risk: 'Neues Risiko erstellen'
+message.create_new_status_report: 'Neuen Statusreport erstellen'
+message.create_new_task: 'Neue Aufgabe erstellen'
+message.create_new_team_member: 'Neues Teammitglied erstellen'
+message.create_new_todo: 'Neues To-Do erstellen'
+message.created: Erstellt
+message.created_on: 'erstellt am'
 message.currency: Währung
-message.current_date: 'Current Date'
-message.customer: Customer
-message.danger: Danger
+message.customer: Kunde
+message.danger: Kritisch
 message.dashboard: Dashboard
-message.day_ago: 'day ago'
 message.days: Tage
-message.days_ago: 'days ago'
-message.decisions: Decisions
-message.delay: Delay
-message.delete: Delete
-message.delete_agenda: 'Delete agenda'
-message.delete_decision: 'Delete decision'
-message.delete_department: 'Are you sure you want to delete selected department?'
-message.delete_external_cost: 'Delete this external cost ?'
+message.decisions: Entscheidungen
+message.delay: Verzögerung
+message.delete: Löschen
+message.delete_agenda: 'Agenda löschen'
+message.delete_decision: 'Entscheidung löschen'
+message.delete_department: 'Sind Sie sicher, dass Sie die ausgewählte Abteilung löschen wollen?'
+message.delete_external_cost: 'Diese externen Kosten löschen?'
 message.delete_file_failed: 'Beim Löschen ist ein Fehler aufgetreten'
-message.delete_info: 'Are you sure you want to delete selected info?'
-message.delete_internal_cost: 'Delete this internal cost ?'
-message.delete_meeting: 'Delete Meeting'
-message.delete_milestone: 'Delete Milestone'
-message.delete_objective: 'Delete objective'
-message.delete_opportunity: 'Delete Opoortunity'
-message.delete_phase: 'Delete Phase'
-message.delete_remaining_action: 'Delete remaining action'
-message.delete_risk: 'Delete Risk'
-message.delete_subteam: 'Delete Subteam'
-message.delete_task: 'Delete Task'
-message.delete_team_member: 'Delete team member'
-message.delete_todo: 'Delete Todo'
-message.department: Department
-message.departments: Departments
-message.departments_involved: 'Departments Involved'
+message.delete_info: 'Sind Sie sicher, dass Sie die ausgewählte Info löschen wollen?'
+message.delete_internal_cost: 'Diese internen Kosten löschen?'
+message.delete_meeting: 'Meeting löschen'
+message.delete_milestone: 'Meilenstein löschen'
+message.delete_objective: 'Zielsetzung löschen'
+message.delete_opportunity: 'Chance löschen'
+message.delete_phase: 'Phase löschen'
+message.delete_remaining_action: 'Verbleibende Maßnahme löschen'
+message.delete_risk: 'Risiko löschen'
+message.delete_subteam: 'Team löschen'
+message.delete_task: 'Aufgabe löschen'
+message.delete_team_member: 'Teammitglied löschen'
+message.delete_todo: 'To-Do löschen'
+message.department: Abteilung
+message.departments: Abteilungen
+message.departments_involved: 'Beteiligte Abteilungen'
 message.details: Details
-message.displaying: Displaying
-message.documents: Documents
-message.download_attachment: 'Download Attachment'
-message.due_date: 'Due Date'
-message.duration: Duration
-message.edit: Edit
-message.edit_actual_total: 'Edit actual total'
-message.edit_agenda: 'Edit Agenda'
-message.edit_decision: 'Edit Decision'
-message.edit_deliverable: 'Edit deliverable'
-message.edit_department: 'Edit Department'
-message.edit_evaluation: 'Edit evaluation'
-message.edit_external_costs: 'Edit external cost'
-message.edit_forecast_total: 'Edit forecast total'
-message.edit_info: 'Edit Info'
-message.edit_internal_costs: 'Edit internal cost'
+message.displaying: Anzeigen
+message.documents: Dokumente
+message.download_attachment: 'Anhang herunterladen'
+message.due_date: Fälligkeitsdatum
+message.duration: Dauer
+message.edit: Bearbeiten
+message.edit_actual_total: 'Tatsächliche Summe bearbeiten'
+message.edit_agenda: 'Agenda bearbeiten'
+message.edit_decision: 'Entscheidung bearbeiten'
+message.edit_deliverable: 'Anforderung bearbeiten'
+message.edit_department: 'Abteilung bearbeiten'
+message.edit_evaluation: 'Beurteilung bearbeiten'
+message.edit_external_costs: 'Externe Kosten bearbeiten'
+message.edit_info: 'Info bearbeiten'
+message.edit_internal_costs: 'Interne Kosten bearbeiten'
 message.edit_label: 'Label bearbeiten'
-message.edit_labels: 'Edit Labels'
-message.edit_lesson: 'Edit lesson'
-message.edit_limitation: 'Edit limitation'
-message.edit_measure: 'Edit Measure'
-message.edit_meeting: 'Edit Meeting'
-message.edit_milestone: 'Edit milestone'
-message.edit_objective: 'Edit objective'
-message.edit_opportunity: 'Edit Opportunity'
-message.edit_organization: 'Edit Organization'
-message.edit_phase: 'Edit Phase'
-message.edit_project_organization: 'Edit Project Organization'
-message.edit_remaining_action: 'Edit Remaining Action'
-message.edit_risk: 'Edit Risk'
-message.edit_sponsors_managers: 'Edit Sponsors & Managers'
-message.edit_subteam: 'Edit Subteam'
-message.edit_task: 'Edit Task'
-message.edit_task_labels: 'Edit Task Labels'
-message.edit_team_member: 'Edit team member'
-message.edit_team_members: 'Edit Team Members'
-message.edit_todo: 'Edit Todo'
-message.edited: edited
-message.email_report: 'Are you sure you want to email thie status report?'
+message.edit_labels: 'Label bearbeiten'
+message.edit_lesson: 'Lektion bearbeiten'
+message.edit_limitation: 'Einschränkung bearbeiten'
+message.edit_measure: 'Maßnahme bearbeiten'
+message.edit_meeting: 'Meeting bearbeiten'
+message.edit_milestone: 'Meilenstein bearbeiten'
+message.edit_objective: 'Zielvorgabe bearbeiten'
+message.edit_opportunity: 'Chance bearbeiten'
+message.edit_organization: 'Organisation bearbeiten'
+message.edit_phase: 'Phase bearbeiten'
+message.edit_project_organization: 'Projektorganisation bearbeiten'
+message.edit_remaining_action: 'Verbleibende Maßnahmen bearbeiten'
+message.edit_risk: 'Risiko bearbeiten'
+message.edit_sponsors_managers: 'Sponsoren und Manager bearbeiten'
+message.edit_subteam: 'Team bearbeiten'
+message.edit_task: 'Aufgabe bearbeiten'
+message.edit_task_labels: 'Aufagbenlabel bearbeiten'
+message.edit_team_member: 'Teammitglied bearbeiten'
+message.edit_team_members: 'Teammitglieder bearbeiten'
+message.edit_todo: 'To-Do bearbeiten'
+message.edited: bearbeitet
+message.email_report: 'Sind Sie sicher, dass Sie diesen Statusreport per E-Mail versenden wollen?'
 message.error: Error!
-message.evaluation_objectives: 'Evaluation Objectives'
 message.event: Event
-message.expenses: Expenses
-message.expiry_date: 'Expiry Date'
+message.expenses: Ausgaben
+message.expiry_date: Ablaufdatum
 message.export_project: 'Projekt exportieren'
-message.external_costs: 'External Costs'
-message.external_resources: 'External Resources'
-message.filter_by: 'Filter By'
-message.finish: Finish
-message.finish_date: 'Finish Date'
-message.first_task: 'First Task'
-message.forecast_schedule: 'Forecast Schedule'
-message.from: from
+message.external_costs: 'Externe Kosten'
+message.external_resources: 'Externe Ressourcen'
+message.filter_by: 'Filtern nach'
+message.first_task: 'Erste Aufgabe'
+message.forecast_schedule: 'Voraussichtlicher Zeitplan'
 message.gantt_chart: 'Gantt Chart'
-message.has_commented_task: 'has commented task'
-message.has_edited_task: 'has edited task'
-message.here: Here
+message.has_commented_task: 'hat die Aufgabe kommentiert'
+message.has_edited_task: 'hat die Aufgabe bearbeitet'
+message.here: Hier
 message.hi: Hi
-message.high: High
+message.high: Hoch
 message.homepage: Homepage
-message.hour_ago: 'hour ago'
-message.hours_ago: 'hours ago'
-message.impact: Impact
-message.impersonate: 'You are currently logged in as'
-message.import_project: 'Import project'
-message.import_task: 'Import Task'
+message.impact: Auswirkung
+message.import_project: 'Projekt importieren'
+message.import_task: 'Aufgabe importieren'
 message.import_tasks: 'Aufgaben importieren'
 message.infos: Infos
-message.internal_costs: 'Internal Costs'
-message.internal_resources: 'Internal Resources'
-message.invoce: 'Invoice for payment:'
-message.label_none: None
-message.label_note: 'Note'':'' the Label text color is white so pick a background color that makes it easy to read the white text above it.'
-message.last_task: 'Last Task'
-message.less: less
+message.internal_costs: 'Interne Kosten'
+message.internal_resources: 'Interne Ressourcen'
+message.label_none: Keine
+message.last_task: 'Letzte Aufgabe'
+message.less: Weniger
 message.lessons_learned: 'Lessons Learned'
-message.loading_more_tasks: 'Mehr Aufgaben werden laden...'
-message.location: Location
-message.low: Low
-message.manual_phase_schedule_note_first: 'Add manual dates for Base and Forecast schedule.'
-message.manual_phase_schedule_note_second: 'Base Start Date and Base Finish Date are overwritten by the automatically calculated dates.'
-message.manual_schedule: 'Manual Schedule'
-message.manual_schedule_note: 'Define Base Start and Base Finish dates as well as Forecast Start and Forecast Finish dates.'
-message.measures: Measures
-message.measures_cost: 'Measures Cost'
+message.loading_more_tasks: 'Mehr Aufgaben werden geladen...'
+message.low: Niedrig
+message.manual_phase_schedule_note_first: 'Daten für Basis und Forcast-Terminplan händisch eingeben.'
+message.manual_phase_schedule_note_second: 'Basis Start- und Enddatum wurden durch automatisch kalkulierte Daten überschrieben.'
+message.manual_schedule: 'Manueller Terminplan'
+message.manual_schedule_note: 'Basis Start- und Enddaten sowie Forecast Start- und Enddaten definieren.'
+message.measures: Maßnahmen
+message.measures_cost: 'Kosten der Maßnahmen'
 message.medium: Medium
 message.meetings: Meetings
-message.member: member
-message.members: members
-message.milestone_responsible: 'Milestone Responsble:'
-message.milestone_schedule_note: 'Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.'
+message.member: Mitglied
+message.members: Mitglieder
+message.milestone_responsible: 'Meilensteinverantwortlicher:'
 message.min: Min
-message.minute_ago: 'minute ago'
-message.minutes_ago: 'minutes ago'
-message.minutes_under_interval: 'You cannot generate another report due to time interval restriction. Please check with your manager.'
+message.minutes_ago: 'vor .. Minuten'
+message.minutes_under_interval: 'Sie können aufgrund der Intervallrestriktion im Moment keinen Bericht erstellen. Bitte halten Sie Rücksprache mit Ihrem Manager.'
 message.months: Monate
-message.more: more
-message.my_projects: 'My Projects'
-message.my_tasks: 'My Tasks'
-message.new_comment: 'New Comment'
-message.new_evaluation_objective: 'New Evaluation Objective'
-message.new_label: 'New Label'
-message.new_lesson: 'New Lesson'
-message.new_message: New
-message.new_objective: 'New Objective'
-message.new_objective_description: 'New Objective Description'
-message.new_objective_title: 'New Objective Title'
-message.new_opportunity: 'New Opportunity'
-message.new_project: 'New Project'
-message.new_project_deliverable: 'New Project Deliverable'
-message.new_project_limitation: 'New Project Limitation'
-message.new_risk: 'New Risk'
-message.new_task: 'New Task'
-message.no: 'No'
-message.no_chat_rooms: 'Chat list is empty for this project'
-message.no_managers: 'There are no managers defined on this project. Please set up managers in order to asign them to this department.'
-message.no_private_messages: 'There are no private messages on this project'
+message.my_projects: 'Meine Projekte'
+message.my_tasks: 'Meine Aufgaben'
+message.new_comment: 'Neuer Kommentar'
+message.new_label: 'Neues Label'
+message.new_lesson: 'Neue Lektion'
+message.new_message: Neu
+message.new_objective: 'Neue Zielsetzung'
+message.new_objective_description: 'Neue Zielsetzungsbeschreibung'
+message.new_objective_title: 'Neuer Zielsetzungstitel'
+message.new_opportunity: 'Neue Chance'
+message.new_project: 'Neues Projekt'
+message.new_project_deliverable: 'Neue Projektanforderung'
+message.new_project_limitation: 'Neue Projektbeschränkung'
+message.new_risk: 'Neues Risiko'
+message.new_task: 'Neue Aufgabe'
+message.no: Nein
+message.no_managers: 'Für dieses Projekt wurden keinen Manager definiert. Bitte erstellen Sie Manager, um sie dieser Abteilung zuzuordnen.'
 message.no_results: 'Keine Ergebnisse'
-message.not_recommended_modules: 'we don’t recommend using the remaining modules but you can still activate them'
-message.note: 'Note:'
-message.notes: Notes
-message.objectives: Objectives
-message.open_tasks: 'Open Tasks'
-message.opex_capex_note: 'If an External Cost is not set up as CAPEX,it will automatically be set up as OPEX.'
-message.opex_subtotal: 'Opex Subtotal'
-message.opportunities: Opportunities
-message.organization: Organization
-message.organization_context: 'Organization Context'
-message.overall_impression: 'Overall Impression'
-message.overall_progress: 'Overall Progress'
-message.overall_status: 'Overall Status'
-message.parent_phase: 'Parent Phase'
-message.participants: Participants
-message.per_day_reports_exceeded: 'You exceeded the number of reports per day. Please check with your manager.'
-message.performance_schedule: 'Performance Schedule'
-message.phase_responsible: 'Phase Responsble:'
-message.phases_and_milestones: 'Phases and Milestones'
-message.phases_milestones: 'Phases & Milestones'
+message.not_recommended_modules: 'Wir empfehlen Ihnen nicht die restlichen Module zu Nutzen, aber Sie können sie dennoch aktivieren.'
+message.notes: Notizen
+message.open_tasks: 'Offene Aufgaben'
+message.opex_capex_note: 'Wenn externe Kosten nicht als CAPEX definiert werden, werden sie automatisch als OPEX definiert.'
+message.opex_subtotal: 'OPEX Zwischensumme'
+message.opportunities: Chancen
+message.organization: Organisation
+message.overall_impression: Gesamteindruck
+message.overall_progress: Gesamtfortschritt
+message.overall_status: Gesamtstatus
+message.participants: Teilnehmer
+message.per_day_reports_exceeded: 'Sie haben das tägliche Berichtslimit erreicht. Bitte halten Sie Rücksprache mit Ihrem Manager.'
+message.phase_responsible: 'Phasenverantwortlicher:'
+message.phases_and_milestones: 'Phasen und Meilensteine'
+message.phases_milestones: 'Phasen & Meilensteine'
 message.plan: Plan
-message.planning: Planning
-message.potential_cost: 'Potential Cost'
-message.potential_savings: 'Potential Savings'
-message.potential_time_delay: 'Potential Time Delay'
-message.potential_time_savings: 'Potential Time Savings'
-message.print_meeting: 'Print Meeting'
-message.priority: Priority
-message.probability: Probability
-message.programme: Programme
-message.progress: Progress
-message.projcet_costs: 'Project Costs'
-message.project: Project
-message.project_acceptance: 'Project Acceptance'
-message.project_budget: 'Project Budget'
-message.project_closed: 'Project has been closed.'
+message.potential_cost: 'Potentielle Kosten'
+message.potential_savings: 'Potentielle Einsparungen'
+message.potential_time_delay: 'Potentielle Verzögerung'
+message.potential_time_savings: 'Potentielle Zeiteinsparung'
+message.print_meeting: 'Meeting ausdrucken'
+message.priority: Priorität
+message.probability: Wahrscheinlichkeit
+message.programme: Programm
+message.progress: Fortschritt
+message.projcet_costs: Projektkosten
+message.project: Projekt
+message.project_acceptance: Projektakzeptanz
+message.project_budget: Projektbudget
+message.project_closed: 'Das Projekt wurde abgeschlossen.'
 message.project_condition: Projektzustand
-message.project_contract: 'Project Contract'
-message.project_create_step1: 'Step 1: General Info'
-message.project_create_step2: 'Step 2: Project Worthiness Analysis'
-message.project_create_step3: 'Step 3: Project Builder'
-message.project_create_wizard: 'Project Creation Wizard'
-message.project_currency: 'Project Currency'
-message.project_dashboard: 'Project Dashboard'
-message.project_decisions: 'Project Decisions'
-message.project_deliverables: 'Project Deliverables'
-message.project_description: 'Project Description'
-message.project_duration: 'Project Duration'
-message.project_infos: 'Project Infos'
-message.project_involved: 'Project Involved'
-message.project_limitations: 'Project Limitations'
-message.project_logo: 'Add Project Logo'
-message.project_management: 'Project Management'
-message.project_manager: 'Project Manager'
+message.project_contract: Projektvertrag
+message.project_create_step1: '1. Schritt: Allgemeine Informationen'
+message.project_currency: Projektwährung
+message.project_dashboard: Projekt-Dashboard
+message.project_decisions: Projektentscheidungen
+message.project_deliverables: Projektanforderungen
+message.project_description: Projektbeschreibung
+message.project_duration: Projektdauer
+message.project_infos: Projektinfo
+message.project_limitations: Projektbeschränkungen
+message.project_logo: 'Projektlogo hinzufügen'
+message.project_management: Projektmanagement
+message.project_manager: Projektmanager
 message.project_manager_signature: 'Unterschrift Projektmanager'
-message.project_managers: 'Project Manager(s)'
-message.project_meetings: 'Project Meetings'
+message.project_managers: Projektmanager
+message.project_meetings: Projektmeetings
 message.project_milestones: Projektmeilensteine
-message.project_name: 'Project Name'
-message.project_number: 'Project No.'
-message.project_objectives: 'Project Objectives'
-message.project_opportunities: 'Project Opportunities'
-message.project_organization: 'Project Organization'
-message.project_phases: 'Project Phases'
-message.project_portfolio: 'Project is part of a portfolio'
-message.project_programme: 'Project is part of a programme'
-message.project_resources: 'Project Resources'
-message.project_risks: 'Project Risks'
-message.project_roles: 'Project Roles'
-message.project_schedule: 'Project Schedule'
-message.project_size: 'Project Size'
+message.project_name: Projektname
+message.project_number: 'Projekt Nr.'
+message.project_objectives: Projektzielsetzung
+message.project_opportunities: Projektchancen
+message.project_organization: Projektorganisationen
+message.project_phases: Projektphasen
+message.project_portfolio: 'Projekt ist Teil eines Portfolios'
+message.project_programme: 'Projekt ist Teil eines Programmes'
+message.project_resources: Projektressourcen
+message.project_risks: Projektrisiken
+message.project_roles: Projektrollen
+message.project_schedule: Projektterminplan
+message.project_size: Projektgröße
 message.project_sponsor: Sponsor
 message.project_sponsor_signature: 'Unterschrift Projektsponsor'
-message.project_start_event: 'Project Start Event'
-message.project_status: 'Project Status'
-message.project_status_reports: 'Project Status Reports'
-message.project_summary: 'Project Summary'
-message.project_tasks: 'Project Tasks'
-message.project_todos: 'Project Todos'
-message.project_trend: 'Project Trend'
-message.projects: Projects
+message.project_status: Projektstatus
+message.project_status_reports: Projektstatusreport
+message.project_summary: Projektzusammenfassung
+message.project_tasks: Projektaufgabe
+message.project_todos: 'Projekt To-Do''s'
+message.project_trend: Projekttrend
+message.projects: Projekte
 message.rasci_matrix: 'RASCI Matrix'
-message.recent_projects: 'My Recent Projects'
-message.recent_tasks: 'My Recent Tasks'
-message.recommended_modules: 'based on your estimations we recommend the following modules'
-message.reflection: Reflection
-message.remaining_action: 'Remaining Action'
-message.reschedule_decision: 'Reschedule Decision'
-message.reschedule_meeting: 'Reschedule Meeting'
-message.reschedule_remaining_action: 'Reschedule remaining action'
-message.reschedule_todo: 'Reschedule todo'
-message.reset_password: 'Please enter your email address to reset the account password. An email will be sent with instructions.'
-message.resource_chart: 'Resource Chart'
-message.resources: Resources
+message.recent_tasks: 'Meine letzten Aufgaben'
+message.recommended_modules: 'basierend auf Ihren Einschätzungen empfehlen wir Ihnen die folgenden Module'
+message.reflection: Reflexion
+message.remaining_action: 'Ausstehende Maßnahmen'
+message.reschedule_decision: 'Entscheidung umplanen'
+message.reschedule_meeting: 'Meeting umplanen'
+message.reschedule_remaining_action: 'Ausstehende Maßnahmen umplanen'
+message.reschedule_todo: 'To-Do umplanen'
+message.reset_password: 'Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Eine E-Mail mit weiteren Anweisungen wird Ihnen zugesendet.'
+message.resource_chart: Ressourcendiagramm
+message.resources: Ressourcen
 message.resources_chart_by_department: 'Ressourcen pro Abteilung'
 message.resources_chart_by_phase: 'Ressourcen pro Phase'
-message.responsible: Responsible
-message.results_out_of: 'results out of'
-message.return: 'to return to your original user.'
-message.risks: Risks
-message.risks_oportunities: 'Risks & Oportunities'
-message.role: Role
-message.roles: Roles
-message.sales: Sales
-message.save_schedule: 'Save Schedule'
-message.saved: Saved!
-message.schedule: Schedule
-message.schedule_base: 'Schedule Base'
-message.schedule_forecast: 'Schedule Forecast'
-message.scope: Scope
-message.select_customer: 'Select Customer'
-message.select_phase_milestone: 'Select a phase&milestone'
-message.select_portfolio: 'Select Portfolio'
-message.select_programme: 'Select Programme'
-message.send_notifications: 'Send Notifications'
-message.sponsors_managers: 'Sponsors & Managers'
+message.responsible: Verantwortlich
+message.results_out_of: 'Ergebnisse von'
+message.return: 'um zu Ihrem ursprünglichen Nutzer zurückzukehren.'
+message.risks: Risiken
+message.risks_oportunities: 'Risiken & Chancen'
+message.role: Rolle
+message.roles: Rollen
+message.sales: Verkäufe
+message.save_schedule: 'Terminplan speichern'
+message.saved: Gespeichert!
+message.schedule: Terminplan
+message.schedule_base: 'Terminplan Basis'
+message.schedule_forecast: 'Terminplan Forecast'
+message.scope: Umfang
+message.select_customer: 'Kunden auswählen'
+message.select_portfolio: 'Portfolio auswählen'
+message.select_programme: 'Programm auswählen'
+message.send_notifications: 'Benachrichtiung senden'
+message.sponsors_managers: 'Sponsoren & Manager'
 message.start: Start
-message.start_date: 'Start Date'
-message.started_on: 'Started on'
-message.starting_on: 'Starting On'
+message.start_date: Startdatum
+message.started_on: 'Gestartet am'
+message.starting_on: 'Startet am'
 message.status: Status
-message.status_report: 'Status Report'
-message.status_reports: 'Status Reports'
-message.strategical_meaning: 'Strategical Meaning'
-message.strategy: Strategy
-message.subtasks: Subtasks
-message.subtasks_summary: '%completed_tasks% of %total_tasks%'
-message.subteam: Subteam
+message.status_report: Statusreport
+message.status_reports: Statusreports
+message.strategical_meaning: 'Strategische Bedeutung'
+message.strategy: Strategie
+message.subtasks: Unteraufgaben
+message.subtasks_summary: '%completed_tasks% von %total_tasks%'
+message.subteam: Team
 message.task_assignments: Aufgaben
-message.task_chart: 'Task Chart'
-message.task_completion: 'Task completion'
-message.task_condition: 'Task condition'
-message.task_details: 'Task Details'
-message.task_management: 'Task Management'
-message.task_progress: 'Task Progress'
-message.task_schedule: 'Task Schedule'
-message.task_status: 'Task Status'
-message.tasks: Tasks
-message.tasks_condition: 'Tasks Condition'
-message.tasks_status: 'Tasks Status'
-message.team_members: 'Team Members'
-message.team_members_involved: 'Team Members Involved'
-message.teams: 'Teams you are a part of'
+message.task_chart: Aufgabendiagramm
+message.task_completion: Aufgabenerfüllung
+message.task_condition: Aufgabenzustand
+message.task_details: Aufgabendetails
+message.task_management: Aufgabenverwaltung
+message.task_progress: Aufgabenfortschritt
+message.task_schedule: Aufgabenplan
+message.task_status: Aufgabenstatus
+message.tasks: Aufgaben
+message.tasks_condition: Aufgabenzustand
+message.tasks_status: Aufgabenstatus
+message.team_members: Teammitglieder
+message.team_members_involved: 'Beteiligte Teammitglieder'
+message.teams: 'Teams, in denen Sie Mitglied sind'
 message.this_task_has_no_planning: 'Für diese Aufgabe wurden keine Planungsdaten konfiguriert'
-message.this_task_part_of: 'This task is part of'
-message.time_calculation: 'Time Saved is calculated as Probability times Potential Time Savings'
-message.time_calculation_opportunity: 'Time Saved is calculated as Probability times Potential Time Savings'
-message.time_calculation_risk: 'Time Saved is calculated as Probability times Potential Time Delays'
-message.time_saved: 'Time Saved'
-message.to: to
-message.todos: Todos
-message.top_opportunity: 'Top Opportunity'
-message.top_risk: 'Top Risk'
-message.total: Total
-message.total_cost_of_measures: 'Total Cost of Measures'
-message.total_number_of_measures: 'Total Number of Measures'
-message.total_potential_cost: 'Total Potential Cost'
-message.total_potential_delay: 'Total Potential Delay'
-message.total_potential_savings: 'Total Potential Savings'
-message.total_potential_time_savings: 'Total Potential Time Savings'
-message.total_tasks: 'Total tasks'
-message.unable_to_save: 'Unable to save.'
-message.uploading_file_failed: 'There was an error while uploading the file'
+message.this_task_part_of: 'Diese Aufgabe gehört zu '
+message.time_saved: Zeitersparnis
+message.todos: To-Dos
+message.total: Gesamt
+message.total_cost_of_measures: 'Gesamtkosten der Maßnahmen'
+message.total_number_of_measures: 'Gesamtanzahl der Maßnahmen'
+message.total_potential_cost: 'Gesamte potentielle Kosten'
+message.total_potential_delay: 'Gesamte potentielle Verzögerung'
+message.total_potential_savings: 'Gesamte potentielle Einsparungen'
+message.total_potential_time_savings: 'Gesamte potentielle Zeiterinsparungen'
+message.total_tasks: 'Gesamte Aufgaben'
+message.unable_to_save: 'Speichern nicht möglich.'
+message.uploading_file_failed: 'Beim Hochladen der Datei ist ein Fehler aufgetreten'
 message.user_added_to_project: 'Der Nutzer wurde dem Projekt hinzugefügt.'
 message.user_blocked: 'Nutzer blockiert'
 message.user_invited_to_project: 'Der Nutzer wurde ins Projekt eingeladen. Wenn er sich das nächste mal einloggt, wird er Zugang zum Projekt haben.'
-message.very_high: 'Very High'
-message.very_low: 'Very Low'
-message.view_board: 'View Board'
+message.very_high: 'Sehr hoch'
+message.very_low: 'Sehr niedrig'
 message.view_decision: 'Entscheidung ansehen'
-message.view_grid: 'View Grid'
-message.view_meeting: 'View Meeting'
-message.view_remaining_action: 'View Remaining Action'
-message.view_team: 'View Team'
-message.view_todo: 'View Todo'
-message.wait: 'Please wait...'
-message.warning: Warning
-message.wbs: WBS
-message.week: Week
+message.view_meeting: 'Meeting ansehen'
+message.view_remaining_action: 'Ausstehende Aktionen ansehen'
+message.view_team: 'Team ansehen'
+message.view_todo: 'To-Do ansehen'
+message.wait: 'Bitte warten...'
+message.warning: Warnung
+message.week: Woche
 message.weeks: Wochen
-message.work_package_dependency_constraint: 'Entry cannot be deleted because there are phases/milestones/tasks that are depending on it!'
+message.work_package_dependency_constraint: 'Der Eintrag kann nicht gelöscht werden, da Phasen/Meilensteine/Aufgaben von ihm abhängig sind.'
 message.workspaces: 'Arbeitsbereiche in denen Sie Mitglied sind'
-message.year: Year
-message.yes: 'Yes'
-message.your_teams: 'Your teams'
+message.year: Jahr
+message.yes: Ja
+message.your_teams: 'Ihre Teams'
 message.your_workspaces: 'Ihre Arbeitsbereiche'
 modules.close_down_project.description: 'Der finale Projektbericht dient als ein endgültiges Dokument für die Evaluation des Projektes und für die Planung der verbleibenden Aufgaben und der Nachprojektphase. Der Projektabschlussbericht ist die Basis für den endgültigen Inbetriebnahmeprozess.'
 modules.close_down_project.title: Projektabschlussbericht
@@ -1721,7 +1661,6 @@ table_header_cell.project_work_cost_type: 'Art der Projektkosten'
 table_header_cell.projectworkcosttype: Kostenart
 table_header_cell.proposed_end_date: 'Vorgeschlagenes Enddatum'
 table_header_cell.proposed_start_date: 'Vorgeschlagenes Startdatum'
-table_header_cell.puid: Puid
 table_header_cell.quantity: Menge
 table_header_cell.rasci: RASCI
 table_header_cell.rate: Rate
@@ -1825,30 +1764,24 @@ title.decision_status.create: 'Entscheidungsstatus erstellen'
 title.decision_status.edit: 'Entscheidungsstatus bearbeiten'
 title.decision_status.list: Entscheidungsstatus
 title.departments: Abteilungen
-title.distribution_list.create: 'Create new distribution list'
-title.distribution_list.edit: 'Edit distribution list'
-title.distribution_list.list: 'Distribution list'
-title.document.create: 'Create new document'
-title.document.edit: 'Edit document'
-title.document.list: Document
-title.evaluation_objective.create: 'Create new Evaluation Objective'
-title.evaluation_objective.edit: 'Edit Evaluation Objective'
-title.evaluation_objective.list: 'Evaluation Objective'
+title.distribution_list.create: 'Neue Verteilerliste erstellen'
+title.distribution_list.edit: 'Verteilerliste bearbeiten'
+title.distribution_list.list: Verteilerliste
+title.document.create: 'Neues Dokument erstellen'
+title.document.edit: 'Dokument bearbeiten'
+title.document.list: Dokument
 title.external_cost.create: 'Kosten erstellen'
 title.external_cost.edit: 'Kosten bearbeiten'
 title.external_cost.list: 'Externe Kosten'
 title.file.edit: 'Edit media file'
-title.file.list: 'Project file'
-title.file.upload: 'Upload new file'
-title.filesystem.create: 'Create new file system'
-title.filesystem.edit: 'Edit file system'
-title.filesystem.list: 'File system'
+title.file.list: Datei
+title.file.upload: 'Neue Datei hochladen'
+title.filesystem.create: 'Neues Dateisystem erstellen'
+title.filesystem.edit: 'Dateisystem bearbeiten'
+title.filesystem.list: Dateisystem
 title.header: 'Campr Administration'
 title.homepage: 'Campr Admin'
 title.homepage_main: 'Campr Main Site'
-title.impact.create: 'Create new impact'
-title.impact.edit: 'Edit impact'
-title.impact.list: Impact
 title.info.create: 'Neue Info erstellen'
 title.info.edit: 'Info bearbeiten'
 title.info.list: Info
@@ -1899,12 +1832,6 @@ title.note_status.list: Notizstatus
 title.opportunity.create: 'Neue Chance erstellen'
 title.opportunity.edit: 'Chance bearbeiten'
 title.opportunity.list: Chance
-title.opportunity_status.create: 'Create new opportunity status'
-title.opportunity_status.edit: 'Edit opportunity status'
-title.opportunity_status.list: 'Opportunity Status'
-title.opportunity_strategy.create: 'Create new opportunity strategy'
-title.opportunity_strategy.edit: 'Edit opportunity strategy'
-title.opportunity_strategy.list: 'Opportunity Strategy'
 title.payment.list: Zahlungen
 title.payment_method.edit: 'Zahlungsmethode bearbeiten'
 title.payment_method.list: 'Liste Zahlungsmethoden'
@@ -1927,65 +1854,56 @@ title.project_close_down.list: Projektabschluss
 title.project_complexity.create: 'Neue Projektkomplexität erstellen'
 title.project_complexity.edit: 'Projektkomplexität bearbeiten'
 title.project_complexity.list: Komplexität
-title.project_cost_type.create: 'Neuen Projektkostentyp erstellen'
-title.project_cost_type.edit: 'Projektkostentyp bearbeiten'
-title.project_cost_type.list: 'Project cost type'
-title.project_deliverable.create: 'Create Project Deliverable'
-title.project_deliverable.edit: 'Edit Project Deliverable'
-title.project_deliverable.list: 'Project Deliverable'
-title.project_department.create: 'Create new project department'
-title.project_department.edit: 'Edit project department'
-title.project_department.list: 'Project department'
-title.project_limitation.create: 'Create Project Limitation'
-title.project_limitation.edit: 'Edit Project Limitation'
-title.project_limitation.list: 'Project Limitation'
-title.project_module.create: 'Create new project module'
-title.project_module.edit: 'Edit project module'
-title.project_module.list: 'Project module'
-title.project_objective.create: 'Create Project Objective'
-title.project_objective.edit: 'Edit Project Objective'
-title.project_objective.list: 'Project Objective'
-title.project_role.create: 'Create new project role'
-title.project_role.edit: 'Edit project role'
-title.project_role.list: 'Project role'
-title.project_scope.create: 'Create new project scope'
-title.project_scope.edit: 'Edit project scope'
-title.project_scope.list: 'Project scope'
-title.project_status.create: 'Create new project status'
-title.project_status.edit: 'Edit project status'
-title.project_status.list: 'Projects status'
-title.project_team.create: 'Create new project team'
-title.project_team.edit: 'Edit project team'
-title.project_team.list: 'Project team'
-title.project_user.create: 'Create new project user'
-title.project_user.edit: 'Edit project user'
-title.project_user.list: 'Project user'
-title.project_work_cost_type.create: 'Create new project work cost type'
-title.project_work_cost_type.edit: 'Edit project work cost type'
-title.project_work_cost_type.list: 'Project work cost type'
-title.rasci.create: 'Create new rasci'
-title.rasci.edit: 'Edit rasci'
-title.rasci.list: Rasci
-title.reset: 'Please enter your email address to reset the account password. An email will be sent with instructions.'
-title.resource.create: 'Create Resource'
-title.resource.edit: 'Edit Resource'
-title.resource.list: Resource
-title.risk.create: 'Create new risk'
-title.risk.edit: 'Edit risk'
-title.risk.list: Risk
-title.risk_and_opportunities: 'Risk & Opportunities'
-title.risk_category.create: 'Create new risk category'
-title.risk_category.edit: 'Edit risk category'
-title.risk_category.list: 'Risk category'
-title.risk_status.create: 'Create new risk status'
-title.risk_status.edit: 'Edit risk status'
-title.risk_status.list: 'Risk Status'
-title.risk_strategy.create: 'Create new risk strategy'
-title.risk_strategy.edit: 'Edit risk strategy'
-title.risk_strategy.list: 'Risk Strategy'
-title.schedule.create: 'Create new schedule'
-title.schedule.edit: 'Edit schedule'
-title.schedule.list: Schedule
+title.project_cost_type.create: 'Neue Projektkostenart erstellen'
+title.project_cost_type.edit: 'Projektkostenart bearbeiten'
+title.project_cost_type.list: Kostenart
+title.project_department.create: 'Neue Projektabteilung erstellen'
+title.project_department.edit: 'Projektabteilung bearbeiten'
+title.project_department.list: Abteilung
+title.project_limitation.create: 'Projekteinschränkung erstellen'
+title.project_limitation.edit: 'Projekteinschränkung bearbeiten'
+title.project_limitation.list: Projekteinschränkung
+title.project_module.list: Projektmodul
+title.project_objective.create: 'Projektziel erstellen'
+title.project_objective.edit: 'Projektziel bearbeiten'
+title.project_objective.list: Projektziel
+title.project_role.create: 'Neue Projektrolle erstellen'
+title.project_role.edit: 'Projektrolle bearbeiten'
+title.project_role.list: Projektrolle
+title.project_scope.create: 'Neuen Projektumfang erstellen'
+title.project_scope.edit: 'Projektumfang bearbeiten'
+title.project_scope.list: Projektumfang
+title.project_status.create: 'Neuen Projektstatus erstellen'
+title.project_status.edit: 'Projektstatus bearbeiten'
+title.project_status.list: Projektstatus
+title.project_team.create: 'Neues Projektteam erstellen'
+title.project_team.edit: 'Projektteam bearbeiten'
+title.project_team.list: Projektteam
+title.project_user.create: 'Neues Nutzer erstellen'
+title.project_user.edit: 'Nutzer bearbeiten'
+title.project_user.list: Nutzer
+title.project_work_cost_type.create: 'Neue Projektarbeitskostenart erstellen'
+title.project_work_cost_type.edit: 'Projektarbeitskostenart bearbeiten'
+title.project_work_cost_type.list: Projektarbeitskostenart
+title.rasci.create: 'Neue RASCI erstellen'
+title.rasci.edit: 'RASCI bearbeiten'
+title.rasci.list: RASCI
+title.resource.create: 'Ressource erstellen'
+title.resource.edit: 'Ressource bearbeiten'
+title.resource.list: Ressource
+title.risk.create: 'Neues Risiko erstellen'
+title.risk.edit: 'Risiko bearbeiten'
+title.risk.list: Risiko
+title.risk_and_opportunities: 'Risiko & Chancen'
+title.risk_category.create: 'Neue Risikokategorie erstellen'
+title.risk_category.edit: 'Risikokategorie bearbeiten'
+title.risk_category.list: Risikokategorie
+title.risk_status.create: 'Neuen Risikostatus erstellen'
+title.risk_status.edit: 'Risikostatus bearbeiten'
+title.risk_status.list: Risikostatus
+title.risk_strategy.create: 'Neue Risikostrategie erstellen'
+title.risk_strategy.edit: 'Risikostrategie bearbeiten'
+title.risk_strategy.list: Risikostrategie
 title.status.edit: Bearbeiten
 title.status_report.list: 'Status Report'
 title.status_report_config.create: 'Neue Statusreport-Konfiguration erstellen'
@@ -2041,9 +1959,6 @@ title.workspace.list: 'Liste Arbeitsumfelder'
 title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
-title.wppcwct.create: 'Create new work package project work cost type'
-title.wppcwct.edit: 'Edit work package project work cost type'
-title.wppcwct.list: 'Work package project work cost type'
 todo_status.discontinued: Eingestellt
 todo_status.finished: Abgeschlossen
 todo_status.initiated: Eingeleitet
@@ -2064,3 +1979,11 @@ label.cost_savings: Kosteneinsparungen
 label.potential_cost_savings: 'Potentielle Kosteneinsparungen'
 label.potential_time_savings: 'Potentielle Zeiteinsparungen'
 message.planned_progress: 'Geplanter Fortschritt'
+menu.unaccepted_team_invites: 'Nicht-akzeptierte Einladungen'
+label.resend: 'Noch einmal verschicken'
+message.removed_team_invites: '%count% Einladung(en) wurden entfernt.'
+message.removed_invalid_team_invites: '%count% ungültige Einladung(en) wurde(n) entfernt.'
+message.resent_team_invites: '%count% Einladung(en) wurde(n) noch einmal verschickt.'
+action.select.all: 'Alle auswählen'
+action.select.none: 'Keine auswählen'
+action.select.invert: 'Auswahl umkehren'
