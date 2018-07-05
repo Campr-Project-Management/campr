@@ -23,6 +23,9 @@ class ApiAttachmentType extends CreateType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'entry_options' => [
+                    'max_size' => $options['max_media_size'],
+                ],
             ]
         );
     }
@@ -32,10 +35,13 @@ class ApiAttachmentType extends CreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefined(['max_media_size']);
+        $resolver->setAllowedTypes('max_media_size', 'int');
         $resolver->setDefaults(
             [
                 'data_class' => WorkPackage::class,
                 'csrf_protection' => false,
+                'max_media_size' => 1024 * 1024 * 10,
             ]
         );
     }
