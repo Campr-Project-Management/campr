@@ -138,7 +138,7 @@
                             form.approvedAt,
                             {
                                 'attr': {
-                                    'class': 'form-control datetime-picker',
+                                    'class': 'form-control datetime-picker-inverted-date',
                                     'addon_front': 'calendar',
                                 },
                                 'label': 'label.forecast_end_date'|trans
@@ -163,6 +163,13 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript">
+        $('.datetime-picker-inverted-date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:SS',
+            debug: true,
+        });
+    </script>
 
     {% include '@App/Admin/Contract/_clear_approved_at.html.twig' with {form: form} %}
 {% endblock %}

@@ -60,7 +60,7 @@ class BaseCreateType extends AbstractType
             ->add('approvedAt', DateTimeType::class, [
                 'required' => false,
                 'widget' => 'single_text',
-                'format' => 'dd-MM-yyyy HH:mm:ss',
+                'format' => 'yyyy-MM-dd HH:mm:ss',
             ])
         ;
     }
