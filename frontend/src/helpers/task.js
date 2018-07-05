@@ -22,13 +22,13 @@ export const createFormData = (data) => {
 
     if (data.planning) {
         if (data.planning.phase) {
-            formData.append('phase', data.planning.phase.key);
+            formData.append('phase', data.planning.phase);
         }
         if (data.planning.milestone) {
-            formData.append('milestone', data.planning.milestone.key);
+            formData.append('milestone', data.planning.milestone);
         }
         if (data.planning.parent) {
-            formData.append('parent', data.planning.parent.key);
+            formData.append('parent', data.planning.parent);
         }
     }
 
