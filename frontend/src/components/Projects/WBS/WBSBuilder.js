@@ -153,13 +153,7 @@ export default function create() {
                     .attr('xmlns', 'http://www.w3.org/1999/xhtml')
                     .attr('class', 'title-body')
                     .html(d => {
-                        return `<table>
-                                <tr>
-                                    <td>
-                                        ${d.data.name}
-                                    </td>
-                                </tr>
-                            </table>`;
+                        return `<div class="title">${d.data.name}</div>`;
                     })
                     .on('click', d => {
                         if (d.contextMenuOpened) {
