@@ -6,9 +6,11 @@ use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\WorkPackageEvent;
+use AppBundle\Repository\WorkPackageStatusRepository;
 use AppBundle\Services\WorkPackageRasciSync;
 use Component\Repository\RepositoryInterface;
 use Component\WorkPackage\WorkPackageEvents;
+use Doctrine\ORM\EntityManager;
 use Predis\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,9 +33,14 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $workPackageRepository;
 
     /**
-     * @var RepositoryInterface
+     * @var WorkPackageStatusRepository
      */
     private $workPackageStatusRepository;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
 
     /**
      * @var Client
@@ -48,16 +55,20 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * WorkPackageSubscriber constructor.
      *
-     * @param WorkPackageRasciSync     $workPackageRasciSync
-     * @param RepositoryInterface      $workPackageRepository
-     * @param RepositoryInterface      $workPackageStatusRepository
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param WorkPackageRasciSync        $workPackageRasciSync
+     * @param RepositoryInterface         $workPackageRepository
+     * @param WorkPackageStatusRepository $workPackageStatusRepository
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param EntityManager               $em
+     * @param Client                      $redis
+     * @param string                      $env
      */
     public function __construct(
         WorkPackageRasciSync $workPackageRasciSync,
         RepositoryInterface $workPackageRepository,
-        RepositoryInterface $workPackageStatusRepository,
+        WorkPackageStatusRepository $workPackageStatusRepository,
         EventDispatcherInterface $eventDispatcher,
+        EntityManager $em,
         Client $redis,
         string $env
     ) {
@@ -67,6 +78,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->workPackageStatusRepository = $workPackageStatusRepository;
         $this->redis = $redis;
         $this->env = $env;
+        $this->em = $em;
     }
 
     /**
@@ -88,7 +100,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $wp = $event->getWorkPackage();
         $this->workPackageRasciSync->sync($wp);
-
         $this->workPackageRepository->add($wp);
     }
 
@@ -99,7 +110,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $wp = $event->getWorkPackage();
         $this->workPackageRasciSync->sync($wp);
-
         $this->workPackageRepository->add($wp);
 
         if ($wp->getProject()) {
@@ -119,92 +129,130 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPreUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
-        $this->recalculateProgress($wp);
-        $this->recalculateActualStartAt($wp);
-        $this->recalculateActualFinishAt($wp);
-    }
 
-    /**
-     * @param WorkPackage $wp
-     */
-    private function recalculateActualStartAt(WorkPackage $wp)
-    {
-        $status = $wp->getWorkPackageStatus();
-        $startAt = $wp->getActualStartAt();
-        if ($status) {
-            if ($status->isOnGoing() && !$startAt) {
-                $startAt = new \DateTime();
-            }
-
-            if ($status->isOpen() || $status->isPending()) {
-                $startAt = null;
-            }
-        }
-
-        $wp->setActualStartAt($startAt);
-        if (!$wp->getActualStartAt()) {
-            $wp->setActualFinishAt($startAt);
+        $isProgressChanged = $this->isProgressChanged($wp);
+        $isStatusChanged = $this->isStatusChanged($wp);
+        if ($isProgressChanged) {
+            $this->onProgressChanged($wp);
+        } elseif ($isStatusChanged) {
+            $this->onStatusChanged($wp);
         }
     }
 
     /**
      * @param WorkPackage $wp
+     *
+     * @return bool
      */
-    private function recalculateActualFinishAt(WorkPackage $wp)
+    private function isProgressChanged(WorkPackage $wp)
     {
-        $status = $wp->getWorkPackageStatus();
-        $finishAt = $wp->getActualFinishAt();
-        if ($status) {
-            if (($status->isCompleted() || $status->isClosed()) && !$finishAt) {
-                $finishAt = new \DateTime();
-            }
+        $uok = $this->em->getUnitOfWork();
+        $data = $uok->getOriginalEntityData($wp);
+        $progress = $data['progress'] ?? $wp->getProgress();
 
-            if ($status->isOpen() || $status->isPending() || $status->isOnGoing()) {
-                $finishAt = null;
-            }
-        }
+        return $progress !== $wp->getProgress();
+    }
 
-        $wp->setActualFinishAt($finishAt);
-        if (!$wp->getActualStartAt()) {
-            $wp->setActualStartAt($finishAt);
-        } elseif ($wp->getActualStartAt() && $finishAt && $wp->getActualStartAt()->getTimestamp() > $finishAt->getTimestamp()) {
-            $wp->setActualStartAt(clone $finishAt);
-        }
+    /**
+     * @param WorkPackage $wp
+     *
+     * @return bool
+     */
+    private function isStatusChanged(WorkPackage $wp)
+    {
+        $uok = $this->em->getUnitOfWork();
+        $data = $uok->getOriginalEntityData($wp);
+        $status = $data['workPackageStatus'] ?? $wp->getWorkPackageStatus();
+
+        return $status !== $wp->getWorkPackageStatus();
     }
 
     /**
      * @param WorkPackage $wp
      */
-    private function recalculateProgress(WorkPackage $wp)
+    private function onStatusChanged(WorkPackage $wp)
     {
         $status = $wp->getWorkPackageStatus();
-        if (!$status || $status->getProgress() < 0) {
-            return;
+        $nextStatus = $this->getNextWorkPackageStatus($status);
+        $min = $status->getProgress();
+        $max = $nextStatus ? $nextStatus->getProgress() - 1 : $status->getProgress();
+        $range = range($min, $max);
+        if (!in_array($wp->getProgress(), $range)) {
+            $wp->setProgress($status->getProgress());
         }
 
-        $closedStatus = $this->getWorkPackageClosedStatus();
-        if ($status->isOnGoing()
-            && $wp->getProgress() >= $status->getProgress()
-            && $wp->getProgress() < $closedStatus->getProgress()
-        ) {
-            return;
-        }
-
-        $wp->setProgress($status->getProgress());
+        $this->setWorkPackageActualDatesByProgress($wp, $status->getProgress());
     }
 
     /**
+     * @param WorkPackage $wp
+     */
+    private function onProgressChanged(WorkPackage $wp)
+    {
+        $statuses = $this->getWorkPackageStatuses();
+        $progress = $wp->getProgress();
+        foreach ($statuses as $index => $status) {
+            $next = $statuses[$index + 1] ?? null;
+            if ($progress === $status->getProgress()
+                || ($progress > $status->getProgress() && (!$next || $progress < $next->getProgress()))
+            ) {
+                $wp->setWorkPackageStatus($status);
+                break;
+            }
+        }
+
+        $this->setWorkPackageActualDatesByProgress($wp, $progress);
+    }
+
+    /**
+     * @param WorkPackage $wp
+     * @param int         $progress
+     */
+    private function setWorkPackageActualDatesByProgress(WorkPackage $wp, int $progress)
+    {
+        if (0 === $progress) {
+            $wp->setActualStartAt(null);
+            $wp->setActualFinishAt(null);
+        }
+
+        if ($progress > 0) {
+            $wp->setActualStartAt($wp->getActualStartAt() ?? new \DateTime());
+            $wp->setActualFinishAt(null);
+        }
+
+        if (100 === $progress) {
+            $wp->setActualStartAt($wp->getActualStartAt() ?? new \DateTime());
+            $wp->setActualFinishAt($wp->getActualFinishAt() ?? new \DateTime());
+        }
+    }
+
+    /**
+     * @param WorkPackageStatus $status
+     *
      * @return WorkPackageStatus|null
      */
-    private function getWorkPackageClosedStatus()
+    private function getNextWorkPackageStatus(WorkPackageStatus $status)
     {
-        /** @var WorkPackageStatus $status */
-        foreach ($this->workPackageStatusRepository->findAll() as $status) {
-            if ($status->isClosed()) {
-                return $status;
+        $statuses = $this->getWorkPackageStatuses();
+        foreach ($statuses as $index => $st) {
+            $next = $statuses[$index] ?? null;
+            if (!$next) {
+                continue;
+            }
+
+            if ($status->getId() === $next->getId()) {
+                return $next;
             }
         }
 
         return null;
+    }
+
+    /**
+     * @return WorkPackageStatus[]
+     */
+    private function getWorkPackageStatuses()
+    {
+        return $this->workPackageStatusRepository->findAllVisibleSortedByProgress();
     }
 }

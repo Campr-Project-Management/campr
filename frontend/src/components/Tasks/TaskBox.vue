@@ -15,13 +15,7 @@
                 </h2>
                 <p class="task-id">#{{ task.id }}</p>
                 <div class="status-boxes">
-                    <span
-                            v-for="cs in colorStatuses"
-                            :key="task.id+'-'+cs.id"
-                            class="status-box"
-                            :style="{ background: statusColor(cs) }"
-                            v-tooltip="hasColorStatus(cs) && colorStatusTooltip">
-                    </span>
+                    <traffic-light size="small" :value="task.trafficLight" />
                 </div>
             </div>
             <div class="content">
@@ -59,8 +53,10 @@
                     <task-cost-bar :task="task" title="message.cost"/>
                 </div>
             </div>            
-            <bar-chart :percentage="task.progress" :status="task.colorStatusName" :color="task.colorStatusColor"
-                       :title-left="'' + translateText(task.workPackageStatusName)"></bar-chart>
+            <bar-chart
+                    :percentage="task.progress"
+                    :color="trafficLightColorByValue(task.trafficLight)"
+                    :title-left="translate(task.workPackageStatusName)"/>
             <scrollbar class="task-content customScrollbar">
                 <div v-html="task.content"></div>
             </scrollbar>
@@ -117,69 +113,42 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex';
     import BarChart from '../_common/_charts/BarChart';
     import moment from 'moment';
     import TaskCostBar from './TaskCostBar.vue';
     import TaskLabelBar from './TaskLabelBar';
-    import _ from 'lodash';
     import ScheduleDatesBar from '../_common/ScheduleDatesBar';
+    import TrafficLight from '../_common/TrafficLight';
 
     export default {
+        name: 'tasks-task-box',
+        props: {
+            task: {
+                type: Object,
+                required: true,
+            },
+        },
         components: {
+            TrafficLight,
             ScheduleDatesBar,
             BarChart,
             TaskCostBar,
             TaskLabelBar,
         },
         computed: {
-            colorStatusTooltip() {
-                let tooltip = '';
-                if (!this.task.colorStatus) {
-                    return tooltip;
-                }
-
-                let colorStatus = _.find(this.colorStatuses, (colorStatus) => {
-                    return colorStatus.id === this.task.colorStatus;
-                });
-
-                if (!colorStatus) {
-                    return tooltip;
-                }
-
-                return this.translate(colorStatus.name);
-            },
+            ...mapGetters([
+                'trafficLightColorByValue',
+            ]),
         },
         methods: {
-            duration: function(startDate, endDate) {
+            duration(startDate, endDate) {
                 let start = moment(startDate);
                 let end = moment(endDate);
                 return end.diff(start, 'days');
             },
-            translateText: function(text) {
-                return this.translate(text);
-            },
-            hasColorStatus(colorStatus) {
-                return !!(this.task.colorStatus && this.task.colorStatus === colorStatus.id);
-            },
-            statusColor(colorStatus) {
-                if (!this.hasColorStatus(colorStatus)) {
-                    return false;
-                }
-
-                return colorStatus.color;
-            },
             hasLabel() {
                 return this.task.label && this.task.labelName && this.task.labelColor;
-            },
-        },
-        props: {
-            task: {
-                type: Object,
-                required: true,
-            },
-            colorStatuses: {
-                type: Array,
-                required: true,
             },
         },
     };

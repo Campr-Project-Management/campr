@@ -115,6 +115,7 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@app.calculator.project_progress'
             - '@app.calculator.work_package_progress'
+            - '@app.calculator.project_actual_dates'
 
     app.service.project_organization_tree:
         class: AppBundle\Services\ProjectOrganizationTreeService

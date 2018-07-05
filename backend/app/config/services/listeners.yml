@@ -105,6 +105,7 @@ services:
             - '@app.repository.work_package'
             - '@app.repository.work_package_status'
             - '@event_dispatcher'
+            - '@doctrine.orm.entity_manager'
             - '@redis.client'
             - '%kernel.environment%'
         tags:
