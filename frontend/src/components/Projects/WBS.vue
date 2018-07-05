@@ -158,7 +158,7 @@ export default {
                 .appendEntityWireframe()
                 .appendEntityLabel(this.updateTree)
                 .appendEntityTopMenu()
-                .appendTrafficLightLabel()
+                .appendStatus()
                 .appendProgressLabel()
                 .appendPUIDLabel()
                 .appendDates()
