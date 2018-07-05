@@ -127,12 +127,12 @@
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <condition v-model="statusColor" :selectedStatusColor="statusColor" />
-                    <error
-                        v-if="validationMessages.colorStatus && validationMessages.colorStatus.length"
-                        v-for="message in validationMessages.colorStatus"
-                        :message="message" />
-                    <!-- /// End Task Condition /// -->
+                    <h3>{{ 'message.task_condition'|trans }}</h3>
+                    <traffic-light
+                            size="small"
+                            v-model="trafficLight"
+                            :editable="true"/>
+                    <error at-path="trafficLight"/>
 
                     <hr class="double">
 
@@ -161,7 +161,6 @@ import InternalCosts from './Create/InternalCosts';
 import ExternalCosts from './Create/ExternalCosts';
 import Subtasks from './Create/Subtasks';
 import Planning from './Create/Planning';
-import Condition from './Create/Condition';
 import TaskDetails from './Create/Details';
 import TaskAssignments from './Create/Assignments';
 import Attachments from './Create/Attachments';
@@ -174,9 +173,11 @@ import {createFormData} from '../../../helpers/task';
 import router from '../../../router';
 import _ from 'lodash';
 import moment from 'moment';
+import TrafficLight from '../../_common/TrafficLight';
 
 export default {
     components: {
+        TrafficLight,
         TaskAssignments,
         InputField,
         SelectField,
@@ -187,7 +188,6 @@ export default {
         ExternalCosts,
         Subtasks,
         Planning,
-        Condition,
         TaskDetails,
         Attachments,
         Editor,
@@ -195,16 +195,17 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions([
-            'createNewTask',
-            'getTaskById',
-            'editTask',
-            'importTask',
-            'emptyValidationMessages',
-            'getProjectUnits',
-            'getGreenColorStatus',
-            'importXMLTask',
-        ]),
+        ...mapActions(
+            [
+                'createNewTask',
+                'getTaskById',
+                'editTask',
+                'importTask',
+                'emptyValidationMessages',
+                'getProjectUnits',
+                'importXMLTask',
+            ]
+        ),
         createTask: function() {
             this
                 .createNewTask({
@@ -324,12 +325,9 @@ export default {
         },
     },
     created() {
+        this.trafficLight = this.defaultTrafficLightValue;
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
-        }
-
-        if (!this.$store.state.greenColorStatus || this.$store.state.greenColorStatus.length == 0) {
-            this.getGreenColorStatus();
         }
     },
     beforeDestroy() {
@@ -338,9 +336,11 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
-            greenColorStatus: 'greenColorStatus',
             validationMessages: 'validationMessages',
         }),
+        ...mapGetters([
+            'defaultTrafficLightValue',
+        ]),
         internalValidationMessages() {
             if (_.isPlainObject(this.validationMessages.costs)) {
                 const out = {};
@@ -413,7 +413,7 @@ export default {
                 medias: this.medias,
                 details: this.details,
                 assignments: this.assignments,
-                statusColor: this.statusColor,
+                trafficLight: this.trafficLight,
             };
 
             if (this.isEdit) {
@@ -441,14 +441,6 @@ export default {
                 });
             }
         },
-        greenColorStatus(value) {
-            if(!this.isEdit) {
-                this.statusColor = {
-                    id: this.greenColorStatus.id,
-                    name: this.greenColorStatus.name,
-                };
-            }
-        },
         task(value) {
             this.title = this.task.name;
             this.description = this.task.content;
@@ -460,10 +452,7 @@ export default {
                 duration: this.task.duration,
             };
 
-            this.statusColor = {
-                id: this.task.colorStatus ? this.task.colorStatus : this.greenColorStatus.id,
-                name: this.task.colorStatusName ? this.task.colorStatusName : this.greenColorStatus.name,
-            };
+            this.trafficLight = this.task.trafficLight;
 
             this.details = {
                 status: this.task.workPackageStatus
@@ -611,7 +600,7 @@ export default {
                 consultedUsers: [],
                 informedUsers: [],
             },
-            statusColor: {},
+            trafficLight: null,
         };
     },
 };

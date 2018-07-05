@@ -106,15 +106,12 @@
 ) }}
 {{ form_errors(form.parent) }}
 {{ form_widget(
-    form.colorStatus,
+    form.trafficLight,
     {
-        'attr': {
-            'class': 'selectpicker',
-        },
         'label': 'label.color'|trans
     }
 ) }}
-{{ form_errors(form.colorStatus) }}
+{{ form_errors(form.trafficLight) }}
 {{ form_widget(
     form.responsibility,
     {

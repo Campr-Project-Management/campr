@@ -2,12 +2,12 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
+use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Repository\Traits\WorkPackageSortingTrait;
@@ -82,10 +82,10 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['colorStatus'])) {
+        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] != '') {
             $qb
-                ->andWhere('wp.colorStatus = :colorStatus')
-                ->setParameter('colorStatus', $criteria['colorStatus'])
+                ->andWhere('wp.trafficLight = :trafficLight')
+                ->setParameter('trafficLight', $criteria['trafficLight'])
             ;
         }
 
@@ -669,10 +669,10 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['colorStatus'])) {
+        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] != '') {
             $qb
-                ->andWhere('wp.colorStatus = :colorStatus')
-                ->setParameter('colorStatus', $criteria['colorStatus'])
+                ->andWhere('wp.trafficLight = :trafficLight')
+                ->setParameter('trafficLight', $criteria['trafficLight'])
             ;
         }
 
@@ -808,11 +808,13 @@ class WorkPackageRepository extends BaseRepository
     /**
      * counts all workpackages for a give type.
      *
-     * @param int $type
+     * @param int                    $type
+     * @param Project|null           $project
+     * @param WorkPackageStatus|null $status
      *
      * @return int
      */
-    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null, ColorStatus $colorStatus = null)
+    public function countTotalByTypeProjectAndStatus($type, Project $project = null, WorkPackageStatus $status = null)
     {
         $qb = $this
             ->createQueryBuilder('wp')
@@ -832,13 +834,6 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->andWhere('wp.workPackageStatus = :status')
                 ->setParameter('status', $status)
-            ;
-        }
-
-        if ($colorStatus) {
-            $qb
-                ->andWhere('wp.colorStatus = :colorStatus')
-                ->setParameter('colorStatus', $colorStatus)
             ;
         }
 
@@ -1425,28 +1420,26 @@ class WorkPackageRepository extends BaseRepository
 
         $qb
             ->select('COUNT(o.id)')
-            ->innerJoin('o.colorStatus', 'cs')
-            ->andWhere('o.type = :type and o.project = :project and cs.code = :code')
-            ->andWhere($expr->isNotNull('o.colorStatus'))
+            ->andWhere('o.type = :type and o.project = :project and o.trafficLight = :trafficLight')
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
         ;
 
         $red = (int) $qb
-            ->setParameter('code', 'red')
+            ->setParameter('trafficLight', TrafficLight::RED)
             ->getQuery()
             ->getSingleScalarResult()
         ;
 
         $green = (int) $qb
-            ->setParameter('code', 'green')
+            ->setParameter('trafficLight', TrafficLight::GREEN)
             ->getQuery()
             ->getSingleScalarResult()
         ;
 
         $yellow = (int) $qb
-            ->setParameter('code', 'yellow')
+            ->setParameter('trafficLight', TrafficLight::YELLOW)
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -1504,10 +1497,10 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (!empty($criteria['colorStatus'])) {
+        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] !== '') {
             $qb
-                ->andWhere('o.colorStatus = :colorStatus')
-                ->setParameter('colorStatus', $criteria['colorStatus'])
+                ->andWhere('o.trafficLight = :trafficLight')
+                ->setParameter('trafficLight', $criteria['trafficLight'])
             ;
         }
 

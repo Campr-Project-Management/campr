@@ -457,7 +457,19 @@
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" v-on:input="updateColorStatus"/>
+                    <h4 class="widget-title">
+                        {{ translateText('message.task_condition') }} -
+                        <b
+                                v-for="(tl, index) in trafficLights"
+                                :key="index"
+                                :style="{color: tl.getColor()}"> {{ translate(tl.getLabel()) }} </b>
+                    </h4>
+
+                    <traffic-light
+                            size="small"
+                            :editable="true"
+                            :value="editableData.trafficLight"
+                            @input="onTrafficLightUpdate"/>
 
                     <!-- /// End Task Condition /// -->
 
@@ -531,7 +543,6 @@ import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
-import Condition from './Create/Condition';
 import EditScheduleModal from './View/EditScheduleModal';
 import TaskHistory from './View/TaskHistory';
 import moment from 'moment';
@@ -542,6 +553,7 @@ import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
 import UserAvatar from '../../_common/UserAvatar';
 import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
+import TrafficLight from '../../_common/TrafficLight';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -550,6 +562,7 @@ const TASK_STATUS_COMPLETED = 4;
 export default {
     name: 'task-view',
     components: {
+        TrafficLight,
         ScheduleDatesTable,
         UserAvatar,
         EditStatusModal,
@@ -565,7 +578,6 @@ export default {
         RangeSlider,
         Modal,
         router,
-        Condition,
         moment,
         AlertModal,
         SwitchField,
@@ -578,7 +590,6 @@ export default {
             this.getTaskById(this.$route.params.taskId);
             this.getTaskHistory(this.$route.params.taskId);
         }
-        this.getColorStatuses();
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
@@ -594,11 +605,11 @@ export default {
         ...mapGetters([
             'workPackageStatusById',
             'taskHistory',
-            'colorStatuses',
-            'colorStatusesForSelect',
             'workPackageStatusesForSelect',
             'projectUsers',
             'projectCurrencySymbol',
+            'defaultTrafficLightValue',
+            'trafficLights',
         ]),
         isClosed() {
             return this.task.isClosed;
@@ -626,10 +637,7 @@ export default {
     },
     watch: {
         task(value) {
-            this.editableData.colorStatus = this.task.colorStatus
-                ? {id: this.task.colorStatus, name: this.task.colorStatusName}
-                : null
-            ;
+            this.editableData.trafficLight = this.task.trafficLight;
             this.editableData.workPackageStatus = this.task.workPackageStatus
                 ? {key: this.task.workPackageStatus, label: this.translateText(this.task.workPackageStatusName)}
                 : null
@@ -727,7 +735,6 @@ export default {
             'getTaskHistory',
             'deleteTaskSubtask',
             'addTaskComment',
-            'getColorStatuses',
             'editTask',
             'getProjectUsers',
             'getWorkPackageStatuses',
@@ -738,6 +745,17 @@ export default {
             'patchSubtask',
             'editTaskCost',
         ]),
+        onTrafficLightUpdate(trafficLight) {
+            this.editableData.trafficLight = trafficLight;
+            let data = {
+                trafficLight: trafficLight,
+            };
+
+            this.patchTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
         onSubtaskStatusChange(event) {
             let taskId = Number(event.target.value);
             let data = {
@@ -984,15 +1002,6 @@ export default {
             this.showOpenTaskModal = value;
             this.getTaskById(this.$route.params.taskId);
         },
-        updateColorStatus() {
-            let data = {
-                colorStatus: this.editableData.colorStatus.id,
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            });
-        },
         updateLabel() {
             let data = {
                 labels: [this.editableData.label.key],
@@ -1079,7 +1088,7 @@ export default {
                     informedUsers: [],
                 },
                 workPackageStatus: null,
-                colorStatus: false,
+                trafficLight: this.defaultTrafficLightValue,
                 label: null,
                 medias: [],
                 schedule: {

@@ -1,6 +1,5 @@
 import * as types from '../mutation-types';
 import Vue from 'vue';
-// import _ from 'lodash';
 
 const state = {
     wbs: [],
