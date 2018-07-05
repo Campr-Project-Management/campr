@@ -155,8 +155,7 @@
                             <small-task-box
                                     v-for="(task, index) in tasks"
                                     :key="index"
-                                    v-bind:task="task"
-                                    v-bind:colorStatuses="colorStatuses"/>
+                                    v-bind:task="task"/>
                         </div>
                         <div class="margintop20 buttons">
                             <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
@@ -226,7 +225,6 @@ export default {
             'getRecentTasksByProject',
             'getProjectUsers',
             'getTasksForSchedule',
-            'getColorStatuses',
             'getTasksStatus',
             'closeProject',
             'editProject',
@@ -267,15 +265,11 @@ export default {
         this.getTasksStatus(this.$route.params.id);
         this.getRecentTasksByProject(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
-        if (!this.$store.state.colorStatus || (this.$store.state.colorStatus.colorStatuses && this.$store.state.colorStatus.colorStatuses.length === 0)) {
-            this.getColorStatuses();
-        }
     },
     computed: {
         ...mapGetters({
             project: 'project',
             tasks: 'tasks',
-            colorStatuses: 'colorStatuses',
             projectSponsors: 'projectSponsors',
             projectManagers: 'projectManagers',
             tasksForSchedule: 'tasksForSchedule',
@@ -283,6 +277,9 @@ export default {
             contract: 'currentContract',
             localUser: 'localUser',
         }),
+        ...mapGetters([
+            'trafficLights',
+        ]),
         projectContractId() {
             if (this.contract && this.contract.id) {
                 return this.contract.id;
@@ -292,13 +289,6 @@ export default {
         },
         downloadPdf() {
             return Routing.generate('app_contract_pdf', {id: this.projectContractId});
-        },
-        trafficLights() {
-            return [
-                tl.TrafficLight.createGreen(),
-                tl.TrafficLight.createYellow(),
-                tl.TrafficLight.createRed(),
-            ];
         },
     },
     watch: {

@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="grid-view">
-                <task-box v-for="task in tasks" v-bind:task="task" v-bind:colorStatuses="colorStatuses"></task-box>
+                <task-box v-for="task in tasks" v-bind:task="task"></task-box>
             </div>
             <div class="pagination flex flex-center" v-if="count > 0">
                 <span v-for="page in pageCount" v-bind:class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
@@ -35,7 +35,7 @@ export default {
         Pagination,
     },
     methods: {
-        ...mapActions(['getTasks', 'getColorStatuses', 'setFilters']),
+        ...mapActions(['getTasks', 'setFilters']),
         changePage(page) {
             this.activePage = page;
             this.getTasksData();
@@ -61,7 +61,6 @@ export default {
     created() {
         this.setFilters({clear: true});
         this.getTasksData();
-        this.getColorStatuses();
     },
     computed: {
         ...mapGetters({
@@ -69,7 +68,6 @@ export default {
             tasks: 'tasks',
             count: 'tasksCount',
             tasksPerPage: 'tasksPerPage',
-            colorStatuses: 'colorStatuses',
         }),
         pages: function() {
             return Math.ceil(this.count / this.tasksPerPage);

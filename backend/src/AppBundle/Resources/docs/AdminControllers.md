@@ -13,10 +13,7 @@ The following controllers are used to create CRUD's for the existing entities:
 AssignmentController.php
 >
 CalendarController.php
->
-ColorStatusController.php
->
-CommunicationController.php
+.php
 >
 CompanyController.php
 >

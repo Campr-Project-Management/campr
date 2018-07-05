@@ -12,10 +12,9 @@ final class TrafficLight
 
     const GREEN = 2;
 
-    /**
-     * @var array
-     */
-    private static $codes = [
+    const VALUES = [self::RED, self::YELLOW, self::GREEN];
+
+    const CODES = [
         self::RED => 'red',
         self::YELLOW => 'yellow',
         self::GREEN => 'green',
@@ -33,7 +32,7 @@ final class TrafficLight
      */
     public function __construct(int $value)
     {
-        Assert::keyExists(self::$codes, $value);
+        Assert::keyExists(self::CODES, $value);
 
         $this->value = $value;
     }
@@ -51,7 +50,7 @@ final class TrafficLight
      */
     public function getCode(): string
     {
-        return self::$codes[$this->value];
+        return self::CODES[$this->value];
     }
 
     /**
@@ -91,6 +90,6 @@ final class TrafficLight
      */
     public static function getValues(): array
     {
-        return array_keys(self::$codes);
+        return self::VALUES;
     }
 }

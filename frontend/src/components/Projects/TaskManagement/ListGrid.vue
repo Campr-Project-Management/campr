@@ -34,10 +34,10 @@
                     :title="translate('label.status')"
                     :options="statusesOptions"/>
             <dropdown
-                    ref="colorStatuses"
-                    :selectedValue="selectColorStatus"
+                    ref="trafficLights"
+                    :selectedValue="selectTrafficLight"
                     :title="translate('message.condition')"
-                    :options="colorStatusesOptions"/>
+                    :options="trafficLightsForSelect"/>
             <a @click="filterTasks" class="btn-rounded btn-auto">{{ translate('button.show_results') }}</a>
             <a @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</a>
         </div>
@@ -49,11 +49,9 @@
                 <div class="grid-view">
                     <task-box
                             user="user"
-                            :color-statuses="colorStatuses"
                             v-for="task in tasks.items"
                             :task="task"
-                            :key="task.id">
-                    </task-box>
+                            :key="task.id"/>
                 </div>
                 <pagination
                         v-model.number="page"
@@ -95,7 +93,6 @@ export default {
 
         let project = this.$route.params.id;
         this.getProjectUsers({id: project});
-        this.getColorStatuses();
         this.getAllTasksGrid({project, page: 1});
     },
     computed: {
@@ -104,12 +101,8 @@ export default {
             'taskStatuses',
             'allTasks',
             'projectUsersForSelect',
-            'colorStatusesForSelect',
-            'colorStatuses',
+            'trafficLightsForSelect',
         ]),
-        colorStatusesOptions() {
-            return this.colorStatusesForSelect.filter((status) => status.key);
-        },
         statusesOptions() {
             return this.taskStatuses.map(item => ({label: this.translate(item.name), key: item.id}));
         },
@@ -130,10 +123,9 @@ export default {
             'setFilters',
             'getAllTasksGrid',
             'getProjectUsers',
-            'getColorStatuses',
         ]),
-        selectColorStatus(colorStatus) {
-            this.criteria.colorStatus = colorStatus;
+        selectTrafficLight(trafficLight) {
+            this.criteria.trafficLight = trafficLight;
         },
         selectAssignee(assignee) {
             this.criteria.assignee = assignee;
@@ -156,7 +148,7 @@ export default {
                 this.$refs.statuses.resetCustomTitle();
             }
             this.page = 1;
-            this.$refs.colorStatuses.resetCustomTitle();
+            this.$refs.trafficLights.resetCustomTitle();
             this.setFilters({clear: true});
             this.getAllTasksGrid({project, page: 1});
         },
