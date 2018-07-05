@@ -194,7 +194,7 @@ export default function create() {
 
             return this;
         },
-        appendTrafficLightLabel() {
+        appendStatus() {
             this.$calls.push(function() {
                 this
                     .append('text')
