@@ -9,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Todo;
@@ -29,7 +28,7 @@ class BaseCreateType extends AbstractType
         $builder
             ->add('meeting', EntityType::class, [
                 'class' => Meeting::class,
-                'required' => false,
+                'required' => true,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.meeting',
                 'translation_domain' => 'messages',
@@ -37,19 +36,9 @@ class BaseCreateType extends AbstractType
             ])
             ->add('title', TextType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.topic',
-                    ]),
-                ],
             ])
             ->add('description', TextareaType::class, [
                 'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.description',
-                    ]),
-                ],
             ])
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,

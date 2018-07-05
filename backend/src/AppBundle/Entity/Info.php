@@ -42,6 +42,7 @@ class Info
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="infos")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
+     * @Assert\NotBlank(message="not_blank.meeting")
      */
     private $meeting;
 
@@ -257,6 +258,8 @@ class Info
 
         if ($meeting->getProject()) {
             $this->project = $meeting->getProject();
+        } else {
+            $this->project = null;
         }
 
         return $this;

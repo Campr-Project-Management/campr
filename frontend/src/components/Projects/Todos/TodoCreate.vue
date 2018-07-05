@@ -27,6 +27,15 @@
                                     :options="todoCategoriesForSelect"
                                     v-model="todoCategory"
                                     :currentOption="todoCategory" />
+                                <error at-path="category"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select-field
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="meeting"
+                                    :currentOption="meeting" />
+                                <error at-path="meeting" />
                             </div>
                         </div>
                     </div>
@@ -50,10 +59,10 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <member-search
-                                        :selectedUser="responsibilityFullName"
-                                        v-model="responsibility"
-                                        :placeholder="translate('placeholder.responsible')"
-                                        :singleSelect="true"></member-search>
+                                    :selectedUser="responsibilityFullName"
+                                    v-model="responsibility"
+                                    :placeholder="translate('placeholder.responsible')"
+                                    :singleSelect="true" />
                                 <error at-path="responsiblity"/>
                             </div>
                             <div class="col-md-6">
@@ -125,6 +134,7 @@ export default {
             'getTodoStatuses',
             'getTodoById',
             'getTodoCategories',
+            'getProjectMeetings',
             'emptyValidationMessages',
         ]),
         saveTodo: function() {
@@ -137,19 +147,24 @@ export default {
                     description: this.description,
                     status: this.status ? this.status.key : null,
                     todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                    meeting: this.meeting ? this.meeting.key : null,
                 },
             };
 
-            this.createTodo(data).then((response) => {
-                if (response.body && response.body.error && response.body.messages) {
-                    this.showFailed = true;
-                    return;
-                }
+            this
+                .createTodo(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                            return;
+                        }
 
-                this.showSaved = true;
-            }, () => {
-
-            });
+                        this.showSaved = true;
+                    },
+                    () => {}
+                )
+            ;
         },
         updateTodo: function() {
             let data = {
@@ -158,31 +173,36 @@ export default {
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                 dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
                 description: this.description,
-                status: this.status.key,
-                todoCategory: this.todoCategory.key,
+                status: this.status ? this.status.key : null,
+                todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                meeting: this.meeting ? this.meeting.key : null,
             };
 
-            this.editTodo(data).then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        this.showFailed = true;
-                        return;
-                    }
+            this
+                .editTodo(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                            return;
+                        }
 
-                    this.showSaved = true;
-                },
-                () => {
-                    this.showFailed = true;
-                }
-            );
+                        this.showSaved = true;
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
     },
     created() {
         this.getTodoStatuses();
+        this.getProjectMeetings({projectId: this.$route.params.id});
+        this.getTodoCategories();
         if (this.$route.params.todoId) {
             this.getTodoById(this.$route.params.todoId);
         }
-        this.getTodoCategories();
     },
     computed: {
         ...mapGetters([
@@ -190,6 +210,7 @@ export default {
             'todoStatusesForSelect',
             'validationMessages',
             'todoCategoriesForSelect',
+            'projectMeetingsForSelect',
         ]),
         todo() {
             return this.currentTodo;
@@ -206,7 +227,12 @@ export default {
             this.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
             this.responsibility = [this.todo.responsibility];
             this.responsibilityFullName = this.todo.responsibilityFullName;
-            this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
+            this.todoCategory = this.todo.todoCategory
+                ? {key: this.todo.todoCategory, label: this.todo.todoCategoryName}
+                : null;
+            this.meeting = this.todo.meeting
+                ? {key: this.todo.meeting, label: this.todo.meetingName}
+                : null;
         },
     },
     data() {
@@ -219,6 +245,7 @@ export default {
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
+            meeting: null,
             showSaved: false,
             showFailed: false,
         };
