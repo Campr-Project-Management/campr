@@ -403,7 +403,7 @@ class MeetingController extends ApiController
      * Send notification to participants.
      *
      * @Route("/{id}/notifications", name="app_api_meeting_notifications", options={"expose"=true})
-     * @Method({"GET"})
+     * @Method({"POST"})
      *
      * @param Meeting $meeting
      *
@@ -413,21 +413,30 @@ class MeetingController extends ApiController
     {
         $mailerService = $this->get('app.service.mailer');
 
-        $meeting
+        $participants = $meeting
             ->getMeetingParticipants()
-            ->filter(function (MeetingParticipant $meetingParticipant) {
-                return $meetingParticipant->getInDistributionList() && $meetingParticipant->getUser();
-            })
-            ->map(function (MeetingParticipant $meetingParticipant) use ($mailerService) {
-                $mailerService->sendEmail(
-                    ':meeting:notification.html.twig',
-                    'info',
-                    $meetingParticipant->getUser()->getEmail(),
-                    ['meeting' => $meetingParticipant->getMeeting()]
-                );
-            })
+            ->filter(
+                function (MeetingParticipant $meetingParticipant) {
+                    return $meetingParticipant->getInDistributionList() && $meetingParticipant->getUser();
+                }
+            )
         ;
 
-        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+        $count = 0;
+        foreach ($participants as $participant) {
+            $count += $mailerService->sendEmail(
+                ':meeting:notification.html.twig',
+                'info',
+                $participant->getUser()->getEmail(),
+                ['meeting' => $participant->getMeeting()]
+            );
+        }
+
+        return $this->createApiResponse(
+            [
+                'message' => $this->get('translator')->trans('message.email_sent', ['%count%' => $count]),
+            ],
+            Response::HTTP_NO_CONTENT
+        );
     }
 }
