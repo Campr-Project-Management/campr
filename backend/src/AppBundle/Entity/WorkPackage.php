@@ -67,7 +67,7 @@ class WorkPackage
      * @var WorkPackage
      *
      * @Serializer\Exclude()
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="phaseChildren")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="phase_id", referencedColumnName="id")
      * })
@@ -75,15 +75,31 @@ class WorkPackage
     private $phase;
 
     /**
+     * @var WorkPackage[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="phase")
+     */
+    private $phaseChildren;
+
+    /**
      * @var WorkPackage
      *
      * @Serializer\Exclude()
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="milestoneChildren")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="milestone_id", referencedColumnName="id")
      * })
      */
     private $milestone;
+
+    /**
+     * @var WorkPackage[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="milestone")
+     */
+    private $milestoneChildren;
 
     /**
      * @var WorkPackage
@@ -478,6 +494,8 @@ class WorkPackage
         $this->informedUsers = new ArrayCollection();
         $this->puid = 1558; // will be changed by the listener anyway
         $this->trafficLight = TrafficLight::GREEN;
+        $this->phaseChildren = new ArrayCollection();
+        $this->milestoneChildren = new ArrayCollection();
     }
 
     public function __toString()
@@ -2425,5 +2443,45 @@ class WorkPackage
     public function setTrafficLight(int $trafficLight = null)
     {
         $this->trafficLight = $trafficLight;
+    }
+
+    /**
+     * @return WorkPackage[]|ArrayCollection
+     */
+    public function getPhaseChildren()
+    {
+        return $this->phaseChildren;
+    }
+
+    /**
+     * @param WorkPackage[]|array $phaseChildren
+     */
+    public function setPhaseChildren($phaseChildren)
+    {
+        $this->phaseChildren = $phaseChildren;
+    }
+
+    /**
+     * @return WorkPackage[]|ArrayCollection
+     */
+    public function getMilestoneChildren()
+    {
+        return $this->milestoneChildren;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $milestoneChildren
+     */
+    public function setMilestoneChildren($milestoneChildren)
+    {
+        $this->milestoneChildren = $milestoneChildren;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return !$this->getParent();
     }
 }
