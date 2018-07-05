@@ -70,6 +70,10 @@ class MeetingControllerTest extends BaseController
             $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
         }
 
+        $responseContent['openDecisions'] = $actual['openDecisions'];
+        $responseContent['openInfos'] = $actual['openInfos'];
+        $responseContent['openTodos'] = $actual['openTodos'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContent, $actual);
@@ -284,6 +288,9 @@ class MeetingControllerTest extends BaseController
                     'distributionLists' => [],
                     'createdAt' => '',
                     'updatedAt' => '',
+                    'openDecisions' => [],
+                    'openTodos' => [],
+                    'openInfos' => [],
                 ],
             ],
         ];

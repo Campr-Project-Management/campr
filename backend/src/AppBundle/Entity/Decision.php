@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Decision.
@@ -40,6 +41,7 @@ class Decision
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="decisions")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
+     * @Assert\NotBlank(message="not_blank.meeting")
      */
     private $meeting;
 
@@ -47,6 +49,7 @@ class Decision
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank(message="not_blank.title")
      */
     private $title;
 
@@ -54,6 +57,7 @@ class Decision
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank(message="not_blank.description")
      */
     private $description;
 
@@ -326,6 +330,12 @@ class Decision
     public function setMeeting(Meeting $meeting = null)
     {
         $this->meeting = $meeting;
+
+        if ($meeting->getProject()) {
+            $this->project = $meeting->getProject();
+        } else {
+            $this->project = null;
+        }
 
         return $this;
     }

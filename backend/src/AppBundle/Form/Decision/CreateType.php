@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
 {
@@ -31,13 +30,6 @@ class CreateType extends AbstractType
                 TextType::class,
                 [
                     'required' => true,
-                    'constraints' => [
-                        new NotBlank(
-                            [
-                                'message' => 'not_blank.title',
-                            ]
-                        ),
-                    ],
                 ]
             )
             ->add(
@@ -45,13 +37,6 @@ class CreateType extends AbstractType
                 TextareaType::class,
                 [
                     'required' => true,
-                    'constraints' => [
-                        new NotBlank(
-                            [
-                                'message' => 'not_blank.description',
-                            ]
-                        ),
-                    ],
                 ]
             )
             ->add(
