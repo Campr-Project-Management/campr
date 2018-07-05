@@ -130,7 +130,11 @@ class WorkPackageController extends ApiController
         $form = $this->createForm(
             ApiAttachmentType::class,
             $wp,
-            ['csrf_protection' => false, 'method' => $request->getMethod()]
+            [
+                'csrf_protection' => false,
+                'method' => $request->getMethod(),
+                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
+            ]
         );
 
         $this->processForm($request, $form);
@@ -153,9 +157,7 @@ class WorkPackageController extends ApiController
                 $media->setFileSystem($fs);
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($wp);
-            $em->flush();
+            $this->get('app.repository.work_package')->add($wp);
 
             return $this->createApiResponse($wp);
         } catch (FileAlreadyExists $ex) {
@@ -192,6 +194,7 @@ class WorkPackageController extends ApiController
             [
                 'csrf_protection' => false,
                 'method' => $request->getMethod(),
+                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
                 'validation_groups' => ['Default', 'edit'],
             ]
         );

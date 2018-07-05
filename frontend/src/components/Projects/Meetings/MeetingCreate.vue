@@ -56,26 +56,24 @@
                                     <date-field v-model="schedule.meetingDate"/>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
-                                    <timepicker v-model="schedule.startTime" hide-clear-button />
-                                    <error
-                                        v-if="validationMessages.start && validationMessages.start.length"
-                                        v-for="(message, index) in validationMessages.start"
-                                        :key="`schedule-schedule-${index}`"
-                                        :message="message" />
+                                    <timepicker
+                                            v-model="schedule.startTime"
+                                            hide-clear-button
+                                            :minute-interval="15"/>
+                                    <error at-path="start"/>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <timepicker v-model="schedule.endTime" hide-clear-button />
-                                    <error
-                                        v-if="validationMessages.end && validationMessages.end.length"
-                                        v-for="(message, index) in validationMessages.end"
-                                        :key="`schedule-end-${index}`"
-                                        :message="message" />
+                                    <timepicker
+                                            v-model="schedule.endTime"
+                                            hide-clear-button
+                                            :minute-interval="15" />
+                                    <error at-path="end"/>
                                 </div>
                             </div>
                         </div>
@@ -193,7 +191,12 @@
                     <hr class="double">
 
                     <!-- /// Meeting Documents /// -->
-                    <meeting-attachments v-on:input="setMedias" :editMedias="medias" />
+                    <h3>{{ translate('message.documents') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            label="button.add_document"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
@@ -439,7 +442,6 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import MeetingAttachments from './MeetingAttachments';
 import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -451,16 +453,17 @@ import MeetingParticipants from './MeetingParticipants';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
+import Attachments from '../../_common/Attachments';
 
 export default {
     components: {
+        Attachments,
         DateField,
         MeetingDecisionForm,
         DeleteIcon,
         InputField,
         SelectField,
         MemberSearch,
-        MeetingAttachments,
         Timepicker,
         MultiSelectField,
         AlertModal,
@@ -617,7 +620,18 @@ export default {
             'validationMessages',
             'validationMessagesFor',
             'decisionsStatusesForSelect',
+            'projectMaxUploadFileSize',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         decisionsStatusesOptions() {
             return this.decisionsStatusesForSelect.map((option) => {
                 return Object.assign({}, option, {label: this.translate(option.label)});
