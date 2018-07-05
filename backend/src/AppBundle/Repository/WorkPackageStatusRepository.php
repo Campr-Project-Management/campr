@@ -27,4 +27,18 @@ class WorkPackageStatusRepository extends BaseRepository
 
         return $status;
     }
+
+    /**
+     * @return WorkPackageStatus[]
+     */
+    public function findAllVisibleSortedByProgress()
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->andWhere('o.visible = true')
+            ->addOrderBy('o.progress', 'asc')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

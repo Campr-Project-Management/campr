@@ -7,6 +7,7 @@ use AppBundle\Entity\Label;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackageCategory;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Form\TrafficLight\TrafficLightType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -22,7 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\User;
-use AppBundle\Entity\ColorStatus;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class CreateType extends BaseType
@@ -114,14 +114,13 @@ class CreateType extends BaseType
                 'translation_domain' => 'messages',
                 'choice_translation_domain' => 'messages',
             ])
-            ->add('colorStatus', EntityType::class, [
-                'class' => ColorStatus::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.color_status',
-                'translation_domain' => 'messages',
-                'choice_translation_domain' => 'messages',
-            ])
+            ->add(
+                'trafficLight',
+                TrafficLightType::class,
+                [
+                    'placeholder' => 'placeholder.color_status',
+                ]
+            )
             ->add('responsibility', EntityType::class, [
                 'class' => User::class,
                 'required' => true,
@@ -317,7 +316,7 @@ class CreateType extends BaseType
                     $formData = $event->getData();
                     $form = $event->getForm();
                     $wp = $form->getData();
-                    if ($wp->getWorkpackageStatus() == null && $this->em !== null) {
+                    if (null == $wp->getWorkpackageStatus() && null !== $this->em) {
                         $formData->setWorkPackageStatus($this
                             ->em
                             ->getRepository(WorkPackageStatus::class)

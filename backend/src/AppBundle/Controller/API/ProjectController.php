@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Calendar;
-use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Decision;
@@ -1282,23 +1281,23 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/tasks-status", name="app_api_project_tasks_status", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function tasksStatusAction(Project $project)
     {
         $response = [];
         $statuses = $this->getDoctrine()->getRepository(WorkPackageStatus::class)->findAll();
-        $colorStatuses = $this->getDoctrine()->getRepository(ColorStatus::class)->findAll();
         $wpRepo = $this->getDoctrine()->getRepository(WorkPackage::class);
         $response['message.total_tasks'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project);
         foreach ($statuses as $status) {
-            $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, $status);
-        }
-
-        $response['conditions']['total'] = 0;
-        foreach ($colorStatuses as $status) {
-            $response['conditions'][$status->getName()]['count'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, null, $status);
-            $response['conditions'][$status->getName()]['color'] = $status->getColor();
-            $response['conditions']['total'] += $response['conditions'][$status->getName()]['count'];
+            $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(
+                WorkPackage::TYPE_TASK,
+                $project,
+                $status
+            );
         }
 
         return $this->createApiResponse($response);

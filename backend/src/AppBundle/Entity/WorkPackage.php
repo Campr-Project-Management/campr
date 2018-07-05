@@ -2,25 +2,23 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Validator\Constraints\WorkPackageNonSelfReferencing;
+use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\Constraints\WorkPackageAssignments;
-use AppBundle\Validator\Constraints\WorkPackageScheduledDates;
-use AppBundle\Validator\Constraints\WorkPackageForecastDates;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * WorkPackage.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
- * @WorkPackageAssignments()
- * @WorkPackageScheduledDates(groups={"create"})
- * @WorkPackageForecastDates(groups={"edit"})
- * @WorkPackageNonSelfReferencing()
+ * @AppAssert\WorkPackageAssignments()
+ * @AppAssert\WorkPackageScheduledDates(groups={"create"})
+ * @AppAssert\WorkPackageForecastDates(groups={"edit"})
+ * @AppAssert\WorkPackageNonSelfReferencing()
  */
 class WorkPackage
 {
@@ -103,16 +101,6 @@ class WorkPackage
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
-
-    /**
-     * @var ColorStatus|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ColorStatus", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="color_status_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $colorStatus;
 
     /**
      * @var int
@@ -463,6 +451,15 @@ class WorkPackage
     private $internalForecastCost = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="traffic_light", type="integer", nullable=false, options={"default": 2})
+     * @Assert\NotNull()
+     * @AppAssert\TrafficLight()
+     */
+    private $trafficLight;
+
+    /**
      * WorkPackage constructor.
      */
     public function __construct()
@@ -480,6 +477,7 @@ class WorkPackage
         $this->consultedUsers = new ArrayCollection();
         $this->informedUsers = new ArrayCollection();
         $this->puid = 1558; // will be changed by the listener anyway
+        $this->trafficLight = TrafficLight::GREEN;
     }
 
     public function __toString()
@@ -1091,30 +1089,6 @@ class WorkPackage
     }
 
     /**
-     * Set colorStatus.
-     *
-     * @param ColorStatus $colorStatus
-     *
-     * @return WorkPackage
-     */
-    public function setColorStatus(ColorStatus $colorStatus = null)
-    {
-        $this->colorStatus = $colorStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get colorStatus.
-     *
-     * @return ColorStatus
-     */
-    public function getColorStatus()
-    {
-        return $this->colorStatus;
-    }
-
-    /**
      * Set responsibility.
      *
      * @param User $responsibility
@@ -1354,45 +1328,6 @@ class WorkPackage
     public function getParentName()
     {
         return $this->parent ? $this->parent->getName() : null;
-    }
-
-    /**
-     * Returns ColorStatus id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatus")
-     *
-     * @return string
-     */
-    public function getColorStatusId()
-    {
-        return $this->colorStatus ? $this->colorStatus->getId() : null;
-    }
-
-    /**
-     * Returns ColorStatus name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusName")
-     *
-     * @return string
-     */
-    public function getColorStatusName()
-    {
-        return $this->colorStatus ? $this->colorStatus->getName() : null;
-    }
-
-    /**
-     * Returns ColorStatus color.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusColor")
-     *
-     * @return string
-     */
-    public function getColorStatusColor()
-    {
-        return $this->colorStatus ? $this->colorStatus->getColor() : null;
     }
 
     /**
@@ -2474,5 +2409,21 @@ class WorkPackage
         $status = $this->getWorkPackageStatus();
 
         return $status && $status->isCompleted();
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrafficLight(): int
+    {
+        return (int) $this->trafficLight;
+    }
+
+    /**
+     * @param int $trafficLight
+     */
+    public function setTrafficLight(int $trafficLight = null)
+    {
+        $this->trafficLight = $trafficLight;
     }
 }
