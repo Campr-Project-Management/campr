@@ -12,13 +12,6 @@ import $ from 'jquery';
 import _ from 'lodash';
 import AlertModal from '../_common/AlertModal.vue';
 import builderFactory from './WBS/WBSBuilder';
-// import router from '../../router';
-// import moment from 'moment';
-
-// const TASK_STATUS_OPEN = 1;
-// const TASK_STATUS_ONGOING = 3;
-// const TASK_STATUS_COMPLETED = 4;
-
 
 export default {
     components: {
@@ -107,23 +100,10 @@ export default {
                 return;
             }
 
-            // let actualStartAt = null;
-            // let actualFinishAt = null;
-            // if (progress === 100) {
-            //     actualFinishAt = moment().format('DD-MM-YYYY');
-            // } else if (progress === 0) {
-            //     actualStartAt = moment().format('DD-MM-YYYY');
-            // } else {
-            //     actualFinishAt = moment(entity.actualFinishAt).format('DD-MM-YYYY');
-            // }
-
             this
                 .patchTask({
                     data: {
                         progress: progress,
-                        // workPackageStatus: entity.workPackageStatus,
-                        // actualStartAt: entity.actualStartAt,
-                        // actualFinishAt: entity.actualFinishAt,
                     },
                     taskId: entity.id,
                 })
@@ -292,68 +272,6 @@ export default {
     @import '../../css/mixins';
     @import '../../css/variables';
 
-    body {
-        &.title-body {
-            min-height: initial !important;
-            background-color: transparent;
-
-            table {
-                color: #ffffff;
-                width: 160px;
-                height: 70px;
-                padding: 0;
-                margin: 0;
-                white-space: normal;
-
-                td {
-                    text-align: center;
-                    vertical-align: middle;
-                    padding: 0;
-                    margin: 0;
-                }
-            }
-        }
-
-        &.color-status-selector {
-            min-height: initial !important;
-            width: auto;
-            min-width: 115px;
-            display: block;
-            background-color: #191E37;
-
-            ul {
-                margin: 3px;
-                li {
-                    color: #5dff88;
-                    margin: 3px;
-                    font-size: 8px !important;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-
-                    &.active {
-                        font-weight: bold;
-
-                        &:before {
-                            content: '> ';
-                        }
-
-                        .glyphicon {
-                            color: #ffffff;
-                        }
-                    }
-
-                    &:hover {
-                        color: #ffff00;
-                    }
-                }
-            }
-        }
-    }
-
-    .overlay {
-        background-color: #eeeeee;
-    }
-
     .link {
         fill: none;
         stroke: #8794c4;
@@ -362,12 +280,6 @@ export default {
 
     .node {
         cursor: pointer;
-
-        circle {
-            fill: #fff;
-            stroke: steelblue;
-            stroke-width: 1.5px;
-        }
 
         text {
             font-size: 10px;
@@ -381,14 +293,19 @@ export default {
             }
         }
 
-        a {
-            &:hover {
-                color: $middleColor;
-            }
-        }
+        .title-body {
+            min-height: initial !important;
+            background-color: transparent;
 
-        .title {
-            font-weight: bold;
+            .title {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 28px 5px 5px 5px;
+                color: $whiteColor;
+                height: 70px;
+                text-align: center;
+                text-transform: uppercase;
+            }
         }
 
         .top-menu {
