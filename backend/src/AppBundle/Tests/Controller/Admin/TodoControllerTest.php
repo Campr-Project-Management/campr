@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\Company;
@@ -83,9 +84,9 @@ class TodoControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[meeting]'] = 1;
         $form['create[title]'] = 'todo3';
         $form['create[description]'] = 'description3';
-        $form['create[project]'] = $project->getId();
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());

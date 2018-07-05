@@ -13,17 +13,25 @@
                     </div>
                 </div>
                 <!-- /// End Header /// -->
-                
+
                 <div class="form">
                     <!-- /// Info Category /// -->
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <select-field
-                                        :title="translate('label.category')"
-                                        :options="infoCategoriesForDropdown"
-                                        v-model="infoCategory"/>
+                                    :title="translate('label.category')"
+                                    :options="infoCategoriesForDropdown"
+                                    v-model="infoCategory"/>
                                 <error at-path="infoCategory"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select-field
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="meeting"
+                                    :currentOption="meeting" />
+                                <error at-path="meeting" />
                             </div>
                         </div>
                     </div>
@@ -32,7 +40,7 @@
                     <!-- /// Info Title and Description /// -->
                     <div class="form-group">
                         <input-field type="text" :label="translate('placeholder.info_topic')" v-model="topic" :content="topic" />
-                        <error at-path="topic"/>
+                        <error at-path="topic" />
                     </div>
                     <div class="form-group">
                         <editor
@@ -111,6 +119,7 @@ export default {
             'createInfo',
             'editInfo',
             'emptyValidationMessages',
+            'getProjectMeetings',
         ]),
         doSave() {
             const data = {
@@ -122,6 +131,9 @@ export default {
                     : null,
                 responsibility: this.responsibility && this.responsibility.length
                     ? this.responsibility[0]
+                    : null,
+                meeting: this.meeting
+                    ? this.meeting.key
                     : null,
             };
 
@@ -176,14 +188,23 @@ export default {
                     label: this.translate(val.infoCategoryName),
                 };
                 this.responsibility = [val.responsibility];
+                this.meeting = val.meeting
+                    ? {key: val.meeting, label: val.meetingName}
+                    : null;
             }
         },
     },
     computed: {
-        ...mapGetters(['info', 'infoCategoriesForDropdown', 'validationMessages']),
+        ...mapGetters([
+            'info',
+            'infoCategoriesForDropdown',
+            'validationMessages',
+            'projectMeetingsForSelect',
+        ]),
     },
     created() {
         this.getInfoCategories();
+        this.getProjectMeetings({projectId: this.$route.params.id});
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
         }
@@ -201,6 +222,7 @@ export default {
             expiresAt: null,
             infoCategory: null,
             responsibility: [],
+            meeting: null,
         };
     },
 };
