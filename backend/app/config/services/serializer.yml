@@ -44,3 +44,10 @@ services:
              - '@app.resolver.user_avatar_url'
         tags:
             - { name: jms_serializer.event_subscriber }
+
+    app.serializer.listener.meeting:
+        class: AppBundle\Serializer\EventListener\MeetingSubscriber
+        arguments:
+             - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: jms_serializer.event_subscriber }

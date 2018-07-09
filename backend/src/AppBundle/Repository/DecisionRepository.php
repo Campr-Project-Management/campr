@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Decision;
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Repository\Traits\UserSortingTrait;
@@ -112,7 +114,32 @@ class DecisionRepository extends BaseRepository
             ->setParameter('date', $date)
             ->setParameter('project', $project)
             ->getQuery()
-            ->getResult()
+            ->getResult();
+    }
+
+    /**
+     * @param Meeting $meeting
+     *
+     * @return Decision[]
+     */
+    public function findOpenAndNotExpiredByMeeting(Meeting $meeting)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $date = new \DateTime('-6 days');
+        $date->setTime(0, 0, 0);
+
+        $qb
+            ->andWhere('o.project = :project')
+            ->andWhere('(o.done <> 1 or (o.done = 1 and o.doneAt >= :date))')
+            ->setParameter('date', $date)
+            ->setParameter('project', $meeting->getProject())
         ;
+
+        if ($meeting->getId()) {
+            $qb->andWhere($qb->expr()->neq('o.meeting', $meeting->getId()));
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

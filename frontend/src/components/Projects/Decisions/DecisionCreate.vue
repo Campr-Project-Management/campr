@@ -21,17 +21,17 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                        :title="translate('message.event')"
-                                        :options="projectMeetingsForSelect"
-                                        v-model="details.meeting"/>
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="details.meeting"/>
                                 <error at-path="meeting"/>
                             </div>
 
                             <div class="col-md-6">
                                 <select-field
-                                        :title="translate('label.category')"
-                                        :options="decisionCategoriesForSelect"
-                                        v-model="details.decisionCategory"/>
+                                    :title="translate('label.category')"
+                                    :options="decisionCategoriesForSelect"
+                                    v-model="details.decisionCategory"/>
                                 <error at-path="decisionCategory"/>
                             </div>
                         </div>

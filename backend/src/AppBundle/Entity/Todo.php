@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Todo.
@@ -50,6 +51,7 @@ class Todo
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="todos")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
+     * @Assert\NotBlank(message="not_blank.meeting")
      */
     private $meeting;
 
@@ -57,6 +59,7 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank(message="not_blank.topic")
      */
     private $title;
 
@@ -64,6 +67,7 @@ class Todo
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @Assert\NotBlank(message="not_blank.description")
      */
     private $description;
 
@@ -330,7 +334,7 @@ class Todo
     {
         $this->meeting = $meeting;
 
-        if ($meeting instanceof Meeting) {
+        if ($meeting->getProject()) {
             $this->project = $meeting->getProject();
         } else {
             $this->project = null;

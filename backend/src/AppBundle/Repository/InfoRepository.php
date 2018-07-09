@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Info;
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -66,7 +68,31 @@ class InfoRepository extends BaseRepository
             ->setParameter('date', $date)
             ->setParameter('project', $project)
             ->getQuery()
-            ->getResult()
+            ->getResult();
+    }
+
+    /**
+     * @param Meeting $meeting
+     *
+     * @return Info[]
+     */
+    public function findOpenAndNotExpiredByMeeting(Meeting $meeting)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $date = new \DateTime('-6 days');
+
+        $qb
+            ->andWhere('o.project = :project')
+            ->andWhere('o.expiresAt >= :date')
+            ->setParameter('date', $date)
+            ->setParameter('project', $meeting->getProject())
         ;
+
+        if ($meeting->getId()) {
+            $qb->andWhere($qb->expr()->neq('o.meeting', $meeting->getId()));
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
