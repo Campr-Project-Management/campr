@@ -2,7 +2,6 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
-use AppBundle\Entity\Company;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
