@@ -115,8 +115,8 @@ class TodoControllerTest extends BaseController
                 [
                     'status' => null,
                     'statusName' => null,
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'meeting' => 1,
+                    'meetingName' => 'meeting1',
                     'project' => 1,
                     'projectName' => 'project1',
                     'responsibility' => null,
