@@ -78,7 +78,7 @@
                             <tr v-for="(meeting, index) in projectMeetings.items"
                                 :key="index"
                                 :class="{'inactive': isInactive(meeting)}">
-                                <td>{{ meeting.name }}</td>
+                                <td>{{ translate(meeting.name) }}</td>
                                 <td>{{ meeting.meetingCategoryName }}</td>
                                 <td>{{ meeting.date | moment('DD.MM.YYYY') }}</td>
                                 <td>{{ meeting.start }} - {{ meeting.end }}</td>
