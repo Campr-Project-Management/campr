@@ -1241,6 +1241,12 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['medias'][$key]['originalName'] = $info['originalName'];
         }
 
+        foreach ($actual['items'] as $key => $item) {
+            $responseContent['items'][$key]['openDecisions'] = $item['openDecisions'];
+            $responseContent['items'][$key]['openInfos'] = $item['openInfos'];
+            $responseContent['items'][$key]['openTodos'] = $item['openTodos'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContent, $actual);
@@ -1456,6 +1462,9 @@ class ProjectControllerTest extends BaseController
                             'distributionLists' => [],
                             'createdAt' => null,
                             'updatedAt' => null,
+                            'openDecisions' => [],
+                            'openTodos' => [],
+                            'openInfos' => [],
                         ],
                     ],
                     'totalItems' => 1,
@@ -1706,6 +1715,7 @@ class ProjectControllerTest extends BaseController
         return [
             [
                 [
+                    'meeting' => 1,
                     'topic' => 'note project 1',
                     'description' => 'description text',
                     'infoCategory' => 1,
@@ -1720,8 +1730,8 @@ class ProjectControllerTest extends BaseController
                     'responsibilityGravatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                     'project' => 1,
                     'projectName' => 'project1',
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'meeting' => 1,
+                    'meetingName' => 'meeting1',
                     'infoCategory' => 1,
                     'infoCategoryName' => 'label.production',
                     'id' => 3,
@@ -2792,6 +2802,7 @@ class ProjectControllerTest extends BaseController
         return [
             [
                 [
+                    'meeting' => 1,
                     'title' => 'do this',
                     'description' => 'descript',
                 ],
@@ -2800,8 +2811,8 @@ class ProjectControllerTest extends BaseController
                 [
                     'status' => null,
                     'statusName' => null,
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'meeting' => 1,
+                    'meetingName' => 'meeting1',
                     'project' => 1,
                     'projectName' => 'project1',
                     'responsibility' => null,
