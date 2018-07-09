@@ -21,30 +21,30 @@
             >
             </meeting-modals>
             <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
-                <p class="modal-title">{{ translateText('message.delete_meeting') }}</p>
+                <p class="modal-title">{{ translate('message.delete_meeting') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMeetingModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteMeeting()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
                 </div>
             </modal>
             <modal v-if="rescheduleModal" @close="rescheduleModal = false" v-bind:hasSpecificClass="true">
-                <p class="modal-title">{{ translateText('message.reschedule_meeting') }}</p>
+                <p class="modal-title">{{ translate('message.reschedule_meeting') }}</p>
                 <div class="form-group last-form-group">
                     <div class="col-md-4">
                         <div class="input-holder">
-                            <label class="active">{{ translateText('label.select_date') }}</label>
+                            <label class="active">{{ translate('label.select_date') }}</label>
                             <date-field v-model="date"/>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="input-holder">
-                            <label class="active">{{ translateText('label.start_time') }}</label>
+                            <label class="active">{{ translate('label.start_time') }}</label>
                             <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="input-holder">
-                            <label class="active">{{ translateText('label.finish_time') }}</label>
+                            <label class="active">{{ translate('label.finish_time') }}</label>
                             <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
                         </div>
                     </div>
@@ -52,16 +52,16 @@
                 <hr class="double">
 
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translateText('button.save') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="rescheduleMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                 </div>
             </modal>
 
             <modal v-if="showNotificationModal" @close="showNotificationModal = false">
-                <p class="modal-title">{{ translateText('message.send_notifications') }}</p>
+                <p class="modal-title">{{ translate('message.send_notifications') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -72,15 +72,15 @@
                         <div>
                             <router-link :to="{name: 'project-meetings'}" class="small-link">
                                 <i class="fa fa-angle-left"></i>
-                                {{ translateText('message.back_to_meetings') }}
+                                {{ translate('message.back_to_meetings') }}
                             </router-link>
                             <h1>{{ meeting.name }}</h1>
                             <h3 class="category"><b>{{ meeting.meetingCategoryName }}</b></h3>
                             <h4>
-                                {{ translateText('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
-                                {{ translateText('message.from') }} <b>{{ meeting.start }}</b> {{ translateText('message.to') }} <b>{{ meeting.end }}</b> | {{ translateText('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translateText('message.min') }}</b>
+                                {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
+                                {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{ meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translate('message.min') }}</b>
                             </h4>
-                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
+                            <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
@@ -88,22 +88,22 @@
 
 
                 <!-- /// Meeting Location /// -->
-                <h3>{{ translateText('message.location') }}</h3>
+                <h3>{{ translate('message.location') }}</h3>
                 <p>{{ meeting.location }}</p>
                 <!-- /// End Meeting Location /// -->
 
                 <hr class="double">
 
                 <!-- /// Meeting Objectives /// -->
-                <h3>{{ translateText('message.objectives') }}</h3>
+                <h3>{{ translate('message.objectives') }}</h3>
                 <ul class="action-list" v-if="meeting.meetingObjectives">
                     <li v-for="objective in meeting.meetingObjectives">
                         <div class="list-item-description">
                             {{ objective.description }}
                         </div>
                         <div class="list-item-actions">
-                            <a @click="initEditObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
-                            <a @click="initDeleteObjective(objective)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
+                            <a @click="initEditObjective(objective)" class="btn-icon" v-tooltip.top-center="translate('message.edit_objective')"><edit-icon fill="second-fill"></edit-icon></a>
+                            <a @click="initDeleteObjective(objective)" class="btn-icon" v-tooltip.top-center="translate('message.delete_objective')"><delete-icon fill="danger-fill"></delete-icon></a>
                         </div>
                     </li>
                 </ul>
@@ -112,19 +112,19 @@
                 <hr class="double">
 
                 <!-- /// Meeting Agenda /// -->
-                <h3>{{ translateText('message.agenda') }}</h3>
+                <h3>{{ translate('message.agenda') }}</h3>
                 <div class="overflow-hidden">
                     <scrollbar class="table-wrapper customScrollbar">
                         <div class="scroll-wrapper">
                             <table class="table table-striped table-responsive">
                                 <thead>
                                     <tr>
-                                        <th>{{ translateText('table_header_cell.topic') }}</th>
-                                        <th>{{ translateText('table_header_cell.responsible') }}</th>
-                                        <th>{{ translateText('table_header_cell.start') }}</th>
-                                        <th>{{ translateText('table_header_cell.finish') }}</th>
-                                        <th>{{ translateText('table_header_cell.duration') }}</th>
-                                        <th>{{ translateText('table_header_cell.actions') }}</th>
+                                        <th>{{ translate('table_header_cell.topic') }}</th>
+                                        <th>{{ translate('table_header_cell.responsible') }}</th>
+                                        <th>{{ translate('table_header_cell.start') }}</th>
+                                        <th>{{ translate('table_header_cell.finish') }}</th>
+                                        <th>{{ translate('table_header_cell.duration') }}</th>
+                                        <th>{{ translate('table_header_cell.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody v-if="meetingAgendas">
@@ -139,11 +139,11 @@
                                         </td>
                                         <td>{{ agenda.start }}</td>
                                         <td>{{ agenda.end }}</td>
-                                        <td>{{ getDuration(agenda.start, agenda.end) }} {{ translateText('message.min') }}</td>
+                                        <td>{{ getDuration(agenda.start, agenda.end) }} {{ translate('message.min') }}</td>
                                         <td>
                                             <div class="text-right">
-                                                <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translateText('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
-                                                <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translateText('label.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                                <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translate('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
+                                                <a @click="initDeleteAgenda(agenda)" class="btn-icon" v-tooltip.top-center="translate('label.delete_topic')"><delete-icon fill="danger-fill"></delete-icon></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -157,7 +157,7 @@
                         <span v-if="agendasPages > 1" v-for="page in agendasPages" v-bind:class="{'active': page == agendasActivePage}" @click="changeAgendasPage(page)">{{ page }}</span>
                     </div>
                     <div>
-                        <span class="pagination-info">{{ translateText('message.displaying') }} {{ meetingAgendas.items.length }} {{ translateText('message.results_out_of') }} {{ meetingAgendas.totalItems }}</span>
+                        <span class="pagination-info">{{ translate('message.displaying') }} {{ meetingAgendas.items.length }} {{ translate('message.results_out_of') }} {{ meetingAgendas.totalItems }}</span>
                     </div>
                 </div>
                 <!-- /// End Meeting Agenda /// -->
@@ -165,10 +165,10 @@
                 <hr class="double">
 
                 <!-- /// Meeting Documents /// -->
-                <h3>{{ translateText('message.documents') }}</h3>
+                <h3>{{ translate('message.documents') }}</h3>
                 <ul class="attachments" v-if="meeting.medias">
                     <li v-for="media in meeting.medias">
-                        <a :href="downloadMedia(media)" :title="translateText('message.download_attachment')">{{ media.path }} <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a>
+                        <a :href="downloadMedia(media)" :title="translate('message.download_attachment')">{{ media.path }} <downloadbutton-icon fill="second-fill"></downloadbutton-icon></a>
                     </li>
                 </ul>
                 <!-- /// End Meeting Documents /// -->
@@ -176,19 +176,19 @@
                 <hr class="double">
 
                 <!-- /// Decisions /// -->
-                <h3>{{ translateText('message.decisions') }}</h3>
+                <h3>{{ translate('message.decisions') }}</h3>
 
                 <div class="entries-wrapper" v-if="meeting.decisions || meeting.openDecisions">
                     <div class="entry" v-for="decision in meeting.openDecisions">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -199,17 +199,17 @@
                     <div class="entry" v-for="decision in meeting.decisions">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
                             </div>
                             <div class="entry-buttons">
                                 <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -222,19 +222,19 @@
                 <hr class="double">
 
                 <!-- /// ToDos /// -->
-                <h3>{{ translateText('message.todos') }}</h3>
+                <h3>{{ translate('message.todos') }}</h3>
 
                 <div class="entries-wrapper" v-if="meeting.todos || meeting.openTodos">
                     <div class="entry" v-for="todo in meeting.openTodos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ translateText(todo.statusName) }}</b><b v-else>-</b>
+                                <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -245,17 +245,17 @@
                     <div class="entry" v-for="todo in meeting.todos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translateText('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translateText('message.status') }}: <b v-if="todo.status">{{ translateText(todo.statusName) }}</b><b v-else>-</b>
+                                <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
                                 <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -268,7 +268,7 @@
                 <hr class="double">
 
                 <!-- /// Infos /// -->
-                <h3>{{ translateText('message.infos') }}</h3>
+                <h3>{{ translate('message.infos') }}</h3>
 
                 <div class="entries-wrapper" v-if="meeting.infos || meeting.openInfos">
                     <div class="entry" v-for="info in meeting.openInfos">
@@ -276,19 +276,19 @@
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
                                 <template v-if="info.isExpired">
-                                    {{ translateText('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
                                 </template>
                                 <template v-else>
-                                    {{ translateText('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
                                 </template> |
 
-                                {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
+                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -301,23 +301,23 @@
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
                                 <template v-if="info.isExpired">
-                                    {{ translateText('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
                                 </template>
                                 <template v-else>
-                                    {{ translateText('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
                                 </template> |
 
-                                {{ translateText('message.category') }}: <b v-if="info.infoCategory">{{ translateText(info.infoCategoryName) }}</b><b v-else>-</b>
+                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                             <div class="entry-buttons">
                                 <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translateText('message.delete') }}</button>
+                                <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                             <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
                             <div>
-                                {{ translateText('message.responsible') }}:
+                                {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
                             </div>
                         </div>
@@ -333,23 +333,23 @@
                     <div class="margintop20 text-right">
                         <div class="buttons">
                             <router-link :to="{name: 'project-meetings-edit-meeting', params: {id: projectId, meetingId: meetingId}}" class="btn-rounded btn-auto">
-                                {{ translateText('button.edit_meeting') }}
+                                {{ translate('button.edit_meeting') }}
                             </router-link>
                             <router-link :to="{name: 'project-meetings-create-meeting', params: {id: projectId}}" class="btn-rounded btn-auto second-bg">
-                                {{ translateText('button.new_meeting') }}
+                                {{ translate('button.new_meeting') }}
                             </router-link>
-                            <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
+                            <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_meeting') }}</a>
                         </div>
                     </div>
                     <!-- /// End Header /// -->
 
                     <div class="flex flex-v-center flex-space-between">
                         <div>
-                            <h3>{{ translateText('message.participants') }}</h3>
+                            <h3>{{ translate('message.participants') }}</h3>
                         </div>
                         <div class="buttons">
-                            <!--<router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.edit_distribution_list') }}</router-link>-->
-                            <a @click="showNotificationModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translateText('button.send_notifications') }}</a>
+                            <!--<router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</router-link>-->
+                            <a @click="showNotificationModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.send_notifications') }}</a>
                         </div>
                     </div>
 
@@ -363,12 +363,12 @@
                 <div class="text-right footer-buttons">
                     <div class="buttons">
                         <router-link :to="{name: 'project-meetings-edit-meeting', params: {id: projectId, meetingId: meetingId}}" class="btn-rounded btn-auto">
-                            {{ translateText('button.edit_meeting') }}
+                            {{ translate('button.edit_meeting') }}
                         </router-link>
                         <router-link :to="{name: 'project-meetings-create-meeting', params: {id: projectId}}" class="btn-rounded btn-auto second-bg">
-                            {{ translateText('button.new_meeting') }}
+                            {{ translate('button.new_meeting') }}
                         </router-link>
-                        <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translateText('button.delete_meeting') }}</a>
+                        <a @click="deleteMeetingModal = true;" class="btn-rounded btn-auto danger-bg">{{ translate('button.delete_meeting') }}</a>
                     </div>
                 </div>
             </div>
@@ -410,9 +410,6 @@ export default {
             'getProjectMeeting', 'getMeetingAgendas', 'getMeetingParticipants',
             'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
@@ -489,7 +486,7 @@ export default {
                 responsibility: [todo.responsibility],
                 responsibilityFullName: todo.responsibilityFullName,
                 dueDate: todo.dueDate ? moment(todo.dueDate).toDate() : new Date(),
-                status: {key: todo.status, label: this.translateText(todo.statusName)},
+                status: {key: todo.status, label: this.translate(todo.statusName)},
                 meeting: this.$route.params.meetingId,
             };
         },

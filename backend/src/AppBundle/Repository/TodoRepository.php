@@ -152,7 +152,7 @@ class TodoRepository extends BaseRepository
         ;
 
         if ($meeting->getId()) {
-            $qb->andWhere($qb->expr()->neq('o.id', $meeting->getId()));
+            $qb->andWhere($qb->expr()->neq('o.meeting', $meeting->getId()));
         }
 
         return $qb->getQuery()->getResult();
