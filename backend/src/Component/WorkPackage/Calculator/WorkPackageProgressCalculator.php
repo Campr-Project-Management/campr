@@ -50,8 +50,6 @@ class WorkPackageProgressCalculator implements WorkPackageProgressCalculatorInte
             }
         );
 
-        dump($workPackages);
-
         $progress = array_reduce(
             $workPackages,
             function ($total, WorkPackage $wp) {
