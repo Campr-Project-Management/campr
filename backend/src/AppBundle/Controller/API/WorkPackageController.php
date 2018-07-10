@@ -219,6 +219,13 @@ class WorkPackageController extends ApiController
         $wp = $form->getData();
         $em = $this->getDoctrine()->getManager();
 
+        if (!array_key_exists('children', $request->request->all())) {
+            foreach ($wp->getChildren() as $child) {
+                $em->remove($child);
+            }
+            $em->flush();
+        }
+
         /** @var Cost $originalCost */
         foreach ($originalCosts as $originalCost) {
             if (!$wp->getCosts()->contains($originalCost)) {
