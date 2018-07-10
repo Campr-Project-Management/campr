@@ -36,13 +36,6 @@
                             },
                         }
                     ) }}
-                        {% if form.vars.valid == false %}
-                            <div class="alert alert-danger">
-                                {% for field in form.children %}
-                                    {{ form_errors(field) }}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
                         {{ form_widget(
                             form.name,
                             {
@@ -52,6 +45,7 @@
                                 'label': 'label.name'|trans,
                             }
                         ) }}
+                        {{ form_errors(form.name) }}
                         {{ form_widget(
                             form.project,
                             {
@@ -61,6 +55,7 @@
                                 'label': 'label.project'|trans,
                             }
                         ) }}
+                        {{ form_errors(form.project) }}
                         {{ form_widget(
                             form.description,
                             {
@@ -70,6 +65,7 @@
                                 'label': 'label.description'|trans
                             }
                         ) }}
+                        {{ form_errors(form.description) }}
                         {{ form_widget(
                             form.projectStartEvent,
                             {
@@ -79,6 +75,7 @@
                                 'label': 'label.project_start_event'|trans
                             }
                         ) }}
+                        {{ form_errors(form.projectStartEvent) }}
                         {{ form_widget(
                             form.proposedStartDate,
                             {
@@ -89,6 +86,7 @@
                                 'label': 'label.proposed_start_date'|trans
                             }
                         ) }}
+                        {{ form_errors(form.proposedStartDate) }}
                         {{ form_widget(
                             form.proposedEndDate,
                             {
@@ -99,6 +97,7 @@
                                 'label': 'label.proposed_end_date'|trans
                             }
                         ) }}
+                        {{ form_errors(form.proposedEndDate) }}
                         {{ form_widget(
                             form.forecastStartDate,
                             {
@@ -109,6 +108,7 @@
                                 'label': 'label.forecast_start_date'|trans
                             }
                         ) }}
+                        {{ form_errors(form.forecastStartDate) }}
                         {{ form_widget(
                             form.forecastEndDate,
                             {
@@ -119,6 +119,7 @@
                                 'label': 'label.forecast_end_date'|trans
                             }
                         ) }}
+                        {{ form_errors(form.forecastEndDate) }}
                         {{ form_widget(
                             form.frozen,
                             {
@@ -129,16 +130,18 @@
                                 'label': 'label.frozen'|trans
                             }
                         ) }}
+                        {{ form_errors(form.frozen) }}
                         {{ form_widget(
                             form.approvedAt,
                             {
                                 'attr': {
-                                    'class': 'form-control date-picker',
+                                    'class': 'form-control datetime-picker-inverted-date',
                                     'addon_front': 'calendar',
                                 },
                                 'label': 'label.approved_at'|trans
                             }
                         ) }}
+                        {{ form_errors(form.approvedAt) }}
 
                         {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
@@ -152,6 +155,13 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript">
+        $('.datetime-picker-inverted-date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:SS',
+            debug: true,
+        });
+    </script>
 
     {% include '@App/Admin/Contract/_clear_approved_at.html.twig' with {form: form} %}
 {% endblock %}
