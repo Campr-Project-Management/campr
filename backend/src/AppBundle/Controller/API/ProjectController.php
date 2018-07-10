@@ -2241,6 +2241,27 @@ class ProjectController extends ApiController
                 $status = Response::HTTP_CREATED;
             }
         } else {
+            list($firstName, $lastName) = explode('@', $email, 2);
+
+            $user = new User();
+            $user->setEmail($email);
+            $user->setActivatedAt(new \DateTime());
+            $user->setIsEnabled(true);
+            $user->setIsSuspended(false);
+            $user->setUsername($email);
+            $user->setPlainPassword(microtime(true));
+            $user->setFirstName($firstName);
+            $user->setLastName('@'.$lastName);
+            $user->setRoles([User::ROLE_USER]);
+            $em->persist($user);
+
+            $projectUser = new ProjectUser();
+            $projectUser->setUser($user);
+            $projectUser->setProject($project);
+            $em->persist($projectUser);
+
+            $em->flush();
+
             $teamInvite = $em
                 ->getRepository(TeamInvite::class)
                 ->findOneBy([
@@ -2253,6 +2274,7 @@ class ProjectController extends ApiController
                 $teamInvite = new TeamInvite();
                 $teamInvite->setEmail($email);
                 $teamInvite->setProject($project);
+                $teamInvite->setUser($user);
                 $em->persist($teamInvite);
                 $em->flush();
             }
