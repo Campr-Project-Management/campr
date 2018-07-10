@@ -47,7 +47,7 @@ class ProjectOrganizationTreeService
         }
 
         $users = [];
-        foreach ($project->getProjectSponsors() as $projectSponsor) {
+        foreach ($project->getProjectManagers() as $projectSponsor) {
             $users[] = $this->extractUserData(
                 $projectSponsor,
                 [
