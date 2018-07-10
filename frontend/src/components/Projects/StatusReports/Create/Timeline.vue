@@ -52,7 +52,7 @@
                         content: phase.name,
                         start: start,
                         end: end,
-                        value: phase.workPackageStatusId,
+                        value: phase.progress,
                         data: data,
                     };
                 });
