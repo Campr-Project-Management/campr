@@ -18,7 +18,6 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @AppAssert\WorkPackageAssignments()
  * @AppAssert\WorkPackageScheduledDates(groups={"create"})
  * @AppAssert\WorkPackageForecastDates(groups={"edit"})
- * @AppAssert\WorkPackageNonSelfReferencing()
  */
 class WorkPackage
 {
@@ -71,6 +70,7 @@ class WorkPackage
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="phase_id", referencedColumnName="id")
      * })
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
     private $phase;
 
@@ -90,6 +90,7 @@ class WorkPackage
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="milestone_id", referencedColumnName="id")
      * })
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.milestone")
      */
     private $milestone;
 
@@ -108,6 +109,7 @@ class WorkPackage
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
     private $parent;
 
@@ -987,15 +989,17 @@ class WorkPackage
     }
 
     /**
-     * @param WorkPackage|null $workPackage
+     * @param WorkPackage|null $phase
      *
-     * @return WorkPackage
+     * @return $this
      */
-    public function setPhase(self $workPackage = null)
+    public function setPhase(WorkPackage $phase = null)
     {
-        $this->phase = $workPackage;
+        $this->phase = $phase;
+        $this->milestone = null;
         foreach ($this->getChildren() as $child) {
-            $child->setPhase($workPackage);
+            $child->setPhase($phase);
+            $child->setMilestone(null);
         }
 
         return $this;
@@ -1038,19 +1042,20 @@ class WorkPackage
     }
 
     /**
-     * @param WorkPackage|null $workPackage
+     * @param WorkPackage|null $milestone
      *
      * @return WorkPackage
      */
-    public function setMilestone(self $workPackage = null)
+    public function setMilestone(WorkPackage $milestone = null)
     {
-        $this->milestone = $workPackage;
-
-        if (null !== $workPackage) {
-            $this->phase = $workPackage->getPhase();
+        $this->milestone = $milestone;
+        if ($milestone) {
+            $this->phase = $milestone->getPhase();
         }
+
         foreach ($this->getChildren() as $child) {
-            $child->setMilestone($workPackage);
+            $child->setPhase($this->phase);
+            $child->setMilestone($milestone);
         }
 
         return $this;

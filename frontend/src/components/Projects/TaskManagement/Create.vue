@@ -60,7 +60,7 @@
                     <hr class="double">
 
                     <!-- /// Task Planning /// -->
-                    <planning v-model="planning" :editPlanning="planning" />
+                    <planning v-model="planning"/>
                     <!-- /// End Task Planning /// -->
 
                     <hr>
@@ -487,29 +487,9 @@ export default {
             }
             this.subtasks = children;
 
-            if (!this.planning) {
-                this.planning = {};
-            }
-            if (this.task.milestone) {
-                this.planning.milestone = {
-                    key: this.task.milestone.toString(),
-                    label: this.task.milestoneName,
-                };
-            }
-
-            if (this.task.phase) {
-                this.planning.phase = {
-                    key: this.task.phase.toString(),
-                    label: this.task.phaseName,
-                };
-            }
-
-            if (this.task.parent) {
-                this.planning.parent = {
-                    key: this.task.parent.toString(),
-                    label: this.task.parentName,
-                };
-            }
+            this.planning.milestone = this.task.milestone;
+            this.planning.phase = this.task.phase;
+            this.planning.parent = this.task.parent;
 
             let internal = [];
             let external = [];
