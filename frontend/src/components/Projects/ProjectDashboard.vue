@@ -1,58 +1,59 @@
 <template>
     <div>
+        {{ locale }}
         <div class="page-section">
             <div class="header flex">
-                <h1>{{ translateText('message.project_dashboard') }}</h1>
+                <h1>{{ translate('message.project_dashboard') }}</h1>
             </div>
 
             <div class="content widget-grid">
                 <!-- /// Project Summary Widget /// -->
                 <div class="widget project-summary-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
+                        <h4 class="widget-title">{{ translate('message.project_summary') }}</h4>
                         <ul class="widget-list">
                             <li>
-                                <span>{{ translateText('message.project_name') }}:</span>
+                                <span>{{ translate('message.project_name') }}:</span>
                                 <b v-if="project.name">{{ project.name }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.project_number') }}:</span>
+                                <span>{{ translate('message.project_number') }}:</span>
                                 <b v-if="project.number">#{{ project.number }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('label.portfolio') }}:</span>
+                                <span>{{ translate('label.portfolio') }}:</span>
                                 <b v-if="project.portfolioName">{{ project.portfolioName }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('label.programme') }}:</span>
+                                <span>{{ translate('label.programme') }}:</span>
                                 <b v-if="project.programmeName">{{ project.programmeName }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.category') }}:</span>
+                                <span>{{ translate('message.category') }}:</span>
                                 <b v-if="project.projectCategoryName">{{ project.projectCategoryName }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.scope') }}:</span>
+                                <span>{{ translate('message.scope') }}:</span>
                                 <b v-if="project.projectScopeName">{{ project.projectScopeName }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.customer') }}:</span>
+                                <span>{{ translate('message.customer') }}:</span>
                                 <b v-if="project.company">{{ project.companyName }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.approved_on') }}:</span>
+                                <span>{{ translate('message.approved_on') }}:</span>
                                 <b v-if="contract && contract.approvedAt">{{ contract.approvedAt }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>
-                                <span>{{ translateText('message.project_sponsor') }}:</span>
+                                <span>{{ translate('message.project_sponsor') }}:</span>
                                 <div>
                                     <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors" :key="index">
                                         {{ sponsor.userFullName }}<span v-if="index != projectSponsors.length - 1">, </span>
@@ -61,7 +62,7 @@
                                 </div>
                             </li>
                             <li>
-                                <span>{{ translateText('message.project_managers') }}:</span>
+                                <span>{{ translate('message.project_managers') }}:</span>
                                 <div>
                                     <b v-if="projectManagers" v-for="(manager, index) in projectManagers" :key="index">
                                         {{ manager.userFullName }}<span v-if="index != projectManagers.length - 1">, </span>
@@ -70,39 +71,39 @@
                                 </div>
                             </li>
                             <li>
-                                <span>{{ translateText('message.currency') }}:</span>
+                                <span>{{ translate('message.currency') }}:</span>
                                 <div>
                                     <b v-if="project.currency">{{ project.currency.symbol }}</b>
                                 </div>
                             </li>
                         </ul>
-                        <h4 class="widget-title">{{ translateText('message.project_schedule') }}</h4>
+                        <h4 class="widget-title">{{ translate('message.project_schedule') }}</h4>
                         <scrollbar class="customScrollbar">
                             <div class="scroll-wrapper">
                                 <table class="table table-small">
                                     <thead>
                                         <tr>
-                                            <th>{{ translateText('message.schedule') }}</th>
-                                            <th>{{ translateText('message.start') }}</th>
-                                            <th>{{ translateText('message.finish') }}</th>
-                                            <th>{{ translateText('message.duration') }}</th>
+                                            <th>{{ translate('message.schedule') }}</th>
+                                            <th>{{ translate('message.start') }}</th>
+                                            <th>{{ translate('message.finish') }}</th>
+                                            <th>{{ translate('message.duration') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{ translateText('table_header_cell.base') }}</td>
+                                            <td>{{ translate('table_header_cell.base') }}</td>
                                             <td>{{ project.scheduledStartAt | date }}</td>
                                             <td>{{ project.scheduledFinishAt | date }}</td>
                                             <td>{{ project.scheduledDurationDays | formatNumber }}</td>
                                         </tr>
                                         <tr>
-                                            <td>{{ translateText('table_header_cell.forecast') }}</td>
+                                            <td>{{ translate('table_header_cell.forecast') }}</td>
                                             <td>{{ project.forecastStartAt | date }}</td>
                                             <td>{{ project.forecastFinishAt | date }}</td>
                                             <td>{{ project.forecastDurationDays | formatNumber }}</td>
                                         </tr>
                                         <tr>
-                                            <td>{{ translateText('table_header_cell.actual') }}</td>
+                                            <td>{{ translate('table_header_cell.actual') }}</td>
                                             <td>{{ project.actualStartAt | date }}</td>
                                             <td>{{ project.actualFinishAt | date }}</td>
                                             <td>{{ project.actualDurationDays | formatNumber }}</td>
@@ -113,16 +114,16 @@
                         </scrollbar>
 
                         <div class="flex flex-direction-reverse margintop20" v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
-                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translateText('button.close_project') }}</button>
+                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translate('button.close_project') }}</button>
                         </div>
                         <hr>
 
-                        <h4 class="widget-title">{{ translateText('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
+                        <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
                         <hr>
 
                         <h4 class="widget-title">
-                            {{ translateText('message.project_condition') }} -
+                            {{ translate('message.project_condition') }} -
                             <b
                                     v-for="(tl, index) in trafficLights"
                                     :key="index"
@@ -141,7 +142,7 @@
                             class="btn-rounded btn-md btn-empty btn-auto"
                             v-if="contract && contract.id"
                             :href="downloadPdf">
-                            {{ translateText('button.print_project_contract') }}
+                            {{ translate('button.print_project_contract') }}
                         </a>
                     </div>
                 </div>
@@ -150,7 +151,7 @@
                 <!-- /// Recent Tasks Widget /// -->
                 <div class="widget recent-tasks-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">{{ translateText('message.project_summary') }}</h4>
+                        <h4 class="widget-title">{{ translate('message.project_summary') }}</h4>
                         <div>
                             <small-task-box
                                     v-for="(task, index) in tasks"
@@ -158,8 +159,8 @@
                                     v-bind:task="task"/>
                         </div>
                         <div class="margintop20 buttons">
-                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_all_tasks') }}</router-link>
-                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translateText('button.view_tasks_board') }}</router-link>
+                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translate('button.view_all_tasks') }}</router-link>
+                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translate('button.view_tasks_board') }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -168,17 +169,17 @@
                 <!-- /// Task Status Widget /// -->
                 <div class="widget task-status-widget">
                     <div class="widget-content">
-                        <h4 class="widget-title">{{ translateText('message.task_status') }}</h4>
+                        <h4 class="widget-title">{{ translate('message.task_status') }}</h4>
                         <ul class="widget-list">
                             <li v-for="(item, index) in projectTasksStatus" :key="index">
-                                <span>{{ translateText(index) }}:</span>
+                                <span>{{ translate(index) }}:</span>
                                 <div v-if="index !== 'conditions'">
                                     <b>{{ item }}</b>
                                 </div>
                                 <div v-else>
-                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{ translateText('color_status.not_started') }}: {{ item['color_status.not_started'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{ translateText('color_status.in_progress') }}: {{ item['color_status.in_progress'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{ translateText('color_status.finished') }}: {{ item['color_status.finished'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{ translate('color_status.not_started') }}: {{ item['color_status.not_started'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{ translate('color_status.in_progress') }}: {{ item['color_status.in_progress'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{ translate('color_status.finished') }}: {{ item['color_status.finished'].count }}</p>
                                 </div>
                             </li>
                         </ul>
@@ -186,7 +187,7 @@
                             <circle-chart
                                     :percentage="project.progress"
                                     :precision="0"
-                                    :title="translateText('message.task_status')"
+                                    :title="translate('message.task_status')"
                                     class="left"/>
                         </div>
                     </div>
@@ -211,6 +212,11 @@ import TrafficLight from '../_common/TrafficLight';
 import tl from '../../util/traffic-light';
 
 export default {
+    props: {
+        locale: {
+            type: String,
+        },
+    },
     components: {
         TrafficLight,
         CircleChart,
@@ -229,9 +235,6 @@ export default {
             'closeProject',
             'editProject',
         ]),
-        translateText(text) {
-            return this.translate(text);
-        },
         onUpdateProjectTrafficLight(trafficLight) {
             this.editProject({
                 trafficLight: trafficLight,
