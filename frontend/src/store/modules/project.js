@@ -37,6 +37,34 @@ const getters = {
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
+    risksAvgImpact: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.risks) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.risks.risk_data.averageData.averageImpact;
+    },
+    risksAvgProbability: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.risks) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.risks.risk_data.averageData.averageProbability;
+    },
+    opportunitiesAvgImpact: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.opportunities) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact;
+    },
+    opportunitiesAvgProbability: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.opportunities) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability;
+    },
     projectsCount: state => state.projects.totalItems,
     projectsPerPage: state => state.projects.pageSize,
     externalCostsGraphData: state => state.externalCostsGraphData,

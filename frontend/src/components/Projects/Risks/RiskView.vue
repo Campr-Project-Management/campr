@@ -138,33 +138,19 @@
                 <hr class="double">
 
                 <!-- ///  Impact /// -->
-                <div class="range-slider-wrapper" v-if="risk">
-                    <range-slider
-                            :disabled="true"
-                            :title="translate('message.impact')"
-                            minSuffix=" %"
-                            :value="risk.impact"/>
-                    <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                        <indicator-icon fill="middle-fill"
-                                        :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
-                                        :title="translate('message.average_impact_risk')"></indicator-icon>
-                    </div>
-                </div>
+                <impact-slider
+                        v-if="risk"
+                        :disabled="true"
+                        :value="risk.impact"
+                        :avg="risksAvgImpact" />
                 <!-- /// End Impact /// -->
 
                 <!-- /// Probability /// -->
-                <div class="range-slider-wrapper" v-if="risk">
-                    <range-slider
-                            :disabled="true"
-                            :title="translate('message.probability')"
-                            minSuffix=" %"
-                            :value="risk.probability"/>
-                    <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                        <indicator-icon fill="middle-fill"
-                                        :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
-                                        :title="translate('message.average_probability_risk')"></indicator-icon>
-                    </div>
-                </div>
+                <probability-slider
+                        v-if="risk"
+                        :disabled="true"
+                        :value="risk.probability"
+                        :avg="risksAvgProbability"/>
                 <!-- /// End Probability /// -->
 
                 <!-- /// Measures /// -->
@@ -306,172 +292,176 @@
 </template>
 
 <script>
-import EditIcon from '../../_common/_icons/EditIcon';
-import DeleteIcon from '../../_common/_icons/DeleteIcon';
-import AttachIcon from '../../_common/_icons/AttachIcon';
-import InputField from '../../_common/_form-components/InputField';
-import MoneyField from '../../_common/_form-components/MoneyField';
-import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
-import RangeSlider from '../../_common/_form-components/RangeSlider';
-import {mapGetters, mapActions} from 'vuex';
-import moment from 'moment';
-import Modal from '../../_common/Modal';
-import Error from '../../_common/_messages/Error.vue';
-import Editor from '../../_common/Editor';
-import RiskMatrix from '../RiskManagement/RiskMatrix';
-import UserAvatar from '../../_common/UserAvatar';
+    import EditIcon from '../../_common/_icons/EditIcon';
+    import DeleteIcon from '../../_common/_icons/DeleteIcon';
+    import AttachIcon from '../../_common/_icons/AttachIcon';
+    import InputField from '../../_common/_form-components/InputField';
+    import MoneyField from '../../_common/_form-components/MoneyField';
+    import {mapGetters, mapActions} from 'vuex';
+    import moment from 'moment';
+    import Modal from '../../_common/Modal';
+    import Error from '../../_common/_messages/Error.vue';
+    import Editor from '../../_common/Editor';
+    import RiskMatrix from '../RiskManagement/RiskMatrix';
+    import UserAvatar from '../../_common/UserAvatar';
+    import ImpactSlider from '../RiskManagement/ImpactSlider';
+    import ProbabilitySlider from '../RiskManagement/ProbabilitySlider';
 
-export default {
-    components: {
-        UserAvatar,
-        RiskMatrix,
-        EditIcon,
-        DeleteIcon,
-        AttachIcon,
-        InputField,
-        IndicatorIcon,
-        RangeSlider,
-        Modal,
-        Error,
-        Editor,
-        MoneyField,
-    },
-    methods: {
-        ...mapActions([
-            'getProjectRiskAndOpportunitiesStats',
-            'getProjectRisk',
-            'createMeasureComment',
-            'createRiskMeasure',
-            'deleteProjectRisk',
-            'editMeasure',
-        ]),
-        moment: function(date) {
-            return moment.utc(date).local();
+    export default {
+        components: {
+            ProbabilitySlider,
+            ImpactSlider,
+            UserAvatar,
+            RiskMatrix,
+            EditIcon,
+            DeleteIcon,
+            AttachIcon,
+            InputField,
+            Modal,
+            Error,
+            Editor,
+            MoneyField,
         },
-        transformToString: function(value) {
-            return value ? value.toString() : '';
-        },
-        addMeasureComment: function(measureId) {
-            let data = {
-                measure: measureId,
-                description: this.newComments[measureId],
-            };
+        methods: {
+            ...mapActions([
+                'getProjectRiskAndOpportunitiesStats',
+                'getProjectRisk',
+                'createMeasureComment',
+                'createRiskMeasure',
+                'deleteProjectRisk',
+                'editMeasure',
+            ]),
+            moment: function(date) {
+                return moment.utc(date)
+                             .local();
+            },
+            transformToString: function(value) {
+                return value ? value.toString() : '';
+            },
+            addMeasureComment: function(measureId) {
+                let data = {
+                    measure: measureId,
+                    description: this.newComments[measureId],
+                };
 
-            this.newComments[measureId] = '';
+                this.newComments[measureId] = '';
 
-            this
-                .createMeasureComment(data)
-                .then(
-                    (response) => {
+                this
+                    .createMeasureComment(data)
+                    .then(
+                        (response) => {
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                this.measureCommentValidationMessages = messages;
+                            }
+                        },
+                        () => {},
+                    )
+                ;
+            },
+            addMeasure: function() {
+                let data = {
+                    risk: this.$route.params.riskId,
+                    title: this.measureTitle,
+                    description: this.measureDescription,
+                    cost: this.measureCost,
+                    responsibility: this.risk.responsibility,
+                };
+                this.createRiskMeasure(data)
+                    .then((response) => {
                         if (response.body && response.body.error) {
-                            const {messages} = response.body;
-                            this.measureCommentValidationMessages = messages;
-                        }
-                    },
-                    () => {}
-                )
-            ;
-        },
-        addMeasure: function() {
-            let data = {
-                risk: this.$route.params.riskId,
-                title: this.measureTitle,
-                description: this.measureDescription,
-                cost: this.measureCost,
-                responsibility: this.risk.responsibility,
-            };
-            this.createRiskMeasure(data).then((response) => {
-                if (response.body && response.body.error) {
-                    return;
-                }
-
-                this.loadRisk();
-            });
-        },
-        deleteRisk: function() {
-            this.deleteProjectRisk(this.$route.params.riskId);
-        },
-        initEditMeasure: function(measure) {
-            this.showEditMeasureModal = true;
-            this.selectedMeasure = {
-                id: measure.id,
-                title: measure.title,
-                description: measure.description,
-                cost: measure.cost,
-            };
-        },
-        editSelectedMeasure: function() {
-            this
-                .editMeasure(this.selectedMeasure)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error) {
-                            const {messages} = response.body;
-                            this.editMeasureValidationMessages = messages;
                             return;
                         }
 
-                        this.editMeasureValidationMessages = {};
-                        this.showEditMeasureModal = false;
                         this.loadRisk();
-                    },
-                    () => {
-                        this.editMeasureValidationMessages = {};
-                        this.showEditMeasureModal = false;
-                    }
-                )
-            ;
+                    });
+            },
+            deleteRisk: function() {
+                this.deleteProjectRisk(this.$route.params.riskId);
+            },
+            initEditMeasure: function(measure) {
+                this.showEditMeasureModal = true;
+                this.selectedMeasure = {
+                    id: measure.id,
+                    title: measure.title,
+                    description: measure.description,
+                    cost: measure.cost,
+                };
+            },
+            editSelectedMeasure: function() {
+                this
+                    .editMeasure(this.selectedMeasure)
+                    .then(
+                        (response) => {
+                            if (response.body && response.body.error) {
+                                const {messages} = response.body;
+                                this.editMeasureValidationMessages = messages;
+                                return;
+                            }
+
+                            this.editMeasureValidationMessages = {};
+                            this.showEditMeasureModal = false;
+                            this.loadRisk();
+                        },
+                        () => {
+                            this.editMeasureValidationMessages = {};
+                            this.showEditMeasureModal = false;
+                        },
+                    )
+                ;
+            },
+            loadRisk() {
+                this.getProjectRisk(this.$route.params.riskId);
+            },
         },
-        loadRisk() {
-            this.getProjectRisk(this.$route.params.riskId);
+        computed: {
+            ...mapGetters([
+                'risk',
+                'risksOpportunitiesStats',
+                'validationMessages',
+                'measures',
+                'projectCurrencySymbol',
+                'risksAvgImpact',
+                'risksAvgProbability',
+            ]),
+            priorityLabel() {
+                return 'message.'.concat(this.risk.priorityName.replace('-', '_'));
+            },
         },
-    },
-    computed: {
-        ...mapGetters({
-            risk: 'currentRisk',
-            risksOpportunitiesStats: 'risksOpportunitiesStats',
-            validationMessages: 'validationMessages',
-            measures: 'measures',
-            projectCurrencySymbol: 'projectCurrencySymbol',
-        }),
-        priorityLabel() {
-            return 'message.'.concat(this.risk.priorityName.replace('-', '_'));
+        created() {
+            this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+            if (this.$route.params.riskId) {
+                this.loadRisk();
+            }
         },
-    },
-    created() {
-        this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
-        if (this.$route.params.riskId) {
-            this.loadRisk();
-        }
-    },
-    data: function() {
-        return {
-            priority: null,
-            selectedMeasure: {},
-            measureTitle: '',
-            measureDescription: '',
-            measureCost: '',
-            currentRiskImpact: 0,
-            currentRiskProbability: 0,
-            showDeleteModal: false,
-            showEditMeasureModal: false,
-            editMeasureValidationMessages: {},
-            measureCommentValidationMessages: {},
-            newComments: {},
-        };
-    },
-    watch: {
-        risk(value) {
-            this.currentRiskImpact = this.risk.impact;
-            this.currentRiskProbability = this.risk.probability;
+        data: function() {
+            return {
+                priority: null,
+                selectedMeasure: {},
+                measureTitle: '',
+                measureDescription: '',
+                measureCost: '',
+                currentRiskImpact: 0,
+                currentRiskProbability: 0,
+                showDeleteModal: false,
+                showEditMeasureModal: false,
+                editMeasureValidationMessages: {},
+                measureCommentValidationMessages: {},
+                newComments: {},
+            };
         },
-        measures(value) {
-            this.measureTitle = '';
-            this.measureDescription = '';
-            this.measureCost = '';
+        watch: {
+            risk(value) {
+                this.currentRiskImpact = this.risk.impact;
+                this.currentRiskProbability = this.risk.probability;
+            },
+            measures(value) {
+                this.measureTitle = '';
+                this.measureDescription = '';
+                this.measureCost = '';
+            },
         },
-    },
-};
+    };
 </script>
 
 <style scoped lang="scss">
