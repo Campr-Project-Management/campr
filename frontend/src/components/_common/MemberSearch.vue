@@ -28,21 +28,21 @@
                     <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                     <div class="info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
+                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span></p>
                     </div>
                 </div>
             </scrollbar>
             <div class="footer">
                 <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="reset" class="cancel">{{ translateText('button.cancel') }}</a>
-                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.done') }}</a>
-                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.show_selected') }}</a>
+                    <a href="javascript:void(0)" @click="reset" class="cancel">{{ translate('button.cancel') }}</a>
+                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.done') }}</a>
+                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.show_selected') }}</a>
                 </div>
             </div>
         </div>
         <div class="results team no-data" v-if="noData && query !== ''">
-            <div>{{ translateText('label.no_data') }}</div>
+            <div>{{ translate('label.no_data') }}</div>
         </div>
         <p v-if="usersList && usersList.length" v-for="user in usersList" class="selected-item">
             <user-avatar
@@ -78,10 +78,19 @@ export default {
                     || this.focused;
             },
         },
+        displaySelectedMembers() {
+            if (!this.value || !this.value.length) {
+                return false;
+            }
+
+            return !!this.users.find((user) => {
+                return this.value.includes(user.id);
+            });
+        },
     },
     watch: {
         users(val) {
-            if (this.displaySelectedMembers()) {
+            if (this.displaySelectedMembers) {
                 this.usersList = this.users;
             }
         },
@@ -115,9 +124,6 @@ export default {
     },
     methods: {
         ...mapActions(['getUsers', 'clearUsers']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         toggleActivation(item) {
             item.checked = !item.checked;
         },
@@ -199,18 +205,6 @@ export default {
                 this.usersList.splice(indexTmp, 1);
                 this.selectedUsers.splice(indexTmp, 1);
             }
-        },
-        displaySelectedMembers() {
-            if (!this.value || this.value.length <= 0) {
-                return false;
-            }
-
-            for (let i = 0; i < this.value.length; i++) {
-                if (!this.value.includes(this.users[i].id)) {
-                    return false;
-                }
-            }
-            return true;
         },
         focusInput() {
             $(this.$refs[`input${this._uid}`]).focus();
