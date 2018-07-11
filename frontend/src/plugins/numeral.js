@@ -1,13 +1,14 @@
 import accounting from 'accounting';
+import numeral from 'numeral';
 
 export default {
     install(Vue) {
-        accounting.settings = settings.en;
+        accounting.settings = accountingSettings.en;
 
         if (typeof window.user === 'object' &&
             typeof window.user.locale === 'string' &&
-            settings[window.user.locale]) {
-            accounting.settings = settings[window.user.locale];
+            accountingSettings[window.user.locale]) {
+            accounting.settings = accountingSettings[window.user.locale];
         }
 
         Vue.formatMoney = (amount, options) => {
@@ -18,12 +19,20 @@ export default {
             return formatNumber(amount, options);
         };
 
+        Vue.formatBytes = (value) => {
+            return formatBytes(value);
+        };
+
         Vue.prototype.$formatMoney = function(amount, options) {
             return formatMoney(amount, options);
         };
 
         Vue.prototype.$formatNumber = function(value, options) {
             return formatNumber(value, options);
+        };
+
+        Vue.prototype.$formatBytes = function(value) {
+            return formatBytes(value);
         };
 
         Vue.mixin({
@@ -37,6 +46,9 @@ export default {
                 formatNumber(value, options) {
                     return formatNumber(value, options);
                 },
+                bytes(value) {
+                    return formatBytes(value);
+                },
             },
         });
     },
@@ -48,7 +60,7 @@ const currencyCodeToSymbolMap = {
     GBP: '£',
 };
 
-const settings = {
+const accountingSettings = {
     en: {
         currency: {
             symbol: '$',   // default currency symbol is '$'
@@ -126,4 +138,14 @@ function formatNumber(value, options = {}) {
     }
 
     return accounting.formatNumber(value, options);
+}
+
+/**
+ * Format bytes
+ *
+ * @param {int} value
+ * @return {string}
+ */
+function formatBytes(value) {
+    return numeral(value).format('0.0 ib');
 }

@@ -109,19 +109,19 @@
 
                     <!-- /// SubTasks /// -->
                     <subtasks
-                        v-model="subtasks"
-                        :editSubtasks="subtasks"
-                        :validationMessages="validationMessages.children" />
+                            v-model="subtasks"
+                            :editSubtasks="subtasks"
+                            :validationMessages="validationMessages.children"/>
                     <!-- /// End SubTasks /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachments /// -->
-                    <attachments v-model="medias"/>
-                    <error
-                            v-if="validationMessages.medias && validationMessages.medias.length"
-                            v-for="message in validationMessages.medias"
-                            :message="message"/>
+                    <h3>{{ translate('message.attachments') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
@@ -163,7 +163,7 @@ import Subtasks from './Create/Subtasks';
 import Planning from './Create/Planning';
 import TaskDetails from './Create/Details';
 import TaskAssignments from './Create/Assignments';
-import Attachments from './Create/Attachments';
+import Attachments from '../../_common/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import Editor from '../../_common/Editor.vue';
 import Error from '../../_common/_messages/Error.vue';
@@ -336,11 +336,23 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
-            validationMessages: 'validationMessages',
         }),
         ...mapGetters([
+            'validationMessages',
             'defaultTrafficLightValue',
+            'projectMaxUploadFileSize',
+            'validationMessagesFor',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         internalValidationMessages() {
             if (_.isPlainObject(this.validationMessages.costs)) {
                 const out = {};
