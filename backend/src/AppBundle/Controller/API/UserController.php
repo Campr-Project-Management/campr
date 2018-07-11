@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\User;
 use MainBundle\Controller\API\ApiController;
+use MainBundle\Form\User\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +19,8 @@ class UserController extends ApiController
     /**
      * @Route("", name="app_api_users", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Request $request
      *
      * @return JsonResponse
      */
@@ -60,17 +63,59 @@ class UserController extends ApiController
     public function syncAction()
     {
         if (!($user = $this->getUser())) {
-            return $this->createApiResponse([
-                'message' => $this
-                    ->get('translator')
-                    ->trans('not_found.general', [], 'messages'),
-            ], Response::HTTP_NOT_FOUND);
+            return $this->createApiResponse(
+                [
+                    'message' => $this
+                        ->get('translator')
+                        ->trans('not_found.general', [], 'messages'),
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         $user = $this->get('app.service.user')->syncUser($user);
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        return $this->createApiResponse($user);
+    }
+
+    /**
+     * @Route("/me", name="app_api_users_me_edit", options={"expose"=true})
+     * @Method({"POST", "PATCH"})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function updateMeAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $repository = $this->get('app.repository.user');
+        $user = $repository->find($user->getId());
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(AccountType::class, $user, ['csrf_protection' => false]);
+
+        $this->processForm($request, $form, $request->isMethod('POST'));
+        if (!$form->isValid()) {
+            return $this->createApiResponse(
+                [
+                    'messages' => $this->getFormErrors($form),
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $repository->add($user);
 
         return $this->createApiResponse($user);
     }

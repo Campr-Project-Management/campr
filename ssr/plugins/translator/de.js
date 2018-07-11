@@ -2224,6 +2224,13 @@ module.exports = function (Translator) {
     Translator.add("action.select.all", "Alle ausw\u00e4hlen", "messages", "de");
     Translator.add("action.select.none", "Keine ausw\u00e4hlen", "messages", "de");
     Translator.add("action.select.invert", "Auswahl umkehren", "messages", "de");
+    Translator.add("message.email_sent", "%count% E-Mails verschickt.", "messages", "de");
+    Translator.add("button.add_document", "Dokument hinzuf\u00fcgen", "messages", "de");
+    Translator.add("message.max_upload_file_size", "Max. Dateigr\u00f6\u00dfe: %size%", "messages", "de");
+    Translator.add("message.file_too_large", "Diese Datei ist zu gro\u00df (%size%). Die maximal erlaubte Gr\u00f6\u00dfe ist %limit%.", "messages", "de");
+    Translator.add("label.max_upload_file_size", "max. Dateigr\u00f6\u00dfe", "messages", "de");
+    Translator.add("message.locale_switcher.english", "Zu englisch wechseln", "messages", "de");
+    Translator.add("message.locale_switcher.german", "auf Deutsch umstellen", "messages", "de");
     Translator.add("task.cost_groups_and_resources.description", "<p>This task deals with the cost and resource management within your project. The costs and resources are precisely defined.<\/p>\n<p><strong>Internal Costs:<\/strong> Here you define the cost groups of your organization. This involves actual costs of your internal project members to cover their contribution to your project.<\/p>\n<p><strong>External Costs:<\/strong> Define the cost groups for your external expenses. This can be external project members which are temporarily joining your endeavor as well as services and goods to accomplish your targets.<\/p>\n", "tasks", "de");
     Translator.add("task.cost_groups_and_resources.title", "Cost Groups and Resources", "tasks", "de");
     Translator.add("task.nice_to_have.description", "<p>To make your work in a complex environment with multiple projects and multitudinous tasks more visual, you can assign colored labels. In the ADMIN SECTION you can name and define the colors of as many labels as you need.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Label:<\/strong> Give a name to a label, define a color and assign it to project or task in order to keep the overview about your stuff.<\/p>\n", "tasks", "de");
