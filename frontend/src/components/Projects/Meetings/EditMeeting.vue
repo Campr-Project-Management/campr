@@ -115,7 +115,10 @@
 
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translate('message.location') }}</h3>
-                    <input-field type="text" v-bind:label="translate('placeholder.location')" v-model="location" v-bind:content="location" />
+                    <input-field
+                            type="text"
+                            :label="translate('placeholder.location')"
+                            v-model="location"/>
                     <!-- /// End Meeting Location /// -->
 
                     <hr class="double">
@@ -239,7 +242,12 @@
                     <hr class="double">
 
                     <!-- /// Meeting Documents /// -->
-                    <meeting-attachments v-on:input="setMedias" v-bind:editMedias="medias" />
+                    <h3>{{ translate('message.documents') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            label="button.add_document"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
@@ -569,7 +577,6 @@
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import MemberSearch from '../../_common/MemberSearch';
-import MeetingAttachments from './MeetingAttachments';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import {mapGetters, mapActions} from 'vuex';
@@ -588,9 +595,11 @@ import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import UserAvatar from '../../_common/UserAvatar';
 import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
+import Attachments from '../../_common/Attachments';
 
 export default {
     components: {
+        Attachments,
         DateField,
         MeetingDecisionForm,
         UserAvatar,
@@ -598,7 +607,6 @@ export default {
         InputField,
         SelectField,
         MemberSearch,
-        MeetingAttachments,
         EditIcon,
         DeleteIcon,
         VueTimepicker,
@@ -632,9 +640,6 @@ export default {
             let start = moment(startDate, 'HH:mm');
 
             return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
-        },
-        setMedias(value) {
-            this.medias = value;
         },
         setModals(value) {
             this.showEditObjectiveModal = value;
@@ -881,7 +886,19 @@ export default {
             'validationMessages',
             'validationOrigin',
             'decisionStatusByValue',
+            'projectMaxUploadFileSize',
+            'validationMessagesFor',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         agendasPerPage: function() {
             return this.meetingAgendas.pageSize;
         },
@@ -1067,11 +1084,7 @@ export default {
                 mm: moment(this.meeting.end, 'HH:mm').format('mm'),
             };
             this.location = this.meeting.location;
-            this.medias = this.meeting.medias.map(item => {
-                return {
-                    'path': item.path,
-                };
-            });
+            this.medias = this.meeting.medias;
         },
         showSaved(value) {
             if (value === false) {
@@ -1102,6 +1115,7 @@ export default {
 
     .action-list {
         margin-bottom: 15px;
+        list-style-type: none;
 
         li {
             margin-bottom: 15px;
@@ -1124,6 +1138,7 @@ export default {
                     height: 10px;
                     left: 0;
                     top: 0;
+                    margin-top: 0.3em;
                 }
             }
 

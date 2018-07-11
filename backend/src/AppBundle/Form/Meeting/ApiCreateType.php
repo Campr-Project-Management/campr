@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Meeting;
 
 use AppBundle\Entity\Meeting;
+use AppBundle\Entity\Project;
 use AppBundle\Form\MeetingParticipant\CreateType as MeetingParticipantCreateType;
 use AppBundle\Form\WorkPackage\UploadMediaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -83,6 +84,9 @@ class ApiCreateType extends BaseCreateType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'entry_options' => [
+                        'max_size' => $options['max_media_size'],
+                    ],
                 ]
             )
             ->add(
@@ -106,10 +110,13 @@ class ApiCreateType extends BaseCreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefined(['max_media_size']);
+        $resolver->setAllowedTypes('max_media_size', 'int');
         $resolver->setDefaults(
             [
                 'data_class' => Meeting::class,
                 'allow_extra_fields' => true,
+                'max_media_size' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
             ]
         );
     }
