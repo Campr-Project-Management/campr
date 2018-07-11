@@ -26,6 +26,8 @@ use AppBundle\Validator\Constraints as AppAssert;
  */
 class Project implements ProjectInterface
 {
+    const DEFAULT_MAX_UPLOAD_FILE_SIZE = 10485760;
+
     /**
      * @var int
      *
@@ -520,6 +522,12 @@ class Project implements ProjectInterface
     private $currency;
 
     /**
+     * @var int
+     * @ORM\Column(name="max_upload_file_size", type="integer", options={"default": 10485760})
+     */
+    private $maxUploadFileSize;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -560,6 +568,7 @@ class Project implements ProjectInterface
         $this->projectCloseDowns = new ArrayCollection();
         $this->projectRoles = new ArrayCollection();
         $this->trafficLight = TrafficLight::GREEN;
+        $this->maxUploadFileSize = self::DEFAULT_MAX_UPLOAD_FILE_SIZE;
     }
 
     /**
@@ -2783,5 +2792,21 @@ class Project implements ProjectInterface
     public function hasFileSystem()
     {
         return (bool) $this->getFileSystem();
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxUploadFileSize()
+    {
+        return (int) $this->maxUploadFileSize;
+    }
+
+    /**
+     * @param int $maxUploadFileSize
+     */
+    public function setMaxUploadFileSize(int $maxUploadFileSize = null)
+    {
+        $this->maxUploadFileSize = $maxUploadFileSize;
     }
 }

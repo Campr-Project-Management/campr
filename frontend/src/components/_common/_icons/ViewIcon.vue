@@ -19,7 +19,3 @@ export default {
     props: ['fill'],
 };
 </script>
-
-<style scoped lang="scss">
-
-</style>

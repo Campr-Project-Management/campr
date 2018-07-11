@@ -2339,6 +2339,10 @@ module.exports = function (Translator) {
     Translator.add("action.select.none", "Select None", "messages", "en");
     Translator.add("action.select.invert", "Invert Selection", "messages", "en");
     Translator.add("message.email_sent", "%count% email(s) sent.", "messages", "en");
+    Translator.add("button.add_document", "Add Document", "messages", "en");
+    Translator.add("message.max_upload_file_size", "Max file size: %size%", "messages", "en");
+    Translator.add("message.file_too_large", "The file is too large (%size%). Allowed maximum size is %limit%.", "messages", "en");
+    Translator.add("label.max_upload_file_size", "Max Upload File Size", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
