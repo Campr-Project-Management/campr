@@ -3,7 +3,10 @@
         <div class="task-box box" v-bind:class="'border-color-' + task.id">
             <div class="box-header">
                 <div v-if="task.responsibility" class="user-info flex flex-v-center">
-                    <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                    <user-avatar
+                            size="small"
+                            :url="task.responsibilityAvatar"
+                            :name="task.responsibilityFullName"/>
                     <p class="user-name">{{ task.responsibilityFullName }}</p>
                 </div>
                 <h2>
@@ -120,6 +123,7 @@
     import TaskLabelBar from './TaskLabelBar';
     import ScheduleDatesBar from '../_common/ScheduleDatesBar';
     import TrafficLight from '../_common/TrafficLight';
+    import UserAvatar from '../_common/UserAvatar';
 
     export default {
         name: 'tasks-task-box',
@@ -130,6 +134,7 @@
             },
         },
         components: {
+            UserAvatar,
             TrafficLight,
             ScheduleDatesBar,
             BarChart,

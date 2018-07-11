@@ -2,47 +2,58 @@
 
 namespace MainBundle\EventListener;
 
-use AppBundle\Entity\User;
-use Symfony\Component\HttpFoundation\Request;
+use Component\Locale\Context\LocaleContextInterface;
+use Component\Locale\Provider\LocaleProviderInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class LocaleListener.
  */
-class LocaleListener
+class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
     /**
-     * @var string
+     * @var LocaleProviderInterface
      */
-    private $defaultLocale;
+    private $localeProvider;
+
+    /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
 
     /**
      * LocaleListener constructor.
      *
-     * @param TokenStorageInterface $tokenStorage
-     * @param TranslatorInterface   $translator
-     * @param string                $defaultLocale
+     * @param TranslatorInterface     $translator
+     * @param LocaleContextInterface  $localeContext
+     * @param LocaleProviderInterface $localeProvider
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
         TranslatorInterface $translator,
-        $defaultLocale = 'en'
+        LocaleContextInterface $localeContext,
+        LocaleProviderInterface $localeProvider
     ) {
-        $this->tokenStorage = $tokenStorage;
         $this->translator = $translator;
-        $this->defaultLocale = $defaultLocale;
+        $this->localeContext = $localeContext;
+        $this->localeProvider = $localeProvider;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => ['onKernelRequest', 4],
+        ];
     }
 
     /**
@@ -51,32 +62,13 @@ class LocaleListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
+        $locale = $this->localeContext->getLocaleCode();
 
-        $locale = $this->getLocale($request);
+        $request->setLocale($locale);
+        $request->setDefaultLocale($this->localeProvider->getDefaultLocaleCode());
+        $request->attributes->set('_locale', $this->localeContext->getLocaleCode());
+        $request->getSession()->set('_locale', $this->localeContext->getLocaleCode());
+
         $this->translator->setLocale($locale);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return string
-     */
-    private function getLocale(Request $request)
-    {
-        if (!$request->hasPreviousSession()) {
-            return $this->defaultLocale;
-        }
-
-        if (!$this->tokenStorage->getToken()) {
-            return $this->defaultLocale;
-        }
-
-        $user = $this->tokenStorage->getToken()->getUser();
-
-        if (!($user instanceof User)) {
-            return $this->defaultLocale;
-        }
-
-        return $user->getLocale();
     }
 }
