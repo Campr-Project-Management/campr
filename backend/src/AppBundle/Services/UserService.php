@@ -18,14 +18,37 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  */
 class UserService extends BaseClientService
 {
+    /**
+     * @var EntityManager
+     */
     private $em;
 
+    /**
+     * @var UserPasswordEncoder
+     */
     private $encoder;
 
+    /**
+     * @var Router
+     */
     private $router;
 
-    public function __construct(RequestStack $requestStack, $mainDomain, EntityManager $em, UserPasswordEncoder $encoder, Router $router)
-    {
+    /**
+     * UserService constructor.
+     *
+     * @param RequestStack        $requestStack
+     * @param string              $mainDomain
+     * @param EntityManager       $em
+     * @param UserPasswordEncoder $encoder
+     * @param Router              $router
+     */
+    public function __construct(
+        RequestStack $requestStack,
+        string $mainDomain,
+        EntityManager $em,
+        UserPasswordEncoder $encoder,
+        Router $router
+    ) {
         parent::__construct($requestStack, $mainDomain);
 
         $this->em = $em;
@@ -57,7 +80,7 @@ class UserService extends BaseClientService
             ]
         );
 
-        if ($request->getStatusCode() !== 200) {
+        if (200 !== $request->getStatusCode()) {
             throw new NotFoundHttpException();
         }
 
@@ -71,16 +94,40 @@ class UserService extends BaseClientService
     }
 
     /**
+     * @param User  $user
+     * @param array $data
+     *
+     * @return User
+     */
+    public function pushToMasterUser(User $user, array $data)
+    {
+        $response = $this->httpClient->patch(
+            $this->router->generate('main_api_users_edit'),
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$user->getApiToken(),
+                ],
+                'json' => $data,
+            ]
+        );
+
+        $body = $response->getBody();
+        $data = $body->getContents();
+
+        return json_decode($data, true);
+    }
+
+    /**
      * Synchronize user from main site with user from secondary website.
      *
      * @param User $user
      *
      * @return User
      */
-    public function syncUser(User $user)
+    public function pullFromMasterUser(User $user)
     {
-        $request = $this->httpClient->get(
-            'user',
+        $response = $this->httpClient->get(
+            $this->router->generate('main_api_users_me'),
             [
                 'headers' => [
                     'Authorization' => 'Bearer '.$user->getApiToken(),
@@ -88,22 +135,14 @@ class UserService extends BaseClientService
             ]
         );
 
-        if ($request->getStatusCode() !== 200) {
-            throw new NotFoundHttpException();
-        }
-
-        $body = $request->getBody();
-        $data = '';
-        while (!$body->eof()) {
-            $data .= $body->read(1024);
-        }
+        $body = $response->getBody();
+        $data = $body->getContents();
         $data = json_decode($data, true);
 
         $user->setUsername($data['username']);
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setPhone($data['phone']);
-        $user->setRoles($data['roles']);
         $user->setWidgetSettings($data['widgetSettings']);
         $user->setIsEnabled($data['isEnabled']);
         $user->setIsSuspended($data['isSuspended']);
@@ -115,6 +154,7 @@ class UserService extends BaseClientService
         $user->setMedium($data['medium']);
         $user->setUpdatedAt(new \DateTime($data['updatedAt']));
         $user->setAvatar($data['avatar']);
+        $user->setLocale($data['locale']);
 
         return $user;
     }

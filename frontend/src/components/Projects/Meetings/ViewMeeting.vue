@@ -184,7 +184,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="decision.responsibilityAvatar"
+                                    :name="decision.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -205,7 +208,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="decision.responsibilityAvatar"
+                                    :name="decision.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -230,7 +236,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="todo.responsibilityAvatar"
+                                    :name="todo.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -251,7 +260,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="todo.responsibilityAvatar"
+                                    :name="todo.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -284,7 +296,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="info.responsibilityAvatar"
+                                    :name="info.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -313,7 +328,10 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                            <user-avatar
+                                    size="small"
+                                    :url="info.responsibilityAvatar"
+                                    :name="info.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -389,9 +407,11 @@ import Editor from '../../_common/Editor';
 import VueTimepicker from 'vue2-timepicker';
 import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         Attachments,
         DateField,
         EditIcon,

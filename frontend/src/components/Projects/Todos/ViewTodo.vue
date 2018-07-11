@@ -37,9 +37,12 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{ todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{todo.responsibilityFullName}}</b>
@@ -97,9 +100,11 @@ import Modal from '../../_common/Modal';
 import router from '../../../router';
 import moment from 'moment';
 import DateField from '../../_common/_form-components/DateField';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         DateField,
         RescheduleIcon,
         Modal,
