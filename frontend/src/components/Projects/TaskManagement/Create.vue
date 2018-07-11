@@ -207,6 +207,12 @@ export default {
             ]
         ),
         createTask: function() {
+            if (this.isSaving) {
+                return;
+            }
+
+            this.isSaving = true;
+
             this
                 .createNewTask({
                     data: createFormData(this.formData),
@@ -214,6 +220,7 @@ export default {
                 })
                 .then(
                     (response) => {
+                        this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
                             return;
@@ -222,12 +229,18 @@ export default {
                         this.showSaved = true;
                     },
                     () => {
+                        this.isSaving = false;
                         this.showFailed = true;
                     }
                 )
             ;
         },
         editExistingTask: function() {
+            if (this.isSaving) {
+                return;
+            }
+
+            this.isSaving = true;
             let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
 
             let formData = createFormData(this.formData);
@@ -243,6 +256,7 @@ export default {
                 })
                 .then(
                     (response) => {
+                        this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
                             return;
@@ -255,6 +269,7 @@ export default {
                         this.showSaved = true;
                     },
                     () => {
+                        this.isSaving = false;
                         this.showFailed = true;
                     }
                 )
@@ -593,6 +608,7 @@ export default {
                 informedUsers: [],
             },
             trafficLight: null,
+            isSaving: false,
         };
     },
 };
