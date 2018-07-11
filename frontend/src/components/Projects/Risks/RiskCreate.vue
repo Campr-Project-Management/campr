@@ -45,37 +45,17 @@
 
                     <hr class="double">
 
-                    <!-- /// Risk Impact /// -->
-                    <div class="range-slider-wrapper">
-                        <range-slider
-                                :title="translate('message.impact')"
-                                minSuffix=" %"
-                                :step="5"
-                                v-model="riskImpact"/>
-                        <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill"
-                                            v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
-                                            :position="risksOpportunitiesStats.risks.risk_data.averageData.averageImpact"
-                                            :title="translate('message.average_impact_risk')"></indicator-icon>
-                        </div>
-                    </div>
-                    <!-- /// End Risk Impact /// -->
+                    <!-- ///  Impact /// -->
+                    <impact-slider
+                            v-model="riskImpact"
+                            :avg="risksAvgImpact" />
+                    <!-- /// End Impact /// -->
 
-                    <!-- /// Risk Probability /// -->
-                    <div class="range-slider-wrapper">
-                        <range-slider
-                                :title="translate('message.probability')"
-                                minSuffix=" %"
-                                :step="5"
-                                v-model="riskProbability"/>
-                        <div class="slider-indicator" v-if="risksOpportunitiesStats.risks">
-                            <indicator-icon fill="middle-fill"
-                                            v-if="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
-                                            :position="risksOpportunitiesStats.risks.risk_data.averageData.averageProbability"
-                                            :title="translate('message.average_probability_risk')"></indicator-icon>
-                        </div>
-                    </div>
-                    <!-- /// End Risk Probability /// -->
+                    <!-- /// Probability /// -->
+                    <probability-slider
+                            v-model="riskProbability"
+                            :avg="risksAvgProbability"/>
+                    <!-- /// End Probability /// -->
 
                     <hr class="double">
 
@@ -248,190 +228,194 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import InputField from '../../_common/_form-components/InputField';
-import MoneyField from '../../_common/_form-components/MoneyField';
-import RangeSlider from '../../_common/_form-components/RangeSlider';
-import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
-import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
-import MemberSearch from '../../_common/MemberSearch';
-import SelectField from '../../_common/_form-components/SelectField';
-import moment from 'moment';
-import Error from '../../_common/_messages/Error.vue';
-import Editor from '../../_common/Editor';
-import RiskMatrix from '../RiskManagement/RiskMatrix';
-import DateField from '../../_common/_form-components/DateField';
+    import {mapGetters, mapActions} from 'vuex';
+    import InputField from '../../_common/_form-components/InputField';
+    import MoneyField from '../../_common/_form-components/MoneyField';
+    import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
+    import MemberSearch from '../../_common/MemberSearch';
+    import SelectField from '../../_common/_form-components/SelectField';
+    import moment from 'moment';
+    import Error from '../../_common/_messages/Error.vue';
+    import Editor from '../../_common/Editor';
+    import RiskMatrix from '../RiskManagement/RiskMatrix';
+    import DateField from '../../_common/_form-components/DateField';
+    import ProbabilitySlider from '../RiskManagement/ProbabilitySlider';
+    import ImpactSlider from '../RiskManagement/ImpactSlider';
 
-export default {
-    components: {
-        DateField,
-        RiskMatrix,
-        InputField,
-        RangeSlider,
-        TooltipIcon,
-        IndicatorIcon,
-        MemberSearch,
-        SelectField,
-        moment,
-        Error,
-        Editor,
-        MoneyField,
-    },
-    methods: {
-        ...mapActions([
-            'getProjectRiskAndOpportunitiesStats', 'getRiskStrategies', 'getRiskStatuses',
-            'createProjectRisk', 'getProjectRisk', 'editProjectRisk', 'emptyValidationMessages',
-        ]),
-        addMeasure: function() {
-            let measure = {
+    export default {
+        components: {
+            ImpactSlider,
+            ProbabilitySlider,
+            DateField,
+            RiskMatrix,
+            InputField,
+            TooltipIcon,
+            MemberSearch,
+            SelectField,
+            moment,
+            Error,
+            Editor,
+            MoneyField,
+        },
+        methods: {
+            ...mapActions([
+                'getProjectRiskAndOpportunitiesStats', 'getRiskStrategies', 'getRiskStatuses',
+                'createProjectRisk', 'getProjectRisk', 'editProjectRisk', 'emptyValidationMessages',
+            ]),
+            addMeasure: function() {
+                let measure = {
+                    title: '',
+                    description: '',
+                    cost: '',
+                    responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
+                };
+
+                this.measures.push(measure);
+            },
+            getFormData: function() {
+                let measures = this.measures.map((item) => ({
+                    cost: item.cost,
+                    description: item.description,
+                    responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
+                    title: item.title,
+                }));
+
+                return {
+                    title: this.title,
+                    description: this.description,
+                    impact: this.riskImpact,
+                    probability: this.riskProbability,
+                    cost: this.cost,
+                    currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
+                    delay: this.timeDelay,
+                    delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
+                    priority: this.priority,
+                    riskStrategy: this.details.strategy ? this.details.strategy.key : null,
+                    riskStatus: this.details.status ? this.details.status.key : null,
+                    dueDate: moment(this.schedule.dueDate)
+                        .format('DD-MM-YYYY'),
+                    responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
+                    measures,
+                };
+            },
+            saveRisk: function() {
+                let data = this.getFormData();
+                data.project = this.$route.params.id;
+                this.createProjectRisk(data);
+            },
+            editRisk: function() {
+                let data = this.getFormData();
+                data.id = this.$route.params.riskId;
+                this.editProjectRisk(data);
+            },
+        },
+        computed: {
+            ...mapGetters([
+                'risksOpportunitiesStats',
+                'riskStrategiesForSelect',
+                'riskStatusesForSelect',
+                'risk',
+                'validationMessages',
+                'projectCurrencySymbol',
+                'risksAvgImpact',
+                'risksAvgProbability',
+            ]),
+            potentialCost: function() {
+                let probability = _.toFinite(this.riskProbability) / 100;
+                let cost = _.toFinite(this.cost);
+
+                return (probability * cost).toFixed(2);
+            },
+            timeUnit() {
+                return this.details.time && this.details.time.key ? this.details.time.label : null;
+            },
+            potentialDelay() {
+                let probability = _.toFinite(this.riskProbability) / 100;
+                let delay = _.toFinite(this.timeDelay);
+
+                return (delay * probability).toFixed(2);
+            },
+        },
+        created() {
+            this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
+            this.getRiskStrategies(this.$route.params.id);
+            this.getRiskStatuses(this.$route.params.id);
+            if (this.$route.params.riskId) {
+                this.getProjectRisk(this.$route.params.riskId);
+            }
+
+            this.$on('changeRangeSliderValue', valueObj => {
+                this[valueObj.modelName] = valueObj.value;
+            });
+        },
+        beforeDestroy() {
+            this.emptyValidationMessages();
+        },
+        data: function() {
+            return {
+                priority: null,
                 title: '',
                 description: '',
-                cost: '',
-                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-            };
-
-            this.measures.push(measure);
-        },
-        getFormData: function() {
-            let measures = this.measures.map((item) => ({
-                cost: item.cost,
-                description: item.description,
-                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-                title: item.title,
-            }));
-
-            return {
-                title: this.title,
-                description: this.description,
-                impact: this.riskImpact,
-                probability: this.riskProbability,
-                cost: this.cost,
-                currency: this.details.currency && this.details.currency.key ? this.details.currency.key : '',
-                delay: this.timeDelay,
-                delayUnit: this.details.time && this.details.time.key ? this.details.time.key : '',
-                priority: this.priority,
-                riskStrategy: this.details.strategy ? this.details.strategy.key : null,
-                riskStatus: this.details.status ? this.details.status.key : null,
-                dueDate: moment(this.schedule.dueDate).format('DD-MM-YYYY'),
-                responsibility: this.memberList.length > 0 ? this.memberList[0] : null,
-                measures,
+                cost: 0,
+                timeDelay: 0,
+                days: '',
+                measureCost: '',
+                schedule: {
+                    dueDate: new Date(),
+                },
+                details: {
+                    currency: null,
+                    time: null,
+                    strategy: null,
+                    status: null,
+                },
+                memberList: [],
+                measures: [],
+                riskImpact: 0,
+                riskProbability: 0,
+                timeLabel: [
+                    {label: this.translate('choices.hours'), key: 'choices.hours'},
+                    {label: this.translate('choices.days'), key: 'choices.days'},
+                    {label: this.translate('choices.weeks'), key: 'choices.weeks'},
+                    {label: this.translate('choices.months'), key: 'choices.months'},
+                ],
+                model: {},
+                currentOption: {},
+                isEdit: this.$route.params.riskId,
+                activeItem: null,
             };
         },
-        saveRisk: function() {
-            let data = this.getFormData();
-            data.project = this.$route.params.id;
-            this.createProjectRisk(data);
-        },
-        editRisk: function() {
-            let data = this.getFormData();
-            data.id = this.$route.params.riskId;
-            this.editProjectRisk(data);
-        },
-    },
-    computed: {
-        ...mapGetters({
-            risksOpportunitiesStats: 'risksOpportunitiesStats',
-            riskStrategiesForSelect: 'riskStrategiesForSelect',
-            riskStatusesForSelect: 'riskStatusesForSelect',
-            risk: 'currentRisk',
-            validationMessages: 'validationMessages',
-            projectCurrencySymbol: 'projectCurrencySymbol',
-        }),
-        potentialCost: function() {
-            let probability = _.toFinite(this.riskProbability) / 100;
-            let cost = _.toFinite(this.cost);
-
-            return (probability * cost).toFixed(2);
-        },
-        timeUnit() {
-            return this.details.time && this.details.time.key ? this.details.time.label : null;
-        },
-        potentialDelay() {
-            let probability = _.toFinite(this.riskProbability) / 100;
-            let delay = _.toFinite(this.timeDelay);
-
-            return (delay * probability).toFixed(2);
-        },
-    },
-    created() {
-        this.getProjectRiskAndOpportunitiesStats(this.$route.params.id);
-        this.getRiskStrategies(this.$route.params.id);
-        this.getRiskStatuses(this.$route.params.id);
-        if (this.$route.params.riskId) {
-            this.getProjectRisk(this.$route.params.riskId);
-        }
-
-        this.$on('changeRangeSliderValue', valueObj => {
-            this[valueObj.modelName] = valueObj.value;
-        });
-    },
-    beforeDestroy() {
-        this.emptyValidationMessages();
-    },
-    data: function() {
-        return {
-            priority: null,
-            title: '',
-            description: '',
-            cost: 0,
-            timeDelay: 0,
-            days: '',
-            measureCost: '',
-            schedule: {
-                dueDate: new Date(),
+        watch: {
+            risk(value) {
+                this.title = this.risk.title;
+                this.description = this.risk.description;
+                this.riskImpact = this.risk.impact;
+                this.riskProbability = this.risk.probability;
+                this.cost = this.risk.cost;
+                this.timeDelay = this.risk.delay;
+                this.schedule.dueDate = this.risk.dueDate ? moment(this.risk.dueDate)
+                    .toDate() : null;
+                this.details.time = this.risk.delayUnit
+                    ? {key: this.risk.delayUnit, label: this.translate(this.risk.delayUnit)}
+                    : null
+                ;
+                this.details.strategy = this.risk.riskStrategy
+                    ? {key: this.risk.riskStrategy, label: this.risk.riskStrategyName}
+                    : null
+                ;
+                this.details.status = this.risk.status
+                    ? {key: this.risk.status, label: this.risk.statusName}
+                    : null
+                ;
+                this.memberList.push(this.risk.responsibility);
+                if (this.risk.measures.length > 0) {
+                    this.measures = this.risk.measures;
+                } else {
+                    this.measures = [];
+                }
             },
-            details: {
-                currency: null,
-                time: null,
-                strategy: null,
-                status: null,
-            },
-            memberList: [],
-            measures: [],
-            riskImpact: 0,
-            riskProbability: 0,
-            timeLabel: [
-                {label: this.translate('choices.hours'), key: 'choices.hours'},
-                {label: this.translate('choices.days'), key: 'choices.days'},
-                {label: this.translate('choices.weeks'), key: 'choices.weeks'},
-                {label: this.translate('choices.months'), key: 'choices.months'},
-            ],
-            model: {},
-            currentOption: {},
-            isEdit: this.$route.params.riskId,
-            activeItem: null,
-        };
-    },
-    watch: {
-        risk(value) {
-            this.title = this.risk.title;
-            this.description = this.risk.description;
-            this.riskImpact = this.risk.impact;
-            this.riskProbability = this.risk.probability;
-            this.cost = this.risk.cost;
-            this.timeDelay = this.risk.delay;
-            this.schedule.dueDate = this.risk.dueDate ? moment(this.risk.dueDate).toDate() : null;
-            this.details.time = this.risk.delayUnit
-                ? {key: this.risk.delayUnit, label: this.translate(this.risk.delayUnit)}
-                : null
-            ;
-            this.details.strategy = this.risk.riskStrategy
-                ? {key: this.risk.riskStrategy, label: this.risk.riskStrategyName}
-                : null
-            ;
-            this.details.status = this.risk.status
-                ? {key: this.risk.status, label: this.risk.statusName}
-                : null
-            ;
-            this.memberList.push(this.risk.responsibility);
-            if (this.risk.measures.length > 0) {
-                this.measures = this.risk.measures;
-            } else {
-                this.measures = [];
-            }
         },
-    },
-};
+    };
 </script>
 
 <style scoped lang="scss">
@@ -453,7 +437,7 @@ export default {
     .btn-row {
         padding-bottom: 15px;
     }
-    
+
     .time-delay {
         text-overflow: ellipsis;
         white-space: nowrap;
