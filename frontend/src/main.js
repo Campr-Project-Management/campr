@@ -27,7 +27,9 @@ Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
 Vue.use(VTooltip);
-Vue.use(Translator);
+Vue.use(Translator, {
+    store,
+});
 Vue.use(HumanizeDuration);
 Vue.use(Numeral);
 Vue.use(DateFormat);

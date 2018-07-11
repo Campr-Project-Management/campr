@@ -6,7 +6,7 @@
                 <ul>
                     <li class="active">
                         <router-link :to="{name: 'dashboard'}" title="Dashboard">
-                            <span class="default">{{ message.dashboard }}</span>
+                            <span class="default">{{ translate('message.dashboard') }}</span>
                             <span class="tablet">
                                 <svg version="1.1" class="dashboard-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                    viewBox="0 0 23.6 23.6" xml:space="preserve">
@@ -33,8 +33,10 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link :to="{name: 'projects'}" v-bind:title="message.projects">
-                            <span class="default">{{ message.projects }}</span>
+                        <router-link
+                                :to="{name: 'projects'}"
+                                :title="translate('message.projects')">
+                            <span class="default">{{ translate('message.projects') }}</span>
                             <span class="tablet">
                                 <svg version="1.1" class="projects-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                    viewBox="0 0 20.9 20.4" xml:space="preserve">
@@ -52,8 +54,10 @@
                         </router-link>
                     </li>
                     <li>
-                        <router-link :to="{name: 'tasks'}" v-bind:title="message.tasks">
-                            <span class="default">{{ message.tasks }}</span>
+                        <router-link
+                                :to="{name: 'tasks'}"
+                                :title="translate('message.tasks')">
+                            <span class="default">{{ translate('message.tasks') }}</span>
                             <span class="tablet">
                                 <svg version="1.1" class="tasks-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                    viewBox="0 0 20.2 19.8" xml:space="preserve">
@@ -87,10 +91,11 @@
                         </router-link>
                     </li>
                     <li v-for="(module, key) in modules" v-if="displayModule(key)">
-                        <router-link :to="{name: moduleToRoute[key], params: {id: projectId}}"
-                                     v-bind:title="translate(module.title)">
+                        <router-link
+                                :to="{name: moduleToRoute[key], params: {id: projectId}}"
+                                :title="translate(module.title)">
                             <span class="default">{{ translate(module.title) }}</span>
-                            <span v-bind:class="module.icon"></span>
+                            <span :class="module.icon"></span>
                         </router-link>
                     </li>
                     <li v-if="user.isAdmin" class="admin-link">
@@ -103,7 +108,6 @@
 </template>
 
 <script>
-    import Vue from 'vue';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -137,9 +141,6 @@
                 'clearProject',
                 'getSidebarInformation',
             ]),
-            translate(key) {
-                return Vue.translate(key);
-            },
             displayModule(module) {
                 return this.project && this.project.projectModules && (
                     this.project.projectModules.indexOf(module) !== -1
@@ -167,11 +168,6 @@
                     decisions: 'project-decisions',
                     status_report: 'project-status-reports',
                     close_down_project: 'project-close-down-report',
-                },
-                message: {
-                    dashboard: this.translate('message.dashboard'),
-                    projects: this.translate('message.projects'),
-                    tasks: this.translate('message.tasks'),
                 },
                 adminRoute: Routing.generate('app_admin_dashboard'),
             };
