@@ -48,37 +48,15 @@
 
                     <hr class="double">
 
-                    <!-- /// Opportunity Impact /// -->
-                    <div class="range-slider-wrapper">
-                        <range-slider
-                                :title="translate('message.impact')"
-                                minSuffix=" %"
-                                :step="5"
-                                v-model="impact"/>
-                        <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                            <indicator-icon fill="middle-fill"
-                                            v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
-                                            :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
-                                            :title="translate('message.average_impact_opportunity')"></indicator-icon>
-                        </div>
-                    </div>
-                    <!-- /// End Opportunity Impact /// -->
+                    <impact-slider
+                            v-model="impact"
+                            :avg="opportunitiesAvgImpact"
+                            avg-tooltip="message.average_impact_opportunity"/>
 
-                    <!-- /// Opportunity Probability /// -->
-                    <div class="range-slider-wrapper">
-                        <range-slider
-                                :title="translate('message.probability')"
-                                minSuffix=" %"
-                                :step="5"
-                                v-model="probability"/>
-                        <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                            <indicator-icon fill="middle-fill"
-                                            v-if="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
-                                            :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
-                                            :title="translate('message.average_probability_opportunity')"></indicator-icon>
-                        </div>
-                    </div>
-                    <!-- /// End Opportunity Probability /// -->
+                    <probability-slider
+                            v-model="probability"
+                            :avg="opportunitiesAvgProbability"
+                            avg-tooltip="message.average_probability_opportunity"/>
 
                     <hr class="double">
 
@@ -256,9 +234,7 @@
     import {mapGetters, mapActions} from 'vuex';
     import InputField from '../../_common/_form-components/InputField';
     import MoneyField from '../../_common/_form-components/MoneyField';
-    import RangeSlider from '../../_common/_form-components/RangeSlider';
     import TooltipIcon from '../../_common/_icons/TooltipQuestionMark';
-    import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
     import MemberSearch from '../../_common/MemberSearch';
     import SelectField from '../../_common/_form-components/SelectField';
     import moment from 'moment';
@@ -267,6 +243,8 @@
     import RiskManagementMatrix from '../RiskManagement/OpportunityMatrix';
     import OpportunityMatrix from '../RiskManagement/OpportunityMatrix';
     import DateField from '../../_common/_form-components/DateField';
+    import ImpactSlider from '../RiskManagement/ImpactSlider';
+    import ProbabilitySlider from '../RiskManagement/ProbabilitySlider';
 
     export default {
         components: {
@@ -274,15 +252,15 @@
             OpportunityMatrix,
             RiskManagementMatrix,
             InputField,
-            RangeSlider,
             TooltipIcon,
-            IndicatorIcon,
             MemberSearch,
             SelectField,
             moment,
             Error,
             Editor,
             MoneyField,
+            ImpactSlider,
+            ProbabilitySlider,
         },
         methods: {
             ...mapActions([
@@ -345,10 +323,10 @@
                 'opportunityStatusesForSelect',
                 'validationMessages',
                 'projectCurrencySymbol',
+                'opportunitiesAvgImpact',
+                'opportunitiesAvgProbability',
+                'opportunity',
             ]),
-            ...mapGetters({
-                opportunity: 'currentOpportunity',
-            }),
             budget() {
                 let probability = _.toInteger(this.opportunityProbability) / 100;
                 let costSavings = _.toFinite(this.costSavings);
