@@ -17,9 +17,7 @@
                     v-bind:editInfoModal="showEditInfoModal"
                     v-bind:deleteInfoModal="showDeleteInfoModal"
                     v-bind:infoObject="editInfoObject"
-                    v-on:input="setModals"
-            >
-            </meeting-modals>
+                    v-on:input="setModals"/>
             <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
                 <p class="modal-title">{{ translate('message.delete_meeting') }}</p>
                 <div class="flex flex-space-between">
@@ -74,11 +72,11 @@
                                 <i class="fa fa-angle-left"></i>
                                 {{ translate('message.back_to_meetings') }}
                             </router-link>
-                            <h1>{{ meeting.name }}</h1>
+                            <h1>{{ translate(meeting.name) }}</h1>
                             <h3 class="category"><b>{{ meeting.meetingCategoryName }}</b></h3>
                             <h4>
                                 {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
-                                {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{ meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translate('message.min') }}</b>
+                                {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{ meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }}</b>
                             </h4>
                             <a @click="rescheduleModal = true;" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.reschedule') }} <reschedule-icon></reschedule-icon></a>
                         </div>
@@ -390,9 +388,11 @@ import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
 import VueTimepicker from 'vue2-timepicker';
 import DateField from '../../_common/_form-components/DateField';
+import Attachments from '../../_common/Attachments';
 
 export default {
     components: {
+        Attachments,
         DateField,
         EditIcon,
         DeleteIcon,
@@ -414,7 +414,7 @@ export default {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
 
-            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+            return this.$humanizeDuration(end.diff(start, 'miliseconds'));
         },
         setModals(value) {
             this.showEditObjectiveModal = value;
@@ -679,6 +679,7 @@ export default {
 
     .action-list {
         margin-bottom: 15px;
+        list-style-type: none;
 
         li {
             margin-bottom: 15px;
@@ -701,6 +702,7 @@ export default {
                     height: 10px;
                     left: 0;
                     top: 0;
+                    margin-top: 0.3em;
                 }
             }
 

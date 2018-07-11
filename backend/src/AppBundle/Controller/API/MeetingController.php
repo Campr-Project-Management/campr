@@ -61,7 +61,15 @@ class MeetingController extends ApiController
     {
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
         $project = $meeting->getProject();
-        $form = $this->createForm(ApiCreateType::class, $meeting, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $form = $this->createForm(
+            ApiCreateType::class,
+            $meeting,
+            [
+                'csrf_protection' => false,
+                'method' => $request->getMethod(),
+                'max_media_size' => $meeting->getProject()->getMaxUploadFileSize(),
+            ]
+        );
         $this->processForm(
             $request,
             $form,
