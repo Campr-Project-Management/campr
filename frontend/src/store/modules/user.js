@@ -74,12 +74,24 @@ const actions = {
 
     /**
      * Update local user
-     * @param {object} dispatch
+     * @param {object} commit
      * @param {string} locale
      * @return {object}
      */
-    switchLocale({dispatch}, locale) {
-        return dispatch('updateLocalUser', {locale});
+    switchLocale({commit}, locale) {
+        return Vue
+            .http
+            .patch(Routing.generate('app_api_switch_locale'), {locale})
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
     },
     /**
      * Gets users.
@@ -114,6 +126,26 @@ const actions = {
      */
     clearUsers({commit}) {
         commit(types.SET_USERS, {users: []});
+    },
+    /**
+     * Sync user.
+     * @param {function} commit
+     * @return {object}
+     */
+    syncUser({commit}) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_users_sync'))
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
     },
 };
 

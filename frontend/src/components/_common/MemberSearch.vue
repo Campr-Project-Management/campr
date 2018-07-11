@@ -46,9 +46,9 @@
         </div>
         <p v-if="usersList && usersList.length" v-for="user in usersList" class="selected-item">
             <user-avatar
-                size="small"
-                :url="user.avatarUrl"
-                :name="user.userFullName"/>
+                    size="small"
+                    :url="user.avatarUrl"
+                    :name="user.userFullName"/>
             <span>{{ user.firstName }} {{ user.lastName }}</span>
             <a @click="removeSelectedOption(user.id)"> <i class="fa fa-times"></i></a>
         </p>

@@ -20,3 +20,12 @@ services:
             - '@app.templating.helper.format_money'
         tags:
             - { name: twig.extension }
+
+    app.twig.extension.locale:
+        class: AppBundle\Twig\LocaleExtension
+        public: false
+        arguments:
+            - '@app.locale.context'
+            - '@app.locale.provider'
+        tags:
+            - { name: twig.extension }
