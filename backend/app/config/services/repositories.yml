@@ -23,6 +23,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\ProjectUser }
 
+    app.repository.user:
+        class: AppBundle\Repository\UserRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\User }
+
     app.repository.team:
         class: AppBundle\Repository\TeamRepository
         arguments: ~
