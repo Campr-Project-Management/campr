@@ -98,14 +98,26 @@ class RiskRepository extends BaseRepository
         return $hours;
     }
 
-    public function getAverageData($project)
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
+    public function getAverageData(Project $project)
     {
-        return $this
+        $row = $this
             ->getQueryBuilderByProject($project)
             ->select('AVG(r.impact) as averageImpact, AVG(r.probability) as averageProbability')
             ->getQuery()
             ->getSingleResult()
         ;
+
+        return array_map(
+            function ($value) {
+                return round((float) $value, 2);
+            },
+            $row
+        );
     }
 
     /**

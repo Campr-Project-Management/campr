@@ -10,18 +10,6 @@
     }
 }  
 
-.range-slider-wrapper {
-    position: relative;
-
-    .slider-indicator {
-        position: absolute;
-        bottom: -18px;
-        left: 0;
-        width: 100%;
-        height: 18px;
-    }
-}
-
 .light-color {
     b {
         color: $lighterColor;

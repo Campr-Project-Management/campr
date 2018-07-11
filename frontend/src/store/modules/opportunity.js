@@ -10,6 +10,7 @@ const state = {
 const getters = {
     opportunities: state => state.opportunities,
     currentOpportunity: state => state.currentOpportunity,
+    opportunity: (state, getters) => getters.currentOpportunity,
     currentOpportunityMeasures: state => state.currentOpportunity.measures,
 };
 
