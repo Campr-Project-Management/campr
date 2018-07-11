@@ -266,6 +266,19 @@ services:
             - '@app.resolver.user_uploaded_avatar_url'
             - '%gravatar.base_url%'
 
+    app.locale.context:
+        class: Component\Locale\Context\LocaleContext
+        arguments:
+            - '@security.token_storage'
+            - '@app.locale.provider'
+            - '@request_stack'
+
+    app.locale.provider:
+        class: Component\Locale\Provider\LocaleProvider
+        arguments:
+            - '%kernel.default_locale%'
+            - '%managed_locales%'
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder

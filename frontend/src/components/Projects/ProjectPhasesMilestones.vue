@@ -135,8 +135,12 @@
                                 </table>
                             </td>
                             <td>{{ translateText(phase.workPackageStatusName) }}</td>
-                            <td class="small-avatar text-center">
-                                <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + phase.responsibilityAvatar + ')' }" v-tooltip.top-center="translateText('message.phase_responsible') + ': ' + phase.responsibilityFullName"></div>
+                            <td class="text-center">
+                                <user-avatar
+                                        size="small"
+                                        :tooltip="phase.responsibilityFullName"
+                                        :url="phase.responsibilityAvatar"
+                                        :name="phase.responsibilityFullName"/>
                             </td>
                             <td>
                                 <router-link
@@ -223,7 +227,11 @@
                             <td>{{ milestone.actualFinishAt | date }}</td>
                             <td>{{ translateText(milestone.workPackageStatusName) }}</td>
                             <td class="small-avatar text-center">
-                                <div class="user-avatar-wrapper" v-bind:style="{ backgroundImage: 'url(' + milestone.responsibilityAvatar + ')' }" v-tooltip.top-center="translateText('message.milestone_responsible') + ': ' + milestone.responsibilityFullName"></div>
+                                <user-avatar
+                                        size="small"
+                                        :tooltip="milestone.responsibilityFullName"
+                                        :url="milestone.responsibilityAvatar"
+                                        :name="milestone.responsibilityFullName"/>
                             </td>
                             <td>
                                 <router-link
@@ -279,9 +287,11 @@
     import moment from 'moment';
     import Modal from '../_common/Modal';
     import AlertModal from '../_common/AlertModal.vue';
+    import UserAvatar from '../_common/UserAvatar';
 
     export default {
         components: {
+            UserAvatar,
             VisTimeline,
             PhaseFilters,
             MilestoneFilters,

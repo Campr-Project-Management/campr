@@ -16,9 +16,22 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends ApiController
 {
     /**
+     * @Route("/me", name="main_api_users_me", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function meAction()
+    {
+        $user = $this->getUser();
+
+        return $this->createApiResponse($user);
+    }
+
+    /**
      * Retrieve User information.
      *
-     * @Route("/{id}", name="main_api_users_get", options={"expose"=true})
+     * @Route("/{id}", name="main_api_users_get", options={"expose"=true}, requirements={"id": "\d+"})
      * @Method({"GET"})
      *
      * @param $id
