@@ -138,35 +138,17 @@
 
                 <hr class="double">
 
-                <!-- ///  Impact /// -->
-                <div class="range-slider-wrapper">
-                    <range-slider
-                            :disabled="true"
-                            :title="translate('message.impact')"
-                            minSuffix=" %"
-                            :value="opportunity.impact"/>
-                    <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                        <indicator-icon fill="middle-fill"
-                                        :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact"
-                                        :title="translate('message.average_impact_opportunity')"></indicator-icon>
-                    </div>
-                </div>
-                <!-- /// End Impact /// -->
+                <impact-slider
+                        :disabled="true"
+                        :value="opportunity.impact"
+                        :avg="opportunitiesAvgImpact"
+                        avg-tooltip="message.average_impact_opportunity"/>
 
-                <!-- /// Probability /// -->
-                <div class="range-slider-wrapper">
-                    <range-slider
-                            :disabled="true"
-                            :title="translate('message.probability')"
-                            minSuffix=" %"
-                            :value="opportunity.probability"/>
-                    <div class="slider-indicator" v-if="risksOpportunitiesStats.opportunities">
-                        <indicator-icon fill="middle-fill"
-                                        :position="risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability"
-                                        :title="translate('message.average_probability_opportunity')"></indicator-icon>
-                    </div>
-                </div>
-                <!-- /// End Probability /// -->
+                <probability-slider
+                        :disabled="true"
+                        :value="opportunity.probability"
+                        :avg="opportunitiesAvgProbability"
+                        avg-tooltip="message.average_probability_opportunity"/>
 
                 <!-- /// Measures /// -->
                 <h3 v-if="opportunity.measures">{{ opportunity.measures.length }} {{ translate('message.measures') }}</h3>
@@ -311,8 +293,6 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
 import InputField from '../../_common/_form-components/InputField';
-import IndicatorIcon from '../../_common/_icons/IndicatorIcon';
-import RangeSlider from '../../_common/_form-components/RangeSlider';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
@@ -321,9 +301,13 @@ import Editor from '../../_common/Editor';
 import MoneyField from '../../_common/_form-components/MoneyField';
 import OpportunityMatrix from '../RiskManagement/OpportunityMatrix';
 import UserAvatar from '../../_common/UserAvatar';
+import ImpactSlider from '../RiskManagement/ImpactSlider';
+import ProbabilitySlider from '../RiskManagement/ProbabilitySlider';
 
 export default {
     components: {
+        ImpactSlider,
+        ProbabilitySlider,
         UserAvatar,
         OpportunityMatrix,
         MoneyField,
@@ -331,8 +315,6 @@ export default {
         DeleteIcon,
         AttachIcon,
         InputField,
-        IndicatorIcon,
-        RangeSlider,
         Modal,
         Error,
         Editor,
@@ -426,12 +408,16 @@ export default {
     },
     computed: {
         ...mapGetters({
-            opportunity: 'currentOpportunity',
-            risksOpportunitiesStats: 'risksOpportunitiesStats',
-            validationMessages: 'validationMessages',
             measures: 'currentOpportunityMeasures',
-            projectCurrencySymbol: 'projectCurrencySymbol',
         }),
+        ...mapGetters([
+            'opportunity',
+            'risksOpportunitiesStats',
+            'validationMessages',
+            'projectCurrencySymbol',
+            'opportunitiesAvgImpact',
+            'opportunitiesAvgProbability',
+        ]),
         priorityLabel() {
             return 'message.'.concat(this.opportunity.priorityName.replace('-', '_'));
         },
