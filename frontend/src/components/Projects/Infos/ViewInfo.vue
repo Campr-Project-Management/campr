@@ -155,7 +155,7 @@ export default {
             this.rescheduleModal = false;
             const id = this.$route.params.infoId;
             const data = {
-                expiresAt: moment(this.rescheduleObj.expiresAt).format('DD-MM-YYYY'),
+                expiresAt: moment(this.date).format('YYYY-MM-DD'),
             };
             this.editInfo({id, data});
         },
@@ -165,7 +165,7 @@ export default {
     },
     watch: {
         info(val) {
-            this.rescheduleObj.expiresAt = this.info.expiresAt ? moment(this.info.expiresAt).toDate() : moment().toDate();
+            this.date = moment(this.info.expiresAt).toDate();
         },
     },
     data() {
@@ -173,7 +173,7 @@ export default {
             showPresent: '',
             distributionList: '',
             rescheduleModal: false,
-            rescheduleObj: {},
+            date: new Date(),
         };
     },
 };
