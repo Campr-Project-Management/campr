@@ -729,6 +729,7 @@ export default {
                 responsibility: this.decision.responsibility,
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 date: moment(this.decision.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                meeting: this.$route.params.meetingId,
             };
 
             this.createMeetingDecision(data).then(() => {
@@ -763,6 +764,7 @@ export default {
                 responsibility: this.todo.responsibility.length > 0 ? this.todo.responsibility[0] : null,
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
+                meeting: this.$route.params.meetingId,
             });
             this.todo.responsibility = [];
             this.todo.title = null;
