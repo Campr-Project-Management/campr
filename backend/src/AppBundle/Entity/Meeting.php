@@ -44,7 +44,7 @@ class Meeting
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MeetingCategory")
      * @ORM\JoinColumn(name="meeting_category_id")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="not_blank.meeting_category")
      */
     private $meetingCategory;
 
