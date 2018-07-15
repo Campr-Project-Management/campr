@@ -1,5 +1,5 @@
 <template>
-    <div class="ro-list">
+    <scrollbar class="ro-list customScrollbar">
         <div class="ro-list-item" v-for="item in list">
             <div class="flex">
                 <router-link :to="{name: 'project-risks-view-risk', params:{riskId: item.id}}">
@@ -17,7 +17,7 @@
             <p>{{ translate('message.strategy') }}: <b v-if="item.riskStrategyName">{{ translate(item.riskStrategyName) }}</b><b v-else>-</b></p>
             <p>{{ translate('message.status') }}: <b>{{ item.statusName ? translate(item.statusName) : '-' }}</b></p>
         </div>
-    </div>
+    </scrollbar>
 </template>
 
 <script>
@@ -52,6 +52,10 @@
     @import '../../../css/_mixins';
     @import '../../../css/_variables';
 
+    .ro-list {
+        height: 100%;
+    }
+    
     .ro-list-item {
         text-transform: uppercase;
         letter-spacing: 0.1em;
