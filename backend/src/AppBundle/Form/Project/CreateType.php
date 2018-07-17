@@ -195,6 +195,7 @@ class CreateType extends AbstractType
                 [
                     'required' => true,
                     'label' => 'label.max_upload_file_size',
+                    'empty_data' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ]
             )
         ;

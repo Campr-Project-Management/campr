@@ -524,6 +524,7 @@ class Project implements ProjectInterface
     /**
      * @var int
      * @ORM\Column(name="max_upload_file_size", type="integer", options={"default": 10485760})
+     * @Assert\NotBlank()
      */
     private $maxUploadFileSize;
 
