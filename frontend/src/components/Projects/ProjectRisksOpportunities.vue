@@ -15,7 +15,7 @@
 
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
-                    <div class="row equal">
+                    <div class="row equa">
                         <div class="col-md-8" ref="opportunityMatrix">
                             <opportunity-matrix
                                     :clickable="true"
@@ -49,7 +49,7 @@
                 <!-- /// End Project Risks Header /// -->
 
                 <div class="ro-grid-wrapper clearfix">
-                    <div class="row equal">
+                    <div class="row">
                         <div class="col-md-8" ref="riskMatrix">
                             <risk-matrix
                                     :clickable="true"
@@ -198,7 +198,6 @@
                 });
             },
             matchHeight() {
-                console.log(this.$refs);
                 this.opportunityRightColStyle.height = this.$refs.opportunityMatrix.clientHeight + 'px';
                 this.riskRightColStyle.height = this.$refs.riskMatrix.clientHeight + 'px';
             },
@@ -231,11 +230,6 @@
     @import '../../css/page-section';
     @import '../../css/_mixins';
     @import '../../css/_variables';
-
-    .row.equal {
-        display: flex;
-        flex-wrap: wrap;
-    }
 
     .dark-border-right {
         border-right: 1px solid $darkerColor;
