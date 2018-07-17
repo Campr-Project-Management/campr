@@ -13,10 +13,12 @@ class FileSizeChoices extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'choices' => $this->getChoices(),
-            ''
-        ]);
+        $choices = $this->getChoices();
+        $resolver->setDefaults(
+            [
+                'choices' => $choices,
+            ]
+        );
     }
 
     /**
