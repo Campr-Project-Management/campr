@@ -207,6 +207,7 @@ export default {
                     (data) => {
                         if (!data.error) {
                             this.showModal = false;
+                            this.distributionTitle = '';
                             this.distributionList = [];
                         } else {
                             this.showFailed = true;
