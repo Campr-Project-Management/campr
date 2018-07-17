@@ -49,7 +49,7 @@
                 <!-- /// End Project Risks Header /// -->
 
                 <div class="ro-grid-wrapper clearfix">
-                    <div class="row">
+                    <div class="row equal">
                         <div class="col-md-8" ref="riskMatrix">
                             <risk-matrix
                                     :clickable="true"
@@ -57,7 +57,7 @@
                                     :labels="risksMatrixLabels"
                                     @priorityClick="onRiskPriorityClick"/>
                         </div>
-                        <div class="col-md-4"  v-bind:style="RiskRightColStyle">
+                        <div class="col-md-4"  v-bind:style="riskRightColStyle">
                             <risk-list :list="selectedRisks"/>
                         </div>
                     </div>
