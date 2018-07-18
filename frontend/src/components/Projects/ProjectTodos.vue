@@ -43,7 +43,11 @@
                                 <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ todo.title }}</td>
                                 <td>
-                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                    <user-avatar
+                                            size="small"
+                                            :tooltip="todo.responsibilityFullName"
+                                            :url="todo.responsibilityAvatar"
+                                            :name="todo.responsibilityFullName"/>
                                 </td>
                                 <td>
                                     <div class="text-right">
@@ -82,9 +86,11 @@ import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../_common/Modal';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         TodosFilters,
         ViewIcon,
         EditIcon,
