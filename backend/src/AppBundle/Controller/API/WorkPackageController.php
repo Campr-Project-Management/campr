@@ -157,7 +157,10 @@ class WorkPackageController extends ApiController
                 $media->setFileSystem($fs);
             }
 
-            $this->get('app.repository.work_package')->add($wp);
+            $this
+                ->get('app.repository.work_package')
+                ->add($wp)
+            ;
 
             return $this->createApiResponse($wp);
         } catch (FileAlreadyExists $ex) {
@@ -219,6 +222,11 @@ class WorkPackageController extends ApiController
         $wp = $form->getData();
         $em = $this->getDoctrine()->getManager();
 
+        $fs = $this->getFileSystem($wp->getProject());
+        foreach ($wp->getMedias() as $media) {
+            $media->setFileSystem($fs);
+        }
+
         if (!array_key_exists('children', $request->request->all())) {
             foreach ($wp->getChildren() as $child) {
                 $em->remove($child);
@@ -231,11 +239,6 @@ class WorkPackageController extends ApiController
             if (!$wp->getCosts()->contains($originalCost)) {
                 $em->remove($originalCost);
             }
-        }
-
-        $fs = $this->getFileSystem($wp->getProject());
-        foreach ($wp->getMedias() as $media) {
-            $media->setFileSystem($fs);
         }
 
         $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
