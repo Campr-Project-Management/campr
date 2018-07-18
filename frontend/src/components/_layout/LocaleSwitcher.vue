@@ -2,18 +2,18 @@
     <div class="locale-switcher">
         <button
                 type="button"
-                v-tooltip.bottom="translate('message.locale_switcher.english')"
+                v-tooltip.bottom="translate('message.locale_switcher.en')"
                 :class="{'active-locale': isActive('en')}"
                 @click="onSwitch('en')">
-            <img src="../../assets/english.png" :alt="translate('message.english')">
+            <img src="../../assets/english.png" :alt="translate('message.locale_switcher.en')">
         </button>
 
         <button
                 type="button"
-                v-tooltip.bottom="translate('message.locale_switcher.german')"
+                v-tooltip.bottom="translate('message.locale_switcher.de')"
                 :class="{'active-locale': isActive('de')}"
                 @click="onSwitch('de')">
-            <img src="../../assets/german.png" :alt="translate('message.german')">
+            <img src="../../assets/german.png" :alt="translate('message.locale_switcher.de')">
         </button>
     </div>
 </template>

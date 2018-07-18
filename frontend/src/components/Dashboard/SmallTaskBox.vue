@@ -4,7 +4,10 @@
             <div class="box-header">
                 <div>
                     <div v-if="task.responsibility" class="user-info flex flex-v-center">
-                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + task.responsibilityAvatar + ')' }"></div>
+                        <user-avatar
+                                size="small"
+                                :url="task.responsibilityAvatar"
+                                :name="task.responsibilityFullName"/>
                         <p class="user-name">{{ task.responsibilityFullName }}</p>
                     </div>
                     <h2>
@@ -60,11 +63,13 @@ import {mapGetters} from 'vuex';
 import BarChart from '../_common/_charts/BarChart';
 import TaskLabelBar from '../Tasks/TaskLabelBar';
 import TrafficLight from '../_common/TrafficLight';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     name: 'dashboard-small-task-box',
     props: ['task'],
     components: {
+        UserAvatar,
         TrafficLight,
         BarChart,
         TaskLabelBar,

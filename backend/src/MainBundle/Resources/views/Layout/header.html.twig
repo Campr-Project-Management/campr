@@ -42,6 +42,8 @@
                     <li>
                         <a class="nav-link{% if app.request.get('_route') == 'main_logout' %} active{% endif %}" href="{{ path('main_logout') }}">{{ 'button.logout'|trans }}</a>
                     </li>
+
+                    {% include 'MainBundle:Layout:_locale_switcher.html.twig' %}
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link{% if app.request.get('_route') == 'main_homepage' %} active{% endif %}" href="{{ path('main_homepage') }}">Home</a>
@@ -61,6 +63,7 @@
                     <li>
                         <a class="nav-link" href="{{ path('main_login') }}">{{ 'button.sign_in'|trans }}</a>
                     </li>
+                    {% include 'MainBundle:Layout:_locale_switcher.html.twig' %}
                 {% endif %}
             </ul>
         </div>
