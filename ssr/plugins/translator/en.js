@@ -2346,6 +2346,7 @@ module.exports = function (Translator) {
     Translator.add("message.locale_switcher.en", "Switch to English", "messages", "en");
     Translator.add("message.locale_switcher.de", "Switch to German", "messages", "en");
     Translator.add("portal.about_us", "About Us", "messages", "en");
+    Translator.add("message.generic_error", "An unexpected error occurred", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
