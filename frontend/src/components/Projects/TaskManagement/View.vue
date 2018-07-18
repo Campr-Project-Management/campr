@@ -836,6 +836,8 @@ export default {
                 taskId: this.$route.params.taskId,
             }).then(() => {
                 this.disableAttachments = false;
+            }).catch((response) => {
+                this.disableAttachments = false;
             });
         },
         translateText(text) {

@@ -2,6 +2,7 @@
 
 namespace MainBundle\Form;
 
+use Component\Locale\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Intl\Intl;
@@ -15,16 +16,16 @@ class LocaleType extends AbstractType
     /**
      * @var string[]
      */
-    private $locales;
+    private $localeProvider;
 
     /**
      * LocaleType constructor.
      *
-     * @param string[] $locales
+     * @param LocaleProviderInterface $localeProvider
      */
-    public function __construct(array $locales)
+    public function __construct(LocaleProviderInterface $localeProvider)
     {
-        $this->locales = $locales;
+        $this->localeProvider = $localeProvider;
     }
 
     /**
@@ -32,15 +33,12 @@ class LocaleType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $locales = array_intersect_key(
-            Intl::getLocaleBundle()->getLocaleNames(),
-            array_flip($this->locales)
+        $resolver->setDefaults(
+            [
+                'choices' => $this->getChoices(),
+                'choice_translation_domain' => false,
+            ]
         );
-
-        $resolver->setDefaults(array(
-            'choices' => array_flip($locales),
-            'choice_translation_domain' => false,
-        ));
     }
 
     /**
@@ -49,5 +47,19 @@ class LocaleType extends AbstractType
     public function getParent()
     {
         return ChoiceType::class;
+    }
+
+    /**
+     * @return array
+     */
+    private function getChoices(): array
+    {
+        $choices = [];
+        foreach ($this->localeProvider->getAvailableLocalesCodes() as $localeCode) {
+            $name = Intl::getLocaleBundle()->getLocaleName($localeCode);
+            $choices[$name] = $localeCode;
+        }
+
+        return $choices;
     }
 }

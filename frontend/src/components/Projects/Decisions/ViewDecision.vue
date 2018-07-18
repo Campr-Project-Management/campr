@@ -39,7 +39,10 @@
                             <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
                             <h4>{{ translate('message.created') }}: <b>{{ currentDecision.createdAt | date }}</b> | {{ translate('message.due_date') }}: <b>{{currentDecision.dueDate | date }}</b> </h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentDecision.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="currentDecision.responsibilityAvatar"
+                                        :name="currentDecision.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{currentDecision.responsibilityFullName}}</b>
@@ -102,9 +105,11 @@ import Modal from '../../_common/Modal';
 import moment from 'moment';
 import router from '../../../router';
 import DateField from '../../_common/_form-components/DateField';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         DateField,
         EditIcon,
         DeleteIcon,

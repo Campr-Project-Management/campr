@@ -401,3 +401,4 @@ $(window).smartresize(function(){
     fullScreen();
     $('body').removeClass('offcanvas-stop-scrolling');
 });
+
