@@ -49,8 +49,8 @@
                             </div>
                         </td>
                         <td>
-                            <span v-for="(department, index) in participant.departments" :key="`participant-department-${index}`">
-                                {{ department }}<span v-if="index < participant.departments.length - 1">,</span>
+                            <span v-for="(department, index) in participant.userDepartmentNames" :key="`participant-department-${index}`">
+                                {{ department }}<span v-if="index < participant.userDepartmentNames.length - 1">,</span>
                             </span>
                         </td>
                         <td>
