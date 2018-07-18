@@ -73,7 +73,7 @@
 
                     main
                         .transition()
-                        .duration(2048)
+                        .duration(0)
                         .attrTween('d', d => {
                             return t => {
                                 d.endAngle = interpolate(t);
@@ -82,7 +82,7 @@
                             };
                         })
                     ;
-                }, 1024);
+                }, 0);
 
                 let percentage = parseInt(this.percentage, 10);
                 if (isNaN(percentage)) {
@@ -105,7 +105,7 @@
 
                         progress
                             .transition()
-                            .duration(2048)
+                            .duration(0)
                             .attrTween('d', d => {
                                 return t => {
                                     d.endAngle = interpolate(t);
@@ -114,7 +114,7 @@
                                 };
                             })
                         ;
-                    }, 2048);
+                    }, 0);
                 }
             },
             formatPercentage(percentage) {
