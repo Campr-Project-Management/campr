@@ -248,9 +248,6 @@ const actions = {
                 }
                 return response;
             },
-            (response) => {
-                return response;
-            },
         );
     },
 
