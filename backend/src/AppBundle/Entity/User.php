@@ -260,8 +260,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      *
-     * @Serializer\Exclude()
-     *
      * @var string
      */
     private $avatar;
