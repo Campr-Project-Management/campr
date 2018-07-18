@@ -337,7 +337,10 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ todo.responsibilityFullName }}</b>
@@ -358,7 +361,10 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ todo.responsibilityFullName }}</b>

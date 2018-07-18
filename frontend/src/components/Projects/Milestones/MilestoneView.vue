@@ -56,7 +56,10 @@
                         <div class="col-md-6">
                             <h3>{{ translateText('label.responsible') }}</h3>
                             <div class="user-info">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + milestone.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="milestone.responsibilityAvatar"
+                                        :name="milestone.responsibilityFullName"/>
                                 <span class="uppercase">
                                     {{ milestone.responsibilityFullName }}
                                     <router-link :to="{name: 'project-phases-and-milestones'}" class="second-color">
@@ -101,9 +104,11 @@ import moment from 'moment';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
 import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         ScheduleDatesTable,
         Modal,
         router,

@@ -88,7 +88,12 @@
                                         <div v-if="meeting.meetingParticipants">
                                             <span v-for="(participant, index) in (showMore[meeting.id] ? participants(meeting) : participants(meeting).slice(0, 3))"
                                                 :key="index">
-                                                <div class="avatar" v-tooltip.top-center="participant.userFullName" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
+
+                                                <user-avatar
+                                                        size="small"
+                                                        :tooltip="participant.userFullName"
+                                                        :url="participant.avatarUrl"
+                                                        :name="participant.userFullName"/>
                                             </span>
                                             <button v-if="participants(meeting).length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">
                                                 <span v-if="!showMore[meeting.id]" class="more">{{ translate('message.more') }} +</span>
@@ -148,9 +153,11 @@ import moment from 'moment';
 import Modal from '../_common/Modal';
 import VueTimepicker from 'vue2-timepicker';
 import DateField from '../_common/_form-components/DateField';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         DateField,
         MeetingsFilters,
         ViewIcon,
