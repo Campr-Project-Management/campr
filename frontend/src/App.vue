@@ -25,10 +25,14 @@
             Sidebar,
         },
         methods: {
-            ...mapActions(['getUserInfo']),
+            ...mapActions([
+                'getUserInfo',
+                'syncUser',
+            ]),
         },
         created() {
             this.getUserInfo();
+            this.syncUser();
         },
         computed: {
             ...mapGetters([
