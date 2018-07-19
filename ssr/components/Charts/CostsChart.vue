@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cost-charts">
         <vue-chart
             chart-type="ColumnChart"
             :columns="columns"
@@ -9,7 +9,11 @@
     </div>
 </template>
 
+
 <script>
+    import _ from 'lodash';
+    import {costChart as colors} from '../../../frontend/src/util/colors';
+
     export default {
         name: 'charts-costs-chart',
         props: {
@@ -34,7 +38,7 @@
                         width: '100%',
                         height: 350,
                         curveType: 'function',
-                        colors: ['#5FC3A5', '#A05555', '#646EA0', '#2E3D60', '#D8DAE5'],
+                        colors: [colors.base, colors.actual, colors.forecast, colors.remaining],
                         backgroundColor: '#191E37',
                         titleTextStyle: {
                             color: '#D8DAE5',
@@ -58,6 +62,11 @@
                 required: false,
                 default: null,
             },
+            currency: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         filters: {
             transform(data) {
@@ -68,10 +77,10 @@
                 return _.map(data, (value, key) => {
                     return [
                         key,
-                        parseFloat(value.base),
-                        parseFloat(value.actual),
-                        parseFloat(value.forecast),
-                        parseFloat(value.remaining),
+                        _.toFinite(value.base),
+                        _.toFinite(value.actual),
+                        _.toFinite(value.forecast),
+                        _.toFinite(value.remaining),
                     ];
                 });
             },

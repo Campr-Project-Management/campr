@@ -674,6 +674,7 @@ export default {
     beforeDestroy() {
         this.ganttRemoveAllEvents();
         this.clearGanttData();
+        gantt.clearAll();
     },
     data() {
         return {
