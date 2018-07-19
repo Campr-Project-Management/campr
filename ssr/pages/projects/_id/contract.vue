@@ -156,7 +156,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
                     <no-ssr>
-                        <chart :data="internalCostsGraphData.byPhase"/>
+                        <chart :data="internalCostsGraphData.byPhase | graphData" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
@@ -165,7 +165,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.external_resources') }}</h3>
                     <no-ssr>
-                        <chart :data="externalCostsGraphData.byPhase"/>
+                        <chart :data="externalCostsGraphData.byPhase | graphData" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project External Costs /// -->
@@ -223,6 +223,20 @@ export default {
             },
         },
 
+    },
+    filters: {
+        graphData(value) {
+            if (!value) {
+                return {};
+            }
+
+            let data = {};
+            value.forEach((row) => {
+                data[row.name] = row.values;
+            });
+
+            return data;
+        },
     },
     async asyncData({params, query}) {
         let project = {};
