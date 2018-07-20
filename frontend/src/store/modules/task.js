@@ -228,7 +228,7 @@ const actions = {
                         Vue.http.get(Routing.generate('app_api_workpackage_history', {'id': data.taskId})).then((response) => {
                             if (response.status === 200) {
                                 let firstPageHistory = response.data;
-                                commit(types.SET_TASK_HISTORY_FIRST_PAGE, {firstPageHistory});
+                                commit(types.PREPEND_TASK_HISTORY, {firstPageHistory});
                             }
                         }, (response) => {
                         });
@@ -372,7 +372,7 @@ const actions = {
                     Vue.http.get(Routing.generate('app_api_workpackage_history', {'id': data.task.id})).then((response) => {
                         if (response.status === 200) {
                             let firstPageHistory = response.data;
-                            commit(types.SET_TASK_HISTORY_FIRST_PAGE, {firstPageHistory});
+                            commit(types.PREPEND_TASK_HISTORY, {firstPageHistory});
                         }
                     }, (response) => {
                     });
@@ -465,7 +465,7 @@ const mutations = {
      * @param {Object} state
      * @param {Object} history
      */
-    [types.SET_TASK_HISTORY_FIRST_PAGE](state, {firstPageHistory}) {
+    [types.PREPEND_TASK_HISTORY](state, {firstPageHistory}) {
         let newHistory = [];
         for (let i = 0; i < firstPageHistory.length; i++) {
             let el = firstPageHistory[i];
