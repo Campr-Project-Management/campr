@@ -477,6 +477,40 @@ body {
 #header {
     .box-shadow(0 2px 5px rgba(0,0,0,.3));
     background-color: @mainColor;
+
+    ul.h-inner {
+        li.language-selector-wrapper {
+            position: absolute;
+            top: 8px;
+            right: 5px;
+
+            .language-selector {
+                padding: 15px 5px;
+                display: inline-block;
+                .transition(all 0.2s ease);
+
+                img {
+                    .opacity(0.8);
+                    .transition(all 0.2s ease);
+                }
+
+                &:hover {
+                    img {
+                        .opacity(1);
+                    }
+                }
+
+                &.disabled {
+                    cursor: pointer;
+                    pointer-events: none;
+
+                    img {
+                        .opacity(0.5);
+                    }
+                }
+            }
+        }
+    }
 }
 
 .h-inner {
