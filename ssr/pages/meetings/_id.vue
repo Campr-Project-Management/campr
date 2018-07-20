@@ -125,7 +125,7 @@
             <h3>{{ translate('message.decisions') }}</h3>
 
             <div class="entries-wrapper" v-if="meeting.decisions || meeting.openDecisions">
-                <div class="entry" v-for="decision in meeting.openDecisions">
+                <div class="entry" v-for="decision in meeting.openDecisions" :key="`open-decision-${decision.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
@@ -142,7 +142,7 @@
                 </div>
 
                 <!-- /// Decision /// -->
-                <div class="entry" v-for="decision in meeting.decisions">
+                <div class="entry" v-for="decision in meeting.decisions" :key="`decision-${decision.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
@@ -167,7 +167,7 @@
             <h3>{{ translate('message.todos') }}</h3>
 
             <div class="entries-wrapper" v-if="meeting.todos || meeting.openTodos">
-                <div class="entry" v-for="todo in meeting.openTodos">
+                <div class="entry" v-for="todo in meeting.openTodos" :key="`open-todo-${todo.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
@@ -184,7 +184,7 @@
                 </div>
 
                 <!-- /// ToDo /// -->
-                <div class="entry" v-for="todo in meeting.todos">
+                <div class="entry" v-for="todo in meeting.todos" :key="`todo-${todo.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
@@ -209,7 +209,7 @@
             <h3>{{ translate('message.infos') }}</h3>
 
             <div class="entries-wrapper" v-if="meeting.infos || meeting.openInfos">
-                <div class="entry" v-for="info in meeting.openInfos">
+                <div class="entry" v-for="info in meeting.openInfos" :key="`open-info-${info.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ info.topic }}</h4> |
@@ -234,7 +234,7 @@
                 </div>
 
                 <!-- /// Info /// -->
-                <div class="entry" v-for="info in meeting.infos">
+                <div class="entry" v-for="info in meeting.infos" :key="`info-${info.id}`">
                     <div class="entry-header flex flex-space-between flex-v-center">
                         <div class="entry-title">
                             <h4>{{ info.topic }}</h4> |
@@ -294,7 +294,6 @@ export default {
             res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}/agendas`, query.key);
             meetingAgendas = await res.json();
 
-            console.log(meeting);
             res = await Vue.doFetch(`http://${query.host}/api/projects/${meeting.project}/distribution-lists`, query.key);
             distributionLists = await res.json();
         }
