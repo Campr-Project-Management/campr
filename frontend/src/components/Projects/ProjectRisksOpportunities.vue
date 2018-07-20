@@ -15,15 +15,15 @@
 
                 <!-- /// Project Opportunities /// -->
                 <div class="ro-grid-wrapper clearfix">
-                    <div class="row">
-                        <div class="col-md-8">
+                    <div class="row equa">
+                        <div class="col-md-8" ref="opportunityMatrix">
                             <opportunity-matrix
                                     :clickable="true"
                                     :show-summary="false"
                                     @priorityClick="onOpportunityPriorityClick"
                                     :labels="opportunitiesMatrixLabels" />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4" v-bind:style="opportunityRightColStyle">
                             <opportunity-list :list="selectedOpportunities"/>
                         </div>
                     </div>
@@ -50,14 +50,14 @@
 
                 <div class="ro-grid-wrapper clearfix">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-8" ref="riskMatrix">
                             <risk-matrix
                                     :clickable="true"
                                     :show-summary="false"
                                     :labels="risksMatrixLabels"
                                     @priorityClick="onRiskPriorityClick"/>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4"  v-bind:style="riskRightColStyle">
                             <risk-list :list="selectedRisks"/>
                         </div>
                     </div>
@@ -197,6 +197,10 @@
                     return value.impactIndex === impactIndex && value.probabilityIndex === probabilityIndex;
                 });
             },
+            matchHeight() {
+                this.opportunityRightColStyle.height = this.$refs.opportunityMatrix.clientHeight + 'px';
+                this.riskRightColStyle.height = this.$refs.riskMatrix.clientHeight + 'px';
+            },
         },
         created() {
             this.getProjectOpportunities({projectId: this.$route.params.id});
@@ -207,7 +211,16 @@
             return {
                 selectedRiskPriority: null,
                 selectedOpportunityPriority: null,
+                opportunityRightColStyle: {
+                    height: 'auto',
+                },
+                riskRightColStyle: {
+                    height: 'auto',
+                },
             };
+        },
+        mounted() {
+            this.matchHeight();
         },
     };
 </script>

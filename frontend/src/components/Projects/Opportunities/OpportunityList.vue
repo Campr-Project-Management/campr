@@ -1,21 +1,21 @@
 <template>
-    <div class="ro-list">
-        <div class="ro-list-item" v-for="item in list">
-            <div class="flex">
-                <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">{{ item.title }}</router-link>
-                <user-avatar
-                        size="very-small"
-                        :name="item.responsibilityFullName"
-                        :url="item.responsibilityAvatar"
-                        :tooltip="item.responsibilityFullName"/>
+    <scrollbar class="ro-list customScrollbar">
+            <div class="ro-list-item" v-for="item in list">
+                <div class="flex">
+                    <router-link :to="{name: 'project-opportunities-view-opportunity', params:{opportunityId: item.id}}">{{ item.title }}</router-link>
+                    <user-avatar
+                            size="very-small"
+                            :name="item.responsibilityFullName"
+                            :url="item.responsibilityAvatar"
+                            :tooltip="item.responsibilityFullName"/>
+                </div>
+                <p>{{ translate('label.potential_cost_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
+                <p>{{ translate('label.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
+                <p>{{ translate('message.priority') }}: <b :style="{color: getPriorityColor(item.priority)}">{{ translate(`message.${item.priorityName}`) }}</b></p>
+                <p>{{ translate('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ translate(item.opportunityStrategyName) }}</b><b v-else>-</b></p>
+                <p>{{ translate('message.status') }}: <b v-if="item.opportunityStatusName">{{ translate(item.opportunityStatusName) }}</b><b v-else>-</b></p>
             </div>
-            <p>{{ translate('label.potential_cost_savings') }}: <b v-if="item.potentialCostSavings">{{ item.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
-            <p>{{ translate('label.potential_time_savings') }}: <b v-if="item.timeSavings">{{ item.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.priority') }}: <b :style="{color: getPriorityColor(item.priority)}">{{ translate(`message.${item.priorityName}`) }}</b></p>
-            <p>{{ translate('message.strategy') }}: <b v-if="item.opportunityStrategyName">{{ translate(item.opportunityStrategyName) }}</b><b v-else>-</b></p>
-            <p>{{ translate('message.status') }}: <b v-if="item.opportunityStatusName">{{ translate(item.opportunityStatusName) }}</b><b v-else>-</b></p>
-        </div>
-    </div>
+    </scrollbar>
 </template>
 
 <script>
@@ -47,6 +47,10 @@
 
 <style scoped lang="scss">
     @import '../../../css/_variables';
+    
+    .ro-list {
+        height: 100%;
+    }
 
     .ro-list-item {
         text-transform: uppercase;
