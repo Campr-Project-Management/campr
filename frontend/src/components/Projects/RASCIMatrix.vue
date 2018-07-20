@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-12">
-                <div class="rasci-matrix page-section">
+                <div v-bind:class="{'rasci-matrix page-section': true, 'fixed': fixed}" ref="rasciTopSection">
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
@@ -52,7 +52,7 @@
                 </div>
         
                 <!-- /// RASCI /// -->
-                <table class="table table-striped table-responsive rasci-table">
+                <table class="table table-striped table-responsive rasci-table rasci-table__top" v-bind:class="{'fixed': fixed}">
                     <thead>
                         <tr>
                             <th class="task-number" width="10%">{{ translateText('table_header_cell.task_number') }}</th>
@@ -176,6 +176,13 @@ export default {
                 }
             });
         },
+        handleScroll() {
+            if (window.scrollY >= 100) {
+                this.fixed = true;
+            } else {
+                this.fixed = false;
+            }
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
@@ -188,6 +195,10 @@ export default {
     },
     created() {
         this.loadRasci();
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
     data() {
         return {
@@ -195,6 +206,7 @@ export default {
             activeRow: null,
             scrolled: false,
             activeElem: '',
+            fixed: false,
         };
     },
 };
@@ -208,12 +220,19 @@ export default {
 
     .rasci-matrix {
         background: #232D4B;
-        position: sticky;
-        top: 0;
-        transition: all 0.2s, ease-in;
-        z-index: 2;
         padding: 0;
-        margin-bottom: -50px;
+        margin-bottom: -60px;
+        position: absolute;
+        z-index: 2;
+        width: calc(100% - 30px);
+
+        &.fixed {
+            position: fixed;
+            top: 0;
+            left: 230px;
+            z-index: 2;
+            width: calc(100% - 250px);
+        }
     }
 
     .rasci-matrix + .rasci-table {
@@ -245,6 +264,16 @@ export default {
         position: relative;
         z-index: 1;
         table-layout: fixed;
+
+        &.rasci-table__top {
+            margin-top: 145px;
+        }
+
+        &.fixed {
+            margin-top: 160px;
+        }
+
+
 
         tr,
         th,
