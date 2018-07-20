@@ -4,18 +4,18 @@ var gulp = require('gulp'),
 	cleanCSS = require('gulp-clean-css');
 
 gulp.task('less', function () {
-    process.chdir('/app/web/assets/admin');
+    process.chdir('../web/assets/admin');
 
 	return gulp
 		.src('less/*.less')
 		.pipe(less())
 		.pipe(cleanCSS())
-		.pipe(gulp.dest('/app/web/assets/admin/css/'))
+		.pipe(gulp.dest('css/'))
 	;
 });
 
 gulp.task('watch-css', function () {
-    process.chdir('/app/web/assets/admin');
+    process.chdir('../web/assets/admin');
 
     gulp.watch('less/*.less', ['less']);
 });
