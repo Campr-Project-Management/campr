@@ -5,6 +5,7 @@ namespace MainBundle\EventListener;
 use AppBundle\Entity\CloseDownAction;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
+use AppBundle\Entity\Info;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Measure;
 use AppBundle\Entity\MeasureComment;
@@ -100,6 +101,7 @@ class ImageSerializeListener
             case $object instanceof MeetingAgenda:
             case $object instanceof Decision:
             case $object instanceof Todo:
+            case $object instanceof Info:
             case $object instanceof Note:
             case $object instanceof DistributionList:
             case $object instanceof StatusReport:

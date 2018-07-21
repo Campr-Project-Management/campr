@@ -56,10 +56,10 @@
                                         </router-link>
                                         <router-link class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                                             <edit-icon fill="second-fill"></edit-icon>
-                                        </router-link>    
+                                        </router-link>
                                         <a href="javascript:void(0)" @click="initDeleteModal(todo)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -183,7 +183,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    } 
+    }
 
     .avatar {
         width: 30px;
@@ -196,9 +196,9 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    } 
+    }
 
     .cell-wrap {
         white-space: normal;
-    }   
+    }
 </style>
