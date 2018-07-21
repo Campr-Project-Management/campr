@@ -48,7 +48,6 @@ class MeetingControllerTest extends BaseController
 
         foreach ($actual['decisions'] as $key => $decision) {
             $responseContent['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
-            $responseContent['decisions'][$key]['responsibilityAvatarUrl'] = $decision['responsibilityAvatarUrl'];
             $responseContent['decisions'][$key]['createdAt'] = $decision['createdAt'];
         }
 
@@ -65,9 +64,9 @@ class MeetingControllerTest extends BaseController
 
         foreach ($actual['infos'] as $key => $info) {
             $responseContent['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
-            $responseContent['infos'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
             $responseContent['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
+            $responseContent['infos'][$key]['infoCategory'] = $info['infoCategory'];
         }
 
         $responseContent['openDecisions'] = $actual['openDecisions'];
@@ -249,8 +248,6 @@ class MeetingControllerTest extends BaseController
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
-                            'responsibilityAvatar' => null,
-                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -264,12 +261,11 @@ class MeetingControllerTest extends BaseController
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
                             'isExpired' => true,
+                            'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                         ],
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
-                            'responsibilityAvatar' => null,
-                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -283,6 +279,7 @@ class MeetingControllerTest extends BaseController
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
                             'isExpired' => true,
+                            'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                         ],
                     ],
                     'distributionLists' => [],
