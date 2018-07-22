@@ -46,7 +46,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                                 <user-avatar
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatarUrl"
+                                        :url="info.responsibilityAvatar"
                                         :tooltip="info.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
@@ -199,7 +199,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -228,7 +228,7 @@ export default {
         width: 30px;
         height: 30px;
         display: inline-block;
-        margin: 0 10px 0 0;  
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -281,7 +281,7 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 
     .buttons {

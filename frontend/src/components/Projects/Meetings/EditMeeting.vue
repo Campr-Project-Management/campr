@@ -270,7 +270,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
                                 <user-avatar
                                     :name="decision.responsibilityFullName"
-                                    :url="decision.responsibilityAvatarUrl"/>
+                                    :url="decision.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
@@ -297,7 +297,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
                                 <user-avatar
                                         :name="decision.responsibilityFullName"
-                                        :url="decision.responsibilityAvatarUrl"/>
+                                        :url="decision.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
@@ -441,7 +441,7 @@
                                 <user-avatar
                                     size="small"
                                     :name="info.responsibilityFullName"
-                                    :url="info.responsibilityAvatarUrl"/>
+                                    :url="info.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
@@ -467,7 +467,7 @@
                                 <user-avatar
                                         size="small"
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatarUrl"/>
+                                        :url="info.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>

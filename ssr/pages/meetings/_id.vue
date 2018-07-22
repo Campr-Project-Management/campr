@@ -224,7 +224,7 @@
                         </div>
                     </div>
                     <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatar + ')' }"></div>
                         <div>
                             {{ translate('message.responsible') }}:
                             <b>{{ info.responsibilityFullName }}</b>
@@ -249,7 +249,7 @@
                         </div>
                     </div>
                     <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + (info.responsibilityAvatar ? '/uploads/avatars/' + info.responsibilityAvatar : info.responsibilityGravatar) + ')' }"></div>
+                        <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatar + ')' }"></div>
                         <div>
                             {{ translate('message.responsible') }}:
                             <b>{{ info.responsibilityFullName }}</b>
