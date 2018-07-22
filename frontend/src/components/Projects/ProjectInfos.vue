@@ -50,7 +50,7 @@
                                 <td>
                                     <user-avatar
                                             :name="info.responsibilityFullName"
-                                            :url="info.responsibilityAvatarUrl"
+                                            :url="info.responsibilityAvatar"
                                             :tooltip="info.responsibilityFullName"
                                             size="small"/>
                                 </td>

@@ -31,20 +31,6 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
-    app.serializer.listener.info:
-        class: AppBundle\Serializer\EventListener\InfoSubscriber
-        arguments:
-             - '@app.resolver.user_avatar_url'
-        tags:
-            - { name: jms_serializer.event_subscriber }
-
-    app.serializer.listener.decision:
-        class: AppBundle\Serializer\EventListener\DecisionSubscriber
-        arguments:
-             - '@app.resolver.user_avatar_url'
-        tags:
-            - { name: jms_serializer.event_subscriber }
-
     app.serializer.listener.meeting:
         class: AppBundle\Serializer\EventListener\MeetingSubscriber
         arguments:
