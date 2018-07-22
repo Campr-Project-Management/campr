@@ -53,7 +53,7 @@
                                             size="small"
                                             :name="decision.responsibilityFullName"
                                             :tooltip="decision.responsibilityFullName"
-                                            :url="decision.responsibilityAvatarUrl"/>
+                                            :url="decision.responsibilityAvatar"/>
                                 </td>
                                 <td>
                                     <div class="text-right">
@@ -65,7 +65,7 @@
                                         </router-link>
                                         <a href="javascript:void(0)" @click="initDeleteModal(decision)" class="btn-icon" v-tooltip.top-center="translate('message.delete_info')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -179,7 +179,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    } 
+    }
 
     .avatar {
         width: 30px;
@@ -192,7 +192,7 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    } 
+    }
 
     .cell-wrap {
         white-space: normal;
