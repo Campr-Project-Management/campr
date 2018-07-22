@@ -340,32 +340,6 @@ class Info
     }
 
     /**
-     * Returns the responsibility username.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("responsibilityAvatar")
-     *
-     * @return string
-     */
-    public function getResponsibilityAvatar()
-    {
-        return $this->responsibility ? $this->responsibility->getAvatar() : null;
-    }
-
-    /**
-     * Returns the responsibility username.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("responsibilityGravatar")
-     *
-     * @return string
-     */
-    public function getResponsibilityGravatar()
-    {
-        return $this->responsibility ? $this->responsibility->getGravatar() : null;
-    }
-
-    /**
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("project")
      */
