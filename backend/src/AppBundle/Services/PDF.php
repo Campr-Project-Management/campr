@@ -35,9 +35,11 @@ class PDF
     /**
      * PDF constructor.
      *
-     * @param string $binaryPath
-     * @param string $binaryOptions
-     * @param string $serviceUrl
+     * @param RequestStack          $requestStack
+     * @param TokenStorageInterface $tokenStorage
+     * @param string                $binaryPath
+     * @param string                $binaryOptions
+     * @param string                $serviceUrl
      */
     public function __construct(
         RequestStack $requestStack,
@@ -54,9 +56,9 @@ class PDF
     }
 
     /**
-     * @return User
-     *
      * @throws \LogicException
+     *
+     * @return User
      */
     private function getUser()
     {
