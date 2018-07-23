@@ -1,6 +1,6 @@
 export default {
     install(Vue, options) {
-        if (typeof window.user === 'object' && typeof window.user.locale === 'string') {
+        if (!process && typeof window.user === 'object' && typeof window.user.locale === 'string') {
             document.documentElement.lang = window.user.locale;
             window.Translator.locale = window.user.locale;
         }
