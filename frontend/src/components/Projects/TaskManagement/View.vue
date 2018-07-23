@@ -746,6 +746,7 @@ export default {
 
             let data = {
                 id: this.$route.params.taskId,
+                reset: true,
             };
             this.getTaskHistory(data);
         },
@@ -1070,6 +1071,7 @@ export default {
         loadNextHistory() {
             let data = {
                 id: this.$route.params.taskId,
+                reset: false,
             };
             this.getTaskHistory(data);
         },
