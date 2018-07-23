@@ -109,6 +109,7 @@
         height: 30px;
         cursor: default;
         border-radius: 50%;
+        -webkit-print-color-adjust: exact !important;
     }
 
     @mixin large_box {
@@ -117,6 +118,7 @@
         margin-right: 5px;
         background-color: $fadeColor;
         border-radius: 50%;
+        -webkit-print-color-adjust: exact !important;
     }
 
     .status-boxes {

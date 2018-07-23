@@ -49,6 +49,7 @@ import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
 import ProjectStatusReports from '../components/Projects/ProjectStatusReports.vue';
 import StatusReportCreate from '../components/Projects/StatusReports/StatusReportCreate.vue';
 import StatusReportView from '../components/Projects/StatusReports/StatusReportView.vue';
+import StatusReportPrint from '../components/Projects/StatusReports/StatusReportPrint.vue';
 import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
 import CloseDownReport from '../components/Projects/ProjectCloseDownReport.vue';
 import RemainingActionView from '../components/Projects/CloseDownReport/ViewRemainingAction.vue';
@@ -608,6 +609,15 @@ const routes = [
                 name: 'project-status-reports-view-status-report',
                 meta: {
                     title: 'View Status Report',
+                    guard: {projectModule: ['status_report']},
+                },
+            },
+            {
+                path: 'status-reports/print-status-report/:reportId',
+                component: StatusReportPrint,
+                name: 'project-status-reports-print-status-report',
+                meta: {
+                    title: 'Print Status Report',
                     guard: {projectModule: ['status_report']},
                 },
             },

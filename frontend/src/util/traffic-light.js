@@ -1,6 +1,6 @@
 import moment from 'moment';
 import {getTrafficLightColorByStatus} from './colors';
-import {trans} from 'Translator';
+import {trans} from './Translator';
 
 /**
  * Traffic Light
