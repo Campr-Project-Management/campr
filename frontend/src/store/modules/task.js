@@ -133,10 +133,14 @@ const actions = {
             }, (response) => {
             });
     },
-    getTaskHistory({commit}, {id}) {
+    getTaskHistory({commit}, {id, reset}) {
+        let historyPage = state.historyPage;
+        if (reset) {
+            historyPage = 1;
+        }
         let data = {
             params: {
-                page: state.historyPage,
+                page: historyPage,
             },
         };
 
@@ -144,7 +148,7 @@ const actions = {
             .get(Routing.generate('app_api_workpackage_history', {'id': id}), data).then((response) => {
                 if (response.status === 200) {
                     let nextHistory = response.data;
-                    commit(types.SET_TASK_HISTORY, {nextHistory});
+                    commit(types.SET_TASK_HISTORY, {nextHistory, reset});
                 }
             }, (response) => {
             });
@@ -451,7 +455,11 @@ const mutations = {
      * @param {Object} state
      * @param {Object} history
      */
-    [types.SET_TASK_HISTORY](state, {nextHistory}) {
+    [types.SET_TASK_HISTORY](state, {nextHistory, reset}) {
+        if (reset) {
+            state.taskHistory = [];
+            state.historyPage = 1;
+        }
         for (let i = 0; i < nextHistory.length; i++) {
             let el = nextHistory[i];
             if (!state.taskHistory.includes(el)) {
