@@ -64,7 +64,7 @@ export default {
      * @param {object} route
      * @return {mixed}
      */
-    canAccess(route) {
+    async canAccess(route) {
         const guard = this._findGuardConfig(route);
         if (!guard) {
             return undefined;
@@ -82,7 +82,7 @@ export default {
         const guardKeys = Object.keys(guard);
         for (let k = 0; k < guardKeys.length; k++) {
             for (let m = 0; m < this.modules.length; m++) {
-                if (this.modules[m].supports(guardKeys[k]) && this.modules[m].vote(route, guard[guardKeys[k]]) === false) {
+                if (this.modules[m].supports(guardKeys[k]) && await this.modules[m].vote(route, guard[guardKeys[k]]) === false) {
                     return false;
                 }
             }
@@ -99,6 +99,16 @@ export default {
      * @param {function} next
      */
     beforeEach(to, from, next) {
-        next(this.canAccess(to));
+        this
+            .canAccess(to)
+            .then(
+                (res) => {
+                    next(res);
+                },
+                () => {
+                    next(false);
+                }
+            )
+        ;
     },
 };
