@@ -19,6 +19,12 @@
     background: none !important;
   }
 
+  html, body {
+    height: auto;
+    page-break-before: avoid;
+    page-break-after: avoid;
+  }
+
   div.datepicker {
     input {
       background: none !important;
@@ -66,7 +72,7 @@
     padding-top: 10px;
   }
 
-  div.avatar, div.user-avatar {
+  div.avatar, div.user-avatar, div.legend-bar, .task-slider-holder * {
     -webkit-print-color-adjust:exact;
   }
 
