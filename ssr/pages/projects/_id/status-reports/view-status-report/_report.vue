@@ -1,6 +1,6 @@
 <template>
     <div class="project-status-report page-section">
-        <div class="row">
+        <!--<div class="row">-->
             <div class="col-lg-8 col-lg-offset-2" id="statusReportPrint">
 
                 <div class="header">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="widget" style="width: 75%;">
+                        <div class="widget" style="width: 90%;">
                             <h3>{{ translate('message.project_trend') }}</h3>
                             <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
 
@@ -84,7 +84,7 @@
                 <hr class="double">
 
                 <template v-if="schedule">
-                    <div class="row" >
+                    <div class="row">
                         <div class="col-md-12">
                             <h3 class="margintop0">{{ translate('message.schedule') }}</h3>
                             <br/>
@@ -104,7 +104,7 @@
                     <hr class="double">
                 </template>
 
-                <div class="row statuses min-status" v-if="progress" style="width: 75%">
+                <div class="row statuses min-status" v-if="progress">
                     <div class="col-md-4" style="width: 33%; display: inline-block;">
                         <div class="status">
                             <no-ssr>
@@ -173,7 +173,7 @@
 
                         <no-ssr>
                             <chart :data="internalCostsGraphData"
-                                style="width: 75%;"/>
+                                style="width: 90%;"/>
                         </no-ssr>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
 
                         <no-ssr>
                             <chart :data="externalCostsGraphData"
-                                style="width: 75%;"/>
+                                style="width: 90%;"/>
                         </no-ssr>
                     </div>
                 </div>
@@ -240,17 +240,17 @@
                 <br>
             </div>
 
-            <div class="col-lg-8 col-lg-offset-2">
-                <hr class="double">
+            <!--<div class="col-lg-8 col-lg-offset-2">-->
+                <!--<hr class="double">-->
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="flex flex-space-between">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<div class="flex flex-space-between">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
@@ -505,7 +505,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
     @import '../../../../../../frontend/src/css/_variables';
     @import '../../../../../../frontend/src/css/_mixins';
 
