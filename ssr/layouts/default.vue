@@ -160,15 +160,17 @@
 
     #app {
         font-family: 'Poppins', sans-serif;
-        color: #D8DAE5;
+        /*color: #D8DAE5;*/
+        color: #000000;
         height: 100%;
-        padding: 5px;
-        min-height: 100vh;
+        /*padding: 5px;*/
+        /*min-height: 100vh;*/
 
         .page {
-            padding: 0 20px;
-            background: #232D4B;
-            min-height: 100vh;
+            /*padding: 0 20px;*/
+            /*background: #232D4B;*/
+            background: #ffffff;
+            /*min-height: 100vh;*/
         }
     }
 

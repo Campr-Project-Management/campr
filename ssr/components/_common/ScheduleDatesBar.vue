@@ -43,10 +43,15 @@
 
 <script>
     import $ from 'jquery';
-    // import 'ion-rangeslider/js/ion.rangeSlider.js';
+    import ionRangeSlider from '../../plugins/ion.rangeSlider';
+    import Tooltip from '../../plugins/tether-tooltip';
     import moment from 'moment';
     import ScheduleDatesTable from './ScheduleDatesTable';
     import {getScheduleForecastTrafficLight, getScheduleActualTrafficLight} from '../../../frontend/src/util/traffic-light';
+
+    if (process.browser && !$.fn.ionRangeSlider) {
+        ionRangeSlider($, document, window, navigator);
+    }
 
     export default {
         name: 'schedule-dates-bar',
@@ -249,7 +254,14 @@
         },
         methods: {
             init() {
-                this.createCallback();
+                console.log(process);
+                if (process.browser) {
+                    this.createBase();
+                    this.createForecast();
+                    this.createActual();
+                    this.createOverallTooltip(this.$refs.tooltipOverlay)
+                }
+                // this.createCallback();
             },
             createCallback() {
                 // don't kill the browser :)
@@ -284,6 +296,13 @@
                 };
 
                 $el.ionRangeSlider(options);
+
+                let $parent = $el.parent();
+                let fromHandle = $parent.find('.irs-slider.from')[0];
+                let toHandle = $parent.find('.irs-slider.to')[0];
+
+                this.createFromTooltip(fromHandle, this._baseStartAt * 1000, 'Base');
+                this.createToTooltip(toHandle, this._baseFinishAt * 1000, 'Base');
             },
             createForecast() {
                 if (!this.showForecast) {
@@ -304,6 +323,13 @@
                 };
 
                 $el.ionRangeSlider(options);
+
+                let $parent = $el.parent();
+                let fromHandle = $parent.find('.irs-slider.from')[0];
+                let toHandle = $parent.find('.irs-slider.to')[0];
+
+                this.createFromTooltip(fromHandle, this._forecastStartAt * 1000, 'Forecast');
+                this.createToTooltip(toHandle, this._forecastFinishAt * 1000, 'Forecast');
             },
             createActual() {
                 if (!this.showActual) {
@@ -323,6 +349,48 @@
                 };
 
                 $el.ionRangeSlider(options);
+
+                let $parent = $el.parent();
+                let fromHandle = $parent.find('.irs-slider.from')[0];
+                let toHandle = $parent.find('.irs-slider.to')[0];
+                this.createFromTooltip(fromHandle, this._actualStartAt * 1000, 'Actual');
+                this.createToTooltip(toHandle, this._actualFinishAt * 1000, 'Actual');
+            },
+            createTooltip(el, text, classes) {
+                if (!el) {
+                    return;
+                }
+
+                return new Tooltip({
+                    target: el,
+                    openOn: 'hover',
+                    content: text,
+                    classes: classes,
+                    position: 'bottom center',
+                });
+            },
+            createFromTooltip(el, date, prefix) {
+                let fromValue = this.$formatDate(date) || 'N/A';
+                let text = `${prefix} ${this.translate('message.start')}: ${fromValue}`;
+
+                return this.createTooltip(el, text);
+            },
+            createToTooltip(el, date, prefix) {
+                let toValue = this.$formatDate(date) || 'N/A';
+                if (!this.actualFinishAt && prefix === 'Actual') {
+                    toValue = 'N/A';
+                }
+
+                if (!this.forecastFinishAt && prefix === 'Forecast') {
+                    toValue = 'N/A';
+                }
+
+                let text = `${prefix} ${this.translate('message.finish')}: ${toValue}`;
+
+                return this.createTooltip(el, text);
+            },
+            createOverallTooltip(el) {
+                return this.createTooltip(el, this.$refs.tooltip.innerHTML, 'task-schedule-bar overall-tooltip');
             },
         },
     };
