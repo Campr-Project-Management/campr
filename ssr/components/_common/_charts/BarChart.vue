@@ -28,7 +28,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../../frontend/src/css/_variables';
+  @import '../../../../frontend/src/css/_variables';
 
   .bar-chart {
       position: relative;
@@ -68,7 +68,7 @@ export default {
 
     .percentage-sign {
       align-self: flex-end;
-      font-size: 10px; 
+      font-size: 10px;
     }
   }
 

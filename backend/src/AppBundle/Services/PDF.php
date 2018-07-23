@@ -2,16 +2,20 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Project;
+use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class PDF
 {
     const CONTRACT_URL = 'projects/%id%/contract';
     const PROJECT_CLOSE_DOWN_URL = 'projects/%id%/close-down-report';
     const MEETING_URL = 'meetings/%id%';
+    const STATUS_REPORT_URL = 'projects/%projectID%/status-reports/view-status-report/%statusReportID%';
 
     /** @var RequestStack */
     private $requestStack;
@@ -108,5 +112,17 @@ class PDF
     public function getMeetingPDF(int $id)
     {
         return $this->run(self::MEETING_URL, ['%id%' => $id]);
+    }
+
+    public function getStatusReportPDF(StatusReport $statusReport)
+    {
+        Assert::integer($statusReport->getId());
+        Assert::isInstanceOf($statusReport->getProject(), Project::class);
+        Assert::integer($statusReport->getProject()->getId());
+
+        return $this->run(self::STATUS_REPORT_URL, [
+            '%projectID%' => $statusReport->getProjectId(),
+            '%statusReportID%' => $statusReport->getId(),
+        ]);
     }
 }

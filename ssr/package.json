@@ -13,6 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "accounting": "^0.4.1",
     "bootstrap": "3.3.7",
     "css-loader": "^0.28.10",
     "d3": "^4.10.0",
@@ -25,11 +26,15 @@
     "jquery-match-height": "^0.7.2",
     "less": "^3.0.1",
     "less-loader": "^4.0.5",
+    "lodash": "^4.17.10",
     "moment": "^2.21.0",
     "node-sass": "^4.7.2",
+    "numeral": "^2.0.6",
     "nuxt": "^1.0.0",
     "nuxt-sass-resources-loader": "^1.1.1",
     "sass-loader": "^6.0.6",
+    "tether-tooltip": "^1.2.0",
+    "v-tooltip": "^2.0.0-rc.33",
     "vis": "^4.19.1",
     "vue": "2.5.15",
     "vue-charts": "0.2.1",
