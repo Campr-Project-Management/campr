@@ -5,6 +5,7 @@ let utils = require('./utils');
 let baseWebpackConfig = require('./webpack.base.conf');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let DevLoader = require('../src/util/DevLoader');
+let path = require('path');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -37,5 +38,10 @@ module.exports = merge(baseWebpackConfig, {
             user: config.dev.env.user,
             subdomain: config.dev.env.subdomain,
         }),
-    ]
+    ],
+    resolve: {
+        alias: {
+            Translator: path.resolve(__dirname, '../src/util/Translator')
+        }
+    }
 });

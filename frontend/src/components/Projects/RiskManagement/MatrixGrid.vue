@@ -239,6 +239,8 @@
         }
 
         .matrix-grid-items {
+            -webkit-print-color-adjust: exact;
+
             .matrix-grid-item {
                 width: 24%;
                 height: 0;

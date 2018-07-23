@@ -5,7 +5,8 @@ export default {
     install(Vue) {
         accounting.settings = accountingSettings.en;
 
-        if (typeof window.user === 'object' &&
+        // nodejs suuuuucks
+        if (!process && typeof window.user === 'object' &&
             typeof window.user.locale === 'string' &&
             accountingSettings[window.user.locale]) {
             accounting.settings = accountingSettings[window.user.locale];
@@ -23,15 +24,27 @@ export default {
             return formatBytes(value);
         };
 
-        Vue.prototype.$formatMoney = function(amount, options) {
+        Vue.prototype.$formatMoney = (amount, options) => {
             return formatMoney(amount, options);
         };
 
-        Vue.prototype.$formatNumber = function(value, options) {
+        Vue.prototype.$formatNumber = (value, options) => {
             return formatNumber(value, options);
         };
 
-        Vue.prototype.$formatBytes = function(value) {
+        Vue.prototype.$formatBytes = (value) => {
+            return formatBytes(value);
+        };
+
+        Vue.prototype.formatMoney = (amount, options) => {
+            return formatMoney(amount, options);
+        };
+
+        Vue.prototype.formatNumber = (value, options) => {
+            return formatNumber(value, options);
+        };
+
+        Vue.prototype.formatBytes = (value) => {
             return formatBytes(value);
         };
 
@@ -63,28 +76,28 @@ const currencyCodeToSymbolMap = {
 const accountingSettings = {
     en: {
         currency: {
-            symbol: '$',   // default currency symbol is '$'
+            symbol: '$', // default currency symbol is '$'
             format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
-            decimal: '.',  // decimal point separator
-            thousand: ',',  // thousands separator
-            precision: 2,   // decimal places
+            decimal: '.', // decimal point separator
+            thousand: ',', // thousands separator
+            precision: 2, // decimal places
         },
         number: {
-            precision: 0,  // default precision on numbers is 0
+            precision: 0, // default precision on numbers is 0
             thousand: ',',
             decimal: '.',
         },
     },
     de: {
         currency: {
-            symbol: '€',   // default currency symbol is '$'
+            symbol: '€', // default currency symbol is '$'
             format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
-            decimal: '.',  // decimal point separator
-            thousand: ',',  // thousands separator
-            precision: 2,   // decimal places
+            decimal: '.', // decimal point separator
+            thousand: ',', // thousands separator
+            precision: 2, // decimal places
         },
         number: {
-            precision: 0,  // default precision on numbers is 0
+            precision: 0, // default precision on numbers is 0
             thousand: ',',
             decimal: '.',
         },
