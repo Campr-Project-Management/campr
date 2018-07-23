@@ -6,6 +6,7 @@ use AppBundle\Entity\StatusReport;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 /**
  * @Route("/status-report")
@@ -17,20 +18,18 @@ class StatusReportController extends Controller
      */
     public function pdfAction(StatusReport $statusReport)
     {
-        $html = $this->renderView(':status_report:pdf.html.twig', [
-            'statusReport' => $statusReport,
-        ]);
-
         $pdf = $this
             ->get('app.service.pdf')
-            ->loadHTML($html)
-            ->pageSize('A4')
-            ->get()
+            ->getStatusReportPDF($statusReport)
         ;
 
-        return new Response($pdf, Response::HTTP_OK, [
+        if (!$pdf) {
+            throw new ServiceUnavailableHttpException();
+        }
+
+        return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => sprintf('attachment; filename="status-report-%010d.pdf"', $statusReport->getCreatedAt()->format('DD-MM-YYYY')),
+            'Content-Disposition' => sprintf('attachment; filename="status-report-%s.pdf"', $statusReport->getCreatedAt()->format('Y-m-d')),
         ]);
     }
 

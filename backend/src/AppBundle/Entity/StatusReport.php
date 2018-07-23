@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Component\Resource\Model\SnapshotAwareInterface;
-use Component\Snapshot\Model\Snapshot;
+use Component\Snapshot\Snapshot;
 use Component\Snapshot\Model\SnapshotInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;

@@ -142,8 +142,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../frontend/src/css/_common';
-    @import '../../../frontend/src/css/_variables';
+    @import '../../../../frontend/src/css/_common';
+    @import '../../../../frontend/src/css/_variables';
 
     .chart {
         font-size: 22px;

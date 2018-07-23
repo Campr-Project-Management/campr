@@ -460,13 +460,19 @@
                 };
             },
             todosItems() {
-                return this.snapshot.todos.items;
+                return this.snapshot.todos
+                    ? this.snapshot.todos.items
+                    : [];
             },
             decisionsItems() {
-                return this.snapshot.decisions.items;
+                return this.snapshot.decisions
+                    ? this.snapshot.decisions.items
+                    : [];
             },
             infosItems() {
-                return this.snapshot.infos.items;
+                return this.snapshot.infos
+                    ? this.snapshot.infos.items
+                    : [];
             },
             trendChartData() {
                 return this.statusReportTrendGraph.map(data => {
