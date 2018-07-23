@@ -39,7 +39,7 @@ module.exports = {
     ** CSS
     */
     css: [
-        '~/assets/less/bootstrap.less'
+        '../frontend/src/css/bootstrap.less'
     ],
     /*
     ** Build configuration

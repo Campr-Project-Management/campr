@@ -1,11 +1,3 @@
-// based on bootstrap print.less
-/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
-
-// ==========================================================================
-// Print styles.
-// Inlined to avoid the additional HTTP request: h5bp.com/r
-// ==========================================================================
-
 @media print {
   *,
   *:before,
@@ -15,9 +7,22 @@
     text-shadow: none !important;
   }
 
+  #app {
+    padding: 0 !important;
+
+    .page {
+      background-color: #fff !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+  }
+
+  header, aside {
+    display: none !important;
+  }
+
   body {
     background: none !important;
-    -webkit-print-color-adjust: exact;
+    -webkit-print-color-adjust: exact !important;
   }
 
   html, body {
@@ -74,7 +79,7 @@
   }
 
   div.avatar, div.user-avatar, div.legend-bar, .task-slider-holder * {
-    -webkit-print-color-adjust:exact;
+    -webkit-print-color-adjust: exact;
   }
 
   div.ve-design, table tr {
@@ -119,9 +124,22 @@
   .table {
     border-collapse: collapse !important;
 
-    td,
-    th {
-      background-color: #fff !important;
+    thead {
+      tr {
+        th {
+          background-color: #d6d6d6 !important;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:nth-of-type(even) td {
+          background-color: #ededed !important;
+        }
+        &:nth-of-type(odd) td {
+          background-color: #fff !important;
+        }
+      }
     }
   }
 
@@ -131,4 +149,26 @@
       border: 1px solid #ddd !important;
     }
   }
+
+  .widget {
+    background-color: #fff !important;
+  }
+
+  hr {
+    display: none !important;
+  }
+
+  .checkbox-input input[type=checkbox] + label:before, .checkbox-input input[type=radio] + label:before {
+    background-color: #fff !important;
+    border: 1px solid #000;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .status-box {
+    background-color: #000;
+  }
 }
+
