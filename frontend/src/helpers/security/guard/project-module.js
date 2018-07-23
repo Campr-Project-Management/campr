@@ -1,10 +1,24 @@
 import store from '../../../store';
 
 export default {
-    vote(route, config) {
-        const project = store.state.project
-            ? store.state.project.currentProject
-            : null;
+    async vote(route, config) {
+        let project = store.getters.project;
+
+        if ((!project || !project.projectModules) && route.params && route.params.id) {
+            await store
+                ._actions
+                .getProjectById[0](route.params.id)
+                .then(
+                    () => {
+                        return true;
+                    },
+                    () => {
+                        return false;
+                    }
+                )
+            ;
+            project = store.getters.project;
+        }
 
         if (!project || !project.projectModules) {
             return false;
