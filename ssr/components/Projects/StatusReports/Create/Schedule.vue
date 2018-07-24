@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-sm-8 col-xs-6">
                 <schedule-dates-table
                     :base-start-at="baseStartAt"
                     :base-finish-at="baseFinishAt"
@@ -13,7 +13,7 @@
                     :actual-finish-at="actualFinishAt"
                     :actual-duration-days="actualDurationDays"/>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-4 col-xs-6">
                 <div class="range-slider-legend">
                     <div class="legend-item">
                         <span>{{ translate('message.base_schedule') }}</span>
@@ -107,6 +107,16 @@
 
 <style lang="scss" scoped>
     @import '../../../../../frontend/src/css/common';
+
+    @media print {
+        .range-slider-legend {
+            .legend-item {
+                span {
+                    font-size: 8px !important;
+                }
+            }
+        }
+    }
 
     .range-slider-legend {
         text-align: right;
