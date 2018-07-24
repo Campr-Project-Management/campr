@@ -15,9 +15,6 @@
 
 <script>
 import DeferredCallbackQueue from 'deferred-callback-queue';
-import 'ion-rangeslider/js/ion.rangeSlider.js';
-import 'ion-rangeslider/css/ion.rangeSlider.css';
-import 'ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
 export default {
     props: [
@@ -154,8 +151,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
-    @import '../../../css/_variables.scss';
+<style lang="scss" scoped>
+    @import '../../../frontend/src/css/_variables';
+    @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.css';
+    @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
     .irs-min, .irs-max, .irs-from, .irs-to, .irs-single {
         display: none !important;
@@ -199,7 +198,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../../css/_variables.scss';
+  @import '../../../frontend/src/css/_variables';
 
   .slider-holder {
       text-transform: uppercase;

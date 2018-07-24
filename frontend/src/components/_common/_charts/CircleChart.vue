@@ -39,6 +39,15 @@ export default {
             type: String,
             default: '#5FC3A5',
         },
+        strokeWidth: {
+            type: Number,
+            default: 1,
+        },
+        animationDuration: {
+            type: Number,
+            required: false,
+            default: 2048,
+        },
     },
     methods: {
         init() {
@@ -51,8 +60,8 @@ export default {
 
             const arc = d3
                 .arc()
-                .innerRadius(radius - 2)
-                .outerRadius(radius - 1)
+                .innerRadius(radius - this.strokeWidth)
+                .outerRadius(radius - this.strokeWidth)
                 .startAngle(0)
             ;
 
@@ -77,7 +86,7 @@ export default {
                 .append('path')
                 .datum({endAngle: 0})
                 .attr('fill', 'transparent')
-                .attr('stroke-width', 1)
+                .attr('stroke-width', this.strokeWidth)
                 .attr('stroke', this.bgStrokeColor)
                 .attr('d', d => arc(d))
             ;
@@ -87,7 +96,7 @@ export default {
 
                 main
                     .transition()
-                    .duration(2048)
+                    .duration(this.animationDuration)
                     .attrTween('d', d => {
                         return t => {
                             d.endAngle = interpolate(t);
@@ -96,7 +105,7 @@ export default {
                         };
                     })
                 ;
-            }, 1024);
+            }, this.animationDuration / 2);
 
             let percentage = parseInt(this.percentage, 10);
             if (isNaN(percentage)) {
@@ -109,7 +118,7 @@ export default {
                     .append('path')
                     .datum({endAngle: 0})
                     .attr('fill', 'transparent')
-                    .attr('stroke-width', 1)
+                    .attr('stroke-width', this.strokeWidth)
                     .attr('stroke', this.fgStrokeColor)
                     .attr('d', d => arc(d))
                 ;
@@ -119,7 +128,7 @@ export default {
 
                     progress
                         .transition()
-                        .duration(2048)
+                        .duration(this.animationDuration)
                         .attrTween('d', d => {
                             return t => {
                                 d.endAngle = interpolate(t);
@@ -128,7 +137,7 @@ export default {
                             };
                         })
                     ;
-                }, 2048);
+                }, this.animationDuration);
             }
         },
         formatPercentage(percentage) {

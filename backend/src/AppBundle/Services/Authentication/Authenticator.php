@@ -12,6 +12,12 @@ use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterfa
 
 class Authenticator implements SimplePreAuthenticatorInterface
 {
+    /**
+     * @param Request $request
+     * @param         $providerKey
+     *
+     * @return PreAuthenticatedToken
+     */
     public function createToken(Request $request, $providerKey)
     {
         $authorization = $request->headers->get('authorization');
@@ -22,7 +28,7 @@ class Authenticator implements SimplePreAuthenticatorInterface
 
         $peaces = explode(' ', $authorization);
 
-        if (count($peaces) !== 2 || strtolower($peaces[0]) !== 'bearer') {
+        if (2 !== count($peaces) || 'bearer' !== strtolower($peaces[0])) {
             throw new BadCredentialsException('Malformed authorization provided.');
         }
 
