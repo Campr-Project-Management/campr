@@ -87,6 +87,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            WorkPackageEvents::PRE_CREATE => 'onPreCreate',
             WorkPackageEvents::POST_CREATE => 'onPostCreate',
             WorkPackageEvents::POST_UPDATE => 'onPostUpdate',
             WorkPackageEvents::PRE_UPDATE => 'onPreUpdate',
@@ -96,9 +97,26 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * @param WorkPackageEvent $event
      */
+    public function onPreCreate(WorkPackageEvent $event)
+    {
+        $wp = $event->getWorkPackage();
+        if (!$wp->isTask()) {
+            return;
+        }
+
+        $this->setWorkPackageChildrenSchedule($wp);
+    }
+
+    /**
+     * @param WorkPackageEvent $event
+     */
     public function onPostCreate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
+        if (!$wp->isTask()) {
+            return;
+        }
+
         $this->workPackageRasciSync->sync($wp);
         $this->workPackageRepository->add($wp);
     }
@@ -109,6 +127,10 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPostUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
+        if (!$wp->isTask()) {
+            return;
+        }
+
         $this->workPackageRasciSync->sync($wp);
         $this->workPackageRepository->add($wp);
 
@@ -129,6 +151,11 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPreUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
+        if (!$wp->isTask()) {
+            return;
+        }
+
+        $this->setWorkPackageChildrenSchedule($wp);
 
         $isProgressChanged = $this->isProgressChanged($wp);
         $isStatusChanged = $this->isStatusChanged($wp);
@@ -254,5 +281,25 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private function getWorkPackageStatuses()
     {
         return $this->workPackageStatusRepository->findAllVisibleSortedByProgress();
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function setWorkPackageChildrenSchedule(WorkPackage $wp)
+    {
+        $children = $wp->getChildren();
+
+        foreach ($children as $child) {
+            if (!$child->getScheduledStartAt() || !$child->getScheduledFinishAt()) {
+                $child->setScheduledStartAt($wp->getScheduledStartAt());
+                $child->setScheduledFinishAt($wp->getScheduledFinishAt());
+            }
+
+            if (!$child->getForecastStartAt() || !$child->getForecastFinishAt()) {
+                $child->setForecastStartAt($wp->getForecastStartAt());
+                $child->setForecastFinishAt($wp->getForecastFinishAt());
+            }
+        }
     }
 }
