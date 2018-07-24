@@ -1,28 +1,37 @@
 <template>
     <div class="project-status-report page-section" v-if="isReady">
+        <modal v-if="showEmailModal" @close="showEmailModal = false">
+            <p class="modal-title">{{ translate('message.email_report') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-empty danger-color danger-border">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded">{{ translate('message.yes') }}</a>
+            </div>
+        </modal>
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2" id="statusReportPrint">
                 <status-report
-                        ref="statusReport"
-                        :report="currentStatusReport"
-                        v-model="editableData"
-                        :editable="false"/>
+                    ref="statusReport"
+                    :report="currentStatusReport"
+                    v-model="editableData"
+                    :editable="false"/>
                 <br>
                 <br>
             </div>
 
-            <div class="col-lg-8 col-lg-offset-2">
+            <div class="col-lg-8 col-lg-offset-2" v-if="currentStatusReport && currentStatusReport.id">
                 <hr class="double">
 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="flex flex-space-between">
                             <a
-                                    @click="downloadPDF()"
-                                    class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.download_pdf') }}<download-icon fill="white-fill"></download-icon></a>
-                            <!--<a-->
-                                    <!--@click="showEmailModal = true"-->
-                                    <!--class="btn-rounded btn-auto btn-auto second-bg"> {{ translate('button.email_status_report') }} <at-icon fill="white-fill"></at-icon></a>-->
+                                :href="downloadPdf"
+                                class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.download_pdf') }}<download-icon fill="white-fill"></download-icon></a>
+                            <a
+                                @click="showEmailModal = true"
+                                class="btn-rounded btn-auto btn-auto second-bg">
+                                {{ translate('button.email_status_report') }}<at-icon fill="white-fill"></at-icon>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -36,8 +45,7 @@
     import StatusReport from './Create/StatusReport';
     import DownloadIcon from '../../_common/_icons/DownloadIcon';
     import AtIcon from '../../_common/_icons/AtIcon';
-    import html2canvas from 'html2canvas';
-    import jsPDF from 'jspdf';
+    import Modal from '../../_common/Modal';
 
     export default {
         name: 'status-report-view',
@@ -45,6 +53,7 @@
             StatusReport,
             DownloadIcon,
             AtIcon,
+            Modal,
         },
         created() {
             this.getStatusReport(this.$route.params.reportId);
@@ -59,13 +68,17 @@
             isReady() {
                 return this.isStatusReportLoaded;
             },
+            downloadPdf() {
+                return Routing.generate('app_status_report_pdf', {id: this.currentStatusReport.id});
+            },
         },
         methods: {
             ...mapActions([
                 'getStatusReport',
+                'emailStatusReport',
             ]),
             emailReport() {
-                this.emailStatusReport(this.$route.params.reportId).then(
+                this.emailStatusReport(this.currentStatusReport.id).then(
                     (response) => {
                         this.showSaved = true;
                         this.showEmailModal = false;
@@ -76,25 +89,10 @@
                     },
                 );
             },
-            downloadPDF() {
-                html2canvas(document.getElementById('statusReportPrint'), this.html2canvasOptions).then((canvas) => {
-                    const ratio = canvas.height / canvas.width;
-                    const width = 400;
-                    const height = width * ratio;
-                    const Pdf = jsPDF;
-                    let pdf = new Pdf('p', 'pt', [width, height]);
-
-                    pdf.addImage(canvas, 'JPEG', 0, 0, width, height);
-                    pdf.save(`status-report-${this.currentStatusReport.id}.pdf`);
-                });
-            },
         },
         data() {
             return {
-                html2canvasOptions: {
-                    backgroundColor: '#232D4B',
-                    logging: false,
-                },
+                showEmailModal: false,
             };
         },
     };
