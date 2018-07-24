@@ -76,7 +76,7 @@ class ProjectTransformer extends AbstractTransformer
     /**
      * @var ProjectProgressCalculatorInterface
      */
-    private $scheduledProgressCalculator;
+    private $plannedProgressCalculator;
 
     /**
      * ProjectTransformer constructor.
@@ -85,7 +85,7 @@ class ProjectTransformer extends AbstractTransformer
      * @param DateRangeCalculatorInterface       $scheduledDatesCalculator
      * @param DateRangeCalculatorInterface       $forecastDatesCalculator
      * @param DateRangeCalculatorInterface       $actualDatesCalculator
-     * @param ProjectProgressCalculatorInterface $scheduledProgressCalculator
+     * @param ProjectProgressCalculatorInterface $plannedProgressCalculator
      * @param TransformerInterface               $tasksTransformer
      * @param TransformerInterface               $costsTransformer
      * @param TransformerInterface               $risksTransformer
@@ -101,7 +101,7 @@ class ProjectTransformer extends AbstractTransformer
         DateRangeCalculatorInterface $scheduledDatesCalculator,
         DateRangeCalculatorInterface $forecastDatesCalculator,
         DateRangeCalculatorInterface $actualDatesCalculator,
-        ProjectProgressCalculatorInterface $scheduledProgressCalculator,
+        ProjectProgressCalculatorInterface $plannedProgressCalculator,
         TransformerInterface $tasksTransformer,
         TransformerInterface $costsTransformer,
         TransformerInterface $risksTransformer,
@@ -116,7 +116,7 @@ class ProjectTransformer extends AbstractTransformer
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
         $this->forecastDatesCalculator = $forecastDatesCalculator;
         $this->actualDatesCalculator = $actualDatesCalculator;
-        $this->scheduledProgressCalculator = $scheduledProgressCalculator;
+        $this->plannedProgressCalculator = $plannedProgressCalculator;
 
         $this->tasksTransformer = $tasksTransformer;
         $this->costsTransformer = $costsTransformer;
@@ -144,7 +144,7 @@ class ProjectTransformer extends AbstractTransformer
                 'code' => $project->getCurrency()->getCode(),
                 'symbol' => $project->getCurrency()->getSymbol(),
             ],
-            'scheduledProgress' => $this->scheduledProgressCalculator->calculate($project),
+            'plannedProgress' => $this->plannedProgressCalculator->calculate($project),
             'schedule' => $this->getScheduleData($project),
             'tasks' => $this->tasksTransformer->transform($project),
             'phases' => $this->phasesTransformer->transform($project),
