@@ -7,6 +7,7 @@ imports:
     - { resource: services/mailer.yml }
     - { resource: services/auth.yml }
     - { resource: services/validators.yml }
+    - { resource: services/calculators.yml }
 
 parameters:
     adapters:
@@ -121,96 +122,6 @@ services:
         class: AppBundle\Services\ProjectOrganizationTreeService
         arguments:
             - '@translator'
-
-    app.calculator.phase_actual_dates:
-        class: Component\WorkPackage\Calculator\PhaseActualDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.phase_forecast_dates:
-        class: Component\WorkPackage\Calculator\PhaseForecastDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.milestone_actual_dates:
-        class: Component\WorkPackage\Calculator\MilestoneActualDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.milestone_forecast_dates:
-        class: Component\WorkPackage\Calculator\MilestoneForecastDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.phase_status:
-        class: Component\WorkPackage\Calculator\PhaseStatusCalculator
-        arguments:
-            - '@app.repository.work_package'
-            - '@app.repository.work_package_status'
-
-    app.calculator.milestone_status:
-        class: Component\WorkPackage\Calculator\MilestoneStatusCalculator
-        arguments:
-            - '@app.repository.work_package'
-            - '@app.repository.work_package_status'
-
-    app.calculator.project_scheduled_dates:
-        class: Component\Project\Calculator\ProjectScheduledDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_forecast_dates:
-        class: Component\Project\Calculator\ProjectForecastDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_actual_dates:
-        class: Component\Project\Calculator\ProjectActualDatesCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_progress:
-        class: Component\Project\Calculator\ProjectProgressCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.work_package_progress:
-        class: Component\WorkPackage\Calculator\WorkPackageProgressCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_total_cost:
-        class: Component\Cost\Calculator\ProjectTotalCostCalculator
-        arguments:
-            - '@app.repository.work_package'
-            - '@app.repository.cost'
-
-    app.calculator.project_workpackage_status_total_count:
-        class: Component\Project\Calculator\WorkPackageStatusTotalCountCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_workpackage_traffic_light_total:
-        class: Component\Project\Calculator\WorkPackageTrafficLightTotalCalculator
-        arguments:
-            - '@app.repository.work_package'
-
-    app.calculator.project_risk_total:
-        class: Component\Project\Calculator\RiskTotalCalculator
-        arguments:
-            - '@app.repository.risk'
-            - '@app.repository.measure'
-
-    app.calculator.project_opportunity_total:
-        class: Component\Project\Calculator\OpportunityTotalCalculator
-        arguments:
-            - '@app.repository.opportunity'
-            - '@app.repository.measure'
-
-    app.calculator.project_scheduled_progress:
-        class: Component\Project\Calculator\ProjectScheduledProgressCalculator
-        arguments:
-            - '@app.calculator.project_scheduled_dates'
 
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
@@ -439,7 +350,7 @@ services:
             - '@app.calculator.project_scheduled_dates'
             - '@app.calculator.project_forecast_dates'
             - '@app.calculator.project_actual_dates'
-            - '@app.calculator.project_scheduled_progress'
+            - '@app.calculator.project_planned_progress'
             - '@app.snapshot.transformer.tasks'
             - '@app.snapshot.transformer.costs'
             - '@app.snapshot.transformer.risks'
