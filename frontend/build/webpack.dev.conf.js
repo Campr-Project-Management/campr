@@ -39,9 +39,4 @@ module.exports = merge(baseWebpackConfig, {
             subdomain: config.dev.env.subdomain,
         }),
     ],
-    resolve: {
-        alias: {
-            Translator: path.resolve(__dirname, '../src/util/Translator')
-        }
-    }
 });
