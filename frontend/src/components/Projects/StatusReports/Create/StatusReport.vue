@@ -117,7 +117,7 @@
                 <div class="status">
                     <circle-chart
                             :bgStrokeColor="options.backgroundColor"
-                            :percentage="projectScheduledProgress"
+                            :percentage="projectPlannedProgress"
                             :title="translate('message.planned_progress')"
                             class="left center-content"/>
                 </div>
@@ -410,8 +410,8 @@
                     costs: Math.round(this.snapshot.costs.progress),
                 };
             },
-            projectScheduledProgress() {
-                return this.snapshot.scheduledProgress;
+            projectPlannedProgress() {
+                return this.snapshot.plannedProgress;
             },
             internalCostsTrafficLight() {
                 return this.snapshot.costs.internal.total.trafficLight;
