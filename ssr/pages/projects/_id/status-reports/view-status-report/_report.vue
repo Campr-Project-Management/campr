@@ -155,7 +155,7 @@
 
             <template v-if="phases || milestones">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
                         <div class="flex flex-center" style="text-align: center">
                             <traffic-light :value="projectTrafficLight"/>
@@ -176,7 +176,7 @@
             </template>
 
             <div class="row" v-if="internalCostsGraphData">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
                     <div class="marginbottom20" style="text-align: center">
                         <traffic-light :value="internalCostsTrafficLight"/>
@@ -262,10 +262,10 @@
 
 <script>
     import Vue from 'vue';
-    import Chart from '../../../../../../frontend/src/components/Projects/Charts/CostsChart';
+    import Chart from '~/components/Charts/CostsChart.vue';
     import colors from '../../../../../../frontend/src/util/colors';
-    import TrafficLight from '../../../../../../frontend/src/components/_common/TrafficLight';
-    import CircleChart from '../../../../../../frontend/src/components/_common/_charts/CircleChart';
+    import TrafficLight from '~/components/_common/TrafficLight.vue';
+    import CircleChart from '~/components/_common/_charts/CircleChart';
     import ProgressBarChart from '~/components/_common/_charts/ProgressBarChart';
     import StatusReportTrendChart from '../../../../../../frontend/src/components/Projects/StatusReports/Create/TrendChart';
     import StatusReportSchedule from '~/components/Projects/StatusReports/Create/Schedule';

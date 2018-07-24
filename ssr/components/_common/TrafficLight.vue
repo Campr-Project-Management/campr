@@ -1,21 +1,21 @@
 <template>
     <div class="status-boxes flex flex-v-center" :class="classes">
         <div
-                v-for="tl in trafficLights"
-                class="status-box"
-                :class="{active: isActive(tl)}"
-                :style="getStyle(tl)"
-                @click="onClick(tl)"
-                v-tooltip.top-center="getTooltip(tl)">
+            v-for="tl in trafficLights"
+            class="status-box"
+            :class="{active: isActive(tl)}"
+            :style="getStyle(tl)"
+            @click="onClick(tl)">
+
             <div
-                    v-if="editable && !isActive(tl)"
-                    :style="{backgroundColor: tl.getColor()}"></div>
+                v-if="editable && !isActive(tl)"
+                :style="{backgroundColor: tl.getColor()}">&nbsp;</div>
         </div>
     </div>
 </template>
 
 <script>
-    import {TrafficLight} from '../../util/traffic-light';
+    import {TrafficLight} from '../../../frontend/src/util/traffic-light';
 
     export default {
         name: 'traffic-light',
@@ -100,7 +100,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../css/_variables';
+    @import '../../../frontend/src/css/_variables';
 
     @mixin normal_box {
         background: $darkerColor;
@@ -109,7 +109,6 @@
         height: 30px;
         cursor: default;
         border-radius: 50%;
-        -webkit-print-color-adjust: exact !important;
     }
 
     @mixin large_box {
@@ -118,15 +117,19 @@
         margin-right: 5px;
         background-color: $fadeColor;
         border-radius: 50%;
-        -webkit-print-color-adjust: exact !important;
     }
 
     .status-boxes {
         .status-box {
+            -webkit-print-color-adjust: exact;
+            display: inline-block;
+
             @include normal_box;
 
             div {
                 @include normal_box;
+                -webkit-print-color-adjust: exact;
+
                 opacity: 0;
                 transition: opacity 0.5s ease-in-out;
                 -moz-transition: opacity 0.5s ease-in-out;
