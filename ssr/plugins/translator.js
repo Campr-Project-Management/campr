@@ -26,3 +26,7 @@ Translator.install = (Vue, options) => {
 global.Translator = Translator;
 
 Vue.use(Translator);
+
+export function trans(text) {
+    return Translator.trans(text);
+}

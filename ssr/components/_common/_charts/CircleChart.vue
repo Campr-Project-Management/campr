@@ -14,31 +14,54 @@
     import * as d3 from 'd3';
 
     export default {
-        ssr: false,
+        name: 'circle-chart',
         props: {
             percentage: {},
             title: {},
-            precision: {
+            /* width: {
                 default() {
-                    return 2;
+                    return 360;
                 },
             },
-            bgStrokeColor: {
+            height: {
                 default() {
-                    return '#232D4B';
+                    return 360;
                 },
+            }, */
+            precision: {
+                default: 0,
+            },
+            bgStrokeColor: {
+                type: String,
+                default: '#232D4B',
+            },
+            fgStrokeColor: {
+                type: String,
+                default: '#5FC3A5',
+            },
+            strokeWidth: {
+                type: Number,
+                default: 1,
+            },
+            animationDuration: {
+                type: Number,
+                required: false,
+                default: 2048,
             },
         },
         methods: {
             init() {
+                /* let width = parseInt(this.width, 10);
+                let height = parseInt(this.width, 10);
+                let radius = Math.min(width, height) / 2; */
                 let width = this.$el.offsetWidth;
                 let height = width;
                 let radius = width / 2;
 
                 const arc = d3
                     .arc()
-                    .innerRadius(radius - 2)
-                    .outerRadius(radius - 1)
+                    .innerRadius(radius - this.strokeWidth)
+                    .outerRadius(radius - this.strokeWidth)
                     .startAngle(0)
                 ;
 
@@ -63,7 +86,7 @@
                     .append('path')
                     .datum({endAngle: 0})
                     .attr('fill', 'transparent')
-                    .attr('stroke-width', 1)
+                    .attr('stroke-width', this.strokeWidth)
                     .attr('stroke', this.bgStrokeColor)
                     .attr('d', d => arc(d))
                 ;
@@ -73,7 +96,7 @@
 
                     main
                         .transition()
-                        .duration(2048)
+                        .duration(this.animationDuration)
                         .attrTween('d', d => {
                             return t => {
                                 d.endAngle = interpolate(t);
@@ -82,7 +105,7 @@
                             };
                         })
                     ;
-                }, 1024);
+                }, this.animationDuration / 2);
 
                 let percentage = parseInt(this.percentage, 10);
                 if (isNaN(percentage)) {
@@ -95,8 +118,8 @@
                         .append('path')
                         .datum({endAngle: 0})
                         .attr('fill', 'transparent')
-                        .attr('stroke-width', 1)
-                        .attr('stroke', '#5FC3A5')
+                        .attr('stroke-width', this.strokeWidth)
+                        .attr('stroke', this.fgStrokeColor)
                         .attr('d', d => arc(d))
                     ;
 
@@ -105,7 +128,7 @@
 
                         progress
                             .transition()
-                            .duration(2048)
+                            .duration(this.animationDuration)
                             .attrTween('d', d => {
                                 return t => {
                                     d.endAngle = interpolate(t);
@@ -114,7 +137,7 @@
                                 };
                             })
                         ;
-                    }, 2048);
+                    }, this.animationDuration);
                 }
             },
             formatPercentage(percentage) {
@@ -142,8 +165,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../../frontend/src/css/_common';
-    @import '../../../frontend/src/css/_variables';
+    @import '../../../../frontend/src/css/_common';
+    @import '../../../../frontend/src/css/_variables';
 
     .chart {
         font-size: 22px;
