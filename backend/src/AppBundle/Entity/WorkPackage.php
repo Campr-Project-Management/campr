@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\BaseScheduleDatesAwareInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +21,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @AppAssert\WorkPackageScheduledDates(groups={"create"})
  * @AppAssert\WorkPackageForecastDates(groups={"edit"})
  */
-class WorkPackage
+class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
 {
     const TYPE_PHASE = 0;
     const TYPE_MILESTONE = 1;
