@@ -254,7 +254,6 @@
         },
         methods: {
             init() {
-                console.log(process);
                 if (process.browser) {
                     this.createBase();
                     this.createForecast();
@@ -397,7 +396,8 @@
 </script>
 
 <style lang="scss">
-    @import '../../../frontend/src/css/_variables';
+    @import '../../../frontend/src/css/task-range-slider';
+    @import '../../../frontend/src/css/variables';
     @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.css';
     @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 
@@ -407,5 +407,8 @@
                 display: none;
             }
         }
+    }
+    .legend-bar {
+        -webkit-print-color-adjust: exact !important;
     }
 </style>
