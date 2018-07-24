@@ -5,7 +5,7 @@ namespace Component\Resource\Model;
 interface ResourceInterface
 {
     /**
-     * @return mixed
+     * @return int
      */
     public function getId();
 }
