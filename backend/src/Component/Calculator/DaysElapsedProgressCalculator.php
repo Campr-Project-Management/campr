@@ -28,6 +28,10 @@ class DaysElapsedProgressCalculator implements DateRangeCalculatorInterface
             return 100;
         }
 
+        if ($today <= $start) {
+            return 0;
+        }
+
         $dateRange = new DateRange($start, $end);
         $total = $dateRange->getDurationDays();
 
@@ -42,7 +46,7 @@ class DaysElapsedProgressCalculator implements DateRangeCalculatorInterface
      */
     protected function getReferenceDate(): \DateTime
     {
-        $today = new \DateTime('2019-09-30');
+        $today = new \DateTime();
         $today->setTime(0, 0, 0);
 
         return $today;
