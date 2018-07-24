@@ -14,7 +14,6 @@ const state = {
     tasksFilters: {},
     allTasks: [],
     tasksPageSize: 0,
-    historyPage: 1,
 };
 
 const getters = {
@@ -24,7 +23,6 @@ const getters = {
     tasksPerPage: state => state.tasksPageSize,
     allTasks: state => state.allTasks,
     taskHistory: state => state.taskHistory,
-    historyPage: state => state.historyPage,
 };
 
 const actions = {
@@ -133,25 +131,34 @@ const actions = {
             }, (response) => {
             });
     },
-    getTaskHistory({commit}, {id, reset}) {
-        let historyPage = state.historyPage;
-        if (reset) {
-            historyPage = 1;
+    getTaskHistory({commit}, {id, page}) {
+        if (!page) {
+            page = 1;
         }
+
         let data = {
             params: {
-                page: historyPage,
+                page: page,
             },
         };
 
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_history', {'id': id}), data).then((response) => {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_workpackage_history',
+                {'id': id}), data)
+            .then((response) => {
                 if (response.status === 200) {
-                    let nextHistory = response.data;
-                    commit(types.SET_TASK_HISTORY, {nextHistory, reset});
+                    commit(types.ADD_TASK_HISTORY, response.data.items);
                 }
+
+                return response;
             }, (response) => {
-            });
+                return response;
+            })
+        ;
+    },
+    resetTaskHistory({commit}) {
+        commit(types.RESET_TASK_HISTORY);
     },
     /**
      * Creates a new task on project
@@ -229,13 +236,6 @@ const actions = {
                         const task = response.body;
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         commit(types.SET_TASK, {task});
-                        Vue.http.get(Routing.generate('app_api_workpackage_history', {'id': data.taskId})).then((response) => {
-                            if (response.status === 200) {
-                                let firstPageHistory = response.data;
-                                commit(types.PREPEND_TASK_HISTORY, {firstPageHistory});
-                            }
-                        }, (response) => {
-                        });
                     }
                     return response;
                 },
@@ -368,20 +368,19 @@ const actions = {
      * Add new comment
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     addTaskComment({commit}, data) {
-        Vue.http
-            .post(Routing.generate('app_api_workpackage_comments_create', {'id': data.task.id}), JSON.stringify(data.payload)).then((response) => {
+        return Vue
+            .http
+            .post(Routing.generate('app_api_workpackage_comments_create',
+                {'id': data.task.id}), JSON.stringify(data.payload))
+            .then((response) => {
                 if (response.status === 200) {
-                    Vue.http.get(Routing.generate('app_api_workpackage_history', {'id': data.task.id})).then((response) => {
-                        if (response.status === 200) {
-                            let firstPageHistory = response.data;
-                            commit(types.PREPEND_TASK_HISTORY, {firstPageHistory});
-                        }
-                    }, (response) => {
-                    });
+                    return response;
                 }
             }, (response) => {
+                return response;
             });
     },
     /**
@@ -453,38 +452,27 @@ const mutations = {
     /**
      * Add history elements
      * @param {Object} state
-     * @param {Object} history
+     * @param {Object} items
      */
-    [types.SET_TASK_HISTORY](state, {nextHistory, reset}) {
-        if (reset) {
-            state.taskHistory = [];
-            state.historyPage = 1;
+    [types.SET_TASK_HISTORY](state, items) {
+        state.taskHistory = items;
+    },
+    /**
+     * Reset history elements
+     * @param {Object} state
+     */
+    [types.RESET_TASK_HISTORY](state) {
+        while (state.taskHistory.length > 0) {
+            state.taskHistory.pop();
         }
-        for (let i = 0; i < nextHistory.length; i++) {
-            let el = nextHistory[i];
-            if (!state.taskHistory.includes(el)) {
-                state.taskHistory = state.taskHistory.concat(el);
-            }
-        }
-        state.historyPage++;
     },
     /**
      * Add history elements
      * @param {Object} state
-     * @param {Object} history
+     * @param {Object} items
      */
-    [types.PREPEND_TASK_HISTORY](state, {firstPageHistory}) {
-        let newHistory = [];
-        for (let i = 0; i < firstPageHistory.length; i++) {
-            let el = firstPageHistory[i];
-            let found = state.taskHistory.some(function(log) {
-                return log.id === el.id;
-            });
-            if (!found) {
-                newHistory.push(el);
-            }
-        }
-        state.taskHistory = newHistory.concat(state.taskHistory);
+    [types.ADD_TASK_HISTORY](state, items) {
+        state.taskHistory.push(...items);
     },
     /**
      * Set the tasks filters
