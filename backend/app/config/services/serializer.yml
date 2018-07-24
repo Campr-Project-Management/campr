@@ -37,3 +37,12 @@ services:
              - '@doctrine.orm.default_entity_manager'
         tags:
             - { name: jms_serializer.event_subscriber }
+
+    app.serializer.listener.log:
+        class: AppBundle\Serializer\EventListener\LogSubscriber
+        arguments:
+             - '@app.repository.project_user'
+             - '@app.repository.user'
+             - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: jms_serializer.event_subscriber }
