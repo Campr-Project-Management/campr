@@ -687,11 +687,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.title) {
-        document.title = to.meta.title;
-    }
-
-    Guard.beforeEach(to, from, next);
+    Guard.beforeEach(to, from, (nArg) => {
+        if (to.meta.title) {
+            document.title = to.meta.title;
+        }
+        next(nArg);
+    });
 });
 
 export default router;
