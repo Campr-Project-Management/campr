@@ -7,7 +7,7 @@
                     <b>{{ potentialCost | money({symbol: currency}) }}</b>
                 </span>
             </p>
-            <p class="clearfix">                
+            <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_potential_time_savings') }}:</span>
                 <span class="text-left">
                     <span v-if="potentialTime">

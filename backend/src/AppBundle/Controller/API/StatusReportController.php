@@ -44,18 +44,17 @@ class StatusReportController extends ApiController
     {
         $mailerService = $this->get('app.service.mailer');
         $em = $this->getDoctrine()->getManager();
-        $html = $this->renderView(':status_report:pdf.html.twig', ['statusReport' => $statusReport]);
+
         $pdf = $this
             ->get('app.service.pdf')
-            ->loadHTML($html)
-            ->pageSize('A4')
-            ->get()
+            ->getStatusReportPDF($statusReport)
         ;
 
         $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
             'project' => $statusReport->getProject(),
-            'sequence' => -1,
+            'name' => 'label.status_report_distribution', // @TODO: change this!
         ]);
+        dump($specialDistribution);
         if ($specialDistribution) {
             $users = $specialDistribution->getUsers();
             foreach ($users as $user) {
