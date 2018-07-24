@@ -78,8 +78,8 @@
     padding-top: 10px;
   }
 
-  div.avatar, div.user-avatar, div.legend-bar, .task-slider-holder * {
-    -webkit-print-color-adjust: exact;
+  div.avatar, div.user-avatar, div.legend-bar {
+    -webkit-print-color-adjust: exact !important;
   }
 
   div.ve-design, table tr {
