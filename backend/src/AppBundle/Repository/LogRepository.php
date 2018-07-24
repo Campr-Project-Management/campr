@@ -2,37 +2,26 @@
 
 namespace AppBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use AppBundle\Entity\WorkPackage;
+use Pagerfanta\Pagerfanta;
 
-class LogRepository extends EntityRepository
+class LogRepository extends BaseRepository
 {
     /**
-     * returns filtered history.
+     * @param WorkPackage $wp
      *
-     * @param string $class
-     * @param int    $objId
-     * @param array  $filters
-     *
-     * @return array
+     * @return Pagerfanta
      */
-    public function findByObjectAndFilters($class, $objId, $filters = [])
+    public function createWorkPackageHistoryPaginator(WorkPackage $wp)
     {
         $qb = $this
             ->createQueryBuilder('l')
-            ->where('l.class = :class')
-            ->andWhere('l.objId = :objId')
-            ->setParameter('class', $class)
-            ->setParameter('objId', $objId)
-            ->orderBy('l.id', 'DESC')
+            ->where('l.class = :class and l.objId = :objId')
+            ->setParameter('class', WorkPackage::class)
+            ->setParameter('objId', $wp->getId())
+            ->orderBy('l.createdAt', 'DESC')
         ;
 
-        if (isset($filters['pageSize']) && isset($filters['page'])) {
-            $qb
-                ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
-                ->setMaxResults($filters['pageSize'])
-            ;
-        }
-
-        return $qb->getQuery()->getResult();
+        return $this->getPaginator($qb);
     }
 }

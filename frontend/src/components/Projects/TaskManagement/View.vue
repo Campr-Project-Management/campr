@@ -131,6 +131,7 @@
                             size="small"
                             :url="currentUser.avatarUrl"
                             :name="currentUser.fullName"/>
+                    <b class="uppercase">{{ currentUser.fullName }}</b>
 
                     <div class="new-comment-body">
                         <editor
@@ -148,7 +149,10 @@
 
                 <hr class="double">
 
-                <task-history :history="taskHistory" @load-next="loadNextHistory" />
+                <task-history
+                        v-if="taskHistory && taskHistory.length > 0"
+                        :items="taskHistory"
+                        @input="onHistoryPageChange"/>
             </div>
 
             <div class="col-lg-6">
@@ -597,6 +601,7 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
+        this.loadTaskHistory();
     },
     computed: {
         ...mapGetters({
@@ -646,9 +651,6 @@ export default {
             });
 
             return count;
-        },
-        currentUserAvatar: function() {
-            return this.currentUser.avatarUrl;
         },
     },
     watch: {
@@ -743,18 +745,13 @@ export default {
                     this.completedSubtasksIds.push(subtask.id);
                 }
             });
-
-            let data = {
-                id: this.$route.params.taskId,
-                reset: true,
-            };
-            this.getTaskHistory(data);
         },
     },
     methods: {
         ...mapActions([
             'getTaskById',
             'getTaskHistory',
+            'resetTaskHistory',
             'deleteTaskSubtask',
             'addTaskComment',
             'editTask',
@@ -773,7 +770,7 @@ export default {
                 trafficLight: trafficLight,
             };
 
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
@@ -825,7 +822,9 @@ export default {
                 },
             };
             this.newComment = '';
-            this.addTaskComment(data);
+            this.addTaskComment(data).then(() => {
+                this.loadTaskHistory();
+            });
         },
         itemTotal(item) {
             let duration = (item.duration == null || isNaN(item.duration) || item.duration == 0) ? 1 : item.duration;
@@ -869,7 +868,7 @@ export default {
                 }
             }
 
-            this.patchTask({
+            this.updateTask({
                 taskId: this.task.id,
                 data: {
                     progress,
@@ -886,7 +885,7 @@ export default {
             this.showEditStatusModal = false;
         },
         onChangeStatus(value) {
-            this.patchTask({
+            this.updateTask({
                 taskId: this.task.id,
                 data: {
                     workPackageStatus: value.key,
@@ -910,7 +909,7 @@ export default {
                 }),
             };
 
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             }).then(({body}) => {
@@ -1014,7 +1013,7 @@ export default {
             let data = {
                 labels: [this.editableData.label.key],
             };
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
@@ -1024,7 +1023,7 @@ export default {
             let data = {
                 labels: [],
             };
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
@@ -1040,7 +1039,7 @@ export default {
                 informedUsers: value.informedUsers.map((u) => u.key),
             };
 
-            this.patchTask({
+            this.updateTask({
                 data,
                 taskId: this.$route.params.taskId,
             }).then(() => {
@@ -1068,12 +1067,42 @@ export default {
                 }, (response) => {}
             );
         },
-        loadNextHistory() {
+        onHistoryPageChange() {
+            this.loadMoreTaskHistory();
+        },
+        loadMoreTaskHistory() {
+            if (this.loadingHistory) {
+                return;
+            }
+
+            if (this.historyPage >= this.historyNbPages) {
+                return;
+            }
+
+            this.loadingHistory = true;
+            this.historyPage++;
+
             let data = {
                 id: this.$route.params.taskId,
-                reset: false,
+                page: this.historyPage,
             };
-            this.getTaskHistory(data);
+
+            this.getTaskHistory(data).then((response) => {
+                this.historyNbPages = response.data.nbPages;
+                this.loadingHistory = false;
+            });
+        },
+        loadTaskHistory() {
+            this.historyPage = 0;
+            this.historyNbPages = 1;
+            this.resetTaskHistory();
+            this.loadMoreTaskHistory();
+        },
+        updateTask(data) {
+            return this.patchTask(data).then((response) => {
+                this.loadTaskHistory();
+                return response;
+            });
         },
     },
     data() {
@@ -1125,6 +1154,9 @@ export default {
             newComment: '',
             updatingAssignments: false,
             disableAttachments: false,
+            historyPage: 0,
+            historyNbPages: 1,
+            loadingHistory: false,
         };
     },
 };

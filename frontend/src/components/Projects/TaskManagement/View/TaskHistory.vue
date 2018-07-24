@@ -1,8 +1,7 @@
 <template>
     <div class="task-history">
         <scrollbar class="histories-scroll customScrollbar" @ps-y-reach-end="onScrollEnd">
-            <div v-for="item in history" :key="item.id">
-
+            <div v-for="item in items" :key="item.id">
                 <!-- /// Task assignement /// -->
                 <div v-if="item.isResponsibilityAdded">
                     <div class="comment">
@@ -11,19 +10,16 @@
                                     size="small"
                                     :url="item.userAvatar"
                                     :name="item.userFullName"/>
-
-                            {{ item.userFullName }}
-                            <b class="uppercase">{{item.userFullName}}</b>
                             <router-link
-                                    :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                    :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
                                     class="simple-link">
-                                @{{ item.userUsername }}
+                                <b class="uppercase">{{item.userFullName}}</b>
                             </router-link>
                             {{ translate('message.assigned_to') }}
                             <router-link
-                                    :to="{name: 'project-organization-view-member', params: {userId: item.newValue.responsibility[1]} }"
+                                    :to="{name: 'project-organization-view-member', params: {userId: item.newResponsibility.id} }"
                                     class="simple-link">
-                                @{{ item.userUsername }}
+                                <b class="uppercase">{{ item.newResponsibility.userFullName }}</b>
                             </router-link>
                             {{ item.createdAt | humanizeDate }}
                         </div>
@@ -40,11 +36,10 @@
                                     size="small"
                                     :url="item.userAvatar"
                                     :name="item.userFullName"/>
-                            <b class="uppercase">{{item.userFullName}}</b>
                             <router-link
-                                    :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                    :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
                                     class="simple-link">
-                                @{{ item.userUsername }}
+                                <b class="uppercase">{{ item.userFullName }}</b>
                             </router-link>
                             {{ translate('message.has_commented_task') }} {{ item.createdAt | humanizeDate }}
                         </div>
@@ -63,11 +58,10 @@
                                     size="small"
                                     :url="item.userAvatar"
                                     :name="item.userFullName"/>
-                            <b class="uppercase">{{item.userFullName}}</b>
                             <router-link
-                                    :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                    :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
                                     class="simple-link">
-                                @{{ item.userUsername }}
+                                <b class="uppercase">{{item.userFullName}}</b>
                             </router-link>
                             <div class="task-label" :style="'background-color:#e04fcc'">
                                 {{ translate('message.high_priority') }}
@@ -87,11 +81,10 @@
                                     size="small"
                                     :url="item.userAvatar"
                                     :name="item.userFullName"/>
-                            <b class="uppercase">{{item.userFullName}}</b>
                             <router-link
-                                    :to="{name: 'project-organization-view-member', params: {userId: item.userId} }"
+                                    :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
                                     class="simple-link">
-                                @{{ item.userUsername }}
+                                <b class="uppercase">{{item.userFullName}}</b>
                             </router-link>
                             {{ translate('message.has_edited_task') }} {{ item.createdAt | humanizeDate }}
                         </div>
@@ -113,29 +106,16 @@
             UserAvatar,
         },
         props: {
-            history: {
+            items: {
                 type: Array,
                 required: true,
                 default: [],
             },
         },
         methods: {
-            loadNext() {
-                if (this.history.length > 0) {
-                    if (this.historyCount < this.history.length) {
-                        this.historyCount = this.history.length;
-                        this.$emit('load-next', true);
-                    }
-                }
-            },
             onScrollEnd(evt) {
-                this.loadNext();
+                this.$emit('input', true);
             },
-        },
-        data() {
-            return {
-                historyCount: 0,
-            };
         },
     };
 </script>

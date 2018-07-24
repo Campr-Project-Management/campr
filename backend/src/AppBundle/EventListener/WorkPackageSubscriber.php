@@ -201,6 +201,11 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $status = $wp->getWorkPackageStatus();
         $nextStatus = $this->getNextWorkPackageStatus($status);
+        if (!$status) {
+            $status = $nextStatus;
+            $wp->setWorkPackageStatus($status);
+        }
+
         $min = $status->getProgress();
         $max = $nextStatus ? $nextStatus->getProgress() - 1 : $status->getProgress();
         $range = range($min, $max);
@@ -258,7 +263,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
      *
      * @return WorkPackageStatus|null
      */
-    private function getNextWorkPackageStatus(WorkPackageStatus $status)
+    private function getNextWorkPackageStatus(WorkPackageStatus $status = null)
     {
         $statuses = $this->getWorkPackageStatuses();
         foreach ($statuses as $index => $st) {
@@ -267,7 +272,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            if ($status->getId() === $next->getId()) {
+            if (!$status || $status->getId() === $next->getId()) {
                 return $next;
             }
         }
