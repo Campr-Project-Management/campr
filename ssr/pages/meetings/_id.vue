@@ -340,6 +340,15 @@ export default {
     @import '../../../frontend/src/css/_variables';
     @import '../../../frontend/src/css/common';
 
+    @media print {
+        div.entry {
+            page-break-inside: avoid !important;
+        }
+        div.avatar, div.user-avatar {
+            -webkit-print-color-adjust: exact !important;
+        }
+    }
+
     .title {
         position: relative;
         top: 15px;
