@@ -21,7 +21,7 @@
             <td>
                 <user-avatar
                         size="small"
-                        :url="projectUserAvatarByUserId(item.responsibilityId)"
+                        :url="item.responsibilityAvatar"
                         :name="item.responsibilityFullName"
                         :tooltip="item.responsibilityFullName"/>
             </td>
@@ -44,11 +44,6 @@
                 type: Array,
                 required: true,
                 default: () => [],
-            },
-        },
-        methods: {
-            projectUserAvatarByUserId(user) {
-                return null;
             },
         },
     };
