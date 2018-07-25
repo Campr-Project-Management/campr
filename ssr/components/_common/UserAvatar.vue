@@ -56,16 +56,16 @@
         methods: {
             setLazyUrl(url) {
                 this.lazyUrl = url;
-                if (!this.lazyUrl) {
-                    return;
-                }
-
-                let image = new Image();
-                image.src = this.lazyUrl;
-
-                image.onerror = () => {
-                    this.lazyUrl = null;
-                };
+                // if (!this.lazyUrl) {
+                //     return;
+                // }
+                //
+                // let image = new Image();
+                // image.src = this.lazyUrl;
+                //
+                // image.onerror = () => {
+                //     this.lazyUrl = null;
+                // };
             },
         },
         created() {
