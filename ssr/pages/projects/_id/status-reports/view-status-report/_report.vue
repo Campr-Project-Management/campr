@@ -308,13 +308,36 @@
                 project = await res.json();
 
                 // project users
-                res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
+                // res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
 
                 // status report trend graph
                 res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/status-reports/trend-graph`, query.key);
                 if (res.status === 200) {
                     statusReportTrendGraph = await res.json();
                 }
+            }
+            if (project.projectUsers && report.information) {
+                let avatarNeedsUpdate = ['todos', 'infos', 'decisions'];
+                avatarNeedsUpdate.map(key => {
+                    if (!report.information[key] || !report.information[key].items) {
+                        return;
+                    }
+                    report.information[key].items.map((item, k) => {
+                        if (!item.responsibilityId) {
+                            return;
+                        }
+
+                        let projectUser = project
+                            .projectUsers
+                            .filter(pu => {
+                                return pu.user === item.responsibilityId;
+                            })
+                        ;
+                        if (projectUser.length) {
+                            report.information[key].items[k].responsibilityAvatar = projectUser[0].userAvatar;
+                        }
+                    });
+                });
             }
 
             return {

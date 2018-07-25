@@ -54,7 +54,6 @@ class StatusReportController extends ApiController
             'project' => $statusReport->getProject(),
             'name' => 'label.status_report_distribution', // @TODO: change this!
         ]);
-        dump($specialDistribution);
         if ($specialDistribution) {
             $users = $specialDistribution->getUsers();
             foreach ($users as $user) {
@@ -63,7 +62,13 @@ class StatusReportController extends ApiController
                     'info',
                     $user->getEmail(),
                     ['statusReport' => $statusReport],
-                    [new \Swift_Attachment($pdf, 'status-report.pdf', 'application/pdf')]
+                    [
+                        new \Swift_Attachment(
+                            file_get_contents($pdf),
+                            sprintf('status-report-%s.pdf', $statusReport->getCreatedAt()->format('Y-m-d')),
+                            'application/pdf'
+                        ),
+                    ]
                 );
             }
         }
