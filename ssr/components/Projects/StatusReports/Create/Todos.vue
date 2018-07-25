@@ -18,7 +18,7 @@
             <td>
                 <user-avatar
                         size="small"
-                        :url="projectUserAvatarByUserId(item.responsibilityId)"
+                        :url="item.responsibilityAvatar"
                         :name="item.responsibilityFullName"
                         :tooltip="item.responsibilityFullName"/>
             </td>
@@ -35,11 +35,6 @@
         name: 'status-report-todos',
         components: {
             UserAvatar,
-        },
-        methods: {
-            projectUserAvatarByUserId(user) {
-                return null;
-            },
         },
         props: {
             items: {
