@@ -55,7 +55,7 @@ parameters:
 
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
-    app.pdf.google_chrome: '/usr/bin/node /app/ssr/print2pdf.js'
+    app.pdf.google_chrome: '/usr/bin/node %kernel.root_dir%/../../ssr/print2pdf.js'
     app.pdf.google_chrome_arguments: '"%%url%%" "%%file%%"'
     app.pdf.service_url: 'http://localhost:3000/'
 
