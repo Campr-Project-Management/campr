@@ -210,25 +210,22 @@
             </div>
 
             <hr class="double">
+
+            <div class="row ro-columns">
+                <div class="col-md-6 col-xs-6 dark-border-right">
+                    <no-ssr>
+                        <opportunities-grid :value="opportunitiesGrid" :currency="currency"/>
+                    </no-ssr>
+                </div>
+
+                <div class="col-md-6 col-xs-6">
+                    <no-ssr>
+                        <risks-grid :value="risksGrid" :currency="currency"/>
+                    </no-ssr>
+                </div>
+            </div>
+
             <hr class="double">
-
-            <table width="100%" style="page-break-before: always">
-                <tbody>
-                <tr>
-                    <td width="50%">
-                        <no-ssr>
-                            <opportunities-grid :value="opportunitiesGrid" :currency="currency"/>
-                        </no-ssr>
-                    </td>
-                    <td>
-                        <no-ssr>
-                            <risks-grid :value="risksGrid" :currency="currency"/>
-                        </no-ssr>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
 
             <div class="row">
                 <div class="col-md-12">
