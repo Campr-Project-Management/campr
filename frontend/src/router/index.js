@@ -698,7 +698,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     Guard.beforeEach(to, from, (nArg) => {
-        if (to.meta.title) {
+        if (to.meta.title && nArg !== false && !(nArg instanceof Error)) {
             document.title = to.meta.title;
         }
         next(nArg);
