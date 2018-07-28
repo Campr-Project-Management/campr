@@ -1021,9 +1021,7 @@ export default {
     watch: {
         'details.distributionList': {
             handler: function(value) {
-                this.selectedParticipants = this
-                    .selectedParticipants
-                    .filter(participant => participant.isPresent || participant.inDistributionList);
+                this.selectedParticipants = [];
 
                 if (!value || !value.key) {
                     return;
@@ -1053,22 +1051,18 @@ export default {
                             });
                         });
                 });
-
-                this
-                    .meeting
-                    .meetingParticipants
-                    .filter(mp => this.selectedParticipants.map(sp => sp.user).indexOf(mp.user) === -1)
-                    .forEach(mp => {
-                        this.selectedParticipants.push({
-                            user: mp.user,
-                            userFullName: mp.userFullName,
-                            userAvatar: mp.userAvatar,
-                            departments: mp.userDepartmentNames,
-                            isPresent: mp.isPresent,
-                            inDistributionList: mp.inDistributionList,
-                        });
-                    })
-                ;
+            },
+            deep: true,
+        },
+        'distributionLists': {
+            handler() {
+                // force an update of the list when the distributionLists are loaded
+                if (this.details.distributionList && this.details.distributionList.key) {
+                    this.details.distributionList = {
+                        key: this.details.distributionList.key,
+                        label: this.details.distributionList.label,
+                    };
+                }
             },
             deep: true,
         },
