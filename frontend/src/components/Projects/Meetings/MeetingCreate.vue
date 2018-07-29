@@ -651,9 +651,7 @@ export default {
     watch: {
         'details.distributionList': {
             handler: function(value) {
-                this.selectedParticipants = this
-                    .selectedParticipants
-                    .filter(participant => participant.isPresent || participant.inDistributionList);
+                this.selectedParticipants = [];
 
                 if (!value || !value.key) {
                     return;
