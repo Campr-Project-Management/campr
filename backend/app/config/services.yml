@@ -309,7 +309,6 @@ services:
         class: Component\Snapshot\Transformer\MilestonesTransformer
         arguments:
             - '@app.snapshot.transformer.milestone'
-            - '@app.repository.work_package'
 
     app.snapshot.transformer.risks:
         class: Component\Snapshot\Transformer\RisksTransformer
