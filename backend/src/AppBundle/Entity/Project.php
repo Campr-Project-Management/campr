@@ -1175,6 +1175,42 @@ class Project implements ProjectInterface
     }
 
     /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getPhases()
+    {
+        return $this->getWorkPackages()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isPhase();
+            }
+        );
+    }
+
+    /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getMilestones()
+    {
+        return $this->getWorkPackages()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isMilestone();
+            }
+        );
+    }
+
+    /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getKeyMilestones()
+    {
+        return $this->getMilestones()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isKeyMilestone();
+            }
+        );
+    }
+
+    /**
      * Returns status id.
      *
      * @Serializer\VirtualProperty()
