@@ -943,6 +943,14 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isKeyMilestone()
+    {
+        return $this->getIsKeyMilestone();
+    }
+
+    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt

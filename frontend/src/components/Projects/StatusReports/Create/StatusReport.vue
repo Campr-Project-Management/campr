@@ -497,11 +497,13 @@
                 return this.snapshot.phases.items;
             },
             milestones() {
-                if (!this.snapshot.milestones) {
+                if (!this.snapshot.milestones || !this.snapshot.milestones.items) {
                     return [];
                 }
 
-                return this.snapshot.milestones.items;
+                return this.snapshot.milestones.items.filter((milestone) => {
+                    return milestone.isKeyMilestone;
+                });
             },
             currency() {
                 return this.snapshot.currency.symbol;
