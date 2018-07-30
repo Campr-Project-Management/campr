@@ -118,3 +118,9 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\OpportunityStatus }
+
+    app.repository.log:
+        class: AppBundle\Repository\LogRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Log }
