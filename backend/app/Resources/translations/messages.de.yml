@@ -42,7 +42,7 @@ add.project_category: 'Neue Projektkategorie hinzufügen'
 add.project_close_down: 'Neuen Projektabschluss hinzufügen'
 add.project_complexity: 'Neue Projektkomplexität hinzufügen'
 add.project_cost_type: 'Neuen Projektkostentyp hinzufügen'
-add.project_deliverable: 'Neues Projektergebnis hinzufügen'
+add.project_deliverable: 'Neue Projektzielsetzung hinzufügen'
 add.project_department: 'Neue Projektabteilung hinzufügen'
 add.project_limitation: 'Neue Projekteinschränkung hinzufügen'
 add.project_module: 'Neues Projektmodul hinzufügen'
@@ -461,7 +461,7 @@ label.per_day: 'Pro Tag'
 label.percent_work: 'Fortschritt in Prozent'
 label.performance_schedule: Performanceplan
 label.phase: Phase
-label.phase_is_subphase: 'Dies ist eine Subphase.'
+label.phase_is_subphase: 'Dies ist eine Unterphase.'
 label.phone: Telefon
 label.portfolio: Portfolio
 label.printable: Druckbar
@@ -538,7 +538,7 @@ label.start_time: Startzeit
 label.started_at: 'Gestartet am'
 label.status: Status
 label.status_report: Statusreport
-label.status_report_distribution: Statusreportv-Verteilerliste
+label.status_report_distribution: Statusreport-Verteilerliste
 label.strategy: Strategie
 label.subject: Betreff
 label.subtask_description: 'Beschreibung Subtask'
@@ -779,6 +779,7 @@ message.infos: Infos
 message.internal_costs: 'Interne Kosten'
 message.internal_resources: 'Interne Ressourcen'
 message.label_none: Keine
+message.label_note: 'Notiz'':'' Die Farbe des Labeltexts ist weiß. Wählen Sie die Hintergrundfarbe Ihres Labels auch nach diesem Kriterium aus.'
 message.last_task: 'Letzte Aufgabe'
 message.less: Weniger
 message.lessons_learned: 'Lessons Learned'
@@ -807,7 +808,7 @@ message.new_lesson: 'Neue Lektion'
 message.new_message: Neu
 message.new_objective: 'Neue Zielsetzung'
 message.new_objective_description: 'Neue Zielsetzungsbeschreibung'
-message.new_objective_title: 'Neuer Zielsetzungstitel'
+message.new_objective_title: 'Neue Zielsetzung'
 message.new_opportunity: 'Neue Chance'
 message.new_project: 'Neues Projekt'
 message.new_project_deliverable: 'Neue Projektanforderung'
@@ -830,7 +831,7 @@ message.overall_status: Gesamtstatus
 message.participants: Teilnehmer
 message.per_day_reports_exceeded: 'Sie haben das tägliche Berichtslimit erreicht. Bitte halten Sie Rücksprache mit Ihrem Manager.'
 message.phase_responsible: 'Phasenverantwortlicher:'
-message.phases_and_milestones: 'Phasen und Meilensteine'
+message.phases_and_milestones: 'Phasen & Meilensteine'
 message.phases_milestones: 'Phasen & Meilensteine'
 message.plan: Plan
 message.potential_cost: 'Potentielle Kosten'
@@ -1000,7 +1001,7 @@ modules.meetings.title: Meetings
 modules.organization.description: 'Die Projektorganisation zeigt die Projektbeteiligten in hierarchischer Ordnung. Dieses Modul visualisiert das Projektorganisationschart, definiert die Rollen und die Beziehungen zwischen den Projektteams. Außerdem können Sie Distributionslisten für Reports und Meetingeinladungen erstellen.'
 modules.organization.title: Organisation
 modules.phases_and_milestones.description: 'Arbeitspakete können in Phasen gemäß der Projektsequenzen gruppiert werden. Besonders wichtige Events im Projektverlauf können als Meilensteine definiert und terminiert werden.'
-modules.phases_and_milestones.title: 'Phasen und Meilensteine'
+modules.phases_and_milestones.title: 'Phasen & Meilensteine'
 modules.rasci_matrix.description: 'Die Veranwortlichkeitsmatrix zeigt die Mitwirkung von unterschiedlichen Rollen bei der Fertigstellung von Aufgaben und anderen Leistungen in der Projektausführung. Die Verantwortlichkeitsmatrix ist besonders nützlich, um Rollen und Zuständigkeiten in bereichsübergreifenden Projekten und Prozessen festzulegen. RASCI steht für die fünf unterschiedlichen Rollen in der Ausführung von Arbeitspaketen oder Aufgaben: Responsible (verantwortlich), Accountable (rechenschaftspflichtig), Supportive (unterstützend), Consulted (beratend) and Informed (informiert).'
 modules.rasci_matrix.title: RASCI-Matrix
 modules.risks_and_opportunities.description: 'Reguläre Risikoanalyse, um potentielle Gefahren und ungenutzte Potentiale im Projekt aufzudecken und Situationen proaktiv anzugehen. Dieses Modul unterstützt Sie dabei Risiken und Chancen zu sammeln, strukturieren, verfolgen und zu visualisieren.'
@@ -1822,6 +1823,7 @@ title.meeting_participant.edit: 'Meetingteilnehmer bearbeiten'
 title.meeting_participant.list: Meetingteilnehmer
 title.members: Mitglieder
 title.messages: Nachrichten
+title.meta_description: 'CAMPR ist das Werkzeug für fleißige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.'
 title.my_account: 'Mein Account'
 title.note.create: 'Neue Notiz erstellen'
 title.note.edit: 'Notiz bearbeiten'
@@ -1832,6 +1834,12 @@ title.note_status.list: Notizstatus
 title.opportunity.create: 'Neue Chance erstellen'
 title.opportunity.edit: 'Chance bearbeiten'
 title.opportunity.list: Chance
+title.opportunity_status.create: 'Neuen Chancenstatus erstellen'
+title.opportunity_status.edit: 'Chancenstatus bearbeiten'
+title.opportunity_status.list: Chancenstatus
+title.opportunity_strategy.create: 'Neue Chancenstrategie erstellen'
+title.opportunity_strategy.edit: 'Chancenstrategie bearbeiten'
+title.opportunity_strategy.list: Chancenstrategie
 title.payment.list: Zahlungen
 title.payment_method.edit: 'Zahlungsmethode bearbeiten'
 title.payment_method.list: 'Liste Zahlungsmethoden'
@@ -1888,6 +1896,7 @@ title.project_work_cost_type.list: Projektarbeitskostenart
 title.rasci.create: 'Neue RASCI erstellen'
 title.rasci.edit: 'RASCI bearbeiten'
 title.rasci.list: RASCI
+title.reset: 'Bitte fügen Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Sie werden eine E-Mail mit weiteren Anweisungen erhalten.'
 title.resource.create: 'Ressource erstellen'
 title.resource.edit: 'Ressource bearbeiten'
 title.resource.list: Ressource
@@ -1959,6 +1968,7 @@ title.workspace.list: 'Liste Arbeitsumfelder'
 title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
+title.wppcwct.create: 'Neuen Arbeitspaketkostentyp erstellen'
 todo_status.discontinued: Eingestellt
 todo_status.finished: Abgeschlossen
 todo_status.initiated: Eingeleitet
@@ -1973,6 +1983,8 @@ message.not_enough_data: 'Nicht genügend Daten.'
 label.meeting_category: Meetingkategorie
 button.save_distribution_list: 'Verteilerliste speichern'
 table_header_cell.expires_at: 'Endet am'
+choices.done: Erledigt
+choices.undone: 'Nicht erledigt'
 traffic_light.red: Kritisch
 traffic_light.yellow: Warnung
 label.cost_savings: Kosteneinsparungen
@@ -1987,7 +1999,7 @@ message.resent_team_invites: '%count% Einladung(en) wurde(n) noch einmal verschi
 action.select.all: 'Alle auswählen'
 action.select.none: 'Keine auswählen'
 action.select.invert: 'Auswahl umkehren'
-message.email_sent: '%count% E-Mails verschickt.'
+message.email_successfully_sent: 'EMail erfolgreich gesendet'
 button.add_document: 'Dokument hinzufügen'
 message.max_upload_file_size: 'Max. Dateigröße: %size%'
 message.file_too_large: 'Diese Datei ist zu groß (%size%). Die maximal erlaubte Größe ist %limit%.'
@@ -1995,3 +2007,4 @@ label.max_upload_file_size: 'max. Dateigröße'
 message.locale_switcher.en: 'CAMPR auf Englisch'
 message.locale_switcher.de: 'CAMPR auf Deutsch'
 portal.about_us: 'Über uns'
+message.generic_error: 'Ein unerwarteter Fehler ist aufgetreten.'

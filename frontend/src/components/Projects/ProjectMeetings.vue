@@ -110,10 +110,28 @@
                                         <router-link class="btn-icon" :to="{name: 'project-meetings-edit-meeting', params:{meetingId: meeting.id}}" v-tooltip.top-center="translate('message.edit_meeting')">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </router-link>
-                                        <a @click="printMeeting(meeting)" class="btn-icon" v-tooltip.top-center="translate('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
-                                        <a @click="initSendNotifications(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
-                                        <a @click="initRescheduleModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
-                                        <a @click="initDeleteModal(meeting)" v-if="!isInactive(meeting)" href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
+                                        <a
+                                                @click="printMeeting(meeting)"
+                                                class="btn-icon"
+                                                v-tooltip.top-center="translate('message.print_meeting')"><print-icon fill="second-fill"></print-icon></a>
+                                        <a
+                                                @click="initSendNotifications(meeting)"
+                                                v-if="!isInactive(meeting)"
+                                                href="javascript:void(0)"
+                                                class="btn-icon"
+                                                v-tooltip.top-center="translate('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a
+                                                @click="initRescheduleModal(meeting)"
+                                                v-if="!isInactive(meeting)"
+                                                href="javascript:void(0)"
+                                                class="btn-icon"
+                                                v-tooltip.top-center="translate('message.reschedule_meeting')"><reschedule-icon fill="second-fill"></reschedule-icon></a>
+                                        <a
+                                                @click="initDeleteModal(meeting)"
+                                                v-if="!isInactive(meeting)"
+                                                href="javascript:void(0)"
+                                                class="btn-icon"
+                                                v-tooltip.top-center="translate('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
                                 </td>
                             </tr>
@@ -265,8 +283,10 @@ export default {
             window.location = pdfURL;
         },
         sendNotifications() {
-            this.sendMeetingNotifications(this.meetingId);
-            this.showNotificationModal = false;
+            this.sendMeetingNotifications(this.meetingId)
+                .then((response) => {
+                    this.showNotificationModal = false;
+                });
         },
         participants: (meeting) => meeting
             .meetingParticipants
