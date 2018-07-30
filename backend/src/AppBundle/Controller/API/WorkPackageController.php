@@ -15,6 +15,7 @@ use AppBundle\Form\WorkPackage\ApiAttachmentType;
 use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Paginator\SerializablePagerfanta;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
@@ -458,25 +459,20 @@ class WorkPackageController extends ApiController
      */
     public function historyAction(Request $request, WorkPackage $wp)
     {
-        $filters = $request->query->all();
-        $filters['pageSize'] = (isset($filters['pageSize']))
-            ? $filters['pageSize']
-            : $this->getParameter('front.per_page')
-        ;
-        $filters['page'] = isset($filters['page']) ? intval($filters['page']) : 1;
+        $pageSize = $request->query->get('pageSize', $this->getParameter('history.per_page'));
+        $page = $request->query->get('page', 1);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $history = $em
-            ->getRepository(Log::class)
-            ->findByObjectAndFilters(
-                WorkPackage::class,
-                $wp->getId(),
-                $filters
-            )
+        $paginator = $this
+            ->get('app.repository.log')
+            ->createWorkPackageHistoryPaginator($wp)
         ;
 
-        return $this->createApiResponse($history);
+        $paginator->setMaxPerPage($pageSize);
+        $paginator->setCurrentPage($page);
+
+        $paginator = new SerializablePagerfanta($paginator);
+
+        return $this->createApiResponse($paginator);
     }
 
     /**
