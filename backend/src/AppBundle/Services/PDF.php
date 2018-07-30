@@ -2,9 +2,12 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\User;
+use Component\Meeting\PDF\MeetingPDFPrinterBuilder;
+use Component\PDF\Exception\PDFException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -14,7 +17,6 @@ class PDF
 {
     const CONTRACT_URL = 'projects/%id%/contract';
     const PROJECT_CLOSE_DOWN_URL = 'projects/%id%/close-down-report';
-    const MEETING_URL = 'meetings/%id%';
     const STATUS_REPORT_URL = 'projects/%projectID%/status-reports/view-status-report/%statusReportID%';
 
     /** @var RequestStack */
@@ -33,26 +35,34 @@ class PDF
     private $serviceUrl;
 
     /**
+     * @var MeetingPDFPrinterBuilder
+     */
+    private $meetingPDFPrinterBuilder;
+
+    /**
      * PDF constructor.
      *
-     * @param RequestStack          $requestStack
-     * @param TokenStorageInterface $tokenStorage
-     * @param string                $binaryPath
-     * @param string                $binaryOptions
-     * @param string                $serviceUrl
+     * @param RequestStack             $requestStack
+     * @param TokenStorageInterface    $tokenStorage
+     * @param string                   $binaryPath
+     * @param string                   $binaryOptions
+     * @param string                   $serviceUrl
+     * @param MeetingPDFPrinterBuilder $meetingPDFPrinterBuilder
      */
     public function __construct(
         RequestStack $requestStack,
         TokenStorageInterface $tokenStorage,
         string $binaryPath,
         string $binaryOptions,
-        string $serviceUrl
+        string $serviceUrl,
+        MeetingPDFPrinterBuilder $meetingPDFPrinterBuilder
     ) {
         $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
         $this->binaryPath = $binaryPath;
         $this->binaryOptions = $binaryOptions;
         $this->serviceUrl = $serviceUrl;
+        $this->meetingPDFPrinterBuilder = $meetingPDFPrinterBuilder;
     }
 
     /**
@@ -77,7 +87,13 @@ class PDF
         return $user;
     }
 
-    private function run($url, $params)
+    /**
+     * @param string $url
+     * @param array  $params
+     *
+     * @return null|string
+     */
+    private function run(string $url, array $params)
     {
         $tmpFile = tempnam('/tmp', md5($url));
 
@@ -111,11 +127,30 @@ class PDF
         return $this->run(self::PROJECT_CLOSE_DOWN_URL, ['%id%' => $id]);
     }
 
-    public function getMeetingPDF(int $id)
+    /**
+     * @param Meeting $meeting
+     *
+     * @throws PDFException
+     *
+     * @return string
+     */
+    public function getMeetingPDF(Meeting $meeting)
     {
-        return $this->run(self::MEETING_URL, ['%id%' => $id]);
+        return $this
+            ->meetingPDFPrinterBuilder
+            ->setMeeting($meeting)
+            ->setHost($this->requestStack->getMasterRequest()->getHttpHost())
+            ->setUser($this->getUser())
+            ->getPrinter()
+            ->getContents()
+        ;
     }
 
+    /**
+     * @param StatusReport $statusReport
+     *
+     * @return bool|null|string
+     */
     public function getStatusReportPDF(StatusReport $statusReport)
     {
         Assert::integer($statusReport->getId());

@@ -121,6 +121,7 @@ module.exports = function (Translator) {
     Translator.add("not_blank.abbreviation", "Das Feld \"Abk\u00fcrzung\" darf nicht frei bleiben", "validators", "de");
     Translator.add("not_blank.budget", "Das Feld \"Budget\" darf nicht frei bleiben", "validators", "de");
     Translator.add("not_blank.color", "Das Feld \"Farben\" darf nicht frei bleiben", "validators", "de");
+    Translator.add("not_blank.comment.body", "Das Kommentarfeld darf nicht leer sein.", "validators", "de");
     Translator.add("not_blank.configuration", "Das Feld \"Projektkonfiguration\" darf nicht frei bleiben.", "validators", "de");
     Translator.add("not_blank.content", "Das Feld \"Inhalt\" darf nicht frei bleiben", "validators", "de");
     Translator.add("not_blank.cost", "Das Feld \"Kosten\" darf nicht frei bleiben", "validators", "de");
@@ -211,6 +212,7 @@ module.exports = function (Translator) {
     Translator.add("unique.workspace.slug", "Der Slug wird bereits verwendet.", "validators", "de");
     Translator.add("used.team.slug", "Slug wurde f\u00fcr dieses Team bereits genutzt!", "validators", "de");
     Translator.add("work_package.assignment.already_used", "%name% wurde in diesem Task bereits eine Rolle zugewiesen.", "validators", "de");
+    Translator.add("invalid.end_time_greater_than_start_time", "Abschlusszeit muss sp\u00e4ter als Startzeit sein", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
     Translator.add("Authentication request could not be processed due to a system problem.", "Die Authentifikation konnte wegen eines Systemproblems nicht bearbeitet werden.", "security", "de");
@@ -279,7 +281,7 @@ module.exports = function (Translator) {
     Translator.add("add.project_close_down", "Neuen Projektabschluss hinzuf\u00fcgen", "messages", "de");
     Translator.add("add.project_complexity", "Neue Projektkomplexit\u00e4t hinzuf\u00fcgen", "messages", "de");
     Translator.add("add.project_cost_type", "Neuen Projektkostentyp hinzuf\u00fcgen", "messages", "de");
-    Translator.add("add.project_deliverable", "Neues Projektergebnis hinzuf\u00fcgen", "messages", "de");
+    Translator.add("add.project_deliverable", "Neue Projektzielsetzung hinzuf\u00fcgen", "messages", "de");
     Translator.add("add.project_department", "Neue Projektabteilung hinzuf\u00fcgen", "messages", "de");
     Translator.add("add.project_limitation", "Neue Projekteinschr\u00e4nkung hinzuf\u00fcgen", "messages", "de");
     Translator.add("add.project_module", "Neues Projektmodul hinzuf\u00fcgen", "messages", "de");
@@ -698,7 +700,7 @@ module.exports = function (Translator) {
     Translator.add("label.percent_work", "Fortschritt in Prozent", "messages", "de");
     Translator.add("label.performance_schedule", "Performanceplan", "messages", "de");
     Translator.add("label.phase", "Phase", "messages", "de");
-    Translator.add("label.phase_is_subphase", "Dies ist eine Subphase.", "messages", "de");
+    Translator.add("label.phase_is_subphase", "Dies ist eine Unterphase.", "messages", "de");
     Translator.add("label.phone", "Telefon", "messages", "de");
     Translator.add("label.portfolio", "Portfolio", "messages", "de");
     Translator.add("label.printable", "Druckbar", "messages", "de");
@@ -775,7 +777,7 @@ module.exports = function (Translator) {
     Translator.add("label.started_at", "Gestartet am", "messages", "de");
     Translator.add("label.status", "Status", "messages", "de");
     Translator.add("label.status_report", "Statusreport", "messages", "de");
-    Translator.add("label.status_report_distribution", "Statusreportv-Verteilerliste", "messages", "de");
+    Translator.add("label.status_report_distribution", "Statusreport-Verteilerliste", "messages", "de");
     Translator.add("label.strategy", "Strategie", "messages", "de");
     Translator.add("label.subject", "Betreff", "messages", "de");
     Translator.add("label.subtask_description", "Beschreibung Subtask", "messages", "de");
@@ -1016,6 +1018,7 @@ module.exports = function (Translator) {
     Translator.add("message.internal_costs", "Interne Kosten", "messages", "de");
     Translator.add("message.internal_resources", "Interne Ressourcen", "messages", "de");
     Translator.add("message.label_none", "Keine", "messages", "de");
+    Translator.add("message.label_note", "Notiz':' Die Farbe des Labeltexts ist wei\u00df. W\u00e4hlen Sie die Hintergrundfarbe Ihres Labels auch nach diesem Kriterium aus.", "messages", "de");
     Translator.add("message.last_task", "Letzte Aufgabe", "messages", "de");
     Translator.add("message.less", "Weniger", "messages", "de");
     Translator.add("message.lessons_learned", "Lessons Learned", "messages", "de");
@@ -1044,7 +1047,7 @@ module.exports = function (Translator) {
     Translator.add("message.new_message", "Neu", "messages", "de");
     Translator.add("message.new_objective", "Neue Zielsetzung", "messages", "de");
     Translator.add("message.new_objective_description", "Neue Zielsetzungsbeschreibung", "messages", "de");
-    Translator.add("message.new_objective_title", "Neuer Zielsetzungstitel", "messages", "de");
+    Translator.add("message.new_objective_title", "Neue Zielsetzung", "messages", "de");
     Translator.add("message.new_opportunity", "Neue Chance", "messages", "de");
     Translator.add("message.new_project", "Neues Projekt", "messages", "de");
     Translator.add("message.new_project_deliverable", "Neue Projektanforderung", "messages", "de");
@@ -1067,7 +1070,7 @@ module.exports = function (Translator) {
     Translator.add("message.participants", "Teilnehmer", "messages", "de");
     Translator.add("message.per_day_reports_exceeded", "Sie haben das t\u00e4gliche Berichtslimit erreicht. Bitte halten Sie R\u00fccksprache mit Ihrem Manager.", "messages", "de");
     Translator.add("message.phase_responsible", "Phasenverantwortlicher:", "messages", "de");
-    Translator.add("message.phases_and_milestones", "Phasen und Meilensteine", "messages", "de");
+    Translator.add("message.phases_and_milestones", "Phasen & Meilensteine", "messages", "de");
     Translator.add("message.phases_milestones", "Phasen & Meilensteine", "messages", "de");
     Translator.add("message.plan", "Plan", "messages", "de");
     Translator.add("message.potential_cost", "Potentielle Kosten", "messages", "de");
@@ -1237,7 +1240,7 @@ module.exports = function (Translator) {
     Translator.add("modules.organization.description", "Die Projektorganisation zeigt die Projektbeteiligten in hierarchischer Ordnung. Dieses Modul visualisiert das Projektorganisationschart, definiert die Rollen und die Beziehungen zwischen den Projektteams. Au\u00dferdem k\u00f6nnen Sie Distributionslisten f\u00fcr Reports und Meetingeinladungen erstellen.", "messages", "de");
     Translator.add("modules.organization.title", "Organisation", "messages", "de");
     Translator.add("modules.phases_and_milestones.description", "Arbeitspakete k\u00f6nnen in Phasen gem\u00e4\u00df der Projektsequenzen gruppiert werden. Besonders wichtige Events im Projektverlauf k\u00f6nnen als Meilensteine definiert und terminiert werden.", "messages", "de");
-    Translator.add("modules.phases_and_milestones.title", "Phasen und Meilensteine", "messages", "de");
+    Translator.add("modules.phases_and_milestones.title", "Phasen & Meilensteine", "messages", "de");
     Translator.add("modules.rasci_matrix.description", "Die Veranwortlichkeitsmatrix zeigt die Mitwirkung von unterschiedlichen Rollen bei der Fertigstellung von Aufgaben und anderen Leistungen in der Projektausf\u00fchrung. Die Verantwortlichkeitsmatrix ist besonders n\u00fctzlich, um Rollen und Zust\u00e4ndigkeiten in bereichs\u00fcbergreifenden Projekten und Prozessen festzulegen. RASCI steht f\u00fcr die f\u00fcnf unterschiedlichen Rollen in der Ausf\u00fchrung von Arbeitspaketen oder Aufgaben: Responsible (verantwortlich), Accountable (rechenschaftspflichtig), Supportive (unterst\u00fctzend), Consulted (beratend) and Informed (informiert).", "messages", "de");
     Translator.add("modules.rasci_matrix.title", "RASCI-Matrix", "messages", "de");
     Translator.add("modules.risks_and_opportunities.description", "Regul\u00e4re Risikoanalyse, um potentielle Gefahren und ungenutzte Potentiale im Projekt aufzudecken und Situationen proaktiv anzugehen. Dieses Modul unterst\u00fctzt Sie dabei Risiken und Chancen zu sammeln, strukturieren, verfolgen und zu visualisieren.", "messages", "de");
@@ -2059,6 +2062,7 @@ module.exports = function (Translator) {
     Translator.add("title.meeting_participant.list", "Meetingteilnehmer", "messages", "de");
     Translator.add("title.members", "Mitglieder", "messages", "de");
     Translator.add("title.messages", "Nachrichten", "messages", "de");
+    Translator.add("title.meta_description", "CAMPR ist das Werkzeug f\u00fcr flei\u00dfige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.", "messages", "de");
     Translator.add("title.my_account", "Mein Account", "messages", "de");
     Translator.add("title.note.create", "Neue Notiz erstellen", "messages", "de");
     Translator.add("title.note.edit", "Notiz bearbeiten", "messages", "de");
@@ -2069,6 +2073,12 @@ module.exports = function (Translator) {
     Translator.add("title.opportunity.create", "Neue Chance erstellen", "messages", "de");
     Translator.add("title.opportunity.edit", "Chance bearbeiten", "messages", "de");
     Translator.add("title.opportunity.list", "Chance", "messages", "de");
+    Translator.add("title.opportunity_status.create", "Neuen Chancenstatus erstellen", "messages", "de");
+    Translator.add("title.opportunity_status.edit", "Chancenstatus bearbeiten", "messages", "de");
+    Translator.add("title.opportunity_status.list", "Chancenstatus", "messages", "de");
+    Translator.add("title.opportunity_strategy.create", "Neue Chancenstrategie erstellen", "messages", "de");
+    Translator.add("title.opportunity_strategy.edit", "Chancenstrategie bearbeiten", "messages", "de");
+    Translator.add("title.opportunity_strategy.list", "Chancenstrategie", "messages", "de");
     Translator.add("title.payment.list", "Zahlungen", "messages", "de");
     Translator.add("title.payment_method.edit", "Zahlungsmethode bearbeiten", "messages", "de");
     Translator.add("title.payment_method.list", "Liste Zahlungsmethoden", "messages", "de");
@@ -2125,6 +2135,7 @@ module.exports = function (Translator) {
     Translator.add("title.rasci.create", "Neue RASCI erstellen", "messages", "de");
     Translator.add("title.rasci.edit", "RASCI bearbeiten", "messages", "de");
     Translator.add("title.rasci.list", "RASCI", "messages", "de");
+    Translator.add("title.reset", "Bitte f\u00fcgen Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zur\u00fcckzusetzen. Sie werden eine E-Mail mit weiteren Anweisungen erhalten.", "messages", "de");
     Translator.add("title.resource.create", "Ressource erstellen", "messages", "de");
     Translator.add("title.resource.edit", "Ressource bearbeiten", "messages", "de");
     Translator.add("title.resource.list", "Ressource", "messages", "de");
@@ -2196,6 +2207,7 @@ module.exports = function (Translator) {
     Translator.add("title.workspace_member.create", "Neues Mitglied erstellen", "messages", "de");
     Translator.add("title.workspace_member.edit", "Bearbeiten", "messages", "de");
     Translator.add("title.workspace_member.for", "Mitglieder von", "messages", "de");
+    Translator.add("title.wppcwct.create", "Neuen Arbeitspaketkostentyp erstellen", "messages", "de");
     Translator.add("todo_status.discontinued", "Eingestellt", "messages", "de");
     Translator.add("todo_status.finished", "Abgeschlossen", "messages", "de");
     Translator.add("todo_status.initiated", "Eingeleitet", "messages", "de");
@@ -2210,6 +2222,8 @@ module.exports = function (Translator) {
     Translator.add("label.meeting_category", "Meetingkategorie", "messages", "de");
     Translator.add("button.save_distribution_list", "Verteilerliste speichern", "messages", "de");
     Translator.add("table_header_cell.expires_at", "Endet am", "messages", "de");
+    Translator.add("choices.done", "Erledigt", "messages", "de");
+    Translator.add("choices.undone", "Nicht erledigt", "messages", "de");
     Translator.add("traffic_light.red", "Kritisch", "messages", "de");
     Translator.add("traffic_light.yellow", "Warnung", "messages", "de");
     Translator.add("label.cost_savings", "Kosteneinsparungen", "messages", "de");
@@ -2224,7 +2238,7 @@ module.exports = function (Translator) {
     Translator.add("action.select.all", "Alle ausw\u00e4hlen", "messages", "de");
     Translator.add("action.select.none", "Keine ausw\u00e4hlen", "messages", "de");
     Translator.add("action.select.invert", "Auswahl umkehren", "messages", "de");
-    Translator.add("message.email_sent", "%count% E-Mails verschickt.", "messages", "de");
+    Translator.add("message.email_successfully_sent", "EMail erfolgreich gesendet", "messages", "de");
     Translator.add("button.add_document", "Dokument hinzuf\u00fcgen", "messages", "de");
     Translator.add("message.max_upload_file_size", "Max. Dateigr\u00f6\u00dfe: %size%", "messages", "de");
     Translator.add("message.file_too_large", "Diese Datei ist zu gro\u00df (%size%). Die maximal erlaubte Gr\u00f6\u00dfe ist %limit%.", "messages", "de");
@@ -2232,15 +2246,15 @@ module.exports = function (Translator) {
     Translator.add("message.locale_switcher.en", "CAMPR auf Englisch", "messages", "de");
     Translator.add("message.locale_switcher.de", "CAMPR auf Deutsch", "messages", "de");
     Translator.add("portal.about_us", "\u00dcber uns", "messages", "de");
-    Translator.add("task.cost_groups_and_resources.description", "<p>This task deals with the cost and resource management within your project. The costs and resources are precisely defined.<\/p>\n<p><strong>Internal Costs:<\/strong> Here you define the cost groups of your organization. This involves actual costs of your internal project members to cover their contribution to your project.<\/p>\n<p><strong>External Costs:<\/strong> Define the cost groups for your external expenses. This can be external project members which are temporarily joining your endeavor as well as services and goods to accomplish your targets.<\/p>\n", "tasks", "de");
-    Translator.add("task.cost_groups_and_resources.title", "Cost Groups and Resources", "tasks", "de");
-    Translator.add("task.nice_to_have.description", "<p>To make your work in a complex environment with multiple projects and multitudinous tasks more visual, you can assign colored labels. In the ADMIN SECTION you can name and define the colors of as many labels as you need.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Label:<\/strong> Give a name to a label, define a color and assign it to project or task in order to keep the overview about your stuff.<\/p>\n", "tasks", "de");
-    Translator.add("task.nice_to_have.title", "Nice to have", "tasks", "de");
-    Translator.add("task.organization.description", "<p>Let's come to the most important success factor for the project - your team.<\/p>\n<p><strong>Department:<\/strong> Enter the names of the individual departments or external teams which become part of your project organization.<\/p>\n<p><strong>Subteams:<\/strong> Define here the individual teams within your department.<\/p>\n<p><strong>Company:<\/strong> What is your company's name or that of one of your (external) partners?<\/p>\n<p>The creation of Departments or Subteams can be set up later within the module ORGANIZATION.<\/p>\n", "tasks", "de");
-    Translator.add("task.organization.title", "Organization", "tasks", "de");
-    Translator.add("task.project_settings.description", "<p>Here you\u2019ll find important settings for your project which you can adjust to meet your organizational or PMO standards.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Settings-Step-1.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Settings-Step-1.jpg\" alt=\"Task-Project-Settings-Step-1\" \/>\n    <\/a>\n<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Settings-Step-2.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Settings-Step-2.jpg\" alt=\"Task-Project-Settings-Step-2\" \/>\n    <\/a>\n<\/p>\n<p><strong>Customer:<\/strong> Who is the actual customer of your project? E.g. an internal department or an external customer?<\/p>\n<p><strong>Program:<\/strong> Is your project part of a bigger scale conglomeration of multiple projects with similar goals? Here you can group your project to the program by entering the program name.<\/p>\n<p><strong>Portfolio:<\/strong> Do you manage multiple projects that belong to a common strategy with high importance for your company or your customers? Then enter the name of the portfolio here.<\/p>\n<p>How is your project integrated into your organization? What is the scope of your project? Use our predefined values or create your own.<\/p>\n<p><strong>Category:<\/strong> Is your project a customer project? Or do you manage a project for a department within your organization?<\/p>\n<p><strong>Scope:<\/strong> What is the scope of the project? Does it impact your department only, the entire location or the global structure of your organization?<\/p>\n", "tasks", "de");
-    Translator.add("task.project_settings.title", "Project Settings", "tasks", "de");
-    Translator.add("task.read_me.description", "<p>Congratulations - your project is successfully created! CAMPR is an intuitive program that you will love to work with and this introduction describes how to utilize the tools to make your experience with CAMPR as convenient as possible.<\/p>\n<p>CAMPR knows that every project is different and allows you to customize your settings to optimize your work. Our ADMIN SECTION is available to you as a project manager. Here you can configure the settings which are relevant for your project. It's best to set up things up before the project starts, but of course, changes or additions are possible at any time during your project.<\/p>\n<p>You will notice that some entries are already predefined, but you can personalize your settings in the ADMIN SECTION to your own needs regarding your individual project environment. Completing the next four tasks optimizes your CAMPR settings to your project needs:<\/p>\n<ul>\n    <li>Project Settings<\/li>\n    <li>Organization<\/li>\n    <li>Costs<\/li>\n    <li>Nice to have<\/li>\n<\/ul>\n<p>It's best to change your settings right away, but as mentioned before, you can always go back and make changes. These default tasks disappear automatically after 5 days. Incidentally, they have no influence on the degree of completion of your project - they are only memory aids.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Read-Me-Workspace-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Read-Me-Workspace-Super-Admin.jpg\" alt=\"Task-Read-Me-Workspace-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p>You can access the ADMIN SECTION as a project manager by using the ADMIN button in your workspace or via the menu in the upper right corner.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Read-Me-Dashboard-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Read-Me-Dashboard-Super-Admin.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>And now have fun with CAMPR!<\/strong><\/p>\n", "tasks", "de");
+    Translator.add("message.generic_error", "Ein unerwarteter Fehler ist aufgetreten.", "messages", "de");
+    Translator.add("task.cost_groups_and_resources.description", "<p>Diese Aufgabe besch\u00e4ftigt sich mit dem Kosten- und Ressourcenmanagement in Ihrem Projekt. Die Kosten und Ressourcen sind pr\u00e4zise definiert.<\/p>\n<p><strong>Interne Kosten:<\/strong> Hier definieren Sie die Kostengruppen Ihrer Organisation. Diese beinhalten tats\u00e4chliche Kosten Ihrer internen Projektmitglieder, um ihre Mitwirkung in Ihrem Projekt zu begleichen.<\/p>\n<p><strong>Externe Kosten:<\/strong> Definieren die Kostengruppen f\u00fcr externe Ausgaben. Diese k\u00f6nnen externe Projektmitarbeiter, die tempor\u00e4r im Projekt t\u00e4tig sind, sein oder andere Dienstleistungen und G\u00fcter zur Erf\u00fcllung Ihrer Projektziele.<\/p>\n", "tasks", "de");
+    Translator.add("task.cost_groups_and_resources.title", "Kostengruppen und Ressourcen", "tasks", "de");
+    Translator.add("task.nice_to_have.description", "<p>Um Ihre Arbeit in einer komplexen Umgebung mit mehreren Projekten und einer Vielzahl an Aufgaben \u00fcbersichtlicher zu gestalten, k\u00f6nnen Sie Farblabels zuordnen. Im Adminbereich k\u00f6nnen Sie eine beliebige Anzahl Labels benennen und ihnen Farben zuordnen.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Label:<\/strong> Geben Sie einem Label einen Namen, definieren Sie ein Farbe und ordnen Sie es einem Projekt oder einer Aufgabe zu, um einen besseren \u00dcberblick zu erhalten.<\/p>\n", "tasks", "de");
+    Translator.add("task.organization.description", "<p>Lassen Sie uns nun zum wichtigsten Erfolgsfaktor Ihres Projektes kommen - Ihrem Team.<\/p>\n<p><strong>Abteilung:<\/strong> F\u00fcgen Sie die Namen der einzelnen Abteiungen oder externen Teams hinzu, welche Teil Ihrer Projektorganisation werden.<\/p>\n<p><strong>Teams:<\/strong> Definieren Sie hier die einzelnen Teams innerhalb Ihrer Abteilung.<\/p>\n<p><strong>Unternehmen:<\/strong> Wie lautet der Name Ihres Unternehmens und der Ihrer (externen) Partner?<\/p>\n<p>Abteilungen und Teams k\u00f6nnen sp\u00e4ter im Modul Organisation eingerichtet werden.<\/p>\n", "tasks", "de");
+    Translator.add("task.organization.title", "Organisation", "tasks", "de");
+    Translator.add("task.project_settings.description", "<p>Hier finden Sie wichtige Einstellungen f\u00fcr Ihr Projekt, welche Sie anpassen k\u00f6nnen, sodass die den Standards Ihrer Organisation oder PMO entsprechen.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Settings-Step-1.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Settings-Step-1.jpg\" alt=\"Task-Project-Settings-Step-1\" \/>\n    <\/a>\n<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Settings-Step-2.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Settings-Step-2.jpg\" alt=\"Task-Project-Settings-Step-2\" \/>\n    <\/a>\n<\/p>\n<p><strong>Customer:<\/strong> Wer ist der tats\u00e4chliche Kunde Ihres Projekts? Beispielsweise eine interne Abteilung oder ein externer Kunde?<\/p>\n<p><strong>Programm:<\/strong> Geh\u00f6rt Ihr Projekt zu einer gr\u00f6\u00dfer angelegten Struktur mehrerer Projekte mit \u00e4hnlichen Zielen? Hier k\u00f6nnen Sie Ihre Projekte in einem Programm gruppieren indem Sie den Programmnamen eintragen.<\/p>\n<p><strong>Portfolio:<\/strong> Managen Sie mehrere Projekte, die zu einer gemeinsamen Strategie mit gro\u00dfer Wochtigkeit f\u00fcr Ihr Unternehmen oder Ihren Kunden? Dann tragen Sie hier den Namen des Portfolios ein.<\/p>\n<p>Wie ist Ihr Projekt in Ihrer Organisation integriert? Wie ist der Umfang Ihres Projektes definiert? Nutzen Sie unsere vorkonfigurierten Werte oder erstellen Sie Ihre eigenen.<\/p>\n<p><strong>Kategorie:<\/strong> Ist Ihr Projekt ein Kundenprojekt? Managen Sie ein Projekt f\u00fcr eine Abteilung Ihrer Organisation?<\/p>\n<p><strong>Umfang:<\/strong> Wie gro\u00df ist der Umfang Ihres Projektes? Beeinflusst es nur Ihre Abteilung, Ihren Standort oder sogar die globale Strukutur Ihrer Organisation?<\/p>\n", "tasks", "de");
+    Translator.add("task.project_settings.title", "Projekteinstellungen", "tasks", "de");
+    Translator.add("task.read_me.description", "<p>Herzlichen Gl\u00fcckwunsch - Sie haben Ihr Projekt erfolgreich erstellt! CAMPR ist ein intuitives Programm und diese Einf\u00fchrung beschreibt, wie Sie sich das Tool zu Nutzen machen, um Ihre Erfahrung mit CAMPR so angenehm wie m\u00f6glich zu machen.<\/p>\n<p>CAMPR wei\u00df, dass jedes Projekt einzigartig ist und erlaubt es Ihnen, die Einstellungen optimal auf Ihre Arbeit abzustimmen. Unser Adminbereich ist Ihnen als Projektmanager zug\u00e4ngig. Hier k\u00f6nne Sie die relevanten Einstellungen konfigurieren. Es bietet sich an die Einrichtung vor dem Projektstart vorzunehmen, aber \u00c4nderunen und Erweiterungen sind auch sp\u00e4ter jederzeit m\u00f6glich.<\/p>\n<p>Sie werden bemerken, dass einige Eintr\u00e4ge bereits vorkonfiguriert sind, aber Sie k\u00f6nnen die Einstellung den Anforderungen Ihres Porjektes im Adminbereich anpassen und individualisieren:<\/p>\n<ul>\n    <li>Projekteinstellungen<\/li>\n    <li>Organisation<\/li>\n    <li>Kosten<\/li>\n    <li>Optional<\/li>\n<\/ul>\n<p>Am besten passen Sie die Einstellung wie bereits erw\u00e4hnt vor dem Projektstart an, aber Sie k\u00f6nnen die Einstellungen jederzeit \u00e4ndern. Diese voreingestellten Aufgaben verschwinden nach 5 Tagen automatisch. Sie haben zudem keinen Einfluss auf den Projektfortschritt - sie dienen lediglich als Ged\u00e4chtnisst\u00fctzen.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Read-Me-Workspace-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Read-Me-Workspace-Super-Admin.jpg\" alt=\"Task-Read-Me-Workspace-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p>Sie k\u00f6nnen den Adminbereich als Projektmanager betreten indem Sie das ADMIN-Feld in Ihrem Arbeitsbereich nutzen oder \u00fcber das Men\u00fc in der oberen rechten Ecke.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Read-Me-Dashboard-Super-Admin.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Read-Me-Dashboard-Super-Admin.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Und jetzt viel Spa\u00df mit CAMPR!<\/strong><\/p>\n", "tasks", "de");
     Translator.add("task.read_me.title", "Read Me", "tasks", "de");
     Translator.add("activation.activated", "Ihr Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
@@ -2388,7 +2402,7 @@ module.exports = function (Translator) {
     Translator.add("success.meeting.delete.from_data_table", "Meeting mit ID", "flashes", "de");
     Translator.add("success.meeting.delete.from_edit", "Meeting erfolgreich gel\u00f6scht!", "flashes", "de");
     Translator.add("success.meeting.edit", "Meeting erfolgreich bearbeitet!", "flashes", "de");
-    Translator.add("success.meeting_agenda.create", "Meeting agenda erfolgreich erstellt!", "flashes", "de");
+    Translator.add("success.meeting_agenda.create", "Meeting Agenda erfolgreich erstellt!", "flashes", "de");
     Translator.add("success.meeting_agenda.delete.from_data_table", "Meeting Agenda mit ID", "flashes", "de");
     Translator.add("success.meeting_agenda.delete.from_edit", "Meeting Agenda erfolgreich gel\u00f6scht!", "flashes", "de");
     Translator.add("success.meeting_agenda.edit", "Meeting Agenda erfolgreich bearbeitet!", "flashes", "de");

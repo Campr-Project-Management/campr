@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\StatusReport;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -43,17 +42,22 @@ class StatusReportController extends ApiController
     public function emailAction(StatusReport $statusReport)
     {
         $mailerService = $this->get('app.service.mailer');
-        $em = $this->getDoctrine()->getManager();
 
         $pdf = $this
             ->get('app.service.pdf')
             ->getStatusReportPDF($statusReport)
         ;
 
-        $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
-            'project' => $statusReport->getProject(),
-            'name' => 'label.status_report_distribution', // @TODO: change this!
-        ]);
+        $specialDistribution = $this
+            ->get('app.repository.distribution_list')
+            ->findOneBy(
+                [
+                    'project' => $statusReport->getProject(),
+                    'name' => 'label.status_report_distribution', // @TODO: change this!
+                ]
+            )
+        ;
+
         if ($specialDistribution) {
             $users = $specialDistribution->getUsers();
             foreach ($users as $user) {
