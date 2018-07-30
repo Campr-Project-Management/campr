@@ -124,3 +124,15 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Log }
+
+    app.repository.distribution_list:
+        class: AppBundle\Repository\DistributionListRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\DistributionList }
+
+    app.repository.meeting:
+        class: AppBundle\Repository\MeetingRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Meeting }
