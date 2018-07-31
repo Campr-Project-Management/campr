@@ -29,6 +29,8 @@ class ApiEditType extends ApiCreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults(
             [
                 'data_class' => WorkPackage::class,
