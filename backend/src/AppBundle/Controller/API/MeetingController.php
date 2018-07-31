@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
@@ -10,6 +11,7 @@ use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
@@ -81,7 +83,7 @@ class MeetingController extends ApiController
             $fileSystem = $project
                 ->getFileSystems()
                 ->filter(function (FileSystem $fs) {
-                    return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
                 })
                 ->first();
 
@@ -414,35 +416,35 @@ class MeetingController extends ApiController
      * @Method({"POST"})
      *
      * @param Meeting $meeting
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function notificationsAction(Meeting $meeting)
+    public function notificationsAction(Meeting $meeting, Request $request)
     {
-        $mailerService = $this->get('app.service.mailer');
+        $host = $request->getHttpHost();
 
-        $participants = $meeting
-            ->getMeetingParticipants()
-            ->filter(
-                function (MeetingParticipant $meetingParticipant) {
-                    return $meetingParticipant->getInDistributionList() && $meetingParticipant->getUser();
-                }
-            )
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $command = strtr(
+            '--env=%env% app:meeting:send-notification %meetingId% %userId% %host%',
+            [
+                '%env%' => $this->getParameter('kernel.environment'),
+                '%userId%' => $user->getId(),
+                '%meetingId%' => $meeting->getId(),
+                '%host%' => $host,
+            ]
+        );
+
+        $this
+            ->get('redis.client')
+            ->rpush(RedisQueueManagerCommand::DEFAULT, [$command])
         ;
-
-        $count = 0;
-        foreach ($participants as $participant) {
-            $count += $mailerService->sendEmail(
-                ':meeting:notification.html.twig',
-                'info',
-                $participant->getUser()->getEmail(),
-                ['meeting' => $participant->getMeeting()]
-            );
-        }
 
         return $this->createApiResponse(
             [
-                'message' => $this->get('translator')->trans('message.email_sent', ['%count%' => $count]),
+                'message' => $this->get('translator')->trans('message.email_successfully_sent'),
             ],
             Response::HTTP_NO_CONTENT
         );
