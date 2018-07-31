@@ -43,7 +43,8 @@
                     <router-link :to="{name: 'project-task-management-edit-labels'}"
                                  class="btn-rounded btn-auto disable-bg">{{ button.cancel }}
                     </router-link>
-                    <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                    <a v-if="!isEdit && active" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                    <a v-if="!isEdit && !active" class="btn-rounded btn-auto">{{ button.create_label }}</a>
                     <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
                 </div>
             </div>
@@ -113,6 +114,7 @@ export default {
                 description: this.description,
                 color: this.color,
             };
+            this.active = false;
             this
                 .createProjectLabel(data)
                 .then(
@@ -122,9 +124,11 @@ export default {
                         } else {
                             this.showSaved = true;
                         }
+                        this.active = true;
                     },
                     () => {
                         this.showFailed = true;
+                        this.active = true;
                     }
                 )
             ;
@@ -174,6 +178,7 @@ export default {
                 create_label: this.translate('button.create_label'),
                 edit_label: this.translate('button.edit_label'),
             },
+            active: true,
         };
     },
 };
