@@ -140,7 +140,7 @@
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
                         <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
-                        <a v-if="isEdit" @click="editExistingTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
+                        <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -235,7 +235,7 @@ export default {
                 )
             ;
         },
-        editExistingTask: function() {
+        updateTask: function() {
             if (this.isSaving) {
                 return;
             }
@@ -444,6 +444,7 @@ export default {
             };
 
             if (this.isEdit) {
+                data.progress = this.task.progress;
                 data.schedule.forecastStartDate = this.schedule.forecastStartDate;
                 data.schedule.forecastEndDate = this.schedule.forecastEndDate;
                 if (!this.isEditBase) {
