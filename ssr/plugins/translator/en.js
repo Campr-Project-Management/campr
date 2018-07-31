@@ -1118,7 +1118,7 @@ module.exports = function (Translator) {
     Translator.add("message.phases_and_milestones", "Phases and Milestones", "messages", "en");
     Translator.add("message.phases_milestones", "Phases & Milestones", "messages", "en");
     Translator.add("message.plan", "Plan", "messages", "en");
-    Translator.add("message.planning", "Planning", "messages", "en");
+    Translator.add("message.planning", "Planung", "messages", "en");
     Translator.add("message.potential_cost", "Potential Cost", "messages", "en");
     Translator.add("message.potential_savings", "Potential Savings", "messages", "en");
     Translator.add("message.potential_time_delay", "Potential Time Delay", "messages", "en");
@@ -2338,7 +2338,7 @@ module.exports = function (Translator) {
     Translator.add("action.select.all", "Select All", "messages", "en");
     Translator.add("action.select.none", "Select None", "messages", "en");
     Translator.add("action.select.invert", "Invert Selection", "messages", "en");
-    Translator.add("message.email_sent", "%count% email(s) sent.", "messages", "en");
+    Translator.add("message.email_successfully_sent", "Email successfully sent", "messages", "en");
     Translator.add("button.add_document", "Add Document", "messages", "en");
     Translator.add("message.max_upload_file_size", "Max file size: %size%", "messages", "en");
     Translator.add("message.file_too_large", "The file is too large (%size%). Allowed maximum size is %limit%.", "messages", "en");
