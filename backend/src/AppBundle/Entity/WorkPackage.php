@@ -1732,9 +1732,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
     }
 
     /**
-     * Remove child.
-     *
-     * @param WorkPackage $child
+     * @param self $child
      */
     public function removeChild(self $child)
     {
@@ -1752,6 +1750,14 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
     }
 
     /**

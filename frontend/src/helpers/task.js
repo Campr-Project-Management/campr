@@ -20,6 +20,10 @@ export const createFormData = (data) => {
         formData.append('content', data.description);
     }
 
+    if (data.progress != null) {
+        formData.append('progress', data.progress);
+    }
+
     if (data.planning) {
         if (data.planning.phase) {
             formData.append('phase', data.planning.phase);
