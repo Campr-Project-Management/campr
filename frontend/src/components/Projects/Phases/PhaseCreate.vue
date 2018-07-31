@@ -108,7 +108,8 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit" @click="createNewPhase()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
+                        <a v-if="!isEdit && active" @click="createNewPhase()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
+                        <a v-if="!isEdit && !active" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
                         <a v-if="isEdit" @click="editPhase()" class="btn-rounded btn-auto">{{ translateText('button.edit_phase') }}</a>
 
                     </div>
@@ -159,6 +160,7 @@ export default {
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
             };
+            this.active = false;
             this.createProjectPhase(data);
         },
         editPhase: function() {
@@ -229,6 +231,7 @@ export default {
             },
             visibleSubphase: false,
             isEdit: this.$route.params.phaseId,
+            active: true,
         };
     },
 };
