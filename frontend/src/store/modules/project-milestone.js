@@ -77,25 +77,29 @@ const actions = {
             });
     },
     /**
-     * Create project milestone
+     * Creates a new project milestone
      * @param {function} commit
-     * @param {array}    data
+     * @param {array} data
+     * @return {object}
      */
     createProjectMilestone({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_milestones_create', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-phases-and-milestones'});
+        return Vue
+                .http
+                .post(
+                    Routing.generate('app_api_project_milestones_create', {id: data.project}),
+                    JSON.stringify(data)
+                ).then((response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-phases-and-milestones'});
+                    }
+                }, (response) => {
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
     /**
      * Edit project milestone
