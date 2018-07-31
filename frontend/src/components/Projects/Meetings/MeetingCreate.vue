@@ -553,58 +553,63 @@ export default {
             ];
         },
         saveMeeting() {
-            let data = {
-                distributionLists: this.details.distributionList
-                    ? [this.details.distributionList]
-                    : null,
-                meetingCategory: this.details.category,
-                date: this.schedule.meetingDate,
-                start: this.schedule.startTime,
-                end: this.schedule.endTime,
-                location: this.location,
-                objectives: this.objectives,
-                agendas: this.agendas,
-                medias: this.medias,
-                decisions: this.decisions,
-                todos: this.todos,
-                infos: this.infos.map((info) => {
-                    return Object.assign({}, info, {
-                        expiresAt: this.$formatToSQLDate(info.expiresAt),
+            if (!this.isSaving) {
+                let data = {
+                    distributionLists: this.details.distributionList
+                        ? [this.details.distributionList]
+                        : null,
+                    meetingCategory: this.details.category,
+                    date: this.schedule.meetingDate,
+                    start: this.schedule.startTime,
+                    end: this.schedule.endTime,
+                    location: this.location,
+                    objectives: this.objectives,
+                    agendas: this.agendas,
+                    medias: this.medias,
+                    decisions: this.decisions,
+                    todos: this.todos,
+                    infos: this.infos.map((info) => {
+                        return Object.assign({}, info, {
+                            expiresAt: this.$formatToSQLDate(info.expiresAt),
+                        });
+                    }),
+                    meetingParticipants: this.selectedParticipants.map(participant => {
+                        return {
+                            user: participant.user,
+                            isPresent: participant.isPresent,
+                            inDistributionList: participant.inDistributionList,
+                        };
+                    }),
+                };
+                this.isSaving = true;
+
+                if (data.distributionLists && data.distributionLists.length > 0) {
+                    data.name = '';
+                    const length = data.distributionLists.length;
+                    data.distributionLists.map((item, index) => {
+                        data.name += index !== length - 1 ? item.label + '|' : item.label;
                     });
-                }),
-                meetingParticipants: this.selectedParticipants.map(participant => {
-                    return {
-                        user: participant.user,
-                        isPresent: participant.isPresent,
-                        inDistributionList: participant.inDistributionList,
-                    };
-                }),
-            };
+                }
 
-            if (data.distributionLists && data.distributionLists.length > 0) {
-                data.name = '';
-                const length = data.distributionLists.length;
-                data.distributionLists.map((item, index) => {
-                    data.name += index !== length - 1 ? item.label + '|' : item.label;
-                });
-            }
-
-            this
-                .createProjectMeeting({
-                    data: createFormData(data),
-                    projectId: this.$route.params.id,
-                })
-                .then((response) => {
-                    if (response.body && response.body.error && response.body.messages) {
+                this
+                    .createProjectMeeting({
+                        data: createFormData(data),
+                        projectId: this.$route.params.id,
+                    })
+                    .then((response) => {
+                        this.isSaving = false;
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.isSaving = false;
                         this.showFailed = true;
-                    } else {
-                        this.showSaved = true;
-                    }
-                },
-                () => {
-                    this.showFailed = true;
-                })
-            ;
+                    })
+                ;
+            }
         },
         distributionListUpdated(distributionList) {
             this.details.distributionList = {key: distributionList.id, label: distributionList.name};
@@ -744,6 +749,7 @@ export default {
                 category: null,
             },
             editDistributionListModal: null,
+            isSaving: false,
         };
     },
 };
