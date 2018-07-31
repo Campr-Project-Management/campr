@@ -124,6 +124,27 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     /**
      * @param WorkPackageEvent $event
      */
+    public function onPreUpdate(WorkPackageEvent $event)
+    {
+        $wp = $event->getWorkPackage();
+        if (!$wp->isTask()) {
+            return;
+        }
+
+        $this->setWorkPackageChildrenSchedule($wp);
+
+        $isProgressChanged = $this->isProgressChanged($wp);
+        $isStatusChanged = $this->isStatusChanged($wp);
+        if ($isProgressChanged) {
+            $this->onProgressChanged($wp);
+        } elseif ($isStatusChanged) {
+            $this->onStatusChanged($wp);
+        }
+    }
+
+    /**
+     * @param WorkPackageEvent $event
+     */
     public function onPostUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
@@ -142,27 +163,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
                     $wp->getProjectId()
                 ),
             ]);
-        }
-    }
-
-    /**
-     * @param WorkPackageEvent $event
-     */
-    public function onPreUpdate(WorkPackageEvent $event)
-    {
-        $wp = $event->getWorkPackage();
-        if (!$wp->isTask()) {
-            return;
-        }
-
-        $this->setWorkPackageChildrenSchedule($wp);
-
-        $isProgressChanged = $this->isProgressChanged($wp);
-        $isStatusChanged = $this->isStatusChanged($wp);
-        if ($isProgressChanged) {
-            $this->onProgressChanged($wp);
-        } elseif ($isStatusChanged) {
-            $this->onStatusChanged($wp);
         }
     }
 
