@@ -23,7 +23,8 @@ class MailerService
      *
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
-     * @param $fromParameters
+     * @param array             $fromParameters
+     * @param array             $options
      */
     public function __construct(
         \Swift_Mailer $mailer,
