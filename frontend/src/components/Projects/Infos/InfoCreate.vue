@@ -76,7 +76,7 @@
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-infos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
                         <a class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">
-                            {{ translate(info && info.id ? 'button.edit_info' : 'button.create_info') }}
+                            {{ translate(isEdit ? 'button.edit_info' : 'button.create_info') }}
                         </a>
                     </div>
                     <!-- /// End Actions /// -->
@@ -122,48 +122,53 @@ export default {
             'getProjectMeetings',
         ]),
         doSave() {
-            const data = {
-                topic: this.topic,
-                description: this.description,
-                expiresAt: this.$formatToSQLDate(this.expiresAt),
-                infoCategory: this.infoCategory && this.infoCategory.key
-                    ? this.infoCategory.key
-                    : null,
-                responsibility: this.responsibility && this.responsibility.length
-                    ? this.responsibility[0]
-                    : null,
-                meeting: this.meeting
-                    ? this.meeting.key
-                    : null,
-            };
+            if (!this.isSaving) {
+                const data = {
+                    topic: this.topic,
+                    description: this.description,
+                    expiresAt: this.$formatToSQLDate(this.expiresAt),
+                    infoCategory: this.infoCategory && this.infoCategory.key
+                        ? this.infoCategory.key
+                        : null,
+                    responsibility: this.responsibility && this.responsibility.length
+                        ? this.responsibility[0]
+                        : null,
+                    meeting: this.meeting
+                        ? this.meeting.key
+                        : null,
+                };
 
-            let method = this.createInfo;
-            let params = {
-                projectId: this.$route.params.id,
-                data,
-            };
+                this.isSaving = true;
+                let method = this.createInfo;
+                let params = {
+                    projectId: this.$route.params.id,
+                    data,
+                };
 
-            if (this.$route.params.infoId) {
-                method = this.editInfo;
-                params.id = this.$route.params.infoId;
-                delete params.projectId;
-            }
+                if (this.$route.params.infoId) {
+                    method = this.editInfo;
+                    params.id = this.$route.params.infoId;
+                    delete params.projectId;
+                }
 
-            method(params)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
+                method(params)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error && response.body.messages) {
+                                this.showFailed = true;
+                                return;
+                            }
+
+                            this.showSaved = true;
+                        },
+                        () => {
                             this.showFailed = true;
-                            return;
+                            this.isSaving = false;
                         }
-
-                        this.showSaved = true;
-                    },
-                    () => {
-                        this.showFailed = true;
-                    }
-                )
-            ;
+                    )
+                ;
+            }
         },
     },
     watch: {
@@ -201,6 +206,9 @@ export default {
             'validationMessages',
             'projectMeetingsForSelect',
         ]),
+        isEdit() {
+            return !!this.$route.params.infoId;
+        },
     },
     created() {
         this.getInfoCategories();
@@ -223,6 +231,7 @@ export default {
             infoCategory: null,
             responsibility: [],
             meeting: null,
+            isSaving: false,
         };
     },
 };
