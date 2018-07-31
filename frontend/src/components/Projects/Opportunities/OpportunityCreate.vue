@@ -306,9 +306,21 @@
                 };
             },
             saveOpportunity: function() {
-                let data = this.getFormData();
-                data.project = this.$route.params.id;
-                this.createProjectOpportunity(data);
+                if (!this.isSaving) {
+                    let data = this.getFormData();
+                    this.isSaving = true;
+                    data.project = this.$route.params.id;
+                    this.createProjectOpportunity(data)
+                        .then(
+                            (response) => {
+                                this.isSaving = false;
+                            },
+                            () => {
+                                this.isSaving = false;
+                            }
+                        )
+                    ;
+                }
             },
             editOpportunity: function() {
                 let data = this.getFormData();
@@ -417,6 +429,7 @@
                     {label: this.translate('choices.months'), key: 'choices.months'},
                 ],
                 isEdit: this.$route.params.opportunityId,
+                isSaving: false,
             };
         },
     };
