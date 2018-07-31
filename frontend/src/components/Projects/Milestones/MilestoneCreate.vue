@@ -92,7 +92,8 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit" @click="createMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
+                        <a v-if="!isEdit && active" @click="createMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
+                        <a v-if="!isEdit && !active" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
                         <a v-if="isEdit" @click="editMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.edit_milestone') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
@@ -141,6 +142,7 @@ export default {
                 phase: this.details.phase ? this.details.phase.key : null,
                 isKeyMilestone: this.isKeyMilestone,
             };
+            this.active = false;
             this.createProjectMilestone(data);
         },
         editMilestone: function() {
@@ -208,6 +210,7 @@ export default {
             },
             isKeyMilestone: false,
             isEdit: this.$route.params.milestoneId,
+            active: true,
         };
     },
 };
