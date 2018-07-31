@@ -12,7 +12,7 @@ use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiAttachmentType;
-use AppBundle\Form\WorkPackage\ApiCreateType;
+use AppBundle\Form\WorkPackage\ApiEditType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Paginator\SerializablePagerfanta;
@@ -193,7 +193,7 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(
-            ApiCreateType::class,
+            ApiEditType::class,
             $wp,
             [
                 'csrf_protection' => false,
@@ -208,7 +208,7 @@ class WorkPackageController extends ApiController
             $originalCosts->add($cost);
         }
 
-        $this->processForm($request, $form, $request->isMethod('POST'));
+        $this->processForm($request, $form, !$request->isMethod('PATCH'));
 
         if (!$form->isValid()) {
             $errors = $this->getFormErrors($form);
@@ -226,13 +226,6 @@ class WorkPackageController extends ApiController
         $fs = $this->getFileSystem($wp->getProject());
         foreach ($wp->getMedias() as $media) {
             $media->setFileSystem($fs);
-        }
-
-        if (!array_key_exists('children', $request->request->all())) {
-            foreach ($wp->getChildren() as $child) {
-                $em->remove($child);
-            }
-            $em->flush();
         }
 
         /** @var Cost $originalCost */
