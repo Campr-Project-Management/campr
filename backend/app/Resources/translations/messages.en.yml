@@ -878,7 +878,7 @@ message.phase_responsible: 'Phase Responsible'
 message.phases_and_milestones: 'Phases and Milestones'
 message.phases_milestones: 'Phases & Milestones'
 message.plan: Plan
-message.planning: Planning
+message.planning: Planung
 message.potential_cost: 'Potential Cost'
 message.potential_savings: 'Potential Savings'
 message.potential_time_delay: 'Potential Time Delay'
@@ -2098,7 +2098,7 @@ message.resent_team_invites: '%count% invite(s) have been resent.'
 action.select.all: 'Select All'
 action.select.none: 'Select None'
 action.select.invert: 'Invert Selection'
-message.email_sent: '%count% email(s) sent.'
+message.email_successfully_sent: 'Email successfully sent'
 button.add_document: 'Add Document'
 message.max_upload_file_size: 'Max file size: %size%'
 message.file_too_large: 'The file is too large (%size%). Allowed maximum size is %limit%.'
