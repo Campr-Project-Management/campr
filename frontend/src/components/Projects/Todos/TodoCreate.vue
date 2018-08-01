@@ -138,33 +138,39 @@ export default {
             'emptyValidationMessages',
         ]),
         saveTodo: function() {
-            let data = {
-                projectId: this.$route.params.id,
-                data: {
-                    title: this.title,
-                    responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
-                    dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
-                    description: this.description,
-                    status: this.status ? this.status.key : null,
-                    todoCategory: this.todoCategory ? this.todoCategory.key : null,
-                    meeting: this.meeting ? this.meeting.key : null,
-                },
-            };
-
-            this
-                .createTodo(data)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
-                            return;
-                        }
-
-                        this.showSaved = true;
+            if (!this.isSaving) {
+                let data = {
+                    projectId: this.$route.params.id,
+                    data: {
+                        title: this.title,
+                        responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
+                        dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
+                        description: this.description,
+                        status: this.status ? this.status.key : null,
+                        todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                        meeting: this.meeting ? this.meeting.key : null,
                     },
-                    () => {}
-                )
-            ;
+                };
+                this.isSaving = true;
+
+                this
+                    .createTodo(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error && response.body.messages) {
+                                this.showFailed = true;
+                                return;
+                            }
+
+                            this.showSaved = true;
+                        },
+                        () => {
+                            this.isSaving = true;
+                        }
+                    )
+                ;
+            }
         },
         updateTodo: function() {
             let data = {
@@ -248,6 +254,7 @@ export default {
             meeting: null,
             showSaved: false,
             showFailed: false,
+            isSaving: false,
         };
     },
 };
