@@ -42,25 +42,29 @@ const actions = {
             });
     },
     /**
-     * Create project risk
+     * Creates a new project risk
      * @param {function} commit
-     * @param {array}    data
+     * @param {array} data
+     * @return {object}
      */
     createProjectRisk({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_create_risk', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-risks-and-opportunities'});
+        return Vue
+            .http
+                .post(
+                    Routing.generate('app_api_project_create_risk', {id: data.project}),
+                    JSON.stringify(data)
+                ).then((response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-risks-and-opportunities'});
+                    }
+                }, (response) => {
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
     /**
      * Edit project risk
