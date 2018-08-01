@@ -43,8 +43,7 @@
                     <router-link :to="{name: 'project-task-management-edit-labels'}"
                                  class="btn-rounded btn-auto disable-bg">{{ button.cancel }}
                     </router-link>
-                    <a v-if="!isEdit && active" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
-                    <a v-if="!isEdit && !active" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                    <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
                     <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
                 </div>
             </div>
@@ -108,30 +107,33 @@ export default {
     methods: {
         ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel', 'emptyValidationMessages']),
         createLabel: function() {
-            let data = {
-                projectId: this.$route.params.id,
-                title: this.title,
-                description: this.description,
-                color: this.color,
-            };
-            this.active = false;
-            this
-                .createProjectLabel(data)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error) {
+            if (!this.isSaving) {
+                let data = {
+                    projectId: this.$route.params.id,
+                    title: this.title,
+                    description: this.description,
+                    color: this.color,
+                };
+                this.isSaving = true;
+                this
+                    .createProjectLabel(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error) {
+                                this.showFailed = true;
+                            } else {
+                                this.showSaved = true;
+                            }
+                            this.active = true;
+                        },
+                        () => {
                             this.showFailed = true;
-                        } else {
-                            this.showSaved = true;
+                            this.active = true;
                         }
-                        this.active = true;
-                    },
-                    () => {
-                        this.showFailed = true;
-                        this.active = true;
-                    }
-                )
-            ;
+                    )
+                ;
+            }
         },
         editLabel: function() {
             let data = {
@@ -178,7 +180,7 @@ export default {
                 create_label: this.translate('button.create_label'),
                 edit_label: this.translate('button.edit_label'),
             },
-            active: true,
+            isSaving: false,
         };
     },
 };
