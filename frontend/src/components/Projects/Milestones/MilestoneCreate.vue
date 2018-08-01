@@ -92,8 +92,7 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit && active" @click="createMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
-                        <a v-if="!isEdit && !active" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
+                        <a v-if="!isEdit" @click="createMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_milestone') }}</a>
                         <a v-if="isEdit" @click="editMilestone()" class="btn-rounded btn-auto second-bg">{{ translateText('button.edit_milestone') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
@@ -131,19 +130,30 @@ export default {
             return this.translate(text);
         },
         createMilestone: function() {
-            let data = {
-                project: this.$route.params.id,
-                name: this.name,
-                type: 1,
-                content: this.content,
-                scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
-                workPackageStatus: this.details.status ? this.details.status.key: null,
-                phase: this.details.phase ? this.details.phase.key : null,
-                isKeyMilestone: this.isKeyMilestone,
-            };
-            this.active = false;
-            this.createProjectMilestone(data);
+            if (!this.isSaving) {
+                let data = {
+                    project: this.$route.params.id,
+                    name: this.name,
+                    type: 1,
+                    content: this.content,
+                    scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
+                    responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
+                    workPackageStatus: this.details.status ? this.details.status.key: null,
+                    phase: this.details.phase ? this.details.phase.key : null,
+                    isKeyMilestone: this.isKeyMilestone,
+                };
+                this.isSaving = true;
+                this.createProjectMilestone(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                        },
+                        () => {
+                            this.isSaving = false;
+                        }
+                    )
+                ;
+            }
         },
         editMilestone: function() {
             let data = {
@@ -210,7 +220,7 @@ export default {
             },
             isKeyMilestone: false,
             isEdit: this.$route.params.milestoneId,
-            active: true,
+            isSaving: false,
         };
     },
 };

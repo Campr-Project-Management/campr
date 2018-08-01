@@ -108,8 +108,7 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
-                        <a v-if="!isEdit && active" @click="createNewPhase()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
-                        <a v-if="!isEdit && !active" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
+                        <a v-if="!isEdit" @click="createNewPhase" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_phase') }}</a>
                         <a v-if="isEdit" @click="editPhase()" class="btn-rounded btn-auto">{{ translateText('button.edit_phase') }}</a>
 
                     </div>
@@ -149,19 +148,31 @@ export default {
             return this.translate(text);
         },
         createNewPhase: function() {
-            let data = {
-                project: this.$route.params.id,
-                name: this.name,
-                type: 0,
-                content: this.content,
-                scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
-                scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
-                workPackageStatus: this.details.status ? this.details.status.key: null,
-                parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
-            };
-            this.active = false;
-            this.createProjectPhase(data);
+            if (!this.isSaving) {
+                let data = {
+                    project: this.$route.params.id,
+                    name: this.name,
+                    type: 0,
+                    content: this.content,
+                    scheduledStartAt: moment(this.schedule.baseStartDate).format('DD-MM-YYYY'),
+                    scheduledFinishAt: moment(this.schedule.baseEndDate).format('DD-MM-YYYY'),
+                    responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
+                    workPackageStatus: this.details.status ? this.details.status.key: null,
+                    parent: this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
+                };
+
+                this.isSaving = true;
+                this.createProjectPhase(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                        },
+                        () => {
+                            this.isSaving = false;
+                        }
+                    )
+                ;
+            }
         },
         editPhase: function() {
             let data = {
@@ -231,7 +242,7 @@ export default {
             },
             visibleSubphase: false,
             isEdit: this.$route.params.phaseId,
-            active: true,
+            isSaving: false,
         };
     },
 };
