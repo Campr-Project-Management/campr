@@ -210,7 +210,7 @@ email.general.plain_password: 'Your password is'
 email.message.contact: Message
 email.message.ends_at: 'Ends at'
 email.message.invoice: 'You have your invoice for payment %payment% attached in this email.'
-email.message.meeting_notification: 'You have been invited to a meeting. Here are the meeeting informations:'
+email.message.meeting_notification: 'You have been invited to a meeting. Here are the meeting informations:'
 email.message.starts_at: 'Starts at'
 email.message.status_report: 'New status report'
 email.message.user.activation: 'Your activation code has been reseted. To activate your account click on the following'
@@ -878,7 +878,7 @@ message.phase_responsible: 'Phase Responsible'
 message.phases_and_milestones: 'Phases and Milestones'
 message.phases_milestones: 'Phases & Milestones'
 message.plan: Plan
-message.planning: Planung
+message.planning: Planing
 message.potential_cost: 'Potential Cost'
 message.potential_savings: 'Potential Savings'
 message.potential_time_delay: 'Potential Time Delay'
@@ -968,7 +968,7 @@ message.schedule_base: 'Schedule Base'
 message.schedule_forecast: 'Schedule Forecast'
 message.scope: Scope
 message.select_customer: 'Select Customer'
-message.select_phase_milestone: 'Select a phase&milestone'
+message.select_phase_milestone: 'Select a phase & milestone'
 message.select_portfolio: 'Select Portfolio'
 message.select_programme: 'Select Programme'
 message.send_notifications: 'Send Notifications'

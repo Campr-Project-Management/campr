@@ -450,7 +450,7 @@ module.exports = function (Translator) {
     Translator.add("email.message.contact", "Message", "messages", "en");
     Translator.add("email.message.ends_at", "Ends at", "messages", "en");
     Translator.add("email.message.invoice", "You have your invoice for payment %payment% attached in this email.", "messages", "en");
-    Translator.add("email.message.meeting_notification", "You have been invited to a meeting. Here are the meeeting informations:", "messages", "en");
+    Translator.add("email.message.meeting_notification", "You have been invited to a meeting. Here are the meeting informations:", "messages", "en");
     Translator.add("email.message.starts_at", "Starts at", "messages", "en");
     Translator.add("email.message.status_report", "New status report", "messages", "en");
     Translator.add("email.message.user.activation", "Your activation code has been reseted. To activate your account click on the following", "messages", "en");
@@ -1118,7 +1118,7 @@ module.exports = function (Translator) {
     Translator.add("message.phases_and_milestones", "Phases and Milestones", "messages", "en");
     Translator.add("message.phases_milestones", "Phases & Milestones", "messages", "en");
     Translator.add("message.plan", "Plan", "messages", "en");
-    Translator.add("message.planning", "Planung", "messages", "en");
+    Translator.add("message.planning", "Planing", "messages", "en");
     Translator.add("message.potential_cost", "Potential Cost", "messages", "en");
     Translator.add("message.potential_savings", "Potential Savings", "messages", "en");
     Translator.add("message.potential_time_delay", "Potential Time Delay", "messages", "en");
@@ -1208,7 +1208,7 @@ module.exports = function (Translator) {
     Translator.add("message.schedule_forecast", "Schedule Forecast", "messages", "en");
     Translator.add("message.scope", "Scope", "messages", "en");
     Translator.add("message.select_customer", "Select Customer", "messages", "en");
-    Translator.add("message.select_phase_milestone", "Select a phase&milestone", "messages", "en");
+    Translator.add("message.select_phase_milestone", "Select a phase & milestone", "messages", "en");
     Translator.add("message.select_portfolio", "Select Portfolio", "messages", "en");
     Translator.add("message.select_programme", "Select Programme", "messages", "en");
     Translator.add("message.send_notifications", "Send Notifications", "messages", "en");
