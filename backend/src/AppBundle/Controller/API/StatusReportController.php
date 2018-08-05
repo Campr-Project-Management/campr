@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\StatusReport;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -43,19 +42,22 @@ class StatusReportController extends ApiController
     public function emailAction(StatusReport $statusReport)
     {
         $mailerService = $this->get('app.service.mailer');
-        $em = $this->getDoctrine()->getManager();
-        $html = $this->renderView(':status_report:pdf.html.twig', ['statusReport' => $statusReport]);
+
         $pdf = $this
             ->get('app.service.pdf')
-            ->loadHTML($html)
-            ->pageSize('A4')
-            ->get()
+            ->getStatusReportPDF($statusReport)
         ;
 
-        $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
-            'project' => $statusReport->getProject(),
-            'sequence' => -1,
-        ]);
+        $specialDistribution = $this
+            ->get('app.repository.distribution_list')
+            ->findOneBy(
+                [
+                    'project' => $statusReport->getProject(),
+                    'name' => 'label.status_report_distribution', // @TODO: change this!
+                ]
+            )
+        ;
+
         if ($specialDistribution) {
             $users = $specialDistribution->getUsers();
             foreach ($users as $user) {
@@ -64,7 +66,13 @@ class StatusReportController extends ApiController
                     'info',
                     $user->getEmail(),
                     ['statusReport' => $statusReport],
-                    [new \Swift_Attachment($pdf, 'status-report.pdf', 'application/pdf')]
+                    [
+                        new \Swift_Attachment(
+                            file_get_contents($pdf),
+                            sprintf('status-report-%s.pdf', $statusReport->getCreatedAt()->format('Y-m-d')),
+                            'application/pdf'
+                        ),
+                    ]
                 );
             }
         }

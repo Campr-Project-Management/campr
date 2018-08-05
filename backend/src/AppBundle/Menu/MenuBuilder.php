@@ -312,9 +312,6 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.opportunity_strategy.list', [], 'messages'), [
                 'route' => 'app_admin_opportunity_strategy_list',
             ])->getParent()
-            ->addChild($this->translator->trans('title.opportunity_status.list', [], 'messages'), [
-                'route' => 'app_admin_opportunity_status_list',
-            ])->getParent()
             ->addChild($this->translator->trans('title.measure.list', [], 'messages'), [
                 'route' => 'app_admin_measure_list',
             ])
@@ -558,6 +555,10 @@ class MenuBuilder
                 'route' => 'main_admin_team_deleted_teams',
             ])
             ->setAttribute('class', 'sidebar-menu-item')
+            ->getParent()
+            ->addChild($this->translator->trans('menu.unaccepted_team_invites', [], 'messages'), [
+                'route' => 'main_admin_team_invite_unaccepted',
+            ])
         ;
 
         $this->filterMenu($menu);

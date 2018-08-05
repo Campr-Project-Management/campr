@@ -2,24 +2,14 @@
     <div class="project-organization page-section">
         <modal v-if="showModal" @close="showModal = false">
             <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
-            <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
-            <error
-                v-if="validationMessages.name && validationMessages.name.length"
-                v-for="message in validationMessages.name"
-                :message="message" />
-            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
-            <div class="members main-list">
-                <div class="member flex member-row"  v-for="item in distributionLists">
-                    <user-avatar
-                            size="small"
-                            :url="item.userAvatar"
-                            :name="item.userFullName"/>
-                    <div class="member-info">
-                        <p class="title">{{ item.userFullName }}</p>
-                        <p class="description">{{ item.projectRoleNames }}</p>
-                    </div>
-                </div>
+            <div class="form-group">
+                <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
+                <error
+                    v-if="validationMessages.name && validationMessages.name.length"
+                    v-for="message in validationMessages.name"
+                    :message="message" />
             </div>
+            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_distribution') }} +</a>
@@ -215,6 +205,7 @@ export default {
                     (data) => {
                         if (!data.error) {
                             this.showModal = false;
+                            this.distributionTitle = '';
                             this.distributionList = [];
                         } else {
                             this.showFailed = true;
@@ -333,7 +324,7 @@ export default {
         selectedDistribution(value) {
             let distribution = [];
             let selected = this.selectedDistribution;
-            this.project.projectUsers.map(function(user) {
+            this.projectUsers.items.map(function(user) {
                 if (selected.indexOf(user.user) > -1) distribution.push(user);
             });
             this.distributionLists = distribution;
@@ -349,6 +340,12 @@ export default {
 
     .modal .modal-inner {
         width: 600px;
+
+        .results.team {
+            width: 600px;
+            position: relative;
+            top: 0 !important;
+        }
     }
 
     .actions {
@@ -383,10 +380,6 @@ export default {
             margin-bottom: 40px;
         }
 
-        .input-holder {
-            margin-bottom: 30px;
-        }
-
         .main-list {
             margin-bottom: 30px;
 
@@ -396,7 +389,7 @@ export default {
                 .member-info {
                     p {
                         margin: 0;
-                        text-transform: uppercase;                    
+                        text-transform: uppercase;
                     }
 
                     .title {
@@ -414,6 +407,8 @@ export default {
 
         .results {
             width: 600px;
+            position: relative;
+            top: 0 !important;
         }
     }
 
@@ -544,6 +539,7 @@ export default {
 
     .search {
         position: relative;
+        margin-bottom: 30px;
 
         .scroll-list {
             max-height: 200px;

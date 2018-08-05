@@ -47,6 +47,7 @@ export default {
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
+            -webkit-print-color-adjust: exact !important;
         }
 
         .social-links {

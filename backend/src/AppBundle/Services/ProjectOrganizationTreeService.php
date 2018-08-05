@@ -46,15 +46,24 @@ class ProjectOrganizationTreeService
             return [];
         }
 
-        return [$this->extractUserData(
-            current($project->getProjectManagers()),
-            [
-                'titles' => [
-                    $this->translator->trans('roles.project_manager', [], 'messages'),
-                ],
-                'children' => $this->getDepartmentData($project),
-            ]
-        )];
+        $users = [];
+        foreach ($project->getProjectManagers() as $projectSponsor) {
+            $users[] = $this->extractUserData(
+                $projectSponsor,
+                [
+                    'titles' => [
+                        $this->translator->trans('roles.project_manager', [], 'messages'),
+                    ],
+                    'children' => [],
+                ]
+            );
+        }
+
+        return [[
+            'id' => 'sponsors',
+            'users' => $users,
+            'children' => $this->getDepartmentData($project),
+        ]];
     }
 
     private function getDepartmentData(Project $project)

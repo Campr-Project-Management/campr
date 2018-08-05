@@ -39,7 +39,19 @@
                 'createStatusReport',
             ]),
             onSave() {
-                this.createStatusReport({id: this.$route.params.id, data: this.editableData});
+                if (!this.isSaving) {
+                    this.isSaving = true;
+                    this.createStatusReport({id: this.$route.params.id, data: this.editableData})
+                        .then(
+                            (response) => {
+                                this.isSaving = false;
+                            },
+                            () => {
+                                this.isSaving = false;
+                            }
+                        )
+                    ;
+                }
             },
         },
         computed: {
@@ -68,6 +80,7 @@
                     comment: null,
                     projectTrafficLight: tl.TrafficLight.GREEN,
                 },
+                isSaving: false,
             };
         },
     };

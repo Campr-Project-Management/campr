@@ -131,7 +131,7 @@
                                     </tr>
                                     <tr :key="`action-due-date-${action.id}`">
                                         <th>{{ translateText('table_header_cell.due_date') }}</th>
-                                        <td>{{ action.dueDate|moment('DD.MM.YYYY') }}</td>
+                                        <td>{{ action.dueDate|date }}</td>
                                     </tr>
                                     <tr :key="`action-empty-0-${action.id}`"></tr>
                                     <tr :key="`action-title-${action.id}`">
@@ -223,7 +223,6 @@
 import Vue from 'vue';
 
 import CalendarIcon from '~/components/_icons/CalendarIcon.vue';
-import Datepicker from '~/components/_form-components/Datepicker';
 import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
 
@@ -233,7 +232,6 @@ export default {
     },
     components: {
         CalendarIcon,
-        Datepicker,
         InputField,
         MemberBadge,
     },

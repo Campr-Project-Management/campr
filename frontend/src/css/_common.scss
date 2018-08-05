@@ -25,6 +25,10 @@
     flex-direction: row-reverse;
 }
 
+.flex-direction-column {
+    flex-direction: row-reverse;
+}
+
 .flex-align-start {
     align-items: flex-start;
 }
@@ -181,10 +185,6 @@ p {
 
 .darker-bg {
     background-color: $darkerColor;
-}
-
-.middle-bg {
-    background-color: $middleColor !important;
 }
 
 .middle-color {

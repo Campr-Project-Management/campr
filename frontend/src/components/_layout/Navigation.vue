@@ -21,16 +21,20 @@
                     </svg>
                 </span>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a :href="routes.account">{{ message.account }}</a></li>
-                    <li><a :href="routes.back_to_campr">{{ message.back_to_campr }}</a></li>
-                    <li v-if="showDashboard"><a :href="routes.admin_dashboard">{{ message.admin_dashboard }}</a></li>
-                    <li><a :href="routes.logout">{{ message.logout }}</a></li>
+                    <li><a :href="routes.account">{{ 'link.account'|trans }}</a></li>
+                    <li><a :href="routes.back_to_campr">{{ 'link.back_to_campr'|trans }}</a></li>
+                    <li v-if="showDashboard"><a :href="routes.admin_dashboard">{{ 'link.admin_dashboard'|trans }}</a></li>
+                    <li><a :href="routes.logout">{{ 'link.logout'|trans }}</a></li>
                 </ul>
             </div>
-            <p class="user-message">{{ message.hi }}, <span>{{ user.firstName }} {{ user.lastName }}</span></p>
-            <user-avatar
-                    :url="user.avatarUrl"
-                    :name="user.fullName"/>
+            <div class="user">
+                <p class="user-message">{{ 'message.hi'|trans }}, <span>{{ user.fullName }}</span></p>
+                <user-avatar
+                        :name="user.fullName"
+                        :url="userAvatar"
+                        size="small"/>
+            </div>
+            <locale-switcher />
             <!--TODO: Further implementation of notifications-->
             <!--<a class="notifications" href="">-->
                 <!--<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"-->
@@ -63,62 +67,63 @@
             <!--</a>-->
         </div>
         <div v-show="currentProjectName" class="project-title" v-if="showProjectName">
-            <p>{{ message.project }}</p>
+            <p>{{ 'message.project'|trans }}</p>
             <h4>{{ currentProjectName }}</h4>
         </div>
     </header>
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-import UserAvatar from '../_common/UserAvatar';
+    import {mapGetters} from 'vuex';
+    import UserAvatar from '../_common/UserAvatar';
+    import LocaleSwitcher from './LocaleSwitcher';
 
-export default {
-    name: 'navigation',
-    props: ['user'],
-    components: {
-        UserAvatar,
-    },
-    computed: {
-        ...mapGetters({
-            currentProjectName: 'currentProjectName',
-        }),
-        userAvatar: function() {
-            return this.user.avatarUrl;
+    export default {
+        name: 'navigation',
+        props: ['user'],
+        components: {
+            LocaleSwitcher,
+            UserAvatar,
         },
-        showDashboard: function() {
-            return this.user.isAdmin;
-        },
-        showProjectName: function() {
-            let path = this.$route.fullPath;
-            let regx = /^\/projects\//;
-            return regx.exec(path);
-        },
-    },
-    data: function() {
-        return {
-            message: {
-                hi: Translator.trans('message.hi'),
-                project: Translator.trans('message.project'),
-                account: Translator.trans('link.account'),
-                back_to_campr: Translator.trans('link.back_to_campr'),
-                logout: Translator.trans('link.logout'),
-                admin_dashboard: Translator.trans('link.admin_dashboard'),
+        computed: {
+            ...mapGetters([
+                'currentProjectName',
+            ]),
+            userAvatar: function() {
+                return this.user.avatarUrl;
             },
-            routes: {
-                logout: Routing.generate('app_logout'),
-                back_to_campr: Routing.generate('main_homepage'),
-                admin_dashboard: Routing.generate('app_admin_dashboard'),
-                account: Routing.generate('main_user_account'),
+            showDashboard: function() {
+                return this.user.isAdmin;
             },
-        };
-    },
-};
+            showProjectName: function() {
+                let path = this.$route.fullPath;
+                let regx = /^\/projects\//;
+                return regx.exec(path);
+            },
+        },
+        data: function() {
+            return {
+                message: {
+                    hi: Translator.trans('message.hi'),
+                    project: Translator.trans('message.project'),
+                    account: Translator.trans('link.account'),
+                    back_to_campr: Translator.trans('link.back_to_campr'),
+                    logout: Translator.trans('link.logout'),
+                    admin_dashboard: Translator.trans('link.admin_dashboard'),
+                },
+                routes: {
+                    logout: Routing.generate('app_logout'),
+                    back_to_campr: Routing.generate('main_homepage'),
+                    admin_dashboard: Routing.generate('app_admin_dashboard'),
+                    account: Routing.generate('main_user_account'),
+                },
+            };
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    @import '../../css/_common';
     @import '../../css/_variables';
 
     svg {
@@ -133,6 +138,7 @@ export default {
         flex-direction: row-reverse;
         justify-content: space-between;
         color: $lightColor;
+        margin: 5px 0;
     }
 
     .project-title {
@@ -153,18 +159,27 @@ export default {
     }
 
     .menu-toggler {
-        width: 34px;
+        width: 27px;
         cursor: pointer;
         text-align: right;
-        padding-top: 10px;
+        padding-top: 12px;
+
+        svg {
+            stroke: $lightColor;
+        }
+    }
+
+    .user {
+        display: inherit;
+        flex-direction: inherit;
     }
 
     .user-message {
         text-transform: uppercase;
-        margin: 0 30px 0 0;
         line-height: 45px;
         font-size: 12px;
         letter-spacing: 1.2px;
+        margin: 0 10px 0 0;
     }
 
     .notifications {

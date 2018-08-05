@@ -1,0 +1,174 @@
+@media print {
+  *,
+  *:before,
+  *:after {
+    color: #000 !important; // Black prints faster: h5bp.com/s
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  #app {
+    padding: 0 !important;
+
+    .page {
+      background-color: #fff !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+  }
+
+  header, aside {
+    display: none !important;
+  }
+
+  body {
+    background: none !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  html, body {
+    height: auto;
+    page-break-before: avoid;
+    page-break-after: avoid;
+  }
+
+  div.datepicker {
+    input {
+      background: none !important;
+    }
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  //a[href]:after {
+  //  content: " (" attr(href) ")";
+  //}
+
+  //abbr[title]:after {
+  //  content: " (" attr(title) ")";
+  //}
+
+  // Don't show links that are fragment identifiers,
+  // or use the `javascript:` pseudo protocol
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group; // h5bp.com/t
+  }
+
+  tr,
+  div,
+  img,
+  h1, h2, h3, h4, h5, h6 {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    padding-top: 10px;
+  }
+
+  div.avatar, div.user-avatar, div.legend-bar {
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  div.ve-design, table tr {
+    page-break-before: always;
+    page-break-inside: auto;
+    page-break-after: always;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+
+  // Bootstrap specific changes start
+  // Bootstrap components
+  .navbar {
+    display: none;
+  }
+
+  .btn,
+  .dropup > .btn {
+    > .caret {
+      border-top-color: #000 !important;
+    }
+  }
+
+  .label {
+    border: 1px solid #000;
+  }
+
+  .table {
+    border-collapse: collapse !important;
+
+    thead {
+      tr {
+        th {
+          background-color: #d6d6d6 !important;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:nth-of-type(even) td {
+          background-color: #ededed !important;
+        }
+        &:nth-of-type(odd) td {
+          background-color: #fff !important;
+        }
+      }
+    }
+  }
+
+  .table-bordered {
+    th,
+    td {
+      border: 1px solid #ddd !important;
+    }
+  }
+
+  .widget {
+    background-color: #fff !important;
+  }
+
+  hr {
+    display: none !important;
+  }
+
+  .checkbox-input input[type=checkbox] + label:before, .checkbox-input input[type=radio] + label:before {
+    background-color: #fff !important;
+    border: 1px solid #000;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .status-box {
+    background-color: #000;
+  }
+}
+

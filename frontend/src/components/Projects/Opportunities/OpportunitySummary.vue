@@ -7,7 +7,7 @@
                     <b>{{ potentialCost | money({symbol: currency}) }}</b>
                 </span>
             </p>
-            <p class="clearfix">                
+            <p class="clearfix">
                 <span class="text-right">{{ translate('message.total_potential_time_savings') }}:</span>
                 <span class="text-left">
                     <span v-if="potentialTime">
@@ -84,7 +84,6 @@ export default {
         p {
             line-height: 1.5em;
             color: $lightColor;
-            display: block;
             border-bottom: 1px solid $darkColor;
             padding-bottom: 5px;
             margin-bottom: 5px;

@@ -1,37 +1,34 @@
 <template>
     <div>
-        <h3>{{ translateText('message.planning') }}</h3>
+        <h3>{{ translate('message.planning') }}</h3>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group last-form-group">
                     <div class="dropdown">
                         <button
-                            ref="btn-dropdown"
-                            class="btn btn-primary dropdown-toggle"
-                            type="button"
-                            data-toggle="dropdown"
-                            @click="updateScrollbarTop()"
-                        >
-                            {{ phaseOrMilestoneLabel }}
+                                ref="btn-dropdown"
+                                class="btn btn-primary dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown"
+                                @click="updateScrollbarTop()">
+                            {{ label }}
                             <span class="caret"></span>
                         </button>
-                        <scrollbar :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}" class="dropdown-menu dropdown-menu-right customScrollbar">
+                        <scrollbar :style="{height: scrollbarHeight + 'px', top: scrollbarTop + 'px'}"
+                                   class="dropdown-menu dropdown-menu-right customScrollbar">
                             <ul ref="ul">
-                                <li v-for="item in dropdownData">
+                                <li v-for="option in options">
                                     <a
-                                        href="javascript:void(0)"
-                                        v-on:click="updatePlanning(item)"
-                                        :style="{paddingLeft: ((item.level+1) * 10) + 'px'}"
-                                    >
-                                        {{ item.name }}
-                                    </a>
+                                            href="javascript:void(0)"
+                                            @click="onClick(option)"
+                                            :style="{paddingLeft: ((option.level+1) * 10) + 'px'}">{{ option.name }}</a>
                                 </li>
                             </ul>
                         </scrollbar>
                     </div>
-                    <error at-path="parent" />
-                    <error at-path="milestone" />
-                    <error at-path="phase" />
+                    <error at-path="parent"/>
+                    <error at-path="milestone"/>
+                    <error at-path="phase"/>
                 </div>
             </div>
         </div>
@@ -39,144 +36,155 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
-import $ from 'jquery';
-import Error from '../../../_common/_messages/Error';
+    import {mapActions, mapGetters} from 'vuex';
+    import $ from 'jquery';
+    import Error from '../../../_common/_messages/Error';
 
-export default {
-    components: {Error},
-    props: {
-        editPlanning: {},
-        maxItems: {
-            type: Number,
-            default: 5,
+    export default {
+        components: {Error},
+        props: {
+            value: {
+                type: Object,
+                required: false,
+                default: {
+                    phase: null,
+                    milestone: null,
+                    parent: null,
+                },
+            },
+            placeholder: {
+                type: String,
+                required: false,
+                default: 'message.select_phase_milestone',
+            },
+            maxItems: {
+                type: Number,
+                default: 5,
+            },
         },
-    },
-    methods: {
-        ...mapActions(['getWBSByProjectID']),
-        translateText(text) {
-            return this.translate(text);
-        },
-        updatePlanning(wp) {
-            switch (wp.type) {
-            case 0:
-                this.planning = {
-                    phase: {
-                        key: wp.id,
-                        label: wp.name,
-                    },
+        methods: {
+            ...mapActions([
+                'getWBSByProjectID',
+            ]),
+            onClick(wp) {
+                let value = {
+                    phase: null,
                     milestone: null,
                     parent: null,
                 };
-                break;
-            case 1:
-                this.planning = {
-                    phase: {
-                        key: wp.phase,
-                        label: wp.phaseName,
-                    },
-                    milestone: {
-                        key: wp.id,
-                        label: wp.name,
-                    },
-                    parent: null,
-                };
-                break;
-            }
-        },
-        clearPhaseMilestone() {
-            this.planning = {
-                phase: null,
-                milestone: null,
-                parent: null,
-            };
-        },
-        updateScrollbarTop() {
-            let scrollTop = $(window).scrollTop();
-            let elementOffset = $(this.$el).offset().top;
-            let currentElementOffset = (elementOffset - scrollTop);
-            let windowInnerHeight = window.innerHeight;
 
-            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
-                this.scrollbarTop = -1 * this.scrollbarHeight;
-            } else {
-                this.scrollbarTop = this.itemHeight;
-            }
-        },
-    },
-    created() {
-        this.getWBSByProjectID(this.$route.params.id);
+                if (wp.isPhase) {
+                    value.phase = wp.id;
+                }
 
-        this.planning = this.editPlanning;
-    },
-    mounted() {
-        let $ul = $(this.$refs.ul);
+                if (wp.isMilestone) {
+                    value.phase = wp.phase;
+                    value.milestone = wp.id;
+                }
 
-        this.itemHeight = $(this.$el).find('button').height() || 40;
-        this.marginTop = parseInt($ul.css('margin-top'), 10);
-        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
-        this.paddingTop = parseInt($ul.css('padding-top'), 10);
-        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
-        this.scrollbarTop = this.itemHeight;
-    },
-    computed: {
-        // ...mapGetters(['allProjectPhases']),
-        ...mapGetters(['wbsPhasesAndMilestones']),
-        phaseOrMilestoneLabel() {
-            const out = [];
+                if (wp.isTask) {
+                    value.phase = wp.phase;
+                    value.milestone = wp.milestone;
+                    value.parent = wp.id;
+                }
 
-            if (this.planning.phase) {
-                out.push(this.planning.phase.label);
-            }
-            if (this.planning.milestone) {
-                out.push(this.planning.milestone.label);
-            }
-            if (this.planning.parent) {
-                out.push(this.planning.parent.label);
-            }
-
-            return out.length ? out.join(' > ') : this.translateText('message.select_phase_milestone');
-        },
-        dropdownData() {
-            return this
-                .wbsPhasesAndMilestones
-                .filter(wp => wp.id != this.$route.params.id)
-            ;
-        },
-        scrollbarHeight() {
-            const itemsToShow = this.dropdownData.length < this.maxItems
-                ? this.dropdownData.length
-                : this.maxItems
-            ;
-
-            return (itemsToShow * this.itemHeight)
-                + (this.marginBottom + this.marginTop)
-                + (this.paddingBottom + this.paddingTop);
-        },
-    },
-    watch: {
-        planning: {
-            handler(value) {
                 this.$emit('input', value);
             },
-            deep: true,
-        },
-    },
-    data() {
-        return {
-            planning: {
-                phase: null,
-                milestone: null,
-                itemHeight: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
-                marginTop: 0,
-                marginBottom: 0,
-                scrollbarTop: 0,
+            updateScrollbarTop() {
+                let scrollTop = $(window)
+                    .scrollTop();
+                let elementOffset = $(this.$el)
+                    .offset().top;
+                let currentElementOffset = (elementOffset - scrollTop);
+                let windowInnerHeight = window.innerHeight;
+
+                if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
+                    this.scrollbarTop = -1 * this.scrollbarHeight;
+                } else {
+                    this.scrollbarTop = this.itemHeight;
+                }
             },
-        };
-    },
-};
+            getWorkPackageNameById(id) {
+                let wp = this.wbsPhasesAndMilestones.find((wp) => wp.id === id);
+                if (!wp) {
+                    return;
+                }
+
+                return wp.name;
+            },
+        },
+        created() {
+            this.getWBSByProjectID(this.$route.params.id);
+        },
+        mounted() {
+            let $ul = $(this.$refs.ul);
+
+            this.itemHeight = $(this.$el)
+                .find('button')
+                .height() || 40;
+            this.marginTop = parseInt($ul.css('margin-top'), 10);
+            this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+            this.paddingTop = parseInt($ul.css('padding-top'), 10);
+            this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+            this.scrollbarTop = this.itemHeight;
+        },
+        computed: {
+            ...mapGetters([
+                'wbsPhasesAndMilestones',
+            ]),
+            label() {
+                const out = [];
+
+                if (this.value.phase) {
+                    let name = this.getWorkPackageNameById(this.value.phase);
+                    if (name) {
+                        out.push(name);
+                    }
+                }
+
+                if (this.value.milestone) {
+                    let name = this.getWorkPackageNameById(this.value.milestone);
+                    if (name) {
+                        out.push(name);
+                    }
+                }
+
+                if (this.value.parent) {
+                    let name = this.getWorkPackageNameById(this.value.parent);
+                    if (name) {
+                        out.push(name);
+                    }
+                }
+
+                return out.length ? out.join(' > ') : this.translate(this.placeholder);
+            },
+            options() {
+                return this.wbsPhasesAndMilestones;
+            },
+            scrollbarHeight() {
+                const itemsToShow = this.options.length < this.maxItems
+                    ? this.options.length
+                    : this.maxItems
+                ;
+
+                return (itemsToShow * this.itemHeight)
+                    + (this.marginBottom + this.marginTop)
+                    + (this.paddingBottom + this.paddingTop);
+            },
+        },
+        data() {
+            return {
+                planning: {
+                    itemHeight: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    scrollbarTop: 0,
+                },
+            };
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

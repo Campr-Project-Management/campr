@@ -12,9 +12,10 @@ use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiAttachmentType;
-use AppBundle\Form\WorkPackage\ApiCreateType;
+use AppBundle\Form\WorkPackage\ApiEditType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
+use AppBundle\Paginator\SerializablePagerfanta;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
@@ -130,7 +131,11 @@ class WorkPackageController extends ApiController
         $form = $this->createForm(
             ApiAttachmentType::class,
             $wp,
-            ['csrf_protection' => false, 'method' => $request->getMethod()]
+            [
+                'csrf_protection' => false,
+                'method' => $request->getMethod(),
+                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
+            ]
         );
 
         $this->processForm($request, $form);
@@ -153,9 +158,10 @@ class WorkPackageController extends ApiController
                 $media->setFileSystem($fs);
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($wp);
-            $em->flush();
+            $this
+                ->get('app.repository.work_package')
+                ->add($wp)
+            ;
 
             return $this->createApiResponse($wp);
         } catch (FileAlreadyExists $ex) {
@@ -187,11 +193,13 @@ class WorkPackageController extends ApiController
         $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
 
         $form = $this->createForm(
-            ApiCreateType::class,
+            ApiEditType::class,
             $wp,
             [
                 'csrf_protection' => false,
                 'method' => $request->getMethod(),
+                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
+                'validation_groups' => ['Default', 'edit'],
             ]
         );
 
@@ -200,11 +208,7 @@ class WorkPackageController extends ApiController
             $originalCosts->add($cost);
         }
 
-        $this->processForm(
-            $request,
-            $form,
-            in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
-        );
+        $this->processForm($request, $form, !$request->isMethod('PATCH'));
 
         if (!$form->isValid()) {
             $errors = $this->getFormErrors($form);
@@ -219,16 +223,16 @@ class WorkPackageController extends ApiController
         $wp = $form->getData();
         $em = $this->getDoctrine()->getManager();
 
+        $fs = $this->getFileSystem($wp->getProject());
+        foreach ($wp->getMedias() as $media) {
+            $media->setFileSystem($fs);
+        }
+
         /** @var Cost $originalCost */
         foreach ($originalCosts as $originalCost) {
             if (!$wp->getCosts()->contains($originalCost)) {
                 $em->remove($originalCost);
             }
-        }
-
-        $fs = $this->getFileSystem($wp->getProject());
-        foreach ($wp->getMedias() as $media) {
-            $media->setFileSystem($fs);
         }
 
         $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
@@ -448,25 +452,20 @@ class WorkPackageController extends ApiController
      */
     public function historyAction(Request $request, WorkPackage $wp)
     {
-        $filters = $request->query->all();
-        $filters['pageSize'] = (isset($filters['pageSize']))
-            ? $filters['pageSize']
-            : $this->getParameter('front.per_page')
-        ;
-        $filters['page'] = isset($filters['page']) ? intval($filters['page']) : 1;
+        $pageSize = $request->query->get('pageSize', $this->getParameter('history.per_page'));
+        $page = $request->query->get('page', 1);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $history = $em
-            ->getRepository(Log::class)
-            ->findByObjectAndFilters(
-                WorkPackage::class,
-                $wp->getId(),
-                $filters
-            )
+        $paginator = $this
+            ->get('app.repository.log')
+            ->createWorkPackageHistoryPaginator($wp)
         ;
 
-        return $this->createApiResponse($history);
+        $paginator->setMaxPerPage($pageSize);
+        $paginator->setCurrentPage($page);
+
+        $paginator = new SerializablePagerfanta($paginator);
+
+        return $this->createApiResponse($paginator);
     }
 
     /**

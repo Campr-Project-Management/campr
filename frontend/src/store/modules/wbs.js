@@ -1,6 +1,5 @@
 import * as types from '../mutation-types';
 import Vue from 'vue';
-// import _ from 'lodash';
 
 const state = {
     wbs: [],
@@ -20,18 +19,7 @@ function getPhasesAndMilestones(workPackage, level) {
         .children
         .filter(wp => [0, 1].indexOf(wp.type) !== -1)
         .map(wp => {
-            let newWp = {
-                id: wp.id,
-                name: wp.name,
-                type: wp.type,
-                phase: wp.phase,
-                phaseName: wp.phaseName,
-                milestone: wp.milestone,
-                milestoneName: wp.milestoneName,
-                parent: wp.parent,
-                parentName: wp.parentName,
-                level,
-            };
+            let newWp = Object.assign({}, wp, {level});
 
             out.push(newWp);
             out = out.concat(getPhasesAndMilestones(wp, level + 1));
@@ -55,18 +43,7 @@ const getters = {
             .children
             .filter(wp => [0, 1].indexOf(wp.type) !== -1)
             .map(wp => {
-                let newWp = {
-                    id: wp.id,
-                    name: wp.name,
-                    type: wp.type,
-                    phase: wp.phase,
-                    phaseName: wp.phaseName,
-                    milestone: wp.milestone,
-                    milestoneName: wp.milestoneName,
-                    parent: wp.parent,
-                    parentName: wp.parentName,
-                    level: 0,
-                };
+                let newWp = Object.assign({}, wp, {level: 0});
                 out.push(newWp);
                 out = out.concat(getPhasesAndMilestones(wp, 1));
             })

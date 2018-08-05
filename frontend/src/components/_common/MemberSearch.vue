@@ -28,24 +28,28 @@
                     <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                     <div class="info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translateText(roleName) }}, </span></p>
+                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span></p>
                     </div>
                 </div>
             </scrollbar>
             <div class="footer">
                 <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="reset" class="cancel">{{ translateText('button.cancel') }}</a>
-                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.done') }}</a>
-                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translateText('button.show_selected') }}</a>
+                    <a href="javascript:void(0)" @click="reset" class="cancel">{{ translate('button.cancel') }}</a>
+                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.done') }}</a>
+                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.show_selected') }}</a>
                 </div>
             </div>
         </div>
         <div class="results team no-data" v-if="noData && query !== ''">
-            <div>{{ translateText('label.no_data') }}</div>
+            <div>{{ translate('label.no_data') }}</div>
         </div>
         <p v-if="usersList && usersList.length" v-for="user in usersList" class="selected-item">
-            {{ user.firstName }} {{ user.lastName }}
+            <user-avatar
+                    size="small"
+                    :url="user.avatarUrl"
+                    :name="user.userFullName"/>
+            <span>{{ user.firstName }} {{ user.lastName }}</span>
             <a @click="removeSelectedOption(user.id)"> <i class="fa fa-times"></i></a>
         </p>
     </div>
@@ -56,8 +60,12 @@ import VueTypeahead from 'vue-typeahead';
 import {mapActions, mapGetters} from 'vuex';
 import $ from 'jquery';
 import _ from 'lodash';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
+    components: {
+        UserAvatar,
+    },
     extends: VueTypeahead,
     props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
     computed: {
@@ -70,10 +78,19 @@ export default {
                     || this.focused;
             },
         },
+        displaySelectedMembers() {
+            if (!this.value || !this.value.length) {
+                return false;
+            }
+
+            return !!this.users.find((user) => {
+                return this.value.includes(user.id);
+            });
+        },
     },
     watch: {
         users(val) {
-            if (this.displaySelectedMembers()) {
+            if (this.displaySelectedMembers) {
                 this.usersList = this.users;
             }
         },
@@ -107,9 +124,6 @@ export default {
     },
     methods: {
         ...mapActions(['getUsers', 'clearUsers']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         toggleActivation(item) {
             item.checked = !item.checked;
         },
@@ -143,9 +157,20 @@ export default {
         },
         updateSelected() {
             let users = [];
+            let selectedUsers = this.selectedUsers;
             this.items.map(function(user) {
                 if (user.checked) {
                     users.push(user.user);
+                } else if (selectedUsers.length > 0) {
+                    let index = selectedUsers.indexOf(user.user);
+                    if (index > -1) {
+                        selectedUsers.splice(index, 1);
+                    }
+                }
+            });
+            selectedUsers.map(function(id) {
+                if (users.indexOf(id) === -1) {
+                    users.push(id);
                 }
             });
             this.selectedUsers = users;
@@ -180,18 +205,6 @@ export default {
                 this.usersList.splice(indexTmp, 1);
                 this.selectedUsers.splice(indexTmp, 1);
             }
-        },
-        displaySelectedMembers() {
-            if (!this.value || this.value.length <= 0) {
-                return false;
-            }
-
-            for (let i = 0; i < this.value.length; i++) {
-                if (this.users[i] && this.value[i] !== this.users[i].id) {
-                    return false;
-                }
-            }
-            return true;
         },
         focusInput() {
             $(this.$refs[`input${this._uid}`]).focus();
@@ -385,16 +398,26 @@ export default {
     }
 
     .selected-item {
-        padding: 11px 20px 9px;
+        padding: 0 0 0 10px;
         background-color: $fadeColor;
         margin-top: 3px;
-        color: $secondColor;
+        color: $whiteColor;
         position: relative;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+
+        span {
+            position: relative;
+            top: 2px;
+        }
 
         i.fa {
             position: absolute;
             right: 20px;
-            top: 13px;
+            top: 50%;
+            margin-top: -5px;
             color: $dangerColor;
             cursor: pointer;
             @include transition(opacity, 0.2s, ease-in);

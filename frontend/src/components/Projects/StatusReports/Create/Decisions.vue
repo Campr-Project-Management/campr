@@ -2,6 +2,7 @@
     <table class="table table-striped table-responsive table-fixed table-small" v-if="items.length > 0">
         <thead>
         <tr>
+            <th style="width:14%">{{ translate('table_header_cell.status') }}</th>
             <th style="width:14%">{{ translate('table_header_cell.due_date') }}</th>
             <th style="width:25%">{{ translate('table_header_cell.topic') }}</th>
             <th style="width:36%">{{ translate('table_header_cell.description') }}</th>
@@ -10,6 +11,10 @@
         </thead>
         <tbody>
         <tr v-for="item in items">
+            <td>
+                <span v-if="item.isDone" class="success-color">{{ translate('choices.done') }}</span>
+                <span v-else class="danger-color">{{ translate('choices.undone') }}</span>
+            </td>
             <td>{{ item.dueDate | date }}</td>
             <td class="cell-wrap">{{ item.title }}</td>
             <td class="cell-wrap cell-large" v-html="item.description"></td>

@@ -4,7 +4,7 @@ namespace Component\Snapshot\Transformer;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
-use AppBundle\Repository\WorkPackageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class MilestonesTransformer extends AbstractTransformer
 {
@@ -14,22 +14,13 @@ class MilestonesTransformer extends AbstractTransformer
     private $milestoneTransformer;
 
     /**
-     * @var WorkPackageRepository
-     */
-    private $workPackageRepository;
-
-    /**
      * MilestonesTransformer constructor.
      *
-     * @param TransformerInterface  $milestoneTransformer
-     * @param WorkPackageRepository $workPackageRepository
+     * @param TransformerInterface $milestoneTransformer
      */
-    public function __construct(
-        TransformerInterface $milestoneTransformer,
-        WorkPackageRepository $workPackageRepository
-    ) {
+    public function __construct(TransformerInterface $milestoneTransformer)
+    {
         $this->milestoneTransformer = $milestoneTransformer;
-        $this->workPackageRepository = $workPackageRepository;
     }
 
     /**
@@ -39,7 +30,7 @@ class MilestonesTransformer extends AbstractTransformer
      */
     protected function doTransform($project)
     {
-        $milestones = $this->workPackageRepository->getMilestones($project);
+        $milestones = $project->getMilestones();
 
         return [
             'items' => $this->getItems($milestones),
@@ -67,17 +58,19 @@ class MilestonesTransformer extends AbstractTransformer
     }
 
     /**
-     * @param WorkPackage[] $milestones
+     * @param ArrayCollection $milestones
      *
      * @return array
      */
-    private function getItems(array $milestones): array
+    private function getItems(ArrayCollection $milestones): array
     {
-        return array_map(
-            function (WorkPackage $milestone) {
-                return $this->getItem($milestone);
-            },
-            $milestones
-        );
+        return $milestones
+            ->map(
+                function (WorkPackage $milestone) {
+                    return $this->getItem($milestone);
+                }
+            )
+            ->getValues()
+        ;
     }
 }

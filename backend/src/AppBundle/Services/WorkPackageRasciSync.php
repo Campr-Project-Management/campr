@@ -77,9 +77,10 @@ class WorkPackageRasciSync
 
         /** @var ProjectUser $projectUser */
         $projectUser = $user->getProjectUser($wp->getProject());
-        $projectUser->setShowInRasci(true);
-
-        $this->projectUserRepository->add($projectUser);
+        if ($projectUser) {
+            $projectUser->setShowInRasci(true);
+            $this->projectUserRepository->add($projectUser);
+        }
 
         return true;
     }
@@ -105,9 +106,11 @@ class WorkPackageRasciSync
 
         /** @var ProjectUser $projectUser */
         $projectUser = $user->getProjectUser($wp->getProject());
-        $projectUser->setShowInRasci(true);
 
-        $this->projectUserRepository->add($projectUser);
+        if ($projectUser) {
+            $projectUser->setShowInRasci(true);
+            $this->projectUserRepository->add($projectUser);
+        }
 
         return true;
     }
@@ -138,9 +141,10 @@ class WorkPackageRasciSync
 
             /** @var ProjectUser $projectUser */
             $projectUser = $user->getProjectUser($wp->getProject());
-            $projectUser->setShowInRasci(true);
-
-            $this->projectUserRepository->add($projectUser);
+            if ($projectUser) {
+                $projectUser->setShowInRasci(true);
+                $this->projectUserRepository->add($projectUser);
+            }
         }
 
         return true;
@@ -172,9 +176,10 @@ class WorkPackageRasciSync
 
             /** @var ProjectUser $projectUser */
             $projectUser = $user->getProjectUser($wp->getProject());
-            $projectUser->setShowInRasci(true);
-
-            $this->projectUserRepository->add($projectUser);
+            if ($projectUser) {
+                $projectUser->setShowInRasci(true);
+                $this->projectUserRepository->add($projectUser);
+            }
         }
 
         return true;
@@ -206,9 +211,10 @@ class WorkPackageRasciSync
 
             /** @var ProjectUser $projectUser */
             $projectUser = $user->getProjectUser($wp->getProject());
-            $projectUser->setShowInRasci(true);
-
-            $this->projectUserRepository->add($projectUser);
+            if ($projectUser) {
+                $projectUser->setShowInRasci(true);
+                $this->projectUserRepository->add($projectUser);
+            }
         }
 
         return true;

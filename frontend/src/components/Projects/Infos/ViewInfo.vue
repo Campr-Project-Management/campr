@@ -11,10 +11,12 @@
                     <div class="col-md-12">
                         <div class="input-holder">
                             <label class="active">{{ translate('label.expiry_date') }}</label>
-                            <datepicker :clear-button="false" v-model="date" format="dd-MM-yyyy" :value="date"></datepicker>
+                            <date-field v-model="date"/>
                         </div>
                     </div>
                 </div>
+
+                <hr class="double">
 
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="rescheduleModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
@@ -44,7 +46,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                                 <user-avatar
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatarUrl"
+                                        :url="info.responsibilityAvatar"
                                         :tooltip="info.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
@@ -114,12 +116,13 @@ import DownloadbuttonIcon from '../../_common/_icons/DownloadbuttonIcon';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../../_common/Modal';
-import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
 import UserAvatar from '../../_common/UserAvatar';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         UserAvatar,
         EditIcon,
         DeleteIcon,
@@ -127,7 +130,6 @@ export default {
         RescheduleIcon,
         DownloadbuttonIcon,
         Modal,
-        datepicker,
     },
     created() {
         this.getInfo(this.$route.params.infoId);
@@ -153,13 +155,18 @@ export default {
             this.rescheduleModal = false;
             const id = this.$route.params.infoId;
             const data = {
-                expiresAt: moment(this.date).format('DD-MM-YYYY'),
+                expiresAt: moment(this.date).format('YYYY-MM-DD'),
             };
             this.editInfo({id, data});
         },
     },
     computed: {
         ...mapGetters(['info']),
+    },
+    watch: {
+        info(val) {
+            this.date = moment(this.info.expiresAt).toDate();
+        },
     },
     data() {
         return {
@@ -192,7 +199,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -221,7 +228,7 @@ export default {
         width: 30px;
         height: 30px;
         display: inline-block;
-        margin: 0 10px 0 0;  
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -274,7 +281,7 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 
     .buttons {

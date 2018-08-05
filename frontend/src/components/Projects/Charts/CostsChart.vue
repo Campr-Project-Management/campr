@@ -23,38 +23,7 @@
             options: {
                 type: Object,
                 required: false,
-                default: () => {
-                    return {
-                        hAxis: {
-                            textStyle: {
-                                color: '#D8DAE5',
-                            },
-                        },
-                        vAxis: {
-                            title: '',
-                            minValue: 0,
-                            maxValue: 0,
-                            textStyle: {
-                                color: '#D8DAE5',
-                            },
-                        },
-                        width: '100%',
-                        height: 350,
-                        curveType: 'function',
-                        colors: [colors.base, colors.actual, colors.forecast, colors.remaining],
-                        backgroundColor: '#191E37',
-                        titleTextStyle: {
-                            color: '#D8DAE5',
-                        },
-                        legend: {
-                            position: 'bottom',
-                            maxLines: 5,
-                        },
-                        legendTextStyle: {
-                            color: '#D8DAE5',
-                        },
-                    };
-                },
+                default: () => {},
             },
             data: {
                 type: Object,
@@ -69,6 +38,14 @@
                 type: String,
                 required: false,
                 default: '',
+            },
+            theme: {
+                type: String,
+                required: false,
+                default: 'default',
+                validate(value) {
+                    return ['default', 'print'].indexOf(value) >= 0;
+                },
             },
         },
         filters: {
@@ -90,14 +67,46 @@
         },
         computed: {
             chartOptions() {
+                let options = Object.assign({}, this.themes[this.theme], this.options);
                 if (!this.title) {
-                    return this.options;
+                    return options;
                 }
 
-                return Object.assign({}, this.options, {title: Translator.trans(this.title)});
+                return Object.assign({}, options, {title: Translator.trans(this.title)});
             },
         },
         data() {
+            let defaultOptions = {
+                hAxis: {
+                    textStyle: {
+                        color: '#D8DAE5',
+                    },
+                },
+                vAxis: {
+                    title: '',
+                    minValue: 0,
+                    maxValue: 0,
+                    textStyle: {
+                        color: '#D8DAE5',
+                    },
+                },
+                width: '100%',
+                height: 350,
+                curveType: 'function',
+                colors: [colors.base, colors.actual, colors.forecast, colors.remaining],
+                backgroundColor: '#191E37',
+                titleTextStyle: {
+                    color: '#D8DAE5',
+                },
+                legend: {
+                    position: 'bottom',
+                    maxLines: 5,
+                },
+                legendTextStyle: {
+                    color: '#D8DAE5',
+                },
+            };
+
             return {
                 columns: [
                     {
@@ -117,6 +126,32 @@
                         'label': Translator.trans('label.remaining'),
                     },
                 ],
+                themes: {
+                    default: defaultOptions,
+                    print: Object.assign({}, defaultOptions, {
+                        hAxis: {
+                            textStyle: {
+                                color: '#000',
+                            },
+                        },
+                        vAxis: {
+                            title: '',
+                            minValue: 0,
+                            maxValue: 0,
+                            textStyle: {
+                                color: '#000',
+                            },
+                        },
+                        height: 350,
+                        backgroundColor: '#fff',
+                        titleTextStyle: {
+                            color: '#000',
+                        },
+                        legendTextStyle: {
+                            color: '#000',
+                        },
+                    }),
+                },
             };
         },
     };
