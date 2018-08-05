@@ -1,41 +1,53 @@
 <template>
-    <div id="app" v-bind:class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
-        <pulse-loader :loading="loading" :color="color" :size="size" v-show="loader"></pulse-loader>
-        <sidebar v-bind:user="localUser" />
+    <div id="app" :class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
+        <pulse-loader
+                :loading="loading"
+                :color="color"
+                :size="size" v-show="loader"/>
+        <sidebar :user="localUser" />
         <div class="page">
-            <navigation v-bind:user="localUser"></navigation>
-            <router-view></router-view>
+            <navigation :user="localUser"/>
+            <router-view />
         </div>
     </div>
 </template>
 <script>
-import Navigation from './components/_layout/Navigation';
-import Sidebar from './components/_layout/Sidebar';
-import {mapActions, mapGetters} from 'vuex';
-import {PulseLoader} from 'vue-spinner/dist/vue-spinner.min.js';
+    import Navigation from './components/_layout/Navigation';
+    import Sidebar from './components/_layout/Sidebar';
+    import {mapActions, mapGetters} from 'vuex';
+    import {PulseLoader} from 'vue-spinner/dist/vue-spinner.min.js';
 
-export default {
-    name: 'app',
-    components: {
-        PulseLoader,
-        Navigation,
-        Sidebar,
-    },
-    methods: mapActions(['getUserInfo']),
-    created() {
-        this.getUserInfo();
-    },
-    computed: mapGetters({
-        user: 'user',
-        loader: 'loader',
-        localUser: 'localUser',
-    }),
-    data: function() {
-        return {
-            bgRoutes: ['projects-create-1', 'projects-create-2', 'projects-create-3'],
-        };
-    },
-};
+    export default {
+        name: 'app',
+        components: {
+            PulseLoader,
+            Navigation,
+            Sidebar,
+        },
+        methods: {
+            ...mapActions([
+                'getUserInfo',
+                'syncUser',
+            ]),
+        },
+        created() {
+            this.getUserInfo();
+            this.syncUser();
+        },
+        computed: {
+            ...mapGetters([
+                'user',
+                'loader',
+                'localUser',
+                'locale',
+            ]),
+        },
+        data() {
+            return {
+                bgRoutes: ['projects-create-1', 'projects-create-2', 'projects-create-3'],
+            };
+        },
+    };
 </script>
 
 <style lang="scss">
@@ -64,7 +76,7 @@ export default {
         background: $mainColor;
         z-index: 99;
     }
-  
+
     .tablet {
         display: none;
     }
@@ -134,12 +146,12 @@ export default {
         }
     }
 
-    .new-box {    
-        width: 25%;  
+    .new-box {
+        width: 25%;
         padding: 15px;
 
         a {
-            text-transform: uppercase; 
+            text-transform: uppercase;
             text-align: center;
             min-height: 200px;
             border: 1px dashed $secondColor;
@@ -175,7 +187,7 @@ export default {
         background: $dangerColor !important;
     }
 
-    .no-select{
+    .no-select {
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Project.
@@ -25,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Project implements ProjectInterface
 {
+    const DEFAULT_MAX_UPLOAD_FILE_SIZE = 10485760;
+
     /**
      * @var int
      *
@@ -53,7 +56,7 @@ class Project implements ProjectInterface
      *
      * @ORM\Column(name="traffic_light", type="integer", options={"default": 2})
      * @Assert\NotNull()
-     * @Assert\Choice({0, 1, 2})
+     * @AppAssert\TrafficLight()
      */
     private $trafficLight;
 
@@ -444,13 +447,6 @@ class Project implements ProjectInterface
     private $decisions;
 
     /**
-     * @var ArrayCollection|OpportunityStatus[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStatus", mappedBy="project")
-     */
-    private $opportunityStatuses;
-
-    /**
      * @var ArrayCollection|OpportunityStrategy[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project")
@@ -526,6 +522,13 @@ class Project implements ProjectInterface
     private $currency;
 
     /**
+     * @var int
+     * @ORM\Column(name="max_upload_file_size", type="integer", options={"default": 10485760})
+     * @Assert\NotBlank()
+     */
+    private $maxUploadFileSize;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -557,7 +560,6 @@ class Project implements ProjectInterface
         $this->risks = new ArrayCollection();
         $this->opportunities = new ArrayCollection();
         $this->decisions = new ArrayCollection();
-        $this->opportunityStatuses = new ArrayCollection();
         $this->opportunityStrategies = new ArrayCollection();
         $this->riskStrategies = new ArrayCollection();
         $this->riskStatuses = new ArrayCollection();
@@ -567,6 +569,7 @@ class Project implements ProjectInterface
         $this->projectCloseDowns = new ArrayCollection();
         $this->projectRoles = new ArrayCollection();
         $this->trafficLight = TrafficLight::GREEN;
+        $this->maxUploadFileSize = self::DEFAULT_MAX_UPLOAD_FILE_SIZE;
     }
 
     /**
@@ -1169,6 +1172,42 @@ class Project implements ProjectInterface
     public function getWorkPackages()
     {
         return $this->workPackages;
+    }
+
+    /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getPhases()
+    {
+        return $this->getWorkPackages()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isPhase();
+            }
+        );
+    }
+
+    /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getMilestones()
+    {
+        return $this->getWorkPackages()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isMilestone();
+            }
+        );
+    }
+
+    /**
+     * @return ArrayCollection|WorkPackage[]
+     */
+    public function getKeyMilestones()
+    {
+        return $this->getMilestones()->filter(
+            function (WorkPackage $wp) {
+                return $wp->isKeyMilestone();
+            }
+        );
     }
 
     /**
@@ -2377,42 +2416,6 @@ class Project implements ProjectInterface
     }
 
     /**
-     * Add opportunityStatus.
-     *
-     * @param OpportunityStatus $opportunityStatus
-     *
-     * @return Project
-     */
-    public function addOpportunityStatus(OpportunityStatus $opportunityStatus)
-    {
-        $this->opportunityStatuses[] = $opportunityStatus;
-
-        return $this;
-    }
-
-    /**
-     * Remove opportunityStatus.
-     *
-     * @param OpportunityStatus $opportunityStatus
-     */
-    public function removeOpportunityStatus(OpportunityStatus $opportunityStatus)
-    {
-        $this->opportunityStatuses->removeElement($opportunityStatus);
-
-        return $this;
-    }
-
-    /**
-     * Get opportunityStatuses.
-     *
-     * @return ArrayCollection|OpportunityStatus[]
-     */
-    public function getOpportunityStatuses()
-    {
-        return $this->opportunityStatuses;
-    }
-
-    /**
      * Add opportunityStrategy.
      *
      * @param OpportunityStrategy $oportunityStrategy
@@ -2826,5 +2829,21 @@ class Project implements ProjectInterface
     public function hasFileSystem()
     {
         return (bool) $this->getFileSystem();
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxUploadFileSize()
+    {
+        return (int) $this->maxUploadFileSize;
+    }
+
+    /**
+     * @param int $maxUploadFileSize
+     */
+    public function setMaxUploadFileSize(int $maxUploadFileSize = null)
+    {
+        $this->maxUploadFileSize = $maxUploadFileSize;
     }
 }

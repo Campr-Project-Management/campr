@@ -1,22 +1,22 @@
 <template>
     <div class="dropdown" :class="{disabled: disabled}">
         <button
-                ref="btn-dropdown"
-                class="btn btn-primary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                @click="updateScrollbarTop($event)"
-                :title="title">
+            ref="btn-dropdown"
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            @click="updateScrollbarTop($event)"
+            :title="title">
 
-            <span class="select-field-placeholder">{{ placeholder }}</span>
+            <span class="select-field-placeholder">{{ translate(placeholder) }}</span>
 
             <i
-                    v-if="allowClear && value"
-                    class="fa fa-times select-field-clear"
-                    :title="translate('message.clear_selection')"
-                    @click="onClear"></i>
+                v-if="allowClear && value"
+                class="fa fa-times select-field-clear"
+                :title="translate('message.clear_selection')"
+                @click="onClear"></i>
 
             <span class="caret"></span>
         </button>

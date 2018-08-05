@@ -125,14 +125,13 @@
 
                 <hr class="double">
 
-                <task-history :history="taskHistory" />
-
                 <!-- /// New Task Description /// -->
                 <div class="new-comment">
                     <user-avatar
                             size="small"
                             :url="currentUser.avatarUrl"
                             :name="currentUser.fullName"/>
+                    <b class="uppercase">{{ currentUser.fullName }}</b>
 
                     <div class="new-comment-body">
                         <editor
@@ -147,6 +146,13 @@
                     </div>
                 </div>
                 <!-- /// End New Task Description /// -->
+
+                <hr class="double">
+
+                <task-history
+                        v-if="taskHistory && taskHistory.length > 0"
+                        :items="taskHistory"
+                        @input="onHistoryPageChange"/>
             </div>
 
             <div class="col-lg-6">
@@ -457,19 +463,34 @@
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <condition v-model="editableData.colorStatus" v-bind:selectedStatusColor="editableData.colorStatus" v-on:input="updateColorStatus"/>
+                    <h4 class="widget-title">
+                        {{ translateText('message.task_condition') }} -
+                        <b
+                                v-for="(tl, index) in trafficLights"
+                                :key="index"
+                                :style="{color: tl.getColor()}"> {{ translate(tl.getLabel()) }} </b>
+                    </h4>
+
+                    <traffic-light
+                            size="small"
+                            :editable="true"
+                            :value="editableData.trafficLight"
+                            @input="onTrafficLightUpdate"/>
 
                     <!-- /// End Task Condition /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachmets /// -->
-
+                    <h3>{{ translate('message.attachments') }}</h3>
                     <attachments
                             @input="onUpdateAttachments"
                             :disabled="disableAttachments"
-                            v-model="editableData.medias"/>
+                            v-model="editableData.medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Task Attachments /// -->
+
                     <hr class="double">
 
                     <!-- /// Task Labels /// -->
@@ -522,7 +543,7 @@ import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import AttachIcon from '../../_common/_icons/AttachIcon';
 import TaskModals from './View/TaskModals';
-import Attachments from './Create/Attachments';
+import Attachments from '../../_common/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import SelectField from '../../_common/_form-components/SelectField';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -531,7 +552,6 @@ import Modal from '../../_common/Modal';
 import AlertModal from '../../_common/AlertModal.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
-import Condition from './Create/Condition';
 import EditScheduleModal from './View/EditScheduleModal';
 import TaskHistory from './View/TaskHistory';
 import moment from 'moment';
@@ -542,6 +562,7 @@ import TaskViewAssignments from './View/Assignments';
 import EditStatusModal from './View/EditStatusModal';
 import UserAvatar from '../../_common/UserAvatar';
 import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
+import TrafficLight from '../../_common/TrafficLight';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -550,6 +571,7 @@ const TASK_STATUS_COMPLETED = 4;
 export default {
     name: 'task-view',
     components: {
+        TrafficLight,
         ScheduleDatesTable,
         UserAvatar,
         EditStatusModal,
@@ -565,7 +587,6 @@ export default {
         RangeSlider,
         Modal,
         router,
-        Condition,
         moment,
         AlertModal,
         SwitchField,
@@ -576,12 +597,11 @@ export default {
     created() {
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
-            this.getTaskHistory(this.$route.params.taskId);
         }
-        this.getColorStatuses();
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
         this.getProjectLabels(this.$route.params.id);
+        this.loadTaskHistory();
     },
     computed: {
         ...mapGetters({
@@ -594,12 +614,24 @@ export default {
         ...mapGetters([
             'workPackageStatusById',
             'taskHistory',
-            'colorStatuses',
-            'colorStatusesForSelect',
             'workPackageStatusesForSelect',
             'projectUsers',
             'projectCurrencySymbol',
+            'defaultTrafficLightValue',
+            'trafficLights',
+            'validationMessagesFor',
+            'projectMaxUploadFileSize',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         isClosed() {
             return this.task.isClosed;
         },
@@ -620,16 +652,10 @@ export default {
 
             return count;
         },
-        currentUserAvatar: function() {
-            return this.currentUser.avatarUrl;
-        },
     },
     watch: {
         task(value) {
-            this.editableData.colorStatus = this.task.colorStatus
-                ? {id: this.task.colorStatus, name: this.task.colorStatusName}
-                : null
-            ;
+            this.editableData.trafficLight = this.task.trafficLight;
             this.editableData.workPackageStatus = this.task.workPackageStatus
                 ? {key: this.task.workPackageStatus, label: this.translateText(this.task.workPackageStatusName)}
                 : null
@@ -725,9 +751,9 @@ export default {
         ...mapActions([
             'getTaskById',
             'getTaskHistory',
+            'resetTaskHistory',
             'deleteTaskSubtask',
             'addTaskComment',
-            'getColorStatuses',
             'editTask',
             'getProjectUsers',
             'getWorkPackageStatuses',
@@ -738,6 +764,17 @@ export default {
             'patchSubtask',
             'editTaskCost',
         ]),
+        onTrafficLightUpdate(trafficLight) {
+            this.editableData.trafficLight = trafficLight;
+            let data = {
+                trafficLight: trafficLight,
+            };
+
+            this.updateTask({
+                data: data,
+                taskId: this.$route.params.taskId,
+            });
+        },
         onSubtaskStatusChange(event) {
             let taskId = Number(event.target.value);
             let data = {
@@ -785,7 +822,9 @@ export default {
                 },
             };
             this.newComment = '';
-            this.addTaskComment(data);
+            this.addTaskComment(data).then(() => {
+                this.loadTaskHistory();
+            });
         },
         itemTotal(item) {
             let duration = (item.duration == null || isNaN(item.duration) || item.duration == 0) ? 1 : item.duration;
@@ -798,28 +837,14 @@ export default {
                 medias: this.editableData.medias,
             };
 
-            this
-                .uploadAttachmentTask({
-                    data: createFormData(data),
-                    taskId: this.$route.params.taskId,
-                })
-                .then(
-                    (response) => {
-                        this.disableAttachments = false;
-
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.fileUploadErrorMessage = response.body.messages.medias;
-                            this.showFileUploadFailed = true;
-                            return;
-                        }
-
-                        if (response.status === 0) {
-                            this.fileUploadErrorMessage = this.translateText('message.uploading_file_failed');
-                            this.showFileUploadFailed = true;
-                        }
-                    }
-                )
-            ;
+            this.uploadAttachmentTask({
+                data: createFormData(data),
+                taskId: this.$route.params.taskId,
+            }).then(() => {
+                this.disableAttachments = false;
+            }).catch((response) => {
+                this.disableAttachments = false;
+            });
         },
         translateText(text) {
             return this.translate(text);
@@ -843,7 +868,7 @@ export default {
                 }
             }
 
-            this.patchTask({
+            this.updateTask({
                 taskId: this.task.id,
                 data: {
                     progress,
@@ -860,7 +885,7 @@ export default {
             this.showEditStatusModal = false;
         },
         onChangeStatus(value) {
-            this.patchTask({
+            this.updateTask({
                 taskId: this.task.id,
                 data: {
                     workPackageStatus: value.key,
@@ -884,7 +909,7 @@ export default {
                 }),
             };
 
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             }).then(({body}) => {
@@ -984,20 +1009,11 @@ export default {
             this.showOpenTaskModal = value;
             this.getTaskById(this.$route.params.taskId);
         },
-        updateColorStatus() {
-            let data = {
-                colorStatus: this.editableData.colorStatus.id,
-            };
-            this.patchTask({
-                data: data,
-                taskId: this.$route.params.taskId,
-            });
-        },
         updateLabel() {
             let data = {
                 labels: [this.editableData.label.key],
             };
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
@@ -1007,7 +1023,7 @@ export default {
             let data = {
                 labels: [],
             };
-            this.patchTask({
+            this.updateTask({
                 data: data,
                 taskId: this.$route.params.taskId,
             });
@@ -1023,7 +1039,7 @@ export default {
                 informedUsers: value.informedUsers.map((u) => u.key),
             };
 
-            this.patchTask({
+            this.updateTask({
                 data,
                 taskId: this.$route.params.taskId,
             }).then(() => {
@@ -1050,6 +1066,43 @@ export default {
                     }
                 }, (response) => {}
             );
+        },
+        onHistoryPageChange() {
+            this.loadMoreTaskHistory();
+        },
+        loadMoreTaskHistory() {
+            if (this.loadingHistory) {
+                return;
+            }
+
+            if (this.historyPage >= this.historyNbPages) {
+                return;
+            }
+
+            this.loadingHistory = true;
+            this.historyPage++;
+
+            let data = {
+                id: this.$route.params.taskId,
+                page: this.historyPage,
+            };
+
+            this.getTaskHistory(data).then((response) => {
+                this.historyNbPages = response.data.nbPages;
+                this.loadingHistory = false;
+            });
+        },
+        loadTaskHistory() {
+            this.historyPage = 0;
+            this.historyNbPages = 1;
+            this.resetTaskHistory();
+            this.loadMoreTaskHistory();
+        },
+        updateTask(data) {
+            return this.patchTask(data).then((response) => {
+                this.loadTaskHistory();
+                return response;
+            });
         },
     },
     data() {
@@ -1079,7 +1132,7 @@ export default {
                     informedUsers: [],
                 },
                 workPackageStatus: null,
-                colorStatus: false,
+                trafficLight: this.defaultTrafficLightValue,
                 label: null,
                 medias: [],
                 schedule: {
@@ -1101,6 +1154,9 @@ export default {
             newComment: '',
             updatingAssignments: false,
             disableAttachments: false,
+            historyPage: 0,
+            historyNbPages: 1,
+            loadingHistory: false,
         };
     },
 };
@@ -1395,6 +1451,35 @@ export default {
 
         &:last-child {
             margin: 0;
+        }
+    }
+
+    .loading-more {
+        text-align: center;
+        padding: 1em 0 1em;
+        color: $middleColor;
+    }
+
+    .histories-scroll {
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        overflow-y: hidden !important;
+    }
+
+    .task-history {
+        height: 600px;
+    }
+</style>
+
+<style lang="scss">
+    .histories-scroll {
+        .ps__scrollbar-x-rail {
+            bottom: auto !important;
+            top: 0;
+        }
+        > .ps__scrollbar-y-rail {
+            visibility: visible;
         }
     }
 </style>

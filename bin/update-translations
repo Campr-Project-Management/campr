@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+php "$DIR/console" translation:download --cache app
+
+php "$DIR/console" bazinga:js-translation:dump --format=js --merge-domains web/js
+
+rm -fv $DIR/backend/app/Resources/translations/*.yml~
+
+php "$DIR/console" app:dump-ssr-translations

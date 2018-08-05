@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-12">
-                <div class="rasci-matrix page-section">
+                <div v-bind:class="{'rasci-matrix page-section': true, 'fixed': fixed}" ref="rasciTopSection">
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
@@ -40,18 +40,19 @@
                                 <th v-for="(user, userIndex) in users"
                                     :key="user.id"
                                     :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                    <div
-                                        class="avatar"
-                                        v-tooltip.top-center="user.firstName + ' ' + user.lastName"
-                                        :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
-                                </th>                                  
+                                    <user-avatar
+                                            size="small"
+                                            :name="`${user.firstName} ${user.lastName}`"
+                                            :url="getUserAvatar(user)"
+                                            :tooltip="`${user.firstName} ${user.lastName}`"/>
+                                </th>
                             </tr>
                         </thead>
                     </table>
                 </div>
         
                 <!-- /// RASCI /// -->
-                <table class="table table-striped table-responsive rasci-table">
+                <table class="table table-striped table-responsive rasci-table rasci-table__top" v-bind:class="{'fixed': fixed}">
                     <thead>
                         <tr>
                             <th class="task-number" width="10%">{{ translateText('table_header_cell.task_number') }}</th>
@@ -59,11 +60,12 @@
                             <th v-for="(user, userIndex) in users"
                                 :key="user.id"
                                 :class="{'rasci-cell': true, 'active-cell': activeCell === userIndex}">
-                                <div
-                                    class="avatar"
-                                    v-tooltip.top-center="user.firstName + ' ' + user.lastName"
-                                    :style="{backgroundImage: 'url(' + getUserAvatar(user) + ')'}"></div>
-                            </th>                                  
+                                <user-avatar
+                                        size="small"
+                                        :name="`${user.firstName} ${user.lastName}`"
+                                        :url="getUserAvatar(user)"
+                                        :tooltip="`${user.firstName} ${user.lastName}`"/>
+                            </th>
                         </tr>
                     </thead>                  
                     <tbody>
@@ -106,7 +108,8 @@
                                         v-bind:activeElem="activeElement"
                                         :elementKey="generateElementKey(workPackage.name + workPackage.id + userIndex)"
                                         @handleClick="activeElement = $event"
-                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"/>
+                                        @input="setRaciData({project: workPackage.project, user: user.user, workPackage: workPackage.id, userObj:user, data: $event})"
+                                        @close="deleteRasciData({project: workPackage.project, user: user.user, workPackage: workPackage.id})"/>
                             </td>
                         </tr>
                     </tbody>
@@ -119,13 +122,15 @@
 <script>
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         ResponsibilitySelect,
     },
     methods: {
-        ...mapActions(['getRasci', 'setRasci']),
+        ...mapActions(['getRasci', 'setRasci', 'deleteRasci']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -136,6 +141,12 @@ export default {
                     this.activeElement = '';
                 }
             }, (userObj, data));
+        },
+        deleteRasciData: function({project, user, workPackage}) {
+            this.deleteRasci({project, user, workPackage}).then(() => {
+                this.loadRasci();
+                this.activeElement = '';
+            });
         },
         repeat(str, count) {
             let c = 0;
@@ -165,6 +176,13 @@ export default {
                 }
             });
         },
+        handleScroll() {
+            if (window.scrollY >= 100) {
+                this.fixed = true;
+            } else {
+                this.fixed = false;
+            }
+        },
     },
     computed: {
         ...mapGetters(['rasci', 'currentProject']),
@@ -177,6 +195,10 @@ export default {
     },
     created() {
         this.loadRasci();
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
     data() {
         return {
@@ -184,6 +206,7 @@ export default {
             activeRow: null,
             scrolled: false,
             activeElem: '',
+            fixed: false,
         };
     },
 };
@@ -197,12 +220,19 @@ export default {
 
     .rasci-matrix {
         background: #232D4B;
-        position: sticky;
-        top: 0;
-        transition: all 0.2s, ease-in;
-        z-index: 2;
         padding: 0;
-        margin-bottom: -50px;
+        margin-bottom: -60px;
+        position: absolute;
+        z-index: 2;
+        width: calc(100% - 30px);
+
+        &.fixed {
+            position: fixed;
+            top: 0;
+            left: 230px;
+            z-index: 2;
+            width: calc(100% - 250px);
+        }
     }
 
     .rasci-matrix + .rasci-table {
@@ -235,6 +265,16 @@ export default {
         z-index: 1;
         table-layout: fixed;
 
+        &.rasci-table__top {
+            margin-top: 145px;
+        }
+
+        &.fixed {
+            margin-top: 160px;
+        }
+
+
+
         tr,
         th,
         td {
@@ -247,8 +287,7 @@ export default {
             box-sizing: content-box;
             font-size: 0;
 
-            .rasci-select,
-            .avatar {
+            .rasci-select {
                 position: relative;
                 z-index: 1;
                 margin: 0;
@@ -262,8 +301,7 @@ export default {
             }
 
             &:hover {               
-                .rasci-select,
-                .avatar {
+                .rasci-select {
                     z-index: 2;
                 }
             }
@@ -293,13 +331,5 @@ export default {
         &:last-child {
             padding-right: 30px
         }
-    }
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
-        background-size: cover;
-        display: inline-block;
     }
 </style>

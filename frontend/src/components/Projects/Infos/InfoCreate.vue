@@ -13,17 +13,25 @@
                     </div>
                 </div>
                 <!-- /// End Header /// -->
-                
+
                 <div class="form">
                     <!-- /// Info Category /// -->
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <select-field
-                                        :title="translate('label.category')"
-                                        :options="infoCategoriesForDropdown"
-                                        v-model="infoCategory"/>
+                                    :title="translate('label.category')"
+                                    :options="infoCategoriesForDropdown"
+                                    v-model="infoCategory"/>
                                 <error at-path="infoCategory"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select-field
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="meeting"
+                                    :currentOption="meeting" />
+                                <error at-path="meeting" />
                             </div>
                         </div>
                     </div>
@@ -32,7 +40,7 @@
                     <!-- /// Info Title and Description /// -->
                     <div class="form-group">
                         <input-field type="text" :label="translate('placeholder.info_topic')" v-model="topic" :content="topic" />
-                        <error at-path="topic"/>
+                        <error at-path="topic" />
                     </div>
                     <div class="form-group">
                         <editor
@@ -55,10 +63,9 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.expiry_date') }}</label>
-                                    <datepicker v-model="expiresAt" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="expiresAt"/>
                                 </div>
-                                <error at-path="dueDate"/>
+                                <error at-path="expiresAt"/>
                             </div>
                         </div>
                     </div>
@@ -69,7 +76,7 @@
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-infos'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
                         <a class="btn-rounded btn-auto btn-auto second-bg" @click="doSave">
-                            {{ translate(info && info.id ? 'button.edit_info' : 'button.create_info') }}
+                            {{ translate(isEdit ? 'button.edit_info' : 'button.create_info') }}
                         </a>
                     </div>
                     <!-- /// End Actions /// -->
@@ -85,8 +92,6 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
@@ -94,13 +99,13 @@ import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
 import moment from 'moment';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         Error,
         Editor,
@@ -114,47 +119,56 @@ export default {
             'createInfo',
             'editInfo',
             'emptyValidationMessages',
+            'getProjectMeetings',
         ]),
         doSave() {
-            const data = {
-                topic: this.topic,
-                description: this.description,
-                expiresAt: this.$formatToSQLDate(this.expiresAt),
-                infoCategory: this.infoCategory && this.infoCategory.key
-                    ? this.infoCategory.key
-                    : null,
-                responsibility: this.responsibility && this.responsibility.length
-                    ? this.responsibility[0]
-                    : null,
-            };
+            if (!this.isSaving) {
+                const data = {
+                    topic: this.topic,
+                    description: this.description,
+                    expiresAt: this.$formatToSQLDate(this.expiresAt),
+                    infoCategory: this.infoCategory && this.infoCategory.key
+                        ? this.infoCategory.key
+                        : null,
+                    responsibility: this.responsibility && this.responsibility.length
+                        ? this.responsibility[0]
+                        : null,
+                    meeting: this.meeting
+                        ? this.meeting.key
+                        : null,
+                };
 
-            let method = this.createInfo;
-            let params = {
-                projectId: this.$route.params.id,
-                data,
-            };
+                this.isSaving = true;
+                let method = this.createInfo;
+                let params = {
+                    projectId: this.$route.params.id,
+                    data,
+                };
 
-            if (this.$route.params.infoId) {
-                method = this.editInfo;
-                params.id = this.$route.params.infoId;
-                delete params.projectId;
-            }
+                if (this.$route.params.infoId) {
+                    method = this.editInfo;
+                    params.id = this.$route.params.infoId;
+                    delete params.projectId;
+                }
 
-            method(params)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error && response.body.messages) {
+                method(params)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error && response.body.messages) {
+                                this.showFailed = true;
+                                return;
+                            }
+
+                            this.showSaved = true;
+                        },
+                        () => {
                             this.showFailed = true;
-                            return;
+                            this.isSaving = false;
                         }
-
-                        this.showSaved = true;
-                    },
-                    () => {
-                        this.showFailed = true;
-                    }
-                )
-            ;
+                    )
+                ;
+            }
         },
     },
     watch: {
@@ -173,20 +187,32 @@ export default {
             if (val) {
                 this.topic = val.topic;
                 this.description = val.description;
-                this.expiresAt = val.expiresAt ? moment(val.expiresAt).toDate() : null;
+                this.expiresAt = val.expiresAt ? moment(val.expiresAt).toDate() : new Date();
                 this.infoCategory = {
                     key: val.infoCategory,
                     label: this.translate(val.infoCategoryName),
                 };
                 this.responsibility = [val.responsibility];
+                this.meeting = val.meeting
+                    ? {key: val.meeting, label: val.meetingName}
+                    : null;
             }
         },
     },
     computed: {
-        ...mapGetters(['info', 'infoCategoriesForDropdown', 'validationMessages']),
+        ...mapGetters([
+            'info',
+            'infoCategoriesForDropdown',
+            'validationMessages',
+            'projectMeetingsForSelect',
+        ]),
+        isEdit() {
+            return !!this.$route.params.infoId;
+        },
     },
     created() {
         this.getInfoCategories();
+        this.getProjectMeetings({projectId: this.$route.params.id});
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
         }
@@ -204,6 +230,8 @@ export default {
             expiresAt: null,
             infoCategory: null,
             responsibility: [],
+            meeting: null,
+            isSaving: false,
         };
     },
 };

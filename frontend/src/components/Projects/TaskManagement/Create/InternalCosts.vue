@@ -6,12 +6,12 @@
                 <div class="form-group">
                     <div class="col-md-6">
                         <select-field
-                            v-bind:title="translate('label.cost_item')"
-                            v-bind:options="resourcesForSelect"
-                            v-bind:currentOption="item.resource"
+                            :title="translate('label.cost_item')"
+                            :options="resourcesForSelect"
+                            :value="{key: item.resource}"
+                            :currentOption="item.resource"
                             v-model="item.resource"
-                            @input="onItemUpdate('resource', index, $event)" 
-                        />
+                            @input="onItemUpdate('resource', index, $event)" />
                         <error
                             v-if="getValidationMessages(index, 'resource').length"
                             v-for="message in getValidationMessages(index, 'resource')"

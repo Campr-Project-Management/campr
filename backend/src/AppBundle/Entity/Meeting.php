@@ -3,10 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Meeting.
@@ -43,7 +45,7 @@ class Meeting
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MeetingCategory")
      * @ORM\JoinColumn(name="meeting_category_id")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="not_blank.meeting_category")
      */
     private $meetingCategory;
 
@@ -76,6 +78,7 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="start", type="time")
+     * @Assert\Time()
      */
     private $start;
 
@@ -85,6 +88,8 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="end", type="time")
+     * @Assert\Time()
+     * @AppAssert\GreaterThan(propertyPath="start", message="invalid.end_time_greater_than_start_time")
      */
     private $end;
 
@@ -406,7 +411,7 @@ class Meeting
     /**
      * Get meetingParticipants.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection|Collection
      */
     public function getMeetingParticipants()
     {

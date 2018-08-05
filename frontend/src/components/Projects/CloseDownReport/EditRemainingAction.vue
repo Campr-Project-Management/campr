@@ -40,8 +40,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translateText('label.due_date') }}</label>
-                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="dueDate"/>
                                 </div>
                             </div>
                         </div>
@@ -64,20 +63,18 @@
 
 <script>
 import InputField from '../../_common/_form-components/InputField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import moment from 'moment';
 import {mapActions, mapGetters} from 'vuex';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         InputField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         moment,
         Error,

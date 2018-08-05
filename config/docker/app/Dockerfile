@@ -1,9 +1,10 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 ENV APPLICATION_UID 1000
 ENV APPLICATION_USER application
 ENV APPLICATION_GID 1000
 ENV APPLICATION_GROUP application
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get clean && apt-get -y update && apt-get install -y \
     locales \
@@ -35,6 +36,7 @@ RUN apt-get install -y \
     php7.1-curl \
     php7.1-cgi \
     php7.1-dev \
+    php7.1-dom \
     php7.1-fpm \
     php7.1-gd \
     php7.1-gmp \

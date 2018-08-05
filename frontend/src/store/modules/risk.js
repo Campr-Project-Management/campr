@@ -10,24 +10,21 @@ const state = {
 const getters = {
     risks: state => state.risks,
     currentRisk: state => state.currentRisk,
+    risk: (state, getters) => getters.currentRisk,
     measures: state => state.currentRisk.measures,
 };
 
 const actions = {
     getProjectRisks({commit}, data) {
-        Vue.http
-            .get(
-                Routing.generate(
-                    'app_api_project_risks',
-                    {id: data.projectId, probability: data.probability, impact: data.impact}
-                )
-            ).then((response) => {
-                if (response.status === 200 || response.status === 204) {
-                    let risks = response.data;
-                    commit(types.SET_PROJECT_RISKS, {risks});
-                }
-            }, (response) => {
-            });
+        return Vue.http.get(
+            Routing.generate('app_api_project_risks', {id: data.projectId}),
+        ).then((response) => {
+            if (response.status === 200 || response.status === 204) {
+                let risks = response.data;
+                commit(types.SET_PROJECT_RISKS, {risks});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Gets project risk
@@ -45,25 +42,29 @@ const actions = {
             });
     },
     /**
-     * Create project risk
+     * Creates a new project risk
      * @param {function} commit
-     * @param {array}    data
+     * @param {array} data
+     * @return {object}
      */
     createProjectRisk({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_create_risk', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-risks-and-opportunities'});
+        return Vue
+            .http
+                .post(
+                    Routing.generate('app_api_project_create_risk', {id: data.project}),
+                    JSON.stringify(data)
+                ).then((response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-risks-and-opportunities'});
+                    }
+                }, (response) => {
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
     /**
      * Edit project risk

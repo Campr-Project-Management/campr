@@ -53,30 +53,27 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
-                                    <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="schedule.meetingDate"/>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
-                                    <timepicker v-model="schedule.startTime" hide-clear-button />
-                                    <error
-                                        v-if="validationMessages.start && validationMessages.start.length"
-                                        v-for="(message, index) in validationMessages.start"
-                                        :key="`schedule-schedule-${index}`"
-                                        :message="message" />
+                                    <timepicker
+                                            v-model="schedule.startTime"
+                                            hide-clear-button
+                                            :minute-interval="15"/>
+                                    <error at-path="start"/>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <timepicker v-model="schedule.endTime" hide-clear-button />
-                                    <error
-                                        v-if="validationMessages.end && validationMessages.end.length"
-                                        v-for="(message, index) in validationMessages.end"
-                                        :key="`schedule-end-${index}`"
-                                        :message="message" />
+                                    <timepicker
+                                            v-model="schedule.endTime"
+                                            hide-clear-button
+                                            :minute-interval="15" />
+                                    <error at-path="end"/>
                                 </div>
                             </div>
                         </div>
@@ -122,6 +119,18 @@
                     <!-- /// Meeting Agenda /// -->
                     <h3>{{ translate('message.agenda') }}</h3>
                     <div v-for="(agenda, index) in agendas" :key="`agenda-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteAgenda(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <input-field type="text" :label="translate('placeholder.topic')" v-model="agenda.topic" :content="agenda.topic" />
                             <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
@@ -182,7 +191,12 @@
                     <hr class="double">
 
                     <!-- /// Meeting Documents /// -->
-                    <meeting-attachments v-on:input="setMedias" :editMedias="medias" />
+                    <h3>{{ translate('message.documents') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            label="button.add_document"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
@@ -190,6 +204,18 @@
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
                     <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteDecision(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <meeting-decision-form
                             :key="index"
                             v-model="decisions[index]"
@@ -206,6 +232,18 @@
                     <!-- /// ToDos /// -->
                     <h3>{{ translate('message.todos') }}</h3>
                     <div v-for="(todo, index) in todos" :key="`todo-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteTodo(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="todo.title" :content="todo.title" />
                         <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                             <error
@@ -243,8 +281,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translate('label.due_date') }}</label>
-                                        <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="todo.dueDate"/>
                                     </div>
                                 </div>
                             </div>
@@ -279,6 +316,18 @@
                     <!-- /// Infos /// -->
                     <h3>{{ translate('message.infos') }}</h3>
                     <div v-for="(info, index) in infos" :key="`info-${index}`">
+                        <div class="row">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteInfo(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
                         <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                             <error
@@ -309,8 +358,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translate('label.expiry_date') }}</label>
-                                        <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="info.expiresAt"/>
                                     </div>
                                     <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
                                         <error
@@ -392,10 +440,8 @@
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
+import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import MeetingAttachments from './MeetingAttachments';
 import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -406,16 +452,18 @@ import router from '../../../router';
 import MeetingParticipants from './MeetingParticipants';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import MeetingDecisionForm from './Form/DecisionForm';
+import DateField from '../../_common/_form-components/DateField';
+import Attachments from '../../_common/Attachments';
 
 export default {
     components: {
+        Attachments,
+        DateField,
         MeetingDecisionForm,
+        DeleteIcon,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
-        MeetingAttachments,
         Timepicker,
         MultiSelectField,
         AlertModal,
@@ -453,6 +501,12 @@ export default {
                 },
             });
         },
+        onDeleteAgenda(index) {
+            this.agendas = [
+                ...this.agendas.slice(0, index),
+                ...this.agendas.slice(index + 1),
+            ];
+        },
         addDecision() {
             this.decisions.push({
                 title: '',
@@ -461,6 +515,12 @@ export default {
                 done: false,
                 dueDate: new Date(),
             });
+        },
+        onDeleteDecision(index) {
+            this.decisions = [
+                ...this.decisions.slice(0, index),
+                ...this.decisions.slice(index + 1),
+            ];
         },
         addTodo() {
             this.todos.push({
@@ -471,6 +531,12 @@ export default {
                 status: {label: this.translate('label.select_status')},
             });
         },
+        onDeleteTodo(index) {
+            this.todos = [
+                ...this.todos.slice(0, index),
+                ...this.todos.slice(index + 1),
+            ];
+        },
         addInfo() {
             this.infos.push({
                 topic: '',
@@ -480,59 +546,70 @@ export default {
                 infoCategory: {label: this.translate('label.category')},
             });
         },
+        onDeleteInfo(index) {
+            this.infos = [
+                ...this.infos.slice(0, index),
+                ...this.infos.slice(index + 1),
+            ];
+        },
         saveMeeting() {
-            let data = {
-                distributionLists: this.details.distributionList
-                    ? [this.details.distributionList]
-                    : null,
-                meetingCategory: this.details.category,
-                date: this.schedule.meetingDate,
-                start: this.schedule.startTime,
-                end: this.schedule.endTime,
-                location: this.location,
-                objectives: this.objectives,
-                agendas: this.agendas,
-                medias: this.medias,
-                decisions: this.decisions,
-                todos: this.todos,
-                infos: this.infos.map((info) => {
-                    return Object.assign({}, info, {
-                        expiresAt: this.$formatToSQLDate(info.expiresAt),
+            if (!this.isSaving) {
+                let data = {
+                    distributionLists: this.details.distributionList
+                        ? [this.details.distributionList]
+                        : null,
+                    meetingCategory: this.details.category,
+                    date: this.schedule.meetingDate,
+                    start: this.schedule.startTime,
+                    end: this.schedule.endTime,
+                    location: this.location,
+                    objectives: this.objectives,
+                    agendas: this.agendas,
+                    medias: this.medias,
+                    decisions: this.decisions,
+                    todos: this.todos,
+                    infos: this.infos.map((info) => {
+                        return Object.assign({}, info, {
+                            expiresAt: this.$formatToSQLDate(info.expiresAt),
+                        });
+                    }),
+                    meetingParticipants: this.selectedParticipants.map(participant => {
+                        return {
+                            user: participant.user,
+                            isPresent: participant.isPresent,
+                            inDistributionList: participant.inDistributionList,
+                        };
+                    }),
+                };
+                this.isSaving = true;
+
+                if (data.distributionLists && data.distributionLists.length > 0) {
+                    data.name = '';
+                    const length = data.distributionLists.length;
+                    data.distributionLists.map((item, index) => {
+                        data.name += index !== length - 1 ? item.label + '|' : item.label;
                     });
-                }),
-                meetingParticipants: this.selectedParticipants.map(participant => {
-                    return {
-                        user: participant.user,
-                        isPresent: participant.isPresent,
-                        inDistributionList: participant.inDistributionList,
-                    };
-                }),
-            };
+                }
 
-            if (data.distributionLists && data.distributionLists.length > 0) {
-                data.name = '';
-                const length = data.distributionLists.length;
-                data.distributionLists.map((item, index) => {
-                    data.name += index !== length - 1 ? item.label + '|' : item.label;
-                });
-            }
-
-            this
-                .createProjectMeeting({
-                    data: createFormData(data),
-                    projectId: this.$route.params.id,
-                })
-                .then((response) => {
-                    if (response.body && response.body.error && response.body.messages) {
+                this
+                    .createProjectMeeting({
+                        data: createFormData(data),
+                        projectId: this.$route.params.id,
+                    })
+                    .then((response) => {
+                        this.isSaving = false;
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        } else {
+                            this.showSaved = true;
+                        }
+                    },
+                    () => {
+                        this.isSaving = false;
                         this.showFailed = true;
-                    } else {
-                        this.showSaved = true;
-                    }
-                },
-                () => {
-                    this.showFailed = true;
-                })
-            ;
+                    })
+                ;
+            }
         },
         distributionListUpdated(distributionList) {
             this.details.distributionList = {key: distributionList.id, label: distributionList.name};
@@ -548,7 +625,18 @@ export default {
             'validationMessages',
             'validationMessagesFor',
             'decisionsStatusesForSelect',
+            'projectMaxUploadFileSize',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         decisionsStatusesOptions() {
             return this.decisionsStatusesForSelect.map((option) => {
                 return Object.assign({}, option, {label: this.translate(option.label)});
@@ -568,9 +656,7 @@ export default {
     watch: {
         'details.distributionList': {
             handler: function(value) {
-                this.selectedParticipants = this
-                    .selectedParticipants
-                    .filter(participant => participant.isPresent || participant.inDistributionList);
+                this.selectedParticipants = [];
 
                 if (!value || !value.key) {
                     return;
@@ -663,6 +749,7 @@ export default {
                 category: null,
             },
             editDistributionListModal: null,
+            isSaving: false,
         };
     },
 };

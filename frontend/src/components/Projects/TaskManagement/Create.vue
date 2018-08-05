@@ -11,7 +11,7 @@
                         </router-link>
                         <router-link
                             v-if="task.id && isEdit"
-                            class="small-link" 
+                            class="small-link"
                             :to="{name: 'project-task-management-view', params: {id: task.project, taskId: task.id}}">
                             <i class="fa fa-angle-left"></i>
                             {{ translate('message.back_to_task_view') }}
@@ -24,8 +24,12 @@
                         type="file"
                         name="importXmlFile"
                         style="display: none;"
+                        v-if="showImport"
                         v-on:change="uploadImportTaskFile" />
-                    <a class="btn-rounded btn-auto btn-empty flex" v-on:click="openFileSelection">
+                    <a
+                        class="btn-rounded btn-auto btn-empty flex"
+                        v-if="showImport"
+                        v-on:click="openFileSelection">
                         <span>{{ translate('message.import_task') }}</span>
                         <upload-icon></upload-icon>
                     </a>
@@ -56,25 +60,25 @@
                     <hr class="double">
 
                     <!-- /// Task Planning /// -->
-                    <planning v-model="planning" :editPlanning="planning" />
+                    <planning v-model="planning"/>
                     <!-- /// End Task Planning /// -->
 
                     <hr>
                     <!-- /// Task Schedule /// -->
                     <schedule
-                            v-model="schedule"
-                            :editable-base="!isEditBase"
-                            :editable-forecast="isEdit"
-                            v-on:input="updateSchedule"/>
+                        v-model="schedule"
+                        :editable-base="!isEditBase"
+                        :editable-forecast="isEdit"
+                        v-on:input="updateSchedule"/>
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Internal Costs /// -->
                     <internal-costs
-                            v-model="internalCosts"
-                            :validationMessages="internalValidationMessages"
-                            @add="onInternalCostAdded"/>
+                        v-model="internalCosts"
+                        :validationMessages="internalValidationMessages"
+                        @add="onInternalCostAdded"/>
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
@@ -105,30 +109,30 @@
 
                     <!-- /// SubTasks /// -->
                     <subtasks
-                        v-model="subtasks"
-                        :editSubtasks="subtasks"
-                        :validationMessages="validationMessages.children" />
+                            v-model="subtasks"
+                            :editSubtasks="subtasks"
+                            :validationMessages="validationMessages.children"/>
                     <!-- /// End SubTasks /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Attachments /// -->
-                    <attachments v-model="medias"/>
-                    <error
-                            v-if="validationMessages.medias && validationMessages.medias.length"
-                            v-for="message in validationMessages.medias"
-                            :message="message"/>
+                    <h3>{{ translate('message.attachments') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Condition /// -->
-                    <condition v-model="statusColor" :selectedStatusColor="statusColor" />
-                    <error
-                        v-if="validationMessages.colorStatus && validationMessages.colorStatus.length"
-                        v-for="message in validationMessages.colorStatus"
-                        :message="message" />
-                    <!-- /// End Task Condition /// -->
+                    <h3>{{ 'message.task_condition'|trans }}</h3>
+                    <traffic-light
+                            size="small"
+                            v-model="trafficLight"
+                            :editable="true"/>
+                    <error at-path="trafficLight"/>
 
                     <hr class="double">
 
@@ -136,7 +140,7 @@
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
                         <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
-                        <a v-if="isEdit" @click="editExistingTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
+                        <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -152,17 +156,14 @@
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import UploadIcon from '../../_common/_icons/UploadIcon';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import Schedule from './Create/Schedule';
 import InternalCosts from './Create/InternalCosts';
 import ExternalCosts from './Create/ExternalCosts';
 import Subtasks from './Create/Subtasks';
 import Planning from './Create/Planning';
-import Condition from './Create/Condition';
 import TaskDetails from './Create/Details';
 import TaskAssignments from './Create/Assignments';
-import Attachments from './Create/Attachments';
-import datepicker from '../../_common/_form-components/Datepicker';
+import Attachments from '../../_common/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import Editor from '../../_common/Editor.vue';
 import Error from '../../_common/_messages/Error.vue';
@@ -172,22 +173,21 @@ import {createFormData} from '../../../helpers/task';
 import router from '../../../router';
 import _ from 'lodash';
 import moment from 'moment';
+import TrafficLight from '../../_common/TrafficLight';
 
 export default {
     components: {
+        TrafficLight,
         TaskAssignments,
         InputField,
         SelectField,
         UploadIcon,
-        CalendarIcon,
-        datepicker,
         Switches,
         Schedule,
         InternalCosts,
         ExternalCosts,
         Subtasks,
         Planning,
-        Condition,
         TaskDetails,
         Attachments,
         Editor,
@@ -203,10 +203,16 @@ export default {
                 'importTask',
                 'emptyValidationMessages',
                 'getProjectUnits',
-                'getGreenColorStatus',
+                'importXMLTask',
             ]
         ),
         createTask: function() {
+            if (this.isSaving) {
+                return;
+            }
+
+            this.isSaving = true;
+
             this
                 .createNewTask({
                     data: createFormData(this.formData),
@@ -214,6 +220,7 @@ export default {
                 })
                 .then(
                     (response) => {
+                        this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
                             return;
@@ -222,12 +229,18 @@ export default {
                         this.showSaved = true;
                     },
                     () => {
+                        this.isSaving = false;
                         this.showFailed = true;
                     }
                 )
             ;
         },
-        editExistingTask: function() {
+        updateTask: function() {
+            if (this.isSaving) {
+                return;
+            }
+
+            this.isSaving = true;
             let customUnitAdded = this.wasCustomUnitAdded(this.externalCosts);
 
             let formData = createFormData(this.formData);
@@ -243,6 +256,7 @@ export default {
                 })
                 .then(
                     (response) => {
+                        this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
                             return;
@@ -255,6 +269,7 @@ export default {
                         this.showSaved = true;
                     },
                     () => {
+                        this.isSaving = false;
                         this.showFailed = true;
                     }
                 )
@@ -264,36 +279,37 @@ export default {
             document.getElementById('importXmlFile').click();
         },
         uploadImportTaskFile: function(e) {
-            let files = e.target.files || e.dataTransfer.files;
+            const files = e.target.files || e.dataTransfer.files;
             if (!files.length) {
                 return;
             }
-            let formData = new FormData();
-            formData.append('file', files[0]);
 
-            this.importTask({
-                data: formData,
-                projectId: this.$route.params.id,
-            })
-            .then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        this.showFailed = true;
-                    } else {
-                        this.showSaved = true;
-                    }
-                },
-                () => {
-                    this.showFailed = true;
-                }
-            );
+            const file = files[0];
+
+            if (!file.name.match(/^.+\.xml$/i)) {
+                alert('Please select an XML file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            const importXMLTask = this.importXMLTask;
+
+            reader.addEventListener('load', function() {
+                importXMLTask(this.result);
+            });
+
+            reader.addEventListener('error', () => {
+                alert('Something went wrong when reading the file. Please make sure it\'s a valid task XML exported from MS Project.');
+            });
+
+            reader.readAsText(file);
         },
         setMedias(value) {
             this.medias = value;
         },
         onInternalCostAdded() {
             this.internalCosts.items.push({
-                resource: '',
+                resource: {label: this.translate('label.cost_item')},
                 quantity: 1,
                 duration: 1,
                 rate: 0,
@@ -324,12 +340,9 @@ export default {
         },
     },
     created() {
+        this.trafficLight = this.defaultTrafficLightValue;
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
-        }
-
-        if (!this.$store.state.greenColorStatus || this.$store.state.greenColorStatus.length == 0) {
-            this.getGreenColorStatus();
         }
     },
     beforeDestroy() {
@@ -338,9 +351,23 @@ export default {
     computed: {
         ...mapGetters({
             task: 'currentTask',
-            greenColorStatus: 'greenColorStatus',
-            validationMessages: 'validationMessages',
         }),
+        ...mapGetters([
+            'validationMessages',
+            'defaultTrafficLightValue',
+            'projectMaxUploadFileSize',
+            'validationMessagesFor',
+        ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         internalValidationMessages() {
             if (_.isPlainObject(this.validationMessages.costs)) {
                 const out = {};
@@ -390,6 +417,12 @@ export default {
         isEdit() {
             return !!this.$route.params.taskId;
         },
+        showImport() {
+            return !this.isEdit
+                && typeof File !== 'undefined'
+                && typeof FileReader !== 'undefined'
+            ;
+        },
         isEditBase() {
             return this.task.scheduledStartAt && this.task.scheduledFinishAt && !!this.$route.params.taskId;
         },
@@ -407,10 +440,11 @@ export default {
                 medias: this.medias,
                 details: this.details,
                 assignments: this.assignments,
-                statusColor: this.statusColor,
+                trafficLight: this.trafficLight,
             };
 
             if (this.isEdit) {
+                data.progress = this.task.progress;
                 data.schedule.forecastStartDate = this.schedule.forecastStartDate;
                 data.schedule.forecastEndDate = this.schedule.forecastEndDate;
                 if (!this.isEditBase) {
@@ -435,14 +469,6 @@ export default {
                 });
             }
         },
-        greenColorStatus(value) {
-            if(!this.isEdit) {
-                this.statusColor = {
-                    id: this.greenColorStatus.id,
-                    name: this.greenColorStatus.name,
-                };
-            }
-        },
         task(value) {
             this.title = this.task.name;
             this.description = this.task.content;
@@ -454,10 +480,7 @@ export default {
                 duration: this.task.duration,
             };
 
-            this.statusColor = {
-                id: this.task.colorStatus ? this.task.colorStatus : this.greenColorStatus.id,
-                name: this.task.colorStatusName ? this.task.colorStatusName : this.greenColorStatus.name,
-            };
+            this.trafficLight = this.task.trafficLight;
 
             this.details = {
                 status: this.task.workPackageStatus
@@ -471,77 +494,68 @@ export default {
             this.assignments = {
                 responsibility: this.task.responsibility && {key: this.task.responsibility},
                 accountability: this.task.accountability && {key: this.task.accountability},
-                supportUsers: this.task.supportUsers.map(user => ({key: user.id})),
-                consultedUsers: this.task.consultedUsers.map(user => ({key: user.id})),
-                informedUsers: this.task.informedUsers.map(user => ({key: user.id})),
+                supportUsers: this.task.supportUsers
+                    ? this.task.supportUsers.map(user => ({key: user.id}))
+                    : [],
+                consultedUsers: this.task.consultedUsers
+                    ? this.task.consultedUsers.map(user => ({key: user.id}))
+                    : [],
+                informedUsers: this.task.informedUsers
+                    ? this.task.informedUsers.map(user => ({key: user.id}))
+                    : [],
             };
 
             let children = [];
-            this.task.children.map(function(child) {
-                children.push({
-                    description: child.name,
+            if (this.task.children) {
+                this.task.children.map((child) => {
+                    children.push({
+                        description: child.name,
+                    });
                 });
-            });
+            }
             this.subtasks = children;
 
-            if (!this.planning) {
-                this.planning = {};
-            }
-            if (this.task.milestone) {
-                this.planning.milestone = {
-                    key: this.task.milestone.toString(),
-                    label: this.task.milestoneName,
-                };
-            }
-
-            if (this.task.phase) {
-                this.planning.phase = {
-                    key: this.task.phase.toString(),
-                    label: this.task.phaseName,
-                };
-            }
-
-            if (this.task.parent) {
-                this.planning.parent = {
-                    key: this.task.parent.toString(),
-                    label: this.task.parentName,
-                };
-            }
+            this.planning.milestone = this.task.milestone;
+            this.planning.phase = this.task.phase;
+            this.planning.parent = this.task.parent;
 
             let internal = [];
             let external = [];
-            this.task.costs.map((cost) => {
-                if (cost.isInternal) {
-                    cost = _.merge(
+            if (this.task.costs) {
+                this.task.costs.map((cost) => {
+                    if (cost.isInternal) {
+                        cost = _.merge(
+                            {},
+                            cost,
+                            {
+                                resource: cost.resource
+                                    ? {
+                                        label: cost.resourceName,
+                                        key: cost.resource,
+                                    }
+                                    : null,
+                                project: this.$route.params.id ? this.$route.params.id : null,
+                                workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
+                            }
+                        );
+
+                        internal.push(cost);
+                        return;
+                    }
+
+                    external.push(_.merge(
                         {},
                         cost,
                         {
-                            resource: cost.resource
-                                ? {
-                                    label: cost.resourceName,
-                                    key: cost.resource,
-                                }
-                                : null,
-                            project: this.$route.params.id ? this.$route.params.id: null,
+                            selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
+                            customUnit: '',
+                            project: this.$route.params.id ? this.$route.params.id : null,
                             workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                        }
-                    );
+                        },
+                    ));
+                });
+            }
 
-                    internal.push(cost);
-                    return;
-                }
-
-                external.push(_.merge(
-                    {},
-                    cost,
-                    {
-                        selectedUnit: cost.unit && cost.unit.id ? cost.unit.id.toString() : null,
-                        customUnit: '',
-                        project: this.$route.params.id ? this.$route.params.id : null,
-                        workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                    },
-                ));
-            });
             this.internalCosts.items = internal;
             this.internalCosts.forecast = this.task.internalForecastCost;
             this.internalCosts.actual = this.task.internalActualCost;
@@ -550,7 +564,7 @@ export default {
             this.externalCosts.forecast = this.task.externalForecastCost;
             this.externalCosts.actual = this.task.externalActualCost;
 
-            this.medias = this.task.medias;
+            this.medias = this.task.medias ? this.task.medias : [];
         },
     },
     data() {
@@ -594,7 +608,8 @@ export default {
                 consultedUsers: [],
                 informedUsers: [],
             },
-            statusColor: {},
+            trafficLight: null,
+            isSaving: false,
         };
     },
 };

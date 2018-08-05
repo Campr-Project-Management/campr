@@ -37,6 +37,34 @@ const getters = {
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
+    risksAvgImpact: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.risks) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.risks.risk_data.averageData.averageImpact;
+    },
+    risksAvgProbability: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.risks) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.risks.risk_data.averageData.averageProbability;
+    },
+    opportunitiesAvgImpact: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.opportunities) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageImpact;
+    },
+    opportunitiesAvgProbability: (state, getters) => {
+        if (!getters.risksOpportunitiesStats.opportunities) {
+            return 0;
+        }
+
+        return getters.risksOpportunitiesStats.opportunities.opportunity_data.averageData.averageProbability;
+    },
     projectsCount: state => state.projects.totalItems,
     projectsPerPage: state => state.projects.pageSize,
     externalCostsGraphData: state => state.externalCostsGraphData,
@@ -44,6 +72,7 @@ const getters = {
     projectCostsAndResources: state => state.projectCostsAndResources,
     progresses: state => state.progresses,
     statusReportAvailability: state => state.statusReportAvailability,
+    projectMaxUploadFileSize: (state, getters) => getters.project.maxUploadFileSize,
 };
 
 const actions = {
@@ -134,6 +163,9 @@ const actions = {
         let paramObject = {params: {}};
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
+        }
+        if (data && data.queryParams && data.queryParams.favorites !== undefined) {
+            paramObject.params.favorites = data.queryParams.favorites;
         }
         if (state.projectFilters && state.projectFilters.status) {
             paramObject.params.status = state.projectFilters.status;

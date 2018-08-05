@@ -21,17 +21,17 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                        :title="translate('message.event')"
-                                        :options="projectMeetingsForSelect"
-                                        v-model="details.meeting"/>
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="details.meeting"/>
                                 <error at-path="meeting"/>
                             </div>
 
                             <div class="col-md-6">
                                 <select-field
-                                        :title="translate('label.category')"
-                                        :options="decisionCategoriesForSelect"
-                                        v-model="details.decisionCategory"/>
+                                    :title="translate('label.category')"
+                                    :options="decisionCategoriesForSelect"
+                                    v-model="details.decisionCategory"/>
                                 <error at-path="decisionCategory"/>
                             </div>
                         </div>
@@ -67,8 +67,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="dueDate" format="dd-MM-yyyy"/>
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="dueDate"/>
                                 </div>
                                 <error at-path="dueDate"/>
                             </div>
@@ -114,21 +113,19 @@
 <script>
     import InputField from '../../_common/_form-components/InputField';
     import SelectField from '../../_common/_form-components/SelectField';
-    import datepicker from '../../_common/_form-components/Datepicker';
-    import CalendarIcon from '../../_common/_icons/CalendarIcon';
     import MemberSearch from '../../_common/MemberSearch';
     import {mapActions, mapGetters} from 'vuex';
     import moment from 'moment';
     import Error from '../../_common/_messages/Error.vue';
     import Editor from '../../_common/Editor.vue';
     import AlertModal from '../../_common/AlertModal.vue';
+    import DateField from '../../_common/_form-components/DateField';
 
     export default {
         components: {
+            DateField,
             InputField,
             SelectField,
-            datepicker,
-            CalendarIcon,
             MemberSearch,
             moment,
             Error,

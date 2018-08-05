@@ -20,15 +20,19 @@ export const createFormData = (data) => {
         formData.append('content', data.description);
     }
 
+    if (data.progress != null) {
+        formData.append('progress', data.progress);
+    }
+
     if (data.planning) {
         if (data.planning.phase) {
-            formData.append('phase', data.planning.phase.key);
+            formData.append('phase', data.planning.phase);
         }
         if (data.planning.milestone) {
-            formData.append('milestone', data.planning.milestone.key);
+            formData.append('milestone', data.planning.milestone);
         }
         if (data.planning.parent) {
-            formData.append('parent', data.planning.parent.key);
+            formData.append('parent', data.planning.parent);
         }
     }
 
@@ -49,8 +53,8 @@ export const createFormData = (data) => {
             (o) => formData.append('informedUsers[]', o.key));
     }
 
-    if (data.statusColor) {
-        formData.append('colorStatus', data.statusColor.id);
+    if (data.trafficLight != null) {
+        formData.append('trafficLight', data.trafficLight);
     }
 
     if (data.parent) {

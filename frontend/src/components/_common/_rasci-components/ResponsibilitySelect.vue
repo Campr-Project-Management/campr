@@ -29,6 +29,11 @@
         <li class="rasci-i" @click="onClick('informed')">
             <span>I</span>
         </li>
+        <li class="rasci-close">
+            <span @click="$emit('close')">
+                <a><i class="fa fa-times"></i></a>
+            </span>
+        </li>
     </ul>
 </template>
 
@@ -308,10 +313,19 @@
                     @include translate(80px, 0);
                     z-index: 2;
                 }
+                &.rasci-close {
+                    @include translate(120px, 0);
+                    background-color: rgba($darkerColor, .8);
+                    z-index: 2;
+
+                    i {
+                        color: $dangerColor;
+                    }
+                }
             }
 
             &:after {
-                width: 210px;
+                width: 250px;
                 left: 50%;
                 margin-left: -105px;
                 height: 100%;

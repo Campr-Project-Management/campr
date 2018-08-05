@@ -135,6 +135,13 @@
                                 'label': 'label.currency'|trans,
                             }
                         ) }}
+                        {{ form_widget(
+                            form.maxUploadFileSize,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.max_upload_file_size'|trans,
+                            }
+                        ) }}
 
                         {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                             with {

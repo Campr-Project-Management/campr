@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import {xml2WorkPackage} from '../../helpers/ms-project/task';
 import _ from 'lodash';
 
 const state = {
@@ -38,8 +39,8 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
-        if (state.taskFilters && state.taskFilters.colorStatus) {
-            paramObject.params.colorStatus = state.taskFilters.colorStatus;
+        if (state.taskFilters && state.taskFilters.trafficLight != null) {
+            paramObject.params.trafficLight = state.taskFilters.trafficLight;
         }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;
@@ -96,8 +97,8 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
-        if (state.taskFilters && state.taskFilters.colorStatus) {
-            paramObject.params.colorStatus = state.taskFilters.colorStatus;
+        if (state.taskFilters && state.taskFilters.trafficLight) {
+            paramObject.params.trafficLight = state.taskFilters.trafficLight;
         }
         if (state.taskFilters && state.taskFilters.status) {
             paramObject.params.status = state.taskFilters.status;
@@ -130,15 +131,34 @@ const actions = {
             }, (response) => {
             });
     },
-    getTaskHistory({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_history', {'id': id})).then((response) => {
+    getTaskHistory({commit}, {id, page}) {
+        if (!page) {
+            page = 1;
+        }
+
+        let data = {
+            params: {
+                page: page,
+            },
+        };
+
+        return Vue
+            .http
+            .get(Routing.generate('app_api_workpackage_history',
+                {'id': id}), data)
+            .then((response) => {
                 if (response.status === 200) {
-                    let history = response.data;
-                    commit(types.SET_TASK_HISTORY, {history});
+                    commit(types.ADD_TASK_HISTORY, response.data.items);
                 }
+
+                return response;
             }, (response) => {
-            });
+                return response;
+            })
+        ;
+    },
+    resetTaskHistory({commit}) {
+        commit(types.RESET_TASK_HISTORY);
     },
     /**
      * Creates a new task on project
@@ -247,9 +267,6 @@ const actions = {
                 }
                 return response;
             },
-            (response) => {
-                return response;
-            },
         );
     },
 
@@ -282,28 +299,18 @@ const actions = {
             }
         );
     },
-    // something is weird here :\
-    // getUsers({commit}) {
-    //     Vue.http
-    //         .post(
-    //             Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
-    //             data.data
-    //         ).then(
-    //         (response) => {
-    //             if (response.status === 200) {
-    //                 alert('Saved!');
-    //             } else {
-    //                 alert(response.status);
-    //             }
-    //         },
-    //         (response) => {
-    //             alert('Validation issues');
-    //             if (response.status === 400) {
-    //                 // implement system to dispay errors
-    //             }
-    //         }
-    //     );
-    // },
+
+    /**
+     * Imports a XML string into the store.
+     *
+     * @param {function} commit
+     * @param {string} xml
+     */
+    importXMLTask({commit}, xml) {
+        const task = xml2WorkPackage(xml);
+
+        commit(types.SET_TASK, {task});
+    },
 
     setFilters({commit}, filters) {
         commit(types.SET_TASKS_FILTERS, {filters});
@@ -361,21 +368,19 @@ const actions = {
      * Add new comment
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     addTaskComment({commit}, data) {
-        Vue.http
-            .post(Routing.generate('app_api_workpackage_comments_create', {'id': data.task.id}), JSON.stringify(data.payload)).then((response) => {
+        return Vue
+            .http
+            .post(Routing.generate('app_api_workpackage_comments_create',
+                {'id': data.task.id}), JSON.stringify(data.payload))
+            .then((response) => {
                 if (response.status === 200) {
-                    Vue.http
-                        .get(Routing.generate('app_api_workpackage_history', {'id': data.task.id})).then((response) => {
-                            if (response.status === 200) {
-                                let history = response.data;
-                                commit(types.SET_TASK_HISTORY, {history});
-                            }
-                        }, (response) => {
-                        });
+                    return response;
                 }
             }, (response) => {
+                return response;
             });
     },
     /**
@@ -445,12 +450,29 @@ const mutations = {
         Vue.set(state.currentTask.children, index, task);
     },
     /**
-     * Set the history
+     * Add history elements
      * @param {Object} state
-     * @param {Object} history
+     * @param {Object} items
      */
-    [types.SET_TASK_HISTORY](state, {history}) {
-        state.taskHistory = history;
+    [types.SET_TASK_HISTORY](state, items) {
+        state.taskHistory = items;
+    },
+    /**
+     * Reset history elements
+     * @param {Object} state
+     */
+    [types.RESET_TASK_HISTORY](state) {
+        while (state.taskHistory.length > 0) {
+            state.taskHistory.pop();
+        }
+    },
+    /**
+     * Add history elements
+     * @param {Object} state
+     * @param {Object} items
+     */
+    [types.ADD_TASK_HISTORY](state, items) {
+        state.taskHistory.push(...items);
     },
     /**
      * Set the tasks filters
@@ -460,7 +482,6 @@ const mutations = {
     [types.SET_TASKS_FILTERS](state, {filters}) {
         state.taskFilters = !filters.clear ? Object.assign({}, state.taskFilters, filters) : [];
     },
-
     /**
      * Set all tasks
      * @param {Object} state
@@ -469,7 +490,6 @@ const mutations = {
     [types.SET_ALL_TASKS](state, {tasks}) {
         state.allTasks = tasks;
     },
-
     /**
      * Delete a subtask
      * @param {Object} state
