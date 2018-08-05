@@ -43,7 +43,7 @@ class TaskTransformer extends AbstractTransformer
             'name' => $wp->getName(),
             'parentId' => $wp->getParentId(),
             'parentName' => $wp->getParentName(),
-            'colorStatusId' => $wp->getColorStatusId(),
+            'trafficLight' => $wp->getTrafficLight(),
             'responsibilityId' => $wp->getResponsibilityId(),
             'responsibilityFullName' => $wp->getResponsibilityFullName(),
             'puid' => $wp->getPuid(),

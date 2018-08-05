@@ -69,6 +69,5 @@ class UserSubscriber implements EventSubscriberInterface
     private function addAvatar(GenericSerializationVisitor $visitor, User $user)
     {
         $visitor->setData('avatarUrl', $this->avatarUrlResolver->resolve($user));
-        $visitor->setData('avatar', $this->uploadedAvatarUrlResolver->resolve($user));
     }
 }

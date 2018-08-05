@@ -38,6 +38,7 @@ class ApiType extends CreateType
         parent::buildForm($builder, $options);
 
         $builder
+            ->remove('maxUploadFileSize')
             ->add('configuration')
             ->add(
                 'projectModules',

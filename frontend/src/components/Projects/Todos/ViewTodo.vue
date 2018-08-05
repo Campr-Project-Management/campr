@@ -16,7 +16,7 @@
                             <div class="col-md-12">
                                 <div class="input-holder">
                                     <label class="active">{{ translate('label.select_due_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="rescheduleObj.dueDate" format="dd-MM-yyyy" :value="rescheduleObj.dueDate"></datepicker>
+                                    <date-field v-model="rescheduleObj.dueDate" />
                                 </div>
                             </div>
                         </div>
@@ -37,9 +37,12 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b>{{todo.statusName}}</b></h4>
+                            <h4>{{ translate('message.created') }}: <b>{{ todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{todo.responsibilityFullName}}</b>
@@ -60,7 +63,7 @@
                         <div class="buttons">
                             <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                                 {{ translate('button.edit_todo') }}
-                            </router-link>    
+                            </router-link>
                             <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                                 {{ translate('button.new_todo') }}
                             </router-link>
@@ -78,7 +81,7 @@
                     <div class="buttons">
                         <router-link class="btn-rounded btn-auto" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                             {{ translate('button.edit_todo') }}
-                        </router-link> 
+                        </router-link>
                         <router-link :to="{name: 'project-todos-create-todo'}" class="btn-rounded btn-auto second-bg">
                             {{ translate('button.new_todo') }}
                         </router-link>
@@ -95,14 +98,16 @@ import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import {mapGetters, mapActions} from 'vuex';
 import Modal from '../../_common/Modal';
 import router from '../../../router';
-import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
+import DateField from '../../_common/_form-components/DateField';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
+        DateField,
         RescheduleIcon,
         Modal,
-        datepicker,
     },
     methods: {
         ...mapActions([
@@ -183,7 +188,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -211,8 +216,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 10px 0 0;  
+        display: inline-block;
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -265,7 +270,7 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 
     .buttons {

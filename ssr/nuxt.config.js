@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = {
     /*
     ** Headers of the page
@@ -28,12 +30,16 @@ module.exports = {
         '~/plugins/vueditor',
         '~/plugins/vue-moment',
         '~/plugins/date',
+        '~/plugins/numeral',
+        '~/plugins/tooltip',
+        '~/plugins/humanize-duration',
+        '~/plugins/templating'
     ],
     /*
     ** CSS
     */
     css: [
-        '~/assets/less/bootstrap.less'
+        '../frontend/src/css/bootstrap.less'
     ],
     /*
     ** Build configuration
@@ -51,15 +57,16 @@ module.exports = {
                     exclude: /(node_modules)/
                 });
             }
+
+            config.resolve.alias.Translator = path.join(__dirname, 'plugins/translator.js');
+            config.externals = {
+                canvas: 'canvas'
+            };
         }
     },
     generate: {
         routes: () => {
-            return [
-                '/projects/1/contract',
-                '/projects/3/contract',
-                '/projects/42/contract'
-            ];
+            return [];
         }
     }
 };

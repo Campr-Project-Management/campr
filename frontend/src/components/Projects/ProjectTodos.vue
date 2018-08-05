@@ -43,7 +43,11 @@
                                 <td>{{ todo.dueDate | moment('DD.MM.YYYY') }}</td>
                                 <td class="cell-wrap">{{ todo.title }}</td>
                                 <td>
-                                    <div class="avatar" v-tooltip.top-center="todo.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                    <user-avatar
+                                            size="small"
+                                            :tooltip="todo.responsibilityFullName"
+                                            :url="todo.responsibilityAvatar"
+                                            :name="todo.responsibilityFullName"/>
                                 </td>
                                 <td>
                                     <div class="text-right">
@@ -52,10 +56,10 @@
                                         </router-link>
                                         <router-link class="btn-icon" v-tooltip.top-center="translateText('message.edit_todo')" :to="{name: 'project-todos-edit-todo', params:{todoId: todo.id}}">
                                             <edit-icon fill="second-fill"></edit-icon>
-                                        </router-link>    
+                                        </router-link>
                                         <a href="javascript:void(0)" @click="initDeleteModal(todo)" class="btn-icon" v-tooltip.top-center="translateText('message.delete_todo')"><delete-icon fill="danger-fill"></delete-icon></a>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -82,9 +86,11 @@ import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../_common/Modal';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
         TodosFilters,
         ViewIcon,
         EditIcon,
@@ -177,7 +183,7 @@ export default {
     .table-wrapper {
         width: 100%;
         padding-bottom: 40px;
-    } 
+    }
 
     .avatar {
         width: 30px;
@@ -190,9 +196,9 @@ export default {
         &:last-child {
             margin-right: 0;
         }
-    } 
+    }
 
     .cell-wrap {
         white-space: normal;
-    }   
+    }
 </style>

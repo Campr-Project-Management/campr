@@ -2,11 +2,11 @@
 
 namespace AppBundle\Controller\API;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/api/dashboard")
@@ -23,14 +23,21 @@ class DashboardController extends ApiController
      */
     public function sidebarAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $wpTotal = $em->getRepository(WorkPackage::class)->countTotalByUserAndFilters($this->getUser(), ['type' => WorkPackage::TYPE_TASK, 'userRasci' => true]);
-        $projectTotal = $em->getRepository(Project::class)->countTotalByUserAndFilters($this->getUser());
+        $wpTotal = $this
+            ->get('app.repository.work_package')
+            ->countTotalByUserAndFilters($this->getUser(), ['type' => WorkPackage::TYPE_TASK, 'userRasci' => true])
+        ;
+        $projectTotal = $this
+            ->get('app.repository.project')
+            ->countTotalByUserAndFilters($this->getUser())
+        ;
 
-        return $this->createApiResponse([
-            'taskTotal' => $wpTotal,
-            'projectTotal' => $projectTotal,
-            'total' => $wpTotal + $projectTotal,
-        ]);
+        return $this->createApiResponse(
+            [
+                'taskTotal' => $wpTotal,
+                'projectTotal' => $projectTotal,
+                'total' => $wpTotal + $projectTotal,
+            ]
+        );
     }
 }

@@ -5,6 +5,7 @@ namespace AppBundle\Tests\Controller\API;
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\WorkPackage;
+use Component\TrafficLight\TrafficLight;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -73,9 +74,7 @@ class WorkPackageControllerTest extends BaseController
                             'accountabilityEmail' => null,
                             'parent' => null,
                             'parentName' => null,
-                            'colorStatus' => 5,
-                            'colorStatusName' => 'color-status2',
-                            'colorStatusColor' => 'green',
+                            'trafficLight' => TrafficLight::GREEN,
                             'project' => 1,
                             'projectName' => 'project1',
                             'calendar' => null,
@@ -159,9 +158,7 @@ class WorkPackageControllerTest extends BaseController
                             'accountabilityEmail' => null,
                             'parent' => null,
                             'parentName' => null,
-                            'colorStatus' => 5,
-                            'colorStatusName' => 'color-status2',
-                            'colorStatusColor' => 'green',
+                            'trafficLight' => TrafficLight::GREEN,
                             'project' => 1,
                             'projectName' => 'project1',
                             'calendar' => null,
@@ -297,9 +294,7 @@ class WorkPackageControllerTest extends BaseController
                     'accountabilityEmail' => null,
                     'parent' => null,
                     'parentName' => null,
-                    'colorStatus' => 5,
-                    'colorStatusName' => 'color-status2',
-                    'colorStatusColor' => 'green',
+                    'trafficLight' => TrafficLight::GREEN,
                     'project' => 1,
                     'projectName' => 'project1',
                     'calendar' => null,
@@ -429,7 +424,7 @@ class WorkPackageControllerTest extends BaseController
             [
                 [
                     'name' => 'task123',
-                    'colorStatus' => 2,
+                    'trafficLight' => TrafficLight::GREEN,
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
@@ -448,9 +443,7 @@ class WorkPackageControllerTest extends BaseController
                     'accountabilityEmail' => null,
                     'parent' => null,
                     'parentName' => null,
-                    'colorStatus' => 2,
-                    'colorStatusName' => 'color_status.in_progress',
-                    'colorStatusColor' => '#ccba54',
+                    'trafficLight' => TrafficLight::GREEN,
                     'project' => 1,
                     'projectName' => 'project1',
                     'calendar' => null,

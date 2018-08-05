@@ -33,6 +33,7 @@ parameters:
     admin.per_page: 10
     front.per_page: 12
     front.users_per_page: 20
+    history.per_page: 24
 
     #misc
     router.request_context.scheme: http
@@ -55,8 +56,8 @@ parameters:
 
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
-    app.pdf.google_chrome: '/usr/bin/xvfb-run /usr/bin/google-chrome'
-    app.pdf.google_chrome_arguments: '--webkit-print-color-adjust --headless --disable-gpu --start-fullscreen --no-sandbox --print-to-pdf="%%file%%" "%%url%%"'
+    app.pdf.google_chrome: '/usr/bin/node %kernel.root_dir%/../../ssr/print2pdf.js'
+    app.pdf.google_chrome_arguments: '"%%url%%" "%%file%%"'
     app.pdf.service_url: 'http://localhost:3000/'
 
     app.token_duration: 5

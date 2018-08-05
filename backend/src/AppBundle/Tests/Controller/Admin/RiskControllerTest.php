@@ -92,7 +92,7 @@ class RiskControllerTest extends BaseController
         $form['admin[cost]'] = 1;
         $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
-        $form['admin[priority]'] = 'risk-priority';
+        $form['admin[priority]'] = 1;
         $form['admin[riskStatus]'] = $status->getId();
 
         $this->client->submit($form);
@@ -131,18 +131,17 @@ class RiskControllerTest extends BaseController
         ;
         $this->em->persist($status);
 
-        $risk = (new Risk())
-            ->setTitle('risk-title3')
-            ->setImpact(1)
-            ->setProbability(1)
-            ->setDescription('risk-description')
-            ->setCost(1)
-            ->setDelay(1)
-            ->setDelayUnit('days')
-            ->setRiskStatus($status)
-        ;
+        $risk = new Risk();
+        $risk->setTitle('risk-title3');
+        $risk->setImpact(1);
+        $risk->setProbability(1);
+        $risk->setDescription('risk-description');
+        $risk->setCost(1);
+        $risk->setDelay(1);
+        $risk->setDelayUnit('days');
+        $risk->setRiskStatus($status);
 
-        $risk->setPriority('risk-priority');
+        $risk->setPriority(1);
 
         $this->em->persist($risk);
         $this->em->flush();

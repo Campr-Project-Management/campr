@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectModule;
 use AppBundle\Form\ProjectModule\CreateType as ProjectModuleCreateType;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Event\ProjectModuleEvent;
+use Component\ProjectModule\ProjectModuleEvents;
 
 /**
  * ProjectModule admin controller.
@@ -131,6 +133,7 @@ class ProjectModuleController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->persist($projectModule);
             $em->flush();
+            $this->dispatchEvent(ProjectModuleEvents::POST_UPDATE, new ProjectModuleEvent($projectModule));
 
             $this
                 ->get('session')

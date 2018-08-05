@@ -8,9 +8,11 @@
             <dropdown ref="categories" :selectedValue="selectedCategory" :title="translateText('message.category')"
                       :options="meetingCategoriesForSelect" item="meetings" filter="category"></dropdown>
             <div class="input-holder right">
-                <datepicker @cleared="clearDate()" v-bind:clear-button="true" v-model="date" format="dd-MM-yyyy" :placeholder="translateText('label.date')"
-                            :value="date"></datepicker>
-                <calendar-icon fill="middle-fill"/>
+                <date-field
+                        @cleared="clearDate()"
+                        :clear-button="true"
+                        v-model="date"
+                        :placeholder="translateText('label.date')"/>
             </div>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
         </div>
@@ -19,19 +21,15 @@
 
 <script>
     import {mapActions, mapGetters} from 'vuex';
-    // import Dropdown from '../_form-components/Datepicker';
     import Dropdown from '../../_common/Dropdown';
-    import CalendarIcon from '../../_common/_icons/CalendarIcon';
-    // import datepicker from 'vuejs-datepicker';
-    import datepicker from '../_form-components/Datepicker';
     import InputField from '../../_common/_form-components/InputField';
+    import DateField from '../_form-components/DateField';
 
     export default {
         props: ['clearAllFilters', 'selectEvent', 'selectCategory', 'selectDate'],
         components: {
+            DateField,
             Dropdown,
-            CalendarIcon,
-            datepicker,
             InputField,
         },
         created() {

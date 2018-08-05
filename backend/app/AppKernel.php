@@ -45,9 +45,10 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
-            new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Translation\PlatformAdapter\Loco\Bridge\Symfony\TranslationAdapterLocoBundle(),
+            new Translation\Bundle\TranslationBundle(),
 
             //internals
             new AppBundle\AppBundle(),

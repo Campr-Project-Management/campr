@@ -23,7 +23,6 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
         $startAt = new \DateTime();
 
         for ($i = 1; $i <= 2; ++$i) {
-            $colorStatus = $this->getReference('color-status'.$i);
             $finishAt = new \DateTime(sprintf('+%d days', $i * 2));
 
             $workPackage = (new WorkPackage())
@@ -36,7 +35,6 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
                 ->setForecastStartAt($startAt)
                 ->setForecastFinishAt($finishAt)
                 ->setResponsibility($user5)
-                ->setColorStatus($colorStatus)
                 ->setProject($project)
                 ->setDuration(0)
             ;
@@ -55,7 +53,6 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setForecastStartAt(new \DateTime('2017-01-01'))
             ->setForecastFinishAt(new \DateTime('2017-01-05'))
             ->setResponsibility($user4)
-            ->setColorStatus($colorStatus)
             ->setProject($project)
             ->setDuration(0)
         ;
@@ -72,7 +69,6 @@ class LoadWorkPackageData extends AbstractFixture implements OrderedFixtureInter
             ->setForecastStartAt(new \DateTime('2017-01-01'))
             ->setForecastFinishAt(new \DateTime('2017-01-05'))
             ->setResponsibility($user4)
-            ->setColorStatus($colorStatus)
             ->setProject($project)
             ->setDuration(0)
         ;

@@ -39,8 +39,7 @@
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translateText('label.base_due_date') }}</label>
-                                        <datepicker v-model="schedule.scheduledFinishAt" format="dd-MM-yyyy" />
-                                        <calendar-icon fill="middle-fill"/>
+                                        <date-field v-model="schedule.scheduledFinishAt"/>
                                     </div>
                                     <error at-path="scheduledFinishAt"/>
                                 </div>
@@ -107,19 +106,17 @@
 import {mapGetters, mapActions} from 'vuex';
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import MemberSearch from '../../_common/MemberSearch';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         Error,
         Editor,
         MemberSearch,
@@ -133,18 +130,30 @@ export default {
             return this.translate(text);
         },
         createMilestone: function() {
-            let data = {
-                project: this.$route.params.id,
-                name: this.name,
-                type: 1,
-                content: this.content,
-                scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
-                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
-                workPackageStatus: this.details.status ? this.details.status.key: null,
-                phase: this.details.phase ? this.details.phase.key : null,
-                isKeyMilestone: this.isKeyMilestone,
-            };
-            this.createProjectMilestone(data);
+            if (!this.isSaving) {
+                let data = {
+                    project: this.$route.params.id,
+                    name: this.name,
+                    type: 1,
+                    content: this.content,
+                    scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
+                    responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
+                    workPackageStatus: this.details.status ? this.details.status.key: null,
+                    phase: this.details.phase ? this.details.phase.key : null,
+                    isKeyMilestone: this.isKeyMilestone,
+                };
+                this.isSaving = true;
+                this.createProjectMilestone(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                        },
+                        () => {
+                            this.isSaving = false;
+                        }
+                    )
+                ;
+            }
         },
         editMilestone: function() {
             let data = {
@@ -211,6 +220,7 @@ export default {
             },
             isKeyMilestone: false,
             isEdit: this.$route.params.milestoneId,
+            isSaving: false,
         };
     },
 };

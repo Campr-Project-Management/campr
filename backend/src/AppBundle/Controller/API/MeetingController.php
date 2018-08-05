@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\API;
 
+use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
@@ -10,6 +11,7 @@ use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Security\MeetingVoter;
 use MainBundle\Controller\API\ApiController;
@@ -61,7 +63,15 @@ class MeetingController extends ApiController
     {
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
         $project = $meeting->getProject();
-        $form = $this->createForm(ApiCreateType::class, $meeting, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $form = $this->createForm(
+            ApiCreateType::class,
+            $meeting,
+            [
+                'csrf_protection' => false,
+                'method' => $request->getMethod(),
+                'max_media_size' => $meeting->getProject()->getMaxUploadFileSize(),
+            ]
+        );
         $this->processForm(
             $request,
             $form,
@@ -73,7 +83,7 @@ class MeetingController extends ApiController
             $fileSystem = $project
                 ->getFileSystems()
                 ->filter(function (FileSystem $fs) {
-                    return $fs->getDriver() === FileSystem::LOCAL_ADAPTER;
+                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
                 })
                 ->first();
 
@@ -403,38 +413,40 @@ class MeetingController extends ApiController
      * Send notification to participants.
      *
      * @Route("/{id}/notifications", name="app_api_meeting_notifications", options={"expose"=true})
-     * @Method({"GET"})
+     * @Method({"POST"})
      *
      * @param Meeting $meeting
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function notificationsAction(Meeting $meeting)
+    public function notificationsAction(Meeting $meeting, Request $request)
     {
-        $participants = $meeting->getMeetingParticipants();
-        $distributionLists = $meeting->getDistributionLists();
-        $mailerService = $this->get('app.service.mailer');
-        foreach ($participants as $participant) {
-            $user = $participant->getUser();
-            $mailerService->sendEmail(
-                ':meeting:notification.html.twig',
-                'info',
-                $user->getEmail(),
-                ['meeting' => $meeting]
-            );
-        }
-        foreach ($distributionLists as $distributionList) {
-            $users = $distributionList->getUsers();
-            foreach ($users as $user) {
-                $mailerService->sendEmail(
-                    ':meeting:notification.html.twig',
-                    'info',
-                    $user->getEmail(),
-                    ['meeting' => $meeting]
-                );
-            }
-        }
+        $host = $request->getHttpHost();
 
-        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $command = strtr(
+            '--env=%env% app:meeting:send-notification %meetingId% %userId% %host%',
+            [
+                '%env%' => $this->getParameter('kernel.environment'),
+                '%userId%' => $user->getId(),
+                '%meetingId%' => $meeting->getId(),
+                '%host%' => $host,
+            ]
+        );
+
+        $this
+            ->get('redis.client')
+            ->rpush(RedisQueueManagerCommand::DEFAULT, [$command])
+        ;
+
+        return $this->createApiResponse(
+            [
+                'message' => $this->get('translator')->trans('message.email_successfully_sent'),
+            ],
+            Response::HTTP_NO_CONTENT
+        );
     }
 }

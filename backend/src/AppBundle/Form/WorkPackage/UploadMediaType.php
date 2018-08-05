@@ -38,13 +38,17 @@ class UploadMediaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', FileType::class, [
-                'required' => true,
-                'data_class' => File::class,
-                'constraints' => [
-                    new FileConstaint(),
-                ],
-            ])
+            ->add(
+                'file',
+                FileType::class,
+                [
+                    'required' => true,
+                    'data_class' => File::class,
+                    'constraints' => [
+                        new FileConstaint(['maxSize' => $options['max_size']]),
+                    ],
+                ]
+            )
             ->addEventListener(
                 FormEvents::SUBMIT,
                 function (FormEvent $event) {
@@ -72,10 +76,13 @@ class UploadMediaType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
+        $resolver->setDefined(['max_size']);
+        $resolver->setAllowedTypes('max_size', 'int');
+        $resolver->setDefaults(
+            [
                 'data_class' => Media::class,
-            ])
-        ;
+                'max_size' => 1024 * 1024 * 10,
+            ]
+        );
     }
 }

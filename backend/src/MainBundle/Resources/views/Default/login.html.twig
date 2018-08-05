@@ -8,6 +8,9 @@
 
 {% block body %}
     <div class="login-content">
+        <ul>
+            {% include 'MainBundle:Layout:_locale_switcher.html.twig' %}
+        </ul>
         <div class="lc-block {% if login is defined %}toggled{% endif %}" id="l-login">
             <div class="lcb-form">
                 {% if error %}

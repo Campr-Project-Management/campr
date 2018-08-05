@@ -27,6 +27,15 @@
                                     :options="todoCategoriesForSelect"
                                     v-model="todoCategory"
                                     :currentOption="todoCategory" />
+                                <error at-path="category"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select-field
+                                    :title="translate('placeholder.meeting')"
+                                    :options="projectMeetingsForSelect"
+                                    v-model="meeting"
+                                    :currentOption="meeting" />
+                                <error at-path="meeting" />
                             </div>
                         </div>
                     </div>
@@ -50,17 +59,16 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <member-search
-                                        :selectedUser="responsibilityFullName"
-                                        v-model="responsibility"
-                                        :placeholder="translate('placeholder.responsible')"
-                                        :singleSelect="true"></member-search>
+                                    :selectedUser="responsibilityFullName"
+                                    v-model="responsibility"
+                                    :placeholder="translate('placeholder.responsible')"
+                                    :singleSelect="true" />
                                 <error at-path="responsiblity"/>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="dueDate"/>
                                 </div>
                                 <error at-path="dueDate"/>
                             </div>
@@ -100,22 +108,20 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
 import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import AlertModal from '../../_common/AlertModal.vue';
+import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         AlertModal,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
         moment,
         Error,
@@ -128,31 +134,43 @@ export default {
             'getTodoStatuses',
             'getTodoById',
             'getTodoCategories',
+            'getProjectMeetings',
             'emptyValidationMessages',
         ]),
         saveTodo: function() {
-            let data = {
-                projectId: this.$route.params.id,
-                data: {
-                    title: this.title,
-                    responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
-                    dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
-                    description: this.description,
-                    status: this.status ? this.status.key : null,
-                    todoCategory: this.todoCategory ? this.todoCategory.key : null,
-                },
-            };
+            if (!this.isSaving) {
+                let data = {
+                    projectId: this.$route.params.id,
+                    data: {
+                        title: this.title,
+                        responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
+                        dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
+                        description: this.description,
+                        status: this.status ? this.status.key : null,
+                        todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                        meeting: this.meeting ? this.meeting.key : null,
+                    },
+                };
+                this.isSaving = true;
 
-            this.createTodo(data).then((response) => {
-                if (response.body && response.body.error && response.body.messages) {
-                    this.showFailed = true;
-                    return;
-                }
+                this
+                    .createTodo(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error && response.body.messages) {
+                                this.showFailed = true;
+                                return;
+                            }
 
-                this.showSaved = true;
-            }, () => {
-
-            });
+                            this.showSaved = true;
+                        },
+                        () => {
+                            this.isSaving = true;
+                        }
+                    )
+                ;
+            }
         },
         updateTodo: function() {
             let data = {
@@ -161,31 +179,36 @@ export default {
                 responsibility: (this.responsibility && this.responsibility.length > 0) ? this.responsibility[0] : null,
                 dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
                 description: this.description,
-                status: this.status.key,
-                todoCategory: this.todoCategory.key,
+                status: this.status ? this.status.key : null,
+                todoCategory: this.todoCategory ? this.todoCategory.key : null,
+                meeting: this.meeting ? this.meeting.key : null,
             };
 
-            this.editTodo(data).then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        this.showFailed = true;
-                        return;
-                    }
+            this
+                .editTodo(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                            return;
+                        }
 
-                    this.showSaved = true;
-                },
-                () => {
-                    this.showFailed = true;
-                }
-            );
+                        this.showSaved = true;
+                    },
+                    () => {
+                        this.showFailed = true;
+                    }
+                )
+            ;
         },
     },
     created() {
         this.getTodoStatuses();
+        this.getProjectMeetings({projectId: this.$route.params.id});
+        this.getTodoCategories();
         if (this.$route.params.todoId) {
             this.getTodoById(this.$route.params.todoId);
         }
-        this.getTodoCategories();
     },
     computed: {
         ...mapGetters([
@@ -193,6 +216,7 @@ export default {
             'todoStatusesForSelect',
             'validationMessages',
             'todoCategoriesForSelect',
+            'projectMeetingsForSelect',
         ]),
         todo() {
             return this.currentTodo;
@@ -209,7 +233,12 @@ export default {
             this.dueDate = this.todo.dueDate ? moment(this.todo.dueDate).toDate() : null;
             this.responsibility = [this.todo.responsibility];
             this.responsibilityFullName = this.todo.responsibilityFullName;
-            this.todoCategory = {key: this.todo.todoCategory, label: this.todo.todoCategoryName};
+            this.todoCategory = this.todo.todoCategory
+                ? {key: this.todo.todoCategory, label: this.todo.todoCategoryName}
+                : null;
+            this.meeting = this.todo.meeting
+                ? {key: this.todo.meeting, label: this.todo.meetingName}
+                : null;
         },
     },
     data() {
@@ -222,8 +251,10 @@ export default {
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
+            meeting: null,
             showSaved: false,
             showFailed: false,
+            isSaving: false,
         };
     },
 };

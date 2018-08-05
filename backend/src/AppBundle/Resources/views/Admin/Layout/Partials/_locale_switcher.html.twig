@@ -1,0 +1,22 @@
+<li class="locale-switcher language-selector-wrapper">
+    {% for locale in app_available_locales() %}
+        {% if app_locale() == locale %}
+            <a
+               href="#"
+               title="{{ ('message.locale_switcher.' ~ locale)|trans }}"
+               class="language-selector disabled">
+                <img
+                    src="{{ asset('assets/admin/img/locale-' ~ locale ~ '.png') }}"
+                    alt="{{ ('message.locale_switcher.' ~ locale)|trans }}"/>
+             </a>            
+        {% else %}
+            <a
+               href="{{ path('app_admin_locale_switch', {'localeCode': locale, 'targetUrl': app.request.requestUri|url_encode}) }}"
+               title="{{ ('message.locale_switcher.' ~ locale)|trans }}"
+               class="language-selector">
+                <img src="{{ asset('assets/admin/img/locale-' ~ locale ~ '.png') }}"
+                     alt="{{ ('message.locale_switcher.' ~ locale)|trans }}"/>
+            </a>
+        {% endif %}
+    {% endfor %}
+</li>

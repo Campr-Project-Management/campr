@@ -12,6 +12,7 @@ const getters = {
     user: state => state.user,
     users: state => state.users,
     localUser: state => state.localUser,
+    locale: (state, getters) => getters.localUser.locale,
 };
 
 const actions = {
@@ -48,6 +49,50 @@ const actions = {
             })
         ;
     },
+
+    /**
+     * Update local user
+     * @param {object} commit
+     * @param {string} data
+     * @return {object}
+     */
+    updateLocalUser({commit}, data) {
+        return Vue
+            .http
+            .patch(Routing.generate('app_api_users_me_edit'), data)
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
+    },
+
+    /**
+     * Update local user
+     * @param {object} commit
+     * @param {string} locale
+     * @return {object}
+     */
+    switchLocale({commit}, locale) {
+        return Vue
+            .http
+            .patch(Routing.generate('app_api_switch_locale'), {locale})
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
+    },
     /**
      * Gets users.
      * @param {function} commit
@@ -82,6 +127,26 @@ const actions = {
     clearUsers({commit}) {
         commit(types.SET_USERS, {users: []});
     },
+    /**
+     * Sync user.
+     * @param {function} commit
+     * @return {object}
+     */
+    syncUser({commit}) {
+        return Vue
+            .http
+            .get(Routing.generate('app_api_users_sync'))
+            .then(
+                (response) => {
+                    let localUser = response.data;
+                    commit(types.SET_LOCAL_USER, {localUser});
+                },
+                (response) => {
+                    commit(types.SET_LOCAL_USER, {localUser: {}});
+                }
+            )
+        ;
+    },
 };
 
 const mutations = {
@@ -108,6 +173,13 @@ const mutations = {
      */
     [types.SET_LOCAL_USER](state, {localUser}) {
         state.localUser = localUser;
+        if (window.user) {
+            window.user.locale = localUser.locale;
+        }
+
+        if (window.Translator) {
+            window.Translator.locale = localUser.locale;
+        }
     },
 };
 

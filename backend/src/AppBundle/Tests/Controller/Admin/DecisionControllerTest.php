@@ -3,6 +3,8 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\Meeting;
+use AppBundle\Entity\Project;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,6 +68,7 @@ class DecisionControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/decision/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[meeting]'] = 1;
         $form['create[title]'] = 'decision3';
         $form['create[description]'] = 'decision-description3';
 

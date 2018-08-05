@@ -4,7 +4,7 @@ import actions from './actions';
 import getters from './getters';
 import mutations from './mutations';
 import closeDownAction from './modules/close-down-action';
-import colorStatus from './modules/color_status';
+import trafficLight from './modules/traffic-light';
 import cost from './modules/cost';
 import customer from './modules/customer';
 import dashboard from './modules/dashboard';
@@ -74,8 +74,8 @@ export default new Vuex.Store({
     getters,
     mutations,
     modules: {
+        trafficLight,
         closeDownAction,
-        colorStatus,
         cost,
         customer,
         dashboard,

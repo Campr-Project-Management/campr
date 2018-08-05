@@ -176,7 +176,7 @@ export default {
             for (let i = 0; i < projectModules.length; i++) {
                 formData.append('projectModules[' + i + '][module]', projectModules[i]['module']);
                 if (projectModules[i]['isEnabled']) {
-                    formData.append('projectModules[' + i + '][isEnabled]', projectModules[i]['isEnabled']);
+                    formData.append('projectModules[' + i + '][isEnabled]', projectModules[i]['isEnabled'] ? 1 : 0);
                 }
             }
 

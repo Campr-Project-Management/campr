@@ -17,7 +17,7 @@
                             <div class="col-md-12">
                                 <div class="input-holder">
                                     <label class="active">{{ translate('label.select_due_date') }}</label>
-                                    <datepicker :clear-button="false" v-model="reschedule.dueDate" format="dd-MM-yyyy" :value="reschedule.dueDate"></datepicker>
+                                    <date-field v-model="reschedule.dueDate"/>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,10 @@
                             <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
                             <h4>{{ translate('message.created') }}: <b>{{ currentDecision.createdAt | date }}</b> | {{ translate('message.due_date') }}: <b>{{currentDecision.dueDate | date }}</b> </h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + currentDecision.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="currentDecision.responsibilityAvatar"
+                                        :name="currentDecision.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{currentDecision.responsibilityFullName}}</b>
@@ -99,19 +102,21 @@ import Switches from '../../3rdparty/vue-switches';
 import RescheduleIcon from '../../_common/_icons/RescheduleIcon';
 import {mapActions, mapGetters} from 'vuex';
 import Modal from '../../_common/Modal';
-import datepicker from '../../_common/_form-components/Datepicker';
 import moment from 'moment';
 import router from '../../../router';
+import DateField from '../../_common/_form-components/DateField';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
+        UserAvatar,
+        DateField,
         EditIcon,
         DeleteIcon,
         Switches,
         RescheduleIcon,
         Modal,
         moment,
-        datepicker,
     },
     methods: {
         ...mapActions(['getDecision', 'editDecision', 'deleteDecision']),
@@ -180,7 +185,7 @@ export default {
                         svg {
                             fill: $secondDarkColor;
                         }
-                    }                    
+                    }
                 }
             }
         }
@@ -195,8 +200,8 @@ export default {
     .user-avatar {
         width: 30px;
         height: 30px;
-        display: inline-block;        
-        margin: 0 10px 0 0;  
+        display: inline-block;
+        margin: 0 10px 0 0;
         position: relative;
         top: -2px;
         background-size: cover;
@@ -250,7 +255,7 @@ export default {
     .footer-buttons {
         margin-top: 60px;
         padding: 30px 0;
-        border-top: 1px solid $darkerColor; 
+        border-top: 1px solid $darkerColor;
     }
 
     .buttons {

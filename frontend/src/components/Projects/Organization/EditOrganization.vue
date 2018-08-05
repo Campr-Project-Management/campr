@@ -1,7 +1,7 @@
 <template>
     <div class="create-task page-section">
         <!-- /// DEPARTMENT MODALS /// -->
-        <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false">
+        <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false" v-bind:hasSpecificClass="true">
             <p class="modal-title">{{ translate('message.edit_department') }}</p>
             <input-field
                     v-model="editDepartmentName"
@@ -31,7 +31,7 @@
         </modal>
 
         <!-- /// SUBTEAM MODALS /// -->
-        <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false">
+        <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false" v-bind:hasSpecificClass="true">
             <p class="modal-title">{{ translate('message.edit_subteam') }}</p>
             <div class="form-group">
                 <input-field

@@ -59,25 +59,13 @@
                     <div class="flex flex-space-between dates">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
-                            <datepicker
-                                v-model="proposedStartDate"
-                                format="dd - MM - yyyy" />
-                            <calendar-icon fill="middle-fill"/>
-                            <error
-                                v-if="validationMessages.proposedStartDate && validationMessages.proposedStartDate.length"
-                                v-for="message in validationMessages.proposedStartDate"
-                                :message="message" />
+                            <date-field v-model="proposedStartDate"/>
+                            <error at-path="proposedStartDate"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
-                            <datepicker
-                                v-model="proposedEndDate"
-                                format="dd - MM - yyyy" />
-                            <calendar-icon fill="middle-fill"/>
-                            <error
-                                v-if="validationMessages.proposedEndDate && validationMessages.proposedEndDate.length"
-                                v-for="message in validationMessages.proposedEndDate"
-                                :message="message" />
+                            <date-field v-model="proposedEndDate"/>
+                            <error at-path="proposedEndDate"/>
                         </div>
                     </div>
                 </div>
@@ -229,24 +217,22 @@ import {mapGetters, mapActions} from 'vuex';
 import DragBox from './TaskManagement/DragBox.vue';
 import Chart from './Charts/CostsChart.vue';
 import InputField from '../_common/_form-components/InputField.vue';
-import CalendarIcon from '../_common/_icons/CalendarIcon.vue';
 import DownloadbuttonIcon from '../_common/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '../_common/_icons/EyeIcon.vue';
 import MemberBadge from '../_common/MemberBadge.vue';
 import AlertModal from '../_common/AlertModal.vue';
-import datepicker from '../_common/_form-components/Datepicker';
 import router from '../../router';
 import Error from '../_common/_messages/Error.vue';
 import Editor from '../_common/Editor.vue';
 import moment from 'moment';
 import Switches from '../3rdparty/vue-switches';
+import DateField from '../_common/_form-components/DateField';
 
 export default {
     components: {
+        DateField,
         DragBox,
-        datepicker,
         InputField,
-        CalendarIcon,
         DownloadbuttonIcon,
         EyeIcon,
         MemberBadge,

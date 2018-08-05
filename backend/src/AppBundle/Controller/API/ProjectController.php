@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Calendar;
-use AppBundle\Entity\ColorStatus;
 use AppBundle\Entity\Contract;
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Decision;
@@ -12,7 +11,6 @@ use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Opportunity;
-use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCloseDown;
@@ -492,7 +490,14 @@ class ProjectController extends ApiController
     {
         $meeting = new Meeting();
         $meeting->setProject($project);
-        $form = $this->createForm(MeetingApiCreateType::class, $meeting, ['csrf_protection' => false]);
+        $form = $this->createForm(
+            MeetingApiCreateType::class,
+            $meeting,
+            [
+                'csrf_protection' => false,
+                'max_media_size' => $project->getMaxUploadFileSize(),
+            ]
+        );
         $this->processForm($request, $form);
 
         $em = $this->getDoctrine()->getManager();
@@ -1290,23 +1295,23 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/tasks-status", name="app_api_project_tasks_status", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function tasksStatusAction(Project $project)
     {
         $response = [];
         $statuses = $this->getDoctrine()->getRepository(WorkPackageStatus::class)->findAll();
-        $colorStatuses = $this->getDoctrine()->getRepository(ColorStatus::class)->findAll();
         $wpRepo = $this->getDoctrine()->getRepository(WorkPackage::class);
         $response['message.total_tasks'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project);
         foreach ($statuses as $status) {
-            $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, $status);
-        }
-
-        $response['conditions']['total'] = 0;
-        foreach ($colorStatuses as $status) {
-            $response['conditions'][$status->getName()]['count'] = $wpRepo->countTotalByTypeProjectAndStatus(WorkPackage::TYPE_TASK, $project, null, $status);
-            $response['conditions'][$status->getName()]['color'] = $status->getColor();
-            $response['conditions']['total'] += $response['conditions'][$status->getName()]['count'];
+            $response[$status->getName()] = $wpRepo->countTotalByTypeProjectAndStatus(
+                WorkPackage::TYPE_TASK,
+                $project,
+                $status
+            );
         }
 
         return $this->createApiResponse($response);
@@ -1331,6 +1336,7 @@ class ProjectController extends ApiController
             $wp,
             [
                 'entity_manager' => $this->getDoctrine()->getManager(),
+                'max_media_size' => $project->getMaxUploadFileSize(),
             ]
         );
         $this->processForm($request, $form);
@@ -1575,19 +1581,14 @@ class ProjectController extends ApiController
      * @Route("/{id}/risks", name="app_api_project_risks", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function risksAction(Request $request, Project $project)
+    public function risksAction(Project $project)
     {
         return $this->createApiResponse(
-            $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository(Risk::class)
-                ->findFiltered($project, $request->query->all())
+            $this->get('app.repository.risk')->findBy(['project' => $project])
         );
     }
 
@@ -1631,19 +1632,14 @@ class ProjectController extends ApiController
      * @Route("/{id}/opportunities", name="app_api_project_opportunities", options={"expose"=true})
      * @Method({"GET"})
      *
-     * @param Request $request
      * @param Project $project
      *
      * @return JsonResponse
      */
-    public function opportunitiesAction(Request $request, Project $project)
+    public function opportunitiesAction(Project $project)
     {
         return $this->createApiResponse(
-            $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository(Opportunity::class)
-                ->findFiltered($project, $request->query->all())
+            $this->get('app.repository.opportunity')->findBy(['project' => $project])
         );
     }
 
@@ -1867,25 +1863,6 @@ class ProjectController extends ApiController
     }
 
     /**
-     * Get all opportunity statuses.
-     *
-     * @Route("/{id}/opportunity-statuses", name="app_api_project_opportunity_statuses", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function opportunityStatusesAction(Project $project)
-    {
-        $opportunityStatuses = $this
-            ->getEntityManager()
-            ->getRepository(OpportunityStatus::class)
-            ->findAllByProjectNullable($project)
-        ;
-
-        return $this->createApiResponse($opportunityStatuses);
-    }
-
-    /**
      * Get all opportunity strategies.
      *
      * @Route("/{id}/opportunity-strategies", name="app_api_project_opportunity_strategies", options={"expose"=true})
@@ -2039,20 +2016,12 @@ class ProjectController extends ApiController
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
         if ($workPackage->getProject() !== $project) {
-            throw $this->createAccessDeniedException(
-                $this
-                    ->get('translator')
-                    ->trans('exception.workpackage_must_belong_to_project')
-            );
+            $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
         }
 
         $projectUser = $user->getProjectUser($project);
-        if (!$project->hasProjectUser($projectUser)) {
-            throw $this->createAccessDeniedException(
-                $this
-                    ->get('translator')
-                    ->trans('exception.user_must_be_part_of_the_project')
-            );
+        if (!$projectUser) {
+            $this->createdTranslatedAccessDeniedException('exception.user_must_be_part_of_the_project');
         }
 
         /** @var RasciRepository $rasciRepo */
@@ -2096,6 +2065,46 @@ class ProjectController extends ApiController
             ],
             Response::HTTP_BAD_REQUEST
         );
+    }
+
+    /**
+     * @Route("/{id}/rasci/{workPackage}/user/{user}", name="app_api_project_rasci_delete", options={"expose"=true})
+     * @ParamConverter("id", class="AppBundle\Entity\Project")
+     * @ParamConverter("workPackage", class="AppBundle\Entity\WorkPackage", options={"id"="workPackage"})
+     * @ParamConverter("user", class="AppBundle\Entity\User", options={"id"="user"})
+     * @Method({"DELETE"})
+     *
+     * @param Request     $request
+     * @param Project     $project
+     * @param WorkPackage $workPackage
+     * @param User        $user
+     *
+     * @return JsonResponse
+     */
+    public function deleteRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
+    {
+        if ($workPackage->getProject() !== $project) {
+            $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
+        }
+
+        $projectUser = $user->getProjectUser($project);
+        if (!$projectUser) {
+            $this->createdTranslatedAccessDeniedException('exception.user_must_be_part_of_the_project');
+        }
+
+        /** @var RasciRepository $rasciRepo */
+        $rasciRepo = $this->get('app.repository.rasci');
+        $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
+        if ($rasci) {
+            $em = $this->getDoctrine()->getManager();
+            $postEventName = RasciEvents::POST_REMOVE;
+            $event = new RasciEvent($rasci);
+            $rasciRepo->remove($rasci);
+            $this->dispatchEvent($postEventName, $event);
+            $em->flush();
+        }
+
+        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -2247,6 +2256,27 @@ class ProjectController extends ApiController
                 $status = Response::HTTP_CREATED;
             }
         } else {
+            list($firstName, $lastName) = explode('@', $email, 2);
+
+            $user = new User();
+            $user->setEmail($email);
+            $user->setActivatedAt(new \DateTime());
+            $user->setIsEnabled(true);
+            $user->setIsSuspended(false);
+            $user->setUsername($email);
+            $user->setPlainPassword(microtime(true));
+            $user->setFirstName($firstName);
+            $user->setLastName('@'.$lastName);
+            $user->setRoles([User::ROLE_USER]);
+            $em->persist($user);
+
+            $projectUser = new ProjectUser();
+            $projectUser->setUser($user);
+            $projectUser->setProject($project);
+            $em->persist($projectUser);
+
+            $em->flush();
+
             $teamInvite = $em
                 ->getRepository(TeamInvite::class)
                 ->findOneBy([
@@ -2259,6 +2289,7 @@ class ProjectController extends ApiController
                 $teamInvite = new TeamInvite();
                 $teamInvite->setEmail($email);
                 $teamInvite->setProject($project);
+                $teamInvite->setUser($user);
                 $em->persist($teamInvite);
                 $em->flush();
             }

@@ -42,6 +42,7 @@ class Info
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="infos")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
+     * @Assert\NotBlank(message="not_blank.meeting")
      */
     private $meeting;
 
@@ -257,6 +258,8 @@ class Info
 
         if ($meeting->getProject()) {
             $this->project = $meeting->getProject();
+        } else {
+            $this->project = null;
         }
 
         return $this;
@@ -334,32 +337,6 @@ class Info
     public function getResponsibilityFullName()
     {
         return $this->responsibility ? $this->responsibility->getFullName() : null;
-    }
-
-    /**
-     * Returns the responsibility username.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("responsibilityAvatar")
-     *
-     * @return string
-     */
-    public function getResponsibilityAvatar()
-    {
-        return $this->responsibility ? $this->responsibility->getAvatar() : null;
-    }
-
-    /**
-     * Returns the responsibility username.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("responsibilityGravatar")
-     *
-     * @return string
-     */
-    public function getResponsibilityGravatar()
-    {
-        return $this->responsibility ? $this->responsibility->getGravatar() : null;
     }
 
     /**

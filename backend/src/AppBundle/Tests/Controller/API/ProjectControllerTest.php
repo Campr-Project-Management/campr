@@ -135,6 +135,7 @@ class ProjectControllerTest extends BaseController
                     'logo' => null,
                     'isClosed' => false,
                     'isCompleted' => false,
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
@@ -353,6 +354,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['updatedAt'] = $actual['updatedAt'];
         $responseContent['projectUsers'][0]['updatedAt'] = $actual['projectUsers'][0]['updatedAt'];
         $responseContent['projectUsers'][0]['userAvatar'] = $actual['projectUsers'][0]['userAvatar'];
+        $responseContent['projectUsers'][0]['projectRoles'] = $actual['projectUsers'][0]['projectRoles'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -460,7 +462,6 @@ class ProjectControllerTest extends BaseController
                     'configuration' => [],
                     'units' => [],
                     'resources' => [],
-                    'opportunityStatuses' => [],
                     'opportunityStrategies' => [],
                     'riskStatuses' => [],
                     'riskStrategies' => [],
@@ -474,6 +475,7 @@ class ProjectControllerTest extends BaseController
                         'symbol' => '€',
                         'name' => 'Euro',
                     ],
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
@@ -1221,7 +1223,6 @@ class ProjectControllerTest extends BaseController
 
         foreach ($actual['items'][0]['decisions'] as $key => $decision) {
             $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
-            $responseContent['items'][0]['decisions'][$key]['responsibilityAvatarUrl'] = $decision['responsibilityAvatarUrl'];
             $responseContent['items'][0]['decisions'][$key]['createdAt'] = $decision['createdAt'];
         }
 
@@ -1233,7 +1234,7 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
             $responseContent['items'][0]['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
-            $responseContent['items'][0]['infos'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
+            $responseContent['items'][0]['infos'][$key]['infoCategory'] = $info['infoCategory'];
         }
 
         foreach ($actual['items'][0]['medias'] as $key => $info) {
@@ -1241,6 +1242,12 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['medias'][$key]['path'] = $info['path'];
             $responseContent['items'][0]['medias'][$key]['name'] = $info['name'];
             $responseContent['items'][0]['medias'][$key]['originalName'] = $info['originalName'];
+        }
+
+        foreach ($actual['items'] as $key => $item) {
+            $responseContent['items'][$key]['openDecisions'] = $item['openDecisions'];
+            $responseContent['items'][$key]['openInfos'] = $item['openInfos'];
+            $responseContent['items'][$key]['openTodos'] = $item['openTodos'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -1419,8 +1426,6 @@ class ProjectControllerTest extends BaseController
                                 [
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'responsibilityAvatar' => null,
-                                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                                     'project' => 1,
                                     'projectName' => 'project1',
                                     'meeting' => 1,
@@ -1434,12 +1439,11 @@ class ProjectControllerTest extends BaseController
                                     'createdAt' => date('Y-m-d H:i:s'),
                                     'updatedAt' => date('Y-m-d H:i:s'),
                                     'isExpired' => true,
+                                    'responsibilityAvatar' => null,
                                 ],
                                 [
                                     'responsibility' => 4,
                                     'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'responsibilityAvatar' => null,
-                                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                                     'project' => 1,
                                     'projectName' => 'project1',
                                     'meeting' => 1,
@@ -1453,11 +1457,15 @@ class ProjectControllerTest extends BaseController
                                     'createdAt' => date('Y-m-d H:i:s'),
                                     'updatedAt' => date('Y-m-d H:i:s'),
                                     'isExpired' => true,
+                                    'responsibilityAvatar' => null,
                                 ],
                             ],
                             'distributionLists' => [],
                             'createdAt' => null,
                             'updatedAt' => null,
+                            'openDecisions' => [],
+                            'openTodos' => [],
+                            'openInfos' => [],
                         ],
                     ],
                     'totalItems' => 1,
@@ -1592,7 +1600,8 @@ class ProjectControllerTest extends BaseController
 
         foreach ($responseArray['items'] as $key => $info) {
             $responseContent['items'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
-            $responseContent['items'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
+            $responseContent['items'][$key]['infoCategory'] = $info['infoCategory'];
+            $responseContent['items'][$key]['infoCategoryName'] = $info['infoCategoryName'];
             $responseContent['items'][$key]['createdAt'] = $info['createdAt'];
             $responseContent['items'][$key]['updatedAt'] = $info['updatedAt'];
         }
@@ -1618,7 +1627,6 @@ class ProjectControllerTest extends BaseController
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
                             'responsibilityAvatar' => null,
-                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -1637,7 +1645,6 @@ class ProjectControllerTest extends BaseController
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
                             'responsibilityAvatar' => null,
-                            'responsibilityGravatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -1693,7 +1700,8 @@ class ProjectControllerTest extends BaseController
         $responseContent['id'] = $responseArray['id'];
         $responseContent['createdAt'] = $responseArray['createdAt'];
         $responseContent['updatedAt'] = $responseArray['updatedAt'];
-        $responseContent['responsibilityAvatarUrl'] = $responseArray['responsibilityAvatarUrl'];
+        $responseContent['responsibilityAvatar'] = $responseArray['responsibilityAvatar'];
+        $responseContent['infoCategoryName'] = $responseArray['infoCategoryName'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1708,6 +1716,7 @@ class ProjectControllerTest extends BaseController
         return [
             [
                 [
+                    'meeting' => 1,
                     'topic' => 'note project 1',
                     'description' => 'description text',
                     'infoCategory' => 1,
@@ -1718,12 +1727,10 @@ class ProjectControllerTest extends BaseController
                 [
                     'responsibility' => 1,
                     'responsibilityFullName' => 'FirstName1 LastName1',
-                    'responsibilityAvatar' => null,
-                    'responsibilityGravatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                     'project' => 1,
                     'projectName' => 'project1',
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'meeting' => 1,
+                    'meetingName' => 'meeting1',
                     'infoCategory' => 1,
                     'infoCategoryName' => 'label.production',
                     'id' => 3,
@@ -1733,6 +1740,7 @@ class ProjectControllerTest extends BaseController
                     'createdAt' => '2018-02-16 04:14:42',
                     'updatedAt' => '2018-02-16 04:14:42',
                     'isExpired' => false,
+                    'responsibilityAvatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                 ],
             ],
         ];
@@ -1926,11 +1934,15 @@ class ProjectControllerTest extends BaseController
         $responseContent['units'][0]['updatedAt'] = $project['units'][0]['updatedAt'];
         $responseContent['units'][1]['updatedAt'] = $project['units'][1]['updatedAt'];
 
-        for ($i = 1; $i <= 3; ++$i) {
-            $projectUser = $this->em->getRepository(ProjectUser::class)->find($i);
-            $email = md5(strtolower(trim($projectUser->getUser()->getEmail())));
-            $responseContent['projectUsers'][$i - 1]['updatedAt'] = $projectUser->getUpdatedAt()->format('Y-m-d H:i:s');
-            $responseContent['projectUsers'][$i - 1]['userAvatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        foreach ($project['projectUsers'] as $k => $projectUser) {
+            $responseContent['projectUsers'][$k]['id'] = $projectUser['id'];
+            $responseContent['projectUsers'][$k]['updatedAt'] = $projectUser['updatedAt'];
+            $responseContent['projectUsers'][$k]['userAvatar'] = $projectUser['userAvatar'];
+            $responseContent['projectUsers'][$k]['projectRoles'] = $projectUser['projectRoles'];
+        }
+
+        foreach ($project['units'] as $k => $unit) {
+            $responseContent['units'][$k]['id'] = $unit['id'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -2215,7 +2227,6 @@ class ProjectControllerTest extends BaseController
                         ],
                     ],
                     'resources' => [],
-                    'opportunityStatuses' => [],
                     'opportunityStrategies' => [],
                     'riskStatuses' => [],
                     'riskStrategies' => [],
@@ -2229,6 +2240,7 @@ class ProjectControllerTest extends BaseController
                         'symbol' => '€',
                         'name' => 'Euro',
                     ],
+                    'maxUploadFileSize' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ],
             ],
         ];
@@ -2799,6 +2811,7 @@ class ProjectControllerTest extends BaseController
         return [
             [
                 [
+                    'meeting' => 1,
                     'title' => 'do this',
                     'description' => 'descript',
                 ],
@@ -2807,8 +2820,8 @@ class ProjectControllerTest extends BaseController
                 [
                     'status' => null,
                     'statusName' => null,
-                    'meeting' => null,
-                    'meetingName' => null,
+                    'meeting' => 1,
+                    'meetingName' => 'meeting1',
                     'project' => 1,
                     'projectName' => 'project1',
                     'responsibility' => null,
@@ -3074,9 +3087,7 @@ class ProjectControllerTest extends BaseController
                     'children' => [],
                     'childrenTotalCosts' => 0,
                     'childrenTotalDuration' => 0,
-                    'colorStatus' => null,
-                    'colorStatusColor' => null,
-                    'colorStatusName' => null,
+                    'trafficLight' => TrafficLight::GREEN,
                     'comments' => [],
                     'consultedUsers' => [],
                     'content' => null,

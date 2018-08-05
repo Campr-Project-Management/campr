@@ -79,6 +79,18 @@ set local dev env to connect to the api
 
 `yarn run dev` (serve with hot reload at localhost:8080)
 
+##### PDF Printing
+
+To make the pdf printing work, you will have to add the current workspace hostname as an extra host inside your local
+`docker-compose.yml` file:
+
+e.g.:
+```
+extra_hosts:
+    - "trisoft.dev.campr.biz:127.0.0.1"
+```
+
+
 ### Tests
 `yarn run unit` (run unit tests)
 
@@ -106,3 +118,8 @@ The command will generate/update the html files for all php classes inside the /
 * [Forms](backend/src/AppBundle/Resources/docs/Forms.md)
 * [Services](backend/src/AppBundle/Resources/docs/Services.md)
 * [Javascripts](backend/src/AppBundle/Resources/docs/Javascripts.md)
+
+
+**Misc information:**
+* [Microsoft Project - Task Element](https://msdn.microsoft.com/en-us/library/office/aa220054(v=office.11).aspx)
+  * contains information about child elements
