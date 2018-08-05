@@ -107,27 +107,33 @@ export default {
     methods: {
         ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel', 'emptyValidationMessages']),
         createLabel: function() {
-            let data = {
-                projectId: this.$route.params.id,
-                title: this.title,
-                description: this.description,
-                color: this.color,
-            };
-            this
-                .createProjectLabel(data)
-                .then(
-                    (response) => {
-                        if (response.body && response.body.error) {
+            if (!this.isSaving) {
+                let data = {
+                    projectId: this.$route.params.id,
+                    title: this.title,
+                    description: this.description,
+                    color: this.color,
+                };
+                this.isSaving = true;
+                this
+                    .createProjectLabel(data)
+                    .then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error) {
+                                this.showFailed = true;
+                            } else {
+                                this.showSaved = true;
+                            }
+                            this.active = true;
+                        },
+                        () => {
                             this.showFailed = true;
-                        } else {
-                            this.showSaved = true;
+                            this.active = true;
                         }
-                    },
-                    () => {
-                        this.showFailed = true;
-                    }
-                )
-            ;
+                    )
+                ;
+            }
         },
         editLabel: function() {
             let data = {
@@ -174,6 +180,7 @@ export default {
                 create_label: this.translate('button.create_label'),
                 edit_label: this.translate('button.edit_label'),
             },
+            isSaving: false,
         };
     },
 };

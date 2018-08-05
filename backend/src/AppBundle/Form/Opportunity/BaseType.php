@@ -148,13 +148,19 @@ class BaseType extends AbstractType
             )
             ->add(
                 'priority',
-                TextType::class,
+                IntegerType::class,
                 [
                     'required' => true,
                     'constraints' => [
                         new NotBlank(
                             [
                                 'message' => 'not_blank.priority',
+                            ]
+                        ),
+                        new GreaterThanOrEqual(
+                            [
+                                'value' => 0,
+                                'message' => 'greater_than_or_equal.priority',
                             ]
                         ),
                     ],

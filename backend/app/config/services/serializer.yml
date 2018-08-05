@@ -31,16 +31,18 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
-    app.serializer.listener.info:
-        class: AppBundle\Serializer\EventListener\InfoSubscriber
+    app.serializer.listener.meeting:
+        class: AppBundle\Serializer\EventListener\MeetingSubscriber
         arguments:
-             - '@app.resolver.user_avatar_url'
+             - '@doctrine.orm.default_entity_manager'
         tags:
             - { name: jms_serializer.event_subscriber }
 
-    app.serializer.listener.decision:
-        class: AppBundle\Serializer\EventListener\DecisionSubscriber
+    app.serializer.listener.log:
+        class: AppBundle\Serializer\EventListener\LogSubscriber
         arguments:
-             - '@app.resolver.user_avatar_url'
+             - '@app.repository.project_user'
+             - '@app.repository.user'
+             - '@doctrine.orm.entity_manager'
         tags:
             - { name: jms_serializer.event_subscriber }

@@ -52,6 +52,7 @@ export default {
             this.getProjects({
                 queryParams: {
                     page: this.page,
+                    favorites: this.favorites,
                 },
             });
         },
@@ -82,6 +83,7 @@ export default {
     data() {
         return {
             page: 1,
+            favorites: true,
         };
     },
 };

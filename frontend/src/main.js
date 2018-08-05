@@ -4,6 +4,7 @@ import router from './router';
 import {sync} from 'vuex-router-sync';
 import VueCharts from 'vue-charts';
 import 'expose?$!expose?jQuery!jquery';
+import './css/bootstrap.less';
 import './css/main.scss';
 // import 'normalise.scss';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,7 +28,9 @@ Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
 Vue.use(VTooltip);
-Vue.use(Translator);
+Vue.use(Translator, {
+    store,
+});
 Vue.use(HumanizeDuration);
 Vue.use(Numeral);
 Vue.use(DateFormat);

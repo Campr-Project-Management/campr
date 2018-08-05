@@ -2,28 +2,73 @@
 
 namespace MainBundle\EventListener;
 
+use Component\Locale\Context\LocaleContextInterface;
+use Component\Locale\Provider\LocaleProviderInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Translation\TranslatorInterface;
 
-class LocaleListener
+/**
+ * Class LocaleListener.
+ */
+class LocaleListener implements EventSubscriberInterface
 {
-    private $defaultLocale;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
-    public function __construct($defaultLocale = 'en')
-    {
-        $this->defaultLocale = $defaultLocale;
+    /**
+     * @var LocaleProviderInterface
+     */
+    private $localeProvider;
+
+    /**
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
+     * LocaleListener constructor.
+     *
+     * @param TranslatorInterface     $translator
+     * @param LocaleContextInterface  $localeContext
+     * @param LocaleProviderInterface $localeProvider
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        LocaleContextInterface $localeContext,
+        LocaleProviderInterface $localeProvider
+    ) {
+        $this->translator = $translator;
+        $this->localeContext = $localeContext;
+        $this->localeProvider = $localeProvider;
     }
 
+    /**
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => ['onKernelRequest', 4],
+        ];
+    }
+
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        if (!$request->hasPreviousSession()) {
-            return;
-        }
+        $locale = $this->localeContext->getLocaleCode();
 
-        if ($locale = $request->attributes->get('_locale')) {
-            $request->getSession()->set('_locale', $locale);
-        } else {
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
-        }
+        $request->setLocale($locale);
+        $request->setDefaultLocale($this->localeProvider->getDefaultLocaleCode());
+        $request->attributes->set('_locale', $this->localeContext->getLocaleCode());
+        $request->getSession()->set('_locale', $this->localeContext->getLocaleCode());
+
+        $this->translator->setLocale($locale);
     }
 }

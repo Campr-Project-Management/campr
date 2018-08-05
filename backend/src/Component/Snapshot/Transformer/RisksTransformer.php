@@ -60,7 +60,6 @@ class RisksTransformer extends AbstractTransformer
             ],
             'items' => $this->getItems($project->getRisks()),
             'topItem' => $this->getTopRisk($project),
-            'grid' => $this->riskRepository->getGridCount($project->getId()),
         ];
     }
 
@@ -126,7 +125,9 @@ class RisksTransformer extends AbstractTransformer
             'priorityName' => $risk->getPriorityName(),
             'dueDate' => $this->dateTransformer->transform($risk->getDueDate()),
             'impact' => $risk->getImpact(),
+            'impactIndex' => $risk->getImpactIndex(),
             'probability' => $risk->getProbability(),
+            'probabilityIndex' => $risk->getProbabilityIndex(),
             'delayUnit' => $risk->getDelayUnit(),
             'potentialCost' => $risk->getPotentialCost(),
             'potentialDelay' => $risk->getPotentialDelay(),

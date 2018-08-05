@@ -2,27 +2,26 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Validator\Constraints\WorkPackageNonSelfReferencing;
+use Component\Resource\Model\BaseScheduleDatesAwareInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Validator\Constraints\WorkPackageAssignments;
-use AppBundle\Validator\Constraints\WorkPackageScheduledDates;
-use AppBundle\Validator\Constraints\WorkPackageForecastDates;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * WorkPackage.
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageRepository")
- * @WorkPackageAssignments()
- * @WorkPackageScheduledDates(groups={"create"})
- * @WorkPackageForecastDates(groups={"edit"})
- * @WorkPackageNonSelfReferencing()
+ * @AppAssert\WorkPackageAssignments()
+ * @AppAssert\WorkPackageScheduledDates(groups={"create"})
+ * @AppAssert\WorkPackageForecastDates(groups={"edit"})
  */
-class WorkPackage
+class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
 {
     const TYPE_PHASE = 0;
     const TYPE_MILESTONE = 1;
@@ -69,23 +68,41 @@ class WorkPackage
      * @var WorkPackage
      *
      * @Serializer\Exclude()
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="phaseChildren")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="phase_id", referencedColumnName="id")
      * })
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
     private $phase;
+
+    /**
+     * @var WorkPackage[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="phase")
+     */
+    private $phaseChildren;
 
     /**
      * @var WorkPackage
      *
      * @Serializer\Exclude()
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="milestoneChildren")
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="milestone_id", referencedColumnName="id")
      * })
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.milestone")
      */
     private $milestone;
+
+    /**
+     * @var WorkPackage[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="milestone")
+     */
+    private $milestoneChildren;
 
     /**
      * @var WorkPackage
@@ -94,6 +111,7 @@ class WorkPackage
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
     private $parent;
 
@@ -103,16 +121,6 @@ class WorkPackage
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="parent", cascade={"persist"}, orphanRemoval=true)
      */
     private $children;
-
-    /**
-     * @var ColorStatus|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ColorStatus", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="color_status_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $colorStatus;
 
     /**
      * @var int
@@ -463,6 +471,15 @@ class WorkPackage
     private $internalForecastCost = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="traffic_light", type="integer", nullable=false, options={"default": 2})
+     * @Assert\NotNull()
+     * @AppAssert\TrafficLight()
+     */
+    private $trafficLight;
+
+    /**
      * WorkPackage constructor.
      */
     public function __construct()
@@ -480,6 +497,9 @@ class WorkPackage
         $this->consultedUsers = new ArrayCollection();
         $this->informedUsers = new ArrayCollection();
         $this->puid = 1558; // will be changed by the listener anyway
+        $this->trafficLight = TrafficLight::GREEN;
+        $this->phaseChildren = new ArrayCollection();
+        $this->milestoneChildren = new ArrayCollection();
     }
 
     public function __toString()
@@ -923,6 +943,14 @@ class WorkPackage
     }
 
     /**
+     * @return bool
+     */
+    public function isKeyMilestone()
+    {
+        return $this->getIsKeyMilestone();
+    }
+
+    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -971,15 +999,17 @@ class WorkPackage
     }
 
     /**
-     * @param WorkPackage|null $workPackage
+     * @param WorkPackage|null $phase
      *
-     * @return WorkPackage
+     * @return $this
      */
-    public function setPhase(self $workPackage = null)
+    public function setPhase(WorkPackage $phase = null)
     {
-        $this->phase = $workPackage;
+        $this->phase = $phase;
+        $this->milestone = null;
         foreach ($this->getChildren() as $child) {
-            $child->setPhase($workPackage);
+            $child->setPhase($phase);
+            $child->setMilestone(null);
         }
 
         return $this;
@@ -1022,19 +1052,20 @@ class WorkPackage
     }
 
     /**
-     * @param WorkPackage|null $workPackage
+     * @param WorkPackage|null $milestone
      *
      * @return WorkPackage
      */
-    public function setMilestone(self $workPackage = null)
+    public function setMilestone(WorkPackage $milestone = null)
     {
-        $this->milestone = $workPackage;
-
-        if (null !== $workPackage) {
-            $this->phase = $workPackage->getPhase();
+        $this->milestone = $milestone;
+        if ($milestone) {
+            $this->phase = $milestone->getPhase();
         }
+
         foreach ($this->getChildren() as $child) {
-            $child->setMilestone($workPackage);
+            $child->setPhase($this->phase);
+            $child->setMilestone($milestone);
         }
 
         return $this;
@@ -1088,30 +1119,6 @@ class WorkPackage
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Set colorStatus.
-     *
-     * @param ColorStatus $colorStatus
-     *
-     * @return WorkPackage
-     */
-    public function setColorStatus(ColorStatus $colorStatus = null)
-    {
-        $this->colorStatus = $colorStatus;
-
-        return $this;
-    }
-
-    /**
-     * Get colorStatus.
-     *
-     * @return ColorStatus
-     */
-    public function getColorStatus()
-    {
-        return $this->colorStatus;
     }
 
     /**
@@ -1354,45 +1361,6 @@ class WorkPackage
     public function getParentName()
     {
         return $this->parent ? $this->parent->getName() : null;
-    }
-
-    /**
-     * Returns ColorStatus id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatus")
-     *
-     * @return string
-     */
-    public function getColorStatusId()
-    {
-        return $this->colorStatus ? $this->colorStatus->getId() : null;
-    }
-
-    /**
-     * Returns ColorStatus name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusName")
-     *
-     * @return string
-     */
-    public function getColorStatusName()
-    {
-        return $this->colorStatus ? $this->colorStatus->getName() : null;
-    }
-
-    /**
-     * Returns ColorStatus color.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("colorStatusColor")
-     *
-     * @return string
-     */
-    public function getColorStatusColor()
-    {
-        return $this->colorStatus ? $this->colorStatus->getColor() : null;
     }
 
     /**
@@ -1764,9 +1732,7 @@ class WorkPackage
     }
 
     /**
-     * Remove child.
-     *
-     * @param WorkPackage $child
+     * @param self $child
      */
     public function removeChild(self $child)
     {
@@ -1784,6 +1750,14 @@ class WorkPackage
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
     }
 
     /**
@@ -2474,5 +2448,61 @@ class WorkPackage
         $status = $this->getWorkPackageStatus();
 
         return $status && $status->isCompleted();
+    }
+
+    /**
+     * @return int
+     */
+    public function getTrafficLight(): int
+    {
+        return (int) $this->trafficLight;
+    }
+
+    /**
+     * @param int $trafficLight
+     */
+    public function setTrafficLight(int $trafficLight = null)
+    {
+        $this->trafficLight = $trafficLight;
+    }
+
+    /**
+     * @return WorkPackage[]|ArrayCollection
+     */
+    public function getPhaseChildren()
+    {
+        return $this->phaseChildren;
+    }
+
+    /**
+     * @param WorkPackage[]|array $phaseChildren
+     */
+    public function setPhaseChildren($phaseChildren)
+    {
+        $this->phaseChildren = $phaseChildren;
+    }
+
+    /**
+     * @return WorkPackage[]|ArrayCollection
+     */
+    public function getMilestoneChildren()
+    {
+        return $this->milestoneChildren;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $milestoneChildren
+     */
+    public function setMilestoneChildren($milestoneChildren)
+    {
+        $this->milestoneChildren = $milestoneChildren;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return !$this->getParent();
     }
 }

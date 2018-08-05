@@ -20,6 +20,11 @@
                 required: false,
                 default: 250,
             },
+            width: {
+                type: Number,
+                required: false,
+                default: 400,
+            },
             pointColor: {
                 type: Array,
                 required: false,
@@ -28,62 +33,7 @@
             options: {
                 type: Object,
                 required: false,
-                default: () => {
-                    return {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        title: {
-                            display: false,
-                        },
-                        tooltips: {
-                            mode: 'index',
-                            intersect: false,
-                        },
-                        hover: {
-                            mode: 'nearest',
-                            intersect: true,
-                        },
-                        legend: {
-                            display: false,
-                        },
-                        scales: {
-                            xAxes: [
-                                {
-                                    gridLines: {
-                                        color: '#2E3D60',
-                                        drawTicks: false,
-                                        lineWidth: 1,
-                                    },
-                                    display: true,
-                                    scaleLabel: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        padding: 10,
-                                        fontColor: '#646EA0',
-                                    },
-                                },
-                            ],
-                            yAxes: [
-                                {
-                                    display: true,
-                                    gridLines: {
-                                        color: '#2E3D60',
-                                        drawTicks: false,
-                                        lineWidth: 1,
-                                    },
-                                    ticks: {
-                                        padding: 10,
-                                        fontColor: '#646EA0',
-                                        callback: function(value, index, values) {
-                                            return Math.ceil(value) !== value ? null : value;
-                                        },
-                                    },
-                                },
-                            ],
-                        },
-                    };
-                },
+                default: () => {},
             },
         },
         computed: {
@@ -99,7 +49,15 @@
                 return {
                     labels: this.chartLabels,
                     datasets: [
-                        Object.assign({}, this.datasetOptions, {data: this.data, pointBackgroundColor, pointHoverBackgroundColor: pointBackgroundColor}),
+                        Object.assign(
+                            {},
+                            this.datasetOptions,
+                            {
+                                data: this.data,
+                                pointBackgroundColor,
+                                pointHoverBackgroundColor: pointBackgroundColor,
+                            }
+                        ),
                     ],
                 };
             },
@@ -117,10 +75,64 @@
                     fill: false,
                     lineTension: 0,
                 },
+                defaultOptions: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: false,
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true,
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    scales: {
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    color: '#2E3D60',
+                                    drawTicks: false,
+                                    lineWidth: 1,
+                                },
+                                display: true,
+                                scaleLabel: {
+                                    display: false,
+                                },
+                                ticks: {
+                                    padding: 10,
+                                    fontColor: '#646EA0',
+                                },
+                            },
+                        ],
+                        yAxes: [
+                            {
+                                display: true,
+                                gridLines: {
+                                    color: '#2E3D60',
+                                    drawTicks: false,
+                                    lineWidth: 1,
+                                },
+                                ticks: {
+                                    padding: 10,
+                                    fontColor: '#646EA0',
+                                    callback: function(value, index, values) {
+                                        return Math.ceil(value) !== value ? null : value;
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                },
             };
         },
         mounted() {
-            this.renderChart(this.chartData, this.options);
+            this.renderChart(this.chartData, Object.assign({}, this.defaultOptions, this.options));
         },
     };
 </script>

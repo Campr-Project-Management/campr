@@ -23,6 +23,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\ProjectUser }
 
+    app.repository.user:
+        class: AppBundle\Repository\UserRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\User }
+
     app.repository.team:
         class: AppBundle\Repository\TeamRepository
         arguments: ~
@@ -88,3 +94,45 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Info }
+
+    app.repository.todo:
+        class: AppBundle\Repository\TodoRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Todo }
+
+    app.repository.decisions:
+        class: AppBundle\Repository\DecisionRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Decision }
+
+    app.repository.infos:
+        class: AppBundle\Repository\InfoRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Info }
+
+    app.repository.opportunity_status:
+        class: AppBundle\Repository\OpportunityStatusRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\OpportunityStatus }
+
+    app.repository.log:
+        class: AppBundle\Repository\LogRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Log }
+
+    app.repository.distribution_list:
+        class: AppBundle\Repository\DistributionListRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\DistributionList }
+
+    app.repository.meeting:
+        class: AppBundle\Repository\MeetingRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\Meeting }

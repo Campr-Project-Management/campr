@@ -60,7 +60,6 @@ class OpportunitiesTransformer extends AbstractTransformer
             ],
             'items' => $this->getItems($project->getOpportunities()),
             'topItem' => $this->getTopOpportunity($project),
-            'grid' => $this->opportunityRepository->getGridCount($project->getId()),
         ];
     }
 
@@ -126,7 +125,9 @@ class OpportunitiesTransformer extends AbstractTransformer
             'priorityName' => $opportunity->getPriorityName(),
             'dueDate' => $this->dateTransformer->transform($opportunity->getDueDate()),
             'impact' => $opportunity->getImpact(),
+            'impactIndex' => $opportunity->getImpactIndex(),
             'probability' => $opportunity->getProbability(),
+            'probabilityIndex' => $opportunity->getProbabilityIndex(),
             'timeUnit' => $opportunity->getTimeUnit(),
             'potentialCost' => $opportunity->getPotentialCostSavings(),
             'potentialTime' => $opportunity->getPotentialTimeSavings(),

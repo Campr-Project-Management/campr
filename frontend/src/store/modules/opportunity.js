@@ -10,24 +10,22 @@ const state = {
 const getters = {
     opportunities: state => state.opportunities,
     currentOpportunity: state => state.currentOpportunity,
+    opportunity: (state, getters) => getters.currentOpportunity,
     currentOpportunityMeasures: state => state.currentOpportunity.measures,
 };
 
 const actions = {
     getProjectOpportunities({commit}, data) {
-        Vue.http
-            .get(
-                Routing.generate(
-                    'app_api_project_opportunities',
-                    {id: data.projectId, probability: data.probability, impact: data.impact}
-                )
-            ).then((response) => {
-                if (response.status === 200 || response.status === 204) {
-                    let opportunities = response.data;
-                    commit(types.SET_PROJECT_OPPORTUNITIES, {opportunities});
-                }
-            }, (response) => {
-            });
+        return Vue.http.get(
+            Routing.generate('app_api_project_opportunities',
+                {id: data.projectId}),
+        ).then((response) => {
+            if (response.status === 200 || response.status === 204) {
+                let opportunities = response.data;
+                commit(types.SET_PROJECT_OPPORTUNITIES, {opportunities});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Gets project opportunity
@@ -45,25 +43,29 @@ const actions = {
             });
     },
     /**
-     * Create project opportunity
+     * Creates a new project opportunity
      * @param {function} commit
-     * @param {array}    data
+     * @param {array} data
+     * @return {object}
      */
     createProjectOpportunity({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_project_create_opportunity', {id: data.project}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-risks-and-opportunities'});
+        return Vue
+            .http
+                .post(
+                    Routing.generate('app_api_project_create_opportunity', {id: data.project}),
+                    JSON.stringify(data)
+                ).then((response) => {
+                    if (response.body && response.body.error) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                        router.push({name: 'project-risks-and-opportunities'});
+                    }
+                }, (response) => {
                 }
-            }, (response) => {
-            });
+            )
+        ;
     },
     /**
      * Edit project phase

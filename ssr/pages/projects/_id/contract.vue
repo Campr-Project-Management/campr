@@ -62,25 +62,13 @@
                 <div class="col-md-6 col-md-offset-3">
                     <h3 class="text-center">{{ translateText('message.schedule') }}</h3>
                     <div class="flex flex-space-between dates">
-                        <div class="input-holder left" :class="{disabledpicker: frozen }">
+                        <div class="input-holder left">
                             <label class="active">{{ translateText('label.proposed_start_date') }}</label>
-                            <no-ssr>
-                                <datepicker
-                                    :value="proposedStartDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
-                            </no-ssr>
-                            <calendar-icon fill="middle-fill" />
+                            <span>{{ proposedStartDate | date }}</span>
                         </div>
-                        <div class="input-holder right" :class="{disabledpicker: frozen }">
+                        <div class="input-holder right">
                             <label class="active">{{ translateText('label.proposed_end_date') }}</label>
-                            <no-ssr>
-                                <datepicker
-                                    :value="proposedEndDate"
-                                    format="dd - MM - yyyy"
-                                    :disabled-picker="true"/>
-                            </no-ssr>
-                            <calendar-icon fill="middle-fill" />
+                            <span>{{ proposedEndDate | date }}</span>
                         </div>
                     </div>
                 </div>
@@ -168,7 +156,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_resources') }}</h3>
                     <no-ssr>
-                        <chart :data="internalCostsGraphData.byPhase"/>
+                        <chart :data="internalCostsGraphData.byPhase | graphData" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
@@ -177,7 +165,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.external_resources') }}</h3>
                     <no-ssr>
-                        <chart :data="externalCostsGraphData.byPhase"/>
+                        <chart :data="externalCostsGraphData.byPhase | graphData" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project External Costs /// -->
@@ -202,30 +190,23 @@
 <script>
 import CalendarIcon from '~/components/_icons/CalendarIcon.vue';
 import Chart from '~/components/Charts/CostsChart.vue';
-import Datepicker from '~/components/_form-components/Datepicker';
 import DownloadbuttonIcon from '~/components/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '~/components/_icons/EyeIcon.vue';
 import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
 import Vue from 'vue';
-import moment from 'moment';
 
 export default {
     validate({params}) {
         return /^\d+$/.test(params.id);
     },
     components: {
-        // DragBox,
         CalendarIcon,
         Chart,
-        Datepicker,
         DownloadbuttonIcon,
         EyeIcon,
         InputField,
         MemberBadge,
-        // VueChart,
-        // AlertModal,
-        // Error,
     },
     methods: {
         translateText(str) {
@@ -242,6 +223,20 @@ export default {
             },
         },
 
+    },
+    filters: {
+        graphData(value) {
+            if (!value) {
+                return {};
+            }
+
+            let data = {};
+            value.forEach((row) => {
+                data[row.name] = row.values;
+            });
+
+            return data;
+        },
     },
     async asyncData({params, query}) {
         let project = {};
@@ -306,12 +301,8 @@ export default {
             objectiveDescription: null,
             limitationDescription: null,
             frozen: false,
-            proposedStartDate: contract.proposedStartDate
-                ? moment(contract.proposedStartDate, 'YYYY-MM-DD').format()
-                : null,
-            proposedEndDate: contract.proposedEndDate
-                ? moment(contract.proposedEndDate, 'YYYY-MM-DD').format()
-                : null,
+            proposedStartDate: contract.proposedStartDate,
+            proposedEndDate: contract.proposedEndDate,
         };
     }
 };

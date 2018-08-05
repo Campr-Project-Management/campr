@@ -1,13 +1,15 @@
 import accounting from 'accounting';
+import numeral from 'numeral';
 
 export default {
     install(Vue) {
-        accounting.settings = settings.en;
+        accounting.settings = accountingSettings.en;
 
-        if (typeof window.user === 'object' &&
+        // nodejs suuuuucks
+        if (!process && typeof window.user === 'object' &&
             typeof window.user.locale === 'string' &&
-            settings[window.user.locale]) {
-            accounting.settings = settings[window.user.locale];
+            accountingSettings[window.user.locale]) {
+            accounting.settings = accountingSettings[window.user.locale];
         }
 
         Vue.formatMoney = (amount, options) => {
@@ -18,12 +20,32 @@ export default {
             return formatNumber(amount, options);
         };
 
-        Vue.prototype.$formatMoney = function(amount, options) {
+        Vue.formatBytes = (value) => {
+            return formatBytes(value);
+        };
+
+        Vue.prototype.$formatMoney = (amount, options) => {
             return formatMoney(amount, options);
         };
 
-        Vue.prototype.$formatNumber = function(value, options) {
+        Vue.prototype.$formatNumber = (value, options) => {
             return formatNumber(value, options);
+        };
+
+        Vue.prototype.$formatBytes = (value) => {
+            return formatBytes(value);
+        };
+
+        Vue.prototype.formatMoney = (amount, options) => {
+            return formatMoney(amount, options);
+        };
+
+        Vue.prototype.formatNumber = (value, options) => {
+            return formatNumber(value, options);
+        };
+
+        Vue.prototype.formatBytes = (value) => {
+            return formatBytes(value);
         };
 
         Vue.mixin({
@@ -37,6 +59,9 @@ export default {
                 formatNumber(value, options) {
                     return formatNumber(value, options);
                 },
+                bytes(value) {
+                    return formatBytes(value);
+                },
             },
         });
     },
@@ -48,31 +73,31 @@ const currencyCodeToSymbolMap = {
     GBP: '£',
 };
 
-const settings = {
+const accountingSettings = {
     en: {
         currency: {
-            symbol: '$',   // default currency symbol is '$'
+            symbol: '$', // default currency symbol is '$'
             format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
-            decimal: '.',  // decimal point separator
-            thousand: ',',  // thousands separator
-            precision: 2,   // decimal places
+            decimal: '.', // decimal point separator
+            thousand: ',', // thousands separator
+            precision: 2, // decimal places
         },
         number: {
-            precision: 0,  // default precision on numbers is 0
+            precision: 0, // default precision on numbers is 0
             thousand: ',',
             decimal: '.',
         },
     },
     de: {
         currency: {
-            symbol: '€',   // default currency symbol is '$'
+            symbol: '€', // default currency symbol is '$'
             format: '%s%v', // controls output: %s = symbol, %v = value/number (can be object: see below)
-            decimal: '.',  // decimal point separator
-            thousand: ',',  // thousands separator
-            precision: 2,   // decimal places
+            decimal: '.', // decimal point separator
+            thousand: ',', // thousands separator
+            precision: 2, // decimal places
         },
         number: {
-            precision: 0,  // default precision on numbers is 0
+            precision: 0, // default precision on numbers is 0
             thousand: ',',
             decimal: '.',
         },
@@ -126,4 +151,14 @@ function formatNumber(value, options = {}) {
     }
 
     return accounting.formatNumber(value, options);
+}
+
+/**
+ * Format bytes
+ *
+ * @param {int} value
+ * @return {string}
+ */
+function formatBytes(value) {
+    return numeral(value).format('0.0 ib');
 }

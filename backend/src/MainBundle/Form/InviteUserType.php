@@ -29,9 +29,9 @@ class InviteUserType extends AbstractType
         ];
 
         if ($options['team']) {
-            $constraints[] = new UserInvited([
-                'team' => $options['team'],
-            ]);
+            //            $constraints[] = new UserInvited([
+//                'team' => $options['team'],
+//            ]);
             $constraints[] = new ActiveMember([
                 'team' => $options['team'],
                 'user' => $options['user'],

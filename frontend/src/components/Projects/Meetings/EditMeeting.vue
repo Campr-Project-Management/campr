@@ -42,7 +42,7 @@
                             <i class="fa fa-angle-left"></i>
                             {{ translate('message.back_to_meetings') }}
                         </router-link>
-                        <h1>{{ translate('message.edit') }} <b>{{ meeting.name }}</b></h1>
+                        <h1>{{ translate('message.edit') }} <b>{{ translateMeetingName(meeting.name) }}</b></h1>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -78,8 +78,7 @@
                             <div class="col-md-4">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
-                                    <datepicker v-model="schedule.meetingDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="schedule.meetingDate"/>
                                 </div>
                                 <error at-path="date"/>
                             </div>
@@ -116,7 +115,10 @@
 
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translate('message.location') }}</h3>
-                    <input-field type="text" v-bind:label="translate('placeholder.location')" v-model="location" v-bind:content="location" />
+                    <input-field
+                            type="text"
+                            :label="translate('placeholder.location')"
+                            v-model="location"/>
                     <!-- /// End Meeting Location /// -->
 
                     <hr class="double">
@@ -240,7 +242,12 @@
                     <hr class="double">
 
                     <!-- /// Meeting Documents /// -->
-                    <meeting-attachments v-on:input="setMedias" v-bind:editMedias="medias" />
+                    <h3>{{ translate('message.documents') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            label="button.add_document"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
@@ -248,7 +255,30 @@
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.decisions">
+                    <div class="entries-wrapper" v-if="meeting.decisions || meeting.openDecisions">
+                        <!-- previous decisions -->
+                        <div class="entry" v-for="decision in meeting.openDecisions">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ decision.title }}</h4>
+                                    | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                    | {{ translate('message.status') }}:
+                                    <b v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</b>
+                                    <b v-else class="danger-color">{{ translate('choices.undone') }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
+                                <user-avatar
+                                    :name="decision.responsibilityFullName"
+                                    :url="decision.responsibilityAvatar"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ decision.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="decision.description"></div>
+                        </div>
+
                         <!-- /// Decision /// -->
                         <div class="entry" v-for="decision in meeting.decisions">
                             <div class="entry-header flex flex-space-between flex-v-center">
@@ -267,7 +297,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
                                 <user-avatar
                                         :name="decision.responsibilityFullName"
-                                        :url="decision.responsibilityAvatarUrl"/>
+                                        :url="decision.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
@@ -298,12 +328,32 @@
                     <!-- /// ToDos /// -->
                     <h3>{{ translate('message.todos') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.todos">
+                    <div class="entries-wrapper" v-if="meeting.todos || meeting.openTodos">
+                        <!-- previous decisions -->
+                        <div class="entry" v-for="todo in meeting.openTodos">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center">
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ todo.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="todo.description"></div>
+                        </div>
+
                         <!-- /// ToDo /// -->
                         <div class="entry" v-for="todo in meeting.todos">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
-                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ todo.statusName }}</b><b v-else>-</b>
+                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
                                     <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
@@ -311,7 +361,10 @@
                                 </div>
                             </div>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="small"
+                                        :url="todo.responsibilityAvatar"
+                                        :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ todo.responsibilityFullName }}</b>
@@ -346,8 +399,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <datepicker v-model="todo.dueDate" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="todo.dueDate"/>
                                 </div>
                             </div>
                         </div>
@@ -375,7 +427,29 @@
                     <!-- /// Infos /// -->
                     <h3>{{ translate('message.infos') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.infos">
+                    <div class="entries-wrapper" v-if="meeting.infos || meeting.openInfos">
+                        <!-- previous infos -->
+                        <div class="entry" v-for="info in meeting.openInfos">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ info.topic }}</h4> |
+                                    {{ translate('message.expiry_date') }}: <b :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</b> |
+                                    {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center">
+                                <user-avatar
+                                    size="small"
+                                    :name="info.responsibilityFullName"
+                                    :url="info.responsibilityAvatar"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ info.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="info.description"></div>
+                        </div>
+
                         <!-- /// Info /// -->
                         <div class="entry" v-for="info in meeting.infos">
                             <div class="entry-header flex flex-space-between flex-v-center">
@@ -393,7 +467,7 @@
                                 <user-avatar
                                         size="small"
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatarUrl"/>
+                                        :url="info.responsibilityAvatar"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>
@@ -431,8 +505,7 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.expiry_date') }}</label>
-                                    <datepicker v-model="info.expiresAt" format="dd-MM-yyyy" />
-                                    <calendar-icon fill="middle-fill"/>
+                                    <date-field v-model="info.expiresAt"/>
                                 </div>
                             </div>
                         </div>
@@ -509,10 +582,7 @@
 <script>
 import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
-import datepicker from '../../_common/_form-components/Datepicker';
-import CalendarIcon from '../../_common/_icons/CalendarIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import MeetingAttachments from './MeetingAttachments';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import {mapGetters, mapActions} from 'vuex';
@@ -530,18 +600,19 @@ import Modal from '../../_common/Modal';
 import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import UserAvatar from '../../_common/UserAvatar';
 import MeetingDecisionForm from './Form/DecisionForm';
+import DateField from '../../_common/_form-components/DateField';
+import Attachments from '../../_common/Attachments';
 
 export default {
     components: {
+        Attachments,
+        DateField,
         MeetingDecisionForm,
         UserAvatar,
         Editor,
         InputField,
         SelectField,
-        datepicker,
-        CalendarIcon,
         MemberSearch,
-        MeetingAttachments,
         EditIcon,
         DeleteIcon,
         VueTimepicker,
@@ -561,14 +632,20 @@ export default {
             'createMeetingAgenda', 'createMeetingDecision', 'createMeetingTodo', 'createInfo',
             'getInfoCategories', 'deleteProjectMeeting',
         ]),
+        translateMeetingName(name) {
+            return name
+                ? name
+                    .split('|')
+                    .map(i => this.translate(i))
+                    .join(' | ')
+                : ''
+            ;
+        },
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
             let start = moment(startDate, 'HH:mm');
 
             return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
-        },
-        setMedias(value) {
-            this.medias = value;
         },
         setModals(value) {
             this.showEditObjectiveModal = value;
@@ -658,6 +735,7 @@ export default {
                 responsibility: this.decision.responsibility,
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 date: moment(this.decision.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
+                meeting: this.$route.params.meetingId,
             };
 
             this.createMeetingDecision(data).then(() => {
@@ -692,6 +770,7 @@ export default {
                 responsibility: this.todo.responsibility.length > 0 ? this.todo.responsibility[0] : null,
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
+                meeting: this.$route.params.meetingId,
             });
             this.todo.responsibility = [];
             this.todo.title = null;
@@ -711,7 +790,7 @@ export default {
         },
         initDeleteTodo: function(todo) {
             this.showDeleteTodoModal = true;
-            this.ditTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
+            this.editTodoObject = {id: todo.id, meeting: this.$route.params.meetingId};
         },
         addInfo: function() {
             const data = {
@@ -815,7 +894,19 @@ export default {
             'validationMessages',
             'validationOrigin',
             'decisionStatusByValue',
+            'projectMaxUploadFileSize',
+            'validationMessagesFor',
         ]),
+        mediasValidationMessages() {
+            let messages = this.validationMessagesFor('medias');
+            let out = [];
+
+            Object.keys(messages).forEach((index) => {
+                out[index] = messages[index].file;
+            });
+
+            return out;
+        },
         agendasPerPage: function() {
             return this.meetingAgendas.pageSize;
         },
@@ -930,9 +1021,7 @@ export default {
     watch: {
         'details.distributionList': {
             handler: function(value) {
-                this.selectedParticipants = this
-                    .selectedParticipants
-                    .filter(participant => participant.isPresent || participant.inDistributionList);
+                this.selectedParticipants = [];
 
                 if (!value || !value.key) {
                     return;
@@ -962,22 +1051,18 @@ export default {
                             });
                         });
                 });
-
-                this
-                    .meeting
-                    .meetingParticipants
-                    .filter(mp => this.selectedParticipants.map(sp => sp.user).indexOf(mp.user) === -1)
-                    .forEach(mp => {
-                        this.selectedParticipants.push({
-                            user: mp.user,
-                            userFullName: mp.userFullName,
-                            userAvatar: mp.userAvatar,
-                            departments: mp.userDepartmentNames,
-                            isPresent: mp.isPresent,
-                            inDistributionList: mp.inDistributionList,
-                        });
-                    })
-                ;
+            },
+            deep: true,
+        },
+        'distributionLists': {
+            handler() {
+                // force an update of the list when the distributionLists are loaded
+                if (this.details.distributionList && this.details.distributionList.key) {
+                    this.details.distributionList = {
+                        key: this.details.distributionList.key,
+                        label: this.details.distributionList.label,
+                    };
+                }
             },
             deep: true,
         },
@@ -1001,11 +1086,7 @@ export default {
                 mm: moment(this.meeting.end, 'HH:mm').format('mm'),
             };
             this.location = this.meeting.location;
-            this.medias = this.meeting.medias.map(item => {
-                return {
-                    'path': item.path,
-                };
-            });
+            this.medias = this.meeting.medias;
         },
         showSaved(value) {
             if (value === false) {
@@ -1036,6 +1117,7 @@ export default {
 
     .action-list {
         margin-bottom: 15px;
+        list-style-type: none;
 
         li {
             margin-bottom: 15px;
@@ -1058,6 +1140,7 @@ export default {
                     height: 10px;
                     left: 0;
                     top: 0;
+                    margin-top: 0.3em;
                 }
             }
 

@@ -47,44 +47,30 @@ class ExportService
             $xmlNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Task></Task>');
         }
 
-        $xmlNode->addChild('UID', $package->getPuid());
+        $xmlNode->addChild('UID', $package->getId());
         $xmlNode->addChild('ID', $package->getId());
         $xmlNode->addChild('Name', $package->getName());
-        $xmlNode->addChild('ExternalTask', $package->getParentName());
-        $xmlNode->addChild('EarlyStart', $package->getScheduledStartAt() ? $package->getScheduledStartAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('EarlyFinish', $package->getScheduledFinishAt() ? $package->getScheduledFinishAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('LateStart', $package->getForecastStartAt() ? $package->getForecastStartAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('LateFinish', $package->getForecastFinishAt() ? $package->getForecastFinishAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('Start', $package->getActualStartAt() ? $package->getActualStartAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('Finish', $package->getActualFinishAt() ? $package->getActualFinishAt()->format('Y-m-d H:i:s') : '');
-        $xmlNode->addChild('Milestone', $package->getIsKeyMilestone() ? 'Yes' : 'No');
-        $xmlNode->addChild('Calendar', $package->getCalendarId());
-        $xmlNode->addChild('PercentComplete', $package->getProgress());
-
-        $assignementsNode = $xmlNode->addChild('Assignements', $package->getCalendarId());
-        foreach ($package->getAssignments() as $assignment) {
-            $assignmentNode = $assignementsNode->addChild('Assignement');
-            $assignmentNode->addChild('UID', $assignment->getExternalId());
-            $assignmentNode->addChild('TaskUID', $package->getPuid());
-            $assignmentNode->addChild('ResourceUID', $assignment->getWorkPackageProjectWorkCostTypeName());
-            $assignmentNode->addChild('PercentWorkComplete', $assignment->getPercentWorkComplete());
-            $assignmentNode->addChild('Milestone', $assignment->getMilestone());
-            $assignmentNode->addChild('Confirmed', $assignment->getConfirmed());
-            $assignmentNode->addChild('Start', $assignment->getStartedAt() ? $assignment->getStartedAt()->format('Y-m-d H:i:s') : '');
-            $assignmentNode->addChild('Finish', $assignment->getFinishedAt() ? $assignment->getFinishedAt()->format('Y-m-d H:i:s') : '');
-
-            $timephasesNode = $assignmentNode->addChild('Timephases');
-            foreach ($assignment->getTimephases() as $timephase) {
-                $timephaseNode = $timephasesNode->addChild('Timephase');
-                $timephaseNode->addChild('UID', $timephase->getId());
-                $timephaseNode->addChild('Type', $timephase->getType());
-                $timephaseNode->addChild('Unit', $timephase->getUnit());
-                $timephaseNode->addChild('Value', $timephase->getValue());
-                $timephaseNode->addChild('Start', $timephase->getStartedAt() ? $timephase->getStartedAt()->format('Y-m-d H:i:s') : '');
-                $timephaseNode->addChild('Finish', $timephase->getFinishedAt() ? $timephase->getFinishedAt()->format('Y-m-d H:i:s') : '');
-            }
-        }
+        $this->addCDataChild($xmlNode, 'Notes', $package->getContent());
+        $xmlNode->addChild('Start', $package->getScheduledStartAt() ? $package->getScheduledStartAt()->format('Y-m-d H:i:s') : '');
+        $xmlNode->addChild('Finish', $package->getScheduledFinishAt() ? $package->getScheduledFinishAt()->format('Y-m-d H:i:s') : '');
+        $xmlNode->addChild('ActualStart', $package->getActualStartAt() ? $package->getActualStartAt()->format('Y-m-d H:i:s') : '');
+        $xmlNode->addChild('ActualFinish', $package->getActualStartAt() ? $package->getActualStartAt()->format('Y-m-d H:i:s') : '');
+        $xmlNode->addChild('Cost', $package->getInternalForecastCost());
+        $xmlNode->addChild('ActualCost', $package->getInternalActualCost());
 
         return $xmlNode;
+    }
+
+    private function addCDataChild(\SimpleXMLElement $xmlNode, string $name, string $content)
+    {
+        $newNode = $xmlNode->addChild($name);
+        $element = dom_import_simplexml($newNode);
+        $element->appendChild(
+            $element
+                ->ownerDocument
+                ->createCDATASection($content)
+        );
+
+        return $newNode;
     }
 }

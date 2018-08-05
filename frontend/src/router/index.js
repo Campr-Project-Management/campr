@@ -49,12 +49,13 @@ import ViewDecision from '../components/Projects/Decisions/ViewDecision.vue';
 import ProjectStatusReports from '../components/Projects/ProjectStatusReports.vue';
 import StatusReportCreate from '../components/Projects/StatusReports/StatusReportCreate.vue';
 import StatusReportView from '../components/Projects/StatusReports/StatusReportView.vue';
+import StatusReportPrint from '../components/Projects/StatusReports/StatusReportPrint.vue';
 import RASCIMatrix from '../components/Projects/RASCIMatrix.vue';
 import CloseDownReport from '../components/Projects/ProjectCloseDownReport.vue';
 import RemainingActionView from '../components/Projects/CloseDownReport/ViewRemainingAction.vue';
 import RemainingActionEdit from '../components/Projects/CloseDownReport/EditRemainingAction.vue';
 import WBS from '../components/Projects/WBS.vue';
-
+import Guard from '../helpers/security/guard';
 
 Vue.use(VueRouter);
 
@@ -109,30 +110,55 @@ const routes = [
                 path: 'contract',
                 component: ProjectContract,
                 name: 'project-contract',
-                meta: {title: 'Project Contract'},
+                meta: {
+                    title: 'Project Contract',
+                    guard: {
+                        projectModule: ['contract'],
+                    },
+                },
             },
             {
                 path: 'organization',
                 component: ProjectOrganization,
                 name: 'project-organization',
-                meta: {title: 'Project Organization'},
+                meta: {
+                    title: 'Project Organization',
+                    guard: {
+                        projectModule: ['organization'],
+                    },
+                },
             },
             {
                 path: 'organization/view-member/:userId',
                 component: ViewMember,
                 name: 'project-organization-view-member',
-                meta: {title: 'Project View Member'},
+                meta: {
+                    title: 'Project View Member',
+                    guard: {
+                        projectModule: ['organization'],
+                    },
+                },
             },
             {
                 path: 'organization/edit',
                 component: EditOrganization,
                 name: 'project-organization-edit',
-                meta: {title: 'Project Edit Organization'},
+                meta: {
+                    title: 'Project Edit Organization',
+                    guard: {
+                        projectModule: ['organization'],
+                    },
+                },
             },
             {
                 path: 'task-management',
                 component: TaskManagement,
-                meta: {title: 'Project Task Management'},
+                meta: {
+                    title: 'Project Task Management',
+                    guard: {
+                        projectModule: ['task_management'],
+                    },
+                },
                 children: [
                     {
                         path: 'list',
@@ -196,247 +222,459 @@ const routes = [
                 path: 'phases-and-milestones',
                 component: ProjectPhasesMilestones,
                 name: 'project-phases-and-milestones',
-                meta: {title: 'Phases and Milestones'},
+                meta: {
+                    title: 'Phases and Milestones',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/create-phase',
                 component: PhaseCreate,
                 name: 'project-phases-create-phase',
-                meta: {title: 'Create Phase'},
+                meta: {
+                    title: 'Create Phase',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/edit-phase/:phaseId',
                 component: PhaseCreate,
                 name: 'project-phases-edit-phase',
-                meta: {title: 'Edit Phase'},
+                meta: {
+                    title: 'Edit Phase',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/phase/:phaseId',
                 component: PhaseView,
                 name: 'project-phases-view-phase',
-                meta: {title: 'View Phase'},
+                meta: {
+                    title: 'View Phase',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/create-milestone',
                 component: MilestoneCreate,
                 name: 'project-milestones-create-milestone',
-                meta: {title: 'Create Milestone'},
+                meta: {
+                    title: 'Create Milestone',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/edit-milestone/:milestoneId',
                 component: MilestoneCreate,
                 name: 'project-milestones-edit-milestone',
-                meta: {title: 'Edit Milestone'},
+                meta: {
+                    title: 'Edit Milestone',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'phases-and-milestones/milestone/:milestoneId',
                 component: MilestoneView,
                 name: 'project-phases-view-milestone',
-                meta: {title: 'View Milestone'},
+                meta: {
+                    title: 'View Milestone',
+                    guard: {
+                        projectModule: ['phases_and_milestones'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities',
                 component: ProjectRisksOpportunities,
                 name: 'project-risks-and-opportunities',
-                meta: {title: 'Risk & Opportunities'},
+                meta: {
+                    title: 'Risk & Opportunities',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/create-risk',
                 component: RiskCreate,
                 name: 'project-risks-create-risk',
-                meta: {title: 'Create Risk'},
+                meta: {
+                    title: 'Create Risk',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/risk/:riskId',
                 component: RiskView,
                 name: 'project-risks-view-risk',
-                meta: {title: 'View Risk'},
+                meta: {
+                    title: 'View Risk',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/edit-risk/:riskId',
                 component: RiskCreate,
                 name: 'project-risks-edit-risk',
-                meta: {title: 'Edit Risk'},
+                meta: {
+                    title: 'Edit Risk',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/create-opportunity',
                 component: OpportunityCreate,
                 name: 'project-opportunities-create-opportunity',
-                meta: {title: 'Create Opportunity'},
+                meta: {
+                    title: 'Create Opportunity',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/opportunity/:opportunityId',
                 component: OpportunityView,
                 name: 'project-opportunities-view-opportunity',
-                meta: {title: 'View Opportunity'},
+                meta: {
+                    title: 'View Opportunity',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'risks-and-opportunities/edit-opportunity/:opportunityId',
                 component: OpportunityCreate,
                 name: 'project-opportunities-edit-opportunity',
-                meta: {title: 'Edit Opportunity'},
+                meta: {
+                    title: 'Edit Opportunity',
+                    guard: {
+                        projectModule: ['risks_and_opportunities'],
+                    },
+                },
             },
             {
                 path: 'meetings',
                 component: ProjectMeetings,
                 name: 'project-meetings',
-                meta: {title: 'Project Meetings'},
+                meta: {
+                    title: 'Project Meetings',
+                    guard: {
+                        projectModule: ['meetings'],
+                    },
+                },
             },
             {
                 path: 'meetings/create-meeting',
                 component: MeetingCreate,
                 name: 'project-meetings-create-meeting',
-                meta: {title: 'Create Meeting'},
+                meta: {
+                    title: 'Create Meeting',
+                    guard: {
+                        projectModule: ['meetings'],
+                    },
+                },
             },
             {
                 path: 'meetings/edit-meeting/:meetingId',
                 component: EditMeeting,
                 name: 'project-meetings-edit-meeting',
-                meta: {title: 'Edit Meeting'},
+                meta: {
+                    title: 'Edit Meeting',
+                    guard: {
+                        projectModule: ['meetings'],
+                    },
+                },
             },
             {
                 path: 'meetings/view-meeting/:meetingId',
                 component: ViewMeeting,
                 name: 'project-meetings-view-meeting',
-                meta: {title: 'View Meeting'},
+                meta: {
+                    title: 'View Meeting',
+                    guard: {
+                        projectModule: ['meetings'],
+                    },
+                },
             },
             {
                 path: 'gantt-chart',
                 component: Gantt,
                 name: 'project-gantt-chart',
-                meta: {title: 'Gantt Chart'},
+                meta: {
+                    title: 'Gantt Chart',
+                    guard: {
+                        projectModule: ['gantt_chart'],
+                    },
+                },
             },
             {
                 path: 'todos',
                 component: ProjectTodos,
                 name: 'project-todos',
-                meta: {title: 'Todos'},
+                meta: {
+                    title: 'Todos',
+                    guard: {
+                        projectModule: ['todos'],
+                    },
+                },
             },
             {
                 path: 'todos/create-todo',
                 component: TodoCreate,
                 name: 'project-todos-create-todo',
-                meta: {title: 'Create Todo'},
+                meta: {
+                    title: 'Create Todo',
+                    guard: {
+                        projectModule: ['todos'],
+                    },
+                },
             },
             {
                 path: 'todos/edit-todo/:todoId',
                 component: TodoCreate,
                 name: 'project-todos-edit-todo',
-                meta: {title: 'Edit Todo'},
+                meta: {
+                    title: 'Edit Todo',
+                    guard: {
+                        projectModule: ['todos'],
+                    },
+                },
             },
             {
                 path: 'todos/view-todo/:todoId',
                 component: ViewTodo,
                 name: 'project-todos-view-todo',
-                meta: {title: 'View Todo'},
+                meta: {
+                    title: 'View Todo',
+                    guard: {
+                        projectModule: ['todos'],
+                    },
+                },
             },
             {
                 path: 'external-costs',
                 component: ExternalCosts,
                 name: 'project-external-costs',
-                meta: {title: 'External Costs'},
+                meta: {
+                    title: 'External Costs',
+                    guard: {
+                        projectModule: ['external_costs'],
+                    },
+                },
             },
             {
                 path: 'internal-costs',
                 component: InternalCosts,
                 name: 'project-internal-costs',
-                meta: {title: 'Internal Costs'},
+                meta: {
+                    title: 'Internal Costs',
+                    guard: {
+                        projectModule: ['internal_costs'],
+                    },
+                },
             },
             {
                 path: 'infos',
                 component: ProjectInfos,
                 name: 'project-infos',
-                meta: {title: 'Project Infos'},
+                meta: {
+                    title: 'Project Infos',
+                    guard: {
+                        projectModule: ['infos'],
+                    },
+                },
             },
             {
                 path: 'infos/new',
                 component: InfoCreate,
                 name: 'project-infos-new',
-                meta: {title: 'Create Info'},
+                meta: {
+                    title: 'Create Info',
+                    guard: {
+                        projectModule: ['infos'],
+                    },
+                },
             },
             {
                 path: 'infos/edit/:infoId',
                 component: InfoCreate,
                 name: 'project-infos-edit',
-                meta: {title: 'Edit Info'},
+                meta: {
+                    title: 'Edit Info',
+                    guard: {
+                        projectModule: ['infos'],
+                    },
+                },
             },
             {
                 path: 'infos/view/:infoId',
                 component: ViewInfo,
                 name: 'project-infos-view',
-                meta: {title: 'View Info'},
+                meta: {
+                    title: 'View Info',
+                    guard: {
+                        projectModule: ['infos'],
+                    },
+                },
             },
             {
                 path: 'decisions',
                 component: ProjectDecisions,
                 name: 'project-decisions',
-                meta: {title: 'Project Decisions'},
+                meta: {
+                    title: 'Project Decisions',
+                    guard: {
+                        projectModule: ['decisions'],
+                    },
+                },
             },
             {
                 path: 'decisions/create-decision',
                 component: DecisionCreate,
                 name: 'project-decisions-create-decision',
-                meta: {title: 'Create Decision'},
+                meta: {
+                    title: 'Create Decision',
+                    guard: {
+                        projectModule: ['decisions'],
+                    },
+                },
             },
             {
                 path: 'decisions/edit-decision/:decisionId',
                 component: DecisionCreate,
                 name: 'project-decisions-edit-decision',
-                meta: {title: 'Edit Decision'},
+                meta: {
+                    title: 'Edit Decision',
+                    guard: {
+                        projectModule: ['decisions'],
+                    },
+                },
             },
             {
                 path: 'decisions/view-decision/:decisionId',
                 component: ViewDecision,
                 name: 'project-decisions-view-decision',
-                meta: {title: 'View Decision'},
+                meta: {
+                    title: 'View Decision',
+                    guard: {
+                        projectModule: ['decisions'],
+                    },
+                },
             },
             {
                 path: 'status-reports',
                 component: ProjectStatusReports,
                 name: 'project-status-reports',
-                meta: {title: 'Project Status Reports'},
+                meta: {
+                    title: 'Project Status Reports',
+                    guard: {
+                        projectModule: ['status_report'],
+                    },
+                },
             },
             {
                 path: 'status-reports/create-status-report',
                 component: StatusReportCreate,
                 name: 'project-status-reports-create-status-report',
-                meta: {title: 'Create Status Report'},
+                meta: {
+                    title: 'Create Status Report',
+                    guard: {
+                        projectModule: ['status_report'],
+                    },
+                },
             },
             {
                 path: 'status-reports/view-status-report/:reportId',
                 component: StatusReportView,
                 name: 'project-status-reports-view-status-report',
-                meta: {title: 'View Status Report'},
+                meta: {
+                    title: 'View Status Report',
+                    guard: {projectModule: ['status_report']},
+                },
+            },
+            {
+                path: 'status-reports/print-status-report/:reportId',
+                component: StatusReportPrint,
+                name: 'project-status-reports-print-status-report',
+                meta: {
+                    title: 'Print Status Report',
+                    guard: {projectModule: ['status_report']},
+                },
             },
             {
                 path: 'rasci-matrix',
                 component: RASCIMatrix,
                 name: 'project-rasci-matrix',
-                meta: {title: 'RASCI Matrix'},
+                meta: {
+                    title: 'RASCI Matrix',
+                    guard: {
+                        projectModule: ['rasci_matrix'],
+                    },
+                },
             },
             {
                 path: 'close-down-report',
                 component: CloseDownReport,
                 name: 'project-close-down-report',
-                meta: {title: 'Close Down Report'},
+                meta: {
+                    title: 'Close Down Report',
+                    guard: {
+                        projectModule: ['close_down_project'],
+                    },
+                },
             },
             {
                 path: 'close-down-report/view-remaining-action/:actionId',
                 component: RemainingActionView,
                 name: 'project-close-down-report-view-remaining-action',
-                meta: {title: 'Close Down Report - View Remaining Action'},
+                meta: {
+                    title: 'Close Down Report - View Remaining Action',
+                    guard: {
+                        projectModule: ['close_down_project'],
+                    },
+                },
             },
             {
                 path: 'close-down-report/edit-remaining-action/:actionId',
                 component: RemainingActionEdit,
                 name: 'project-close-down-report-edit-remaining-action',
-                meta: {title: 'Close Down Report - Edit Remaining Action'},
+                meta: {
+                    title: 'Close Down Report - Edit Remaining Action',
+                    guard: {
+                        projectModule: ['close_down_project'],
+                    },
+                },
             },
             {
                 path: 'wbs',
                 component: WBS,
                 name: 'project-wbs',
-                meta: {title: 'WBS'},
+                meta: {
+                    title: 'WBS',
+                    guard: {
+                        projectModule: ['wbs'],
+                    },
+                },
             },
         ],
     },
@@ -459,11 +697,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.title) {
-        document.title = to.meta.title;
-    }
-
-    next();
+    Guard.beforeEach(to, from, (nArg) => {
+        if (to.meta.title && nArg !== false && !(nArg instanceof Error)) {
+            document.title = to.meta.title;
+        }
+        next(nArg);
+    });
 });
 
 export default router;

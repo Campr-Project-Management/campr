@@ -1,0 +1,118 @@
+{% extends 'MainBundle:Admin:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block body_content %}
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col">
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="alert alert-success">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div class="alert alert-danger">
+                        {{ flashMessage }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row justify-content-between align-items-center">
+            <div class="col-md-auto">
+                <h3 class="page-header">{{ 'menu.unaccepted_team_invites'|trans }}</h3>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col">
+                <a href="#all" class="button button-small">{{ 'action.select.all'|trans }}</a>
+                <a href="#none" class="button button-small">{{ 'action.select.none'|trans }}</a>
+                <a href="#invert" class="button button-small">{{ 'action.select.invert'|trans }}</a>
+                <button name="action" value="resend" class="button button-small">{{ 'label.resend'|trans }}</button>
+                <button name="action" value="delete" class="button button-small">{{ 'button.delete'|trans }}</button>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col">
+                <div class="table-wrapper table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th class="cell-auto">
+                                    {{ 'table_header_cell.id'|trans }}
+                                </th>
+                                <th class="avatar text-center">{{ 'table_header_cell.logo'|trans }}</th>
+                                <th>{{ 'table_header_cell.team'|trans }}</th>
+                                <th>{{ 'table_header_cell.user'|trans }}</th>
+                                <th>{{ 'table_header_cell.created_at'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for team_invite in team_invites %}
+                                <tr>
+                                    <td>
+                                        {% set id = 'teamInvites_' ~ team_invite.id %}
+                                        <input type="checkbox" id="{{ id }}" name="teamInvites[]" value="{{ team_invite.id }}">
+                                    </td>
+                                    <td class="avatar text-center">
+                                        {% if team_invite.team and team_invite.team.logo %}
+                                            <div class="user-avatar-wrapper">
+                                                <img src="{{ vich_uploader_asset(team_invite.team, 'logoFile') }}">
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ team_invite.team }}</td>
+                                    <td>{{ team_invite.user|default(team_invite.email) }}</td>
+                                    <td>{{ team_invite.createdAt|date('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-30">
+            <div class="col">
+                <a href="#all" class="button button-small">{{ 'action.select.all'|trans }}</a>
+                <a href="#none" class="button button-small">{{ 'action.select.none'|trans }}</a>
+                <a href="#invert" class="button button-small">{{ 'action.select.invert'|trans }}</a>
+                <button name="action" value="resend" class="button button-small">{{ 'label.resend'|trans }}</button>
+                <button name="action" value="delete" class="button button-small">{{ 'button.delete'|trans }}</button>
+            </div>
+        </div>
+        {% set unused = form_row(form.teamInvites) %}
+        {% set unused = form_row(form.action) %}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function () {
+            $('a[href="#all"]').click(function (e) {
+                e.preventDefault();
+
+                $('form :checkbox').each(function (_, item) {
+                    item.checked = true;
+                });
+            });
+
+            $('a[href="#none"]').click(function (e) {
+                e.preventDefault();
+
+                $('form :checkbox').each(function (_, item) {
+                    item.checked = false;
+                });
+            });
+
+            $('a[href="#invert"]').click(function (e) {
+                e.preventDefault();
+
+                $('form :checkbox').each(function (_, item) {
+                    item.checked = !item.checked;
+                });
+            });
+        });
+    </script>
+{% endblock %}

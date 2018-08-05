@@ -12,7 +12,6 @@ use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\Currency\CurrencyChoiceType;
 use AppBundle\Form\TrafficLight\TrafficLightType;
-use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -188,6 +187,15 @@ class CreateType extends AbstractType
                 [
                     'required' => true,
                     'label' => 'label.currency',
+                ]
+            )
+            ->add(
+                'maxUploadFileSize',
+                FileSizeChoices::class,
+                [
+                    'required' => true,
+                    'label' => 'label.max_upload_file_size',
+                    'empty_data' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
                 ]
             )
         ;

@@ -103,7 +103,7 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.time_unit',
                 'translation_domain' => 'messages',
             ])
-            ->add('priority', TextType::class, [
+            ->add('priority', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([

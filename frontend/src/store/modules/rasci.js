@@ -30,6 +30,21 @@ const actions = {
             )
         ;
     },
+    deleteRasci({commit}, {project, user, workPackage}) {
+        return Vue
+            .http
+            .delete(
+                Routing.generate(
+                    'app_api_project_rasci_delete',
+                    {
+                        id: project,
+                        workPackage,
+                        user,
+                    }
+                ),
+            )
+        ;
+    },
     getRasci({commit}, {id}) {
         return Vue
             .http
