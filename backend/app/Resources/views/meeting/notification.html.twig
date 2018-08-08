@@ -12,8 +12,33 @@
     <p>{{ 'email.message.starts_at'|trans }}: {{ meeting.start|date('H:i') }}</p>
     <p>{{ 'email.message.ends_at'|trans }}:  {{ meeting.end|date('H:i') }}</p>
     <p>{{ 'email.message.location'|trans}}: { {meeting.location }}</p>
-    <p>{{ 'email.message.objective'|trans}}: { {meeting.objective }}</p>
-    <p>{{ 'email.message.agenda'|trans}}</p>
+    <p>{{ 'email.message.objective'|trans}}:</p>
+    <ul>
+	    {% for objective in meeting.meetingObjectives %}
+	        <li>{{ objective.description }}</li>
+	    {% endfor %}
+	</ul>
+    <p>{{ 'email.message.agenda'|trans}}:</p>
+    <table>
+    	<thead>
+            <tr>
+                <th>{{ 'email.table_header_cell.topic'|trans }}</th>
+                <th>{{ 'email.table_header_cell.responsible'|trans }}</th>
+                <th>{{ 'email.table_header_cell.start'|trans }}</th>
+                <th>{{ 'email.table_header_cell.finish'|trans }}</th>
+                <th>{{ 'email.table_header_cell.duration'|trans }}</th>
+            </tr>
+            <tbody>
+	            {% for agenda in meeting.meetingAgendas %}
+	            	<th>{{agenda.topic}}</th>
+	            	<th>{{agenda.responsibilityFullName}}</th>
+	            	<th>{{agenda.start}}</th>
+	            	<th>{{agenda.end}}</th>
+	            	<th>{{agenda.duration}} {{ message.min }}</th>
+	            {% endfor %}
+            </tbody>
+    	</thead>
+    </table>
 
 
 {% endblock %}
