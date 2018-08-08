@@ -2107,3 +2107,6 @@ message.locale_switcher.en: 'Switch to English'
 message.locale_switcher.de: 'Switch to German'
 portal.about_us: 'About Us'
 message.generic_error: 'An unexpected error occurred'
+email.message.location: Location
+email.message.objective: Objective
+email.message.agenda: Agenda
