@@ -2350,6 +2350,11 @@ module.exports = function (Translator) {
     Translator.add("email.message.location", "Location", "messages", "en");
     Translator.add("email.message.objective", "Objective", "messages", "en");
     Translator.add("email.message.agenda", "Agenda", "messages", "en");
+    Translator.add("email.table_header_cell.topic", "Topic", "messages", "en");
+    Translator.add("email.table_header_cell.responsible", "Responsible", "messages", "en");
+    Translator.add("email.table_header_cell.start", "Start", "messages", "en");
+    Translator.add("email.table_header_cell.end", "Finish", "messages", "en");
+    Translator.add("email.table_header_cell.duration", "Duration", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
