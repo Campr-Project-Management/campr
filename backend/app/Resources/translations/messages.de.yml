@@ -2109,3 +2109,8 @@ message.generic_error: 'Ein unerwarteter Fehler ist aufgetreten.'
 email.message.location: Standort
 email.message.objective: Ziele
 email.message.agenda: Agenda
+email.table_header_cell.topic: Topic
+email.table_header_cell.responsible: Responsible
+email.table_header_cell.start: Start
+email.table_header_cell.end: Finish
+email.table_header_cell.duration: Duration

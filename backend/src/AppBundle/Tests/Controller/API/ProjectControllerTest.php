@@ -1307,6 +1307,7 @@ class ProjectControllerTest extends BaseController
                             ],
                             'meetingAgendas' => [
                                 [
+                                    'duration' => '30',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'responsibility' => 3,
@@ -1318,6 +1319,7 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                 ],
                                 [
+                                    'duration' => '30',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'responsibility' => 3,

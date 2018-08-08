@@ -2110,3 +2110,8 @@ message.generic_error: 'An unexpected error occurred'
 email.message.location: Location
 email.message.objective: Objective
 email.message.agenda: Agenda
+email.table_header_cell.topic: Topic
+email.table_header_cell.responsible: Responsible
+email.table_header_cell.start: Start
+email.table_header_cell.end: Finish
+email.table_header_cell.duration: Duration
