@@ -2106,3 +2106,6 @@ message.locale_switcher.en: 'CAMPR auf Englisch'
 message.locale_switcher.de: 'CAMPR auf Deutsch'
 portal.about_us: 'Über uns'
 message.generic_error: 'Ein unerwarteter Fehler ist aufgetreten.'
+email.message.location: Standort
+email.message.objective: Ziele
+email.message.agenda: Agenda

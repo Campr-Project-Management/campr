@@ -11,4 +11,9 @@
     </p>
     <p>{{ 'email.message.starts_at'|trans }}: {{ meeting.start|date('H:i') }}</p>
     <p>{{ 'email.message.ends_at'|trans }}:  {{ meeting.end|date('H:i') }}</p>
+    <p>{{ 'email.message.location'|trans}}: { {meeting.location }}</p>
+    <p>{{ 'email.message.objective'|trans}}: { {meeting.objective }}</p>
+    <p>{{ 'email.message.agenda'|trans}}</p>
+
+
 {% endblock %}
