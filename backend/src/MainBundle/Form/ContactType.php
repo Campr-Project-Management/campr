@@ -18,6 +18,7 @@ class ContactType extends AbstractType
         $builder
             ->add('full_name', TextType::class, [
                 'label' => false,
+                'required' => true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.full_name',
@@ -26,6 +27,7 @@ class ContactType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
+                'required' => true,
                 'constraints' => [
                     new Email([
                         'message' => 'invalid.email',
@@ -35,16 +37,9 @@ class ContactType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('subject', TextType::class, [
-                'label' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.subject',
-                    ]),
-                ],
-            ])
             ->add('message', TextareaType::class, [
                 'label' => false,
+                'required' => true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.message',
@@ -56,6 +51,8 @@ class ContactType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'csrf_protection' => false,
+        ]);
     }
 }

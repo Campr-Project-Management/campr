@@ -12,9 +12,13 @@ use MainBundle\Form\User\HomepageRegisterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class DefaultController extends Controller
 {
@@ -23,6 +27,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $contactForm = $this->createForm(ContactType::class);
+
         if ($this->getUser() instanceof User) {
             $teams = $this
                 ->getDoctrine()
@@ -34,16 +40,24 @@ class DefaultController extends Controller
             $teams = [];
         }
 
-        return $this->render('MainBundle:Default:index.html.twig', ['teams' => $teams]);
+        return $this->render('MainBundle:Default:index.html.twig', [
+            'teams' => $teams,
+            'contactForm' => $contactForm->createView(),
+        ]);
     }
 
     /**
      * @Route("/register", name="main_register", options={"expose"=true})
      * @Method({"GET","POST"})
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
         $user = new User();
+        $contactForm = $this->createForm(ContactType::class);
         $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
             'method' => Request::METHOD_POST,
             'action' => $this->generateUrl('main_register'),
@@ -51,7 +65,7 @@ class DefaultController extends Controller
 
         $signUpForm->handleRequest($request);
         if ($request->isMethod(Request::METHOD_POST) && $signUpForm->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
 
             $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
 
@@ -70,6 +84,7 @@ class DefaultController extends Controller
 
         return $this->render('MainBundle:Default:register.html.twig', [
             'signUpForm' => $signUpForm->createView(),
+            'contactForm' => $contactForm->createView(),
         ]);
     }
 
@@ -97,7 +112,11 @@ class DefaultController extends Controller
      */
     public function modulesAction(Request $request)
     {
-        return $this->render('MainBundle:Default:modules.html.twig');
+        $contactForm = $this->createForm(ContactType::class);
+
+        return $this->render('MainBundle:Default:modules.html.twig', [
+            'contactForm' => $contactForm->createView(),
+        ]);
     }
 
     /**
@@ -128,6 +147,9 @@ class DefaultController extends Controller
      * Contact page.
      *
      * @Route("/contact", name="main_contact")
+     * @Method({"GET","POST"})
+     *
+     * @param Request $request
      *
      * @return Response|RedirectResponse
      */
@@ -136,31 +158,54 @@ class DefaultController extends Controller
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $mailerService = $this->get('app.service.mailer');
-            $mailerService->addFromParameter('contact_from', ['email' => $data['email'], 'name' => $data['full_name']]);
-            $mailerService
-                ->sendEmail(
-                    'MainBundle:Email:contact.html.twig',
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $mailerService = $this->get('app.service.mailer');
+                $mailerService->addFromParameter(
                     'contact_from',
-                    'info@campr.biz',
-                    ['subject' => $data['subject'], 'fullName' => $data['full_name'], 'message' => $data['message']]
-                )
-            ;
+                    [
+                        'email' => $data['email'],
+                        'name' => $data['full_name'], ]
+                );
+                $mailerService
+                    ->sendEmail(
+                        'MainBundle:Email:contact.html.twig',
+                        'contact_from',
+                        $this->getParameter('email.contact_info'),
+                        [
+                            'email' => $data['email'],
+                            'subject' => 'Campr contact',
+                            'fullName' => $data['full_name'],
+                            'message' => $data['message'],
+                        ]
+                    )
+                ;
 
-            $this
-                ->get('session')
-                ->getFlashBag()
-                ->add(
-                    'success',
-                    $this
-                        ->get('translator')
-                        ->trans('success.contact.message.sent', [], 'flashes')
-                )
-            ;
+                $this
+                    ->get('session')
+                    ->getFlashBag()
+                    ->add(
+                        'success',
+                        $this
+                            ->get('translator')
+                            ->trans('success.contact.message.sent', [], 'flashes')
+                    )
+                ;
 
-            return $this->redirectToRoute('main_contact');
+                return $this->redirectToRoute('main_contact');
+            } else {
+                $this
+                    ->get('session')
+                    ->getFlashBag()
+                    ->add(
+                        'error',
+                        $this
+                            ->get('translator')
+                            ->trans('success.contact.message.not_sent', [], 'flashes')
+                    )
+                ;
+            }
         }
 
         return $this->render(
@@ -169,6 +214,61 @@ class DefaultController extends Controller
                 'form' => $form->createView(),
             ]
         );
+    }
+
+    /**
+     * Contact Email.
+     *
+     * @Route("/contact-email", name="main_contact_email", options={"expose"= true})
+     * @Method({"GET","POST"})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function contactEmailAction(Request $request)
+    {
+        $form = $this->createForm(ContactType::class);
+        $form->handleRequest($request);
+        $this->processForm($request, $form);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $mailerService = $this->get('app.service.mailer');
+                $mailerService->addFromParameter(
+                    'contact_from',
+                    [
+                        'email' => $data['email'],
+                        'name' => $data['full_name'],
+                    ]
+                );
+                $mailerService
+                    ->sendEmail(
+                        'MainBundle:Email:contact.html.twig',
+                        'contact_from',
+                        $this->getParameter('email.contact_info'),
+                        [
+                            'email' => $data['email'],
+                            'subject' => 'Campr contact',
+                            'fullName' => $data['full_name'],
+                            'message' => $data['message'],
+                        ]
+                    )
+                ;
+
+                return new JsonResponse([
+                    'ok' => true,
+                    'message' => $this->get('translator')->trans('success.contact.message.sent', [], 'flashes'),
+                ]);
+            }
+        }
+
+        return new JsonResponse([
+            'ok' => false,
+            'message' => $this->get('translator')->trans('success.contact.message.not_sent', [], 'flashes'),
+            'errors' => $this->getFormErrors($form),
+        ]);
     }
 
     /**
@@ -212,5 +312,49 @@ class DefaultController extends Controller
      */
     public function logoutAction()
     {
+    }
+
+    /**
+     * @param Request       $request
+     * @param FormInterface $form
+     * @param bool          $clearMissing
+     */
+    protected function processForm(Request $request, FormInterface $form, $clearMissing = true)
+    {
+        $data = $request->request->all();
+        if (null === $data) {
+            throw new BadRequestHttpException();
+        }
+
+        if ($request->files->count()) {
+            $data = array_merge_recursive($data, $request->files->all());
+        }
+
+        $form->submit($data, $clearMissing);
+    }
+
+    /**
+     * @param Form $form
+     *
+     * @return array
+     */
+    protected function getFormErrors(Form $form)
+    {
+        $errors = [];
+
+        foreach ($form->getErrors() as $error) {
+            $errors[] = $error->getMessage();
+        }
+
+        foreach ($form->all() as $key => $childForm) {
+            if ($childForm instanceof Form) {
+                $childErrors = $this->getFormErrors($childForm);
+                if (count($childErrors)) {
+                    $errors[$childForm->getName()] = $childErrors;
+                }
+            }
+        }
+
+        return $errors;
     }
 }
