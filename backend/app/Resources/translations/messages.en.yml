@@ -202,6 +202,8 @@ copyright: 'Copyright &copy; %year% Campr'
 email.expiration.user.activation: 'The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
 email.expiration.user.reset: 'The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
 email.from.contact: 'There is a new contact message from:'
+email.from.contact.full_name: 'Full name'
+email.from.contact.email: 'Email'
 email.general.email: Email
 email.general.hello: Hello
 email.general.link: link

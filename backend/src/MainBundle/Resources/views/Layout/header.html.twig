@@ -57,9 +57,6 @@
                     <li class="nav-item">
                         <a class="nav-link{% if app.request.get('_route') == 'main_register' %} active{% endif %}" href="{{ path('main_register') }}">Signup</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
                     <li>
                         <a class="nav-link" href="{{ path('main_login') }}">{{ 'button.sign_in'|trans }}</a>
                     </li>
