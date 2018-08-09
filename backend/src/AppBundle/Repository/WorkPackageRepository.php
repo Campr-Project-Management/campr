@@ -806,6 +806,28 @@ class WorkPackageRepository extends BaseRepository
     }
 
     /**
+     * @param Project $project
+     *
+     * @return int
+     */
+    public function getTotalExecutingCount(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return (int) $qb
+            ->select('COUNT(o.id)')
+            ->where('o.project = :project and o.type = :type and o.workPackageStatus IN (:status)')
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->setParameter('type', WorkPackage::TYPE_TASK)
+            ->setParameter('status', [WorkPackageStatus::PENDING, WorkPackageStatus::ONGOING, WorkPackageStatus::COMPLETED])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    /**
      * counts all workpackages for a give type.
      *
      * @param int                    $type
