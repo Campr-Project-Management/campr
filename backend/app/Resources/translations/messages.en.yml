@@ -355,6 +355,7 @@ label.end: End
 label.enhance: Enhance
 label.entered: Entered
 label.event: Event
+label.executing: Executing
 label.expired: Expired
 label.expiry_date: 'Expiry Date'
 label.exploit: Exploit
