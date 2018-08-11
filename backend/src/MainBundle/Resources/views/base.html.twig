@@ -71,8 +71,9 @@
     <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap-4/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js') }}"></script>
     <script src="{{ asset('assets/admin/vendors/bower_components/bootstrap-offcanvas/dist/js/bootstrap.offcanvas.min.js') }}"></script>
-
     <script src="{{ asset('assets/admin/js/main-script.js') }}"></script>
+    <script src="{{ asset('static/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 {% endblock %}
 </body>
 </html>
