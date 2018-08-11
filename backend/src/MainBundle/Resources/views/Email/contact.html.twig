@@ -2,10 +2,10 @@
 
 {% trans_default_domain 'messages' %}
 
-{% block subject %}{{ 'email.subject.contact'|trans }} - {{ subject }}{% endblock %}
+{% block subject %}{{ 'email.subject.contact'|trans }}{% endblock %}
 
 {% block message %}
-    <p>{{ 'email.from.contact'|trans }}: {{ fullName }}</p>
-    <p>{{ 'email.subject.general'|trans }}: {{ subject }}</p>
-    <p>{{ 'email.message.contact'|trans }}: {{ message }}</p>
+    <p><b>{{ 'email.from.contact.full_name'|trans }}</b> {{ fullName }}</p>
+    <p><b>{{ 'email.from.contact.email'|trans }}:</b> {{ email }}</p>
+    <p><b>{{ 'email.message.contact'|trans }}:</b> {{ message }}</p>
 {% endblock %}
