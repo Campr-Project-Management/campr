@@ -202,6 +202,8 @@ copyright: 'Copyright &copy; %year% CAMPR'
 email.expiration.user.activation: 'Der Aktivierungslink läuft in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.expiration.user.reset: 'Der Zurücksetzungstoken läuft in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.from.contact: 'Sie haben eine neue Nachricht von:'
+email.from.contact.full_name: 'Vollständiger Name'
+email.from.contact.email: 'E-Mail'
 email.general.email: E-Mail
 email.general.hello: Hallo
 email.general.link: Link
