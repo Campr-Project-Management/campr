@@ -62,7 +62,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $mailer = $this->getMailer();
 
         $io->note('Creating meeting ICS...');
-        $icsAttachement = $this->createMailIcsAttachement($meeting, $user);
+        $icsAttachment = $this->createMailIcsAttachement($meeting, $user);
         $io->success('Meeting ICS successfully created');
 
         $io->note('Creating meeting PDF...');
@@ -102,7 +102,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
                 $user->getEmail(),
                 $to,
                 ['meeting' => $meeting],
-                [$attachment, $icsAttachement]
+                [$attachment, $icsAttachment]
             );
         }
 
