@@ -446,6 +446,7 @@ class ProjectControllerTest extends BaseController
                             'updatedAt' => null,
                             'userAvatar' => '',
                             'userCompanyName' => null,
+                            'rate' => null,
                         ],
                     ],
                     'projectTeams' => [],
@@ -2059,6 +2060,7 @@ class ProjectControllerTest extends BaseController
                             'updatedAt' => null,
                             'userAvatar' => '',
                             'userCompanyName' => null,
+                            'rate' => null,
                         ],
                         [
                             'user' => 4,
@@ -2091,6 +2093,7 @@ class ProjectControllerTest extends BaseController
                             'updatedAt' => null,
                             'userAvatar' => '',
                             'userCompanyName' => null,
+                            'rate' => null,
                         ],
                         [
                             'user' => 5,
@@ -2123,6 +2126,7 @@ class ProjectControllerTest extends BaseController
                             'updatedAt' => null,
                             'userAvatar' => '',
                             'userCompanyName' => null,
+                            'rate' => null,
                         ],
                     ],
                     'projectTeams' => [
@@ -2631,6 +2635,7 @@ class ProjectControllerTest extends BaseController
                     'updatedAt' => null,
                     'userAvatar' => '',
                     'userCompanyName' => null,
+                    'rate' => null,
                 ],
             ],
         ];
