@@ -31,6 +31,15 @@
     }
 ) }}
 {{ form_widget(
+    form.rate,
+    {
+        'attr': {
+            'class': 'form-control input-sm',
+        },
+        'label': 'label.rate'|trans,
+    }
+) }}
+{{ form_widget(
     form.project,
     {
         'attr': {
