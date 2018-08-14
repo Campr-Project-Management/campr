@@ -15,6 +15,11 @@ class WorkPackageStatusTotalCount
     private $closed;
 
     /**
+     * @var int
+     */
+    private $executing;
+
+    /**
      * @return int
      */
     public function getOpened(): int
@@ -44,5 +49,21 @@ class WorkPackageStatusTotalCount
     public function setClosed(int $closed): void
     {
         $this->closed = $closed;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExecuting(): int
+    {
+        return $this->executing;
+    }
+
+    /**
+     * @param int $executing
+     */
+    public function setExecuting(int $executing): void
+    {
+        $this->executing = $executing;
     }
 }
