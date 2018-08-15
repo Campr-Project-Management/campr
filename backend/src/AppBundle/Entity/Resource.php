@@ -35,6 +35,16 @@ class Resource
     private $project;
 
     /**
+     * @var ProjectUser|null
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectUser", inversedBy="resources")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="project_user_id", referencedColumnName="id")
+     * })
+     * @Serializer\Exclude()
+     */
+    private $projectUser;
+
+    /**
      * @var float
      * @ORM\Column(name="rate", type="decimal", precision=9, scale=2)
      * @Assert\NotBlank(message="not_blank.rate")
@@ -233,5 +243,47 @@ class Resource
         $this->rate = $rate;
 
         return $this;
+    }
+
+    /**
+     * @return ProjectUser|null
+     */
+    public function getProjectUser()
+    {
+        return $this->projectUser;
+    }
+
+    /**
+     * @param ProjectUser|null $projectUser
+     *
+     * @return resource
+     */
+    public function setProjectUser(ProjectUser $projectUser = null)
+    {
+        $this->projectUser = $projectUser;
+
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectUserId")
+     *
+     * @return int|null
+     */
+    public function getProjectUserId()
+    {
+        return $this->projectUser ? $this->projectUser->getId() : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("projectUserRate")
+     *
+     * @return string|null
+     */
+    public function getProjectUserRate()
+    {
+        return $this->projectUser ? (string) $this->projectUser->getRate() : null;
     }
 }

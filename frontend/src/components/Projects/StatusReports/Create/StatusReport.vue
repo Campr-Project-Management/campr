@@ -350,6 +350,10 @@
                         value: this.snapshot.tasks.total.status.opened,
                         color: '#646EA0',
                     }, {
+                        name: 'label.executing',
+                        value: this.snapshot.tasks.total.status.executing,
+                        color: '#465079',
+                    }, {
                         name: 'label.closed',
                         value: this.snapshot.tasks.total.status.closed,
                         color: '#232D4B',
