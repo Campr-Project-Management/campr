@@ -56,14 +56,12 @@
                                         <td>{{ team.teamMembers.count }}</td>
                                         <td>{{ team.enabled ? ('message.yes'|trans) : ('message.no'|trans) }}</td>
                                         <td>
-                                            <!-- {% if team.enabled and team.available %}                                                
-                                                <a href="{{ path('main_team_sso', {'id': team.id}) }}" class="button button-small">
-                                                    {{ 'button.login'|trans }}
-                                                </a>    
-                                            {% endif %} -->
-                                            <a href="{{ path('main_team_sso', {'id': team.id}) }}" class="button button-small">
+                                            <a href="{{ path('main_team_sso', {'id': team.id}) }}" class="button button-small{{ not team.enabled or not team.available ? ' hide' }}"{{ team.enabled and not team.available ? ' data-check-team-availability=true data-team-id=' ~ team.id }}>
                                                 {{ 'button.login'|trans }}
-                                            </a> 
+                                            </a>
+                                            {% if not team.enabled or not team.available %}
+                                                <img src="{{ asset('assets/admin/img/spinner.gif') }}" class="spinner">
+                                            {% endif %}
                                             <a href="{{ path('main_team_show', {'id': team.id}) }}" class="btn-icon" data-toggle="tooltip" title="Show Team">
                                                 <div class="view-icon icon">
                                                     <svg version="1.1" class="second-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16">
@@ -113,4 +111,10 @@
             </div>
         </section>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
 {% endblock %}
