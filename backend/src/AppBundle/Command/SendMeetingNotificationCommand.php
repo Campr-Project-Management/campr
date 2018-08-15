@@ -32,6 +32,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             ->addArgument('meetingId', InputArgument::REQUIRED, 'Meeting ID', null)
             ->addArgument('userId', InputArgument::REQUIRED, 'User ID', null)
             ->addArgument('host', InputArgument::REQUIRED, 'Hostname', null)
+            ->addArgument('scheme', InputArgument::REQUIRED, 'Scheme', null)
         ;
     }
 
@@ -46,6 +47,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $meetingId = (int) $input->getArgument('meetingId');
         $userId = (int) $input->getArgument('userId');
         $host = $input->getArgument('host');
+        $scheme = $input->getArgument('scheme');
 
         $meeting = $this->findMeeting($meetingId);
         $user = $this->findUser($userId);
@@ -92,6 +94,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             ]
         );
 
+        $url = $scheme.'://'.$host.'/#/projects/'.$meeting->getProject()->getId().'/meetings/view-meeting/'.$meeting->getId();
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
         foreach ($recipients as $locale => $to) {
@@ -101,7 +104,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
                 ':meeting:notification.html.twig',
                 $user->getEmail(),
                 $to,
-                ['meeting' => $meeting],
+                ['meeting' => $meeting, 'url' => $url],
                 [$attachment, $icsAttachment]
             );
         }
