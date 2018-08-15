@@ -33,9 +33,11 @@ class WorkPackageStatusTotalCountCalculator
 
         $opened = $this->workPackageRepository->getTotalOpenedCount($project);
         $closed = $this->workPackageRepository->getTotalClosedCount($project);
+        $executing = $this->workPackageRepository->getTotalExecutingCount($project);
 
         $count->setOpened($opened);
         $count->setClosed($closed);
+        $count->setExecuting($executing);
 
         return $count;
     }

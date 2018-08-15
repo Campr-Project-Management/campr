@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Cost;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\Resource;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Repository\Traits\ProjectSortingTrait;
 use AppBundle\Repository\Traits\WorkPackageSortingTrait;
@@ -100,5 +101,24 @@ class CostRepository extends BaseRepository
         $this->setProjectOrder($orderBy, $qb);
         $this->setWorkPackageOrder($orderBy, $qb);
         $this->setResourceOrder($orderBy, $qb);
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return int
+     */
+    public function countByResource(Resource $resource)
+    {
+        return (int) $this
+            ->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.resource = :resource')
+            ->setParameters([
+                'resource' => $resource,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }
