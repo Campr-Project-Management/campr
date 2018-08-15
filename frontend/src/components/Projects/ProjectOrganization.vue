@@ -82,8 +82,6 @@
                                 <td class="text-center switchers">
                                     <switches
                                         @click.native="updateUserOption(item, 'resource')"
-                                        emit-on-mount="false"
-                                        v-model="showInResources"
                                         :selected="item.showInResources" />
                                 </td>
                                 <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
@@ -107,10 +105,10 @@
                                     <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                                 </td>
                                 <td class="text-center switchers">
-                                    <switches @click.native="updateUserOption(item, 'rasci')" v-model="showInRasci" :selected="item.showInRasci"></switches>
+                                    <switches @click.native="updateUserOption(item, 'rasci')" :selected="item.showInRasci"></switches>
                                 </td>
                                 <td class="text-center switchers">
-                                    <switches @click.native="updateUserOption(item, 'org')" v-model="showInOrg" :selected="item.showInOrg"></switches>
+                                    <switches @click.native="updateUserOption(item, 'org')" :selected="item.showInOrg"></switches>
                                 </td>
                                 <td class="text-center switchers" v-for="dl in project.distributionLists" :key="dl.id+'-'+item.user.id">
                                     <switches @click.native="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
@@ -247,6 +245,8 @@ export default {
                 });
                 break;
             }
+
+            this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         },
         updateDistributionItem: function(item, distribution) {
             const self = this;
@@ -277,6 +277,7 @@ export default {
             projectUsers: 'projectUsers',
             validationMessages: 'validationMessages',
             distributionList: 'distributionList',
+            projectUser: 'currentMember',
         }),
         pages: function() {
             if (!this.projectUsers || !this.projectUsers.totalItems) {

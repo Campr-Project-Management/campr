@@ -56,6 +56,7 @@ class TasksTransformer extends AbstractTransformer
             'total' => [
                 'status' => [
                     'opened' => $statusCount->getOpened(),
+                    'executing' => $statusCount->getExecuting(),
                     'closed' => $statusCount->getClosed(),
                 ],
                 'trafficLight' => [

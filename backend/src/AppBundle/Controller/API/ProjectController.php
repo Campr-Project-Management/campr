@@ -23,6 +23,7 @@ use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
+use AppBundle\Entity\Resource;
 use AppBundle\Entity\Risk;
 use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\RiskStrategy;
@@ -1096,7 +1097,13 @@ class ProjectController extends ApiController
      */
     public function resourcesAction(Project $project)
     {
-        return $this->createApiResponse($project->getResources());
+        return $this->createApiResponse(
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->getRepository(Resource::class)
+                ->findWithoutProjectUserOrWithShowInResourcesProjectUserByProject($project)
+        );
     }
 
     /**

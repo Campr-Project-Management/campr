@@ -109,6 +109,15 @@ class ProjectUser
     private $projectTeam;
 
     /**
+     * @var ArrayCollection|resource[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="projectUser", orphanRemoval=true)
+     */
+    private $resources;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default"=1})
@@ -137,6 +146,13 @@ class ProjectUser
     private $company;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="rate", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $rate;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -163,6 +179,7 @@ class ProjectUser
         $this->createdAt = new \DateTime();
         $this->projectRoles = new ArrayCollection();
         $this->projectDepartments = new ArrayCollection();
+        $this->resources = new ArrayCollection();
     }
 
     public function __toString()
@@ -414,6 +431,30 @@ class ProjectUser
         $this->company = $company;
 
         return $this;
+    }
+
+    /**
+     * Set rate.
+     *
+     * @param string $rate
+     *
+     * @return ProjectUser
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    /**
+     * Get rate.
+     *
+     * @return string
+     */
+    public function getRate()
+    {
+        return $this->rate;
     }
 
     /**
@@ -831,6 +872,40 @@ class ProjectUser
         }
 
         return $subteamNames;
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return ProjectUser
+     */
+    public function addResource(Resource $resource)
+    {
+        $this->resources[] = $resource;
+        $resource->setProjectUser($this);
+
+        return $this;
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return ProjectUser
+     */
+    public function removeResource(Resource $resource)
+    {
+        $this->resources->removeElement($resource);
+        $resource->setProjectUser(null);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|resource[]
+     */
+    public function getResources()
+    {
+        return $this->resources;
     }
 
     public function hasRole($role)

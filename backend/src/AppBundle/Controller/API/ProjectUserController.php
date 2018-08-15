@@ -64,6 +64,7 @@ class ProjectUserController extends ApiController
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($projectUser);
             $em->flush();
 
