@@ -15,6 +15,7 @@ use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -610,6 +611,17 @@ class TeamController extends Controller
             'team' => $team,
             'teamMember' => $teamMember,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/check-availability", name="main_team_check_availability", options={"expose": true})
+     * @Method("GET")
+     */
+    public function checkTeamAvailabilityAction(Team $team)
+    {
+        return new JsonResponse([
+            'available' => $team->isEnabled() && $team->isAvailable(),
         ]);
     }
 }
