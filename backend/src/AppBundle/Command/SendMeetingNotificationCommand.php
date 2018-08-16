@@ -32,7 +32,6 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             ->addArgument('meetingId', InputArgument::REQUIRED, 'Meeting ID', null)
             ->addArgument('userId', InputArgument::REQUIRED, 'User ID', null)
             ->addArgument('host', InputArgument::REQUIRED, 'Hostname', null)
-            ->addArgument('scheme', InputArgument::REQUIRED, 'Scheme', null)
         ;
     }
 
@@ -47,7 +46,6 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $meetingId = (int) $input->getArgument('meetingId');
         $userId = (int) $input->getArgument('userId');
         $host = $input->getArgument('host');
-        $scheme = $input->getArgument('scheme');
 
         $meeting = $this->findMeeting($meetingId);
         $user = $this->findUser($userId);
@@ -94,9 +92,11 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             ]
         );
 
-        $url = $scheme.'://'.$host.'/#/projects/'.$meeting->getProject()->getId().'/meetings/view-meeting/'.$meeting->getId();
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
+        $scheme = $this->getContainer()->getParameter('router.request_context.scheme');
+
+        $url = $scheme.'://'.$host.'/#/projects/'.$meeting->getProject()->getId().'/meetings/view-meeting/'.$meeting->getId();
         foreach ($recipients as $locale => $to) {
             $trans->setLocale($locale);
 
@@ -178,26 +178,6 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         Assert::notNull($user, sprintf('User with ID "%d" not found', $id));
 
         return $user;
-    }
-
-    /**
-     * @param Meeting $meeting
-     * @param User    $user
-     * @param string  $host
-     *
-     * @throws PDFException
-     *
-     * @return \Swift_Attachment
-     */
-    private function createMailPDFAttachment(Meeting $meeting, User $user, string $host): \Swift_Attachment
-    {
-        $pdf = $this->getPDFContent($meeting, $user, $host);
-
-        return new \Swift_Attachment(
-            $pdf,
-            sprintf('status-report-%s.pdf', $meeting->getCreatedAt()->format('Y-m-d')),
-            'application/pdf'
-        );
     }
 
     /**
@@ -287,6 +267,26 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $event->setOrganizer($organizer);
 
         return $event;
+    }
+
+    /**
+     * @param Meeting $meeting
+     * @param User    $user
+     * @param string  $host
+     *
+     * @throws PDFException
+     *
+     * @return \Swift_Attachment
+     */
+    private function createMailPDFAttachment(Meeting $meeting, User $user, string $host): \Swift_Attachment
+    {
+        $pdf = $this->getPDFContent($meeting, $user, $host);
+
+        return new \Swift_Attachment(
+            $pdf,
+            sprintf('status-report-%s.pdf', $meeting->getCreatedAt()->format('Y-m-d')),
+            'application/pdf'
+        );
     }
 
     /**

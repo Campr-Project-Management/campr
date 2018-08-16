@@ -423,7 +423,6 @@ class MeetingController extends ApiController
     public function notificationsAction(Meeting $meeting, Request $request)
     {
         $host = $request->getHttpHost();
-        $scheme = $request->getScheme();
 
         /** @var User $user */
         $user = $this->getUser();
@@ -435,7 +434,6 @@ class MeetingController extends ApiController
                 '%userId%' => $user->getId(),
                 '%meetingId%' => $meeting->getId(),
                 '%host%' => $host,
-                '%scheme%' => $scheme,
             ]
         );
 
