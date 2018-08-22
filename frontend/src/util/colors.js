@@ -84,8 +84,8 @@ export const schedule = Object.freeze({
 
         return trafficLight.red;
     },
-    getActualColor(forecast, actual, completed = true) {
-        let tl = getScheduleActualTrafficLight(forecast, actual, completed);
+    getActualColor(base, forecast, actual, completed = true) {
+        let tl = getScheduleActualTrafficLight(base, forecast, actual, completed);
 
         if (tl.isGreen()) {
             return;
