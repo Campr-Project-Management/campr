@@ -7,8 +7,46 @@
 {% block message %}
     <p>{{ 'email.message.meeting_notification'|trans }}</p>
     <p>
-        {{ meeting.name }} - {{ meeting.date|date('d.m.Y') }}
+        <b><a href="{{ url }}">{{ meeting.name }} - {{ meeting.date|date('d.m.Y') }}</a></b>
     </p>
-    <p>{{ 'email.message.starts_at'|trans }}: {{ meeting.start|date('H:i') }}</p>
-    <p>{{ 'email.message.ends_at'|trans }}:  {{ meeting.end|date('H:i') }}</p>
+    <p><b>{{ 'email.message.starts_at'|trans }}:</b> {{ meeting.start|date('H:i') }}</p>
+    <p><b>{{ 'email.message.ends_at'|trans }}:</b>  {{ meeting.end|date('H:i') }}</p>
+    <p><b>{{ 'email.message.location'|trans}}:</b> {{meeting.location }}</p>
+
+    {% if meeting.meetingObjectives|length > 0 %}
+        <p><b>{{ 'email.message.objective'|trans}}:</b></p>
+        <ul>
+            {% for objective in meeting.meetingObjectives %}
+                <li>{{ objective.description }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if meeting.meetingAgendas|length > 0 %}
+        <p><b>{{ 'email.message.agenda'|trans}}:</b></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'email.table_header_cell.topic'|trans }}</th>
+                    <th>{{ 'email.table_header_cell.responsible'|trans }}</th>
+                    <th>{{ 'email.table_header_cell.start'|trans }}</th>
+                    <th>{{ 'email.table_header_cell.end'|trans }}</th>
+                    <th>{{ 'email.table_header_cell.duration'|trans }}</th>
+                </tr>
+                <tbody>
+                    {% for agenda in meeting.meetingAgendas %}
+                        <tr>
+                            <td>{{agenda.topic}}</td>
+                            <td>{{agenda.responsibilityFullName}}</td>
+                            <td>{{agenda.start}}</td>
+                            <td>{{agenda.end}}</td>
+                            <td>{{agenda.duration}} {{ message.min }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </thead>
+        </table>
+    {% endif %}
+
+
 {% endblock %}
