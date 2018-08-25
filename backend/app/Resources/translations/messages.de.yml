@@ -454,6 +454,7 @@ label.opportunity_status: Chancenstatus
 label.opportunity_strategy: Chancenstrategie
 label.organization_context: Organisationskontext
 label.overall_impression: Gesamteindruck
+label.parent: Übergeordnet
 label.parent_phase: 'Übergeordnete Phase auswählen'
 label.participants: Teilnehmer
 label.password.first: Passwort
@@ -490,6 +491,7 @@ label.projectworkcosttype: Kostentyp
 label.proposed_end_date: 'Vorgeschlagenes Enddatum'
 label.proposed_start_date: 'Vorgeschlagenes Startdatum'
 label.published: Veröffentlicht
+label.puid: PUID
 label.purchasing: Einkauf
 label.qty: Menge
 label.quality_management: Qualitätssicherung
@@ -602,13 +604,17 @@ menu.teams: Teams
 menu.users: Nutzer
 menu.workspaces: Arbeitsbereiche
 message.access_denied: 'Zugriff verweigert'
+message.action_needed: 'Handlung nötig'
 message.actual_schedule: planmäßig
 message.add_avatar_image: 'Profilbild hinzufügen'
 message.add_comment: Kommentieren
+message.add_deliverable: 'Neue Projektleistung hinzufügen'
 message.add_external_costs: 'Externe Kosten hinzufügen'
 message.add_internal_costs: 'Interne Kosten hinzufügen'
 message.add_limitation: 'Neue Limitierung hinzufügen'
+message.add_new_action: 'Neue Handlung hinzufügen'
 message.add_new_decision: 'Neue Entscheidung hinzufügen'
+message.add_new_evaluation_objective: 'Neues Bewertungskriterium hinzufügen'
 message.add_new_info: 'Neue Info hinzufügen'
 message.add_new_lesson: 'Neue Lektion hinzufügen'
 message.add_new_objective: 'Neue Zielsetzung hinzufügen'
@@ -617,6 +623,7 @@ message.add_new_topic: 'Neues Thema hinzufügen'
 message.add_objective: 'Neue Zielsetzung hinzufügen'
 message.add_portfolio: 'Neues Portfolio hinzufügen'
 message.add_programme: 'Neues Programm hinzufügen'
+message.added_a_measure: 'Maßnahme hinzugefügt'
 message.agenda: Agenda
 message.alert: Alarm
 message.all_customers: 'Alle Kunden'
@@ -634,6 +641,12 @@ message.attachments: Anhänge
 message.automatic_phase_schedule_note: 'Auf Basis des Startdatums der ersten Aufgabe/des ersten Meilensteins und des Enddatums der letzten Aufgabe/des letzten Meilensteins kalkuliert.'
 message.automatic_schedule: 'Automatischer Terminplan'
 message.automatic_schedule_note: 'Definieren Sie einen Vorgänger und Nachfolger für diese Aufgabe und fügen Sie einen Zeitraum ein, um Basisstart- und -enddatum automatisch zu berechnen.'
+message.average_impact: 'Der durchschnittliche Wert der Auswirkungen aller Chancen beträgt'
+message.average_impact_opportunity: 'Der durchschnittliche Wert der Auswirkungen aller Chancen beträgt'
+message.average_impact_risks: 'Der durchschnittliche Wert der Auswirkungen aller Risiken beträgt'
+message.average_probability: 'Der durchnittliche Erwartungswert aller Chancen beträgt'
+message.average_probability_opportunity: 'Der durchnittliche Erwartungswert aller Chancen beträgt'
+message.average_probability_risks: 'Der durchnittliche Erwartungswert aller Risiken beträgt'
 message.back_to: 'Zurück zu'
 message.back_to_decisions: 'Zurück zu Entscheidungen'
 message.back_to_infos: 'Zurück zu Infos'
@@ -644,7 +657,11 @@ message.back_to_risks_and_opportunities: 'Zurück zu Risiken und Chancen'
 message.back_to_task_management: 'Zurück zur Aufgabenverwaltung'
 message.back_to_task_view: 'Zurück zur Aufgabenansicht'
 message.back_to_todos: 'Zurück zu To-Dos'
+message.base_schedule: Basis-Zeitplan
 message.budget: Budget
+message.budget_calculation: 'Das Budget ist das Produkt aus Wahrscheinlichkeit und potentiellen Einsparungen'
+message.budget_calculation_opportunity: 'Das Budget ist das Produkt aus Wahrscheinlichkeit und potentiellen Einsparungen'
+message.budget_calculation_risk: 'Das Budget ist das Produkt aus Wahrscheinlichkeit und potentiellen Kosten'
 message.budget_saved: 'Budget gespeichert'
 message.by: by
 message.by_department: 'pro Abteilung'
@@ -653,6 +670,7 @@ message.campr_moto: 'Campr - The tool for industrious people'
 message.capex: Capex
 message.capex_subtotal: 'Capex Subtotal'
 message.category: Kategorie
+message.change_accountable: 'Ändere Accountable'
 message.clear_selection: 'Auswahl löschen'
 message.click: Klick
 message.close: Schließen
@@ -670,9 +688,11 @@ message.confirm_open_task: 'Sind Sie sicher, dass Sie diese Aufgabe eröffnen wo
 message.context: Kontext
 message.contract: Vertrag
 message.contract_frozen: 'Der Projektvertrag ist eingefroren'
+message.control_measures: Kontrollmaßnahmen
 message.cost: Kosten
 message.cost_status: Kostenstatus
 message.costs: Kosten
+message.costs_chart: Kostentabelle
 message.costs_chart_by_department: 'Kosten pro Abteilung'
 message.costs_chart_by_phase: 'Kosten pro Phase'
 message.costs_progress: Kostenentwicklung
@@ -690,10 +710,13 @@ message.create_new_todo: 'Neues To-Do erstellen'
 message.created: Erstellt
 message.created_on: 'erstellt am'
 message.currency: Währung
+message.current_date: 'Heutiges Datum'
 message.customer: Kunde
 message.danger: Kritisch
 message.dashboard: Dashboard
+message.day_ago: 'Tag zuvor'
 message.days: Tage
+message.days_ago: 'Tage zuvor'
 message.decisions: Entscheidungen
 message.delay: Verzögerung
 message.delete: Löschen
@@ -732,6 +755,7 @@ message.edit_deliverable: 'Anforderung bearbeiten'
 message.edit_department: 'Abteilung bearbeiten'
 message.edit_evaluation: 'Beurteilung bearbeiten'
 message.edit_external_costs: 'Externe Kosten bearbeiten'
+message.edit_forecast_total: 'Vorschau bearbeiten'
 message.edit_info: 'Info bearbeiten'
 message.edit_internal_costs: 'Interne Kosten bearbeiten'
 message.edit_label: 'Label bearbeiten'
@@ -758,6 +782,7 @@ message.edit_todo: 'To-Do bearbeiten'
 message.edited: bearbeitet
 message.email_report: 'Sind Sie sicher, dass Sie diesen Statusreport per E-Mail versenden wollen?'
 message.error: Error!
+message.evaluation_objectives: Bewertungskriterium
 message.event: Event
 message.expenses: Ausgaben
 message.expiry_date: Ablaufdatum
@@ -765,8 +790,11 @@ message.export_project: 'Projekt exportieren'
 message.external_costs: 'Externe Kosten'
 message.external_resources: 'Externe Ressourcen'
 message.filter_by: 'Filtern nach'
+message.finish: Ende
+message.finish_date: Enddatum
 message.first_task: 'Erste Aufgabe'
 message.forecast_schedule: 'Voraussichtlicher Zeitplan'
+message.from: von
 message.gantt_chart: 'Gantt Chart'
 message.has_commented_task: 'hat die Aufgabe kommentiert'
 message.has_edited_task: 'hat die Aufgabe bearbeitet'
@@ -774,19 +802,24 @@ message.here: Hier
 message.hi: Hi
 message.high: Hoch
 message.homepage: Homepage
+message.hour_ago: 'Stunde zuvor'
+message.hours_ago: 'Stunden zuvor'
 message.impact: Auswirkung
+message.impersonate: 'Sie sind derzeit eingeloggt als'
 message.import_project: 'Projekt importieren'
 message.import_task: 'Aufgabe importieren'
 message.import_tasks: 'Aufgaben importieren'
 message.infos: Infos
 message.internal_costs: 'Interne Kosten'
 message.internal_resources: 'Interne Ressourcen'
+message.invoce: 'Rechnung für Zahlung:'
 message.label_none: Keine
 message.label_note: 'Notiz'':'' Die Farbe des Labeltexts ist weiß. Wählen Sie die Hintergrundfarbe Ihres Labels auch nach diesem Kriterium aus.'
 message.last_task: 'Letzte Aufgabe'
 message.less: Weniger
 message.lessons_learned: 'Lessons Learned'
 message.loading_more_tasks: 'Mehr Aufgaben werden geladen...'
+message.location: Standort
 message.low: Niedrig
 message.manual_phase_schedule_note_first: 'Daten für Basis und Forcast-Terminplan händisch eingeben.'
 message.manual_phase_schedule_note_second: 'Basis Start- und Enddatum wurden durch automatisch kalkulierte Daten überschrieben.'
@@ -799,13 +832,17 @@ message.meetings: Meetings
 message.member: Mitglied
 message.members: Mitglieder
 message.milestone_responsible: 'Meilensteinverantwortlicher:'
+message.milestone_schedule_note: 'Basis Frist wird neu berechnet auf Basis der Aufgaben zugehörig zu diesem Meilenstein.'
 message.min: Min
+message.minute_ago: 'Minute zuvor'
 message.minutes_ago: 'vor .. Minuten'
 message.minutes_under_interval: 'Sie können aufgrund der Intervallrestriktion im Moment keinen Bericht erstellen. Bitte halten Sie Rücksprache mit Ihrem Manager.'
 message.months: Monate
+message.more: mehr
 message.my_projects: 'Meine Projekte'
 message.my_tasks: 'Meine Aufgaben'
 message.new_comment: 'Neuer Kommentar'
+message.new_evaluation_objective: 'Neues Bewertungskriterium'
 message.new_label: 'Neues Label'
 message.new_lesson: 'Neue Lektion'
 message.new_message: Neu
@@ -819,24 +856,32 @@ message.new_project_limitation: 'Neue Projektbeschränkung'
 message.new_risk: 'Neues Risiko'
 message.new_task: 'Neue Aufgabe'
 message.no: Nein
+message.no_chat_rooms: 'Die Chatliste ist leer in diesem Projekt.'
 message.no_managers: 'Für dieses Projekt wurden keinen Manager definiert. Bitte erstellen Sie Manager, um sie dieser Abteilung zuzuordnen.'
+message.no_private_messages: 'Es gibt keine Privatnachrichten zu diesem Projekt.'
 message.no_results: 'Keine Ergebnisse'
 message.not_recommended_modules: 'Wir empfehlen Ihnen nicht die restlichen Module zu Nutzen, aber Sie können sie dennoch aktivieren.'
+message.note: 'Notiz:'
 message.notes: Notizen
+message.objectives: Objectives
 message.open_tasks: 'Offene Aufgaben'
 message.opex_capex_note: 'Wenn externe Kosten nicht als CAPEX definiert werden, werden sie automatisch als OPEX definiert.'
 message.opex_subtotal: 'OPEX Zwischensumme'
 message.opportunities: Chancen
 message.organization: Organisation
+message.organization_context: Organisationsrahmen
 message.overall_impression: Gesamteindruck
 message.overall_progress: Gesamtfortschritt
 message.overall_status: Gesamtstatus
+message.parent_phase: 'Übergeordnete Phase'
 message.participants: Teilnehmer
 message.per_day_reports_exceeded: 'Sie haben das tägliche Berichtslimit erreicht. Bitte halten Sie Rücksprache mit Ihrem Manager.'
+message.performance_schedule: 'Performance Schedule'
 message.phase_responsible: 'Phasenverantwortlicher:'
 message.phases_and_milestones: 'Phasen & Meilensteine'
 message.phases_milestones: 'Phasen & Meilensteine'
 message.plan: Plan
+message.planning: Planung
 message.potential_cost: 'Potentielle Kosten'
 message.potential_savings: 'Potentielle Einsparungen'
 message.potential_time_delay: 'Potentielle Verzögerung'
@@ -854,6 +899,9 @@ message.project_closed: 'Das Projekt wurde abgeschlossen.'
 message.project_condition: Projektzustand
 message.project_contract: Projektvertrag
 message.project_create_step1: '1. Schritt: Allgemeine Informationen'
+message.project_create_step2: 'Step 2: Project Worthiness Analysis'
+message.project_create_step3: '3. Schritt: Projekterstellung'
+message.project_create_wizard: 'Project Creation Wizard'
 message.project_currency: Projektwährung
 message.project_dashboard: Projekt-Dashboard
 message.project_decisions: Projektentscheidungen
@@ -861,6 +909,7 @@ message.project_deliverables: Projektanforderungen
 message.project_description: Projektbeschreibung
 message.project_duration: Projektdauer
 message.project_infos: Projektinfo
+message.project_involved: 'Project Involved'
 message.project_limitations: Projektbeschränkungen
 message.project_logo: 'Projektlogo hinzufügen'
 message.project_management: Projektmanagement
@@ -884,6 +933,7 @@ message.project_schedule: Projektterminplan
 message.project_size: Projektgröße
 message.project_sponsor: Sponsor
 message.project_sponsor_signature: 'Unterschrift Projektsponsor'
+message.project_start_event: Startereignis
 message.project_status: Projektstatus
 message.project_status_reports: Projektstatusreport
 message.project_summary: Projektzusammenfassung
@@ -892,6 +942,7 @@ message.project_todos: 'Projekt To-Do''s'
 message.project_trend: Projekttrend
 message.projects: Projekte
 message.rasci_matrix: 'RASCI Matrix'
+message.recent_projects: 'Meine letzten Projekte'
 message.recent_tasks: 'Meine letzten Aufgaben'
 message.recommended_modules: 'basierend auf Ihren Einschätzungen empfehlen wir Ihnen die folgenden Module'
 message.reflection: Reflexion
@@ -920,6 +971,7 @@ message.schedule_base: 'Terminplan Basis'
 message.schedule_forecast: 'Terminplan Forecast'
 message.scope: Umfang
 message.select_customer: 'Kunden auswählen'
+message.select_phase_milestone: 'Phase & Meilenstein auswählen'
 message.select_portfolio: 'Portfolio auswählen'
 message.select_programme: 'Programm auswählen'
 message.send_notifications: 'Benachrichtiung senden'
@@ -953,8 +1005,13 @@ message.team_members_involved: 'Beteiligte Teammitglieder'
 message.teams: 'Teams, in denen Sie Mitglied sind'
 message.this_task_has_no_planning: 'Für diese Aufgabe wurden keine Planungsdaten konfiguriert'
 message.this_task_part_of: 'Diese Aufgabe gehört zu '
+message.time_calculation: 'Zeitersparnis ist das Produkt aus Wahrscheinlichkeit und potentieller Zeitersparnis'
+message.time_calculation_opportunity: 'Zeitersparnis ist das Produkt aus Wahrscheinlichkeit und potentieller Zeitersparnis'
+message.time_calculation_risk: 'Zeitersparnis ist das Produkt aus Wahrscheinlichkeit und potentieller Zeitersparnis'
 message.time_saved: Zeitersparnis
 message.todos: To-Dos
+message.top_opportunity: Top-Chance
+message.top_risk: Top-Risiko
 message.total: Gesamt
 message.total_cost_of_measures: 'Gesamtkosten der Maßnahmen'
 message.total_number_of_measures: 'Gesamtanzahl der Maßnahmen'
@@ -970,13 +1027,16 @@ message.user_blocked: 'Nutzer blockiert'
 message.user_invited_to_project: 'Der Nutzer wurde ins Projekt eingeladen. Wenn er sich das nächste mal einloggt, wird er Zugang zum Projekt haben.'
 message.very_high: 'Sehr hoch'
 message.very_low: 'Sehr niedrig'
+message.view_board: 'View Board'
 message.view_decision: 'Entscheidung ansehen'
+message.view_grid: 'View Grid'
 message.view_meeting: 'Meeting ansehen'
 message.view_remaining_action: 'Ausstehende Aktionen ansehen'
 message.view_team: 'Team ansehen'
 message.view_todo: 'To-Do ansehen'
 message.wait: 'Bitte warten...'
 message.warning: Warnung
+message.wbs: WBS
 message.week: Woche
 message.weeks: Wochen
 message.work_package_dependency_constraint: 'Der Eintrag kann nicht gelöscht werden, da Phasen/Meilensteine/Aufgaben von ihm abhängig sind.'
@@ -1608,6 +1668,7 @@ table_header_cell.is_baseline: 'Ist Planvorgabe'
 table_header_cell.is_budget: 'Ist Budget'
 table_header_cell.is_cost_resource: 'Ist Kostenressource'
 table_header_cell.is_default: 'Ist voreingestellt'
+table_header_cell.is_enterprise: Unternehmen
 table_header_cell.is_excused: 'Ist entschuldigt'
 table_header_cell.is_generic: 'Ist allgemein'
 table_header_cell.is_inactive: 'Ist inaktiv'
@@ -1665,6 +1726,7 @@ table_header_cell.project_work_cost_type: 'Art der Projektkosten'
 table_header_cell.projectworkcosttype: Kostenart
 table_header_cell.proposed_end_date: 'Vorgeschlagenes Enddatum'
 table_header_cell.proposed_start_date: 'Vorgeschlagenes Startdatum'
+table_header_cell.puid: Puid
 table_header_cell.quantity: Menge
 table_header_cell.rasci: RASCI
 table_header_cell.rate: Rate
@@ -1700,6 +1762,7 @@ table_header_cell.strategy: Strategie
 table_header_cell.subteam: Team
 table_header_cell.subteam_members: Team-Mitglieder
 table_header_cell.subteam_name: Teamname
+table_header_cell.subteam_parent: 'Übergeordnete Einheit'
 table_header_cell.subteam_roles: Team-Rollen
 table_header_cell.suspended: Ausgesetzt
 table_header_cell.task_number: 'Aufgabe Nr.'
@@ -1734,12 +1797,17 @@ table_header_cell.wppwct: 'Art der Arbeitspaketkosten'
 table_header_cell.wppwcts: 'Art der Arbeitspaketkosten'
 title.account_activation: Accountaktivierung
 title.add_distribution_list: 'Verteilerliste hinzufügen'
+title.assignment.create: 'Neue Zuordnung erstellen'
+title.assignment.edit: 'Zuordnung bearbeiten'
+title.assignment.list: Zuordnung
 title.calendar.create: 'Neuen Kalender erstellen'
 title.calendar.edit: 'Kalender bearbeiten'
 title.calendar.list: Kalender
 title.close_down_action.create: 'Neue Abschlussmaßnahme erstellen'
 title.close_down_action.edit: 'Abschlussmaßnahme bearbeiten'
 title.close_down_action.list: Abschlussmaßnahme
+title.color_status.create: 'Neuen Statusfarbe erstellen'
+title.color_status.edit: 'Statusfarbe bearbeiten'
 title.color_status.list: Farbstatus
 title.communication.create: 'Neue Mitteilung erstellen'
 title.communication.edit: 'Mitteilung bearbeiten'
@@ -1774,6 +1842,9 @@ title.distribution_list.list: Verteilerliste
 title.document.create: 'Neues Dokument erstellen'
 title.document.edit: 'Dokument bearbeiten'
 title.document.list: Dokument
+title.evaluation_objective.create: 'Neues Bewertungsobjekt erstellen'
+title.evaluation_objective.edit: 'Bewertungskriterium bearbeiten'
+title.evaluation_objective.list: Bewertungsobjekt
 title.external_cost.create: 'Kosten erstellen'
 title.external_cost.edit: 'Kosten bearbeiten'
 title.external_cost.list: 'Externe Kosten'
@@ -1786,6 +1857,9 @@ title.filesystem.list: Dateisystem
 title.header: 'Campr Administration'
 title.homepage: 'Campr Admin'
 title.homepage_main: 'Campr Main Site'
+title.impact.create: 'Neue Auswirkung erstellen'
+title.impact.edit: 'Auswirkung bearbeiten'
+title.impact.list: Auswirkung
 title.info.create: 'Neue Info erstellen'
 title.info.edit: 'Info bearbeiten'
 title.info.list: Info
@@ -1807,6 +1881,7 @@ title.lesson.list: Lektion
 title.measure.create: 'Neue Maßnahme erstellen'
 title.measure.edit: 'Maßnahme bearbeiten'
 title.measure.list: Maßnahme
+title.media.edit: 'Mediendatei bearbeiten'
 title.media.list: Medien
 title.media.upload: 'Neue Datei hochladen'
 title.meeting.create: 'Neues Meeting erstellen'
@@ -1844,6 +1919,7 @@ title.opportunity_strategy.create: 'Neue Chancenstrategie erstellen'
 title.opportunity_strategy.edit: 'Chancenstrategie bearbeiten'
 title.opportunity_strategy.list: Chancenstrategie
 title.payment.list: Zahlungen
+title.payment_method.create: 'Neue Zahlungsmethode hinzufügen'
 title.payment_method.edit: 'Zahlungsmethode bearbeiten'
 title.payment_method.list: 'Liste Zahlungsmethoden'
 title.portfolio.create: 'Neues Portfolio erstellen'
@@ -1868,12 +1944,17 @@ title.project_complexity.list: Komplexität
 title.project_cost_type.create: 'Neue Projektkostenart erstellen'
 title.project_cost_type.edit: 'Projektkostenart bearbeiten'
 title.project_cost_type.list: Kostenart
+title.project_deliverable.create: 'Neues Projektleistung erstellen'
+title.project_deliverable.edit: 'Projektleistung bearbeiten'
+title.project_deliverable.list: Projektleistung
 title.project_department.create: 'Neue Projektabteilung erstellen'
 title.project_department.edit: 'Projektabteilung bearbeiten'
 title.project_department.list: Abteilung
 title.project_limitation.create: 'Projekteinschränkung erstellen'
 title.project_limitation.edit: 'Projekteinschränkung bearbeiten'
 title.project_limitation.list: Projekteinschränkung
+title.project_module.create: 'Neues Projektmodul erstellen'
+title.project_module.edit: 'Projektmodul bearbeiten'
 title.project_module.list: Projektmodul
 title.project_objective.create: 'Projektziel erstellen'
 title.project_objective.edit: 'Projektziel bearbeiten'
@@ -1916,6 +1997,9 @@ title.risk_status.list: Risikostatus
 title.risk_strategy.create: 'Neue Risikostrategie erstellen'
 title.risk_strategy.edit: 'Risikostrategie bearbeiten'
 title.risk_strategy.list: Risikostrategie
+title.schedule.create: 'Neuen Terminplan erstellen'
+title.schedule.edit: 'Terminplan bearbeiten'
+title.schedule.list: Terminplan
 title.status.edit: Bearbeiten
 title.status_report.list: 'Status Report'
 title.status_report_config.create: 'Neue Statusreport-Konfiguration erstellen'
@@ -1937,6 +2021,10 @@ title.team.list: Teamliste
 title.team_member.create: 'Neues Teammitglied erstellen'
 title.team_member.edit: 'Teammitglied bearbeiten'
 title.team_member.for: 'Teammitgliederliste für'
+title.team_member.list: Teammitglieder
+title.timephase.create: 'Neue Phase erstellen'
+title.timephase.edit: 'Phase bearbeiten'
+title.timephase.list: Phase
 title.todo.create: 'Neues To-Do erstellen'
 title.todo.edit: 'To-Do bearbeiten'
 title.todo.list: To-Do
@@ -1972,6 +2060,8 @@ title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
 title.wppcwct.create: 'Neuen Arbeitspaketkostentyp erstellen'
+title.wppcwct.edit: 'Kostentyp bearbeiten'
+title.wppcwct.list: Kostentyp
 todo_status.discontinued: Eingestellt
 todo_status.finished: Abgeschlossen
 todo_status.initiated: Eingeleitet
@@ -1980,20 +2070,28 @@ todo_status.ongoing: Fortlaufend
 token.expired: 'Token abgelaufen.'
 token.invalid: 'Ungültiger Token.'
 token.used: 'Token wurde bereits genutzt.'
+unknown_route: 'Ich weiß nicht wo Sie hin wollen'
 message.expired_at: 'Endete am'
+message.all_conditions: 'Alle Zustände'
 message.change_responsible: 'Verantwortlichkeit ändern'
 message.not_enough_data: 'Nicht genügend Daten.'
 label.meeting_category: Meetingkategorie
+label.project_start_event: Startereignis
+label.traffic_light: Ampel
 button.save_distribution_list: 'Verteilerliste speichern'
 table_header_cell.expires_at: 'Endet am'
 choices.done: Erledigt
 choices.undone: 'Nicht erledigt'
 traffic_light.red: Kritisch
 traffic_light.yellow: Warnung
+traffic_light.green: 'Im Plan'
+message.reschedule_info: Neuterminierung
+label.time_delay: 'Zeitliche Verzögerung'
 label.cost_savings: Kosteneinsparungen
 label.potential_cost_savings: 'Potentielle Kosteneinsparungen'
 label.potential_time_savings: 'Potentielle Zeiteinsparungen'
 message.planned_progress: 'Geplanter Fortschritt'
+label.follow_up: Nachfolgend
 menu.unaccepted_team_invites: 'Nicht-akzeptierte Einladungen'
 label.resend: 'Noch einmal verschicken'
 message.removed_team_invites: '%count% Einladung(en) wurden entfernt.'
@@ -2011,3 +2109,11 @@ message.locale_switcher.en: 'CAMPR auf Englisch'
 message.locale_switcher.de: 'CAMPR auf Deutsch'
 portal.about_us: 'Über uns'
 message.generic_error: 'Ein unerwarteter Fehler ist aufgetreten.'
+email.message.location: Standort
+email.message.objective: Ziele
+email.message.agenda: Agenda
+email.table_header_cell.topic: Topic
+email.table_header_cell.responsible: Responsible
+email.table_header_cell.start: Start
+email.table_header_cell.end: Finish
+email.table_header_cell.duration: Duration
