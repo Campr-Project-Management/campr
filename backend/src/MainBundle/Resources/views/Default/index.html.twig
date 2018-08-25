@@ -40,9 +40,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-auto text-right">
-                                        <a href="{{ path('main_team_sso', {id: team.id}) }}" class="button button-small">
+                                        <a href="{{ path('main_team_sso', {id: team.id}) }}" class="button button-small{{ not team.enabled or not team.available ? ' hide' }}"{{ team.enabled and not team.available ? ' data-check-team-availability=true data-team-id=' ~ team.id }}>
                                             {{ 'button.login'|trans }}
                                         </a>
+                                        {% if not team.enabled or not team.available %}
+                                            <img src="{{ asset('assets/admin/img/spinner.gif') }}" class="spinner">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </li>
@@ -87,9 +90,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-auto text-right">
-                                        <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="button button-small">
+                                        <a href="{{ path('main_team_sso', {id: teamMember.team.id}) }}" class="button button-small{{ not teamMember.team.enabled or not teamMember.team.available ? ' hide' }}"{{ teamMember.team.enabled and not teamMember.team.available ? ' data-check-team-availability=true data-team-id=' ~ teamMember.team.id }}>
                                             {{ 'button.login'|trans }}
                                         </a>
+                                        {% if not teamMember.team.enabled or not teamMember.team.available %}
+                                            <img src="{{ asset('assets/admin/img/spinner.gif') }}" class="spinner">
+                                        {% endif %}
                                     </div>
                                 </div>
                             </li>
@@ -1138,4 +1144,5 @@
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/homepage-script.js') }}"></script>
     <script src="{{ asset('assets/admin/js/contact.js') }}"></script>
+    <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
 {% endblock %}
