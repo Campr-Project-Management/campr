@@ -187,6 +187,21 @@ class MeetingAgenda
     }
 
     /**
+     * Returns topic duration.
+     *
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("duration")
+     *
+     * @return string
+     */
+    public function getDuration()
+    {
+        $difference = $this->start->diff($this->end);
+
+        return $difference->format('%i');
+    }
+
+    /**
      * Returns meeting name.
      *
      * @Serializer\VirtualProperty()
