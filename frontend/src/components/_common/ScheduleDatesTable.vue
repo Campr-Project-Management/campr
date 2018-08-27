@@ -96,6 +96,9 @@
             },
             actualRowColor() {
                 return colors.schedule.getActualColor({
+                    startAt: this.baseStartAt,
+                    finishAt: this.baseFinishAt,
+                }, {
                     startAt: this.forecastStartAt,
                     finishAt: this.forecastFinishAt,
                 }, {
