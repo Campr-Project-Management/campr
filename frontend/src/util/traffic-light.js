@@ -106,15 +106,21 @@ export function getScheduleForecastTrafficLight(scheduled, forecast) {
 }
 
 /**
+ * @param {object} base
  * @param {object} forecast
  * @param {object} actual
  * @param {boolean} completed
  * @return {TrafficLight}
  */
 export function getScheduleActualTrafficLight(
-    forecast, actual, completed = true) {
+    base, forecast, actual, completed = true) {
     if (!forecast.finishAt || !actual.finishAt) {
         return TrafficLight.createGreen();
+    }
+
+    if (moment(actual.finishAt).isBefore(base.finishAt)
+        && moment(actual.finishAt).isAfter(forecast.finishAt)) {
+        return TrafficLight.createYellow();
     }
 
     if (moment(actual.finishAt).isAfter(forecast.finishAt)) {
