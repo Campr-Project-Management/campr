@@ -60,9 +60,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, options={"default": "WorkPackage"})
+     * @ORM\Column(name="name", type="string", length=255, options={"default": "Task"})
      */
-    private $name = 'WorkPackage';
+    private $name = 'Task';
 
     /**
      * @var WorkPackage

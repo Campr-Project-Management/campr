@@ -1276,10 +1276,10 @@ subtitle.todo_status: 'Liste der To-Do-Status'
 subtitle.unit: 'Liste der Einheiten'
 subtitle.user: 'Liste der Nutzer'
 subtitle.working_time: 'Liste der Arbeitszeiten'
-subtitle.workpackage: 'Liste der Arbeitspakete'
+subtitle.workpackage: 'Liste der Aufgaben'
 subtitle.workpackage_category: 'Liste der Arbeitspaketkategorien'
-subtitle.workpackage_status: 'Liste der Arbeitspaketstatus'
-subtitle.wppcwct: 'Liste der Arbeitspaketprojektkostentypen'
+subtitle.workpackage_status: 'Liste der Aufgabenstatus'
+subtitle.wppcwct: 'Liste der Aufgaben Projektarbeitskostenart'
 success.account.edit: 'Ihr Account wurde erfolgreich bearbeitet!'
 success.assignment.create: 'Auftrag erfolgreich erstellt!'
 success.assignment.delete.from_data_table: 'Auftrag mit ID'
@@ -2045,15 +2045,15 @@ title.user.list: Nutzer
 title.working_time.create: 'Neue Arbeitszeit erstellen'
 title.working_time.edit: 'Arbeitszeit bearbeiten'
 title.working_time.list: Arbeitszeit
-title.workpackage.create: 'Neues Arbeitspaket erstellen'
-title.workpackage.edit: 'Arbeitspaket bearbeiten'
+title.workpackage.create: 'Erstellen Sie eine neue Aufgabe'
+title.workpackage.edit: 'Aufgabe bearbeiten'
 title.workpackage.list: 'Aufgabe'
-title.workpackage_category.create: 'Arbeitspaketkategorie erstellen'
-title.workpackage_category.edit: 'Arbeitspaketkategorie bearbeiten'
-title.workpackage_category.list: Arbeitspaketkategorie
-title.workpackage_status.create: 'Arbeitspaketstatus erstellen'
-title.workpackage_status.edit: 'Arbeitspaketstatus bearbeiten'
-title.workpackage_status.list: Arbeitspaketstatus
+title.workpackage_category.create: 'Erstellen Sie eine Aufgabenkategorie'
+title.workpackage_category.edit: 'Bearbeiten Sie die Aufgabenkategorie'
+title.workpackage_category.list: 'Aufgabenkategorie'
+title.workpackage_status.create: 'Erstellen Sie den Aufgabenstatus'
+title.workpackage_status.edit: 'Bearbeiten Sie den Aufgabenstatus'
+title.workpackage_status.list: 'Aufgabenstatus'
 title.workspace.create: 'Neues Arbeitsumfeld erstellen'
 title.workspace.edit: 'Arbeitsumfeld bearbeiten'
 title.workspace.list: 'Liste Arbeitsumfelder'
@@ -2061,8 +2061,8 @@ title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
 title.wppcwct.create: 'Neuen Arbeitspaketkostentyp erstellen'
-title.wppcwct.edit: 'Kostentyp bearbeiten'
-title.wppcwct.list: Kostentyp
+title.wppcwct.edit: 'Bearbeiten Sie den Projektarbeitskosten-Typ'
+title.wppcwct.list: 'Aufgabe Projekt Arbeitskostenart'
 todo_status.discontinued: Eingestellt
 todo_status.finished: Abgeschlossen
 todo_status.initiated: Eingeleitet
