@@ -214,6 +214,8 @@ module.exports = function (Translator) {
     Translator.add("work_package.assignment.already_used", "%name% wurde in diesem Task bereits eine Rolle zugewiesen.", "validators", "de");
     Translator.add("invalid.traffic_light", "Ung\u00fcltiger Ampelstatus", "validators", "de");
     Translator.add("invalid.end_time_greater_than_start_time", "Abschlusszeit muss sp\u00e4ter als Startzeit sein", "validators", "de");
+    Translator.add("greater_than_or_equal.duration", "The duration field should contain numbers greater than or equal to 0", "validators", "de");
+    Translator.add("is_greater_than.meeting_duration", "Meeting has only  %duration% minutes.", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
     Translator.add("Authentication request could not be processed due to a system problem.", "Die Authentifikation konnte wegen eines Systemproblems nicht bearbeitet werden.", "security", "de");
@@ -2354,6 +2356,7 @@ module.exports = function (Translator) {
     Translator.add("email.table_header_cell.start", "Start", "messages", "de");
     Translator.add("email.table_header_cell.end", "Finish", "messages", "de");
     Translator.add("email.table_header_cell.duration", "Duration", "messages", "de");
+    Translator.add("placeholder.duration", "Duration", "messages", "de");
     Translator.add("task.cost_groups_and_resources.description", "<p>Diese Aufgabe besch\u00e4ftigt sich mit dem Kosten- und Ressourcenmanagement in Ihrem Projekt. Die Kosten und Ressourcen sind pr\u00e4zise definiert.<\/p>\n<p><strong>Interne Kosten:<\/strong> Hier definieren Sie die Kostengruppen Ihrer Organisation. Diese beinhalten tats\u00e4chliche Kosten Ihrer internen Projektmitglieder, um ihre Mitwirkung in Ihrem Projekt zu begleichen.<\/p>\n<p><strong>Externe Kosten:<\/strong> Definieren die Kostengruppen f\u00fcr externe Ausgaben. Diese k\u00f6nnen externe Projektmitarbeiter, die tempor\u00e4r im Projekt t\u00e4tig sind, sein oder andere Dienstleistungen und G\u00fcter zur Erf\u00fcllung Ihrer Projektziele.<\/p>\n", "tasks", "de");
     Translator.add("task.cost_groups_and_resources.title", "Kostengruppen und Ressourcen", "tasks", "de");
     Translator.add("task.nice_to_have.description", "<p>Um Ihre Arbeit in einer komplexen Umgebung mit mehreren Projekten und einer Vielzahl an Aufgaben \u00fcbersichtlicher zu gestalten, k\u00f6nnen Sie Farblabels zuordnen. Im Adminbereich k\u00f6nnen Sie eine beliebige Anzahl Labels benennen und ihnen Farben zuordnen.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Label:<\/strong> Geben Sie einem Label einen Namen, definieren Sie ein Farbe und ordnen Sie es einem Projekt oder einer Aufgabe zu, um einen besseren \u00dcberblick zu erhalten.<\/p>\n", "tasks", "de");

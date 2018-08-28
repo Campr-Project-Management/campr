@@ -161,7 +161,6 @@
                                             <th>{{ translate('table_header_cell.topic') }}</th>
                                             <th>{{ translate('table_header_cell.responsible') }}</th>
                                             <th>{{ translate('table_header_cell.start') }}</th>
-                                            <th>{{ translate('table_header_cell.finish') }}</th>
                                             <th>{{ translate('table_header_cell.duration') }}</th>
                                             <th>{{ translate('table_header_cell.actions') }}</th>
                                         </tr>
@@ -177,8 +176,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ agenda.start }}</td>
-                                            <td>{{ agenda.end }}</td>
-                                            <td>{{ getDuration(agenda.start, agenda.end) }} {{ translate('message.min') }}</td>
+                                            <td>{{ agenda.duration }} {{ translate('message.min') }}</td>
                                             <td>
                                                 <div class="text-right">
                                                     <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translate('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
@@ -223,14 +221,11 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <vue-timepicker v-model="agenda.endTime" hide-clear-button></vue-timepicker>
-                                    <error
-                                        v-if="validationMessages.end && validationMessages.end.length"
-                                        v-for="message in validationMessages.end"
+                                <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" v-bind:min="0" />
+                                <error
+                                        v-if="validationMessages.duration && validationMessages.duration.length"
+                                        v-for="message in validationMessages.duration"
                                         :message="message" />
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -640,12 +635,6 @@ export default {
                     .join(' | ')
                 : ''
             ;
-        },
-        getDuration: function(startDate, endDate) {
-            let end = moment(endDate, 'HH:mm');
-            let start = moment(startDate, 'HH:mm');
-
-            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
         },
         setModals(value) {
             this.showEditObjectiveModal = value;

@@ -55,16 +55,23 @@ const actions = {
      * Edit a meeting agenda
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     editMeetingAgenda({commit}, data) {
-        Vue.http
+        return Vue.http
             .patch(
                 Routing.generate('app_api_meeting_agendas_edit', {'id': data.id}),
                 data
             ).then((response) => {
-                let meetingAgenda = response.data;
-                commit(types.EDIT_MEETING_AGENDA, {meetingAgenda});
+                if (response.body && response.body.error) {
+                    throw response;
+                } else {
+                    let meetingAgenda = response.data;
+                    commit(types.EDIT_MEETING_AGENDA, {meetingAgenda});
+                }
+                return response;
             }, (response) => {
+                return response;
             });
     },
     /**
@@ -118,7 +125,7 @@ const mutations = {
                     item.responsibilityAvatar = meetingAgenda.responsibilityAvatar;
                     item.responsibilityFullName = meetingAgenda.responsibilityFullName;
                     item.start = meetingAgenda.start;
-                    item.end = meetingAgenda.end;
+                    item.duration = meetingAgenda.duration;
                 }
             });
         }
