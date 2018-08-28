@@ -44,7 +44,7 @@ export const createFormData = (data) => {
             formData.append('meetingAgendas[' + i + '][topic]', data.agendas[i].topic);
             formData.append('meetingAgendas[' + i + '][responsibility]', data.agendas[i].responsible.length > 0 ? data.agendas[i].responsible[0] : null);
             formData.append('meetingAgendas[' + i + '][start]', data.agendas[i].startTime.HH + ':' + data.agendas[i].startTime.mm);
-            formData.append('meetingAgendas[' + i + '][end]', data.agendas[i].endTime.HH + ':' + data.agendas[i].endTime.mm);
+            formData.append('meetingAgendas[' + i + '][duration]', data.agendas[i].duration);
         }
     }
 

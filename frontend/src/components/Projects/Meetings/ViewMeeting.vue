@@ -120,7 +120,6 @@
                                         <th>{{ translate('table_header_cell.topic') }}</th>
                                         <th>{{ translate('table_header_cell.responsible') }}</th>
                                         <th>{{ translate('table_header_cell.start') }}</th>
-                                        <th>{{ translate('table_header_cell.finish') }}</th>
                                         <th>{{ translate('table_header_cell.duration') }}</th>
                                         <th>{{ translate('table_header_cell.actions') }}</th>
                                     </tr>
@@ -136,8 +135,7 @@
                                             </div>
                                         </td>
                                         <td>{{ agenda.start }}</td>
-                                        <td>{{ agenda.end }}</td>
-                                        <td>{{ getDuration(agenda.start, agenda.end) }} {{ translate('message.min') }}</td>
+                                        <td>{{ agenda.duration }} {{ translate('message.min') }}</td>
                                         <td>
                                             <div class="text-right">
                                                 <a @click="initEditAgenda(agenda)"  class="btn-icon" v-tooltip.top-center="translate('label.edit_topic')"><edit-icon fill="second-fill"></edit-icon></a>
@@ -470,10 +468,7 @@ export default {
                     HH: moment(agenda.start, 'HH:mm').format('HH'),
                     mm: moment(agenda.start, 'HH:mm').format('mm'),
                 },
-                end: {
-                    HH: moment(agenda.end, 'HH:mm').format('HH'),
-                    mm: moment(agenda.end, 'HH:mm').format('mm'),
-                },
+                duration: agenda.duration,
             };
         },
         initDeleteAgenda: function(agenda) {
