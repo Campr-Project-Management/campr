@@ -697,6 +697,11 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    // force scroll to top on each navigation
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 100);
+
     Guard.beforeEach(to, from, (nArg) => {
         if (to.meta.title && nArg !== false && !(nArg instanceof Error)) {
             document.title = to.meta.title;
