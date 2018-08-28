@@ -1317,6 +1317,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic1',
                                     'start' => '07:30',
                                     'end' => '08:00',
+                                    'duration' => 0,
                                     'responsibilityAvatar' => '',
                                 ],
                                 [
@@ -1329,6 +1330,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic2',
                                     'start' => '11:30',
                                     'end' => '12:00',
+                                    'duration' => 0,
                                     'responsibilityAvatar' => '',
                                 ],
                             ],

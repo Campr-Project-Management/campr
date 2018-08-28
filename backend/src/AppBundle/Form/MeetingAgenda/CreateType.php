@@ -7,10 +7,12 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateType extends AbstractType
@@ -54,12 +56,15 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('end', DateTimeType::class, [
+            ->add('duration', IntegerType::class, [
                 'required' => true,
-                'widget' => 'single_text',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.end',
+                        'message' => 'not_blank.duration',
+                    ]),
+                    new GreaterThanOrEqual([
+                        'value' => 0,
+                        'message' => 'greater_than_or_equal.duration',
                     ]),
                 ],
             ])

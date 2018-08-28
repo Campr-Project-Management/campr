@@ -14,6 +14,7 @@ use AppBundle\Form\MeetingAgenda\CreateType as AgendaType;
 use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\Todo\BaseCreateType as TodoType;
 use AppBundle\Form\Info\BaseCreateType as InfoType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ApiCreateType extends BaseCreateType
 {
@@ -44,6 +45,7 @@ class ApiCreateType extends BaseCreateType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+                    'constraints' => new Valid(),
                 ]
             )
             ->add(
