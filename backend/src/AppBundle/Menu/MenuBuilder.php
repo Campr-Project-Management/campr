@@ -233,9 +233,9 @@ class MenuBuilder
             ->addChild($this->translator->trans('title.project_status.list', [], 'messages'), [
                 'route' => 'app_admin_project_status_list',
             ])->getParent()
-            ->addChild($this->translator->trans('title.project_team.list', [], 'messages'), [
-                'route' => 'app_admin_project_team_list',
-            ])->getParent()
+//            ->addChild($this->translator->trans('title.project_team.list', [], 'messages'), [
+//                'route' => 'app_admin_project_team_list',
+//            ])->getParent()
             ->addChild($this->translator->trans('title.project_user.list', [], 'messages'), [
                 'route' => 'app_admin_project_user_list',
             ])->getParent()
