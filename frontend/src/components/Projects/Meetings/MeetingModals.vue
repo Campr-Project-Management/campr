@@ -41,9 +41,11 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="input-holder right">
-                                <label class="active">{{ translateText('label.finish_time') }}</label>
-                                <vue-timepicker v-model="editAgendaObject.end" hide-clear-button></vue-timepicker>
+                            <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="editAgendaObject.duration" v-bind:content="editAgendaObject.duration" v-bind:min="0" />
+                            <div v-if="editAgendaErrors && editAgendaErrors.duration">
+                                <error
+                                    v-for="(message, index) in editAgendaErrors.duration"
+                                    :message="message" />
                             </div>
                         </div>
                     </div>
@@ -278,7 +280,8 @@ export default {
         ...mapActions([
             'getTodoStatuses', 'editMeetingObjective', 'deleteMeetingObjective',
             'editMeetingAgenda', 'deleteMeetingAgenda', 'editDecision', 'deleteDecision', 'editTodo', 'deleteTodo',
-            'editInfo', 'deleteInfo', 'getInfoCategories',
+            'editInfo', 'deleteInfo', 'getInfoCategories', 'validationMessages',
+
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -294,12 +297,20 @@ export default {
             this.$emit('input', this.showDeleteObjectiveModal);
         },
         saveAgenda: function() {
-            this.editAgendaObject.responsibility = this.editAgendaObject.responsibility.length > 0 ? this.editAgendaObject.responsibility[0] : null;
-            this.editAgendaObject.start = this.editAgendaObject.start.HH + ':' + this.editAgendaObject.start.mm,
-            this.editAgendaObject.end = this.editAgendaObject.end.HH + ':' + this.editAgendaObject.end.mm,
-            this.editMeetingAgenda(this.editAgendaObject);
-            this.showEditAgendaModal = false;
-            this.$emit('input', this.showEditAgendaModal);
+            let data = Object.assign({}, this.editAgendaObject, {
+                start: this.editAgendaObject.start.HH + ':' + this.editAgendaObject.start.mm,
+                responsibility: this.editAgendaObject.responsibility.length > 0 ? this.editAgendaObject.responsibility[0] : null,
+                duration: this.editAgendaObject.duration,
+                topic: this.editAgendaObject.topic,
+            });
+
+            this.editMeetingAgenda(data).then(() => {
+                this.showEditAgendaModal = false;
+                this.editAgendaErrors = {};
+                this.$emit('input', this.showEditAgendaModal);
+            }).catch((response) => {
+                this.editAgendaErrors = response.body.messages;
+            });
         },
         deleteAgenda: function() {
             this.deleteMeetingAgenda(this.editAgendaObject);
@@ -396,6 +407,7 @@ export default {
             showDeleteInfoModal: false,
             editInfoObject: {},
             editDecisionErrors: {},
+            editAgendaErrors: {},
         };
     },
 };

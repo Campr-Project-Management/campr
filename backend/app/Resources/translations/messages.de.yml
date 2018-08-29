@@ -179,8 +179,7 @@ button.view: Anzeigen
 button.view_all_tasks: 'Alle Aufgaben anzeigen'
 button.view_info: 'Info anzeigen'
 button.view_remaining_action: 'Verbleibende Maßnahmen ansehen'
-button.view_tasks_board: 'Task Board Ansicht'
-button.view_tasks_grid: 'Task Grid Ansicht'
+button.view_tasks_board: 'Task Board anzeigen'
 checkbox.checked: Ja
 checkbox.unchecked: Nein
 choices.days: Tage
@@ -203,8 +202,6 @@ copyright: 'Copyright &copy; %year% CAMPR'
 email.expiration.user.activation: 'Der Aktivierungslink läuft in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.expiration.user.reset: 'Der Zurücksetzungstoken läuft in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.from.contact: 'Sie haben eine neue Nachricht von:'
-email.from.contact.full_name: 'Vollständiger Name'
-email.from.contact.email: 'E-Mail'
 email.general.email: E-Mail
 email.general.hello: Hallo
 email.general.link: Link
@@ -358,7 +355,6 @@ label.end: Ende
 label.enhance: Verbessern
 label.entered: Eingetreten
 label.event: Event
-label.executing: Ausführen
 label.expired: Abgelaufen
 label.expiry_date: Ablaufdatum
 label.exploit: Ausschöpfen
@@ -1210,7 +1206,7 @@ subtitle.color_status: 'Liste der Statusfarben'
 subtitle.communication: 'Liste der Ankündigungen'
 subtitle.company: 'Liste der Unternehmen'
 subtitle.contract: 'Liste der Verträge'
-subtitle.cost: 'Liste der Externen Kosten'
+subtitle.cost: 'Liste der Kosten'
 subtitle.dashboard: 'Willkommen im Adminbereich!'
 subtitle.day: 'Liste der Tage'
 subtitle.decision: 'Liste der Entscheidungen'
@@ -1255,7 +1251,7 @@ subtitle.project_team: 'Liste der Projektteams'
 subtitle.project_user: 'Liste der Projektnutzer'
 subtitle.project_work_cost_type: 'Liste der Projektarbeitskostentypen'
 subtitle.rasci: 'Liste der RASCI-Matrix'
-subtitle.resource: 'Liste der Interne Kosten'
+subtitle.resource: 'Liste der Ressourcen'
 subtitle.risk: 'Liste der Risiken'
 subtitle.risk_category: 'Liste der Risikokategorien'
 subtitle.risk_status: 'Liste der Risikostatus'
@@ -1276,10 +1272,10 @@ subtitle.todo_status: 'Liste der To-Do-Status'
 subtitle.unit: 'Liste der Einheiten'
 subtitle.user: 'Liste der Nutzer'
 subtitle.working_time: 'Liste der Arbeitszeiten'
-subtitle.workpackage: 'Liste der Aufgaben'
+subtitle.workpackage: 'Liste der Arbeitspakete'
 subtitle.workpackage_category: 'Liste der Arbeitspaketkategorien'
-subtitle.workpackage_status: 'Liste der Aufgabenstatus'
-subtitle.wppcwct: 'Liste der Aufgaben Projektarbeitskostenart'
+subtitle.workpackage_status: 'Liste der Arbeitspaketstatus'
+subtitle.wppcwct: 'Liste der Arbeitspaketprojektkostentypen'
 success.account.edit: 'Ihr Account wurde erfolgreich bearbeitet!'
 success.assignment.create: 'Auftrag erfolgreich erstellt!'
 success.assignment.delete.from_data_table: 'Auftrag mit ID'
@@ -1820,9 +1816,9 @@ title.contact: 'Senden Sie uns eine Nachricht'
 title.contract.create: 'Vertrag erstellen'
 title.contract.edit: 'Vertrag bearbeiten'
 title.contract.list: Vertrag
-title.cost.create: 'Externe Kosten Schaffen'
-title.cost.edit: 'Externe Kosten bearbeiten'
-title.cost.list: 'Externe Kosten'
+title.cost.create: 'Kosten erstellen'
+title.cost.edit: 'Kosten bearbeiten'
+title.cost.list: Kosten
 title.dashboard: Dashboard
 title.day.create: 'Neuen Tag erstellen'
 title.day.edit: 'Tag bearbeiten'
@@ -1974,7 +1970,7 @@ title.project_team.edit: 'Projektteam bearbeiten'
 title.project_team.list: Projektteam
 title.project_user.create: 'Neues Nutzer erstellen'
 title.project_user.edit: 'Nutzer bearbeiten'
-title.project_user.list: 'Mitglieder'
+title.project_user.list: Nutzer
 title.project_work_cost_type.create: 'Neue Projektarbeitskostenart erstellen'
 title.project_work_cost_type.edit: 'Projektarbeitskostenart bearbeiten'
 title.project_work_cost_type.list: Projektarbeitskostenart
@@ -1982,9 +1978,9 @@ title.rasci.create: 'Neue RASCI erstellen'
 title.rasci.edit: 'RASCI bearbeiten'
 title.rasci.list: RASCI
 title.reset: 'Bitte fügen Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Sie werden eine E-Mail mit weiteren Anweisungen erhalten.'
-title.resource.create: 'Interne Kosten Schaffen'
-title.resource.edit: 'Interne Kosten Bearbeiten'
-title.resource.list: 'Interne Kosten'
+title.resource.create: 'Ressource erstellen'
+title.resource.edit: 'Ressource bearbeiten'
+title.resource.list: Ressource
 title.risk.create: 'Neues Risiko erstellen'
 title.risk.edit: 'Risiko bearbeiten'
 title.risk.list: Risiko
@@ -2045,15 +2041,15 @@ title.user.list: Nutzer
 title.working_time.create: 'Neue Arbeitszeit erstellen'
 title.working_time.edit: 'Arbeitszeit bearbeiten'
 title.working_time.list: Arbeitszeit
-title.workpackage.create: 'Erstellen Sie eine neue Aufgabe'
-title.workpackage.edit: 'Aufgabe bearbeiten'
-title.workpackage.list: 'Aufgabe'
-title.workpackage_category.create: 'Erstellen Sie eine Aufgabenkategorie'
-title.workpackage_category.edit: 'Bearbeiten Sie die Aufgabenkategorie'
-title.workpackage_category.list: 'Aufgabenkategorie'
-title.workpackage_status.create: 'Erstellen Sie den Aufgabenstatus'
-title.workpackage_status.edit: 'Bearbeiten Sie den Aufgabenstatus'
-title.workpackage_status.list: 'Aufgabenstatus'
+title.workpackage.create: 'Neues Arbeitspaket erstellen'
+title.workpackage.edit: 'Arbeitspaket bearbeiten'
+title.workpackage.list: Arbeitspaket
+title.workpackage_category.create: 'Arbeitspaketkategorie erstellen'
+title.workpackage_category.edit: 'Arbeitspaketkategorie bearbeiten'
+title.workpackage_category.list: Arbeitspaketkategorie
+title.workpackage_status.create: 'Arbeitspaketstatus erstellen'
+title.workpackage_status.edit: 'Arbeitspaketstatus bearbeiten'
+title.workpackage_status.list: Arbeitspaketstatus
 title.workspace.create: 'Neues Arbeitsumfeld erstellen'
 title.workspace.edit: 'Arbeitsumfeld bearbeiten'
 title.workspace.list: 'Liste Arbeitsumfelder'
@@ -2061,8 +2057,8 @@ title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
 title.wppcwct.create: 'Neuen Arbeitspaketkostentyp erstellen'
-title.wppcwct.edit: 'Bearbeiten Sie den Projektarbeitskosten-Typ'
-title.wppcwct.list: 'Aufgabe Projekt Arbeitskostenart'
+title.wppcwct.edit: 'Kostentyp bearbeiten'
+title.wppcwct.list: Kostentyp
 todo_status.discontinued: Eingestellt
 todo_status.finished: Abgeschlossen
 todo_status.initiated: Eingeleitet
@@ -2118,3 +2114,4 @@ email.table_header_cell.responsible: Responsible
 email.table_header_cell.start: Start
 email.table_header_cell.end: Finish
 email.table_header_cell.duration: Duration
+placeholder.duration: Duration

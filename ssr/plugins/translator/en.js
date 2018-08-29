@@ -214,6 +214,8 @@ module.exports = function (Translator) {
     Translator.add("work_package.assignment.already_used", "%name% already have a role assigned on this task", "validators", "en");
     Translator.add("invalid.traffic_light", "Invalid traffic light", "validators", "en");
     Translator.add("invalid.end_time_greater_than_start_time", "End time must be greater than start time", "validators", "en");
+    Translator.add("greater_than_or_equal.duration", "The duration field should contain numbers greater than or equal to 0", "validators", "en");
+    Translator.add("is_greater_than.meeting_duration", "Meeting has only  %duration% minutes.", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
     Translator.add("Authentication request could not be processed due to a system problem.", "Authentication request could not be processed due to a system problem.", "security", "en");
@@ -2355,6 +2357,7 @@ module.exports = function (Translator) {
     Translator.add("email.table_header_cell.start", "Start", "messages", "en");
     Translator.add("email.table_header_cell.end", "Finish", "messages", "en");
     Translator.add("email.table_header_cell.duration", "Duration", "messages", "en");
+    Translator.add("placeholder.duration", "Duration", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
@@ -2427,7 +2430,7 @@ module.exports = function (Translator) {
     Translator.add("success.company.delete.from_data_table", "Company with ID", "flashes", "en");
     Translator.add("success.company.delete.from_edit", "Company successfully deleted!", "flashes", "en");
     Translator.add("success.company.edit", "Company successfully edited!", "flashes", "en");
-    Translator.add("success.contact.message.sent", "Message succesfully sent!", "flashes", "en");
+    Translator.add("success.contact.message.sent", "Message successfully sent!", "flashes", "en");
     Translator.add("success.contract.create", "Contract successfully created!", "flashes", "en");
     Translator.add("success.contract.delete.from_data_table", "Contract with ID", "flashes", "en");
     Translator.add("success.contract.delete.from_edit", "Contract successfully deleted!", "flashes", "en");
