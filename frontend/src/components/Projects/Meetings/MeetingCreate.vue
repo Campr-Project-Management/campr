@@ -167,16 +167,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="input-holder right">
-                                        <label class="active">{{ translate('label.finish_time') }}</label>
-                                        <timepicker v-model="agenda.endTime" hide-clear-button />
-                                        <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
-                                            <error
-                                                v-if="validationMessages.meetingAgendas[index.toString()].end && validationMessages.meetingAgendas[index.toString()].end.length"
-                                                v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].end"
-                                                :key="`agenda-endTime-${index}`"
-                                                :message="message" />
-                                        </div>
+                                    <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" />
+                                    <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
+                                        <error
+                                            v-if="validationMessages.meetingAgendas[index.toString()].duration && validationMessages.meetingAgendas[index.toString()].duration.length"
+                                            v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].duration"
+                                            :message="message" />
                                     </div>
                                 </div>
                             </div>
@@ -495,10 +491,7 @@ export default {
                     HH: null,
                     mm: null,
                 },
-                endTime: {
-                    HH: null,
-                    mm: null,
-                },
+                duration: 0,
             });
         },
         onDeleteAgenda(index) {

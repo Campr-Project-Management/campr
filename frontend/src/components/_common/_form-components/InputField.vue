@@ -21,6 +21,7 @@
                     :value="value"
                     :disabled="disabled"
                     :style="css"
+                    :min="min"
                     @focusin="onFocus"
                     @focusout="onBlur"/>
         </template>
@@ -56,6 +57,10 @@
             },
             disabled: {
                 type: Boolean,
+                default: false,
+            },
+            min: {
+                required: false,
                 default: false,
             },
         },
@@ -116,5 +121,8 @@
     label {
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    input[type="number"] {
+        margin-bottom: 0 !important;
     }
 </style>

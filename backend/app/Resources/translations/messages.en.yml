@@ -179,8 +179,7 @@ button.view: View
 button.view_all_tasks: 'View all tasks'
 button.view_info: 'View Info'
 button.view_remaining_action: 'View Remaining Action'
-button.view_tasks_board: 'Task Board View'
-button.view_tasks_grid: 'Task Grid View'
+button.view_tasks_board: 'View tasks board'
 checkbox.checked: 'Yes'
 checkbox.unchecked: 'No'
 choices.days: Days
@@ -203,8 +202,6 @@ copyright: 'Copyright &copy; %year% Campr'
 email.expiration.user.activation: 'The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
 email.expiration.user.reset: 'The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
 email.from.contact: 'There is a new contact message from:'
-email.from.contact.full_name: 'Full name'
-email.from.contact.email: 'Email'
 email.general.email: Email
 email.general.hello: Hello
 email.general.link: link
@@ -358,7 +355,6 @@ label.end: End
 label.enhance: Enhance
 label.entered: Entered
 label.event: Event
-label.executing: Executing
 label.expired: Expired
 label.expiry_date: 'Expiry Date'
 label.exploit: Exploit
@@ -1211,7 +1207,7 @@ subtitle.color_status: 'List of color statuses'
 subtitle.communication: 'List of communications'
 subtitle.company: 'List of companies'
 subtitle.contract: 'List of contracts'
-subtitle.cost: 'List of external costs'
+subtitle.cost: 'List of costs'
 subtitle.dashboard: 'Welcome to the admin area!'
 subtitle.day: 'List of days'
 subtitle.decision: 'List of decisions'
@@ -1256,7 +1252,7 @@ subtitle.project_team: 'List of project teams'
 subtitle.project_user: 'List of project users'
 subtitle.project_work_cost_type: 'List of project work cost types'
 subtitle.rasci: 'List of rasci'
-subtitle.resource: 'List of internal resources'
+subtitle.resource: 'List of resources'
 subtitle.risk: 'List of risks'
 subtitle.risk_category: 'List of risk categories'
 subtitle.risk_status: 'List of Risk Statuses'
@@ -1277,10 +1273,10 @@ subtitle.todo_status: 'List of todo statuses'
 subtitle.unit: 'List of units'
 subtitle.user: 'List of users'
 subtitle.working_time: 'List of working times'
-subtitle.workpackage: 'List of tasks'
-subtitle.workpackage_category: 'List of task categories'
-subtitle.workpackage_status: 'List of task statuses'
-subtitle.wppcwct: 'List of Task Project Work Cost Type'
+subtitle.workpackage: 'List of workpackages'
+subtitle.workpackage_category: 'List of work package categories'
+subtitle.workpackage_status: 'List of work package statuses'
+subtitle.wppcwct: 'List of Work Package Project Work Cost Type'
 success.account.edit: 'Your account was succesfully edited!'
 success.assignment.create: 'Assignment successfully created!'
 success.assignment.delete.from_data_table: 'Assignment with ID'
@@ -1821,9 +1817,9 @@ title.contact: 'Send us a message'
 title.contract.create: 'Create Contract'
 title.contract.edit: 'Edit Contract'
 title.contract.list: Contract
-title.cost.create: 'Create External Cost'
-title.cost.edit: 'Edit External Cost'
-title.cost.list: 'External Cost'
+title.cost.create: 'Create Cost'
+title.cost.edit: 'Edit Cost'
+title.cost.list: Cost
 title.dashboard: Dashboard
 title.day.create: 'Create new day'
 title.day.edit: 'Edit day'
@@ -1975,7 +1971,7 @@ title.project_team.edit: 'Edit project team'
 title.project_team.list: Team
 title.project_user.create: 'Create new project user'
 title.project_user.edit: 'Edit project user'
-title.project_user.list: 'Members'
+title.project_user.list: User
 title.project_work_cost_type.create: 'Create new project work cost type'
 title.project_work_cost_type.edit: 'Edit project work cost type'
 title.project_work_cost_type.list: 'Work cost type'
@@ -1983,9 +1979,9 @@ title.rasci.create: 'Create new rasci'
 title.rasci.edit: 'Edit rasci'
 title.rasci.list: Rasci
 title.reset: 'Please enter your email address to reset the account password. An email will be sent with instructions.'
-title.resource.create: 'Create Internal Cost'
-title.resource.edit: 'Edit Internal Cost'
-title.resource.list: 'Internal Cost'
+title.resource.create: 'Create Resource'
+title.resource.edit: 'Edit Resource'
+title.resource.list: Resource
 title.risk.create: 'Create new risk'
 title.risk.edit: 'Edit risk'
 title.risk.list: Risk
@@ -2046,24 +2042,24 @@ title.user.list: Users
 title.working_time.create: 'Create new working time'
 title.working_time.edit: 'Edit working time'
 title.working_time.list: 'Working time'
-title.workpackage.create: 'Create new task'
-title.workpackage.edit: 'Edit task'
-title.workpackage.list: 'Task'
-title.workpackage_category.create: 'Create Task Category'
-title.workpackage_category.edit: 'Edit Task Category'
-title.workpackage_category.list: 'Task Category'
-title.workpackage_status.create: 'Create Task Status'
-title.workpackage_status.edit: 'Edit Task Status'
-title.workpackage_status.list: 'Task Status'
+title.workpackage.create: 'Create new work package'
+title.workpackage.edit: 'Edit work package'
+title.workpackage.list: 'Work Package'
+title.workpackage_category.create: 'Create Work Package Category'
+title.workpackage_category.edit: 'Edit Work Package Category'
+title.workpackage_category.list: 'Work Package Category'
+title.workpackage_status.create: 'Create Work Package Status'
+title.workpackage_status.edit: 'Edit Work Package Status'
+title.workpackage_status.list: 'Work Package Status'
 title.workspace.create: 'Create new workspace'
 title.workspace.edit: 'Edit workspace'
 title.workspace.list: 'Workspace list'
 title.workspace_member.create: 'Create new member'
 title.workspace_member.edit: Edit
 title.workspace_member.for: 'Members of'
-title.wppcwct.create: 'Create new task project work cost type'
-title.wppcwct.edit: 'Edit Task project work cost type'
-title.wppcwct.list: 'Task project work cost type'
+title.wppcwct.create: 'Create new work package project work cost type'
+title.wppcwct.edit: 'Edit work package project work cost type'
+title.wppcwct.list: 'Work package project work cost type'
 todo_status.discontinued: Discontinued
 todo_status.finished: Finished
 todo_status.initiated: Initiated
@@ -2119,3 +2115,4 @@ email.table_header_cell.responsible: Responsible
 email.table_header_cell.start: Start
 email.table_header_cell.end: Finish
 email.table_header_cell.duration: Duration
+placeholder.duration: Duration
