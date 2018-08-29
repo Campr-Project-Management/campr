@@ -61,13 +61,10 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertNotNull($this->user, 'User not found');
 
         $start = new \DateTime();
-        $end = new \DateTime('+1 hour');
-        $diff = $end->diff($start)->format('%H:%I:%S');
 
         $meetingAgenda = (new MeetingAgenda())
             ->setTopic('topic4')
             ->setStart($start)
-            ->setEnd($end)
         ;
         $this->em->persist($meetingAgenda);
         $this->em->flush();
@@ -91,7 +88,6 @@ class MeetingAgendaControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-agenda/create');
 
         $start = new \DateTime();
-        $end = new \DateTime('+1 hour');
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[topic]'] = 'topic3';

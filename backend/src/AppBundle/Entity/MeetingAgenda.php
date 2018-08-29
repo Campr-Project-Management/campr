@@ -68,15 +68,6 @@ class MeetingAgenda
     private $start;
 
     /**
-     * @var \DateTime
-     *
-     * @Serializer\Type("DateTime<'H:i'>")
-     *
-     * @ORM\Column(name="end", type="time", nullable=true)
-     */
-    private $end;
-
-    /**
      * Get id.
      *
      * @return int
@@ -132,30 +123,6 @@ class MeetingAgenda
     public function getStart()
     {
         return $this->start;
-    }
-
-    /**
-     * Set end.
-     *
-     * @param \DateTime $end
-     *
-     * @return MeetingAgenda
-     */
-    public function setEnd(\DateTime $end = null)
-    {
-        $this->end = $end;
-
-        return $this;
-    }
-
-    /**
-     * Get end.
-     *
-     * @return \DateTime
-     */
-    public function getEnd()
-    {
-        return $this->end;
     }
 
     /**
