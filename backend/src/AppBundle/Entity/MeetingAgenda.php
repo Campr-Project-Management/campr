@@ -4,12 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * MeetingAgenda.
  *
  * @ORM\Table(name="meeting_agenda")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingAgendaRepository")
+ * @AppAssert\MeetingAgendaDuration()
  */
 class MeetingAgenda
 {
@@ -40,6 +42,13 @@ class MeetingAgenda
     private $topic;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="duration", type="integer", nullable=false, options={"default"=0})
+     */
+    private $duration = 0;
+
+    /**
      * @var User|null
      *
      * @Serializer\Exclude()
@@ -63,7 +72,7 @@ class MeetingAgenda
      *
      * @Serializer\Type("DateTime<'H:i'>")
      *
-     * @ORM\Column(name="end", type="time", nullable=false)
+     * @ORM\Column(name="end", type="time", nullable=true)
      */
     private $end;
 
@@ -187,21 +196,6 @@ class MeetingAgenda
     }
 
     /**
-     * Returns topic duration.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("duration")
-     *
-     * @return string
-     */
-    public function getDuration()
-    {
-        $difference = $this->start->diff($this->end);
-
-        return $difference->format('%i');
-    }
-
-    /**
      * Returns meeting name.
      *
      * @Serializer\VirtualProperty()
@@ -262,5 +256,29 @@ class MeetingAgenda
     public function getResponsibilityFullName()
     {
         return $this->responsibility ? $this->responsibility->getFullName() : null;
+    }
+
+    /**
+     * Set duration.
+     *
+     * @param int $duration
+     *
+     * @return MeetingAgenda
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * Get duration.
+     *
+     * @return int
+     */
+    public function getDuration()
+    {
+        return $this->duration;
     }
 }

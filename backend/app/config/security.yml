@@ -69,6 +69,7 @@ security:
         # app specific
         - { path: ^/login, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/_profiler, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # general
         - { path: ^/api/teams/[^/]+/enabled, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
