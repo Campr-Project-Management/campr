@@ -1366,6 +1366,7 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                     'isDone' => false,
                                     'done' => false,
+                                    'medias' => [],
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1384,6 +1385,7 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                     'isDone' => false,
                                     'done' => false,
+                                    'medias' => [],
                                 ],
                             ],
                             'todos' => [

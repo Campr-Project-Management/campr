@@ -83,7 +83,15 @@
                             <error at-path="done"/>
                         </div>
                     </div>
+                    <hr class="double">
 
+                    <!-- /// Task Attachments /// -->
+                    <h3>{{ translate('message.attachments') }}</h3>
+                    <attachments
+                            v-model="medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"/>
+                    <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
                     <!-- /// Actions /// -->
@@ -110,6 +118,7 @@
     </div>
 </template>
 
+
 <script>
     import InputField from '../../_common/_form-components/InputField';
     import SelectField from '../../_common/_form-components/SelectField';
@@ -119,7 +128,9 @@
     import Error from '../../_common/_messages/Error.vue';
     import Editor from '../../_common/Editor.vue';
     import AlertModal from '../../_common/AlertModal.vue';
+    import Attachments from '../../_common/Attachments';
     import DateField from '../../_common/_form-components/DateField';
+    import {createFormData} from '../../../helpers/decision';
 
     export default {
         components: {
@@ -131,6 +142,7 @@
             Error,
             Editor,
             AlertModal,
+            Attachments,
         },
         methods: {
             ...mapActions([
@@ -143,7 +155,7 @@
             ]),
             getData() {
                 return {
-                    projectId: this.$route.params.id,
+                    project: this.$route.params.id,
                     meeting: this.details.meeting ? this.details.meeting.key : null,
                     title: this.title,
                     description: this.description,
@@ -151,10 +163,15 @@
                     decisionCategory: this.details.decisionCategory ? this.details.decisionCategory.key : null,
                     responsibility: this.responsible.length > 0 ? this.responsible[0] : null,
                     dueDate: this.dueDate ? moment(this.dueDate).format('DD-MM-YYYY') : null,
+                    medias: this.medias,
                 };
             },
             createNewDecision: function() {
-                this.createDecision(this.getData()).then(
+                let formData = createFormData(this.getData());
+                this.createDecision({
+                    data: formData,
+                    projectId: this.$route.params.id,
+                }).then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
@@ -169,10 +186,12 @@
                 );
             },
             saveDecision: function() {
-                let data = this.getData();
-                data.id = this.$route.params.decisionId;
-                data.redirect = true;
-                this.editDecision(data).then(
+                let formData = createFormData(this.getData());
+                this.editDecision({
+                    data: formData,
+                    id: this.$route.params.decisionId,
+                    withPost: true,
+                }).then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
                             this.showFailed = true;
@@ -195,7 +214,19 @@
                 'currentDecision',
                 'decisionsStatusesForSelect',
                 'currentDecisionStatusForSelect',
+                'projectMaxUploadFileSize',
+                'validationMessagesFor',
             ]),
+            mediasValidationMessages() {
+                let messages = this.validationMessagesFor('medias');
+                let out = [];
+
+                Object.keys(messages).forEach((index) => {
+                    out[index] = messages[index].file;
+                });
+
+                return out;
+            },
             decisionsStatusesOptions() {
                 return this.decisionsStatusesForSelect.map((option) => {
                     return Object.assign({}, option, {label: this.translate(option.label)});
@@ -229,6 +260,7 @@
                 this.dueDate = this.currentDecision.dueDate
                     ? moment(this.currentDecision.dueDate).toDate()
                     : null;
+                this.medias = this.currentDecision.medias ? this.currentDecision.medias : [];
             },
         },
         data() {
@@ -245,6 +277,7 @@
                     meeting: null,
                     decisionCategory: null,
                 },
+                medias: [],
                 isEdit: this.$route.params.decisionId,
                 showFailed: false,
                 showSaved: false,
@@ -252,4 +285,3 @@
         },
     };
 </script>
-

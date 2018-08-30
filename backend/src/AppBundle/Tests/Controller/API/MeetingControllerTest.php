@@ -188,6 +188,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
+                            'medias' => [],
                         ],
                         [
                             'meeting' => 1,
@@ -206,6 +207,7 @@ class MeetingControllerTest extends BaseController
                             'showInStatusReport' => false,
                             'dueDate' => '2017-05-01 00:00:00',
                             'responsibilityAvatar' => '',
+                            'medias' => [],
                         ],
                     ],
                     'todos' => [

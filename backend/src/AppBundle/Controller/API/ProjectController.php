@@ -40,6 +40,7 @@ use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
+use AppBundle\Form\Decision\ApiCreateType as DecisionApiCreateType;
 use AppBundle\Form\Contract\BaseCreateType as ContractCreateType;
 use AppBundle\Form\DistributionList\BaseCreateType as DistributionCreateType;
 use AppBundle\Form\ProjectTeam\BaseCreateType as ProjectTeamCreateType;
@@ -78,7 +79,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
-use AppBundle\Form\Decision\CreateType as DecisionType;
 use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 use AppBundle\Utils\ImportConstants;
@@ -1843,18 +1843,66 @@ class ProjectController extends ApiController
      */
     public function createDecisionAction(Request $request, Project $project)
     {
-        $form = $this->createForm(DecisionType::class, new Decision(), ['csrf_protection' => false]);
+        $decision = new Decision();
+        $form = $this->createForm(
+            DecisionApiCreateType::class,
+            $decision,
+            [
+                'entity_manager' => $this->getDoctrine()->getManager(),
+                'max_media_size' => $project->getMaxUploadFileSize(),
+            ]
+        );
         $this->processForm($request, $form);
 
-        if ($form->isValid()) {
-            $decision = $form->getData();
-            $decision->setProject($project);
-            $this->persistAndFlush($decision);
+        $em = $this->getDoctrine()->getManager();
+        $fileSystem = $project
+            ->getFileSystems()
+            ->filter(
+                function (FileSystem $fs) {
+                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
+                }
+            )
+            ->first();
 
-            return $this->createApiResponse($decision, Response::HTTP_CREATED);
+        if (!$fileSystem) {
+            $fileSystem = $em
+                ->getRepository(FileSystem::class)
+                ->findOneBy(
+                    [
+                        'driver' => FileSystem::LOCAL_ADAPTER,
+                    ]
+                );
+            if (!$fileSystem) {
+                return $this->createApiResponse(
+                    [
+                        'messages' => [
+                            'Filesystem is missing. Please contact us.',
+                        ],
+                    ],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+        }
+
+        $entitySaveErrors = [];
+        if ($form->isValid()) {
+            foreach ($decision->getMedias() as $media) {
+                $media->setFileSystem($fileSystem);
+            }
+
+            try {
+                $decision->setProject($project);
+                $this->persistAndFlush($decision);
+
+                return $this->createApiResponse($decision, Response::HTTP_CREATED);
+            } catch (FileAlreadyExists $exception) {
+                $entitySaveErrors['medias'][] = $exception->getMessage();
+            }
         }
 
         $errors = $this->getFormErrors($form);
+        $errors = array_merge($errors, $entitySaveErrors);
+
         $errors = [
             'messages' => $errors,
         ];
