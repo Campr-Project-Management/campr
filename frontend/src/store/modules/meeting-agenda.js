@@ -33,9 +33,10 @@ const actions = {
      * Creates a new meeting agenda
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
     createMeetingAgenda({commit}, data) {
-        Vue.http
+        return Vue.http
             .post(
                 Routing.generate('app_api_meeting_agendas_create', {'id': data.id}),
                 data
@@ -48,7 +49,9 @@ const actions = {
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                     commit(types.ADD_MEETING_AGENDA, {meetingAgenda});
                 }
+                return response;
             }, (response) => {
+                return response;
             });
     },
     /**

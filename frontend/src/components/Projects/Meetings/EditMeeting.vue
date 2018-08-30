@@ -690,10 +690,17 @@ export default {
                 responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
                 start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
                 duration: this.agenda.duration,
-
+            }).then(() => {
+                this.agenda.responsibility = [];
+                this.agenda.topic = null;
+                this.agenda.duration = null;
+                this.agenda.startTime = {
+                    HH: null,
+                    mm: null,
+                };
+            }).catch((response) => {
+                this.agendaErrors = response.body.messages;
             });
-            this.agenda.responsible = [];
-            this.agenda.topic = null;
         },
         initEditAgenda: function(agenda) {
             this.showEditAgendaModal = true;
@@ -945,15 +952,12 @@ export default {
             },
             agenda: {
                 topic: null,
-                responsible: [],
+                responsibility: [],
                 startTime: {
                     HH: null,
                     mm: null,
                 },
-                endTime: {
-                    HH: null,
-                    mm: null,
-                },
+                duration: null,
             },
             defaultDecision: defaultDecision,
             decision: defaultDecision,
