@@ -27,19 +27,16 @@ class LoadMeetingAgendaData extends AbstractFixture implements OrderedFixtureInt
             ->setTopic('topic1')
             ->setMeeting($meeting)
             ->setStart($start)
-            ->setEnd($end)
         ;
         $manager->persist($meetingAgenda1);
 
         $start = new \DateTime('2017-01-01 11:30:00');
-        $end = new \DateTime('2017-01-01 12:00:00');
 
         $meetingAgenda2 = (new MeetingAgenda())
             ->setResponsibility($responsible)
             ->setTopic('topic2')
             ->setMeeting($meeting)
             ->setStart($start)
-            ->setEnd($end)
         ;
         $manager->persist($meetingAgenda2);
 
