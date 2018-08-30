@@ -689,7 +689,8 @@ export default {
                 topic: this.agenda.topic,
                 responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
                 start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
-                end: this.agenda.endTime.HH + ':' + this.agenda.endTime.mm,
+                duration: this.agenda.duration,
+
             });
             this.agenda.responsible = [];
             this.agenda.topic = null;
@@ -705,10 +706,7 @@ export default {
                     HH: moment(agenda.start, 'HH:mm').format('HH'),
                     mm: moment(agenda.start, 'HH:mm').format('mm'),
                 },
-                end: {
-                    HH: moment(agenda.end, 'HH:mm').format('HH'),
-                    mm: moment(agenda.end, 'HH:mm').format('mm'),
-                },
+                duration: agenda.duration,
             };
         },
         initDeleteAgenda: function(agenda) {
