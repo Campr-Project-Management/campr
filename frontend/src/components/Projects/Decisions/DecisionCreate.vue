@@ -190,7 +190,6 @@
                 this.editDecision({
                     data: formData,
                     id: this.$route.params.decisionId,
-                    withPost: true,
                 }).then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
