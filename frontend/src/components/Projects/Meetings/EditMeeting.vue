@@ -689,10 +689,18 @@ export default {
                 topic: this.agenda.topic,
                 responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
                 start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
-                end: this.agenda.endTime.HH + ':' + this.agenda.endTime.mm,
+                duration: this.agenda.duration,
+            }).then(() => {
+                this.agenda.responsibility = [];
+                this.agenda.topic = null;
+                this.agenda.duration = null;
+                this.agenda.startTime = {
+                    HH: null,
+                    mm: null,
+                };
+            }).catch((response) => {
+                this.agendaErrors = response.body.messages;
             });
-            this.agenda.responsible = [];
-            this.agenda.topic = null;
         },
         initEditAgenda: function(agenda) {
             this.showEditAgendaModal = true;
@@ -705,10 +713,7 @@ export default {
                     HH: moment(agenda.start, 'HH:mm').format('HH'),
                     mm: moment(agenda.start, 'HH:mm').format('mm'),
                 },
-                end: {
-                    HH: moment(agenda.end, 'HH:mm').format('HH'),
-                    mm: moment(agenda.end, 'HH:mm').format('mm'),
-                },
+                duration: agenda.duration,
             };
         },
         initDeleteAgenda: function(agenda) {
@@ -947,15 +952,12 @@ export default {
             },
             agenda: {
                 topic: null,
-                responsible: [],
+                responsibility: [],
                 startTime: {
                     HH: null,
                     mm: null,
                 },
-                endTime: {
-                    HH: null,
-                    mm: null,
-                },
+                duration: null,
             },
             defaultDecision: defaultDecision,
             decision: defaultDecision,
