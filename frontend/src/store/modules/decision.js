@@ -95,9 +95,8 @@ const actions = {
      * @return {object}
      */
     createDecision({commit}, data) {
-        const method = data.withPost ? 'post' : 'patch';
-        return Vue
-            .http[method](
+        return Vue.http
+            .post(
                 Routing.generate('app_api_project_decisions_create', {'id': data.projectId}),
                 data.data
             ).then((response) => {
