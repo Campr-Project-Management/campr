@@ -33,8 +33,8 @@
             v-bind:openTaskModal="showOpenTaskModal"
             @input="setModals"/>
 
-        <div class="row">
-            <div class="col-lg-6">
+        <div class="row flex">
+            <div class="col-lg-6 flex-1">
 
                <!-- /// Task Title and Label /// -->
                 <div class="header">
@@ -155,7 +155,7 @@
                         @input="onHistoryPageChange"/>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 flex-1">
                 <!-- /// Header Buttons /// -->
                 <div class="header-buttons">
                     <button
@@ -1465,10 +1465,6 @@ export default {
         height: 100%;
         padding-top: 20px;
         overflow-y: hidden !important;
-    }
-
-    .task-history {
-        height: 600px;
     }
 </style>
 
