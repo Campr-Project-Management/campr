@@ -3,7 +3,11 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\FileSystem;
+use AppBundle\Entity\Project;
+use AppBundle\Form\Decision\ApiCreateType;
 use AppBundle\Form\Decision\CreateType;
+use AppBundle\Services\FileSystemResolver;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -38,7 +42,7 @@ class DecisionController extends ApiController
      * Edit a specific Decision.
      *
      * @Route("/{id}", name="app_api_decisions_edit", options={"expose"=true})
-     * @Method({"PUT", "PATCH"})
+     * @Method({"PUT", "PATCH", "POST"})
      *
      * @param Request  $request
      * @param Decision $decision
@@ -47,21 +51,38 @@ class DecisionController extends ApiController
      */
     public function editAction(Request $request, Decision $decision)
     {
-        $form = $this->getForm($decision, ['method' => $request->getMethod()]);
-        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
+        $form = $this->createForm(
+            ApiCreateType::class,
+            $decision,
+            [
+                'csrf_protection' => false,
+                'method' => $request->getMethod(),
+                'validation_groups' => ['Default', 'edit'],
+            ]
+        );
 
-        if ($form->isValid()) {
-            $this->persistAndFlush($decision);
+        $this->processForm($request, $form, !$request->isMethod(Request::METHOD_PATCH));
 
-            return $this->createApiResponse($decision, Response::HTTP_ACCEPTED);
+        if (!$form->isValid()) {
+            $errors = $this->getFormErrors($form);
+            $errors = [
+                'messages' => $errors,
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
+        $em = $this->getDoctrine()->getManager();
+        $decision = $form->getData();
+        $fs = $this->getFileSystem($decision->getProject());
+        foreach ($decision->getMedias() as $media) {
+            $media->setFileSystem($fs);
+        }
 
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        $em->persist($decision);
+        $em->flush();
+
+        return $this->createApiResponse($decision, Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -81,5 +102,23 @@ class DecisionController extends ApiController
         $em->flush();
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return FileSystem
+     */
+    private function getFileSystem(Project $project): FileSystem
+    {
+        /** @var FileSystemResolver $fs */
+        $fsResolver = $this->get('app.fs.resolver');
+        $fs = $fsResolver->resolve($project);
+
+        if ($fs) {
+            return $fs;
+        }
+
+        throw new \Exception('Filesystem is missing. Please contact us.');
     }
 }
