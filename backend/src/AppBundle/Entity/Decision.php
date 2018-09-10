@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -134,12 +135,29 @@ class Decision
     private $doneAt;
 
     /**
+     * @var Media[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Media", inversedBy="decisions", cascade={"all"})
+     * @ORM\JoinTable(
+     *     name="decision_media",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="decision_id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="media_id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    private $medias;
+
+    /**
      * Decision constructor.
      */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->done = false;
+        $this->medias = new ArrayCollection();
     }
 
     /**
@@ -528,5 +546,37 @@ class Decision
     public function setDoneAt(\DateTime $doneAt): void
     {
         $this->doneAt = $doneAt;
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return Decision
+     */
+    public function addMedia(Media $media)
+    {
+        $this->medias[] = $media;
+
+        return $this;
+    }
+
+    /**
+     * @param Media $media
+     *
+     * @return Decision
+     */
+    public function removeMedia(Media $media)
+    {
+        $this->medias->removeElement($media);
+
+        return $this;
+    }
+
+    /**
+     * @return Media[]|ArrayCollection
+     */
+    public function getMedias()
+    {
+        return $this->medias;
     }
 }

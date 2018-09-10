@@ -855,7 +855,6 @@ export default {
                 .editProjectMeeting({
                     id: this.$route.params.meetingId,
                     data: createFormData(data),
-                    withPost: true,
                 })
                 .then(
                     (response) => {

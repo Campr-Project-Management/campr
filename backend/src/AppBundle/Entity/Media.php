@@ -106,6 +106,13 @@ class Media implements FileSystemAwareInterface
     private $workPackages;
 
     /**
+     * @var WorkPackage[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="medias")
+     * @Serializer\Exclude()
+     */
+    private $decisions;
+
+    /**
      * @var Measure[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Measure", mappedBy="medias")
      * @Serializer\Exclude()
@@ -136,6 +143,7 @@ class Media implements FileSystemAwareInterface
         $this->createdAt = new \DateTime();
         $this->meetings = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
         $this->measures = new ArrayCollection();
         $this->measureComments = new ArrayCollection();
     }
@@ -559,5 +567,39 @@ class Media implements FileSystemAwareInterface
     public function hasFileSystem()
     {
         return (bool) $this->getFileSystem();
+    }
+
+    /**
+     * @param Decision $decision
+     *
+     * @return Media
+     */
+    public function addDecision(Decision $decision)
+    {
+        $this->decisions[] = $decision;
+        $decision->addMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Decision $decision
+     *
+     * @return Media
+     */
+    public function removeDecision(Decision $decision)
+    {
+        $this->decisions->removeElement($decision);
+        $decision->removeMedia($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Decision[]|ArrayCollection
+     */
+    public function getDecisions()
+    {
+        return $this->decisions;
     }
 }
