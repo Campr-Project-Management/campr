@@ -98,7 +98,7 @@ const actions = {
         return Vue.http
             .post(
                 Routing.generate('app_api_project_decisions_create', {'id': data.projectId}),
-                data
+                data.data
             ).then((response) => {
                 if (response.body && response.body.error) {
                     const {messages} = response.body;
@@ -120,9 +120,9 @@ const actions = {
      */
     editDecision({commit}, data) {
         return Vue.http
-            .patch(
+            .post(
                 Routing.generate('app_api_decisions_edit', {'id': data.id}),
-                data
+                data.data
             ).then((response) => {
                 let decision = response.data;
                 if (response.body && response.body.error) {
