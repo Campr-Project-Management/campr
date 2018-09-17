@@ -198,6 +198,10 @@ class ProjectTotalCost
      */
     private function calculateTrafficLight(float $base, float $forecast, float $actual): int
     {
+        if ($base > $actual && $actual > $forecast) {
+            return TrafficLight::YELLOW;
+        }
+
         if ($actual > $forecast) {
             return TrafficLight::RED;
         }
