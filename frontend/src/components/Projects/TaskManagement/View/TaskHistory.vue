@@ -2,7 +2,7 @@
     <div class="task-history">
         <scrollbar class="histories-scroll customScrollbar" @ps-y-reach-end="onScrollEnd">
             <div v-for="item in items" :key="item.id">
-                <!-- /// Task assignement /// -->
+                <!-- /// Task assignment /// -->
                 <div v-if="item.isResponsibilityAdded">
                     <div class="comment">
                         <div class="comment-header">
@@ -119,3 +119,9 @@
         },
     };
 </script>
+
+<style lang="scss" scoped>
+    .task-history {
+        height: 1457px;
+    }
+</style>
