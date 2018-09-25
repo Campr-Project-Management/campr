@@ -4,10 +4,13 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\User;
 use Component\Locale\Context\LocaleContextInterface;
+use Component\Locale\LocaleEvents;
+use Component\User\UserEvents;
 use MainBundle\Controller\API\ApiController;
 use MainBundle\Form\User\AccountType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,14 +81,12 @@ class UserController extends ApiController
         }
 
         try {
-            $user = $this
-                ->get('app.service.user')
-                ->pullFromMasterUser($user)
+            $this
+                ->get('event_dispatcher')
+                ->dispatch(UserEvents::SYNC, new GenericEvent($user))
             ;
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->get('app.repository.user')->add($user);
         } catch (\Exception $e) {
             $this
                 ->get('logger')
@@ -152,8 +153,8 @@ class UserController extends ApiController
 
         try {
             $this
-                ->get('app.service.user')
-                ->pushToMasterUser($user, ['locale' => $localeCode])
+                ->get('event_dispatcher')
+                ->dispatch(LocaleEvents::SWITCH, new GenericEvent($localeCode))
             ;
         } catch (\Exception $e) {
             $this

@@ -1,0 +1,14 @@
+imports:
+    - { resource: services.yml }
+
+eight_points_guzzle:
+    clients:
+        portal_api:
+            base_url: "%portal.api.base_url%"
+            options:
+                timeout: 30
+                headers:
+                    User-Agent: 'Campr Workspaces'
+                    Content-Type: 'application/json'
+                    Host: '%portal.api.host%'
+            plugin: ~

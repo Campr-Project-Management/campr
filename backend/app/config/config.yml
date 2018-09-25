@@ -6,7 +6,10 @@ imports:
     - { resource: bundles/vich_uploader.yml }
     - { resource: bundles/scheb_two_factor.yml }
     - { resource: bundles/translation.yml }
+    - { resource: bundles/eight_points_guzzle.yaml }
+    - { resource: bundles/enqueue.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }
+    - { resource: "@PortalBundle/Resources/config/config.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -71,6 +74,8 @@ doctrine:
                     collate: utf8mb4_unicode_ci
             main:
                 <<: *default_connection
+        types:
+            uuid:  Ramsey\Uuid\Doctrine\UuidType
 
     orm:
         default_entity_manager: default

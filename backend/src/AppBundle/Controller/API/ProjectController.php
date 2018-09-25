@@ -29,7 +29,6 @@ use AppBundle\Entity\RiskStatus;
 use AppBundle\Entity\RiskStrategy;
 use AppBundle\Entity\StatusReport;
 use AppBundle\Entity\Subteam;
-use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
@@ -2237,7 +2236,7 @@ class ProjectController extends ApiController
     }
 
     /**
-     * @Route("/{id}/invite", name="app_api_project_invite", options={"expose"=true})
+     * @Route("/{id}/invite", name="app_api_project_invite", options={"expose"=true}, methods={"POST"})
      *
      * @param Request $request
      * @param Project $project
@@ -2254,112 +2253,29 @@ class ProjectController extends ApiController
                 'csrf_protection' => false,
             ]
         );
-        $form->submit($request->request->all());
-
-        if (!$form->isSubmitted()) {
-            throw $this->createNotFoundException();
-        }
+        $this->processForm($request, $form);
 
         if (!$form->isValid()) {
-            return $this->createApiResponse([
-                'errors' => $this->getFormErrors($form),
-            ]);
+            return $this->createApiResponse(
+                [
+                    'errors' => $this->getFormErrors($form),
+                ]
+            );
         }
+        $email = $form->get('email')->getData();
 
-        $email = $request->request->get('email');
-        $em = $this->getDoctrine()->getManager();
-        $translator = $this->get('translator');
-        $out = [];
-        $status = Response::HTTP_OK;
+        $this
+            ->get('app.team_invite.inviter')
+            ->invite($email, $this->getParameter('kernel.team_slug'), $project)
+        ;
 
-        /** @var User $user */
-        $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
-        if ($user) {
-            $projectUser = $user
-                ->getProjectUsers()
-                ->filter(function (ProjectUser $pu) use ($project) {
-                    return $pu->getProject() === $project;
-                })
-                ->first()
-            ;
-            if ($projectUser) {
-                $out = [
-                    'messages' => [
-                        $translator->trans('exception.user.already_member_of_project', [], 'messages'),
-                    ],
-                ];
-                $status = Response::HTTP_BAD_REQUEST;
-            } else {
-                $projectUser = new ProjectUser();
-                $projectUser->setUser($user);
-                $projectUser->setProject($project);
-                $em->persist($projectUser);
-                $em->flush();
-
-                $out = [
-                    'messages' => [
-                        $translator->trans('message.user_added_to_project', [], 'messages'),
-                    ],
-                ];
-                $status = Response::HTTP_CREATED;
-            }
-        } else {
-            list($firstName, $lastName) = explode('@', $email, 2);
-
-            $user = new User();
-            $user->setEmail($email);
-            $user->setActivatedAt(new \DateTime());
-            $user->setIsEnabled(true);
-            $user->setIsSuspended(false);
-            $user->setUsername($email);
-            $user->setPlainPassword(microtime(true));
-            $user->setFirstName($firstName);
-            $user->setLastName('@'.$lastName);
-            $user->setRoles([User::ROLE_USER]);
-            $em->persist($user);
-
-            $projectUser = new ProjectUser();
-            $projectUser->setUser($user);
-            $projectUser->setProject($project);
-            $em->persist($projectUser);
-
-            $em->flush();
-
-            $teamInvite = $em
-                ->getRepository(TeamInvite::class)
-                ->findOneBy([
-                    'project' => $project,
-                    'email' => $email,
-                ])
-            ;
-
-            if (!$teamInvite) {
-                $teamInvite = new TeamInvite();
-                $teamInvite->setEmail($email);
-                $teamInvite->setProject($project);
-                $teamInvite->setUser($user);
-                $em->persist($teamInvite);
-                $em->flush();
-            }
-
-            $this
-                ->get('app.service.user')
-                ->inviteUserToWorkspace(
-                    $this->getUser(),
-                    $this->getParameter('kernel.team_slug'),
-                    $email
-                )
-            ;
-
-            $out = [
+        return $this->createApiResponse(
+            [
                 'messages' => [
-                    $translator->trans('message.user_invited_to_project', [], 'messages'),
+                    $this->get('translator')->trans('message.user_invited_to_project', [], 'messages'),
                 ],
-            ];
-            $status = Response::HTTP_CREATED;
-        }
-
-        return $this->createApiResponse($out, $status);
+            ]
+        );
     }
 
     /**

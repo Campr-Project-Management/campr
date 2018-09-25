@@ -22,6 +22,7 @@ use Scheb\TwoFactorBundle\Model\TrustedComputerInterface;
  *     @ORM\UniqueConstraint(name="username_unique", columns={"username"}),
  *     @ORM\UniqueConstraint(name="email_unique", columns={"email"})
  * })
+ * @UniqueEntity("uuid")
  * @UniqueEntity(
  *      fields="email",
  *      errorPath="email",
@@ -43,6 +44,14 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="uuid", type="uuid", unique=true, nullable=true)
+     * @Serializer\Exclude()
+     */
+    private $uuid;
 
     /**
      * @var int
@@ -96,7 +105,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @Serializer\Exclude()
      *
-     * @ORM\Column(name="password", type="string", length=128)
+     * @ORM\Column(name="password", type="string", length=128, nullable=true)
      */
     private $password;
 
@@ -126,16 +135,16 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_enabled", type="boolean", nullable=false, options={"default"=0})
+     * @ORM\Column(name="enabled", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isEnabled = false;
+    private $enabled = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_suspended", type="boolean", nullable=false, options={"default"=0})
+     * @ORM\Column(name="suspended", type="boolean", nullable=false, options={"default"=0})
      */
-    private $isSuspended = false;
+    private $suspended = false;
 
     /**
      * @var string
@@ -412,6 +421,13 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      * })
      */
     private $company;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar_url", type="string", nullable=true)
+     */
+    private $avatarUrl;
 
     /**
      * User constructor.
@@ -781,13 +797,13 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * Set isEnabled.
      *
-     * @param bool $isEnabled
+     * @param bool $enabled
      *
      * @return User
      */
-    public function setIsEnabled($isEnabled)
+    public function setIsEnabled($enabled)
     {
-        $this->isEnabled = $isEnabled;
+        $this->setEnabled($enabled);
 
         return $this;
     }
@@ -799,19 +815,32 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      */
     public function getIsEnabled()
     {
-        return $this->isEnabled;
+        return $this->isEnabled();
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled)
+    {
+        $this->enabled = $enabled;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
     }
 
     /**
      * Set isSuspended.
      *
-     * @param bool $isSuspended
+     * @param bool $suspended
      *
      * @return User
      */
-    public function setIsSuspended($isSuspended)
+    public function setIsSuspended($suspended)
     {
-        $this->isSuspended = $isSuspended;
+        $this->setSuspended($suspended);
 
         return $this;
     }
@@ -823,7 +852,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      */
     public function getIsSuspended()
     {
-        return $this->isSuspended;
+        return $this->isSuspended();
     }
 
     /**
@@ -994,16 +1023,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function eraseCredentials()
     {
         $this->setPlainPassword(null);
-    }
-
-    /**
-     * Is enabled.
-     *
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        return $this->isEnabled;
     }
 
     /**
@@ -1887,5 +1906,53 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getCompanyName()
     {
         return $this->company ? $this->company->getName() : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return (string) $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuspended(): bool
+    {
+        return $this->suspended;
+    }
+
+    /**
+     * @param bool $suspended
+     */
+    public function setSuspended(bool $suspended)
+    {
+        $this->suspended = $suspended;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatarUrl(): string
+    {
+        return (string) $this->avatarUrl;
+    }
+
+    /**
+     * @param string $avatarUrl
+     */
+    public function setAvatarUrl(string $avatarUrl = null)
+    {
+        $this->avatarUrl = $avatarUrl;
     }
 }

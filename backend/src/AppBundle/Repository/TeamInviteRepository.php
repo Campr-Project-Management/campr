@@ -5,9 +5,8 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityRepository;
 
-class TeamInviteRepository extends EntityRepository
+class TeamInviteRepository extends BaseRepository
 {
     public function findPendingInvitesForUser(User $user)
     {
