@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -19,11 +20,20 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
  * @UniqueEntity(fields={"name"}, message="unique.workspace.name")
  * @UniqueEntity(fields={"slug"}, message="unique.workspace.slug")
+ * @UniqueEntity(fields={"uuid"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Vich\Uploadable
  */
 class Team
 {
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="uuid", type="uuid", unique=true, nullable=true)
+     * @Serializer\Exclude()
+     */
+    private $uuid;
+
     /**
      * @var int
      *
@@ -150,6 +160,13 @@ class Team
     private $encryptionKey;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="logo_url", type="string", nullable=true)
+     */
+    private $logoUrl;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="available", type="boolean", options={"default" = 0})
@@ -163,6 +180,7 @@ class Team
         $this->teamSlugs = new ArrayCollection();
         $this->teamInvites = new ArrayCollection();
         $this->encryptionKey = hash('sha512', random_bytes(64));
+        $this->uuid = Uuid::uuid4()->toString();
     }
 
     public function __toString()
@@ -427,11 +445,12 @@ class Team
     {
         return $this
             ->teamMembers
-            ->map(function (TeamMember $teamMember) {
-                return $teamMember->getUser();
-            })
-            ->contains($user)
-        ;
+            ->map(
+                function (TeamMember $teamMember) {
+                    return $teamMember->getUser();
+                }
+            )
+            ->contains($user);
     }
 
     /**
@@ -615,5 +634,37 @@ class Team
     public function getDeletedAt(): ? \DateTime
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid() : string
+    {
+        return (string) $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogoUrl(): string
+    {
+        return (string) $this->logoUrl;
+    }
+
+    /**
+     * @param string $logoUrl
+     */
+    public function setLogoUrl(string $logoUrl = null)
+    {
+        $this->logoUrl = $logoUrl;
     }
 }
