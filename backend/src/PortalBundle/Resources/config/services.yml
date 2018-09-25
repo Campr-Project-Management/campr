@@ -1,0 +1,58 @@
+services:
+    portal.client.http.user:
+        class: PortalBundle\Client\Http\UserClient
+        arguments:
+            - '@eight_points_guzzle.client.portal_api'
+            - '%portal.api.host%'
+            - '@monolog.logger.portal'
+
+    portal.client.http.workspace:
+        class: PortalBundle\Client\Http\WorkspaceClient
+        arguments:
+            - '@eight_points_guzzle.client.portal_api'
+            - '%portal.api.host%'
+            - '@monolog.logger.portal'
+            - '%portal.webhook.secret%'
+
+    portal.client.http.workspace_invite:
+        class: PortalBundle\Client\Http\WorkspaceInviteClient
+        arguments:
+            - '@eight_points_guzzle.client.portal_api'
+            - '%portal.api.host%'
+            - '@monolog.logger.portal'
+
+    portal.listener.locale:
+        class: PortalBundle\EventListener\LocaleSubscriber
+        arguments:
+            - '%managed_locales%'
+            - '@portal.client.http.user'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    portal.listener.user:
+        class: PortalBundle\EventListener\UserSubscriber
+        arguments:
+            - '@portal.client.http.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    portal.listener.team:
+        class: PortalBundle\EventListener\TeamSubscriber
+        arguments:
+            - '%kernel.environment%'
+            - '@redis.client'
+            - '@monolog.logger.portal'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    portal.security.http.authentication.authenticator:
+        class: PortalBundle\Security\Http\Authentication\Authenticator
+        arguments:
+            - '%portal.api.secret%'
+
+    portal.team_invite.sender:
+        class: PortalBundle\TeamInvite\TeamInviteSender
+        arguments:
+            - '@portal.client.http.workspace_invite'
+            - '@monolog.logger.portal'

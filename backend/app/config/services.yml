@@ -14,22 +14,6 @@ parameters:
         placeholder.driver.local: "local_adapter"
 
 services:
-    app.service.base_client:
-        abstract: true
-        arguments:
-            - "@request_stack"
-            - "%domain%"
-
-    app.service.team:
-        class: AppBundle\Services\TeamService
-        parent: app.service.base_client
-        arguments: ["@redis.client"]
-
-    app.service.user:
-        class: AppBundle\Services\UserService
-        parent: app.service.base_client
-        arguments: ["@doctrine.orm.entity_manager", "@security.password_encoder", "@router"]
-
     app.service.request_parser:
         class: AppBundle\Services\RequestParserService
 
@@ -202,6 +186,26 @@ services:
         parent: 'app.pdf.builder'
         class: Component\Meeting\PDF\MeetingPDFPrinterBuilder
 
+    app.team_invite.sender:
+        class: Component\TeamInvite\TeamInviteSender
+        tags:
+            - { name: app.overrideable, id: team_invite.sender }
+
+    app.team_invite.inviter:
+        class: Component\TeamInvite\TeamInviter
+        arguments:
+            - '@app.repository.user'
+            - '@app.repository.project_user'
+            - '@app.repository.team_invite'
+            - '@app.team_invite.sender'
+            - '@security.token_storage'
+
+    app.team.context:
+        class: Component\Team\Context\TeamContext
+        arguments:
+            - '%kernel.team_slug%'
+            - '@app.repository.team'
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder
@@ -257,7 +261,7 @@ services:
             - { name: security.voter }
         public: false
 
-### ROUTING ###
+## ROUTING ###
     app.routing.loader:
         class: AppBundle\Routing\Loader
         public: false

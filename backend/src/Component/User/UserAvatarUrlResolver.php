@@ -35,6 +35,10 @@ class UserAvatarUrlResolver implements UserAvatarUrlResolverInterface
      */
     public function resolve(User $user): string
     {
+        if ($user->getAvatarUrl()) {
+            return $user->getAvatarUrl();
+        }
+
         $avatar = $user->getAvatar();
         if (empty($avatar)) {
             return $this->getGravatar($user);
