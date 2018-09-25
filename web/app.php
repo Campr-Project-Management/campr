@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\ClassLoader\ApcClassLoader;
+
 /*
  * @var Composer\Autoload\ClassLoader
  */
@@ -13,7 +14,7 @@ $loader = new ApcClassLoader('campr', $loader);
 $loader->register(true);
 
 $env = getenv('SYMFONY_ENV') ? getenv('SYMFONY_ENV') : 'prod';
-$debug = getenv('SYMFONY_DEBUG') ? (getenv('SYMFONY_DEBUG') === 'false' ? false : true) : false;
+$debug = getenv('SYMFONY_DEBUG') ? ('false' === getenv('SYMFONY_DEBUG') ? false : true) : false;
 
 if ($debug) {
     Debug::enable();

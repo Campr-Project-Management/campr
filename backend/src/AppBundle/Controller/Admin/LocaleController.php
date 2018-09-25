@@ -3,6 +3,8 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\User;
+use Component\Locale\LocaleEvents;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,9 +25,9 @@ class LocaleController extends BaseLocaleController
      * @Route("/switch/{localeCode}", name="app_admin_locale_switch")
      * @Method("GET")
      */
-    public function switchAction(string $localeCode = null, Request $request): RedirectResponse
+    public function switchAction(Request $request, string $localeCode = null): RedirectResponse
     {
-        return parent::switchAction($localeCode, $request);
+        return parent::switchAction($request, $localeCode);
     }
 
     /**
@@ -50,8 +52,8 @@ class LocaleController extends BaseLocaleController
 
         try {
             $this
-                ->get('app.service.user')
-                ->pushToMasterUser($user, ['locale' => $localeCode])
+                ->get('event_dispatcher')
+                ->dispatch(LocaleEvents::SWITCH, new GenericEvent($localeCode))
             ;
         } catch (\Exception $e) {
             $this

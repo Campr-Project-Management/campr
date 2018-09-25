@@ -30,11 +30,13 @@
             <div class="table-wrapper table-responsive">
                 <table class="custom-table">
                     <thead>
+                    <tr>
                         <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
                         <th class="avatar text-center">{{ 'table_header_cell.avatar'|trans }}</th>
                         <th>{{ 'table_header_cell.username'|trans }}</th>
                         <th>{{ 'table_header_cell.email'|trans }}</th>
                         <th>{{ 'placeholder.actions'|trans }}</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {% for user in users %}

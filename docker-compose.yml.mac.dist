@@ -9,19 +9,24 @@ services:
             - redis
             - mailcatcher
         volumes:
-            - campr-app:/app
-            - ~/.ssh:/home/application/.ssh
+            - .:/app
+            - ~/.ssh:/root/.ssh
             - ~/.gitconfig:/home/application/.gitconfig
             - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
         shm_size: 1g
         ports:
-            - "80:80"
-            - "8080:8080"
             - "443:443"
             - "3000:3000"
+        external_links:
+            - "campr_portal_app:portal"
         env_file: config/docker/.env
         extra_hosts:
-            - "dev.campr.biz:127.0.0.1"
+            - "trisoft.dev.campr.biz:127.0.0.1"
+        networks:
+            - default
+            - campr
+        environment:
+            - VIRTUAL_HOST=*.dev.campr.biz
 
     mailcatcher:
         container_name: campr_mailcatcher
@@ -53,3 +58,7 @@ volumes:
             o: addr=host.docker.internal,rw,nolock,hard,nointr,noacl,nodiratime,async,noatime,actimeo=3,nfsvers=3
             device: ":/path/to/your/project"
     campr-data:
+
+networks:
+    campr:
+        external: true

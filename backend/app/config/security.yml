@@ -12,6 +12,14 @@ security:
     access_decision_manager:
         strategy: affirmative
     firewalls:
+        portal:
+            pattern: ^/portal
+            stateless: true
+            anonymous: true
+            simple_preauth:
+                authenticator: portal.security.http.authentication.authenticator
+            provider: api_provider
+
         login:
             pattern: ^/api/login
             stateless: true
@@ -68,6 +76,8 @@ security:
     access_control:
         # app specific
         - { path: ^/login, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sso, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/portal, roles: ROLE_PORTAL }
         - { path: ^/, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/_profiler, host: '^[^\.]+.%domain%$', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # general

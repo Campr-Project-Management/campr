@@ -1,8 +1,19 @@
+portal:
+    resource: "@PortalBundle/Controller/"
+    type: annotation
+    prefix: /
+    defaults:
+        subdomain: "%kernel.team_slug%"
+
 main:
     resource: "@MainBundle/Controller/"
     type:  annotation
-    host: "%domain%"
+    host: "{domain}"
     prefix: /
+    defaults:
+        domain: "%domain%"
+    requirements:
+        domain: "%domain%"
 
 app:
     resource: "@AppBundle/Controller/"
@@ -19,3 +30,6 @@ fos_js_routing:
 
 _bazinga_jstranslation:
     resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+
+translation:
+    resource: "@TranslationBundle/Resources/config/routing_symfony_profiler.yml"

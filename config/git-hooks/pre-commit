@@ -87,7 +87,7 @@ then
     echo -e "\n\033[0;31mThere are coding standard errors!"
     echo "Please fix them in order to be able to make commits!\n"
     echo -e "\033[0mTo fix all the files automatically, you can run the following command:"
-    echo -e "\033[0;37m\tgit status -s | grep \"\.php$\" | cut -d\" \" -f3 | xargs -L1 php-cs-fixer fix --level=symfony -vvv\033[0m"
+    echo -e "\033[0;37m\tgit status -s | grep \"\.php$\" | cut -d\" \" -f3 | xargs -L1 backend/vendor/fabpot/php-cs-fixer/php-cs-fixer fix --level=symfony -vvv\033[0m"
     exit 1
 fi
 

@@ -18,37 +18,55 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.workspace.name',
-                    ]),
-                ],
-            ])
-            ->add('logoFile', VichImageType::class, [
-                'required' => false,
-                'download_link' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'invalid.image',
-                    ]),
-                ],
-            ])
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.workspace.name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'logoFile',
+                VichImageType::class,
+                [
+                    'required' => false,
+                    'download_link' => false,
+                    'constraints' => [
+                        new File(
+                            [
+                                'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
+                                'mimeTypesMessage' => 'invalid.image',
+                            ]
+                        ),
+                    ],
+                ]
+            )
             ->add('enabled', CheckboxType::class)
-            ->add('description', TextareaType::class, [
-                'required' => false,
-            ])
+            ->add(
+                'description',
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
+            )
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Team::class,
-            'attr' => [
-                'novalidate' => 'novalidate',
-            ],
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Team::class,
+                'attr' => [
+                    'novalidate' => 'novalidate',
+                ],
+            ]
+        );
     }
 }
