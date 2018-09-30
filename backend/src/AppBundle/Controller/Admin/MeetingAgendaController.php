@@ -2,6 +2,10 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Component\Meeting\MeetingEvent;
+use Component\Meeting\MeetingEvents;
+use Component\MeetingAgenda\MeetingAgendaEvent;
+use Component\MeetingAgenda\MeetingAgendaEvents;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -101,7 +105,9 @@ class MeetingAgendaController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($form->getData());
+            $meetingAgenda = $form->getData();
+            $this->dispatchEvent(MeetingAgendaEvents::CALCULATE_START_DATE, new MeetingAgendaEvent($meetingAgenda));
+            $em->persist($meetingAgenda);
             $em->flush();
 
             $this
@@ -144,6 +150,7 @@ class MeetingAgendaController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->dispatchEvent(MeetingEvents::RECALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meetingAgenda->getMeeting()));
             $em->persist($meetingAgenda);
             $em->flush();
 
@@ -184,7 +191,12 @@ class MeetingAgendaController extends BaseController
     public function deleteAction(Request $request, MeetingAgenda $meetingAgenda)
     {
         $em = $this->getDoctrine()->getManager();
+        $meeting = $meetingAgenda->getMeeting();
+
         $em->remove($meetingAgenda);
+        $em->flush();
+
+        $this->dispatchEvent(MeetingEvents::RECALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meeting));
         $em->flush();
 
         if ($request->isXmlHttpRequest()) {
