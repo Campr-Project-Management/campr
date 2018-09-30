@@ -4,6 +4,8 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Form\MeetingAgenda\CreateType;
+use Component\Meeting\MeetingEvent;
+use Component\Meeting\MeetingEvents;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,6 +38,7 @@ class MeetingAgendaController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
+            $this->dispatchEvent(MeetingEvents::RECALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meetingAgenda->getMeeting()));
             $this->persistAndFlush($meetingAgenda);
 
             return $this->createApiResponse($meetingAgenda, Response::HTTP_ACCEPTED);
@@ -62,7 +65,10 @@ class MeetingAgendaController extends ApiController
     public function deleteAction(MeetingAgenda $meetingAgenda)
     {
         $em = $this->getDoctrine()->getManager();
+        $meeting = $meetingAgenda->getMeeting();
         $em->remove($meetingAgenda);
+        $em->flush();
+        $this->dispatchEvent(MeetingEvents::RECALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meeting));
         $em->flush();
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);

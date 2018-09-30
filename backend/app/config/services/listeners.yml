@@ -117,3 +117,17 @@ services:
             - '@app.service.rasci_workpackage_sync'
         tags:
             - { name: kernel.event_subscriber }
+
+    app.subscriber.meeting:
+        class: AppBundle\EventListener\MeetingSubscriber
+        arguments:
+        - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.meeting_agenda:
+        class: AppBundle\EventListener\MeetingAgendaSubscriber
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+        - { name: kernel.event_subscriber }
