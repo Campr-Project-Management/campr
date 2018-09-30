@@ -6,7 +6,6 @@ use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -46,15 +45,6 @@ class CreateType extends AbstractType
                 'choice_label' => 'username',
                 'placeholder' => 'placeholder.user',
                 'translation_domain' => 'messages',
-            ])
-            ->add('start', DateTimeType::class, [
-                'required' => true,
-                'widget' => 'single_text',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.start',
-                    ]),
-                ],
             ])
             ->add('duration', IntegerType::class, [
                 'required' => true,

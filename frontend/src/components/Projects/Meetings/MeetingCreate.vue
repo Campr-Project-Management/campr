@@ -154,19 +154,6 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="input-holder right">
-                                        <label class="active">{{ translate('label.start_time') }}</label>
-                                        <timepicker v-model="agenda.startTime" hide-clear-button />
-                                        <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
-                                            <error
-                                                v-if="validationMessages.meetingAgendas[index.toString()].start && validationMessages.meetingAgendas[index.toString()].start.length"
-                                                v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].start"
-                                                :key="`agenda-startTime-${index}`"
-                                                :message="message" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
                                     <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" />
                                     <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
@@ -487,10 +474,6 @@ export default {
             this.agendas.push({
                 topic: '',
                 responsible: [],
-                startTime: {
-                    HH: null,
-                    mm: null,
-                },
                 duration: 0,
             });
         },
