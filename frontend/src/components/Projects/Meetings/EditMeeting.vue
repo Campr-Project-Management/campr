@@ -17,7 +17,8 @@
             v-bind:editInfoModal="showEditInfoModal"
             v-bind:deleteInfoModal="showDeleteInfoModal"
             v-bind:infoObject="editInfoObject"
-            v-on:input="setModals" />
+            v-on:input="setModals"
+            @agendaChanged="refreshAgendaTable" />
         <modal v-if="deleteMeetingModal" @close="deleteMeetingModal = false">
             <p class="modal-title">{{ translate('message.delete_meeting') }}</p>
             <div class="flex flex-space-between">
@@ -209,16 +210,6 @@
                         <div class="form-group form-group">
                             <div class="col-md-4">
                                 <member-search  v-bind:selectedUser="agenda.responsibilityFullName" v-model="agenda.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="input-holder right">
-                                    <label class="active">{{ translate('label.start_time') }}</label>
-                                    <vue-timepicker v-model="agenda.startTime" hide-clear-button></vue-timepicker>
-                                    <error
-                                        v-if="validationMessages.start && validationMessages.start.length"
-                                        v-for="message in validationMessages.start"
-                                        :message="message" />
-                                </div>
                             </div>
                             <div class="col-md-4">
                                 <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" v-bind:min="0" />
@@ -698,6 +689,14 @@ export default {
                     }, 100);
                 });
         },
+        refreshAgendaTable() {
+            this.getMeetingAgendas({
+                meetingId: this.$route.params.meetingId,
+                apiParams: {
+                    page: this.agendasActivePage,
+                },
+            });
+        },
         setModals(value) {
             this.showEditObjectiveModal = value;
             this.showDeleteObjectiveModal = value;
@@ -750,16 +749,11 @@ export default {
                 id: this.$route.params.meetingId,
                 topic: this.agenda.topic,
                 responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
-                start: this.agenda.startTime.HH + ':' + this.agenda.startTime.mm,
                 duration: this.agenda.duration,
             }).then(() => {
                 this.agenda.responsibility = [];
                 this.agenda.topic = null;
                 this.agenda.duration = null;
-                this.agenda.startTime = {
-                    HH: null,
-                    mm: null,
-                };
             }).catch((response) => {
                 this.agendaErrors = response.body.messages;
             });
@@ -1025,10 +1019,6 @@ export default {
             agenda: {
                 topic: null,
                 responsibility: [],
-                startTime: {
-                    HH: null,
-                    mm: null,
-                },
                 duration: null,
             },
             defaultDecision: defaultDecision,
