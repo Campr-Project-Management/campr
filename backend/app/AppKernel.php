@@ -49,10 +49,13 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Translation\PlatformAdapter\Loco\Bridge\Symfony\TranslationAdapterLocoBundle(),
             new Translation\Bundle\TranslationBundle(),
+            new EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle(),
+            new \Enqueue\Bundle\EnqueueBundle(),
 
             //internals
             new AppBundle\AppBundle(),
             new MainBundle\MainBundle(),
+            new PortalBundle\PortalBundle(),
         ];
 
         if (in_array($this->getRealEnvironment(), ['prod', 'qa'], true)) {

@@ -82,27 +82,12 @@ RUN GOREPLACE_VERSION=1.1.2 \
 
 RUN npm install -g yarn nuxt
 
-ADD config/nginx/default.conf /etc/nginx/sites-available/default
-ADD config/php/pool.d/dev.conf /etc/php/7.1/fpm/pool.d/www.conf
-
-ADD config/php/php.ini /etc/php/7.1/fpm/conf.d/99-php.ini
-ADD config/php/php.ini /etc/php/7.1/cli/conf.d/99-php.ini
-
-ADD config/supervisor/supervisor.conf /etc/supervisor.conf
-ADD config/supervisor/services.conf /etc/supervisor/conf.d/nginx-php.conf
-
 # Server Side Rendering
 RUN curl -o /tmp/google-chrome-stable_current_amd64.deb \
         https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || true) \
     && apt-get install -y -f \
     && apt-get install -y xvfb
-
-RUN go-replace --mode=line --regex \
-    -s '^[\s;]*user[\s]*='  -r "user = $APPLICATION_USER" \
-    -s '^[\s;]*group[\s]*=' -r "group = $APPLICATION_GROUP" \
-    --path=/etc/php/7.1/fpm/pool.d/ \
-    --path-pattern='*.conf'
 
 ADD bootstrap.sh /bootstrap.sh
 RUN chmod 700 /bootstrap.sh
@@ -117,6 +102,21 @@ EXPOSE 80
 EXPOSE 8080
 
 WORKDIR /app
+
+ADD config/nginx/default.conf /etc/nginx/sites-available/default
+ADD config/php/pool.d/dev.conf /etc/php/7.1/fpm/pool.d/www.conf
+
+ADD config/php/php.ini /etc/php/7.1/fpm/conf.d/99-php.ini
+ADD config/php/php.ini /etc/php/7.1/cli/conf.d/99-php.ini
+
+ADD config/supervisor/supervisor.conf /etc/supervisor.conf
+ADD config/supervisor/services.conf /etc/supervisor/conf.d/nginx-php.conf
+
+RUN go-replace --mode=line --regex \
+    -s '^[\s;]*user[\s]*='  -r "user = $APPLICATION_USER" \
+    -s '^[\s;]*group[\s]*=' -r "group = $APPLICATION_GROUP" \
+    --path=/etc/php/7.1/fpm/pool.d/ \
+    --path-pattern='*.conf'
 
 RUN /bootstrap.sh
 CMD ["supervisord", "-c", "/etc/supervisor.conf", "--user", "root"]

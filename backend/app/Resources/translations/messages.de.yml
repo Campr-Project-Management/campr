@@ -307,7 +307,7 @@ label.closed: Abgeschlossen
 label.color: Farbe
 label.color_status: Statusfarbe
 label.company: Unternehmen
-label.completed: Abgeschlossen
+label.completed: Ausgeführt
 label.confirmed: Bestätigt
 label.content: Inhalt
 label.contract: Vertrag
@@ -605,10 +605,10 @@ message.action_needed: 'Handlung nötig'
 message.actual_schedule: planmäßig
 message.add_avatar_image: 'Profilbild hinzufügen'
 message.add_comment: Kommentieren
-message.add_deliverable: 'Neue Projektleistung hinzufügen'
+message.add_deliverable: 'Neue Anforderung hinzufügen'
 message.add_external_costs: 'Externe Kosten hinzufügen'
 message.add_internal_costs: 'Interne Kosten hinzufügen'
-message.add_limitation: 'Neue Limitierung hinzufügen'
+message.add_limitation: 'Neue Beschränkung hinzufügen'
 message.add_new_action: 'Neue Handlung hinzufügen'
 message.add_new_decision: 'Neue Entscheidung hinzufügen'
 message.add_new_evaluation_objective: 'Neues Bewertungskriterium hinzufügen'
@@ -1024,9 +1024,9 @@ message.user_blocked: 'Nutzer blockiert'
 message.user_invited_to_project: 'Der Nutzer wurde ins Projekt eingeladen. Wenn er sich das nächste mal einloggt, wird er Zugang zum Projekt haben.'
 message.very_high: 'Sehr hoch'
 message.very_low: 'Sehr niedrig'
-message.view_board: 'View Board'
+message.view_board: Tafelansicht
 message.view_decision: 'Entscheidung ansehen'
-message.view_grid: 'View Grid'
+message.view_grid: Gitteransicht
 message.view_meeting: 'Meeting ansehen'
 message.view_remaining_action: 'Ausstehende Aktionen ansehen'
 message.view_team: 'Team ansehen'
@@ -1206,7 +1206,7 @@ subtitle.color_status: 'Liste der Statusfarben'
 subtitle.communication: 'Liste der Ankündigungen'
 subtitle.company: 'Liste der Unternehmen'
 subtitle.contract: 'Liste der Verträge'
-subtitle.cost: 'Liste der Externen Kosten'
+subtitle.cost: 'Liste der Kosten'
 subtitle.dashboard: 'Willkommen im Adminbereich!'
 subtitle.day: 'Liste der Tage'
 subtitle.decision: 'Liste der Entscheidungen'
@@ -1251,7 +1251,7 @@ subtitle.project_team: 'Liste der Projektteams'
 subtitle.project_user: 'Liste der Projektnutzer'
 subtitle.project_work_cost_type: 'Liste der Projektarbeitskostentypen'
 subtitle.rasci: 'Liste der RASCI-Matrix'
-subtitle.resource: 'Liste der Interne Kosten'
+subtitle.resource: 'Liste der Ressourcen'
 subtitle.risk: 'Liste der Risiken'
 subtitle.risk_category: 'Liste der Risikokategorien'
 subtitle.risk_status: 'Liste der Risikostatus'
@@ -1272,10 +1272,10 @@ subtitle.todo_status: 'Liste der To-Do-Status'
 subtitle.unit: 'Liste der Einheiten'
 subtitle.user: 'Liste der Nutzer'
 subtitle.working_time: 'Liste der Arbeitszeiten'
-subtitle.workpackage: 'Liste der Aufgaben'
+subtitle.workpackage: 'Liste der Arbeitspakete'
 subtitle.workpackage_category: 'Liste der Arbeitspaketkategorien'
-subtitle.workpackage_status: 'Liste der Aufgabenstatus'
-subtitle.wppcwct: 'Liste der Aufgaben Projektarbeitskostenart'
+subtitle.workpackage_status: 'Liste der Arbeitspaketstatus'
+subtitle.wppcwct: 'Liste der Arbeitspaketprojektkostentypen'
 success.account.edit: 'Ihr Account wurde erfolgreich bearbeitet!'
 success.assignment.create: 'Auftrag erfolgreich erstellt!'
 success.assignment.delete.from_data_table: 'Auftrag mit ID'
@@ -1643,7 +1643,7 @@ table_header_cell.expiry_date: Ablaufdatum
 table_header_cell.file: Datei
 table_header_cell.filesystem: Dateiensystem
 table_header_cell.finish: Abschluss
-table_header_cell.finished_at: 'Abgeschlossen um'
+table_header_cell.finished_at: 'Fertiggestellt um'
 table_header_cell.forecast: Forecast
 table_header_cell.forecast_due_date: 'Vorschau Frist'
 table_header_cell.forecast_end_date: 'Forecast Enddatum'
@@ -1816,9 +1816,9 @@ title.contact: 'Senden Sie uns eine Nachricht'
 title.contract.create: 'Vertrag erstellen'
 title.contract.edit: 'Vertrag bearbeiten'
 title.contract.list: Vertrag
-title.cost.create: 'Externe Kosten Schaffen'
-title.cost.edit: 'Externe Kosten bearbeiten'
-title.cost.list: 'Externe Kosten'
+title.cost.create: 'Kosten erstellen'
+title.cost.edit: 'Kosten bearbeiten'
+title.cost.list: Kosten
 title.dashboard: Dashboard
 title.day.create: 'Neuen Tag erstellen'
 title.day.edit: 'Tag bearbeiten'
@@ -1970,7 +1970,7 @@ title.project_team.edit: 'Projektteam bearbeiten'
 title.project_team.list: Projektteam
 title.project_user.create: 'Neues Nutzer erstellen'
 title.project_user.edit: 'Nutzer bearbeiten'
-title.project_user.list: 'Mitglieder'
+title.project_user.list: Nutzer
 title.project_work_cost_type.create: 'Neue Projektarbeitskostenart erstellen'
 title.project_work_cost_type.edit: 'Projektarbeitskostenart bearbeiten'
 title.project_work_cost_type.list: Projektarbeitskostenart
@@ -1978,9 +1978,9 @@ title.rasci.create: 'Neue RASCI erstellen'
 title.rasci.edit: 'RASCI bearbeiten'
 title.rasci.list: RASCI
 title.reset: 'Bitte fügen Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Sie werden eine E-Mail mit weiteren Anweisungen erhalten.'
-title.resource.create: 'Interne Kosten Schaffen'
-title.resource.edit: 'Interne Kosten Bearbeiten'
-title.resource.list: 'Interne Kosten'
+title.resource.create: 'Ressource erstellen'
+title.resource.edit: 'Ressource bearbeiten'
+title.resource.list: Ressource
 title.risk.create: 'Neues Risiko erstellen'
 title.risk.edit: 'Risiko bearbeiten'
 title.risk.list: Risiko
@@ -2041,15 +2041,15 @@ title.user.list: Nutzer
 title.working_time.create: 'Neue Arbeitszeit erstellen'
 title.working_time.edit: 'Arbeitszeit bearbeiten'
 title.working_time.list: Arbeitszeit
-title.workpackage.create: 'Erstellen Sie eine neue Aufgabe'
-title.workpackage.edit: 'Aufgabe bearbeiten'
-title.workpackage.list: 'Aufgabe'
-title.workpackage_category.create: 'Erstellen Sie eine Aufgabenkategorie'
-title.workpackage_category.edit: 'Bearbeiten Sie die Aufgabenkategorie'
-title.workpackage_category.list: 'Aufgabenkategorie'
-title.workpackage_status.create: 'Erstellen Sie den Aufgabenstatus'
-title.workpackage_status.edit: 'Bearbeiten Sie den Aufgabenstatus'
-title.workpackage_status.list: 'Aufgabenstatus'
+title.workpackage.create: 'Neues Arbeitspaket erstellen'
+title.workpackage.edit: 'Arbeitspaket bearbeiten'
+title.workpackage.list: Arbeitspaket
+title.workpackage_category.create: 'Arbeitspaketkategorie erstellen'
+title.workpackage_category.edit: 'Arbeitspaketkategorie bearbeiten'
+title.workpackage_category.list: Arbeitspaketkategorie
+title.workpackage_status.create: 'Arbeitspaketstatus erstellen'
+title.workpackage_status.edit: 'Arbeitspaketstatus bearbeiten'
+title.workpackage_status.list: Arbeitspaketstatus
 title.workspace.create: 'Neues Arbeitsumfeld erstellen'
 title.workspace.edit: 'Arbeitsumfeld bearbeiten'
 title.workspace.list: 'Liste Arbeitsumfelder'
@@ -2057,10 +2057,10 @@ title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
 title.wppcwct.create: 'Neuen Arbeitspaketkostentyp erstellen'
-title.wppcwct.edit: 'Bearbeiten Sie den Projektarbeitskosten-Typ'
-title.wppcwct.list: 'Aufgabe Projekt Arbeitskostenart'
+title.wppcwct.edit: 'Kostentyp bearbeiten'
+title.wppcwct.list: Kostentyp
 todo_status.discontinued: Eingestellt
-todo_status.finished: Abgeschlossen
+todo_status.finished: Fertiggestellt
 todo_status.initiated: Eingeleitet
 todo_status.on_hold: Angehalten
 todo_status.ongoing: Fortlaufend
@@ -2097,7 +2097,7 @@ message.resent_team_invites: '%count% Einladung(en) wurde(n) noch einmal verschi
 action.select.all: 'Alle auswählen'
 action.select.none: 'Keine auswählen'
 action.select.invert: 'Auswahl umkehren'
-message.email_successfully_sent: 'EMail erfolgreich gesendet'
+message.email_successfully_sent: 'E-Mail erfolgreich gesendet'
 button.add_document: 'Dokument hinzufügen'
 message.max_upload_file_size: 'Max. Dateigröße: %size%'
 message.file_too_large: 'Diese Datei ist zu groß (%size%). Die maximal erlaubte Größe ist %limit%.'
@@ -2109,9 +2109,11 @@ message.generic_error: 'Ein unerwarteter Fehler ist aufgetreten.'
 email.message.location: Standort
 email.message.objective: Ziele
 email.message.agenda: Agenda
-email.table_header_cell.topic: Topic
-email.table_header_cell.responsible: Responsible
+email.table_header_cell.topic: Thema
+email.table_header_cell.responsible: Verantwortlich
 email.table_header_cell.start: Start
-email.table_header_cell.end: Finish
-email.table_header_cell.duration: Duration
-placeholder.duration: Duration
+email.table_header_cell.end: Ende
+email.table_header_cell.duration: Dauer
+placeholder.duration: Dauer
+button.send_meeting_report: 'Bericht senden'
+message.send_meeting_report: 'Meetingbericht senden'
