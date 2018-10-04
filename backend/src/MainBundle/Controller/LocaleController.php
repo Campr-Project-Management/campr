@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * @Route("/locale")
@@ -24,10 +23,9 @@ class LocaleController extends Controller
      *
      * @return RedirectResponse
      *
-     * @Route("/switch/{localeCode}", name="main_locale_switch")
-     * @Method("GET")
+     * @Route("/switch/{localeCode}", name="main_locale_switch", methods={"GET"})
      */
-    public function switchAction(string $localeCode = null, Request $request): RedirectResponse
+    public function switchAction(Request $request, string $localeCode = null): RedirectResponse
     {
         if (empty($localeCode)) {
             $localeCode = $this->getDefaultLocaleCode();

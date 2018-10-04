@@ -136,3 +136,9 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\Meeting }
+
+    app.repository.team_invite:
+        class: AppBundle\Repository\TeamInviteRepository
+        arguments: ~
+        tags:
+        - { name: app.repository, class: AppBundle\Entity\TeamInvite }

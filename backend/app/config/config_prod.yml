@@ -23,6 +23,8 @@ doctrine:
         query_cache_driver: apc
 
 monolog:
+    channels:
+        - "portal"
     handlers:
         main:
             type:         fingers_crossed
@@ -34,3 +36,8 @@ monolog:
             level: debug
         console:
             type:  console
+        portal:
+            type: stream
+            path: "%kernel.logs_dir%/portal.log"
+            level: info
+            channels: ["portal"]

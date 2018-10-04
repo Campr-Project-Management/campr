@@ -78,6 +78,18 @@ class TeamInvite
     private $project;
 
     /**
+     * @var User
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *     @ORM\JoinColumn(name="inviter_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $inviter;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="accepted_at", type="datetime", nullable=true)
      */
@@ -257,5 +269,21 @@ class TeamInvite
         $this->project = $project;
 
         return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getInviter()
+    {
+        return $this->inviter;
+    }
+
+    /**
+     * @param User $inviter
+     */
+    public function setInviter(User $inviter = null)
+    {
+        $this->inviter = $inviter;
     }
 }

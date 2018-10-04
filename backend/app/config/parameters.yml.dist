@@ -67,3 +67,9 @@ parameters:
 
     #email
     email.contact_info: info@campr.biz
+
+    portal.api.base_url: 'http://portal'
+    portal.api.host: 'dev.campr.biz'
+    portal.api.secret: '4D65A2AC47476D33BAB2CBF62BCE8'
+    portal.webhook.secret: '6F73A8EA3FBDB812922E2AB71E2F6'
+    enqueue.redis.dsn: 'redis://%redis_host%:6379/4'
