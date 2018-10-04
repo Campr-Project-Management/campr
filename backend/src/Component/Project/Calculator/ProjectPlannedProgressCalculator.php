@@ -50,6 +50,10 @@ class ProjectPlannedProgressCalculator implements ProjectProgressCalculatorInter
             ++$count;
         }
 
+        if (!$count) {
+            return 0;
+        }
+
         return round($total / $count, 4);
     }
 }

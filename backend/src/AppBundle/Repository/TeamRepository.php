@@ -4,9 +4,8 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityRepository;
 
-class TeamRepository extends EntityRepository
+class TeamRepository extends BaseRepository
 {
     /**
      * @param $id
@@ -91,6 +90,26 @@ class TeamRepository extends EntityRepository
 
         $team = $this->find($id);
 
+        if ($team instanceof Team) {
+            // forces the load of team members
+            $team->getTeamMembers()->count();
+        }
+
+        $this->getEntityManager()->getFilters()->enable('softdeleteable');
+
+        return $team->getDeletedAt() ? $team : null;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return Team|null
+     */
+    public function findDeletedByUuid(string $uuid)
+    {
+        $this->getEntityManager()->getFilters()->disable('softdeleteable');
+
+        $team = $this->findOneBy(['uuid' => $uuid]);
         if ($team instanceof Team) {
             // forces the load of team members
             $team->getTeamMembers()->count();
