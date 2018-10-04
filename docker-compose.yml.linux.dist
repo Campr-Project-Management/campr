@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-    dev.campr.biz:
+    app:
         container_name: campr_app
         build: config/docker/app
         links:
@@ -15,11 +15,18 @@ services:
             - ./config/supervisor/docker_dev.conf:/etc/supervisor/conf.d/docker_dev.conf
         shm_size: 1g
         ports:
-            - "80:80"
-            - "8080:8080"
             - "443:443"
             - "3000:3000"
+        external_links:
+            - "campr_portal_app:portal"
         env_file: config/docker/.env
+        extra_hosts:
+            - "trisoft.dev.campr.biz:127.0.0.1"
+        networks:
+            - default
+            - campr
+        environment:
+            - VIRTUAL_HOST=*.dev.campr.biz
 
     mailcatcher:
         container_name: campr_mailcatcher
@@ -45,3 +52,7 @@ services:
 
 volumes:
     campr-data:
+
+networks:
+    campr:
+        external: true

@@ -22,31 +22,19 @@ const actions = {
      * @return {Object}
      */
     getUserInfo({commit}) {
-        Vue
+        return Vue
             .http
             .get(Routing.generate('app_api_users_me'))
             .then(
                 (response) => {
                     let localUser = response.data;
                     commit(types.SET_LOCAL_USER, {localUser});
+                    commit(types.SET_USER, {user: localUser});
                 },
                 (response) => {
                     commit(types.SET_LOCAL_USER, {localUser: {}});
                 }
             )
-        ;
-
-        return Vue
-            .http
-            .get(Routing.generate('main_api_users_get'))
-            .then((response) => {
-                let user = response.data;
-                commit(types.SET_USER, {user});
-                localStorage.setItem('id_token', user.apiToken);
-                commit(types.TOGGLE_LOADER, false);
-            }, (response) => {
-                commit(types.TOGGLE_LOADER, false);
-            })
         ;
     },
 

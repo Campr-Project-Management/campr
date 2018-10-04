@@ -1,0 +1,4 @@
+enqueue:
+    transport:
+        default: '%enqueue.redis.dsn%'
+    client: ~
