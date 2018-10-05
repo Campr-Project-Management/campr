@@ -69,7 +69,8 @@ set('mysql_password_usage', function () {
     return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
 });
 set('bin/mysqldump', function () {
-    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}%\'"`';
+    //dump all workspaces dbs for backup
+    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}_%\'"`';
 });
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
@@ -310,7 +311,7 @@ task('deploy', [
     'project:build:frontend_and_ssr',
     'deploy:cache:warmup',
     'database:cleanup',
-    'database:migrate',
+    //'database:migrate',
     'project:apache:enable-config',
     'project:apache:restart',
     'project:supervisor:enable-config',
