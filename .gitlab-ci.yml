@@ -1,5 +1,6 @@
 stages:
   - test
+  - deploy
 
 phpunit:
   stage: test
