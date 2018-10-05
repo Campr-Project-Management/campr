@@ -2,9 +2,6 @@ stages:
   - test
   - deploy
 
-before_script:
-  - composer install --prefer-dist
-
 phpunit:
   stage: test
   script:
@@ -13,8 +10,7 @@ phpunit:
     - export SYMFONY__DATABASE_NAME=campr_runner_$CI_RUNNER_ID
     - export SYMFONY__DATABASE_PASSWORD=campr
     - rm -rf var/cache/*
-    - wget https://getcomposer.org/composer.phar
-    - php composer.phar install --quiet --prefer-dist --no-interaction
+    - composer install --quiet --prefer-dist --no-interaction
     - cp phpunit.xml.dist phpunit.xml
     - rm -rf web/uploads/tests
     - mkdir -p backend/src/AppBundle/Tests/Resources/files/ && touch backend/src/AppBundle/Tests/Resources/files/file.txt
@@ -31,9 +27,9 @@ phpunit:
 cs-fixer:
   stage: test
   script:
-  - echo "Checking PHP files with php-cs-fixer"
-  - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
-  - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false deploy.php
+    - echo "Checking PHP files with php-cs-fixer"
+    - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
+    - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false deploy.php
 
 deploy_qa:
   stage: deploy
