@@ -8,7 +8,7 @@ parameters:
     domain: campr.biz
     router.request_context.scheme: https
     show_tracking_code: true
-    uploads.root_folder: '/var/www/%domain%/shared/web/uploads'
+    uploads.root_folder: '/var/www/workspace.prod/shared/web/uploads'
 
 #framework:
 #    validation:
