@@ -21,7 +21,7 @@ class CreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['skip_meeting'] !== true) {
+        if (true !== $options['skip_meeting']) {
             $builder
                 ->add('meeting', EntityType::class, [
                     'class' => Meeting::class,

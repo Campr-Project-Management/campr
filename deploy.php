@@ -38,7 +38,7 @@ set('symfony_console_options', function () {
     return sprintf(
        '--env=%s%s %s',
        get('env'),
-       get('env') === 'prod' ? ' --no-debug' : '',
+       'prod' === get('env') ? ' --no-debug' : '',
        '--no-interaction'
    );
 });
@@ -239,7 +239,7 @@ task('database:migrate', function () {
     run('{{symfony_console}} app:migrate:all-databases {{symfony_console_options}}');
 });
 task('server:provision', function () {
-    if (input()->getFirstArgument() == 'server:provision' || input()->getOption('provision')) {
+    if ('server:provision' == input()->getFirstArgument() || input()->getOption('provision')) {
         upload('bin/install/deps-provision', '/tmp/deps-provision');
         run('chmod +x /tmp/deps-provision && /tmp/deps-provision {{env}} {{deploy_path}}/current && rm -f /tmp/deps-provision');
     } else {

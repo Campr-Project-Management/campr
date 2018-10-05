@@ -174,7 +174,6 @@ class UserControllerTest extends BaseController
             ->getRepository(User::class)
             ->findOneBy([
                 'email' => 'testuser@trisoft.ro',
-
             ])
         ;
         $this->em->remove($user);
@@ -223,7 +222,6 @@ class UserControllerTest extends BaseController
             ->getRepository(User::class)
             ->findOneBy([
                 'email' => 'testuser@trisoft.ro',
-
             ])
         ;
         $this->em->remove($user);
@@ -280,7 +278,6 @@ class UserControllerTest extends BaseController
             ->getRepository(User::class)
             ->findOneBy([
                 'email' => 'testuser@trisoft.ro',
-
             ])
         ;
         $this->em->remove($user);
@@ -326,7 +323,6 @@ class UserControllerTest extends BaseController
             ->getRepository(User::class)
             ->findOneBy([
                 'email' => 'testuser@trisoft.ro',
-
             ])
         ;
         $this->em->remove($user);

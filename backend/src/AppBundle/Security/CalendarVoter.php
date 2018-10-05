@@ -96,7 +96,7 @@ class CalendarVoter extends Voter
             ->findOneBy(['user' => $user, 'project' => $calendar->getProject()])
         ;
 
-        return $projectUser !== null;
+        return null !== $projectUser;
     }
 
     /**
@@ -130,7 +130,7 @@ class CalendarVoter extends Voter
 
         return $projectUser
             && $projectUser->getProjectRole()
-            && $projectUser->getProjectRoleName() === ProjectRole::ROLE_MANAGER
+            && ProjectRole::ROLE_MANAGER === $projectUser->getProjectRoleName()
         ;
     }
 }

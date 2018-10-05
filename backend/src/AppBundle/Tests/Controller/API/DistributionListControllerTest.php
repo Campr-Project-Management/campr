@@ -217,7 +217,6 @@ class DistributionListControllerTest extends BaseController
                 [
                     'name' => '',
                     'sequence' => 1,
-
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,

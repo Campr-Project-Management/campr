@@ -77,12 +77,12 @@ class TeamInviteController extends Controller
                         'team' => $teamInvite->getTeam(),
                     ]
                 );
-                $resent++;
+                ++$resent;
             } catch (\Exception $e) {
                 // automatically remove invalid email/emails that cannot be emailed to
                 $em->remove($teamInvite);
 
-                $removedInvalid++;
+                ++$removedInvalid;
             }
         }
 
@@ -119,7 +119,7 @@ class TeamInviteController extends Controller
 
         foreach ($teamInvites as $teamInvite) {
             $em->remove($teamInvite);
-            $removed++;
+            ++$removed;
         }
 
         $em->flush();

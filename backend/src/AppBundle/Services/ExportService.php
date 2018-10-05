@@ -43,7 +43,7 @@ class ExportService
 
     public function exportTask(WorkPackage $package, \SimpleXMLElement $xmlNode = null)
     {
-        if ($xmlNode === null) {
+        if (null === $xmlNode) {
             $xmlNode = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Task></Task>');
         }
 

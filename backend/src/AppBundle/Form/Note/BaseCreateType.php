@@ -5,7 +5,6 @@ namespace AppBundle\Form\Note;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\NoteStatus;
 use AppBundle\Entity\User;
-use AppBundle\Entity\Status;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

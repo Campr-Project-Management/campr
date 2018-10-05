@@ -28,7 +28,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
         $defaultMessage = 'Something went terribly wrong.';
 
-        if (strpos($request->getPathInfo(), '/api') !== 0) {
+        if (0 !== strpos($request->getPathInfo(), '/api')) {
             $exception = $event->getException();
 
             if ($exception instanceof UndefinedMethodException) {

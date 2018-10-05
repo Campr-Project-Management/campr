@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-backend/vendor/bin/php-cs-fixer fix --level=symfony ./backend/src
+bin/php-cs-fixer fix --rules=@Symfony -v --stop-on-violation --using-cache=false backend/src
+bin/php-cs-fixer fix --rules=@Symfony -v --stop-on-violation --using-cache=false deploy.php

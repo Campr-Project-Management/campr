@@ -4,7 +4,6 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Risk;
 use AppBundle\Entity\RiskStatus;
-use AppBundle\Entity\Status;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;

@@ -16,4 +16,3 @@ interface TeamContextInterface
      */
     public function getCurrentSlug(): string;
 }
-
