@@ -236,7 +236,7 @@ task('database:cleanup', function () {
     }
 });
 task('database:migrate', function () {
-    run('{{symfony_console}} app:migrate:all-workspace-databases {{symfony_console_options}}');
+    run('{{symfony_console}} app:migrate:all-databases {{symfony_console_options}}');
 });
 task('server:provision', function () {
     if ('server:provision' == input()->getFirstArgument() || input()->getOption('provision')) {
@@ -311,7 +311,7 @@ task('deploy', [
     'project:build:frontend_and_ssr',
     'deploy:cache:warmup',
     'database:cleanup',
-    //'database:migrate',
+    'database:migrate',
     'project:apache:enable-config',
     'project:apache:restart',
     'project:supervisor:enable-config',

@@ -3,6 +3,7 @@ imports:
     - { resource: bundles/nelmio_cors.yml }
 
 parameters:
+    database_name: campr
     database_password: campr
     domain: qa.campr.biz
     uploads.root_folder: '/var/www/workspace.qa/shared/web/uploads'
