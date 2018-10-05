@@ -6,7 +6,7 @@ parameters:
     database_name: campr
     database_password: campr
     domain: qa.campr.biz
-    uploads.root_folder: '/var/www/%domain%/shared/web/uploads'
+    uploads.root_folder: '/var/www/workspace.qa/shared/web/uploads'
 
 #framework:
 #    validation:
@@ -20,7 +20,7 @@ framework:
         strict_requirements: true
     profiler:
         only_exceptions: false
-        dsn: 'file:/var/www/qa.campr.biz/shared/var/profiler/%kernel.environment%'
+        dsn: 'file:/var/www/workspace.qa/shared/var/profiler/%kernel.environment%'
 
 web_profiler:
     toolbar: true
