@@ -3,7 +3,6 @@ imports:
     - { resource: bundles/nelmio_cors.yml }
 
 parameters:
-    database_name: campr
     database_password: campr
     domain: campr.biz
     router.request_context.scheme: https
