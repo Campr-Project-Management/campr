@@ -2,9 +2,7 @@
 
 namespace MainBundle\Tests\Controller\API;
 
-use AppBundle\Entity\User;
 use MainBundle\Tests\Controller\BaseController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserControllerTest extends BaseController

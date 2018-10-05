@@ -58,6 +58,7 @@ class SubteamRole
     {
         return (string) $this->name;
     }
+
     /**
      * Constructor.
      */

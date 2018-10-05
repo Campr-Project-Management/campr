@@ -16,7 +16,7 @@ class MediaRepository extends BaseRepository
                 continue;
             }
 
-            if ($key === 'findIn') {
+            if ('findIn' === $key) {
                 foreach ($criteria[$key] as $column => $vals) {
                     $qb
                         ->andWhere(

@@ -59,7 +59,7 @@ class CalendarService
         }
 
         $data = [];
-        if (isset($options['type']) && $options['type'] === self::EXPORT_TYPE_CSV) {
+        if (isset($options['type']) && self::EXPORT_TYPE_CSV === $options['type']) {
             $data[] = self::CSV_HEADERS;
             foreach ($wps as $wp) {
                 $today = new \DateTime();
@@ -79,7 +79,7 @@ class CalendarService
             $response = new CsvResponse($data, 'project_'.$wp->getProjectName().'_events.csv');
 
             return $response;
-        } elseif (isset($options['type']) && $options['type'] === self::EXPORT_TYPE_ICS) {
+        } elseif (isset($options['type']) && self::EXPORT_TYPE_ICS === $options['type']) {
             $data = [];
             foreach ($wps as $wp) {
                 $wpCal = $wp->getCalendar();

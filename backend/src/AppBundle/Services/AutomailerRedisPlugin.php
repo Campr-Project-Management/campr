@@ -44,7 +44,7 @@ class AutomailerRedisPlugin implements \Swift_Events_SendListener
         //trigger this only when the message is first spooled, because else the rpush will be triggered twice, once at
         //Swift_Events_SendEvent::RESULT_SPOOLED and once at Swift_Events_SendEvent::RESULT_SUCCESS
         //also, we limit to 1 message because this event is triggered for only 1 message
-        if ($evt->getResult() === Swift_Events_SendEvent::RESULT_SPOOLED) {
+        if (Swift_Events_SendEvent::RESULT_SPOOLED === $evt->getResult()) {
             $this->redis->rpush(RedisQueueManagerCommand::AUTOMAILER, [
                 sprintf(
                     'automailer:spool:send --message-limit=1 --env=%s',

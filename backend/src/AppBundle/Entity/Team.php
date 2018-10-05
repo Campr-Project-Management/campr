@@ -639,7 +639,7 @@ class Team
     /**
      * @return string
      */
-    public function getUuid() : string
+    public function getUuid(): string
     {
         return (string) $this->uuid;
     }

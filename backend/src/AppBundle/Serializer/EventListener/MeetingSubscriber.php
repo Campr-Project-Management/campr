@@ -21,6 +21,7 @@ class MeetingSubscriber implements EventSubscriberInterface
 
     /**
      * MeetingSubscriber constructor.
+     *
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -94,4 +95,3 @@ class MeetingSubscriber implements EventSubscriberInterface
         $visitor->setData('openInfos', $visitor->visitArray($infos, [Info::class], $context));
     }
 }
-

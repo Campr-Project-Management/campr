@@ -78,7 +78,7 @@ class ChatTopic implements TopicInterface
         array $eligible
     ) {
         $data = explode('/', $topic->getId());
-        if (isset($data[2]) && $data[2] === '') {
+        if (isset($data[2]) && '' === $data[2]) {
             $project = $this->em->getReference(Project::class, $event['data']['project']);
             $chatRoom = $this->chatService->createProjectChatRoom($project, '#'.$event['data']['name']);
             $event['chat_id'] = $chatRoom->getId();

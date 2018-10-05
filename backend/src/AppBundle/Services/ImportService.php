@@ -67,7 +67,7 @@ class ImportService
 
         foreach ($xml->children() as $tag => $element) {
             if (array_key_exists($tag, ImportConstants::PROJECT_KEY_FUNCTION)) {
-                if ($tag === ImportConstants::PROJECT_NAME_TAG) {
+                if (ImportConstants::PROJECT_NAME_TAG === $tag) {
                     if ($this->em->getRepository(Project::class)->findBy(['name' => (string) $element])) {
                         return;
                     }
@@ -78,7 +78,7 @@ class ImportService
                     if ($this->checkIsDate((string) $element)) {
                         $date = str_replace('T', ' ', (string) $element);
                         $project->$action(new \DateTime($date));
-                    } elseif ($tag === ImportConstants::PROJECT_COMPANY_TAG) {
+                    } elseif (ImportConstants::PROJECT_COMPANY_TAG === $tag) {
                         $company = $this->importCompany((string) $element);
                         $project->$action($company);
                     } else {
@@ -137,7 +137,7 @@ class ImportService
                 } else {
                     switch ($calendarTag) {
                         case ImportConstants::BASE_CALENDAR_TAG:
-                            if ($element != '-1') {
+                            if ('-1' != $element) {
                                 $baseCalendar = $this
                                     ->em
                                     ->getRepository(Calendar::class)
@@ -313,7 +313,7 @@ class ImportService
                             }
                             break;
                         default:
-                            if ($workPackageTag === ImportConstants::OUTLINE_NUMBER) {
+                            if (ImportConstants::OUTLINE_NUMBER === $workPackageTag) {
                                 $outlineNumber2Entity[(string) $element] = $newWorkPackage;
                             }
                             if (!is_array($element)) {
@@ -325,10 +325,10 @@ class ImportService
 
             // set type
             switch (true) {
-                case stripos($newWorkPackage->getName(), 'phase') !== false:
+                case false !== stripos($newWorkPackage->getName(), 'phase'):
                     $newWorkPackage->setType(WorkPackage::TYPE_PHASE);
                     break;
-                case stripos($newWorkPackage->getName(), 'milestone') !== false:
+                case false !== stripos($newWorkPackage->getName(), 'milestone'):
                     $newWorkPackage->setType(WorkPackage::TYPE_MILESTONE);
                     break;
                 default:
@@ -371,7 +371,7 @@ class ImportService
             }
             // exclude 1st level items
             $pos = strpos($puid, '.');
-            if ($pos === false) {
+            if (false === $pos) {
                 continue;
             }
             $parentPuid = substr($puid, 0, $pos);

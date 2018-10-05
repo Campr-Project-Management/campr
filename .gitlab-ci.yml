@@ -1,10 +1,10 @@
 stages:
   - test
-  - deploy
 
-test:phpunit:
+phpunit:
   stage: test
   script:
+    - echo "Running phpunit tests"
     - export SYMFONY_ENV=test
     - export SYMFONY__DATABASE_NAME=campr_runner_$CI_RUNNER_ID
     - export SYMFONY__DATABASE_PASSWORD=campr
@@ -23,6 +23,19 @@ test:phpunit:
     - backend/vendor/bin/phpunit -c . backend/src
     - rm -rf backend/src/AppBundle/Tests/Resources/files/
     - bin/console doctrine:database:drop --if-exists --force --env=test
+
+phpstan:
+  stage: test
+  script:
+  - echo "Checking PHP files with phpstan"
+  - bin/phpstan analyse -l 1 backend/src
+
+cs-fixer:
+  stage: test
+  script:
+  - echo "Checking PHP files with php-cs-fixer"
+  - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
+  - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false deploy.php
 
 deploy_qa:
   stage: deploy

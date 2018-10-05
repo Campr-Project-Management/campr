@@ -185,7 +185,7 @@ class Rasci
      */
     public function isResponsible(): bool
     {
-        return $this->data === self::DATA_RESPONSIBLE;
+        return self::DATA_RESPONSIBLE === $this->data;
     }
 
     /**
@@ -193,7 +193,7 @@ class Rasci
      */
     public function isAccountable(): bool
     {
-        return $this->data === self::DATA_ACCOUNTABLE;
+        return self::DATA_ACCOUNTABLE === $this->data;
     }
 
     /**
@@ -201,7 +201,7 @@ class Rasci
      */
     public function isSupport(): bool
     {
-        return $this->data === self::DATA_SUPPORT;
+        return self::DATA_SUPPORT === $this->data;
     }
 
     /**
@@ -209,7 +209,7 @@ class Rasci
      */
     public function isConsulted(): bool
     {
-        return $this->data === self::DATA_CONSULTED;
+        return self::DATA_CONSULTED === $this->data;
     }
 
     /**
@@ -217,6 +217,6 @@ class Rasci
      */
     public function isInformed(): bool
     {
-        return $this->data === self::DATA_INFORMED;
+        return self::DATA_INFORMED === $this->data;
     }
 }

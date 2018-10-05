@@ -15,7 +15,7 @@ class ProcessManagerCommand extends ContainerAwareCommand
 {
     /**
      * The manager should only be run on the main environments!
-     * If you want a specific environment, use the --only-env=XXX option
+     * If you want a specific environment, use the --only-env=XXX option.
      */
     const ALLOWED_PROCESS_MANAGERS_ENVS = ['dev', 'qa', 'prod', 'test'];
 
@@ -33,8 +33,9 @@ class ProcessManagerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -69,6 +70,7 @@ class ProcessManagerCommand extends ContainerAwareCommand
 
     /**
      * @param InputInterface $input
+     *
      * @return string[]
      */
     private function getEnvironments(InputInterface $input)
@@ -91,7 +93,7 @@ class ProcessManagerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     private function validateProcessManagerEnvironment(InputInterface $input, OutputInterface $output)
@@ -112,9 +114,9 @@ class ProcessManagerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param array $environments
+     * @param array           $environments
      */
     private function printInfo(InputInterface $input, OutputInterface $output, array $environments)
     {
@@ -127,8 +129,8 @@ class ProcessManagerCommand extends ContainerAwareCommand
         $output->writeln(sprintf(
             '<info>Will run</info> <comment>%s</comment><info>.</info>',
             !$input->getOption('only-env')
-                ? 'for environments: ' . implode(', ', $environments)
-                : 'only for ' . $input->getOption('only-env')
+                ? 'for environments: '.implode(', ', $environments)
+                : 'only for '.$input->getOption('only-env')
         ));
     }
 
@@ -139,6 +141,7 @@ class ProcessManagerCommand extends ContainerAwareCommand
      * @param array $commands
      * @param array $environments
      * @param $timeout
+     *
      * @return array
      */
     private function buildProcesses(array $commands, array $environments = [], $timeout)
@@ -174,6 +177,7 @@ class ProcessManagerCommand extends ContainerAwareCommand
 
     /**
      * @param string $cmd
+     *
      * @return string
      */
     private function stripEnv(string $cmd): string

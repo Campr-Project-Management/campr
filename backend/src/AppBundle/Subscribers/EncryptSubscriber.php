@@ -228,7 +228,6 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
              * If property is an normal value and contains the Encrypt tag, lets encrypt/decrypt that property
              */
             if ($this->annReader->getPropertyAnnotation($refProperty, self::ENCRYPTED_ANN_NAME)) {
-
                 /*
                  * If it is public lets not use the getter/setter
                  */
@@ -238,7 +237,6 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
                 } else {
                     //If private or protected check if there is an getter/setter for the property, based on the $methodName
                     if ($reflectionClass->hasMethod($getter = 'get'.$methodName) && $reflectionClass->hasMethod($setter = 'set'.$methodName)) {
-
                         //Get the information (value) of the property
                         try {
                             $getInformation = $entity->$getter();
@@ -250,9 +248,9 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
                          * Then decrypt, encrypt the information if not empty, information is an string and the <ENC> tag is there (decrypt) or not (encrypt).
                          * The <ENC> will be added at the end of an encrypted string so it is marked as encrypted. Also protects against double encryption/decryption
                          */
-                        if ($encryptorMethod == 'decrypt') {
+                        if ('decrypt' == $encryptorMethod) {
                             if (!is_null($getInformation) and !empty($getInformation)) {
-                                if (substr($getInformation, -5) == '<ENC>') {
+                                if ('<ENC>' == substr($getInformation, -5)) {
                                     ++$this->decryptCounter;
                                     $currentPropValue = $this->encryptor->decrypt(substr($getInformation, 0, -5));
                                     $entity->$setter($currentPropValue);
@@ -260,7 +258,7 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
                             }
                         } else {
                             if (!is_null($getInformation) and !empty($getInformation)) {
-                                if (substr($entity->$getter(), -5) != '<ENC>') {
+                                if ('<ENC>' != substr($entity->$getter(), -5)) {
                                     ++$this->encryptCounter;
                                     $currentPropValue = $this->encryptor->encrypt($entity->$getter());
                                     $entity->$setter($currentPropValue);
@@ -285,7 +283,6 @@ class EncryptSubscriber extends DoctrineEncryptSubscriber
             $embeddedEntity = $embeddedProperty->getValue();
         } else {
             if ($reflectionClass->hasMethod($getter = 'get'.$methodName) && $reflectionClass->hasMethod($setter = 'set'.$methodName)) {
-
                 //Get the information (value) of the property
                 try {
                     $embeddedEntity = $entity->$getter();

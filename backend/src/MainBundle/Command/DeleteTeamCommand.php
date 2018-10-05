@@ -26,7 +26,7 @@ class DeleteTeamCommand extends ContainerAwareCommand
         $repo = $em->getRepository(Team::class);
         $teams = $repo->findDeletedTeams(new \DateInterval($teamRetentionPeriod));
 
-        if (count($teams) === 0) {
+        if (0 === count($teams)) {
             $output->writeln('<info>Nothing to clean up.</info>');
 
             return;

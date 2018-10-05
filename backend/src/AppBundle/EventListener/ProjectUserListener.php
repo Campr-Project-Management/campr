@@ -73,7 +73,7 @@ class ProjectUserListener
                             ->getRepository(Cost::class)
                             ->countByResource($resource);
 
-                        if ($costs == 0) {
+                        if (0 == $costs) {
                             $em->remove($resource);
                         }
                     }
