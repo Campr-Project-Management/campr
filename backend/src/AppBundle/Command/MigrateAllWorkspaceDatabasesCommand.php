@@ -8,16 +8,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 /**
- * Migrates all databases.
+ * Migrates all workspace databases.
  *
- * Command usage: app:migrate:all-databases
+ * Command usage: app:migrate:all-workspace-databases
  */
-class MigrateAllDatabasesCommand extends ContainerAwareCommand
+class MigrateAllWorkspaceDatabasesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('app:migrate:all-databases')
+            ->setName('app:migrate:all-workspace-databases')
         ;
     }
 
@@ -27,28 +27,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
         $env = $this->getContainer()->get('kernel')->getEnvironment();
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
 
-        /* Migrate main database */
-        $command = sprintf(
-            '--env=%s doctrine:migrations:migrate -n',
-            $env
-        );
-        $process = new Process(
-            sprintf('%s bin/console %s', PHP_BINARY, $command),
-            $wd,
-            null,
-            null,
-            null
-        );
-        $process->run();
-
-        if (0 !== $process->getExitCode()) {
-            $output->writeln(sprintf(
-                '<error>Executing %s failed.</error>',
-                $command
-            ));
-        }
-
-        /* Migrate team databases */
+        /* Migrate workspace databases */
         $sql = 'SELECT slug from team';
         $stmt = $em
             ->getConnection()
