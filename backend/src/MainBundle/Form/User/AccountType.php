@@ -150,7 +150,7 @@ class AccountType extends AbstractType
                     $user = $event->getData();
                     $form = $event->getForm();
                     if ($form->get('twoFactor')->getData()) {
-                        if ($user->getGoogleAuthenticatorSecret() === null) {
+                        if (null === $user->getGoogleAuthenticatorSecret()) {
                             $user->setGoogleAuthenticatorSecret($this->googleAuthenticator->generateSecret());
                         }
                     } else {

@@ -32,9 +32,10 @@ class ProcessManager
 
     /**
      * ProcessManager constructor.
-     * @param bool $parallel
-     * @param int $maxProcesses
-     * @param array $processes
+     *
+     * @param bool            $parallel
+     * @param int             $maxProcesses
+     * @param array           $processes
      * @param OutputInterface $output
      */
     public function __construct(
@@ -45,7 +46,7 @@ class ProcessManager
     ) {
         $this->parallel = $parallel;
 
-        if ($maxProcesses === self::AUTO_MAX_PROCESS) {
+        if (self::AUTO_MAX_PROCESS === $maxProcesses) {
             $maxProcesses = $this->getNumberOfCPUs();
         }
 

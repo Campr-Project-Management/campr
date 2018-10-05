@@ -41,7 +41,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
         );
         $process->run();
 
-        if ($process->getExitCode() !== 0) {
+        if (0 !== $process->getExitCode()) {
             $output->writeln(sprintf(
                 '<error>Executing %s failed.</error>',
                 $command
@@ -72,7 +72,7 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
             );
             $process->run();
 
-            if ($process->getExitCode() !== 0) {
+            if (0 !== $process->getExitCode()) {
                 $output->writeln(sprintf(
                     '<error>Executing %s failed.</error>',
                     $command

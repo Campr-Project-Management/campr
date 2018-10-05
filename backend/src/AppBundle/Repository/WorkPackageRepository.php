@@ -82,7 +82,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] != '') {
+        if (isset($criteria['trafficLight']) && '' != $criteria['trafficLight']) {
             $qb
                 ->andWhere('wp.trafficLight = :trafficLight')
                 ->setParameter('trafficLight', $criteria['trafficLight'])
@@ -669,7 +669,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] != '') {
+        if (isset($criteria['trafficLight']) && '' != $criteria['trafficLight']) {
             $qb
                 ->andWhere('wp.trafficLight = :trafficLight')
                 ->setParameter('trafficLight', $criteria['trafficLight'])
@@ -1519,7 +1519,7 @@ class WorkPackageRepository extends BaseRepository
             ;
         }
 
-        if (isset($criteria['trafficLight']) && $criteria['trafficLight'] !== '') {
+        if (isset($criteria['trafficLight']) && '' !== $criteria['trafficLight']) {
             $qb
                 ->andWhere('o.trafficLight = :trafficLight')
                 ->setParameter('trafficLight', $criteria['trafficLight'])
@@ -1640,7 +1640,7 @@ class WorkPackageRepository extends BaseRepository
             ->where('o.type = :task')
             ->orWhere('o.type = :tutorial')
             ->setParameter('task', WorkPackage::TYPE_TASK)
-            ->setParameter('tutorial',  WorkPackage::TYPE_TUTORIAL)
+            ->setParameter('tutorial', WorkPackage::TYPE_TUTORIAL)
             ->getQuery()
             ->getResult()
         ;

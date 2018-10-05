@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Meeting;
-use AppBundle\Entity\Status;
 use AppBundle\Entity\TodoCategory;
 
 class BaseCreateType extends AbstractType

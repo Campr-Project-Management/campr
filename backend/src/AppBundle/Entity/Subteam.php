@@ -84,6 +84,7 @@ class Subteam
     {
         return (string) $this->name;
     }
+
     /**
      * Constructor.
      */

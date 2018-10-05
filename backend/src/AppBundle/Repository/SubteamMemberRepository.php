@@ -35,7 +35,7 @@ class SubteamMemberRepository extends BaseRepository
                 continue;
             }
 
-            if ($key === 'findIn') {
+            if ('findIn' === $key) {
                 foreach ($criteria[$key] as $column => $vals) {
                     $qb
                         ->andWhere($qb->expr()->in('u.'.$column, ':vals'))

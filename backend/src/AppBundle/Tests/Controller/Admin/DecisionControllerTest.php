@@ -3,8 +3,6 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Decision;
-use AppBundle\Entity\Meeting;
-use AppBundle\Entity\Project;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
