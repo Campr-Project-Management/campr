@@ -69,8 +69,8 @@ set('mysql_password_usage', function () {
     return empty(get('mysql_password')) ? '' : ' -p{{mysql_password}}';
 });
 set('bin/mysqldump', function () {
-    //dump all workspaces dbs for backup
-    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}_%\'"`';
+    //dump main db and all workspaces dbs for backup
+    return '`which mysqldump` -u{{mysql_user}}{{mysql_password_usage}} --routines --databases `mysql -u{{mysql_user}}{{mysql_password_usage}} -Bse "show databases like \'{{mysql_database}}%\'"`';
 });
 set('bin/mc', function () {
     return '{{release_path}}/bin/mc --config-folder={{release_path}}/config/minio/';
