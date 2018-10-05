@@ -29,6 +29,8 @@ swiftmailer:
     disable_delivery: true
 
 monolog:
+    channels:
+        - "portal"
     handlers:
         main:
             type: stream
@@ -38,6 +40,11 @@ monolog:
         console:
             type:   console
             channels: [!event, !doctrine]
+        portal:
+            type: stream
+            path: "%kernel.logs_dir%/portal.log"
+            level: info
+            channels: ["portal"]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
