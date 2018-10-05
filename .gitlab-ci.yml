@@ -2,6 +2,9 @@ stages:
   - test
   - deploy
 
+before_script:
+  - composer install --prefer-dist
+
 phpunit:
   stage: test
   script:
