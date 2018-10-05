@@ -29,7 +29,7 @@ class ResourceRepository extends BaseRepository
                 ->expr()
                 ->orX(
                     $qb->expr()->isNull('r.projectUser'),
-                    $qb->expr()->eq('pu.showInResources',  true)
+                    $qb->expr()->eq('pu.showInResources', true)
                 )
             )
         ;

@@ -16,6 +16,7 @@ class DecisionCategoryController extends ApiController
 {
     const ENTITY_CLASS = DecisionCategory::class;
     const FORM_CLASS = CreateType::class;
+
     /**
      * Get the decision categories.
      *

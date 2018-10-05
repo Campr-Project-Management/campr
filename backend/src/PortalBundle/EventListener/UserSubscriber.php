@@ -47,6 +47,6 @@ class UserSubscriber implements EventSubscriberInterface
             return null;
         }
 
-         $this->client->get($user);
+        $this->client->get($user);
     }
 }

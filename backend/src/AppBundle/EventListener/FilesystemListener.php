@@ -19,7 +19,7 @@ class FilesystemListener
             }
 
             $total = (int) $fsRepo->countTotal();
-            if ($entity->getIsDefault() || $total === 1) {
+            if ($entity->getIsDefault() || 1 === $total) {
                 $manager->persist($entity);
                 $manager->refresh($entity);
                 $uof->recomputeSingleEntityChangeSet(

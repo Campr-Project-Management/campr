@@ -14,4 +14,3 @@ interface LocaleProviderInterface
      */
     public function getDefaultLocaleCode(): string;
 }
-

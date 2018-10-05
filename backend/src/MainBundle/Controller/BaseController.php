@@ -49,7 +49,7 @@ abstract class BaseController extends Controller
     protected function createApiResponse($data, $statusCode = Response::HTTP_OK, $emptyData = '')
     {
         if (empty($data)) {
-            if ($emptyData === '' && is_array($data)) {
+            if ('' === $emptyData && is_array($data)) {
                 $emptyData = [];
             }
 

@@ -13,6 +13,7 @@ class StatusReportRepository extends BaseRepository
         ProjectSortingTrait::setOrder as setProjectOrder;
         UserSortingTrait::setOrder as setUserOrder;
     }
+
     public function findLastByProject(Project $project)
     {
         return $this
@@ -77,7 +78,7 @@ class StatusReportRepository extends BaseRepository
                 ->andWhere('sr.createdAt > :date_start')
                 ->andWhere('sr.createdAt < :date_end')
                 ->setParameter('date_start', $date->format('Y-m-d 00:00:00'))
-                ->setParameter('date_end',   $date->format('Y-m-d 23:59:59'))
+                ->setParameter('date_end', $date->format('Y-m-d 23:59:59'))
             ;
         }
 

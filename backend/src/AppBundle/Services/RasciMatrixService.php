@@ -5,7 +5,6 @@ namespace AppBundle\Services;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
-use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Repository\RasciRepository;
 use AppBundle\Repository\WorkPackageRepository;

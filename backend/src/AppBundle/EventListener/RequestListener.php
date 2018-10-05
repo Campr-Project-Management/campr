@@ -27,7 +27,7 @@ class RequestListener
             return false;
         }
 
-        if (strtolower($temp[0]) !== 'application/json') {
+        if ('application/json' !== strtolower($temp[0])) {
             return false;
         }
 

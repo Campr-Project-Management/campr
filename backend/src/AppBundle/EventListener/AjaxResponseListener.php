@@ -26,7 +26,7 @@ class AjaxResponseListener
                 if ($response instanceof JsonResponse) {
                     $content = $response->getContent();
                     // @todo the third condition is just a temporary solution, it will be replaced later
-                    if (!empty($content) && !in_array($content, ['""', "''"], true) && strpos($content, 'messages') !== false) {
+                    if (!empty($content) && !in_array($content, ['""', "''"], true) && false !== strpos($content, 'messages')) {
                         $content = json_decode($content, true);
                         $content['error'] = true;
                         $response->setData($content);

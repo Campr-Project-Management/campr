@@ -18,6 +18,7 @@ class TodoCategoryController extends ApiController
 {
     const ENTITY_CLASS = TodoCategory::class;
     const FORM_CLASS = BaseType::class;
+
     /**
      * Get the todos categories.
      *

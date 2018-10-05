@@ -118,7 +118,7 @@ class RedisQueueManagerCommand extends ContainerAwareCommand
             $commandQueueLog->setExitCode($process->getExitCode());
             $commandQueueLog->setOutput($process->getOutput());
 
-            if ($process->getExitCode() !== 0 && $count < $this->maxRequeueCount) {
+            if (0 !== $process->getExitCode() && $count < $this->maxRequeueCount) {
                 $redis->rpush($this->list, [$message.' --queue-count='.($count + 1)]);
                 $output->writeln(sprintf(
                     '<error>Executing %s failed. Requeueing.</error>',

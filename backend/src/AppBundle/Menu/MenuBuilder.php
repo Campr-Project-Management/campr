@@ -68,7 +68,7 @@ class MenuBuilder
         $token = $this->securityTokenStorage->getToken();
 
         if ($token->isAuthenticated()) {
-            if (php_sapi_name() === 'cli') {
+            if ('cli' === php_sapi_name()) {
                 $route = $this->router->getRouteCollection()->get($routeName);
                 $controller = $route->getDefault('_controller');
                 list($class, $method) = explode('::', $controller, 2);
@@ -104,7 +104,7 @@ class MenuBuilder
             /** @var MenuItem $child */
             $routes = $child->getExtra('routes');
 
-            if ($routes !== null) {
+            if (null !== $routes) {
                 $route = current(current($routes));
 
                 if ($route && !$this->hasRouteAccess($route)) {
