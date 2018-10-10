@@ -1,53 +1,58 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-3">
-            <h1>{{ translateText('message.project_create_wizard') }}</h1>
-            <h2>{{ translateText('message.project_create_step3') }}</h2>
+            <h1>{{ translate('message.project_create_wizard') }}</h1>
+            <h2>{{ translate('message.project_create_step3') }}</h2>
             <div class="hr"></div>
-            <h3>{{ translateText('message.project_size') }}: <span>{{ translateText('message.medium') }}</span></h3>
+            <h3>{{ translate('message.project_size') }}: <span>{{ translate('message.medium') }}</span></h3>
 
-            <p>{{ translateText('message.recommended_modules') }}</p>
-            <project-module v-for="(module, key) in modules"
-                v-if="moduleIsRecommended(key)"
-                v-bind:title="translateText(module.title)"
-                v-bind:description="translateText(module.description)"
-                v-bind:id="key"
-                v-model="modulesConfiguration[key]"
-                v-bind:inactive="!modulesConfiguration[key]" />
-         
-            <p>{{ translateText('message.not_recommended_modules') }}</p>
+            <p>{{ translate('message.recommended_modules') }}</p>
 
-            <project-module v-for="(module, key) in modules"
-                v-if="!moduleIsRecommended(key)"
-                v-bind:title="translateText(module.title)"
-                v-bind:description="translateText(module.description)"
-                v-bind:id="key"
-                v-model="modulesConfiguration[key]"
-                v-bind:inactive="!modulesConfiguration[key]" />
+            <project-module
+                    v-for="(module, key) in recommendedModules"
+                    :title="translate(`modules.${module}.title`)"
+                    :description="translate(`modules.${module}.description`)"
+                    :id="`recommended_module_${key}`"
+                    :value="isModuleSelected(module)"
+                    @input="onModuleSelectionChanged(module, $event)"/>
+
+            <template v-if="optionalModules.length > 0">
+                <p>{{ translate('message.not_recommended_modules') }}</p>
+
+                <project-module
+                        v-for="(module, key) in optionalModules"
+                        :title="translate(`modules.${module}.title`)"
+                        :description="translate(`modules.${module}.description`)"
+                        :id="`optional_module_${key}`"
+                        :inactive="true"
+                        :value="isModuleSelected(module)"
+                        @input="onModuleSelectionChanged(module, $event)"/>
+            </template>
 
             <div class="flex flex-space-between actions">
-                <a href="#" v-on:click="previousStep" class="btn-rounded btn-right" v-bind:title="translateText('button.previous_step')">
-                    < {{ translateText('button.previous_step') }}
-                </a>
-                <a v-if="!projectLoading" href="#" v-on:click="submitProject" class="btn-rounded btn-right second-bg" v-bind:title="translateText('button.start_project')">
-                    < {{ translateText('button.start_project') }}
-                </a>
+                <a
+                        href="#"
+                        @click="previousStep"
+                        class="btn-rounded btn-right"
+                        :title="translate('button.previous_step')">< {{ translate('button.previous_step') }}</a>
+                <a
+                        href="#"
+                        @click.prevent="submitProject"
+                        class="btn-rounded btn-right second-bg"
+                        :title="translate('button.start_project')">< {{ translate('button.start_project') }}</a>
             </div>
             <!-- /// Show errors modal/// -->
             <modal v-if="showErrorAlert" @close="showErrorAlert = false">
-                <p class="modal-title">{{ translateText('title.project_add_error') }}</p>
+                <p class="modal-title">{{ translate('title.project_add_error') }}</p>
                 <dl v-for="(field, key) in validationMessages">
                     <dt class="ucwords">{{key}}:</dt>
-                    <dd v-for="item in field" >{{item}}</dd>
+                    <dd v-for="item in field">{{item}}</dd>
                 </dl>
                 <div class="flex flex-space-between">
                     <a
-                        @click.preventDefault="showErrorAlert = false"
-                        class="btn-rounded btn-empty danger-color danger-border"
-                        style="margin: auto"
-                    >
-                        {{ translateText('message.close') }}
-                    </a>
+                            @click.preventDefault="showErrorAlert = false"
+                            class="btn-rounded btn-empty danger-color danger-border"
+                            style="margin: auto">{{ translate('message.close') }}</a>
                 </div>
             </modal>
         </div>
@@ -55,152 +60,156 @@
 </template>
 
 <script>
-import ProjectModule from './ProjectModule';
-import Modal from '../_common/Modal';
-import {mapActions, mapGetters} from 'vuex';
-import _ from 'lodash';
-import {
-    processProjectModules,
-    processProjectConfiguration,
-    convertImageToBlog,
-    FIRST_STEP_LOCALSTORAGE_KEY,
-    SECOND_STEP_LOCALSTORAGE_KEY,
-    THIRD_STEP_LOCALSTORAGE_KEY,
-} from '../../helpers/project';
+    import ProjectModule from './ProjectModule';
+    import Modal from '../_common/Modal';
+    import {mapActions, mapGetters} from 'vuex';
+    import _ from 'lodash';
+    import {convertImageToBlog} from '../../helpers/project';
+    import * as projectModuleHelper from '../../helpers/project-module';
 
-export default {
-    components: {
-        ProjectModule,
-        Modal,
-    },
-    computed: {
-        ...mapGetters([
-            'modules',
-            'project',
-            'projectLoading',
-            'localUser',
-            'validationMessages',
-        ]),
-    },
-    created() {
-        if (!this.modules || !this.modules.length) {
+    export default {
+        components: {
+            ProjectModule,
+            Modal,
+        },
+        computed: {
+            ...mapGetters([
+                'modules',
+                'project',
+                'localUser',
+                'validationMessages',
+                'recommendedModules',
+                'optionalModules',
+                'projectCreateWizardStep1',
+                'projectCreateWizardStep2',
+                'projectCreateWizardStep3',
+                'isRecommendedModule',
+            ]),
+        },
+        created() {
             this.getModules();
-        }
-    },
-    watch: {
-        project(value) {
-            localStorage.removeItem(FIRST_STEP_LOCALSTORAGE_KEY);
-            localStorage.removeItem(SECOND_STEP_LOCALSTORAGE_KEY);
-            localStorage.removeItem(THIRD_STEP_LOCALSTORAGE_KEY);
-            this.$router.push({name: 'project-dashboard', params: {'id': value.id}});
+            this.loadRecommendedModules();
         },
-        modules(value) {
-            const stepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY) || '{}');
-            if (stepData && stepData.modulesConfiguration != null) {
-                this.modulesConfiguration = stepData.modulesConfiguration;
-                return;
-            }
-            for (let module in value) {
-                if (value.hasOwnProperty(module)) {
-                    this.modulesConfiguration[module] = this.moduleIsRecommended(module);
+        watch: {
+            project(value) {
+                this.resetProjectCreateWizard();
+                this.$router.push({name: 'project-dashboard', params: {'id': value.id}});
+            },
+            recommendedModules(modules) {
+                this.selectedModules = [];
+                modules.forEach((module) => {
+                    this.selectedModules.push(module);
+                });
+            },
+            validationMessages(value) {
+                if (_.isObject(value) && _.keys(value) && _.keys(value).length) {
+                    this.showErrorAlert = true;
                 }
-            }
-            this.modulesConfiguration = JSON.parse(JSON.stringify(this.modulesConfiguration));
+            },
         },
-        validationMessages(value) {
-            if (_.isObject(value) && _.keys(value) && _.keys(value).length) {
-                this.showErrorAlert = true;
-            }
-        },
-    },
-    methods: {
-        ...mapActions(['createProject', 'getModules']),
-        translateText(text) {
-            return this.translate(text);
-        },
-        moduleIsRecommended(moduleKey) {
-            /* we will have to implement an algoritm for this*/
-            let notRecomandedModules = ['rasci_matrix', 'task_chart', 'gantt_chart', 'decisions'];
-            return notRecomandedModules.indexOf(moduleKey) === -1;
-        },
-        submitProject: function(e) {
-            e.preventDefault();
-            this.saveStepState();
-
-            this.startProject();
-        },
-        startProject: function() {
-            const firstStepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY) || '{}');
-            const secondStepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY) || '{}');
-            const thirdStepData = JSON.parse(localStorage.getItem(THIRD_STEP_LOCALSTORAGE_KEY) || '{}');
-
-            let projectModules = processProjectModules(thirdStepData);
-
-            let formData = new FormData();
-            let configuration = processProjectConfiguration(secondStepData);
-
-            formData.append('name', firstStepData.projectName);
-            formData.append('number', firstStepData.projectNumber);
-
-            if (firstStepData.selectedCompany) {
-                formData.append('company', firstStepData.selectedCompany.key);
-            }
-
-            if (firstStepData.projectLogo) {
-                formData.append('logoFile[file]', convertImageToBlog(firstStepData.projectLogo));
-            }
-            if (firstStepData.visiblePortfolio) {
-                formData.append('portfolio', firstStepData.selectedPortfolio.key);
-            }
-            if (firstStepData.visibleProgramme) {
-                formData.append('programme', firstStepData.selectedProgramme.key);
-            }
-            if (firstStepData.selectedCurrency) {
-                formData.append('currency', firstStepData.selectedCurrency.key);
-            }
-
-            if (secondStepData.selectedCategory) {
-                formData.append('projectCategory', secondStepData.selectedCategory.key);
-            }
-
-            if (secondStepData.selectedScope) {
-                formData.append('projectScope', secondStepData.selectedScope.key);
-            }
-
-            for (let key in configuration) {
-                if (configuration.hasOwnProperty(key)) {
-                    formData.append('configuration[' + key +']', configuration[key]);
+        methods: {
+            ...mapActions([
+                'createProject',
+                'getModules',
+                'getRecommendedModules',
+                'setProjectCreateWizardStep3',
+                'resetProjectCreateWizard',
+            ]),
+            isModuleSelected(module) {
+                return this.selectedModules.indexOf(module) >= 0;
+            },
+            onModuleSelectionChanged(module, isChecked) {
+                if (isChecked) {
+                    this.selectedModules.push(module);
+                    return;
                 }
-            }
 
-            for (let i = 0; i < projectModules.length; i++) {
-                formData.append('projectModules[' + i + '][module]', projectModules[i]['module']);
-                if (projectModules[i]['isEnabled']) {
-                    formData.append('projectModules[' + i + '][isEnabled]', projectModules[i]['isEnabled'] ? 1 : 0);
+                let index = this.selectedModules.indexOf(module);
+                if (index < 0) {
+                    return;
                 }
-            }
 
-            this.createProject(formData);
+                this.$delete(this.selectedModules, index);
+            },
+            loadRecommendedModules() {
+                const stepData = this.projectCreateWizardStep2;
+                this.getRecommendedModules({
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_DURATION]: stepData.projectDuration,
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_BUDGET]: stepData.projectBudget,
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_INNOVATION_DEGREEE]: stepData.projectInnovationDegree,
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_MEMBERS]: stepData.projectMembers,
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_STRATEGICAL_MEANING]: stepData.projectStrategicalMeaning,
+                    [projectModuleHelper.MODULE_ANALYSER_PROJECT_TECHNOLOGY_COMPLEXITY]: stepData.projectTechnologyComplexity,
+                });
+            },
+            submitProject() {
+                this.saveStepState();
+                this.startProject();
+            },
+            startProject: function() {
+                const firstStepData = this.projectCreateWizardStep1;
+                const secondStepData = this.projectCreateWizardStep2;
+
+                let formData = new FormData();
+
+                if (firstStepData.projectName) {
+                    formData.append('name', firstStepData.projectName);
+                }
+
+                if (firstStepData.projectNumber) {
+                    formData.append('number', firstStepData.projectNumber);
+                }
+
+                if (firstStepData.selectedCompany) {
+                    formData.append('company', firstStepData.selectedCompany.key);
+                }
+
+                if (firstStepData.projectLogo) {
+                    formData.append('logoFile[file]', convertImageToBlog(firstStepData.projectLogo));
+                }
+                if (firstStepData.visiblePortfolio) {
+                    formData.append('portfolio', firstStepData.selectedPortfolio.key);
+                }
+                if (firstStepData.visibleProgramme) {
+                    formData.append('programme', firstStepData.selectedProgramme.key);
+                }
+                if (firstStepData.selectedCurrency) {
+                    formData.append('currency', firstStepData.selectedCurrency.key);
+                }
+
+                if (secondStepData.selectedCategory) {
+                    formData.append('projectCategory', secondStepData.selectedCategory.key);
+                }
+
+                if (secondStepData.selectedScope) {
+                    formData.append('projectScope', secondStepData.selectedScope.key);
+                }
+
+                this.modules.forEach((module, i) => {
+                    formData.append(`projectModules[${i}][module]`, module);
+                    formData.append(`projectModules[${i}][isEnabled]`, this.isModuleSelected(module) ? 1: 0);
+                });
+
+                this.createProject(formData);
+            },
+            previousStep: function(e) {
+                e.preventDefault();
+                this.saveStepState();
+                this.$router.push({name: 'projects-create-2'});
+            },
+            saveStepState: function() {
+                this.setProjectCreateWizardStep3({
+                    selectedModules: this.selectedModules,
+                });
+            },
         },
-        previousStep: function(e) {
-            e.preventDefault();
-            this.saveStepState();
-            this.$router.push({name: 'projects-create-2'});
-        },
-        saveStepState: function() {
-            const stepData = {
-                modulesConfiguration: this.modulesConfiguration,
+        data() {
+            return {
+                selectedModules: [],
+                showErrorAlert: false,
             };
-            localStorage.setItem(THIRD_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
         },
-    },
-    data: function() {
-        return {
-            modulesConfiguration: {},
-            showErrorAlert: false,
-        };
-    },
-};
+    };
 </script>
 
 <style lang="scss">
@@ -212,11 +221,11 @@ export default {
     @import '../../css/_common';
 
     .st0 {
-        fill:none;
-        stroke:#65BEA3;
-        stroke-linecap:round;
-        stroke-linejoin:round;
-        stroke-miterlimit:10;
+        fill: none;
+        stroke: #65BEA3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
     }
 
     .hr {
@@ -256,7 +265,7 @@ export default {
     .toggle-content {
         cursor: pointer;
     }
-    
+
     .ucwords {
         text-transform: capitalize;
     }

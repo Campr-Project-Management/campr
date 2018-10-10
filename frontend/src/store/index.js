@@ -16,7 +16,6 @@ import gantt from './modules/gantt';
 import infoCategory from './modules/info-category';
 import info from './modules/info';
 import lesson from './modules/lesson';
-import loader from './modules/loader';
 import measure from './modules/measure';
 import meetingAgenda from './modules/meeting-agenda';
 import meetingCategory from './modules/meeting-category';
@@ -64,10 +63,20 @@ import workPackage from './modules/work-package';
 import workPackageStatus from './modules/work-package-status';
 import workspace from './modules/workspace';
 import currency from './modules/currency';
+import projectCreateWizard from './modules/project-create-wizard';
+import VuexPersist from 'vuex-persist';
+import VueWait from 'vue-wait';
 
 Vue.use(Vuex);
+Vue.use(VueWait);
 
 const debug = process.env.NODE_ENV !== 'production';
+
+const localPersist = new VuexPersist({
+    key: 'campr',
+    storage: window.localStorage,
+    modules: ['projectCreateWizard'],
+});
 
 export default new Vuex.Store({
     actions,
@@ -87,7 +96,6 @@ export default new Vuex.Store({
         info,
         infoCategory,
         lesson,
-        loader,
         measure,
         meeting,
         meetingAgenda,
@@ -135,6 +143,8 @@ export default new Vuex.Store({
         workPackageStatus,
         workspace,
         currency,
+        projectCreateWizard,
     },
     strict: debug,
+    plugins: [localPersist.plugin],
 });

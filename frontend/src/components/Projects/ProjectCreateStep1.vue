@@ -1,19 +1,19 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-1">
-            <h1>{{ translateText('message.project_create_wizard') }}</h1>
-            <h2>{{ translateText('message.project_create_step1') }}</h2>
+            <h1>{{ translate('message.project_create_wizard') }}</h1>
+            <h2>{{ translate('message.project_create_step1') }}</h2>
 
-            <input-field type="text" :label="translateText('message.project_name')" v-model="projectName"
+            <input-field type="text" :label="translate('message.project_name')" v-model="projectName"
                          :content="projectName"/>
-            <input-field type="text" :label="translateText('message.project_number')" v-model="projectNumber"
+            <input-field type="text" :label="translate('message.project_number')" v-model="projectNumber"
                          :content="projectNumber"/>
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*"
                    @change="updateProjectLogo">
 
             <select-field
-                    :title="translateText('message.select_customer')"
-                    :options="customers"
+                    :title="translate('message.select_customer')"
+                    :options="customersForSelect"
                     v-model="selectedCompany"/>
 
             <select-field
@@ -28,26 +28,24 @@
                 <img :src="projectLogo" class="avatar"/>
             </div>
             <div class="flex flex-center">
-                <a class="btn-rounded btn-empty btn-md" @click="openProjectLogoFileSelection">{{
-                    translateText('message.project_logo') }}</a>
+                <a class="btn-rounded btn-empty btn-md" @click="openProjectLogoFileSelection">{{ translate('message.project_logo') }}</a>
             </div>
             <div class="checkbox-input clearfix">
                 <input id="project-portfolio" type="checkbox" v-model="visiblePortfolio">
-                <label for="project-portfolio">{{ translateText('message.project_portfolio') }}</label>
+                <label for="project-portfolio">{{ translate('message.project_portfolio') }}</label>
             </div>
             <div v-if="visiblePortfolio">
                 <select-field
-                        :title="translateText('message.select_portfolio')"
-                        :options="portfolios"
+                        :title="translate('message.select_portfolio')"
+                        :options="portfoliosForSelect"
                         v-model="selectedPortfolio"/>
                 <div class="flex" v-if="visibleAddPortfolioField">
                     <input-field v-model="portfolioName" :content="portfolioName" type="text"
-                                 :label="translateText('message.add_portfolio')"/>
+                                 :label="translate('message.add_portfolio')"/>
                     <button
                             @click="addPortfolio"
                             :disabled="portfolioLoading"
-                            class="btn-rounded btn-add">
-                        {{translateText('label.add')}}
+                            class="btn-rounded btn-add">{{translate('label.add')}}
                     </button>
                 </div>
                 <div class="flex flex-direction-reverse">
@@ -55,29 +53,28 @@
                             v-if="!visibleAddPortfolioField"
                             @click="showAddPortfolioField"
                             :disabled="portfolioLoading"
-                            class="btn-rounded btn-right">
-                        {{ translateText('message.add_portfolio') }}
+                            class="btn-rounded btn-right">{{ translate('message.add_portfolio') }}
                     </button>
                 </div>
             </div>
 
             <div class="checkbox-input clearfix">
                 <input id="project-programme" type="checkbox" v-model="visibleProgramme">
-                <label for="project-programme">{{ translateText('message.project_programme') }}</label>
+                <label for="project-programme">{{ translate('message.project_programme') }}</label>
             </div>
             <div v-if="visibleProgramme">
                 <select-field
-                        :title="translateText('message.select_programme')"
-                        :options="programmes"
+                        :title="translate('message.select_programme')"
+                        :options="programmesForSelect"
                         v-model="selectedProgramme"/>
                 <div class="flex" v-if="visibleAddProgrammeField">
                     <input-field v-model="programmeName" :content="programmeName" type="text"
-                                 :label="translateText('message.add_programme')"/>
+                                 :label="translate('message.add_programme')"/>
                     <button
                             @click="addProgramme"
                             :disabled="programmeLoading"
                             class="btn-rounded btn-add">
-                        {{translateText('label.add')}}
+                        {{translate('label.add')}}
                     </button>
                 </div>
                 <div class="flex flex-direction-reverse">
@@ -86,14 +83,14 @@
                             @click="showAddProgrammeField"
                             :disabled="programmeLoading"
                             class="btn-rounded btn-right">
-                        {{ translateText('message.add_programme') }}
+                        {{ translate('message.add_programme') }}
                     </button>
                 </div>
             </div>
 
             <div class="flex flex-direction-reverse actions">
-                <a href="#" @click="nextStep" class="btn-rounded second-bg" :title="translateText('button.next_step')">
-                    {{ translateText('button.next_step') }} >
+                <a href="#" @click="nextStep" class="btn-rounded second-bg" :title="translate('button.next_step')">
+                    {{ translate('button.next_step') }} >
                 </a>
             </div>
         </div>
@@ -105,7 +102,6 @@
     import SelectField from '../_common/_form-components/SelectField';
     import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
     import {mapActions, mapGetters} from 'vuex';
-    import {FIRST_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
 
     export default {
         components: {
@@ -121,10 +117,8 @@
                 'getProgrammes',
                 'getCustomers',
                 'getCurrencies',
+                'setProjectCreateWizardStep1',
             ]),
-            translateText(text) {
-                return this.translate(text);
-            },
             hideAddPortfolioField: function() {
                 this.visibleAddPortfolioField = false;
             },
@@ -143,7 +137,7 @@
                 this.$router.push({name: 'projects-create-2'});
             },
             saveStepState: function() {
-                const stepData = {
+                const data = {
                     'portfolioName': this.portfolioName,
                     'programmeName': this.programmeName,
                     'projectName': this.projectName,
@@ -158,7 +152,7 @@
                     'selectedCompany': this.selectedCompany,
                     'selectedCurrency': this.selectedCurrency,
                 };
-                localStorage.setItem(FIRST_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
+                this.setProjectCreateWizardStep1(data);
             },
             addPortfolio: function() {
                 let data = {
@@ -189,18 +183,39 @@
                 };
                 reader.readAsDataURL(files[0]);
             },
+            init() {
+                const stepData = this.projectCreateWizardStep1;
+
+                this.projectName = stepData ? stepData.projectName : '';
+                this.projectNumber = stepData ? stepData.projectNumber : '';
+                this.projectLogo = stepData ? stepData.projectLogo : '';
+                this.visiblePortfolio = stepData ? stepData.visiblePortfolio : false;
+                this.visibleAddPortfolioField = stepData ? stepData.visibleAddPortfolioField : false;
+                this.visibleProgramme = stepData ? stepData.visibleProgramme : false;
+                this.visibleAddProgrammeField = stepData ? stepData.visibleAddProgrammeField : false;
+                this.portfolioName = stepData ? stepData.portfolioName : '';
+                this.programmeName = stepData ? stepData.programmeName : '';
+                this.selectedPortfolio = stepData ? stepData.selectedPortfolio : {};
+                this.selectedProgramme = stepData ? stepData.selectedProgramme : {};
+                this.selectedCompany = stepData ? stepData.selectedCompany : {};
+                this.selectedCurrency = stepData ? stepData.selectedCurrency : {};
+            },
         },
-        computed: mapGetters({
-            customers: 'customersForSelect',
-            localUser: 'localUser',
-            portfolios: 'portfoliosForSelect',
-            portfolioLoading: 'portfolioLoading',
-            programmes: 'programmesForSelect',
-            programmeLoading: 'programmeLoading',
-            currenciesForSelect: 'currenciesForSelect',
-            currencies: 'currencies',
-        }),
+        computed: {
+            ...mapGetters([
+                'localUser',
+                'currenciesForSelect',
+                'currencies',
+                'programmeLoading',
+                'projectCreateWizardStep1',
+                'customersForSelect',
+                'portfolioLoading',
+                'programmesForSelect',
+                'portfoliosForSelect',
+            ]),
+        },
         created() {
+            this.init();
             this.getPortfolios();
             this.getProgrammes();
             this.getCustomers();
@@ -210,7 +225,7 @@
             }
         },
         watch: {
-            portfolios(value) {
+            portfoliosForSelect(value) {
                 let selectedPortfolio = value.filter((item) => item.label === this.portfolioName);
 
                 if (selectedPortfolio.length > 0) {
@@ -221,7 +236,7 @@
             selectedPortfolio(value) {
                 this.hideAddPortfolioField();
             },
-            programmes(value) {
+            programmesForSelect(value) {
                 let selectedProgramme = value.filter((item) => item.label === this.programmeName);
 
                 if (selectedProgramme.length > 0) {
@@ -233,23 +248,21 @@
                 this.hideAddProgrammeField();
             },
         },
-        data: function() {
-            const stepData = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
-
+        data() {
             return {
-                projectName: stepData ? stepData.projectName : '',
-                projectNumber: stepData ? stepData.projectNumber : '',
-                projectLogo: stepData ? stepData.projectLogo : '',
-                visiblePortfolio: stepData ? stepData.visiblePortfolio : false,
-                visibleAddPortfolioField: stepData ? stepData.visibleAddPortfolioField : false,
-                visibleProgramme: stepData ? stepData.visibleProgramme : false,
-                visibleAddProgrammeField: stepData ? stepData.visibleAddProgrammeField : false,
-                portfolioName: stepData ? stepData.portfolioName : '',
-                programmeName: stepData ? stepData.programmeName : '',
-                selectedPortfolio: stepData ? stepData.selectedPortfolio : {},
-                selectedProgramme: stepData ? stepData.selectedProgramme : {},
-                selectedCompany: stepData ? stepData.selectedCompany : {},
-                selectedCurrency: stepData ? stepData.selectedCurrency : {},
+                projectName: '',
+                projectNumber: '',
+                projectLogo: '',
+                visiblePortfolio: false,
+                visibleAddPortfolioField: false,
+                visibleProgramme: false,
+                visibleAddProgrammeField: false,
+                portfolioName: '',
+                programmeName: '',
+                selectedPortfolio: {},
+                selectedProgramme: {},
+                selectedCompany: {},
+                selectedCurrency: {},
             };
         },
     };
