@@ -826,7 +826,10 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->enabled = $enabled;
     }
 
-    public function isEnabled(): bool
+    /**
+     * @return bool
+     */
+    public function isEnabled()
     {
         return $this->enabled;
     }
@@ -1911,7 +1914,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function getUuid()
     {
         return (string) $this->uuid;
     }
@@ -1927,7 +1930,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @return bool
      */
-    public function isSuspended(): bool
+    public function isSuspended()
     {
         return $this->suspended;
     }
@@ -1943,7 +1946,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     /**
      * @return string
      */
-    public function getAvatarUrl(): string
+    public function getAvatarUrl()
     {
         return (string) $this->avatarUrl;
     }

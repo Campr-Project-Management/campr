@@ -1,64 +1,39 @@
 <template>
     <div class="project-create-wrapper">
         <div class="page-section project-create step-2">
-            <h1>{{ translateText('message.project_create_wizard') }}</h1>
-            <h2>{{ translateText('message.project_create_step2') }}</h2>
+            <h1>{{ translate('message.project_create_wizard') }}</h1>
+            <h2>{{ translate('message.project_create_step2') }}</h2>
 
-            <range-slider
-                    :title="translateText('message.project_duration')"
-                    :max="durationMaxValue"
-                    minSuffix="Months"
-                    v-model="projectDuration"/>
-            <range-slider
-                    :title="translateText('message.project_budget')"
-                    :max="budgetMaxValue"
-                    :values="budgetValues"
-                    :min-prefix="currencySymbol"
-                    v-model="projectBudget"/>
-            <range-slider
-                    :title="translateText('message.team_members_involved')"
-                    :min="1"
-                    :max="20"
-                    type="double"
-                    v-model="projectInvolved"/>
-            <range-slider
-                    :title="translateText('message.departments_involved')"
-                    :min="1"
-                    :max="20"
-                    type="double"
-                    v-model="departmentsInvolved"/>
-            <range-slider
-                    :title="translateText('message.strategical_meaning')"
-                    min="none"
-                    :values="['none', 'few', 'medium', 'high']"
-                    v-model="strategicalMeaning"/>
-            <range-slider
-                    :title="translateText('message.risks')"
-                    min="few"
-                    :values="['none', 'few', 'medium', 'high']"
-                    v-model="risks"/>
+            <project-duration-slider v-model="projectDuration"/>
+            <project-budget-slider
+                    v-model="projectBudget"
+                    :currency="currencySymbol"/>
+            <project-members-slider v-model="projectMembers"/>
+            <project-strategical-meaning-slider v-model="projectStrategicalMeaning"/>
+            <project-innovation-degree-slider v-model="projectInnovationDegree"/>
+            <project-technology-complexity-slider v-model="projectTechnologyComplexity"/>
 
             <div class="dropdowns">
                 <select-field
-                        :title="translateText('message.category')"
-                        :options="projectCategories"
+                        :title="translate('message.category')"
+                        :options="projectCategoriesForSelect"
                         v-model="selectedCategory">
                 </select-field>
                 <select-field
-                        :title="translateText('message.scope')"
-                        :options="projectScopes"
+                        :title="translate('message.scope')"
+                        :options="projectScopesForSelect"
                         v-model="selectedScope">
                 </select-field>
             </div>
 
             <div class="flex flex-space-between actions">
                 <a href="#" @click="previousStep" class="btn-rounded"
-                   :title="translateText('button.previous_step')">
-                    < {{ translateText('button.previous_step') }}
+                   :title="translate('button.previous_step')">
+                    < {{ translate('button.previous_step') }}
                 </a>
                 <a href="#" @click="nextStep" class="btn-rounded second-bg"
-                   :title="translateText('button.analyze')">
-                    {{ translateText('button.analyze') }} >
+                   :title="translate('button.analyze')">
+                    {{ translate('button.analyze') }} >
                 </a>
             </div>
         </div>
@@ -69,10 +44,21 @@
     import SelectField from '../_common/_form-components/SelectField';
     import RangeSlider from '../_common/_form-components/RangeSlider';
     import {mapActions, mapGetters} from 'vuex';
-    import {FIRST_STEP_LOCALSTORAGE_KEY, SECOND_STEP_LOCALSTORAGE_KEY} from '../../helpers/project';
+    import ProjectDurationSlider from './ProjectCreate/ProjectDurationSlider';
+    import ProjectBudgetSlider from './ProjectCreate/ProjectBudgetSlider';
+    import ProjectStrategicalMeaningSlider from './ProjectCreate/ProjectStrategicalMeaningSlider';
+    import ProjectInnovationDegreeSlider from './ProjectCreate/ProjectInnovationDegreeSlider';
+    import ProjectTechnologyComplexitySlider from './ProjectCreate/ProjectTechnologyComplexitySlider';
+    import ProjectMembersSlider from './ProjectCreate/ProjectMembersSlider';
 
     export default {
         components: {
+            ProjectMembersSlider,
+            ProjectTechnologyComplexitySlider,
+            ProjectInnovationDegreeSlider,
+            ProjectStrategicalMeaningSlider,
+            ProjectBudgetSlider,
+            ProjectDurationSlider,
             SelectField,
             RangeSlider,
         },
@@ -81,10 +67,8 @@
                 'getProjectCategories',
                 'getProjectScopes',
                 'getCurrencies',
+                'setProjectCreateWizardStep2',
             ]),
-            translateText(text) {
-                return this.translate(text);
-            },
             nextStep: function(e) {
                 e.preventDefault();
                 this.saveStepState();
@@ -96,46 +80,41 @@
                 this.$router.push({name: 'projects-create-1'});
             },
             saveStepState: function() {
-                const stepData = {
+                const data = {
                     projectDuration: this.projectDuration,
                     projectBudget: this.projectBudget,
-                    projectInvolved: this.projectInvolved,
-                    departmentsInvolved: this.departmentsInvolved,
+                    projectMembers: this.projectMembers,
+                    projectStrategicalMeaning: this.projectStrategicalMeaning,
+                    projectInnovationDegree: this.projectInnovationDegree,
+                    projectTechnologyComplexity: this.projectTechnologyComplexity,
                     selectedCategory: this.selectedCategory,
                     selectedScope: this.selectedScope,
-                    strategicalMeaning: this.strategicalMeaning,
-                    risks: this.risks,
                 };
-                localStorage.setItem(SECOND_STEP_LOCALSTORAGE_KEY, JSON.stringify(stepData));
+                this.setProjectCreateWizardStep2(data);
             },
-            projectHasProgrammeAndPortofolio: function() {
-                const step1Data = JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
-                if (
-                    step1Data.visiblePortfolio &&
-                    step1Data.selectedPortfolio.key &&
-                    step1Data.visibleProgramme &&
-                    step1Data.selectedProgramme.key !== undefined
-                ) {
-                    return true;
-                }
-                return false;
-            },
-            getFirstStepData() {
-                return JSON.parse(localStorage.getItem(FIRST_STEP_LOCALSTORAGE_KEY));
+            init() {
+                let stepData = this.projectCreateWizardStep2;
+
+                this.projectDuration = stepData.projectDuration > 0 ? stepData.projectDuration : 1;
+                this.projectBudget = stepData.projectBudget >= 10000 ? stepData.projectBudget : 10000;
+                this.projectMembers = stepData.projectMembers >= 3 ? stepData.projectMembers : 3;
+                this.projectStrategicalMeaning = Number(stepData.projectStrategicalMeaning ? stepData.projectStrategicalMeaning : 0);
+                this.projectInnovationDegree = Number(stepData.projectInnovationDegree ? stepData.projectInnovationDegree : 0);
+                this.projectTechnologyComplexity = Number(stepData.projectInnovationDegree ? stepData.projectInnovationDegree : 0);
             },
         },
         computed: {
-            ...mapGetters({
-                localUser: 'localUser',
-                projectCategories: 'projectCategoriesForSelect',
-                projectCategoriesLoading: 'projectCategoriesLoading',
-                projectScopes: 'projectScopesForSelect',
-                projectScopesLoading: 'projectScopesLoading',
-                currencyById: 'currencyById',
-                currencies: 'currencies',
-            }),
+            ...mapGetters([
+                'localUser',
+                'currencyById',
+                'currencies',
+                'projectCreateWizardStep1',
+                'projectCreateWizardStep2',
+                'projectCategoriesForSelect',
+                'projectScopesForSelect',
+            ]),
             currencySymbol() {
-                const stepData = this.getFirstStepData();
+                const stepData = this.projectCreateWizardStep1;
                 if (!stepData) {
                     return '';
                 }
@@ -152,38 +131,6 @@
 
                 return currency.symbol;
             },
-            durationMaxValue: function() {
-                return this.projectHasProgrammeAndPortofolio() ? 36 : 12;
-            },
-            budgetMaxValue: function() {
-                return this.projectHasProgrammeAndPortofolio() ? 2000000 : 500000;
-            },
-            budgetValues: function() {
-                let values = [];
-                for (let i = 0; i < 20; i++) {
-                    values.push(i * 10000);
-                }
-
-                if (!this.projectHasProgrammeAndPortofolio()) {
-                    for (let i = 0; i < 6; i++) {
-                        values.push(200000 + (i * 50000));
-                    }
-
-                    values.push(500000);
-                    return values;
-                }
-
-                for (let i = 0; i < 16; i++) {
-                    values.push(200000 + (i * 50000));
-                }
-                for (let i = 0; i < 10; i++) {
-                    values.push(1000000 + (i * 100000));
-                }
-
-                values.push(2000000);
-
-                return values;
-            },
         },
         created() {
             this.getProjectCategories();
@@ -192,19 +139,19 @@
             if (this.currencies.length === 0) {
                 this.getCurrencies();
             }
-        },
-        data: function() {
-            const stepData = JSON.parse(localStorage.getItem(SECOND_STEP_LOCALSTORAGE_KEY));
 
+            this.init();
+        },
+        data() {
             return {
-                projectDuration: stepData ? stepData.projectDuration : 0,
-                projectBudget: stepData ? stepData.projectBudget : 0,
-                projectInvolved: stepData ? stepData.projectInvolved : [0, 0],
-                departmentsInvolved: stepData ? stepData.departmentsInvolved : [0, 0],
-                strategicalMeaning: stepData ? stepData.strategicalMeaning : 'none',
-                risks: stepData ? stepData.risks : 'none',
-                selectedCategory: stepData ? stepData.selectedCategory : {},
-                selectedScope: stepData ? stepData.selectedScope : {},
+                projectDuration: 1,
+                projectBudget: 10000,
+                projectMembers: 3,
+                projectStrategicalMeaning: 0,
+                projectInnovationDegree: 0,
+                projectTechnologyComplexity: 0,
+                selectedCategory: null,
+                selectedScope: null,
             };
         },
     };

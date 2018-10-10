@@ -1,35 +1,36 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     projectCategories: [],
     projectCategoriesForSelect: [],
-    projectCategoryLoading: false,
 };
 
 const getters = {
     projectCategories: state => state.projectCategories,
     projectCategoriesForSelect: state => state.projectCategoriesForSelect,
-    projectCategoriesLoading: state => state.projectCategoryLoading,
 };
 
 const actions = {
     /**
      * Get all project categories.
      * @param {function} commit
+     * @param {function} dispatch
+     * @return {object}
      */
-    getProjectCategories({commit}) {
-        commit(types.SET_PROJECT_CATEGORIES_LOADING, {loading: true});
-        Vue.http
-            .get(Routing.generate('app_api_project_categories_list')).then((response) => {
-                if (response.status === 200) {
-                    let projectCategories = response.data;
-                    commit(types.SET_PROJECT_CATEGORIES, {projectCategories});
-                }
-                commit(types.SET_PROJECT_CATEGORIES_LOADING, {loading: false});
-            }, (response) => {
-                commit(types.SET_PROJECT_CATEGORIES_LOADING, {loading: false});
-            });
+    async getProjectCategories({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_PROJECT_CATEGORIES, {root: true});
+            let response = await Vue.http.get(Routing.generate('app_api_project_categories_list'));
+
+            let projectCategories = response.data;
+            commit(types.SET_PROJECT_CATEGORIES, {projectCategories});
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_PROJECT_CATEGORIES, {root: true});
+        }
     },
 };
 
@@ -46,13 +47,6 @@ const mutations = {
             projectCategoriesForSelect.push({'key': projectCategory.id, 'label': projectCategory.name});
         });
         state.projectCategoriesForSelect = projectCategoriesForSelect;
-    },
-    /**
-     * @param {Object} state
-     * @param {array} loading
-     */
-    [types.SET_PROJECT_CATEGORIES_LOADING](state, {loading}) {
-        state.projectCategoryLoading = loading;
     },
 };
 
