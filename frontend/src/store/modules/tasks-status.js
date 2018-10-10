@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     taskStatuses: [],
@@ -21,18 +22,19 @@ const actions = {
     /**
      * Gets task statuses from the API and commits SET_TASK_STATUSES mutation
      * @param {function} commit
+     * @param {function} dispatch
      */
-    getTaskStatuses({commit}) {
-        commit(types.TOGGLE_LOADER, true);
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_statuses_list')).then((response) => {
-                if (response.status === 200) {
-                    let taskStatuses = response.data;
-                    commit(types.SET_TASK_STATUSES, {taskStatuses});
-                    commit(types.TOGGLE_LOADER, false);
-                }
-            }, (response) => {
-            });
+    async getTaskStatuses({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_TASK_STATUSES, {root: true});
+            let response = await Vue.http.get(Routing.generate('app_api_workpackage_statuses_list'));
+            if (response.status === 200) {
+                let taskStatuses = response.data;
+                commit(types.SET_TASK_STATUSES, {taskStatuses});
+            }
+        } finally {
+            dispatch('wait/end', loading.GET_TASK_STATUSES, {root: true});
+        }
     },
 };
 

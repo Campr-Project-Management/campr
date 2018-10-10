@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 import {xml2WorkPackage} from '../../helpers/ms-project/task';
 import _ from 'lodash';
 
@@ -58,27 +59,32 @@ const actions = {
             }, (response) => {
             });
     },
-    getRecentTasksByProject({commit}, projectId) {
-        commit(types.SET_TASKS, {tasks: []});
-        commit(types.TOGGLE_LOADER, true);
-        let params = {
-            id: projectId,
-            sort: 'updatedAt',
-            order: 'desc',
-            limit: 6,
-        };
-        Vue.http
-            .get(Routing.generate('app_api_project_tasks', params)).then((response) => {
-                if (response.status === 200) {
-                    let tasks = response.data;
-                    commit(types.SET_TASKS, {tasks});
-                    commit(types.TOGGLE_LOADER, false);
-                } else {
-                    commit(types.SET_TASKS, {tasks: []});
-                }
-            }, (response) => {
+    async getRecentTasksByProject({commit, dispatch}, projectId) {
+        try {
+            commit(types.SET_TASKS, {tasks: []});
+            dispatch('wait/start', loading.GET_RECENT_TASKS_BY_PROJECT, {root: true});
+
+            let params = {
+                id: projectId,
+                sort: 'updatedAt',
+                order: 'desc',
+                limit: 6,
+            };
+            let response = await Vue.http.get(
+                Routing.generate('app_api_project_tasks', params));
+            if (response.status === 200) {
+                let tasks = response.data;
+                commit(types.SET_TASKS, {tasks});
+            } else {
                 commit(types.SET_TASKS, {tasks: []});
-            });
+            }
+
+            return response;
+        } catch(e) {
+            commit(types.SET_TASKS, {tasks: []});
+        } finally {
+            dispatch('wait/end', loading.GET_RECENT_TASKS_BY_PROJECT, {root: true});
+        }
     },
     /**
      * Gets tasks from the API and commits SET_TASKS mutation
@@ -316,32 +322,33 @@ const actions = {
         commit(types.SET_TASKS_FILTERS, {filters});
     },
 
-    getAllTasksGrid({commit}, {project, page}) {
-        commit(types.SET_ALL_TASKS, {tasks: {}});
+    async getAllTasksGrid({commit, dispatch}, {project, page}) {
+        try {
+            dispatch('wait/start', loading.GET_ALL_TASKS_GRID, {root: true});
+            commit(types.SET_ALL_TASKS, {tasks: {}});
 
-        let data = {
-            params: {
-                criteria: {
-                    type: 2,
+            let data = {
+                params: {
+                    criteria: {
+                        type: 2,
+                    },
+                    page: page,
+                    pageSize: 8,
                 },
-                page: page,
-                pageSize: 8,
-            },
-        };
+            };
 
-        data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
+            data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
 
-        Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), data)
-            .then((response) => {
-                if (response.status === 200) {
-                    let tasks = response.data;
-                    commit(types.SET_ALL_TASKS, {tasks});
-                    commit(types.TOGGLE_LOADER, false);
-                }
-            }, (response) => {
-            })
-        ;
+            let response = await Vue.http.get(
+                Routing.generate('app_api_projects_workpackages',
+                    {'id': project}), data);
+            if (response.status === 200) {
+                let tasks = response.data;
+                commit(types.SET_ALL_TASKS, {tasks});
+            }
+        } finally {
+            dispatch('wait/end', loading.GET_ALL_TASKS_GRID, {root: true});
+        }
     },
     /**
      * Delete subtask
