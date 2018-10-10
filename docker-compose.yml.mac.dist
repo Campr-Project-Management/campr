@@ -17,6 +17,7 @@ services:
         ports:
             - "443:443"
             - "3000:3000"
+            - "8080:8080"
         external_links:
             - "campr_portal_app:portal"
         env_file: config/docker/.env
@@ -55,7 +56,7 @@ volumes:
         driver: local
         driver_opts:
             type: nfs
-            o: addr=host.docker.internal,rw,nolock,hard,nointr,noacl,nodiratime,async,noatime,actimeo=3,nfsvers=3
+            o: addr=host.docker.internal,rw,nolock,hard,nointr,noacl,nodiratime,async,noatime,actimeo=10,nfsvers=3
             device: ":/path/to/your/project"
     campr-data:
 

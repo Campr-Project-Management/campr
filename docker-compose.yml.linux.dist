@@ -17,6 +17,7 @@ services:
         ports:
             - "443:443"
             - "3000:3000"
+            - "8080:8080"
         external_links:
             - "campr_portal_app:portal"
         env_file: config/docker/.env
