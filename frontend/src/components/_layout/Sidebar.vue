@@ -101,6 +101,9 @@
                     <li v-if="user.isAdmin" class="admin-link">
                         <a :href="adminRoute">Admin</a>
                     </li>
+                    <li class="admin-link">
+                        <a href="#" onclick="_urq.push(['Feedback_Open']);">User Feedback</a>
+                    </li>
                 </ul>
             </nav>
         </scrollbar>
