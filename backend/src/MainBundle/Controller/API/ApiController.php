@@ -58,7 +58,12 @@ abstract class ApiController extends BaseController
         return $this->createForm(static::FORM_CLASS, $data, $options);
     }
 
-    protected function getFormErrors(Form $form)
+    /**
+     * @param FormInterface $form
+     *
+     * @return array
+     */
+    protected function getFormErrors(FormInterface $form)
     {
         $errors = [];
 
@@ -78,6 +83,11 @@ abstract class ApiController extends BaseController
         return $errors;
     }
 
+    /**
+     * @param Request       $request
+     * @param FormInterface $form
+     * @param bool          $clearMissing
+     */
     protected function processForm(Request $request, FormInterface $form, $clearMissing = true)
     {
         $data = $request->request->all();

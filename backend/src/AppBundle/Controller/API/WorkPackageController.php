@@ -4,14 +4,11 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Assignment;
 use AppBundle\Entity\Cost;
-use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Media;
-use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
-use AppBundle\Form\WorkPackage\ApiAttachmentType;
 use AppBundle\Form\WorkPackage\ApiEditType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
@@ -20,7 +17,6 @@ use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
 use AppBundle\Form\Assignment\BaseCreateType as AssignmentCreateType;
 use AppBundle\Form\Comment\CreateType as CommentCreateType;
-use AppBundle\Services\FileSystemResolver;
 use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -30,7 +26,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Gaufrette\Exception\FileAlreadyExists;
 
 /**
  * @Route("/api/workpackages")
@@ -56,7 +51,9 @@ class WorkPackageController extends ApiController
         $wpRepo = $this->get('app.repository.work_package');
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             $result = $projects = $wpRepo->findUserFiltered($user, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $wpRepo->countTotalByUserAndFilters($user, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
@@ -65,10 +62,12 @@ class WorkPackageController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'totalItems' => $wpRepo->countTotalByUserAndFilters($user),
-            'items' => $wpRepo->findUserFiltered($user)->getQuery()->getResult(),
-        ]);
+        return $this->createApiResponse(
+            [
+                'totalItems' => $wpRepo->countTotalByUserAndFilters($user),
+                'items' => $wpRepo->findUserFiltered($user)->getQuery()->getResult(),
+            ]
+        );
     }
 
     /**
@@ -114,70 +113,6 @@ class WorkPackageController extends ApiController
     }
 
     /**
-     * Upload attachment.
-     *
-     * @Route("/{id}/attachments", name="app_api_workpackage_attachments", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request     $request
-     * @param WorkPackage $wp
-     *
-     * @return JsonResponse
-     */
-    public function uploadAttachmentAction(Request $request, WorkPackage $wp)
-    {
-        $this->denyAccessUnlessGranted(WorkPackageVoter::EDIT, $wp);
-
-        $form = $this->createForm(
-            ApiAttachmentType::class,
-            $wp,
-            [
-                'csrf_protection' => false,
-                'method' => $request->getMethod(),
-                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
-            ]
-        );
-
-        $this->processForm($request, $form);
-
-        try {
-            $fs = $this->getFileSystem($wp->getProject());
-
-            if (!$form->isValid()) {
-                return $this->createApiResponse(
-                    [
-                        'messages' => $this->getFormErrors($form),
-                    ],
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            /** @var WorkPackage $wp */
-            $wp = $form->getData();
-            foreach ($wp->getMedias() as $media) {
-                $media->setFileSystem($fs);
-            }
-
-            $this
-                ->get('app.repository.work_package')
-                ->add($wp)
-            ;
-
-            return $this->createApiResponse($wp);
-        } catch (FileAlreadyExists $ex) {
-            return $this->createApiResponse(
-                ['messages' => ['medias' => [$ex->getMessage()]]],
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->createApiResponse(
-                ['messages' => [$e->getMessage()]],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
-    }
-
-    /**
      * Edit a specific WorkPackage.
      *
      * @Route("/{id}", name="app_api_workpackage_edit", options={"expose"=true})
@@ -198,7 +133,6 @@ class WorkPackageController extends ApiController
             [
                 'csrf_protection' => false,
                 'method' => $request->getMethod(),
-                'max_media_size' => $wp->getProject()->getMaxUploadFileSize(),
                 'validation_groups' => ['Default', 'edit'],
             ]
         );
@@ -206,6 +140,11 @@ class WorkPackageController extends ApiController
         $originalCosts = new ArrayCollection();
         foreach ($wp->getCosts() as $cost) {
             $originalCosts->add($cost);
+        }
+
+        $originalMedias = new ArrayCollection();
+        foreach ($wp->getMedias() as $media) {
+            $originalMedias->add($media);
         }
 
         $this->processForm($request, $form, !$request->isMethod('PATCH'));
@@ -223,9 +162,8 @@ class WorkPackageController extends ApiController
         $wp = $form->getData();
         $em = $this->getDoctrine()->getManager();
 
-        $fs = $this->getFileSystem($wp->getProject());
         foreach ($wp->getMedias() as $media) {
-            $media->setFileSystem($fs);
+            $media->makeAsPermanent();
         }
 
         /** @var Cost $originalCost */
@@ -235,10 +173,17 @@ class WorkPackageController extends ApiController
             }
         }
 
+        /** @var Media $media */
+        foreach ($originalMedias as $media) {
+            if (!$wp->getMedias()->contains($media)) {
+                $media->makeAsTemporary(0);
+                $em->persist($media);
+            }
+        }
+
         $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($wp));
 
-        $em->persist($wp);
-        $em->flush();
+        $this->get('app.repository.work_package')->add($wp);
 
         $this->dispatchEvent(WorkPackageEvents::POST_UPDATE, new WorkPackageEvent($wp));
 
@@ -331,7 +276,11 @@ class WorkPackageController extends ApiController
         } catch (ForeignKeyConstraintViolationException $e) {
             $errors = [
                 'messages' => [
-                    'dependency' => $this->get('translator')->trans('message.work_package_dependency_constraint', [], 'messages'),
+                    'dependency' => $this->get('translator')->trans(
+                        'message.work_package_dependency_constraint',
+                        [],
+                        'messages'
+                    ),
                 ],
             ];
 
@@ -388,7 +337,7 @@ class WorkPackageController extends ApiController
             'messages' => $errors,
         ];
 
-        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -420,9 +369,11 @@ class WorkPackageController extends ApiController
             $log->setObjId($wp->getId());
             $log->setClass(get_class($wp));
             $log->setOldValue(null);
-            $log->setNewValue([
-                'comment' => $comment->getBody(),
-            ]);
+            $log->setNewValue(
+                [
+                    'comment' => $comment->getBody(),
+                ]
+            );
             $log->setUser($this->getUser());
 
             $em->persist($log);
@@ -436,7 +387,7 @@ class WorkPackageController extends ApiController
             'messages' => $errors,
         ];
 
-        return  $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -457,8 +408,7 @@ class WorkPackageController extends ApiController
 
         $paginator = $this
             ->get('app.repository.log')
-            ->createWorkPackageHistoryPaginator($wp)
-        ;
+            ->createWorkPackageHistoryPaginator($wp);
 
         $paginator->setMaxPerPage($pageSize);
         $paginator->setCurrentPage($page);
@@ -486,38 +436,5 @@ class WorkPackageController extends ApiController
         $xmlTask = $exportService->exportTask($workPackage);
 
         return new Response($xmlTask->asXML());
-    }
-
-    /**
-     * @param Project $project
-     *
-     * @return FileSystem
-     */
-    private function getFileSystem(Project $project): FileSystem
-    {
-        /** @var FileSystemResolver $fs */
-        $fsResolver = $this->get('app.fs.resolver');
-        $fs = $fsResolver->resolve($project);
-
-        if ($fs) {
-            return $fs;
-        }
-
-        throw new \Exception('Filesystem is missing. Please contact us.');
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return Media
-     */
-    private function findMediaOr404(int $id): Media
-    {
-        $media = $this->get('app.repository.media')->find($id);
-        if ($media) {
-            return $media;
-        }
-
-        throw $this->createNotFoundException('Media not found');
     }
 }

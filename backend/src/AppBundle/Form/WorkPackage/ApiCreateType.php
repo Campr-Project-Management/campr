@@ -2,9 +2,10 @@
 
 namespace AppBundle\Form\WorkPackage;
 
-use AppBundle\Entity\Project;
+use AppBundle\Entity\Media;
 use AppBundle\Form\Cost\ApiCreateType as CostCreateType;
 use AppBundle\Form\WorkPackage\BaseType as WorkPackageBaseType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,15 +44,10 @@ class ApiCreateType extends CreateType
             )
             ->add(
                 'medias',
-                CollectionType::class,
+                EntityType::class,
                 [
-                    'entry_type' => UploadMediaType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'entry_options' => [
-                        'max_size' => $options['max_media_size'],
-                    ],
+                    'class' => Media::class,
+                    'multiple' => true,
                 ]
             )
         ;
@@ -62,15 +58,12 @@ class ApiCreateType extends CreateType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(['max_media_size']);
-        $resolver->setAllowedTypes('max_media_size', 'int');
         $resolver->setDefaults(
             [
                 'data_class' => WorkPackage::class,
                 'csrf_protection' => false,
                 'entity_manager' => null,
                 'validation_groups' => ['Default', 'create'],
-                'max_media_size' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
             ]
         );
     }
