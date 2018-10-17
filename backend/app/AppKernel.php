@@ -51,6 +51,7 @@ class AppKernel extends Kernel
             new Translation\Bundle\TranslationBundle(),
             new EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle(),
             new \Enqueue\Bundle\EnqueueBundle(),
+            new Oneup\UploaderBundle\OneupUploaderBundle(),
 
             //internals
             new AppBundle\AppBundle(),

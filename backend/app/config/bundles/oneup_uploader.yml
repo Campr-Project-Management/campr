@@ -1,0 +1,8 @@
+oneup_uploader:
+    mappings:
+        media:
+            frontend: dropzone
+            storage:
+                directory: '%uploads.tmp_folder%'
+            endpoints:
+                upload: app_api_project_uploader_media_upload

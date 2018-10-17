@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Media;
+
 class MediaRepository extends BaseRepository
 {
     public function findByWithLike(array $criteria, array $orderBy = null, $limit = null, $offset = null)
@@ -82,6 +84,20 @@ class MediaRepository extends BaseRepository
             ->setParameter('ids', $fsIds)
             ->getQuery()
             ->getSingleScalarResult()
+        ;
+    }
+
+    /**
+     * @return Media[]
+     */
+    public function findAllExpired()
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->where('o.expiresAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult()
         ;
     }
 }
