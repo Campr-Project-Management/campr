@@ -467,14 +467,28 @@ class Meeting
      */
     public function addMedia(Media $media)
     {
-        $this->medias[] = $media;
         $media->addMeeting($this);
+        $this->medias->add($media);
+
+        return $this;
     }
 
     /**
-     * Remove media.
-     *
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->addMeeting($this);
+        }
+
+        $this->medias = $medias;
+    }
+
+    /**
      * @param Media $media
+     *
+     * @return $this
      */
     public function removeMedia(Media $media)
     {
@@ -485,7 +499,7 @@ class Meeting
     /**
      * Get medias.
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|Media[]
      */
     public function getMedias()
     {
@@ -506,9 +520,9 @@ class Meeting
     }
 
     /**
-     * Remove decision.
-     *
      * @param Decision $decision
+     *
+     * @return $this
      */
     public function removeDecision(Decision $decision)
     {
@@ -727,7 +741,7 @@ class Meeting
     /**
      * @param MeetingCategory|null $meetingCategory
      */
-    public function setMeetingCategory(MeetingCategory $meetingCategory)
+    public function setMeetingCategory(MeetingCategory $meetingCategory = null)
     {
         $this->meetingCategory = $meetingCategory;
     }

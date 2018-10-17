@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import store from './store';
 import router from './router';
+import httpConfig from './config/http';
 import {sync} from 'vuex-router-sync';
 import VueCharts from 'vue-charts';
 import 'expose?$!expose?jQuery!jquery';
@@ -24,6 +25,7 @@ import Templating from './plugins/templating';
 import Rbac from './plugins/rbac';
 import Scrollbar from './components/_common/Scrollbar';
 import VueWait from 'vue-wait';
+import Routing from './plugins/routing';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
@@ -36,6 +38,7 @@ Vue.use(HumanizeDuration);
 Vue.use(Numeral);
 Vue.use(DateFormat);
 Vue.use(Templating);
+Vue.use(Routing);
 Vue.component(Scrollbar.name, Scrollbar);
 
 sync(store, router);
@@ -51,9 +54,7 @@ Vue.use(
     }
 );
 
-Vue.http.headers.common['Authorization'] = 'Bearer ' + window.user.api_token;
-// This is required for Symfony to actually be able to respond properly to Request::isXmlHttpRequest()
-Vue.http.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+Vue.http.headers.common = Object.assign(Vue.http.headers.common, httpConfig.headers);
 
 new Vue({
     router,
