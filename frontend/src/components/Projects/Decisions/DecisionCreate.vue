@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="header flex-v-center">
@@ -90,8 +90,8 @@
                     <attachments
                             v-model="medias"
                             :max-file-size="projectMaxUploadFileSize"
-                            :error-messages="mediasValidationMessages"/>
-                    <!-- /// End Decision Attachments /// -->
+                            @uploading="onUploading"/>
+                    <!-- /// End Task Attachments /// -->
                     <hr class="double">
 
                     <!-- /// Actions /// -->
@@ -99,8 +99,14 @@
                         <router-link :to="{name: 'project-decisions'}" class="btn-rounded btn-auto btn-auto disable-bg">
                             {{ translate('button.cancel') }}
                         </router-link>
-                        <a v-if="!isEdit" @click="createNewDecision()" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.create_decision') }}</a>
-                        <a v-if="isEdit" @click="saveDecision()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
+                        <a
+                                v-if="!isEdit && canSave"
+                                @click="createNewDecision()"
+                                class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.create_decision') }}</a>
+                        <a
+                                v-if="isEdit && canSave"
+                                @click="saveDecision()"
+                                class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -153,6 +159,9 @@
                 'editDecision',
                 'emptyValidationMessages',
             ]),
+            onUploading(uploading) {
+                this.isUploading = uploading;
+            },
             getData() {
                 return {
                     project: this.$route.params.id,
@@ -204,6 +213,9 @@
                     },
                 );
             },
+            canSave() {
+                return !this.isUploading;
+            },
         },
         computed: {
             ...mapGetters([
@@ -215,6 +227,7 @@
                 'currentDecisionStatusForSelect',
                 'projectMaxUploadFileSize',
                 'validationMessagesFor',
+                'project',
             ]),
             mediasValidationMessages() {
                 let messages = this.validationMessagesFor('medias');
@@ -280,6 +293,7 @@
                 isEdit: this.$route.params.decisionId,
                 showFailed: false,
                 showSaved: false,
+                isUploading: false,
             };
         },
     };

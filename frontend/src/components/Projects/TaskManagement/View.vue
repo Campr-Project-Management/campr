@@ -483,12 +483,13 @@
 
                     <!-- /// Task Attachmets /// -->
                     <h3>{{ translate('message.attachments') }}</h3>
+
                     <attachments
+                            :value="task.medias"
                             @input="onUpdateAttachments"
+                            @uploading="onAttachmentUploading"
                             :disabled="disableAttachments"
-                            v-model="editableData.medias"
-                            :max-file-size="projectMaxUploadFileSize"
-                            :error-messages="mediasValidationMessages"/>
+                            :max-file-size="projectMaxUploadFileSize"/>
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
@@ -621,6 +622,7 @@ export default {
             'trafficLights',
             'validationMessagesFor',
             'projectMaxUploadFileSize',
+            'project',
         ]),
         mediasValidationMessages() {
             let messages = this.validationMessagesFor('medias');
@@ -654,6 +656,21 @@ export default {
         },
     },
     watch: {
+        medias(value) {
+            this.disableAttachments = true;
+            let data = {
+                medias: value,
+            };
+
+            this.patchTask({
+                data: createFormData(data),
+                taskId: this.$route.params.taskId,
+            }).then(() => {
+                this.disableAttachments = false;
+            }).catch((response) => {
+                this.disableAttachments = false;
+            });
+        },
         task(value) {
             this.editableData.trafficLight = this.task.trafficLight;
             this.editableData.workPackageStatus = this.task.workPackageStatus
@@ -686,8 +703,6 @@ export default {
                 ? {key: this.task.label, label: this.task.labelName, color: this.task.labelColor}
                 : null
             ;
-
-            this.editableData.medias = this.task.medias;
 
             let internal = [];
             let external = [];
@@ -760,7 +775,6 @@ export default {
             'getWorkPackageStatusesForSelect',
             'getProjectLabels',
             'patchTask',
-            'uploadAttachmentTask',
             'patchSubtask',
             'editTaskCost',
         ]),
@@ -831,20 +845,23 @@ export default {
             let total = item.rate * item.quantity * duration;
             return !isNaN(total) ? total : 0;
         },
-        onUpdateAttachments() {
+        onUpdateAttachments(medias) {
             this.disableAttachments = true;
             let data = {
-                medias: this.editableData.medias,
+                medias: medias.map((media) => media.id).filter((id) => id > 0),
             };
 
-            this.uploadAttachmentTask({
-                data: createFormData(data),
+            this.patchTask({
+                data,
                 taskId: this.$route.params.taskId,
             }).then(() => {
                 this.disableAttachments = false;
             }).catch((response) => {
                 this.disableAttachments = false;
             });
+        },
+        onAttachmentUploading(isUploading) {
+            this.disableAttachments = isUploading;
         },
         translateText(text) {
             return this.translate(text);
@@ -1134,7 +1151,6 @@ export default {
                 workPackageStatus: null,
                 trafficLight: this.defaultTrafficLightValue,
                 label: null,
-                medias: [],
                 schedule: {
                     baseStartDate: new Date(),
                     baseEndDate: new Date(),
