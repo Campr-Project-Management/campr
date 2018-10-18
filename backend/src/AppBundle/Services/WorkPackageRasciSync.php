@@ -2,11 +2,11 @@
 
 namespace AppBundle\Services;
 
-use AppBundle\Entity\Enum\ProjectModuleTypeEnum;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Rasci;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
+use Component\ProjectModule\ProjectModules;
 use Component\Repository\RepositoryInterface;
 
 class WorkPackageRasciSync
@@ -41,7 +41,7 @@ class WorkPackageRasciSync
     public function sync(WorkPackage $wp): bool
     {
         $project = $wp->getProject();
-        if (!$project->hasProjectModule(ProjectModuleTypeEnum::RASCI_MATRIX)) {
+        if (!$project->hasProjectModule(ProjectModules::MODULE_RASCI_MATRIX)) {
             return false;
         }
 

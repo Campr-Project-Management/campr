@@ -403,25 +403,39 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request(
-            'PATCH',
-            '/api/project-roles/5',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
+        $role = (new ProjectRole())
+            ->setName(uniqid())
+            ->setSequence(1)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
+        ;
+        $this->em->persist($role);
+        $this->em->flush();
 
-        $projectRole = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectRole['updatedAt'];
+        try {
+            $this->client->request(
+                'PATCH',
+                sprintf('/api/project-roles/%d', $role->getId()),
+                [],
+                [],
+                [
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+                ],
+                json_encode($content)
+            );
+            $response = $this->client->getResponse();
+            $projectRole = json_decode($response->getContent(), true);
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+            $responseContent['updatedAt'] = $projectRole['updatedAt'];
+            $responseContent['id'] = $role->getId();
+
+            $this->assertEquals($responseContent, $projectRole);
+        } finally {
+            $this->em->remove($role);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -432,13 +446,13 @@ class ProjectRoleControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'manager',
+                    'name' => 'new-role-edit-name',
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'id' => 5,
-                    'name' => 'manager',
+                    'id' => null,
+                    'name' => 'new-role-edit-name',
                     'sequence' => 1,
                     'isLead' => false,
                     'children' => [],
@@ -640,21 +654,26 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request(
-            'DELETE',
-            sprintf('/api/project-roles/%d', $projectRole->getId()),
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
+        try {
+            $this->client->request(
+                'DELETE',
+                sprintf('/api/project-roles/%d', $projectRole->getId()),
+                [],
+                [],
+                [
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+                ],
+                ''
+            );
+            $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($projectRole);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -670,63 +689,49 @@ class ProjectRoleControllerTest extends BaseController
         ];
     }
 
-    /**
-     * @dataProvider getDataForGetAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testGetAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
+    public function testGetAction()
+    {
+        $role = (new ProjectRole())
+            ->setName(uniqid())
+            ->setSequence(1)
+            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
+        ;
+        $this->em->persist($role);
+        $this->em->flush();
+
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        $projectRole = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectRole['updatedAt'];
-
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForGetAction()
-    {
-        return [
-            [
-                '/api/project-roles/6',
-                true,
-                Response::HTTP_OK,
+        try {
+            $this->client->request(
+                'GET',
+                sprintf('/api/project-roles/%d', $role->getId()),
+                [],
+                [],
                 [
-                    'id' => 6,
-                    'name' => 'sponsor',
-                    'sequence' => 1,
-                    'isLead' => false,
-                    'children' => [],
-                    'createdAt' => '2017-01-01 12:00:00',
-                    'updatedAt' => null,
+                    'CONTENT_TYPE' => 'application/json',
+                    'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
                 ],
-            ],
-        ];
+                ''
+            );
+            $response = $this->client->getResponse();
+            $actual = json_decode($response->getContent(), true);
+            $expected = [
+                'id' => $role->getId(),
+                'name' => $role->getName(),
+                'sequence' => $role->getSequence(),
+                'isLead' => $role->getIsLead(),
+                'children' => [],
+                'createdAt' => $role->getCreatedAt()->format('Y-m-d H:i:s'),
+                'updatedAt' => $role->getUpdatedAt()->format('Y-m-d H:i:s'),
+            ];
+
+            $this->assertTrue($response->isSuccessful());
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertEquals($expected, $actual);
+        } finally {
+            $this->em->remove($role);
+            $this->em->flush();
+        }
     }
 }

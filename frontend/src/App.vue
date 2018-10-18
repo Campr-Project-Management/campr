@@ -1,9 +1,9 @@
 <template>
     <div id="app" :class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
         <pulse-loader
-                :loading="loading"
                 :color="color"
-                :size="size" v-show="loader"/>
+                :size="size"
+                v-if="$wait.any"/>
         <sidebar :user="localUser" />
         <div class="page">
             <navigation :user="localUser"/>

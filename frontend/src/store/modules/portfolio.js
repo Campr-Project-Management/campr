@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     currentPortofolio: {},
@@ -40,19 +41,20 @@ const actions = {
     /**
      * Gets portfolios from the API and commits SET_PORTFOLIOS mutation
      * @param {function} commit
+     * @param {function} dispatch
+     * @return {object}
      */
-    getPortfolios({commit}) {
-        commit(types.SET_PORTFOLIO_LOADING, {loading: true});
-        Vue.http
-            .get(Routing.generate('app_api_portfolio_list')).then((response) => {
-                if (response.status === 200) {
-                    let portfolios = response.data;
-                    commit(types.SET_PORTFOLIOS, {portfolios});
-                }
-                commit(types.SET_PORTFOLIO_LOADING, {loading: false});
-            }, (response) => {
-                commit(types.SET_PORTFOLIO_LOADING, {loading: false});
-            });
+    async getPortfolios({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_PORTFOLIOS, {root: true});
+            let response = await Vue.http.get(Routing.generate('app_api_portfolio_list'));
+            let portfolios = response.data;
+            commit(types.SET_PORTFOLIOS, {portfolios});
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_PORTFOLIOS, {root: true});
+        }
     },
     /**
      * Gets a portfolio by ID from the API and commits SET_PORTFOLIO mutation

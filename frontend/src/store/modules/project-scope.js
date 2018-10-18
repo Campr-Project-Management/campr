@@ -1,35 +1,36 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     projectScopes: [],
     projectScopesForSelect: [],
-    projectScopeLoading: false,
 };
 
 const getters = {
     projectScopes: state => state.projectScopes,
     projectScopesForSelect: state => state.projectScopesForSelect,
-    projectScopesLoading: state => state.projectScopeLoading,
 };
 
 const actions = {
     /**
      * Get all project scopes.
      * @param {function} commit
+     * @param {function} dispatch
+     * @return {object}
      */
-    getProjectScopes({commit}) {
-        commit(types.SET_PROJECT_SCOPES_LOADING, {loading: true});
-        Vue.http
-            .get(Routing.generate('app_api_project_scopes_list')).then((response) => {
-                if (response.status === 200) {
-                    let projectScopes = response.data;
-                    commit(types.SET_PROJECT_SCOPES, {projectScopes});
-                }
-                commit(types.SET_PROJECT_SCOPES_LOADING, {loading: false});
-            }, (response) => {
-                commit(types.SET_PROJECT_SCOPES_LOADING, {loading: false});
-            });
+    async getProjectScopes({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_PROJECT_SCOPES, {root: true});
+            let response = await Vue.http.get(
+                Routing.generate('app_api_project_scopes_list'));
+            let projectScopes = response.data;
+            commit(types.SET_PROJECT_SCOPES, {projectScopes});
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_PROJECT_SCOPES, {root: true});
+        }
     },
 };
 
@@ -43,16 +44,10 @@ const mutations = {
         state.projectScopes = projectScopes;
         let projectScopesForSelect = [];
         state.projectScopes.map((projectScope) => {
-            projectScopesForSelect.push({'key': projectScope.id, 'label': projectScope.name});
+            projectScopesForSelect.push(
+                {'key': projectScope.id, 'label': projectScope.name});
         });
         state.projectScopesForSelect = projectScopesForSelect;
-    },
-    /**
-     * @param {Object} state
-     * @param {array} loading
-     */
-    [types.SET_PROJECT_SCOPES_LOADING](state, {loading}) {
-        state.projectScopeLoading = loading;
     },
 };
 
