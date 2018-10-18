@@ -13,13 +13,13 @@ class UserControllerTest extends BaseController
      * @param $url
      * @param $isResponseSuccessful
      * @param $responseStatusCode
-     * @param $responseContent
+     * @param $expected
      */
     public function testGetTeamsAction(
         $url,
         $isResponseSuccessful,
         $responseStatusCode,
-        $responseContent
+        $expected
     ) {
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
@@ -35,10 +35,13 @@ class UserControllerTest extends BaseController
             ],
             ''
         );
+
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -91,6 +94,7 @@ class UserControllerTest extends BaseController
                         'teamInvites' => [],
                         'available' => false,
                         'logo' => null,
+                        'logoUrl' => null,
                     ],
                     [
                         'user' => 3,
@@ -106,6 +110,7 @@ class UserControllerTest extends BaseController
                         'teamInvites' => [],
                         'available' => false,
                         'logo' => null,
+                        'logoUrl' => null,
                     ],
                     [
                         'user' => 3,
@@ -121,6 +126,7 @@ class UserControllerTest extends BaseController
                         'teamInvites' => [],
                         'available' => false,
                         'logo' => null,
+                        'logoUrl' => null,
                     ],
                 ],
             ],

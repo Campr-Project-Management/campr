@@ -90,11 +90,11 @@
                             <span v-bind:class="'tablet'"></span>
                         </router-link>
                     </li>
-                    <li v-for="(module, key) in modules" v-if="displayModule(key)">
+                    <li v-for="(module, key) in modules" v-if="displayModule(module)">
                         <router-link
-                                :to="{name: moduleToRoute[key], params: {id: projectId}}"
-                                :title="translate(module.title)">
-                            <span class="default">{{ translate(module.title) }}</span>
+                                :to="{name: moduleToRoute[module], params: {id: projectId}}"
+                                :title="translate(`modules.${module}.title`)">
+                            <span class="default">{{ translate(`modules.${module}.title`) }}</span>
                             <span :class="module.icon"></span>
                         </router-link>
                     </li>

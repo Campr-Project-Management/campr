@@ -263,7 +263,12 @@
                 </svg>
             </div>
             <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-              <input :id="id" type="checkbox" name="" value="1" :checked="!inactive" v-on:click="updateValue">
+              <input
+                      :id="id"
+                      type="checkbox"
+                      :value="true"
+                      :checked="value"
+                      @click="onUpdateValue"/>
               <label :for="id"></label>
             </div>
         </div>
@@ -278,18 +283,39 @@
 <script>
 
 export default {
-    props: ['title', 'id', 'inactive', 'description'],
+    name: 'ProjectModule',
+    props: {
+        value: {
+            type: Boolean,
+            default: false,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        id: {
+            required: true,
+        },
+        inactive: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+    },
     methods: {
         toggleContent() {
             this.contentVisible = !this.contentVisible;
         },
-        updateValue: function(e) {
+        onUpdateValue: function(e) {
             this.$emit('input', e.target.checked);
         },
     },
     data: function() {
         return {
-            project: 0,
             contentVisible: false,
         };
     },

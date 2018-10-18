@@ -23,6 +23,7 @@ import DateFormat from './plugins/date-format';
 import Templating from './plugins/templating';
 import Rbac from './plugins/rbac';
 import Scrollbar from './components/_common/Scrollbar';
+import VueWait from 'vue-wait';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
@@ -57,6 +58,9 @@ Vue.http.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 new Vue({
     router,
     store,
+    wait: new VueWait({
+        useVuex: true,
+    }),
     template: '<App/>',
     components: {App},
 }).$mount('#app');

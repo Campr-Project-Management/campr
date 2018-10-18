@@ -2,9 +2,9 @@
 
 namespace AppBundle\Form\ProjectModule;
 
-use AppBundle\Entity\Enum\ProjectModuleTypeEnum;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectModule;
+use Component\ProjectModule\ProjectModules;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -24,8 +24,8 @@ class CreateType extends AbstractType
     {
         $modules = [];
 
-        foreach (ProjectModuleTypeEnum::ELEMENTS as $key => $elem) {
-            $modules[$elem['title']] = $key;
+        foreach (ProjectModules::MODULES as $module) {
+            $modules[sprintf('modules.%s.title', $module)] = $module;
         }
 
         $builder
@@ -37,7 +37,7 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.module',
                     ]),
                     new Choice([
-                        'choices' => array_keys(ProjectModuleTypeEnum::ELEMENTS),
+                        'choices' => ProjectModules::MODULES,
                         'message' => 'invalid.module',
                     ]),
                 ],

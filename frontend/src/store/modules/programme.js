@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     programmes: [],
@@ -25,19 +26,20 @@ const actions = {
     /**
      * Get all programmes.
      * @param {function} commit
+     * @param {function} dispatch
+     * @return {object}
      */
-    getProgrammes({commit}) {
-        commit(types.SET_PROGRAMME_LOADING, {loading: true});
-        Vue.http
-            .get(Routing.generate('app_api_programmes_list')).then((response) => {
-                if (response.status === 200) {
-                    let programmes = response.data;
-                    commit(types.SET_PROGRAMMES, {programmes});
-                }
-                commit(types.SET_PROGRAMME_LOADING, {loading: false});
-            }, (response) => {
-                commit(types.SET_PROGRAMME_LOADING, {loading: false});
-            });
+    async getProgrammes({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_PROGRAMMES, {root: true});
+            let response = await Vue.http.get(Routing.generate('app_api_programmes_list'));
+            let programmes = response.data;
+
+            commit(types.SET_PROGRAMMES, {programmes});
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_PROGRAMMES, {root: true});
+        }
     },
     /**
      * Creates a new programme
