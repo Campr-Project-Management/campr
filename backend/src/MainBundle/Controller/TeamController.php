@@ -6,7 +6,6 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
-use MainBundle\Event\TeamEvent;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
 use MainBundle\Form\TeamMember\EditRolesType;
@@ -96,8 +95,6 @@ class TeamController extends Controller
                         ->trans('success.workspace.create', [], 'flashes')
                 )
             ;
-
-            $this->get('event_dispatcher')->dispatch(TeamEvent::CREATED, new TeamEvent($team));
 
             return $this->redirectToRoute('main_team_show', ['id' => $team->getId()]);
         }

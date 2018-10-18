@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import * as projectStatus from './project-status';
+import * as loading from '../loading-types';
 
 const state = {
     currentProject: {},
@@ -9,7 +10,6 @@ const state = {
     filteredProjects: {},
     projectFilters: [],
     labelsForChoice: [],
-    loading: false,
     label: {},
     resources: [],
     tasksForSchedule: {},
@@ -28,7 +28,6 @@ const getters = {
     projectCurrencySymbol: (state, getters) => getters.projectCurrency && getters.projectCurrency.symbol,
     projectCurrencyCode: (state, getters) => getters.projectCurrency && getters.projectCurrency.code,
     projects: state => state.filteredProjects.items,
-    projectLoading: state => state.loading,
     labels: state => state.projects,
     currentProjectName: (state) => state.currentProject && state.currentProject.name,
     projectsForFilter: state => state.projectsForFilter,
@@ -544,31 +543,26 @@ const actions = {
      * @param {array} data
      * @return {object}
      */
-    createProject({commit}, data) {
-        commit(types.SET_PROJECT_LOADING, {loading: true});
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_create'),
-                data
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        const project = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.SET_PROJECT, {project});
-                    }
-                    commit(types.SET_PROJECT_LOADING, {loading: false});
-                },
-                (response) => {
-                    commit(types.SET_PROJECT_LOADING, {loading: false});
-                }
-            )
-        ;
+    async createProject({commit, dispatch}, data) {
+        try {
+            dispatch('wait/start', loading.CREATE_PROJECT, {root: true});
+            let response = await Vue.http.post(
+                Routing.generate('app_api_project_create'), data);
+
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                const project = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                commit(types.SET_PROJECT, {project});
+                commit(types.RESET_PROJECT_CREATE_WIZARD);
+            }
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.CREATE_PROJECT, {root: true});
+        }
     },
 
     /**
@@ -852,10 +846,6 @@ const mutations = {
             choiceLabel.push({'key': label.id, 'label': label.title, 'color': label.color});
         });
         state.labelsForChoice = choiceLabel;
-    },
-
-    [types.SET_PROJECT_LOADING](state, {loading}) {
-        state.loading = loading;
     },
 
     /**
