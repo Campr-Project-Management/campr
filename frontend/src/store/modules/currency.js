@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     currencies: [],
@@ -22,19 +23,19 @@ const actions = {
      * Currencies
      *
      * @param {function} commit
+     * @param {function} dispatch
      * @return {object}
      */
-    getCurrencies({commit}) {
-        return Vue.http.get(Routing.generate('app_api_currencies')).then(
-            (response) => {
-                if (response.status === 200) {
-                    commit(types.SET_CURRENCIES, response.data);
-                }
+    async getCurrencies({commit, dispatch}) {
+        try {
+            dispatch('wait/start', loading.GET_CURRENCIES, {root: true});
+            let response = await Vue.http.get(Routing.generate('app_api_currencies'));
+            commit(types.SET_CURRENCIES, response.data);
 
-                return response;
-            },
-            (response) => response,
-        );
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_CURRENCIES, {root: true});
+        }
     },
 };
 

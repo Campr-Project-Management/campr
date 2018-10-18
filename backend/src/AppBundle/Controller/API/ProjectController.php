@@ -126,8 +126,7 @@ class ProjectController extends ApiController
     /**
      * Create a new Project.
      *
-     * @Route(name="app_api_project_create", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route(name="app_api_project_create", options={"expose"=true}, methods={"POST"})
      *
      * @param Request $request
      *

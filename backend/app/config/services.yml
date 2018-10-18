@@ -206,6 +206,46 @@ services:
             - '%kernel.team_slug%'
             - '@app.repository.team'
 
+    app.analysis.module.project_duration:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectDurationModuleAnalyser
+
+    app.analysis.module.project_budget:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectBudgetModuleAnalyser
+
+    app.analysis.module.project_members:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectMembersModuleAnalyser
+
+    app.analysis.module.project_strategical_meaning:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectStrategicalMeaningModuleAnalyser
+
+    app.analysis.module.project_innovation_degree:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectInnovationDegreeModuleAnalyser
+
+    app.analysis.module.project_technology_complexity:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectTechnologyComplexityModuleAnalyser
+
+    app.analysis.module.chained:
+        public: false
+        class: Component\ProjectModule\Analysis\ProjectModuleChainedAnalyser
+        arguments:
+            - '@app.analysis.module.project_duration'
+            - '@app.analysis.module.project_budget'
+            - '@app.analysis.module.project_members'
+            - '@app.analysis.module.project_strategical_meaning'
+            - '@app.analysis.module.project_innovation_degree'
+            - '@app.analysis.module.project_technology_complexity'
+
+    app.analysis.resolver.project_modules:
+        class: Component\ProjectModule\Analysis\ProjectModulesResolver
+        arguments:
+            - '@app.analysis.module.chained'
+
 ### MENU BUILDER ###
     app.admin.menu.builder:
         class: AppBundle\Menu\MenuBuilder

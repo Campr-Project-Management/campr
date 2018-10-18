@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
+import * as loading from '../loading-types';
 
 const state = {
     customers: [],
@@ -29,16 +30,21 @@ const actions = {
     /**
      * Get all customers.
      * @param {function} commit
+     * @param {function} dispatch
+     * @return {object}
      */
-    getCustomers({commit}) {
-        Vue.http
-            .get(Routing.generate('app_api_company_list')).then((response) => {
-                if (response.status === 200) {
-                    let customers = response.data;
-                    commit(types.SET_CUSTOMERS, {customers});
-                }
-            }, (response) => {
-            });
+    async getCustomers({commit, dispatch}) {
+        dispatch('wait/start', loading.GET_CUSTOMERS, {root: true});
+
+        try {
+            let response = await Vue.http.get(Routing.generate('app_api_company_list'));
+            let customers = response.data;
+            commit(types.SET_CUSTOMERS, {customers});
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_CUSTOMERS, {root: true});
+        }
     },
 };
 

@@ -2118,3 +2118,24 @@ email.table_header_cell.duration: Duration
 placeholder.duration: Duration
 button.send_meeting_report: 'Send report'
 message.send_meeting_report: 'Send meeting report'
+message.project_duration_slider.label.lte: '<= %number% Month'
+message.project_duration_slider.label.gt: '> %number% Months'
+message.project_duration_slider.label.months: '%number% Months'
+message.project_budget_slider.label.lte: '<= %amount%'
+message.project_budget_slider.label.gt: '> %amount%'
+message.project_strategical_meaning: 'Strategical Meaning'
+message.project_strategical_meaning_slider.label.low: Low
+message.project_strategical_meaning_slider.label.medium: Medium
+message.project_strategical_meaning_slider.label.high: High
+message.project_innovation_degree: 'Innovation Degree'
+message.project_innovation_degree_slider.label.enhancements: Enhancements
+message.project_innovation_degree_slider.label.incremental: Incremental
+message.project_innovation_degree_slider.label.strategic_innovation: 'Strategic Innovation'
+message.project_innovation_degree_slider.label.radical_innovation: 'Radical Innovation'
+message.project_technology_complexity: 'Complexity Of Technology'
+message.project_technology_complexity_slider.label.low: Low
+message.project_technology_complexity_slider.label.medium: Medium
+message.project_technology_complexity_slider.label.high: High
+message.project_members: 'Project Members Involved'
+message.project_members_slider.label.lte: '<= %count%'
+message.project_members_slider.label.gt: '>= %count%'
