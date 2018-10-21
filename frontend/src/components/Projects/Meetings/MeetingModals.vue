@@ -206,6 +206,7 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import Error from '../../_common/_messages/Error';
 import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
+import {createFormDataDecision} from '../../../helpers/decision';
 
 export default {
     props: [
@@ -323,9 +324,13 @@ export default {
                 date: moment(this.editDecisionObject.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 done: this.editDecisionObject.done,
                 responsibility: this.editDecisionObject.responsibility,
+                medias: this.editDecisionObject.medias,
             });
-
-            this.editDecision(data).then(() => {
+            let formData = createFormDataDecision(data);
+            this.editDecision({
+                id: this.editDecisionObject.id,
+                data: formData,
+            }).then(() => {
                 this.showEditDecisionModal = false;
                 this.editDecisionErrors = {};
                 this.$emit('input', this.showEditDecisionModal);

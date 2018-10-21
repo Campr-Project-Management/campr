@@ -66,6 +66,16 @@ export const createFormData = (data) => {
             formData.append('decisions[' + i + '][done]', data.decisions[i].done);
             formData.append('decisions[' + i + '][responsibility]', data.decisions[i].responsibility);
             formData.append('decisions[' + i + '][dueDate]', moment(data.decisions[i].dueDate).format('DD-MM-YYYY'));
+            if (data.decisions[i].medias) {
+                for (let j = 0; j < data.decisions[i].medias.length; j++) {
+                    formData.append(
+                        'decisions[' + i + '][medias][' + j + '][file]',
+                        data.decisions[i].medias[j] instanceof window.File
+                            ? data.decisions[i].medias[j]
+                            : ''
+                    );
+                }
+            }
         }
     }
 

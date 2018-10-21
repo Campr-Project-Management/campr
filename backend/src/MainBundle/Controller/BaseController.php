@@ -95,4 +95,29 @@ abstract class BaseController extends Controller
     {
         return $this->getEventDispatcher()->dispatch($name, $event);
     }
+
+    /**
+     * @param array $array1
+     * @param array $array2
+     *
+     * @return array
+     */
+    public function merge_multidimensional_arrays(array &$array1, array &$array2)
+    {
+        $data = $array1;
+
+        foreach ($array2 as $key => &$value) {
+            if (is_array($value) && isset($data[$key]) && is_array($data[$key])) {
+                $data[$key] = $this->merge_multidimensional_arrays($data[$key], $value);
+            } elseif (is_numeric($key)) {
+                if (!in_array($value, $data)) {
+                    $data[] = $value;
+                }
+            } else {
+                $data[$key] = $value;
+            }
+        }
+
+        return $data;
+    }
 }
