@@ -272,6 +272,20 @@
                                 </div>
                             </div>
                             <div class="entry-body" v-html="decision.description"></div>
+                            <div class="attachments">
+                                <template v-for="(media, index) in decision.medias">
+                                    <div
+                                        class="attachment"
+                                        v-if="media"
+                                        :key="index">
+                                        <view-icon/>
+                                        <span class="attachment-name">
+                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                            <span v-else>{{ media.name }}</span>
+                                        </span>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
 
                         <!-- /// Decision /// -->
@@ -299,6 +313,20 @@
                                 </div>
                             </div>
                             <div class="entry-body" v-html="decision.description"></div>
+                            <div class="attachments">
+                                <template v-for="(media, index) in decision.medias">
+                                    <div
+                                            class="attachment"
+                                            v-if="media"
+                                            :key="index">
+                                        <view-icon/>
+                                        <span class="attachment-name">
+                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                            <span v-else>{{ media.name }}</span>
+                                        </span>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                         <!-- /// End Decision /// -->
                     </div>
@@ -588,6 +616,7 @@ import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import Error from '../../_common/_messages/Error.vue';
+import ViewIcon from '../../_common/_icons/ViewIcon';
 import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import Editor from '../../_common/Editor';
@@ -597,6 +626,8 @@ import UserAvatar from '../../_common/UserAvatar';
 import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
+import {createFormDataDecision} from '../../../helpers/decision';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -611,6 +642,7 @@ export default {
         EditIcon,
         DeleteIcon,
         VueTimepicker,
+        ViewIcon,
         moment,
         MultiSelectField,
         MeetingModals,
@@ -635,6 +667,36 @@ export default {
                     .join(' | ')
                 : ''
             ;
+        },
+        getMediaFile(media) {
+            if (!media.id) {
+                return;
+            }
+
+            const url = Routing.generate('app_api_media_download', {id: media.id});
+            Vue.http.get(url, {responseType: 'blob'})
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
+                    let a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download = media.originalName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                });
         },
         setModals(value) {
             this.showEditObjectiveModal = value;
@@ -722,7 +784,6 @@ export default {
         },
         addDecision() {
             let data = {
-                id: this.$route.params.meetingId,
                 title: this.decision.title,
                 description: this.decision.description,
                 done: this.decision.done,
@@ -730,17 +791,23 @@ export default {
                 dueDate: moment(this.decision.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 date: moment(this.decision.date, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 meeting: this.$route.params.meetingId,
+                project: this.$route.params.id,
+                medias: this.decision.medias,
             };
 
-            this.createMeetingDecision(data).then(() => {
+            let formData = createFormDataDecision(data);
+            this.createMeetingDecision({
+                data: formData,
+                meetingId: this.$route.params.meetingId,
+            }).then(() => {
                 this.decisionErrors = {};
                 this.decision = this.defaultDecision;
+                this.getProjectMeeting(this.$route.params.meetingId);
             }).catch((response) => {
                 this.decisionErrors = response.body.messages;
             });
         },
         initEditDecision: function(decision) {
-            this.showEditDecisionModal = true;
             this.editDecisionObject = {
                 id: decision.id,
                 title: decision.title,
@@ -750,7 +817,11 @@ export default {
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 date: decision.date ? moment(decision.date).toDate() : new Date(),
                 done: decision.done,
+                project: this.$route.params.id,
+                meeting: this.$route.params.meetingId,
+                medias: decision.medias,
             };
+            this.showEditDecisionModal = true;
         },
         initDeleteDecision: function(decision) {
             this.showDeleteDecisionModal = true;
@@ -855,6 +926,7 @@ export default {
                 .editProjectMeeting({
                     id: this.$route.params.meetingId,
                     data: createFormData(data),
+                    withPost: true,
                 })
                 .then(
                     (response) => {
@@ -928,6 +1000,7 @@ export default {
             dueDate: new Date(),
             date: new Date(),
             done: false,
+            medias: [],
         };
 
         return {
@@ -1318,6 +1391,34 @@ export default {
       a {
         margin: 5px 0 5px 10px;
       }
+    }
+
+    .attachments {
+        margin: 0 0 20px;
+    }
+
+    .attachment {
+        padding: 10px 20px;
+        background-color: $fadeColor;
+        margin-top: 3px;
+        color: $secondColor;
+        position: relative;
+
+        .view-icon {
+            display: inline;
+            margin-right: 10px;
+            position: relative;
+            top: 3px;
+
+            svg {
+                width: 18px;
+            }
+        }
+        .attachment-name {
+            a {
+                cursor: pointer;
+            }
+        }
     }
 </style>
 

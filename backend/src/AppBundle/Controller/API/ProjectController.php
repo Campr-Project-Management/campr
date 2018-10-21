@@ -531,6 +531,12 @@ class ProjectController extends ApiController
                 $media->setFileSystem($fileSystem);
             }
 
+            foreach ($meeting->getDecisions() as $decision) {
+                foreach ($decision->getMedias() as $media) {
+                    $media->setFileSystem($fileSystem);
+                }
+            }
+
             $meeting->setCreatedBy($this->getUser());
             foreach ($meeting->getInfos() as $info) {
                 $info->setProject($project);
