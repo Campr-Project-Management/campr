@@ -59,6 +59,21 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <!-- /// Decision Attachments /// -->
+                    <attachments
+                            v-model="lazyValue.medias"
+                            v-bind:value="lazyValue.medias"
+                            :max-file-size="projectMaxUploadFileSize"
+                            :error-messages="mediasValidationMessages"
+                            @input="onInput" />
+                    <!-- /// End Decision Attachments /// -->
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -72,6 +87,8 @@
     import Editor from '../../../_common/Editor';
     import moment from 'moment';
     import DateField from '../../../_common/_form-components/DateField';
+    import Attachments from '../../../_common/Attachments';
+
 
     export default {
         name: 'meeting-decision-form',
@@ -91,6 +108,7 @@
                         dueDate: [],
                         reponsibility: [],
                         done: [],
+                        medias: [],
                     };
                 },
             },
@@ -103,12 +121,25 @@
             MultiSelectField,
             Error,
             Editor,
+            Attachments,
         },
         computed: {
             ...mapGetters([
                 'decisionsStatusesForSelect',
                 'decisionStatusByValueForSelect',
+                'projectMaxUploadFileSize',
+                'validationMessagesFor',
             ]),
+            mediasValidationMessages() {
+                let messages = this.validationMessagesFor('errorMessages.medias');
+                let out = [];
+
+                Object.keys(messages).forEach((index) => {
+                    out[index] = messages[index].file;
+                });
+
+                return out;
+            },
             decisionsStatusesOptions() {
                 return this.decisionsStatusesForSelect.map((option) => {
                     return Object.assign({}, option, {label: this.translate(option.label)});
@@ -126,6 +157,7 @@
                     done: this.lazyValue.done.key,
                     responsibility: responsibility,
                     dueDate: this.lazyValue.dueDate ? moment(this.lazyValue.dueDate).toDate() : null,
+                    medias: this.lazyValue.medias,
                 });
 
                 this.$emit('input', value);
@@ -136,6 +168,7 @@
                         key: value.done,
                     },
                     responsibility: value.responsibility ? [value.responsibility] : [],
+                    medias: value.medias ? value.medias : [],
                 });
             },
         },

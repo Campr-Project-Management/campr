@@ -192,6 +192,20 @@
                             </div>
                         </div>
                         <div class="entry-body" v-html="decision.description"></div>
+                        <div class="attachments">
+                            <template v-for="(media, index) in decision.medias">
+                                <div
+                                        class="attachment"
+                                        v-if="media"
+                                        :key="index">
+                                    <view-icon/>
+                                    <span class="attachment-name">
+                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                            <span v-else>{{ media.name }}</span>
+                                        </span>
+                                </div>
+                            </template>
+                        </div>
                     </div>
 
                     <!-- /// Decision /// -->
@@ -216,6 +230,20 @@
                             </div>
                         </div>
                         <div class="entry-body" v-html="decision.description"></div>
+                        <div class="attachments">
+                            <template v-for="(media, index) in decision.medias">
+                                <div
+                                        class="attachment"
+                                        v-if="media"
+                                        :key="index">
+                                    <view-icon/>
+                                    <span class="attachment-name">
+                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                            <span v-else>{{ media.name }}</span>
+                                        </span>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                     <!-- /// End Decision /// -->
                 </div>
@@ -402,10 +430,12 @@ import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
+import ViewIcon from '../../_common/_icons/ViewIcon';
 import VueTimepicker from 'vue2-timepicker';
 import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
 import UserAvatar from '../../_common/UserAvatar';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -422,6 +452,7 @@ export default {
         Modal,
         Editor,
         VueTimepicker,
+        ViewIcon,
     },
     methods: {
         ...mapActions([
@@ -433,6 +464,36 @@ export default {
             let start = moment(startDate, 'HH:mm');
 
             return this.$humanizeDuration(end.diff(start, 'miliseconds'));
+        },
+        getMediaFile(media) {
+            if (!media.id) {
+                return;
+            }
+
+            const url = Routing.generate('app_api_media_download', {id: media.id});
+            Vue.http.get(url, {responseType: 'blob'})
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
+                    let a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download = media.originalName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                });
         },
         setModals(value) {
             this.showEditObjectiveModal = value;
@@ -486,6 +547,8 @@ export default {
                 dueDate: decision.dueDate ? moment(decision.dueDate).toDate() : new Date(),
                 status: {key: decision.status, label: decision.statusName},
                 meeting: this.$route.params.meetingId,
+                project: this.$route.params.id,
+                medias: decision.medias,
             };
         },
         initDeleteDecision: function(decision) {
@@ -942,6 +1005,35 @@ export default {
             }
         }
     }
+
+    div.attachments {
+        margin: 0 0 20px;
+
+        .attachment {
+            padding: 10px 20px;
+            background-color: $fadeColor;
+            margin-top: 3px;
+            color: $secondColor;
+            position: relative;
+
+            .view-icon {
+                display: inline;
+                margin-right: 10px;
+                position: relative;
+                top: 3px;
+
+                svg {
+                    width: 18px;
+                }
+            }
+            .attachment-name {
+                a {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
 
     .footer-buttons {
         margin-top: 60px;
