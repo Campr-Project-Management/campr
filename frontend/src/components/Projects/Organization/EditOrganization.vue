@@ -76,6 +76,48 @@
             </div>
         </modal>
 
+        <!-- /// SPONSOR MODALS /// -->
+        <modal v-if="showEditSponsorModal" @close="showEditSponsorModal = false" v-bind:hasSpecificClass="true">
+            <p class="modal-title">{{ translate('message.edit_sponsor') }}</p>
+            <div class="form-group">
+                <select-field
+                        :title="translate('label.select_user')"
+                        :options="editSponsorMembers"
+                        :current-option="editSponsor"
+                        v-model="editSponsor"/>
+            </div>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{
+                    translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{
+                    translate('button.edit_sponsor') }} +</a>
+            </div>
+        </modal>
+        <modal v-if="showCreateSponsorModal" @close="showCreateSponsorModal = false" v-bind:hasSpecificClass="true">
+            <p class="modal-title">{{ translate('message.create_sponsor') }}</p>
+            <div class="form-group">
+                <select-field
+                        :title="translate('label.select_user')"
+                        :options="sponsorMembers"
+                        v-model="newSponsor"/>
+            </div>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{
+                    translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{
+                    translate('button.create_sponsor') }} +</a>
+            </div>
+        </modal>
+        <modal v-if="showDeleteSponsorModal" @close="showDeleteSponsorModal = false">
+            <p class="modal-title">{{ translate('message.delete_sponsor') }}</p>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{
+                    translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedSponsor()"
+                   class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+            </div>
+        </modal>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="header">
@@ -280,6 +322,58 @@
                         <!-- /// End Add new Subteam /// -->
                     </div>
                 </div>
+
+                <div v-if="currentTab === 'sponsor'">
+                    <!-- /// Sponsor /// -->
+                    <h3>{{ translate('title.sponsor') }}</h3>
+                    <scrollbar class="customScrollbar">
+                        <table class="table table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th class="avatar"></th>
+                                <th>{{ translate('table_header_cell.name') }}</th>
+                                <th>{{ translate('table_header_cell.email') }}</th>
+                                <th>{{ translate('table_header_cell.actions') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="user in projectSponsors" :key="user.id">
+                                <td class="avatar text-center">
+                                    <div class="user-avatar-wrapper"
+                                         :style="{ backgroundImage: 'url(' + user.avatarUrl + ')' }"></div>
+                                </td>
+                                <td>{{ user.firstName + ' ' + user.lastName }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <button @click="initEditSponsorModal(user)" data-target="#logistics-edit-modal"
+                                            data-toggle="modal" type="button" class="btn-icon">
+                                        <edit-icon fill="second-fill"></edit-icon>
+                                    </button>
+                                    <button @click="initDeleteSponsorModal(user)"
+                                            data-target="#logistics-delete-modal" data-toggle="modal" type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"></delete-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </scrollbar>
+                    <div class="flex flex-direction-reverse">
+                        <member-badge v-for="(item, index) in sponsors"
+                                      v-bind:item="item" v-bind:key="'sponsor'+index" size="small" />
+                    </div>
+                    <!-- /// End Sponsor /// -->
+                    <hr>
+                    <div class="form">
+                        <!-- /// Add new Sponsor /// -->
+                        <div class="flex flex-direction-reverse">
+                            <a v-if="!projectSponsors.length" @click="initCreateSponsorModal()" class="btn-rounded btn-auto">{{
+                                translate('button.add_new_sponsor') }} +</a>
+                        </div>
+                        <!-- /// End Add new Sponsor /// -->
+                    </div>
+                </div>
             </div>
         </div>
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save"/>
@@ -325,6 +419,7 @@
                 'deleteDepartment', 'getProjectUsers', 'getSubteams', 'createSubteam',
                 'editSubteam', 'deleteSubteam', 'emptyValidationMessages', 'getUsers', 'clearUsers',
                 'createProjectUser', 'deleteProjectUser', 'getProjectById',
+                'createSponsor', 'editProjectSponsor', 'getProjectSponsors', 'deleteSponsor',
             ]),
             isSpecial(user) {
                 return (this.project.projectSponsor === user.id) ||
@@ -500,12 +595,56 @@
 
                 return department.name;
             },
+            initEditSponsorModal(sponsor) {
+                this.showEditSponsorModal = true;
+                this.editSponsor = {key: sponsor.id, label: sponsor.userFullName};
+                this.project.projectUsers.map(member => {
+                    this.editSponsorMembers.push({key: member.user, label: member.userFullName});
+                });
+            },
+            initDeleteSponsorModal(sponsor) {
+                this.showDeleteSponsorModal = true;
+                this.deleteSponsorId = sponsor.id;
+            },
+            initCreateSponsorModal() {
+                this.showCreateSponsorModal = true;
+                this.project.projectUsers.map(member => {
+                    this.sponsorMembers.push({key: member.user, label: member.userFullName});
+                });
+            },
+            selectSponsor() {
+                let data = {
+                    id: this.$route.params.id,
+                    user: this.newSponsor.key,
+                };
+                this.createSponsor(data).then(response => {
+                    this.showCreateSponsorModal = false;
+                });
+            },
+            editSelectedSponsor() {
+                let data = {
+                    id: this.$route.params.id,
+                    user: this.editSponsor.key,
+                };
+
+                this.editProjectSponsor(data);
+                this.showEditSponsorModal = false;
+            },
+            deleteSelectedSponsor() {
+                this.showDeleteSponsorModal = false;
+                let projectSponsorData = {
+                    projectId: this.project.id,
+                    userId: this.deleteSponsorId,
+                };
+                this.deleteSponsor(projectSponsorData);
+            },
         },
         created() {
             this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
             this.getProjectUsers({id: this.$route.params.id});
             this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
             this.getUsers();
+            this.getProjectSponsors({id: this.$route.params.id});
         },
         beforeDestroy() {
             this.emptyValidationMessages();
@@ -522,6 +661,7 @@
                 'projectDepartmentsForSelect',
                 'projectDepartmentById',
                 'projectUsers',
+                'projectSponsors',
             ]),
             departmentMembersOptions() {
                 return this.projectUsers.items.map(
@@ -551,7 +691,7 @@
             return {
                 activeDepartmentPage: 1,
                 activeSubteamPage: 1,
-                availableTabs: ['members', 'departments', 'subteams'],
+                availableTabs: ['members', 'departments', 'subteams', 'sponsor'],
                 currentTab: 'members',
                 departmentName: '',
                 departmentPages: 0,
@@ -561,13 +701,20 @@
                 editDepartmentName: '',
                 editDepartmentMembers: [],
                 editSubteamMembers: [],
+                editSponsorMembers: [],
+                sponsorMembers: [],
                 editSubteamLead: [],
                 editSubteamDepartment: null,
                 roleName: null,
+                newSponsor: null,
+                editSponsor: null,
                 showEditDepartmentModal: false,
                 showDeleteDepartmentModal: false,
                 showEditSubteamModal: false,
+                showEditSponsorModal: false,
+                showCreateSponsorModal: false,
                 showDeleteSubteamModal: false,
+                showDeleteSponsorModal: false,
                 subteamPages: 0,
                 subteamName: '',
                 showFailed: false,
