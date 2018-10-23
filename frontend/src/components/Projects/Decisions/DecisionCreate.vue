@@ -85,13 +85,13 @@
                     </div>
                     <hr class="double">
 
-                    <!-- /// Task Attachments /// -->
+                    <!-- /// Decision Attachments /// -->
                     <h3>{{ translate('message.attachments') }}</h3>
                     <attachments
                             v-model="medias"
                             :max-file-size="projectMaxUploadFileSize"
                             :error-messages="mediasValidationMessages"/>
-                    <!-- /// End Task Attachments /// -->
+                    <!-- /// End Decision Attachments /// -->
                     <hr class="double">
 
                     <!-- /// Actions /// -->
