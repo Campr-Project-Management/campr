@@ -48,7 +48,6 @@ class ApiCreateType extends CreateType
                 'data_class' => Decision::class,
                 'csrf_protection' => false,
                 'entity_manager' => null,
-                'validation_groups' => ['Default', 'create'],
                 'max_media_size' => Project::DEFAULT_MAX_UPLOAD_FILE_SIZE,
             ]
         );

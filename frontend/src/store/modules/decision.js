@@ -72,9 +72,8 @@ const actions = {
      */
     createMeetingDecision({commit}, data) {
         return Vue.http.post(
-            Routing.generate('app_api_meeting_decisions_create',
-                {'id': data.id}),
-            data,
+            Routing.generate('app_api_meeting_decisions_create', {'id': data.meetingId}),
+            data.data
         ).then((response) => {
             if (response.body && response.body.error) {
                 throw response;
