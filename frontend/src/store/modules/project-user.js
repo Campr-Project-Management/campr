@@ -3,7 +3,6 @@ import * as types from '../mutation-types';
 import _ from 'lodash';
 // import router from '../../router';
 
-const ROLE_SPONSOR = 'roles.project_sponsor';
 const ROLE_MANAGER = 'roles.project_manager';
 
 const state = {
@@ -78,7 +77,6 @@ const actions = {
                     let projectUsers = response.data;
                     commit(types.SET_PROJECT_USERS, {projectUsers});
                     commit(types.SET_MANAGERS, {projectUsers});
-                    commit(types.SET_SPONSORS, {projectUsers});
                 }
             }, (response) => {
             });
@@ -154,6 +152,21 @@ const actions = {
             );
     },
     /**
+     * Get project sponsors
+     * @param {function} commit
+     * @param {array} data
+     */
+    getProjectSponsors({commit}, data) {
+        Vue.http
+            .get(Routing.generate('app_api_project_sponsor_users', data)).then((response) => {
+                if (response.status === 200) {
+                    let projectUsers = response.data;
+                    commit(types.SET_SPONSORS, {projectUsers});
+                }
+            }, (response) => {
+            });
+    },
+    /**
      * Update team member
      * @param {function} commit
      * @param {array} data
@@ -167,6 +180,25 @@ const actions = {
                 JSON.stringify(data)
             ).then((response) => {
                 return response.body;
+            }, (response) => {
+            });
+    },
+    /**
+     * Edit a project sponspor
+     * @param {function} commit
+     * @param {array} data
+     * @return {object}
+     */
+    editProjectSponsor({commit}, data) {
+        return Vue.http
+            .patch(
+                Routing.generate('app_api_project_users_update_sponsor', data),
+                JSON.stringify(data)
+            ).then((response) => {
+                if (response.status === 200) {
+                    let projectUsers = response.data;
+                    commit(types.SET_SPONSORS, {projectUsers});
+                }
             }, (response) => {
             });
     },
@@ -214,6 +246,50 @@ const actions = {
             .delete(Routing.generate('app_api_project_users_delete_user', data))
         ;
     },
+    /**
+     * Delete a sponsor
+     * @param {function} commit
+     * @param {integer} projectId
+     * @param {integer} userId
+     */
+    deleteSponsor({commit}, {projectId, userId}) {
+        const data = {
+            id: projectId,
+            user: userId,
+        };
+
+        Vue.http
+            .delete(
+                Routing.generate('app_api_project_users_delete_sponsor', data)
+            ).then((response) => {
+                if (response.status === 200) {
+                    let projectUsers = response.data;
+                    commit(types.SET_SPONSORS, {projectUsers});
+                }
+            }, (response) => {
+            });
+    },
+    /**
+     * Create a project sponsor
+     * @param {function} commit
+     * @param {integer} id
+     * @param {integer} user
+     */
+    createSponsor({commit}, {id, user}) {
+        const data = {
+            id: id,
+            user: user,
+        };
+
+        Vue.http
+            .put(
+                Routing.generate('app_api_project_users_create_sponsor', data)
+            ).then((response) => {
+                let projectUsers = response.data;
+                commit(types.SET_SPONSORS, {projectUsers});
+            }, (response) => {
+            });
+    },
 };
 
 const mutations = {
@@ -249,13 +325,11 @@ const mutations = {
      */
     [types.SET_SPONSORS](state, {projectUsers}) {
         let sponsors = [];
-        if (!_.isArray(projectUsers.items)) {
+        if (typeof projectUsers == 'undefined' || !_.isArray(projectUsers.items)) {
             projectUsers.items = [];
         }
         projectUsers.items.map(function(projectUser) {
-            if (projectUser.projectRoleNames.indexOf(ROLE_SPONSOR) !== -1) {
-                sponsors.push(projectUser);
-            }
+            sponsors.push(projectUser);
         });
         state.sponsors = sponsors;
     },

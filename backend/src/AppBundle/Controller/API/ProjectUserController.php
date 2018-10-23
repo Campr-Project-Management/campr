@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use AppBundle\Form\ProjectUser\BaseCreateType;
@@ -126,5 +127,124 @@ class ProjectUserController extends ApiController
         });
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Delete sponsor role.
+     *
+     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_delete_sponsor", options={"expose"=true})
+     * @Method({"DELETE"})
+     *
+     * @param Project $project
+     * @param User    $user
+     *
+     * @return JsonResponse
+     */
+    public function deleteSponsorAction(Project $project, User $user)
+    {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
+                'project' => $project,
+                'name' => ProjectRole::ROLE_SPONSOR,
+            ]);
+            $projectUser = $em->getRepository(ProjectUser::class)->findOneBy([
+                'project' => $project->getId(),
+                'user' => $user->getId(),
+            ]);
+
+            $projectUser->removeProjectRole($sponsorRole);
+            $em->flush();
+        } catch (\Exception $e) {
+            return $this->createApiResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->createApiResponse(['items' => $project->getProjectSponsors()]);
+    }
+
+    /**
+     * Update project sponsor.
+     *
+     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_update_sponsor", options={"expose"=true})
+     * @Method({"PATCH"})
+     *
+     * @param Project $project
+     * @param User    $user
+     *
+     * @return JsonResponse
+     */
+    public function updateSponsorAction(Project $project, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
+            'project' => $project,
+            'name' => ProjectRole::ROLE_SPONSOR,
+        ]);
+
+        if (!$sponsorRole) {
+            $sponsorRole = (new ProjectRole())
+                ->setProject($project)
+                ->setName(ProjectRole::ROLE_SPONSOR)
+            ;
+            $em->persist($sponsorRole);
+        }
+        try {
+            $project->getProjectUsers()->map(function (ProjectUser $projectUser) use ($sponsorRole, $user, $em) {
+                if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
+                    $projectUser->removeProjectRole($sponsorRole);
+                }
+            });
+
+            $projectUser = $em->getRepository(ProjectUser::class)->findOneBy(
+                [
+                    'project' => $project->getId(),
+                    'user' => $user->getId(),
+                ]
+            );
+            $projectUser->addProjectRole($sponsorRole);
+
+            $em->flush();
+        } catch (\Exception $e) {
+            return $this->createApiResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->createApiResponse(['items' => $project->getProjectSponsors()]);
+    }
+
+    /**
+     * Create project sponsor.
+     *
+     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_create_sponsor", options={"expose"=true})
+     * @Method({"PUT"})
+     *
+     * @param Project $project
+     * @param User    $user
+     *
+     * @return JsonResponse
+     **/
+    public function createSponsorAction(Project $project, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
+            'project' => $project,
+            'name' => ProjectRole::ROLE_SPONSOR,
+        ]);
+
+        if (!$sponsorRole) {
+            $sponsorRole = (new ProjectRole())
+                ->setProject($project)
+                ->setName(ProjectRole::ROLE_SPONSOR);
+            $em->persist($sponsorRole);
+        }
+        $projectUser = $em->getRepository(ProjectUser::class)->findOneBy([
+                'project' => $project->getId(),
+                'user' => $user->getId(),
+        ]);
+
+        $projectUser->addProjectRole($sponsorRole);
+        $em->flush();
+
+        return $this->createApiResponse(['items' => $project->getProjectSponsors()]);
     }
 }
