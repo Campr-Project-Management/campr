@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Form\MeetingObjective\BaseType as ObjectiveType;
 use AppBundle\Form\MeetingAgenda\CreateType as AgendaType;
-use AppBundle\Form\Decision\CreateType as DecisionType;
+use AppBundle\Form\Decision\ApiCreateType as DecisionType;
 use AppBundle\Form\Todo\BaseCreateType as TodoType;
 use AppBundle\Form\Info\BaseCreateType as InfoType;
 use Symfony\Component\Validator\Constraints\Valid;

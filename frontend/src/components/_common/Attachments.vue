@@ -202,6 +202,11 @@
                 this.lazyErrorMessages = value;
             },
         },
+        mounted() {
+            if (this.value) {
+                this.inputValue = [...this.value];
+            }
+        },
         data() {
             return {
                 inputValue: [],

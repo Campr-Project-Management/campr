@@ -74,6 +74,7 @@ class DecisionController extends ApiController
 
         $em = $this->getDoctrine()->getManager();
         $decision = $form->getData();
+
         $fs = $this->getFileSystem($decision->getProject());
         foreach ($decision->getMedias() as $media) {
             $media->setFileSystem($fs);
