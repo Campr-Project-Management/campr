@@ -86,7 +86,8 @@ abstract class ApiController extends BaseController
         }
 
         if ($request->files->count()) {
-            $data = array_merge_recursive($data, $request->files->all());
+            $files = $request->files->all();
+            $data = $this->merge_multidimensional_arrays($data, $files);
         }
 
         $form->submit($data, $clearMissing);

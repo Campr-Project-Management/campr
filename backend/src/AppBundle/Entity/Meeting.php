@@ -125,6 +125,7 @@ class Meeting
      * @var ArrayCollection|Decision[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting", cascade={"all"})
+     * @Assert\Valid()
      */
     private $decisions;
 

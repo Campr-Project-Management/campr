@@ -507,6 +507,7 @@ export default {
                 responsibility: null,
                 done: false,
                 dueDate: new Date(),
+                medias: [],
             });
         },
         onDeleteDecision(index) {

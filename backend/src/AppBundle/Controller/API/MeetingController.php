@@ -9,6 +9,7 @@ use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\MeetingObjective;
 use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\Note;
+use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\User;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\MeetingObjective\BaseType as MeetingObjectiveType;
 use AppBundle\Form\MeetingAgenda\CreateType as MeetingAgendaType;
-use AppBundle\Form\Decision\CreateType as DecisionType;
+use AppBundle\Form\Decision\ApiCreateType as DecisionType;
 use AppBundle\Form\Todo\CreateType as TodoType;
 use AppBundle\Form\Note\CreateType as NoteType;
 
@@ -104,11 +105,11 @@ class MeetingController extends ApiController
                     );
                 }
             }
-
             if ($form->isValid()) {
                 foreach ($meeting->getMedias() as $media) {
                     $media->setFileSystem($fileSystem);
                 }
+
                 $meeting->setProject($project);
                 $this->persistAndFlush($meeting);
 
@@ -266,13 +267,27 @@ class MeetingController extends ApiController
      */
     public function createDecisionAction(Request $request, Meeting $meeting)
     {
-        $form = $this->createForm(DecisionType::class, new Decision(), ['csrf_protection' => false]);
+        $decision = new Decision();
+        $form = $this->createForm(
+            DecisionType::class,
+            $decision,
+            [
+                'allow_extra_fields' => true,
+                'entity_manager' => $this->getDoctrine()->getManager(),
+                'max_media_size' => $meeting->getProject()->getMaxUploadFileSize(),
+            ]
+        );
+
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
             $decision = $form->getData();
             $decision->setMeeting($meeting);
             $decision->setProject($meeting->getProject());
+            $fs = $this->getFileSystem($meeting->getProject());
+            foreach ($decision->getMedias() as $media) {
+                $media->setFileSystem($fs);
+            }
             $this->persistAndFlush($decision);
 
             return $this->createApiResponse($decision, Response::HTTP_CREATED);
@@ -448,5 +463,23 @@ class MeetingController extends ApiController
             ],
             Response::HTTP_NO_CONTENT
         );
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return FileSystem
+     */
+    private function getFileSystem(Project $project): FileSystem
+    {
+        /** @var FileSystemResolver $fs */
+        $fsResolver = $this->get('app.fs.resolver');
+        $fs = $fsResolver->resolve($project);
+
+        if ($fs) {
+            return $fs;
+        }
+
+        throw new \Exception('Filesystem is missing. Please contact us.');
     }
 }
