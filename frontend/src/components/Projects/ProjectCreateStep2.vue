@@ -98,9 +98,12 @@
                 this.projectDuration = stepData.projectDuration > 0 ? stepData.projectDuration : 1;
                 this.projectBudget = stepData.projectBudget >= 10000 ? stepData.projectBudget : 10000;
                 this.projectMembers = stepData.projectMembers >= 3 ? stepData.projectMembers : 3;
-                this.projectStrategicalMeaning = Number(stepData.projectStrategicalMeaning ? stepData.projectStrategicalMeaning : 0);
-                this.projectInnovationDegree = Number(stepData.projectInnovationDegree ? stepData.projectInnovationDegree : 0);
-                this.projectTechnologyComplexity = Number(stepData.projectInnovationDegree ? stepData.projectInnovationDegree : 0);
+                this.projectStrategicalMeaning = Number(
+                    stepData.projectStrategicalMeaning ? stepData.projectStrategicalMeaning : 0);
+                this.projectInnovationDegree = Number(
+                    stepData.projectInnovationDegree ? stepData.projectInnovationDegree : 0);
+                this.projectTechnologyComplexity = Number(
+                    stepData.projectTechnologyComplexity ? stepData.projectTechnologyComplexity : 0);
             },
         },
         computed: {
