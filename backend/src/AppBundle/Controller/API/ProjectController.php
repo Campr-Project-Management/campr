@@ -2292,4 +2292,23 @@ class ProjectController extends ApiController
 
         return $this->createApiResponse($tree);
     }
+
+    /**
+     * Get all sponsor users.
+     *
+     * @Route("/{id}/sponsor-users", name="app_api_project_sponsor_users", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function projectSponsorUsersAction(Project $project)
+    {
+        return $this->createApiResponse(
+            [
+                'items' => $project->getProjectSponsors(),
+            ]
+        );
+    }
 }
