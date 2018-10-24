@@ -30,7 +30,6 @@ class MeetingSubscriber implements EventSubscriberInterface
         return [
             MeetingEvents::CALCULATE_MEETING_AGENDA_START_DATES => 'onCalculateMeetingAgendaStartDates',
             MeetingEvents::RECALCULATE_MEETING_AGENDA_START_DATES => 'onRecalculateMeetingAgendaStartDates',
-
         ];
     }
 

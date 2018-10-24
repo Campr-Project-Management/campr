@@ -105,19 +105,8 @@ class MeetingAgendaControllerTest extends BaseController
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-agenda/create');
 
-        $meeting = (new Meeting())
-            ->setName('meeting3')
-            ->setLocation('meeting-location')
-            ->setDate(new \DateTime())
-            ->setStart(new \DateTime())
-            ->setEnd(new \DateTime('+1 hour'))
-        ;
-
-        $this->em->persist($meeting);
-        $this->em->flush();
-
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[meeting]'] = $meeting->getId();
+        $form['create[meeting]'] = 1;
         $form['create[topic]'] = 'topic3';
         $form['create[duration]'] = 0;
 
