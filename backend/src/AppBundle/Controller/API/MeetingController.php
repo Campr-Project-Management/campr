@@ -8,12 +8,14 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\MeetingObjective;
 use AppBundle\Entity\MeetingParticipant;
+use AppBundle\Entity\MeetingReport;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
+use AppBundle\Form\MeetingReport\CreateType as ReportCreateType;
 use AppBundle\Security\MeetingVoter;
 use Component\MeetingAgenda\MeetingAgendaEvent;
 use Component\MeetingAgenda\MeetingAgendaEvents;
@@ -486,5 +488,88 @@ class MeetingController extends ApiController
         }
 
         throw new \Exception('Filesystem is missing. Please contact us.');
+    }
+
+    /**
+     * Send meeting report to participants.
+     *
+     * @Route("/{id}/report", name="app_api_meeting_report", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Meeting $meeting
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function reportAction(Meeting $meeting, Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $form = $this->createForm(ReportCreateType::class, new MeetingReport(), ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $meetingReport = $form->getData();
+            $meetingReport->setMeeting($meeting);
+            $meetingReport->setCreatedBy($user);
+
+            $this->persistAndFlush($meetingReport);
+
+            $host = $request->getHttpHost();
+
+            $command = strtr(
+                '--env=%env% app:meeting:send-report %meetingId% %userId% %meetingReportId% %host%',
+                [
+                    '%env%' => $this->getParameter('kernel.environment'),
+                    '%userId%' => $user->getId(),
+                    '%meetingId%' => $meeting->getId(),
+                    '%meetingReportId%' => $meetingReport->getId(),
+                    '%host%' => $host,
+                ]
+            );
+
+            $this
+                ->get('redis.client')
+                ->rpush(RedisQueueManagerCommand::DEFAULT, [$command])
+            ;
+
+            return $this->createApiResponse(
+                [
+                    'message' => $this->get('translator')->trans('message.email_successfully_sent'),
+                ],
+                Response::HTTP_NO_CONTENT
+            );
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * Retrieve Last Meeting Report.
+     *
+     * @Route("/{id}/reports/last", name="app_api_meeting_reports_last", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Meeting $meeting
+     *
+     * @return JsonResponse
+     */
+    public function meetingReportsLastAction(Meeting $meeting)
+    {
+        $repo = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(MeetingReport::class)
+        ;
+
+        $report = $repo->findLastByMeeting($meeting);
+
+        return $this->createApiResponse($report);
     }
 }

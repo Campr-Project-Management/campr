@@ -399,6 +399,15 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $statusReports;
 
     /**
+     * @var MeetingReport[]|ArrayCollection
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingReport", mappedBy="createdBy")
+     */
+    private $meetingReports;
+
+    /**
      * @var array
      * @ORM\Column(name="sign_up_details", type="json_array")
      */
@@ -452,6 +461,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->subteamMembers = new ArrayCollection();
         $this->projectUsers = new ArrayCollection();
         $this->statusReports = new ArrayCollection();
+        $this->meetingReports = new ArrayCollection();
     }
 
     public function __toString()
@@ -479,8 +489,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setWidgetSettings(array $widgetSettings)
     {
         $this->widgetSettings = $widgetSettings;
-
-        return $this;
     }
 
     public function getWidgetSettings()
@@ -568,8 +576,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setPhone($phone)
     {
         $this->phone = $phone;
-
-        return $this;
     }
 
     /**
@@ -643,8 +649,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
                 $this->lastName = $fullName;
                 break;
         }
-
-        return $this;
     }
 
     /**
@@ -715,8 +719,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setSalt($salt)
     {
         $this->salt = $salt;
-
-        return $this;
     }
 
     /**
@@ -844,8 +846,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setIsSuspended($suspended)
     {
         $this->setSuspended($suspended);
-
-        return $this;
     }
 
     /**
@@ -868,8 +868,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setActivationToken($activationToken)
     {
         $this->activationToken = $activationToken;
-
-        return $this;
     }
 
     /**
@@ -892,8 +890,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setActivationTokenCreatedAt(\DateTime $activationTokenCreatedAt = null)
     {
         $this->activationTokenCreatedAt = $activationTokenCreatedAt;
-
-        return $this;
     }
 
     /**
@@ -916,8 +912,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setResetPasswordToken($resetPasswordToken)
     {
         $this->resetPasswordToken = $resetPasswordToken;
-
-        return $this;
     }
 
     /**
@@ -940,8 +934,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setResetPasswordTokenCreatedAt(\DateTime $resetPasswordTokenCreatedAt = null)
     {
         $this->resetPasswordTokenCreatedAt = $resetPasswordTokenCreatedAt;
-
-        return $this;
     }
 
     /**
@@ -988,8 +980,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     /**
@@ -1072,8 +1062,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setActivatedAt(\DateTime $activatedAt = null)
     {
         $this->activatedAt = $activatedAt;
-
-        return $this;
     }
 
     /**
@@ -1096,8 +1084,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addMedia(Media $media)
     {
         $this->medias[] = $media;
-
-        return $this;
     }
 
     /**
@@ -1131,8 +1117,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->teamMembers[] = $teamMember;
         $teamMember->setUser($this);
-
-        return $this;
     }
 
     /**
@@ -1146,8 +1130,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->teamMembers->removeElement($teamMember);
         $teamMember->setUser(null);
-
-        return $this;
     }
 
     /**
@@ -1186,8 +1168,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addTeam(Team $team)
     {
         $this->teams[] = $team;
-
-        return $this;
     }
 
     /**
@@ -1200,8 +1180,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeTeam(Team $team)
     {
         $this->teams->removeElement($team);
-
-        return $this;
     }
 
     /**
@@ -1224,8 +1202,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setApiToken($apiToken)
     {
         $this->apiToken = $apiToken;
-
-        return $this;
     }
 
     /**
@@ -1248,8 +1224,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addTeamInvite(TeamInvite $teamInvite)
     {
         $this->teamInvites[] = $teamInvite;
-
-        return $this;
     }
 
     /**
@@ -1262,8 +1236,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeTeamInvite(TeamInvite $teamInvite)
     {
         $this->teamInvites->removeElement($teamInvite);
-
-        return $this;
     }
 
     /**
@@ -1292,8 +1264,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-
-        return $this;
     }
 
     /**
@@ -1310,8 +1280,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         if ($image) {
             $this->updatedAt = new \DateTime();
         }
-
-        return $this;
     }
 
     /**
@@ -1340,8 +1308,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setFacebook($facebook)
     {
         $this->facebook = $facebook;
-
-        return $this;
     }
 
     /**
@@ -1360,8 +1326,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setTwitter($twitter)
     {
         $this->twitter = $twitter;
-
-        return $this;
     }
 
     /**
@@ -1380,8 +1344,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setInstagram($instagram)
     {
         $this->instagram = $instagram;
-
-        return $this;
     }
 
     /**
@@ -1400,8 +1362,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setGplus($gplus)
     {
         $this->gplus = $gplus;
-
-        return $this;
     }
 
     /**
@@ -1420,8 +1380,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setLinkedIn($linkedIn)
     {
         $this->linkedIn = $linkedIn;
-
-        return $this;
     }
 
     /**
@@ -1440,8 +1398,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setMedium($medium)
     {
         $this->medium = $medium;
-
-        return $this;
     }
 
     /**
@@ -1454,8 +1410,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addOwnedDistributionList(DistributionList $ownedDistributionList)
     {
         $this->ownedDistributionLists[] = $ownedDistributionList;
-
-        return $this;
     }
 
     /**
@@ -1489,8 +1443,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->distributionLists[] = $distributionList;
         $distributionList->addUser($this);
-
-        return $this;
     }
 
     /**
@@ -1502,8 +1454,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->distributionLists->removeElement($distributionList);
         $distributionList->removeUser($this);
-
-        return $this;
     }
 
     /**
@@ -1526,8 +1476,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addContract(Contract $contract)
     {
         $this->contracts[] = $contract;
-
-        return $this;
     }
 
     /**
@@ -1538,8 +1486,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeContract(Contract $contract)
     {
         $this->contracts->removeElement($contract);
-
-        return $this;
     }
 
     /**
@@ -1562,8 +1508,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addOwnedMeeting(Meeting $ownedMeeting)
     {
         $this->ownedMeetings[] = $ownedMeeting;
-
-        return $this;
     }
 
     /**
@@ -1574,8 +1518,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeOwnedMeeting(Meeting $ownedMeeting)
     {
         $this->ownedMeetings->removeElement($ownedMeeting);
-
-        return $this;
     }
 
     /**
@@ -1598,8 +1540,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addFavoriteProject(Project $favoriteProject)
     {
         $this->favoriteProjects[] = $favoriteProject;
-
-        return $this;
     }
 
     /**
@@ -1612,8 +1552,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeFavoriteProject(Project $favoriteProject)
     {
         $this->favoriteProjects->removeElement($favoriteProject);
-
-        return $this;
     }
 
     /**
@@ -1701,8 +1639,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->subteamMembers[] = $subteamMember;
         $subteamMember->setUser($this);
-
-        return $this;
     }
 
     /**
@@ -1713,8 +1649,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeSubteamMember(SubteamMember $subteamMember)
     {
         $this->subteamMembers->removeElement($subteamMember);
-
-        return $this;
     }
 
     /**
@@ -1734,8 +1668,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->projectUsers[] = $projectUser;
         $projectUser->setUser($this);
-
-        return $this;
     }
 
     /**
@@ -1747,8 +1679,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     {
         $this->projectUsers->removeElement($projectUser);
         $projectUser->setUser(null);
-
-        return $this;
     }
 
     /**
@@ -1817,8 +1747,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function addStatusReport(StatusReport $statusReport)
     {
         $this->statusReports[] = $statusReport;
-
-        return $this;
     }
 
     /**
@@ -1829,8 +1757,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function removeStatusReport(StatusReport $statusReport)
     {
         $this->statusReports->removeElement($statusReport);
-
-        return $this;
     }
 
     /**
@@ -1873,8 +1799,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setLocale(string $locale)
     {
         $this->locale = $locale;
-
-        return $this;
     }
 
     /**
@@ -1887,8 +1811,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setCompany(Company $company = null)
     {
         $this->company = $company;
-
-        return $this;
     }
 
     /**
@@ -1957,5 +1879,59 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function setAvatarUrl(string $avatarUrl = null)
     {
         $this->avatarUrl = $avatarUrl;
+    }
+
+    /**
+     * Set trustedComputers.
+     *
+     * @param array $trustedComputers
+     *
+     * @return User
+     */
+    public function setTrustedComputers($trustedComputers)
+    {
+        $this->trustedComputers = $trustedComputers;
+    }
+
+    /**
+     * Get trustedComputers.
+     *
+     * @return array
+     */
+    public function getTrustedComputers()
+    {
+        return $this->trustedComputers;
+    }
+
+    /**
+     * Add meetingReport.
+     *
+     * @param MeetingReport $meetingReport
+     *
+     * @return User
+     */
+    public function addMeetingReport(MeetingReport $meetingReport)
+    {
+        $this->meetingReports[] = $meetingReport;
+    }
+
+    /**
+     * Remove meetingReport.
+     *
+     * @param MeetingReport $meetingReport
+     */
+    public function removeMeetingReport(MeetingReport $meetingReport)
+    {
+        $this->meetingReports->removeElement($meetingReport);
+    }
+
+    /**
+     * Get meetingReports.
+     *
+     * @return Collection
+     */
+    public function getMeetingReports()
+    {
+        return $this->meetingReports;
     }
 }
