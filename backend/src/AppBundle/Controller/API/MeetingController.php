@@ -211,7 +211,9 @@ class MeetingController extends ApiController
         if ($form->isValid()) {
             $meetingAgenda = $form->getData();
             $meetingAgenda->setMeeting($meeting);
+
             $this->dispatchEvent(MeetingAgendaEvents::CALCULATE_START_DATE, new MeetingAgendaEvent($meetingAgenda));
+
             $this->persistAndFlush($meetingAgenda);
 
             return $this->createApiResponse($meetingAgenda, Response::HTTP_CREATED);

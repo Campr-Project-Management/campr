@@ -747,10 +747,14 @@ export default {
         addAgenda: function() {
             this.createMeetingAgenda({
                 id: this.$route.params.meetingId,
+                meeting: this.$route.params.meetingId,
                 topic: this.agenda.topic,
                 responsibility: this.agenda.responsibility.length > 0 ? this.agenda.responsibility[0] : null,
                 duration: this.agenda.duration,
-            }).then(() => {
+            }).then((response) => {
+                if (response.body && response.body.error && response.body.messages) {
+                    return;
+                }
                 this.agenda.responsibility = [];
                 this.agenda.topic = null;
                 this.agenda.duration = null;
