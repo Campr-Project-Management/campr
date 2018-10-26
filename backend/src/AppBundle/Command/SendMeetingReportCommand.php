@@ -4,17 +4,11 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingParticipant;
+use AppBundle\Entity\MeetingReport;
 use AppBundle\Entity\User;
 use AppBundle\Services\MailerService;
+use Component\PDF\Exception\PDFException;
 use Doctrine\Common\Collections\Collection;
-use Jsvrcek\ICS\CalendarExport;
-use Jsvrcek\ICS\CalendarStream;
-use Jsvrcek\ICS\Model\Calendar;
-use Jsvrcek\ICS\Model\CalendarEvent;
-use Jsvrcek\ICS\Model\Description\Location;
-use Jsvrcek\ICS\Model\Relationship\Attendee;
-use Jsvrcek\ICS\Model\Relationship\Organizer;
-use Jsvrcek\ICS\Utility\Formatter;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,14 +16,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Webmozart\Assert\Assert;
 
-class SendMeetingNotificationCommand extends ContainerAwareCommand
+class SendMeetingReportCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('app:meeting:send-notification')
+            ->setName('app:meeting:send-report')
             ->addArgument('meetingId', InputArgument::REQUIRED, 'Meeting ID', null)
             ->addArgument('userId', InputArgument::REQUIRED, 'User ID', null)
+            ->addArgument('meetingReportId', InputArgument::REQUIRED, 'Report ID', null)
             ->addArgument('host', InputArgument::REQUIRED, 'Hostname', null)
         ;
     }
@@ -45,9 +40,11 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $meetingId = (int) $input->getArgument('meetingId');
         $userId = (int) $input->getArgument('userId');
         $host = $input->getArgument('host');
+        $meetingReportId = (int) $input->getArgument('meetingReportId');
 
         $meeting = $this->findMeeting($meetingId);
         $user = $this->findUser($userId);
+        $report = $this->findReport($meetingReportId);
 
         $io = new SymfonyStyle($input, $output);
 
@@ -60,9 +57,9 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
         $mailer = $this->getMailer();
 
-        $io->note('Creating meeting ICS...');
-        $icsAttachment = $this->createMailIcsAttachement($meeting, $user);
-        $io->success('Meeting ICS successfully created');
+        $io->note('Creating meeting PDF...');
+        $attachment = $this->createMailPDFAttachment($meeting, $user, $host);
+        $io->success('Meeting PDF successfully created');
 
         $io->note(
             sprintf(
@@ -89,18 +86,16 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
-        $scheme = $this->getContainer()->getParameter('router.request_context.scheme');
 
-        $url = $scheme.'://'.$host.'/#/projects/'.$meeting->getProject()->getId().'/meetings/view-meeting/'.$meeting->getId();
         foreach ($recipients as $locale => $to) {
             $trans->setLocale($locale);
 
             $mailer->sendEmail(
-                ':meeting:notification.html.twig',
+                ':meeting:report.html.twig',
                 $user->getEmail(),
                 $to,
-                ['meeting' => $meeting, 'url' => $url],
-                [$icsAttachment]
+                ['meeting' => $meeting, 'report' => $report],
+                [$attachment]
             );
         }
 
@@ -118,25 +113,20 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
      */
     private function getMailRecipientsGroupedByLocale(Meeting $meeting): array
     {
-        /** @var User[] $users */
-        $users = $this
+        $recipients = [];
+        $this
             ->getMeetingParticipants($meeting)
             ->map(
-                function (MeetingParticipant $meetingParticipant) {
-                    return $meetingParticipant->getUser();
+                function (MeetingParticipant $meetingParticipant) use (&$recipients) {
+                    $user = $meetingParticipant->getUser();
+                    $locale = $user->getLocale();
+                    if (empty($recipients[$locale])) {
+                        $recipients[$locale] = [];
+                    }
+                    $recipients[$locale][] = $user->getEmail();
                 }
             )
         ;
-
-        $recipients = [];
-        foreach ($users as $user) {
-            $locale = $user->getLocale();
-            if (empty($recipients[$locale])) {
-                $recipients[$locale] = [];
-            }
-
-            $recipients[$locale][] = $user->getEmail();
-        }
 
         return $recipients;
     }
@@ -176,92 +166,62 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param int $id
+     *
+     * @return MeetingReport
+     */
+    private function findReport(int $id): MeetingReport
+    {
+        $report = $this
+            ->getContainer()
+            ->get('app.repository.meeting_report')
+            ->find($id)
+        ;
+        Assert::notNull($report, sprintf('Report with ID "%d" not found', $id));
+
+        return $report;
+    }
+
+    /**
      * @param Meeting $meeting
      * @param User    $user
+     * @param string  $host
+     *
+     * @throws PDFException
      *
      * @return \Swift_Attachment
-     *
-     * @throws \Jsvrcek\ICS\Exception\CalendarEventException
      */
-    private function createMailIcsAttachement(Meeting $meeting, User $user): \Swift_Attachment
+    private function createMailPDFAttachment(Meeting $meeting, User $user, string $host): \Swift_Attachment
     {
-        $ics = $this->getICSContent($meeting, $user);
+        $pdf = $this->getPDFContent($meeting, $user, $host);
 
         return new \Swift_Attachment(
-            $ics,
-            sprintf('meeting-event-%s.ics', $meeting->getCreatedAt()->format('Y-m-d')),
-            'text/calendar'
+            $pdf,
+            sprintf('status-report-%s.pdf', $meeting->getCreatedAt()->format('Y-m-d')),
+            'application/pdf'
         );
     }
 
     /**
      * @param Meeting $meeting
      * @param User    $user
+     * @param string  $host
+     *
+     * @throws PDFException
      *
      * @return string
-     *
-     * @throws \Jsvrcek\ICS\Exception\CalendarEventException
      */
-    private function getICSContent(Meeting $meeting, User $user): string
+    private function getPDFContent(Meeting $meeting, User $user, string $host): string
     {
-        $calendar = new Calendar();
-        $calendar->setProdId('default');
-        $calendar->addEvent($this->createIcalEvent($meeting, $user));
-
-        $calendarExport = new CalendarExport(new CalendarStream(), new Formatter());
-        $calendarExport->addCalendar($calendar);
-
-        return $calendarExport->getStream();
-    }
-
-    /**
-     * @param Meeting $meeting
-     * @param User    $user
-     *
-     * @return CalendarEvent
-     *
-     * @throws \Jsvrcek\ICS\Exception\CalendarEventException
-     */
-    private function createIcalEvent(Meeting $meeting, User $user)
-    {
-        $meetingDate = $meeting->getDate();
-        $meetingStart = new \DateTime($meetingDate->format('Y-m-d').' '.$meeting->getStart()->format('H:i:s'));
-        $meetingEnd = new \DateTime($meetingDate->format('Y-m-d').' '.$meeting->getEnd()->format('H:i:s'));
-
-        $location = new Location();
-        $location->setName($meeting->getLocation());
-
-        $event = new CalendarEvent();
-        $event->setSummary($meeting->getName());
-        $event->setStart($meetingStart);
-        $event->setEnd($meetingEnd);
-        $event->addLocation($location);
-
-        $recipients = $this
-            ->getMeetingParticipants($meeting)
-            ->map(
-                function (MeetingParticipant $meetingParticipant) {
-                    return $meetingParticipant->getUser();
-                }
-            )
+        return $this
+            ->getContainer()
+            ->get('app.pdf.builder.meeting')
+            ->setMeeting($meeting)
+            ->setUser($user)
+            ->setHost($host)
+            ->getPrinter()
+            ->getContents()
         ;
-
-        if (!empty($recipients)) {
-            foreach ($recipients as $recipient) {
-                $attendee = new Attendee(new Formatter());
-                $attendee
-                    ->setName($recipient->getFirstName().' '.$recipient->getLastName())
-                    ->setValue($recipient->getEmail());
-                $event->addAttendee($attendee);
-            }
-        }
-
-        $organizer = new Organizer(new Formatter());
-        $organizer->setValue($user->getEmail())
-            ->setName($user->getFirstName().' '.$user->getLastName());
-        $event->setOrganizer($organizer);
-
-        return $event;
     }
 
     /**
