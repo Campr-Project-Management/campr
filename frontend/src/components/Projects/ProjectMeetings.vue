@@ -42,7 +42,26 @@
             <p class="modal-title">{{ translate('message.send_notifications') }}</p>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
-                <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="sendNotifications" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
+            </div>
+        </modal>
+
+        <modal v-if="showMeetingReportModal" @close="showMeetingReportModal = false">
+            <p class="modal-title">{{ translate('message.send_meeting_report') }}</p>
+            <div class="form-group">
+                <editor
+                        v-model="lastMeetingReportContent"
+                        :label="'placeholder.email_content'"/>
+                <error
+                        v-if="validationMessages.content && validationMessages.content.length"
+                        v-for="message in validationMessages.content"
+                        :message="message" />
+            </div>
+
+            <hr class="double">
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showMeetingReportModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="sendReport" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
             </div>
         </modal>
 
@@ -121,6 +140,13 @@
                                                 class="btn-icon"
                                                 v-tooltip.top-center="translate('message.send_notifications')"><notification-icon fill="second-fill"></notification-icon></a>
                                         <a
+                                                @click="initSendMeetingReport(meeting)"
+                                                v-if="isInactive(meeting)"
+                                                href="javascript:void(0)"
+                                                class="btn-icon"
+                                                v-tooltip.top-center="translate('message.send_meeting_report')"><notification-icon fill="second-fill"></notification-icon></a>
+
+                                        <a
                                                 @click="initRescheduleModal(meeting)"
                                                 v-if="!isInactive(meeting)"
                                                 href="javascript:void(0)"
@@ -132,6 +158,7 @@
                                                 href="javascript:void(0)"
                                                 class="btn-icon"
                                                 v-tooltip.top-center="translate('message.delete_meeting')"><delete-icon fill="danger-fill"></delete-icon></a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -172,6 +199,7 @@ import Modal from '../_common/Modal';
 import VueTimepicker from 'vue2-timepicker';
 import DateField from '../_common/_form-components/DateField';
 import UserAvatar from '../_common/UserAvatar';
+import Editor from '../_common/Editor';
 
 export default {
     components: {
@@ -186,6 +214,7 @@ export default {
         DeleteIcon,
         moment,
         Modal,
+        Editor,
         VueTimepicker,
     },
     methods: {
@@ -195,6 +224,8 @@ export default {
             'deleteProjectMeeting',
             'editProjectMeeting',
             'sendMeetingNotifications',
+            'sendMeetingReport',
+            'getLastMeetingReport',
         ]),
         isInactive(meeting) {
             let currentDate = moment();
@@ -278,6 +309,11 @@ export default {
             this.showNotificationModal = true;
             this.meetingId = meeting.id;
         },
+        initSendMeetingReport(meeting) {
+            this.showMeetingReportModal = true;
+            this.getLastMeetingReport({meetingId: meeting.id});
+            this.meetingId = meeting.id;
+        },
         printMeeting(meeting) {
             let pdfURL = Routing.generate('app_meeting_pdf', {id: meeting.id});
             window.location = pdfURL;
@@ -287,6 +323,24 @@ export default {
                 .then((response) => {
                     this.showNotificationModal = false;
                 });
+        },
+        sendReport() {
+            this
+                .sendMeetingReport({
+                    id: this.meetingId,
+                    content: this.content,
+                }).then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            return;
+                        }
+                        this.showMeetingReportModal = false;
+                    },
+                    () => {
+                        this.showMeetingReportModal = false;
+                    },
+                )
+            ;
         },
         participants: (meeting) => meeting
             .meetingParticipants
@@ -320,7 +374,21 @@ export default {
     computed: {
         ...mapGetters({
             projectMeetings: 'projectMeetings',
+            validationMessages: 'validationMessages',
+            lastMeetingReport: 'lastMeetingReport',
         }),
+        lastMeetingReportContent: {
+            get() {
+                if (!this.lastMeetingReport.content) {
+                    return '';
+                }
+
+                return this.lastMeetingReport.content;
+            },
+            set(newValue) {
+                this.content = newValue;
+            },
+        },
         pages() {
             return Math.ceil(this.projectMeetings.totalItems / this.perPage);
         },
@@ -334,11 +402,13 @@ export default {
             showDeleteModal: false,
             showRescheduleModal: false,
             showNotificationModal: false,
+            showMeetingReportModal: false,
             meetingId: null,
             date: moment().toDate(),
             startTime: null,
             endTime: null,
             showMore: {},
+            content: '',
         };
     },
 };
