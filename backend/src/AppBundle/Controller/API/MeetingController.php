@@ -17,6 +17,8 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Form\MeetingReport\CreateType as ReportCreateType;
 use AppBundle\Security\MeetingVoter;
+use Component\MeetingAgenda\MeetingAgendaEvent;
+use Component\MeetingAgenda\MeetingAgendaEvents;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -211,6 +213,9 @@ class MeetingController extends ApiController
         if ($form->isValid()) {
             $meetingAgenda = $form->getData();
             $meetingAgenda->setMeeting($meeting);
+
+            $this->dispatchEvent(MeetingAgendaEvents::CALCULATE_START_DATE, new MeetingAgendaEvent($meetingAgenda));
+
             $this->persistAndFlush($meetingAgenda);
 
             return $this->createApiResponse($meetingAgenda, Response::HTTP_CREATED);

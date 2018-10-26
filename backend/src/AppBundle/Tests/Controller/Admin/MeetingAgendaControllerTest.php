@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
+use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
@@ -25,8 +26,6 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertContains('name="create[topic]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_start"', $crawler->html());
-        $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_duration"', $crawler->html());
         $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -43,12 +42,21 @@ class MeetingAgendaControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-agenda/create');
 
+        $meeting = (new Meeting())
+            ->setName('meeting3')
+            ->setLocation('meeting-location')
+            ->setDate(new \DateTime())
+            ->setStart(new \DateTime())
+            ->setEnd(new \DateTime('+1 hour'))
+        ;
+
         $form = $crawler->filter('#create-form')->first()->form();
+
+        $form['create[meeting]'] = $meeting->getId();
 
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The topic field should not be blank', $crawler->html());
-        $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The duration field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -60,11 +68,21 @@ class MeetingAgendaControllerTest extends BaseController
         $this->login($this->user);
         $this->assertNotNull($this->user, 'User not found');
 
+        $meeting = (new Meeting())
+            ->setName('meeting3')
+            ->setLocation('meeting-location')
+            ->setDate(new \DateTime())
+            ->setStart(new \DateTime())
+            ->setEnd(new \DateTime('+1 hour'))
+        ;
+
+        $this->em->persist($meeting);
         $start = new \DateTime();
 
         $meetingAgenda = (new MeetingAgenda())
             ->setTopic('topic4')
             ->setStart($start)
+            ->setMeeting($meeting)
         ;
         $this->em->persist($meetingAgenda);
         $this->em->flush();
@@ -87,11 +105,9 @@ class MeetingAgendaControllerTest extends BaseController
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-agenda/create');
 
-        $start = new \DateTime();
-
         $form = $crawler->filter('#create-form')->first()->form();
+        $form['create[meeting]'] = 1;
         $form['create[topic]'] = 'topic3';
-        $form['create[start]'] = $start->format('H:m');
         $form['create[duration]'] = 0;
 
         $this->client->submit($form);
@@ -126,8 +142,6 @@ class MeetingAgendaControllerTest extends BaseController
         $this->assertContains('name="create[topic]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
-        $this->assertContains('id="create_start"', $crawler->html());
-        $this->assertContains('name="create[start]"', $crawler->html());
         $this->assertContains('id="create_duration"', $crawler->html());
         $this->assertContains('name="create[duration]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -147,12 +161,10 @@ class MeetingAgendaControllerTest extends BaseController
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[topic]'] = '';
-        $form['create[start]'] = '';
         $form['create[duration]'] = '';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The topic field should not be blank', $crawler->html());
-        $this->assertContains('The start field should not be blank', $crawler->html());
         $this->assertContains('The duration field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());

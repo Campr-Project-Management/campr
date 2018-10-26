@@ -35,12 +35,6 @@
                             <member-search v-bind:selectedUser="editAgendaObject.responsibilityFullName" v-model="editAgendaObject.responsibility" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                         </div>
                         <div class="col-md-4">
-                            <div class="input-holder right">
-                                <label class="active">{{ translateText('label.start_time') }}</label>
-                                <vue-timepicker v-model="editAgendaObject.start" hide-clear-button></vue-timepicker>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
                             <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="editAgendaObject.duration" v-bind:content="editAgendaObject.duration" v-bind:min="0" />
                             <div v-if="editAgendaErrors && editAgendaErrors.duration">
                                 <error
@@ -299,7 +293,6 @@ export default {
         },
         saveAgenda: function() {
             let data = Object.assign({}, this.editAgendaObject, {
-                start: this.editAgendaObject.start.HH + ':' + this.editAgendaObject.start.mm,
                 responsibility: this.editAgendaObject.responsibility.length > 0 ? this.editAgendaObject.responsibility[0] : null,
                 duration: this.editAgendaObject.duration,
                 topic: this.editAgendaObject.topic,
@@ -309,6 +302,7 @@ export default {
                 this.showEditAgendaModal = false;
                 this.editAgendaErrors = {};
                 this.$emit('input', this.showEditAgendaModal);
+                this.$emit('agendaChanged');
             }).catch((response) => {
                 this.editAgendaErrors = response.body.messages;
             });
@@ -317,6 +311,7 @@ export default {
             this.deleteMeetingAgenda(this.editAgendaObject);
             this.showDeleteAgendaModal = false;
             this.$emit('input', this.showDeleteAgendaModal);
+            this.$emit('agendaChanged');
         },
         saveDecision() {
             let data = Object.assign({}, this.editDecisionObject, {

@@ -791,6 +791,22 @@ class Meeting
         return $this->meetingObjectives;
     }
 
+    public function getMeetingAgendasTotalDuration()
+    {
+        $totalDuration = 0;
+
+        foreach ($this->getMeetingAgendas() as $agenda) {
+            $totalDuration += $agenda->getDuration();
+        }
+
+        return $totalDuration;
+    }
+
+    public function getMeetingDuration()
+    {
+        return ($this->getEnd()->getTimestamp() - $this->getStart()->getTimestamp()) / 60;
+    }
+
     /**
      * Add meetingReport.
      *
