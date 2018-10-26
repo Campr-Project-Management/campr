@@ -1306,6 +1306,7 @@ class ProjectControllerTest extends BaseController
                                     'inDistributionList' => false,
                                 ],
                             ],
+                            'meetingReports' => [],
                             'meetingAgendas' => [
                                 [
                                     'duration' => '30',
