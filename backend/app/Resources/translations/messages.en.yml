@@ -183,6 +183,7 @@ button.view_all_tasks: 'View all tasks'
 button.view_info: 'View Info'
 button.view_remaining_action: 'View Remaining Action'
 button.view_tasks_board: 'View tasks board'
+button.view_tasks_grid: 'View tasks grid'
 checkbox.checked: 'Yes'
 checkbox.unchecked: 'No'
 choices.days: Days

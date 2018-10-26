@@ -183,6 +183,7 @@ button.view_all_tasks: 'Alle Aufgaben anzeigen'
 button.view_info: 'Info anzeigen'
 button.view_remaining_action: 'Verbleibende Maßnahmen ansehen'
 button.view_tasks_board: 'Task Board anzeigen'
+button.view_tasks_grid: 'Task Grid anzeigen'
 checkbox.checked: Ja
 checkbox.unchecked: Nein
 choices.days: Tage
