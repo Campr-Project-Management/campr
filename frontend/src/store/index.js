@@ -22,6 +22,7 @@ import meetingCategory from './modules/meeting-category';
 import meeting from './modules/meeting';
 import meetingObjective from './modules/meeting-objective';
 import meetingParticipant from './modules/meeting-participant';
+import meetingReport from './modules/meeting-report';
 import module from './modules/module';
 import note from './modules/note';
 import noteStatus from './modules/note-status';
@@ -102,6 +103,7 @@ export default new Vuex.Store({
         meetingCategory,
         meetingObjective,
         meetingParticipant,
+        meetingReport,
         module,
         note,
         noteStatus,

@@ -161,6 +161,34 @@ const actions = {
             Routing.generate('app_api_meeting_notifications', {id}),
         );
     },
+    /**
+     * Send meeting report
+     * @param {function} commit
+     * @param {array} data
+     * @return {object}
+     */
+    sendMeetingReport({commit}, data) {
+        return Vue.http
+            .post(
+                Routing.generate('app_api_meeting_report', {'id': data.id}),
+                data
+            ).then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        const {messages} = response.body;
+                        commit(types.SET_VALIDATION_MESSAGES, {messages});
+                    } else {
+                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    }
+
+                    return response;
+                },
+                (response) => {
+                    return response;
+                }
+            )
+        ;
+    },
 };
 
 const mutations = {

@@ -93,7 +93,6 @@ button.add_new_phase: 'Neue Phase hinzufügen'
 button.add_new_remaining_action: 'Neue Maßnahme hinzufügen'
 button.add_new_subtask: 'Neue Unteraufgabe erstellen'
 button.add_new_subteam: 'Neues Team hinzufügen'
-button.add_new_sponsor: 'Neues Sponsor hinzufügen'
 button.add_subteam_child: 'Team hinzufügen'
 button.add_subteam_member: 'Neues Teammitglied hinzufügen'
 button.add_subteam_role: 'Rolle hinzufügen'
@@ -107,7 +106,6 @@ button.close_project: 'Projekt abschließen'
 button.comment: Kommentieren
 button.create: Erstellen
 button.create_decision: 'Entscheidung erstellen'
-button.create_sponsor: 'Sponsor erstellen'
 button.create_distribution: 'Verteilerliste erstellen'
 button.create_info: 'Info erstellen'
 button.create_label: 'Label erstellen'
@@ -128,7 +126,6 @@ button.download_pdf: 'PDF herunterladen'
 button.edit: Bearbeiten
 button.edit_decision: 'Entscheidung bearbeiten'
 button.edit_department: 'Abteilung bearbeiten'
-button.edit_sponsor: 'Sponsor bearbeiten'
 button.edit_distribution_list: 'Verteilerliste bearbeiten'
 button.edit_info: 'Info bearbeiten'
 button.edit_label: 'Label bearbeiten'
@@ -529,7 +526,6 @@ label.select_status: 'Status auswählen'
 label.select_successors: 'Nachfolger auswählen'
 label.select_support_users: 'Unterstützenden Nutzer auswählen'
 label.select_users: 'Nutzer auswählen'
-label.select_user: 'Nutzer auswählen'
 label.sequence: Ablauf
 label.share: Teilen
 label.show_in_org: 'In Organisation anzeigen'
@@ -708,7 +704,6 @@ message.create_new_status_report: 'Neuen Statusreport erstellen'
 message.create_new_task: 'Neue Aufgabe erstellen'
 message.create_new_team_member: 'Neues Teammitglied erstellen'
 message.create_new_todo: 'Neues To-Do erstellen'
-message.create_sponsor: 'Neues Sponsor'
 message.created: Erstellt
 message.created_on: 'erstellt am'
 message.currency: Währung
@@ -737,7 +732,6 @@ message.delete_phase: 'Phase löschen'
 message.delete_remaining_action: 'Verbleibende Maßnahme löschen'
 message.delete_risk: 'Risiko löschen'
 message.delete_subteam: 'Team löschen'
-message.delete_sponsor: 'Sponsor löschen'
 message.delete_task: 'Aufgabe löschen'
 message.delete_team_member: 'Teammitglied löschen'
 message.delete_todo: 'To-Do löschen'
@@ -756,7 +750,6 @@ message.edit_agenda: 'Agenda bearbeiten'
 message.edit_decision: 'Entscheidung bearbeiten'
 message.edit_deliverable: 'Anforderung bearbeiten'
 message.edit_department: 'Abteilung bearbeiten'
-message.edit_sponsor: 'Sponsor bearbeiten'
 message.edit_evaluation: 'Beurteilung bearbeiten'
 message.edit_external_costs: 'Externe Kosten bearbeiten'
 message.edit_forecast_total: 'Vorschau bearbeiten'
@@ -2019,7 +2012,6 @@ title.subteam_role.create: 'Teamrolle erstellen'
 title.subteam_role.edit: 'Teamrolle bearbeiten'
 title.subteam_role.list: Teamrolle
 title.subteams: Teams
-title.sponsor: Sponsor
 title.team.create: 'Neues Team erstellen'
 title.team.edit: 'Team bearbeiten'
 title.team.list: Teamliste
@@ -2125,3 +2117,12 @@ email.table_header_cell.duration: Dauer
 placeholder.duration: Dauer
 button.send_meeting_report: 'Bericht senden'
 message.send_meeting_report: 'Meetingbericht senden'
+placeholder.email_content: Message
+button.add_new_sponsor: 'Neues Sponsor hinzufügen'
+button.create_sponsor: 'Sponsor erstellen'
+button.edit_sponsor: 'Sponsor bearbeiten'
+label.select_user: 'Nutzer auswählen'
+message.create_sponsor: 'Neues Sponsor'
+message.delete_sponsor: 'Sponsor löschen'
+message.edit_sponsor: 'Sponsor bearbeiten'
+title.sponsor: Sponsor

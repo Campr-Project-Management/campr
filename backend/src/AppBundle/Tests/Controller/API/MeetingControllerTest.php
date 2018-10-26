@@ -128,6 +128,7 @@ class MeetingControllerTest extends BaseController
                             'inDistributionList' => false,
                         ],
                     ],
+                    'meetingReports' => [],
                     'meetingAgendas' => [
                         [
                             'duration' => '30',
@@ -367,6 +368,7 @@ class MeetingControllerTest extends BaseController
                     'end' => '17:00',
                     'meetingObjectives' => [],
                     'meetingParticipants' => [],
+                    'meetingReports' => [],
                     'meetingAgendas' => [],
                     'medias' => [],
                     'decisions' => [],
