@@ -4,14 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * MeetingAgenda.
  *
  * @ORM\Table(name="meeting_agenda")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingAgendaRepository")
- * @AppAssert\MeetingAgendaDuration()
  */
 class MeetingAgenda
 {
@@ -247,5 +247,45 @@ class MeetingAgenda
     public function getDuration()
     {
         return $this->duration;
+    }
+
+    /**
+     * Validation for agenda duration, the sum of the duration of all the agendas
+     * cannot excede the duration of the meeting.
+     *
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function meetingAgendaDurationValidator(ExecutionContextInterface $context)
+    {
+        if (is_null($this->getMeeting())) {
+            return;
+        }
+
+        $agendasIDS = [];
+        $agendas = $this->getMeeting()->getMeetingAgendas();
+        $futureDuration = $this->getMeeting()->getMeetingAgendasTotalDuration();
+
+        foreach ($agendas as $agenda) {
+            array_push($agendasIDS, $agenda->getId());
+        }
+
+        if (!in_array($this->getId(), $agendasIDS)) {
+            $futureDuration += $this->getDuration();
+        }
+
+        if ($futureDuration > $this->getMeeting()->getMeetingDuration()) {
+            $context
+                ->buildViolation(
+                    'is_greater_than.meeting_duration',
+                    [
+                        '%duration%' => $this->getMeeting()->getMeetingDuration(),
+                    ]
+                )
+                ->atPath('duration')
+                ->addViolation()
+            ;
+        }
     }
 }
