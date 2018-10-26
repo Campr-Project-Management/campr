@@ -65,6 +65,8 @@ use AppBundle\Repository\RasciRepository;
 use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
+use Component\Meeting\MeetingEvent;
+use Component\Meeting\MeetingEvents;
 use Component\Rasci\RasciEvents;
 use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\ORM\EntityManager;
@@ -541,6 +543,9 @@ class ProjectController extends ApiController
             foreach ($meeting->getInfos() as $info) {
                 $info->setProject($project);
             }
+
+            $this->dispatchEvent(MeetingEvents::CALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meeting));
+
             $this->persistAndFlush($meeting);
 
             return $this->createApiResponse($meeting, Response::HTTP_CREATED);
