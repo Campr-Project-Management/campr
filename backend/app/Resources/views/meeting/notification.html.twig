@@ -7,7 +7,7 @@
 {% block message %}
     <p>{{ 'email.message.meeting_notification'|trans }}</p>
     <p>
-        <b><a href="{{ url }}">{{ meeting.name }} - {{ meeting.date|date('d.m.Y') }}</a></b>
+        <b><a href="{{ url }}">{{ meeting.name|trans }} - {{ meeting.date|date('d.m.Y') }}</a></b>
     </p>
     <p><b>{{ 'email.message.starts_at'|trans }}:</b> {{ meeting.start|date('H:i') }}</p>
     <p><b>{{ 'email.message.ends_at'|trans }}:</b>  {{ meeting.end|date('H:i') }}</p>
