@@ -108,6 +108,13 @@ class Meeting
     private $meetingParticipants;
 
     /**
+     * @var ArrayCollection|MeetingReport[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingReport", mappedBy="meeting", cascade={"all"})
+     */
+    private $meetingReports;
+
+    /**
      * @var ArrayCollection|MeetingAgenda[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MeetingAgenda", mappedBy="meeting", cascade={"all"})
@@ -188,6 +195,7 @@ class Meeting
     public function __construct()
     {
         $this->meetingParticipants = new ArrayCollection();
+        $this->meetingReports = new ArrayCollection();
         $this->meetingObjectives = new ArrayCollection();
         $this->meetingAgendas = new ArrayCollection();
         $this->medias = new ArrayCollection();
@@ -394,8 +402,6 @@ class Meeting
     {
         $this->meetingParticipants[] = $meetingParticipant;
         $meetingParticipant->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -430,8 +436,6 @@ class Meeting
     {
         $this->meetingAgendas[] = $meetingAgenda;
         $meetingAgenda->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -447,7 +451,7 @@ class Meeting
     /**
      * Get meetingAgendas.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getMeetingAgendas()
     {
@@ -465,8 +469,6 @@ class Meeting
     {
         $this->medias[] = $media;
         $media->addMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -478,8 +480,6 @@ class Meeting
     {
         $this->medias->removeElement($media);
         $media->removeMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -503,8 +503,6 @@ class Meeting
     {
         $this->decisions[] = $decision;
         $decision->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -515,8 +513,6 @@ class Meeting
     public function removeDecision(Decision $decision)
     {
         $this->decisions->removeElement($decision);
-
-        return $this;
     }
 
     /**
@@ -540,8 +536,6 @@ class Meeting
     {
         $this->todos[] = $todo;
         $todo->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -552,8 +546,6 @@ class Meeting
     public function removeTodo(Todo $todo)
     {
         $this->todos->removeElement($todo);
-
-        return $this;
     }
 
     /**
@@ -577,8 +569,6 @@ class Meeting
     {
         $this->infos[] = $info;
         $info->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -591,8 +581,6 @@ class Meeting
     public function removeInfo(Info $info)
     {
         $this->infos->removeElement($info);
-
-        return $this;
     }
 
     /**
@@ -616,8 +604,6 @@ class Meeting
     {
         $distributionList->addMeeting($this);
         $this->distributionLists->add($distributionList);
-
-        return $this;
     }
 
     /**
@@ -629,8 +615,6 @@ class Meeting
     {
         $this->distributionLists->removeElement($distributionList);
         $distributionList->removeMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -703,8 +687,6 @@ class Meeting
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**
@@ -727,8 +709,6 @@ class Meeting
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     public function getUpdatedAt()
@@ -750,8 +730,6 @@ class Meeting
     public function setMeetingCategory(MeetingCategory $meetingCategory)
     {
         $this->meetingCategory = $meetingCategory;
-
-        return $this;
     }
 
     /**
@@ -791,8 +769,6 @@ class Meeting
     {
         $this->meetingObjectives[] = $meetingObjective;
         $meetingObjective->setMeeting($this);
-
-        return $this;
     }
 
     /**
@@ -803,14 +779,12 @@ class Meeting
     public function removeMeetingObjective(MeetingObjective $meetingObjective)
     {
         $this->meetingObjectives->removeElement($meetingObjective);
-
-        return $this;
     }
 
     /**
      * Get meetingObjective.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getMeetingObjectives()
     {
@@ -831,5 +805,37 @@ class Meeting
     public function getMeetingDuration()
     {
         return ($this->getEnd()->getTimestamp() - $this->getStart()->getTimestamp()) / 60;
+    }
+
+    /**
+     * Add meetingReport.
+     *
+     * @param MeetingReport $meetingReport
+     *
+     * @return Meeting
+     */
+    public function addMeetingReport(MeetingReport $meetingReport)
+    {
+        $this->meetingReports[] = $meetingReport;
+    }
+
+    /**
+     * Remove meetingReport.
+     *
+     * @param MeetingReport $meetingReport
+     */
+    public function removeMeetingReport(MeetingReport $meetingReport)
+    {
+        $this->meetingReports->removeElement($meetingReport);
+    }
+
+    /**
+     * Get meetingReports.
+     *
+     * @return Collection
+     */
+    public function getMeetingReports()
+    {
+        return $this->meetingReports;
     }
 }
