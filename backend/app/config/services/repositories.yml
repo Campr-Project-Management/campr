@@ -141,4 +141,10 @@ services:
         class: AppBundle\Repository\TeamInviteRepository
         arguments: ~
         tags:
-        - { name: app.repository, class: AppBundle\Entity\TeamInvite }
+            - { name: app.repository, class: AppBundle\Entity\TeamInvite }
+
+    app.repository.meeting_report:
+        class: AppBundle\Repository\MeetingReportRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\MeetingReport }
