@@ -55,11 +55,30 @@
                 </div>
             </modal>
 
+            <modal v-if="showMeetingReportModal" @close="showMeetingReportModal = false">
+                <p class="modal-title">{{ translate('message.send_meeting_report') }}</p>
+                <div class="form-group">
+                    <editor
+                            v-model="lastMeetingReportContent"
+                            :label="'placeholder.email_content'"/>
+                    <error
+                            v-if="validationMessages.content && validationMessages.content.length"
+                            v-for="message in validationMessages.content"
+                            :message="message" />
+                </div>
+
+                <hr class="double">
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showMeetingReportModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="sendReport" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
+                </div>
+            </modal>
+
             <modal v-if="showNotificationModal" @close="showNotificationModal = false">
                 <p class="modal-title">{{ translate('message.send_notifications') }}</p>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showNotificationModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
-                    <a href="javascript:void(0)" @click="sendNotifications()" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
+                    <a href="javascript:void(0)" @click="sendNotifications" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
                 </div>
             </modal>
 
@@ -391,6 +410,7 @@
                         </div>
                         <div class="buttons">
                             <!--<router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</router-link>-->
+                            <a @click="openReportModal" class="btn-rounded btn-auto btn-md btn-empty" v-if="isInactive">{{ translate('button.send_meeting_report') }}</a>
                             <a @click="showNotificationModal = true" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.send_notifications') }}</a>
                         </div>
                     </div>
@@ -436,9 +456,12 @@ import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
 import UserAvatar from '../../_common/UserAvatar';
 import Vue from 'vue';
+import InputField from '../../_common/_form-components/InputField';
+import Error from '../../_common/_messages/Error.vue';
 
 export default {
     components: {
+        InputField,
         UserAvatar,
         Attachments,
         DateField,
@@ -451,6 +474,7 @@ export default {
         MeetingParticipants,
         Modal,
         Editor,
+        Error,
         VueTimepicker,
         ViewIcon,
     },
@@ -458,6 +482,7 @@ export default {
         ...mapActions([
             'getProjectMeeting', 'getMeetingAgendas', 'getMeetingParticipants',
             'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications',
+            'sendMeetingReport', 'emptyValidationMessages', 'getProjectMeeting', 'getLastMeetingReport',
         ]),
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
@@ -608,16 +633,50 @@ export default {
                 })
             ;
         },
-        sendNotifications: function() {
+        sendNotifications() {
             this.sendMeetingNotifications(this.$route.params.meetingId);
             this.showNotificationModal = false;
+        },
+        openReportModal() {
+            this.showMeetingReportModal = true;
+            this.getLastMeetingReport({meetingId: this.$route.params.meetingId});
+        },
+        sendReport() {
+            this
+                .sendMeetingReport({
+                    id: this.$route.params.meetingId,
+                    content: this.content,
+                }).then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            return;
+                        }
+                        this.showMeetingReportModal = false;
+                    },
+                    () => {
+                        this.showMeetingReportModal = false;
+                    },
+                )
+            ;
         },
         downloadMedia: function(media) {
             return Routing.generate('app_media_download', {id: media.id});
         },
     },
     computed: {
-        ...mapGetters(['meeting', 'meetingAgendas', 'distributionLists']),
+        ...mapGetters(['meeting', 'meetingAgendas', 'distributionLists', 'validationMessages', 'lastMeetingReport']),
+        lastMeetingReportContent: {
+            get() {
+                if (!this.lastMeetingReport.content) {
+                    return '';
+                }
+
+                return this.lastMeetingReport.content;
+            },
+            set(newValue) {
+                this.content = newValue;
+            },
+        },
     },
     created() {
         this.getDistributionLists({projectId: this.$route.params.id});
@@ -629,6 +688,7 @@ export default {
             },
         });
         this.getMeetingParticipants({id: this.$route.params.meetingId});
+        this.getLastMeetingReport({meetingId: this.$route.params.meetingId});
     },
     data() {
         return {
@@ -658,6 +718,9 @@ export default {
             endTime: {},
             selectedParticipants: [],
             showNotificationModal: false,
+            showMeetingReportModal: false,
+            isInactive: false,
+            content: '',
         };
     },
     watch: {
@@ -682,6 +745,11 @@ export default {
                 HH: moment(this.meeting.end, 'HH:mm').format('HH'),
                 mm: moment(this.meeting.end, 'HH:mm').format('mm'),
             };
+
+            let currentDate = moment();
+            let date = this.meeting.date.split(' ');
+            let meetingDate = moment(date[0] + ' ' + this.meeting.start);
+            this.isInactive = meetingDate < currentDate;
         },
         selectedParticipants: {
             handler(nv, ov) {
