@@ -100,6 +100,8 @@ class WorkspaceClient
      * @param Team $team
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function createdWebhook(Team $team): bool
     {
