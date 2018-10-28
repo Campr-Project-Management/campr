@@ -43,6 +43,7 @@ services:
             - '%kernel.environment%'
             - '@redis.client'
             - '@monolog.logger.portal'
+            - '%beta.db.snapshot%'
         tags:
             - { name: kernel.event_subscriber }
 
