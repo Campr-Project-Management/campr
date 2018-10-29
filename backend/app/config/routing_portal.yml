@@ -1,0 +1,7 @@
+main_user_account:
+    path: /account/profile
+    host: "{domain}"
+    defaults:
+        domain: "%domain%"
+    options:
+        expose: true
