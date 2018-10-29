@@ -22,6 +22,9 @@ app:
     defaults:
         subdomain: "%kernel.team_slug%"
 
+portal:
+    resource: routing_portal.yml
+
 api_login_check:
     path: /api/login-check
 

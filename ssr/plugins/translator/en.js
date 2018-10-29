@@ -216,6 +216,8 @@ module.exports = function (Translator) {
     Translator.add("invalid.end_time_greater_than_start_time", "End time must be greater than start time", "validators", "en");
     Translator.add("greater_than_or_equal.duration", "The duration field should contain numbers greater than or equal to 0", "validators", "en");
     Translator.add("is_greater_than.meeting_duration", "Meeting has only  %duration% minutes.", "validators", "en");
+    Translator.add("required.terms_and_conditions", "You must agree to Term and Conditions", "validators", "en");
+    Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
     Translator.add("Authentication request could not be processed due to a system problem.", "Authentication request could not be processed due to a system problem.", "security", "en");
@@ -2390,6 +2392,9 @@ module.exports = function (Translator) {
     Translator.add("message.delete_sponsor", "Delete Sponsor", "messages", "en");
     Translator.add("message.edit_sponsor", "Edit Sponsor", "messages", "en");
     Translator.add("title.sponsor", "Sponsor", "messages", "en");
+    Translator.add("email.subject.beta.workspace.ready", "Your CAMPR Beta workspace is ready!", "messages", "en");
+    Translator.add("email.beta.workspace.message", "The following workspace for CAMPR Beta is ready", "messages", "en");
+    Translator.add("placeholder.minutes", "minutes", "messages", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
