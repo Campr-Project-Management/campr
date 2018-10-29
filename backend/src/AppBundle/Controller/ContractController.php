@@ -21,7 +21,7 @@ class ContractController extends Controller
     {
         $pdf = $this
             ->get('app.service.pdf')
-            ->getContractPDF($contract->getId())
+            ->getContractPDF($contract)
         ;
 
         if (!$pdf) {
