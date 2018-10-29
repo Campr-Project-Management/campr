@@ -2126,3 +2126,4 @@ message.create_sponsor: 'Neues Sponsor'
 message.delete_sponsor: 'Sponsor löschen'
 message.edit_sponsor: 'Sponsor bearbeiten'
 title.sponsor: Sponsor
+placeholder.minutes: minuten
