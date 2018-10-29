@@ -73,3 +73,4 @@ parameters:
     portal.api.secret: '4D65A2AC47476D33BAB2CBF62BCE8'
     portal.webhook.secret: '6F73A8EA3FBDB812922E2AB71E2F6'
     enqueue.redis.dsn: 'redis://%redis_host%:6379/4'
+    beta.db.snapshot: '%kernel.root_dir%/data/beta.db.snapshot.sql'
