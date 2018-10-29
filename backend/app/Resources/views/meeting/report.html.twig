@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'messages' %}
 
-{% block subject %}{{ meeting.name }} - {{ meeting.date|date('d.m.Y') }}{% endblock %}
+{% block subject %}{{ meeting.name|trans }} - {{ meeting.date|date('d.m.Y') }}{% endblock %}
 
 {% block message %}
     <p>{{ report.content|raw }}</p>
