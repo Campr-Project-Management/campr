@@ -2148,3 +2148,6 @@ message.create_sponsor: 'Create Sponsor'
 message.delete_sponsor: 'Delete Sponsor'
 message.edit_sponsor: 'Edit Sponsor'
 title.sponsor: Sponsor
+email.subject.beta.workspace.ready: 'Your CAMPR Beta workspace is ready!'
+email.beta.workspace.message: 'The following workspace for CAMPR Beta is ready'
+placeholder.minutes: minutes
