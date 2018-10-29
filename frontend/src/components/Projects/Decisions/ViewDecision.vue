@@ -57,6 +57,24 @@
                 <div class="entry-body">
                     <div v-html="currentDecision.description"></div>
                 </div>
+                <hr class="double">
+                <!-- /// Decision Attachments /// -->
+                <h3>{{ translate('message.attachments') }}</h3>
+                <div class="attachments">
+                    <template v-for="(media, index) in currentDecision.medias">
+                        <div
+                            class="attachment"
+                            v-if="media"
+                            :key="index">
+                            <view-icon/>
+                            <span class="attachment-name">
+                                <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                <span v-else>{{ media.name }}</span>
+                            </span>
+                        </div>
+                    </template>
+                </div>
+                <!-- /// End Decision Attachments /// -->
             </div>
             <div class="col-md-6">
                 <div class="create-meeting page-section">
@@ -106,6 +124,7 @@ import moment from 'moment';
 import router from '../../../router';
 import DateField from '../../_common/_form-components/DateField';
 import UserAvatar from '../../_common/UserAvatar';
+import Vue from 'vue';
 
 export default {
     components: {
@@ -120,6 +139,36 @@ export default {
     },
     methods: {
         ...mapActions(['getDecision', 'editDecision', 'deleteDecision']),
+        getMediaFile(media) {
+            if (!media.id) {
+                return;
+            }
+
+            const url = Routing.generate('app_api_media_download', {id: media.id});
+            Vue.http.get(url, {responseType: 'blob'})
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
+                    let a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download = media.originalName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                });
+        },
         rescheduleDecision: function() {
             let data = {
                 id: this.$route.params.decisionId,
@@ -263,4 +312,33 @@ export default {
         margin: 5px 0 5px 10px;
       }
     }
+
+    div.attachments {
+        margin: 0 0 20px;
+
+        .attachment {
+            padding: 10px 20px;
+            background-color: $fadeColor;
+            margin-top: 3px;
+            color: $secondColor;
+            position: relative;
+
+            .view-icon {
+                display: inline;
+                margin-right: 10px;
+                position: relative;
+                top: 3px;
+
+                svg {
+                    width: 18px;
+                }
+            }
+            .attachment-name {
+                a {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
 </style>
