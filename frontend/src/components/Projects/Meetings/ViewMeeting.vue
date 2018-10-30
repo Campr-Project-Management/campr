@@ -480,9 +480,17 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectMeeting', 'getMeetingAgendas', 'getMeetingParticipants',
-            'getDistributionLists', 'deleteProjectMeeting', 'editProjectMeeting', 'sendMeetingNotifications',
-            'sendMeetingReport', 'emptyValidationMessages', 'getProjectMeeting', 'getLastMeetingReport',
+            'getProjectMeeting',
+            'getMeetingAgendas',
+            'getMeetingParticipants',
+            'getDistributionLists',
+            'deleteProjectMeeting',
+            'patchProjectMeeting',
+            'sendMeetingNotifications',
+            'sendMeetingReport',
+            'emptyValidationMessages',
+            'getProjectMeeting',
+            'getLastMeetingReport',
         ]),
         getDuration: function(startDate, endDate) {
             let end = moment(endDate, 'HH:mm');
@@ -627,7 +635,7 @@ export default {
                 end: this.endTime.HH + ':' + this.endTime.mm,
             };
             this
-                .editProjectMeeting({
+                .patchProjectMeeting({
                     id: this.$route.params.meetingId,
                     data,
                 })
@@ -768,7 +776,7 @@ export default {
                 };
 
                 this
-                    .editProjectMeeting({
+                    .patchProjectMeeting({
                         id: this.$route.params.meetingId,
                         data,
                         // prevents issues with the switches going crazy from side to side if you click too quickly
