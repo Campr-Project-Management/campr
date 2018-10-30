@@ -41,8 +41,7 @@ export const createFormData = (data) => {
                 return;
             }
 
-            formData.append('medias[' + index + '][file]',
-                media instanceof window.File ? media : '');
+            formData.append('medias[' + index + ']', media.id);
         });
     }
 

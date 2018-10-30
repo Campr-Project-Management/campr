@@ -179,7 +179,7 @@
                             v-model="medias"
                             label="button.add_document"
                             :max-file-size="projectMaxUploadFileSize"
-                            :error-messages="mediasValidationMessages"/>
+                            @uploading="onUploading"/>
                     <!-- /// End Meeting Documents /// -->
 
                     <hr class="double">
@@ -202,6 +202,7 @@
                         <meeting-decision-form
                             :key="index"
                             v-model="decisions[index]"
+                            @uploading="onDecisionUploading"
                             :error-messages="decisionErrors(index)"/>
                         <hr>
                     </div>
@@ -384,7 +385,10 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-meetings'}" class="btn-rounded btn-auto btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
-                        <a @click="saveMeeting()" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
+                        <a
+                                v-if="canSave"
+                                @click="saveMeeting()"
+                                class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -394,7 +398,10 @@
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
                 <div class="margintop20 text-right">
-                    <a @click="saveMeeting()" class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
+                    <a
+                            v-if="canSave"
+                            @click="saveMeeting()"
+                            class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                 </div>
                 <div class="margintop20 text-right">
                     <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</a>
@@ -591,6 +598,12 @@ export default {
         distributionListUpdated(distributionList) {
             this.details.distributionList = {key: distributionList.id, label: distributionList.name};
         },
+        onUploading(uploading) {
+            this.isUploading = uploading;
+        },
+        onDecisionUploading(uploading) {
+            this.isDecisionUploading = uploading;
+        },
     },
     computed: {
         ...mapGetters([
@@ -603,7 +616,11 @@ export default {
             'validationMessagesFor',
             'decisionsStatusesForSelect',
             'projectMaxUploadFileSize',
+            'project',
         ]),
+        canSave() {
+            return !this.isUploading && !this.isDecisionUploading;
+        },
         mediasValidationMessages() {
             let messages = this.validationMessagesFor('medias');
             let out = [];
@@ -727,6 +744,8 @@ export default {
             },
             editDistributionListModal: null,
             isSaving: false,
+            isUploading: false,
+            isDecisionUploading: false,
         };
     },
 };
