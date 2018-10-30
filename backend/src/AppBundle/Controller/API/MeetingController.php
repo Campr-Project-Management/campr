@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\Media;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\MeetingObjective;
@@ -12,11 +13,11 @@ use AppBundle\Entity\MeetingReport;
 use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
-use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\User;
 use AppBundle\Form\Meeting\ApiCreateType;
 use AppBundle\Form\MeetingReport\CreateType as ReportCreateType;
 use AppBundle\Security\MeetingVoter;
+use Doctrine\Common\Collections\ArrayCollection;
 use Component\MeetingAgenda\MeetingAgendaEvent;
 use Component\MeetingAgenda\MeetingAgendaEvents;
 use MainBundle\Controller\API\ApiController;
@@ -56,8 +57,7 @@ class MeetingController extends ApiController
     /**
      * Edit a specific Meeting.
      *
-     * @Route("/{id}", name="app_api_meeting_edit", options={"expose"=true})
-     * @Method({"POST", "PUT", "PATCH"})
+     * @Route("/{id}", name="app_api_meeting_edit", options={"expose"=true}, methods={"POST", "PUT", "PATCH"})
      *
      * @param Request $request
      * @param Meeting $meeting
@@ -67,71 +67,53 @@ class MeetingController extends ApiController
     public function editAction(Request $request, Meeting $meeting)
     {
         $this->denyAccessUnlessGranted(MeetingVoter::EDIT, $meeting);
-        $project = $meeting->getProject();
         $form = $this->createForm(
             ApiCreateType::class,
             $meeting,
             [
                 'csrf_protection' => false,
                 'method' => $request->getMethod(),
-                'max_media_size' => $meeting->getProject()->getMaxUploadFileSize(),
             ]
         );
-        $this->processForm(
-            $request,
-            $form,
-            in_array($request->getMethod(), [Request::METHOD_PUT, Request::METHOD_POST])
-        );
+
+        $originalMedias = new ArrayCollection();
+        foreach ($meeting->getMedias() as $media) {
+            $originalMedias->add($media);
+        }
+
+        $this->processForm($request, $form, !$request->isMethod('PATCH'));
+
+        if (!$form->isValid()) {
+            $errors = $this->getFormErrors($form);
+            $errors = [
+                'messages' => $errors,
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
 
         $em = $this->getDoctrine()->getManager();
-        if ($project) {
-            $fileSystem = $project
-                ->getFileSystems()
-                ->filter(function (FileSystem $fs) {
-                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-                })
-                ->first();
 
-            if (!$fileSystem) {
-                $fileSystem = $em
-                    ->getRepository(FileSystem::class)
-                    ->findOneBy([
-                        'driver' => FileSystem::LOCAL_ADAPTER,
-                    ]);
-                if (!$fileSystem) {
-                    return $this->createApiResponse(
-                        [
-                            'messages' => [
-                                'Filesystem is missing. Please contact us.',
-                            ],
-                        ],
-                        Response::HTTP_INTERNAL_SERVER_ERROR
-                    );
-                }
-            }
-            if ($form->isValid()) {
-                foreach ($meeting->getMedias() as $media) {
-                    $media->setFileSystem($fileSystem);
-                }
+        foreach ($meeting->getMedias() as $media) {
+            $media->makeAsPermanent();
+            $media->addMeeting($meeting);
+        }
 
-                $meeting->setProject($project);
-                $this->persistAndFlush($meeting);
-
-                return $this->createApiResponse(
-                    $meeting,
-                    $request->isMethod(Request::METHOD_POST)
-                        ? Response::HTTP_OK
-                        : Response::HTTP_ACCEPTED
-                );
+        /** @var Media $media */
+        foreach ($originalMedias as $media) {
+            if (!$meeting->getMedias()->contains($media)) {
+                $media->makeAsTemporary(0);
+                $media->removeMeeting($meeting);
+                $em->persist($media);
             }
         }
 
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
+        $this->get('app.repository.meeting')->add($meeting);
 
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        return $this->createApiResponse(
+            $meeting,
+            $request->isMethod(Request::METHOD_POST) ? Response::HTTP_OK : Response::HTTP_ACCEPTED
+        );
     }
 
     /**
@@ -172,11 +154,12 @@ class MeetingController extends ApiController
         $repo = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(MeetingAgenda::class)
-        ;
+            ->getRepository(MeetingAgenda::class);
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             $result = $repo->getQueryBuilderByMeetingAndFilters($meeting, $filters)->getQuery()->getResult();
 
             $responseArray['totalItems'] = $repo->countTotalByMeetingAndFilters($meeting, $filters);
@@ -188,10 +171,12 @@ class MeetingController extends ApiController
 
         $items = $repo->findBy(['meeting' => $meeting]);
 
-        return $this->createApiResponse([
-            'items' => $items,
-            'totalItems' => count($items),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $items,
+                'totalItems' => count($items),
+            ]
+        );
     }
 
     /**
@@ -281,7 +266,6 @@ class MeetingController extends ApiController
             [
                 'allow_extra_fields' => true,
                 'entity_manager' => $this->getDoctrine()->getManager(),
-                'max_media_size' => $meeting->getProject()->getMaxUploadFileSize(),
             ]
         );
 
@@ -406,18 +390,19 @@ class MeetingController extends ApiController
             foreach ($data['participants'] as $participant) {
                 if (isset($participant['user']) && isset($participant['isPresent'])) {
                     $user = $em->getRepository(User::class)->find($participant['user']);
-                    $meetingParticipant = $em->getRepository(MeetingParticipant::class)->findOneBy([
-                        'meeting' => $meeting,
-                        'user' => $user,
-                    ]);
+                    $meetingParticipant = $em->getRepository(MeetingParticipant::class)->findOneBy(
+                        [
+                            'meeting' => $meeting,
+                            'user' => $user,
+                        ]
+                    );
                     if ($meetingParticipant) {
                         $meetingParticipant->setIsPresent($participant['isPresent']);
                     } else {
                         $meetingParticipant = (new MeetingParticipant())
                             ->setMeeting($meeting)
                             ->setUser($user)
-                            ->setIsPresent($participant['isPresent'])
-                        ;
+                            ->setIsPresent($participant['isPresent']);
                     }
                     $this->persistAndFlush($meetingParticipant);
                 } else {
@@ -461,8 +446,7 @@ class MeetingController extends ApiController
 
         $this
             ->get('redis.client')
-            ->rpush(RedisQueueManagerCommand::DEFAULT, [$command])
-        ;
+            ->rpush(RedisQueueManagerCommand::DEFAULT, [$command]);
 
         return $this->createApiResponse(
             [

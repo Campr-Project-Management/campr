@@ -21,9 +21,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateAction(
         array $content,
@@ -60,8 +60,7 @@ class ProjectControllerTest extends BaseController
             $project = $this
                 ->em
                 ->getRepository(Project::class)
-                ->find($project['id'])
-            ;
+                ->find($project['id']);
             if ($project) {
                 $this->em->remove($project);
             }
@@ -69,11 +68,12 @@ class ProjectControllerTest extends BaseController
             $projectUser = $this
                 ->em
                 ->getRepository(ProjectUser::class)
-                ->findOneBy([
-                    'user' => $user,
-                    'project' => $project,
-                ])
-            ;
+                ->findOneBy(
+                    [
+                        'user' => $user,
+                        'project' => $project,
+                    ]
+                );
             if ($projectUser) {
                 $this->em->remove($projectUser);
             }
@@ -145,9 +145,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForNumberIsUniqueOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNumberIsUniqueOnEditAction(
         array $content,
@@ -201,9 +201,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -270,14 +270,12 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $this->em->persist($project);
         $this->em->flush();
 
@@ -498,7 +496,14 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -582,9 +587,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateCalendarAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateCalendarAction(
         array $content,
@@ -595,7 +600,14 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/projects/1/calendars', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/projects/1/calendars',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
@@ -659,7 +671,8 @@ class ProjectControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
@@ -735,9 +748,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateContractAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateContractAction(
         array $content,
@@ -773,8 +786,7 @@ class ProjectControllerTest extends BaseController
         $contract = $this
             ->em
             ->getRepository(Contract::class)
-            ->find($contract['id'])
-        ;
+            ->find($contract['id']);
         $this->em->remove($contract);
         $this->em->flush();
     }
@@ -840,7 +852,8 @@ class ProjectControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
 
@@ -985,9 +998,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateDistributionListAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateDistributionListAction(
         array $content,
@@ -1024,8 +1037,7 @@ class ProjectControllerTest extends BaseController
         $distributionList = $this
             ->em
             ->getRepository(DistributionList::class)
-            ->find($distributionList['id'])
-        ;
+            ->find($distributionList['id']);
         $this->em->remove($distributionList);
         $this->em->flush();
     }
@@ -1086,7 +1098,8 @@ class ProjectControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
@@ -1133,9 +1146,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateLabelAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateLabelAction(
         array $content,
@@ -1208,7 +1221,14 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/projects/1/meetings', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            '/api/projects/1/meetings',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $actual = json_decode($response->getContent(), true);
@@ -1309,7 +1329,6 @@ class ProjectControllerTest extends BaseController
                             'meetingReports' => [],
                             'meetingAgendas' => [
                                 [
-                                    'duration' => '30',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'responsibility' => 3,
@@ -1321,7 +1340,6 @@ class ProjectControllerTest extends BaseController
                                     'responsibilityAvatar' => '',
                                 ],
                                 [
-                                    'duration' => '30',
                                     'meeting' => 1,
                                     'meetingName' => 'meeting1',
                                     'responsibility' => 3,
@@ -1347,6 +1365,7 @@ class ProjectControllerTest extends BaseController
                                     'createdAt' => '2017-01-01 00:00:00',
                                     'name' => null,
                                     'originalName' => null,
+                                    'expiresAt' => null,
                                 ],
                             ],
                             'decisions' => [
@@ -1678,9 +1697,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateInfoAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateInfoAction(
         array $content,
@@ -1755,9 +1774,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForNumberIsUniqueOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNumberIsUniqueOnCreateAction(
         array $content,
@@ -1768,14 +1787,12 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $project->setCurrency($this->findCurrencyByCode('EUR'));
 
         $this->em->persist($project);
@@ -1843,9 +1860,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnCreateAction(
         array $content,
@@ -1900,9 +1917,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -2332,9 +2349,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateProjectTeamAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateProjectTeamAction(
         array $content,
@@ -2369,8 +2386,7 @@ class ProjectControllerTest extends BaseController
         $projectTeam = $this
             ->em
             ->getRepository(ProjectTeam::class)
-            ->find($projectTeam['id'])
-        ;
+            ->find($projectTeam['id']);
         $this->em->remove($projectTeam);
         $this->em->flush();
     }
@@ -2427,7 +2443,8 @@ class ProjectControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
@@ -2552,9 +2569,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateProjectUserAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateProjectUserAction(
         array $content,
@@ -2591,8 +2608,7 @@ class ProjectControllerTest extends BaseController
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
-            ->find($projectUser['id'])
-        ;
+            ->find($projectUser['id']);
         $this->em->remove($projectUser);
         $this->em->flush();
     }
@@ -2650,9 +2666,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnCreateProjectUserAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnCreateProjectUserAction(
         array $content,
@@ -2716,7 +2732,14 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
@@ -2784,9 +2807,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateTodoAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateTodoAction(
         array $content,
@@ -2797,7 +2820,14 @@ class ProjectControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/projects/1/todos', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/projects/1/todos',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
@@ -2867,7 +2897,8 @@ class ProjectControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
@@ -2937,10 +2968,10 @@ class ProjectControllerTest extends BaseController
     /**
      * @dataProvider getDataForExportCalendarsAction()
      *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $url
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      * @param mixed $responseContentType
      */
     public function testExportCalendarsAction(
@@ -3009,9 +3040,9 @@ class ProjectControllerTest extends BaseController
      * @dataProvider getDataForCreateTaskAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateTaskAction(
         array $content,
@@ -3041,7 +3072,11 @@ class ProjectControllerTest extends BaseController
             $responseContent['puid'] = $actual['puid'];
             $responseContent['createdAt'] = $actual['createdAt'];
 
-            $this->assertEquals($isResponseSuccessful, 201 === $response->getStatusCode(), 'Response is not successfully');
+            $this->assertEquals(
+                $isResponseSuccessful,
+                201 === $response->getStatusCode(),
+                'Response is not successfully'
+            );
             $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
             $this->assertEquals(
                 $responseContent,
@@ -3052,8 +3087,7 @@ class ProjectControllerTest extends BaseController
             $task = $this
                 ->em
                 ->getRepository(WorkPackage::class)
-                ->find($actual['id'])
-            ;
+                ->find($actual['id']);
             $this->em->remove($task);
             $this->em->flush();
         }
@@ -3174,8 +3208,7 @@ class ProjectControllerTest extends BaseController
         $currency = $this
             ->em
             ->getRepository(Currency::class)
-            ->findOneBy(['code' => $code])
-        ;
+            ->findOneBy(['code' => $code]);
 
         $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
 
