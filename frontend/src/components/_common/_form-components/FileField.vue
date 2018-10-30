@@ -174,6 +174,7 @@
                     chunking: this.chunking,
                     chunkSize: this.chunkSize,
                     retryChunks: this.retryChunks,
+                    forceChunking: this.chunking,
                 },
                 uploadingFiles: [],
             };
