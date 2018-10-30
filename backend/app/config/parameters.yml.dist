@@ -44,6 +44,7 @@ parameters:
 
     #paths
     uploads.root_folder: '%kernel.root_dir%/../../web/uploads'
+    uploads.tmp_folder: '/tmp'
     media_upload_folder: '%uploads.root_folder%/media'
     main.team.images_path: '%uploads.root_folder%/teams'
     main.team.uri_prefix: /uploads/teams

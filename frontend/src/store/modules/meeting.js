@@ -40,17 +40,16 @@ const actions = {
         if (state.filters && state.filters.date) {
             paramObject.params.date = state.filters.date;
         }
-        Vue.http
-            .get(
-                Routing.generate('app_api_project_meetings', {id: data.projectId}),
-                paramObject,
-            ).then((response) => {
-                if (response.status === 200 || response.status === 204) {
-                    let projectMeetings = response.data;
-                    commit(types.SET_PROJECT_MEETINGS, {projectMeetings});
-                }
-            }, (response) => {
-            });
+        Vue.http.get(
+            Routing.generate('app_api_project_meetings', {id: data.projectId}),
+            paramObject,
+        ).then((response) => {
+            if (response.status === 200 || response.status === 204) {
+                let projectMeetings = response.data;
+                commit(types.SET_PROJECT_MEETINGS, {projectMeetings});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Delete project meeting
@@ -58,54 +57,81 @@ const actions = {
      * @param {integer} id
      */
     deleteProjectMeeting({commit}, id) {
-        Vue
-            .http
-            .delete(Routing.generate('app_api_meeting_delete', {id: id}))
-            .then(
+        Vue.http.delete(Routing.generate('app_api_meeting_delete', {id: id})).
+            then(
                 () => {
                     commit(types.DELETE_PROJECT_MEETING, {id});
                     router.push({name: 'project-meetings'});
                 },
-                () => {}
+                () => {},
             )
         ;
     },
     /**
-     * Edit a subteam
+     * Update a project meeting
      * @param {function} commit
      * @param {array} data
      * @return {object}
      */
-    editProjectMeeting({commit}, data) {
-        const method = data.withPost ? 'post' : 'patch';
-
-        return Vue
-            .http[method](
+    async updateProjectMeeting({commit}, data) {
+        try {
+            let response = await Vue.http.post(
                 Routing.generate('app_api_meeting_edit', {id: data.id}),
-                data.data
-            ).then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                data.data,
+            );
 
-                        let meeting = response.body;
-                        let id = data.id;
+            if (response.body && response.body.error &&
+                response.body.messages) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
 
-                        if (!data.skipCommit || data.skipCommit !== true) {
-                            commit(types.EDIT_PROJECT_MEETING, {id, meeting});
-                        }
-                    }
+                let meeting = response.body;
+                let id = data.id;
 
-                    return response;
-                },
-                (response) => {
-                    return response;
+                if (!data.skipCommit || data.skipCommit !== true) {
+                    commit(types.EDIT_PROJECT_MEETING, {id, meeting});
                 }
-            )
-        ;
+            }
+
+            return response;
+        } catch (e) {
+            return e.response;
+        }
+    },
+    /**
+     * Patch a project meeting
+     * @param {function} commit
+     * @param {array} data
+     * @return {object}
+     */
+    async patchProjectMeeting({commit}, data) {
+        try {
+            let response = await Vue.http.patch(
+                Routing.generate('app_api_meeting_edit', {id: data.id}),
+                data.data,
+            );
+
+            if (response.body && response.body.error &&
+                response.body.messages) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+
+                let meeting = response.body;
+                let id = data.id;
+
+                if (!data.skipCommit || data.skipCommit !== true) {
+                    commit(types.EDIT_PROJECT_MEETING, {id, meeting});
+                }
+            }
+
+            return response;
+        } catch (e) {
+            return e.response;
+        }
     },
     /**
      * Creates a new project meeting
@@ -114,26 +140,27 @@ const actions = {
      * @return {Object}
      */
     createProjectMeeting({commit}, data) {
-        return Vue.http
-            .post(
-                Routing.generate('app_api_project_meeting_create', {'id': data.projectId}),
-                data.data
-            ).then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    }
-
-                    return response;
-                },
-                (response) => {
-                    return response;
+        return Vue.http.post(
+            Routing.generate('app_api_project_meeting_create',
+                {'id': data.projectId}),
+            data.data,
+        ).then(
+            (response) => {
+                if (response.body && response.body.error &&
+                    response.body.messages) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                 }
-            )
-        ;
+
+                return response;
+            },
+            (response) => {
+                return response;
+            },
+        )
+            ;
     },
     /**
      * Gets project meeting
@@ -141,8 +168,8 @@ const actions = {
      * @param {number} id
      */
     getProjectMeeting({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_meeting_get', {'id': id})).then((response) => {
+        Vue.http.get(Routing.generate('app_api_meeting_get', {'id': id})).
+            then((response) => {
                 if (response.status === 200) {
                     let meeting = response.data;
                     commit(types.SET_MEETING, {meeting});
@@ -206,7 +233,8 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_MEETINGS_FILTERS](state, {filters}) {
-        state.filters = !filters.clear ? Object.assign({}, state.filters, filters) : [];
+        state.filters = !filters.clear ? Object.assign({}, state.filters,
+            filters) : [];
     },
     /**
      * Delete project meeting
@@ -214,9 +242,10 @@ const mutations = {
      * @param {integer} id
      */
     [types.DELETE_PROJECT_MEETING](state, {id}) {
-        state.projectMeetings.items = state.projectMeetings.items.filter((item) => {
-            return item.id !== id;
-        });
+        state.projectMeetings.items = state.projectMeetings.items.filter(
+            (item) => {
+                return item.id !== id;
+            });
         state.projectMeetings.totalItems--;
     },
     /**
@@ -226,9 +255,10 @@ const mutations = {
      */
     [types.EDIT_PROJECT_MEETING](state, {id, meeting}) {
         if (state.projectMeetings.items) {
-            state.projectMeetings.items = state.projectMeetings.items.map((item) => {
-                return item.id === id ? meeting : item;
-            });
+            state.projectMeetings.items = state.projectMeetings.items.map(
+                (item) => {
+                    return item.id === id ? meeting : item;
+                });
         }
         if (state.meeting) {
             state.meeting = meeting;
@@ -271,9 +301,10 @@ const mutations = {
      */
     [types.DELETE_MEETING_OBJECTIVE](state, {meetingObjectiveId}) {
         if (state.meeting.meetingObjectives) {
-            state.meeting.meetingObjectives = state.meeting.meetingObjectives.filter((item) => {
-                return item.id !== meetingObjectiveId;
-            });
+            state.meeting.meetingObjectives = state.meeting.meetingObjectives.filter(
+                (item) => {
+                    return item.id !== meetingObjectiveId;
+                });
         }
     },
     /**
@@ -296,7 +327,8 @@ const mutations = {
             return;
         }
 
-        let index = _.findIndex(state.meeting.decisions, (item) => item.id === decision.id);
+        let index = _.findIndex(state.meeting.decisions,
+            (item) => item.id === decision.id);
         if (index < 0) {
             return;
         }
