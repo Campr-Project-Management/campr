@@ -40,6 +40,8 @@ class FileSystemRefreshCommand extends ContainerAwareCommand
                 $fs->mkdir($teamFolder);
             }
 
+            $fs->chown($teamFolder, 'www-data', true);
+
             $fileSystem->setConfig([
                 'path' => $teamFolder,
             ]);
