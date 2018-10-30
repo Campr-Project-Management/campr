@@ -2,3 +2,6 @@ enqueue:
     transport:
         default: '%enqueue.redis.dsn%'
     client: ~
+    consumption:
+        idle_timeout: 5000
+        receive_timeout: 1000
