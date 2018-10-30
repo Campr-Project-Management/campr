@@ -96,7 +96,6 @@
                             <th>{{ translate('table_header_cell.topic') }}</th>
                             <th>{{ translate('table_header_cell.responsible') }}</th>
                             <th>{{ translate('table_header_cell.start') }}</th>
-                            <th>{{ translate('table_header_cell.finish') }}</th>
                             <th>{{ translate('table_header_cell.duration') }}</th>
                         </tr>
                         </thead>
@@ -111,8 +110,7 @@
                                 </div>
                             </td>
                             <td>{{ agenda.start }}</td>
-                            <td>{{ agenda.end }}</td>
-                            <td>{{ getDuration(agenda.start, agenda.end) }} {{ translate('message.min') }}</td>
+                            <td>{{ agenda.duration }} {{ translate('message.min') }}</td>
                         </tr>
                         </tbody>
                     </table>
