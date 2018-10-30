@@ -3,11 +3,10 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Decision;
-use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\Project;
+use AppBundle\Entity\Media;
 use AppBundle\Form\Decision\ApiCreateType;
 use AppBundle\Form\Decision\CreateType;
-use AppBundle\Services\FileSystemResolver;
+use Doctrine\Common\Collections\ArrayCollection;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -61,6 +60,11 @@ class DecisionController extends ApiController
             ]
         );
 
+        $originalMedias = new ArrayCollection();
+        foreach ($decision->getMedias() as $media) {
+            $originalMedias->add($media);
+        }
+
         $this->processForm($request, $form, !$request->isMethod(Request::METHOD_PATCH));
 
         if (!$form->isValid()) {
@@ -73,15 +77,23 @@ class DecisionController extends ApiController
         }
 
         $em = $this->getDoctrine()->getManager();
+
+        /** @var Decision $decision */
         $decision = $form->getData();
 
-        $fs = $this->getFileSystem($decision->getProject());
         foreach ($decision->getMedias() as $media) {
-            $media->setFileSystem($fs);
+            $media->makeAsPermanent();
         }
 
-        $em->persist($decision);
-        $em->flush();
+        /** @var Media $media */
+        foreach ($originalMedias as $media) {
+            if (!$decision->getMedias()->contains($media)) {
+                $media->makeAsTemporary(0);
+                $em->persist($media);
+            }
+        }
+
+        $this->get('app.repository.decisions')->add($decision);
 
         return $this->createApiResponse($decision, Response::HTTP_ACCEPTED);
     }
@@ -103,23 +115,5 @@ class DecisionController extends ApiController
         $em->flush();
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @param Project $project
-     *
-     * @return FileSystem
-     */
-    private function getFileSystem(Project $project): FileSystem
-    {
-        /** @var FileSystemResolver $fs */
-        $fsResolver = $this->get('app.fs.resolver');
-        $fs = $fsResolver->resolve($project);
-
-        if ($fs) {
-            return $fs;
-        }
-
-        throw new \Exception('Filesystem is missing. Please contact us.');
     }
 }

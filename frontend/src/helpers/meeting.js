@@ -48,14 +48,9 @@ export const createFormData = (data) => {
     }
 
     if (data.medias) {
-        for (let i = 0; i < data.medias.length; i++) {
-            formData.append(
-                'medias[' + i + '][file]',
-                data.medias[i] instanceof window.File
-                    ? data.medias[i]
-                    : ''
-            );
-        }
+        data.medias.forEach((media, i) => {
+            formData.append('medias[' + i + ']', media.id);
+        });
     }
 
     if (data.decisions) {
