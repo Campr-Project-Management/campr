@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class Media implements FileSystemAwareInterface
 {
+    const DEFAULT_EXPIRE_DELTA = 60 * 60;
+
     /**
      * @var int
      *
@@ -134,6 +136,13 @@ class Media implements FileSystemAwareInterface
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expires_at", type="datetime", nullable=true)
+     */
+    private $expiresAt;
 
     /**
      * Media constructor.
@@ -391,7 +400,11 @@ class Media implements FileSystemAwareInterface
      */
     public function addMeeting(Meeting $meeting)
     {
-        $this->meetings[] = $meeting;
+        if ($this->meetings->contains($meeting)) {
+            return $this;
+        }
+
+        $this->meetings->add($meeting);
 
         return $this;
     }
@@ -498,7 +511,7 @@ class Media implements FileSystemAwareInterface
     }
 
     /**
-     * @param Measure $measure
+     * @param MeasureComment $measureComment
      *
      * @return Media
      */
@@ -601,5 +614,37 @@ class Media implements FileSystemAwareInterface
     public function getDecisions()
     {
         return $this->decisions;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getExpiresAt()
+    {
+        return $this->expiresAt;
+    }
+
+    /**
+     * @param \DateTime|null $expiresAt
+     */
+    public function setExpiresAt(\DateTime $expiresAt = null)
+    {
+        $this->expiresAt = $expiresAt;
+    }
+
+    /**
+     * @param int $ttl
+     */
+    public function makeAsTemporary(int $ttl = self::DEFAULT_EXPIRE_DELTA)
+    {
+        $expiresAt = new \DateTime();
+        $expiresAt->setTimestamp(time() + $ttl);
+
+        $this->expiresAt = $expiresAt;
+    }
+
+    public function makeAsPermanent()
+    {
+        $this->expiresAt = null;
     }
 }

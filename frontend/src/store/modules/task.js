@@ -228,52 +228,26 @@ const actions = {
      * @return {Object}
      * @todo change this to a more suitable version
      */
-    patchTask({commit}, data) {
-        return Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
-                data.data
-            ).then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        const task = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.SET_TASK, {task});
-                    }
-                    return response;
-                },
-                (response) => {
-                    return response;
-                }
+    async patchTask({commit}, data) {
+        try {
+            let response = await Vue.http.patch(
+                Routing.generate('app_api_workpackage_edit',
+                    {'id': data.taskId}),
+                data.data,
             );
-    },
 
-    /**
-     * Upload attachment to an existing task
-     * @param {function} commit
-     * @param {array} data
-     * @return {Object}
-     */
-    uploadAttachmentTask({commit}, data) {
-        return Vue.http.post(
-            Routing.generate('app_api_workpackage_attachments', {'id': data.taskId}),
-            data.data,
-        ).then(
-            (response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    const task = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.SET_TASK, {task});
-                }
-                return response;
-            },
-        );
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                const task = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                commit(types.SET_TASK, {task});
+            }
+            return response;
+        } catch (e) {
+            return e.response;
+        }
     },
 
     /**
@@ -283,27 +257,27 @@ const actions = {
      * @return {Object}
      * @todo change this to a more suitable version
      */
-    patchSubtask({commit}, data) {
-        return Vue.http
-        .patch(
-            Routing.generate('app_api_workpackage_edit', {'id': data.taskId}),
-            data.data
-        ).then(
-            (response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    const task = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.SET_SUBTASK, {task});
-                }
-                return response;
-            },
-            (response) => {
-                return response;
+    async patchSubtask({commit}, data) {
+        try {
+            let response = await Vue.http.patch(
+                Routing.generate('app_api_workpackage_edit',
+                    {'id': data.taskId}),
+                data.data,
+            );
+
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                const task = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                commit(types.SET_SUBTASK, {task});
             }
-        );
+
+            return response;
+        } catch (e) {
+            return e.response;
+        }
     },
 
     /**

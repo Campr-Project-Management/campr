@@ -79,7 +79,8 @@
         "eightpoints/guzzle-bundle": "^7.3",
       "ext-json": "*",
         "enqueue/enqueue-bundle": "^0.8.37",
-        "enqueue/redis": "^0.8.37"
+        "enqueue/redis": "^0.8.37",
+        "oneup/uploader-bundle": "^2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

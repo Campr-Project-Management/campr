@@ -3,13 +3,18 @@
 namespace AppBundle\Controller\API\Project;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\WorkPackage;
+use AppBundle\Event\WorkPackageEvent;
+use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Paginator\SerializablePagerfanta;
 use AppBundle\Repository\WorkPackageRepository;
+use Component\WorkPackage\WorkPackageEvents;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/projects/{id}")
@@ -43,5 +48,54 @@ class WorkPackageController extends ApiController
         $paginator = new SerializablePagerfanta($paginator);
 
         return $this->createApiResponse($paginator);
+    }
+
+    /**
+     * Create a new WorkPackage.
+     *
+     * @Route("/tasks", name="app_api_project_tasks_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function createTaskAction(Request $request, Project $project): JsonResponse
+    {
+        $form = $this->createForm(
+            ApiCreateType::class,
+            new WorkPackage(),
+            [
+                'entity_manager' => $this->getDoctrine()->getManager(),
+            ]
+        );
+        $this->processForm($request, $form);
+
+        if (!$form->isValid()) {
+            $errors = $this->getFormErrors($form);
+            $errors = [
+                'messages' => $errors,
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
+
+        /** @var WorkPackage $wp */
+        $wp = $form->getData();
+        $wp->setProject($project);
+
+        foreach ($wp->getMedias() as $media) {
+            $media->makeAsPermanent();
+        }
+
+        $wp->setForecastStartAt($wp->getScheduledStartAt());
+        $wp->setForecastFinishAt($wp->getScheduledFinishAt());
+
+        $this->dispatchEvent(WorkPackageEvents::PRE_CREATE, new WorkPackageEvent($wp));
+        $this->get('app.repository.work_package')->add($wp);
+        $this->dispatchEvent(WorkPackageEvents::POST_CREATE, new WorkPackageEvent($wp));
+
+        return $this->createApiResponse($wp, Response::HTTP_CREATED);
     }
 }

@@ -8,6 +8,7 @@ imports:
     - { resource: bundles/translation.yml }
     - { resource: bundles/eight_points_guzzle.yaml }
     - { resource: bundles/enqueue.yml }
+    - { resource: bundles/oneup_uploader.yml }
     - { resource: "@MainBundle/Resources/config/services.yml" }
     - { resource: "@PortalBundle/Resources/config/config.yml" }
 

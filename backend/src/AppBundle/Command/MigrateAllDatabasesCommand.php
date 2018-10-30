@@ -16,11 +16,15 @@ class MigrateAllDatabasesCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this
-            ->setName('app:migrate:all-databases')
-        ;
+        $this->setName('app:migrate:all-databases');
     }
 
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $wd = $this->getContainer()->getParameter('kernel.root_dir').'/../..';
