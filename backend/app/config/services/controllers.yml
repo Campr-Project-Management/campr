@@ -7,3 +7,4 @@ services:
             - '@oneup_uploader.error_handler.dropzone'
             - '%oneup_uploader.config.media%'
             - 'media'
+            - '@logger'

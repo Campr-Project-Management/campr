@@ -15,13 +15,24 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
 
 class ApiExceptionSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
+    /**
+     * ApiExceptionSubscriber constructor.
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param GetResponseForExceptionEvent $event
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $request = $event->getRequest();
