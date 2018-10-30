@@ -213,9 +213,6 @@
                     },
                 );
             },
-            canSave() {
-                return !this.isUploading;
-            },
         },
         computed: {
             ...mapGetters([
@@ -229,6 +226,9 @@
                 'validationMessagesFor',
                 'project',
             ]),
+            canSave() {
+                return !this.isUploading;
+            },
             mediasValidationMessages() {
                 let messages = this.validationMessagesFor('medias');
                 let out = [];
