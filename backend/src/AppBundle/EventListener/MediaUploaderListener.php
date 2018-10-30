@@ -12,6 +12,7 @@ use Component\Repository\RepositoryInterface;
 use Oneup\UploaderBundle\Event\PostPersistEvent;
 use Oneup\UploaderBundle\Uploader\Response\AbstractResponse;
 use Oneup\UploaderBundle\UploadEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -48,6 +49,11 @@ class MediaUploaderListener implements EventSubscriberInterface
     private $tokenStorage;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * MediaUploaderListener constructor.
      *
      * @param FileSystemResolver         $fileSystemResolver
@@ -55,19 +61,22 @@ class MediaUploaderListener implements EventSubscriberInterface
      * @param RepositoryInterface        $mediaRepository
      * @param JsonSerializableNormalizer $jsonSerializerNormalizer
      * @param TokenStorageInterface      $tokenStorage
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         FileSystemResolver $fileSystemResolver,
         RepositoryInterface $projectRepository,
         RepositoryInterface $mediaRepository,
         JsonSerializableNormalizer $jsonSerializerNormalizer,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        LoggerInterface $logger
     ) {
         $this->fileSystemResolver = $fileSystemResolver;
         $this->projectRepository = $projectRepository;
         $this->mediaRepository = $mediaRepository;
         $this->jsonSerializerNormalizer = $jsonSerializerNormalizer;
         $this->tokenStorage = $tokenStorage;
+        $this->logger = $logger;
     }
 
     /**
@@ -115,8 +124,8 @@ class MediaUploaderListener implements EventSubscriberInterface
                 $response[$key] = $value;
             }
         } catch (\Exception $e) {
-            $response['error'] = true;
-            $response['messages'] = [$e->getMessage()];
+            $this->logger->error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            throw $e;
         } finally {
             @unlink($file->getRealPath());
         }
