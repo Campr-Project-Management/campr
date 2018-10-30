@@ -140,6 +140,7 @@ services:
             - '@app.repository.media'
             - '@app.serializer.normalizer.json'
             - '@security.token_storage'
+            - '@logger'
         tags:
             - { name: kernel.event_subscriber }
 
