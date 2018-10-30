@@ -65,7 +65,7 @@ class DumpRoutesCommand extends ContainerAwareCommand
             }
         }
 
-        $this->output->writeln(ProcessManager::runParallel($processes, count($processes)));
+        $this->output->writeln(ProcessManager::runParallel($processes, $this->getNumProcs()));
     }
 
     private function newProcess($cmd)
@@ -84,5 +84,12 @@ class DumpRoutesCommand extends ContainerAwareCommand
         $stmt->execute();
 
         return array_column($stmt->fetchAll(), 'slug');
+    }
+
+    private function getNumProcs()
+    {
+        $procs = exec('cat /proc/cpuinfo | grep processor | wc -l');
+
+        return $procs > 1 ? --$procs : 1;
     }
 }
