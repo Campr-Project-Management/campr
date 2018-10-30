@@ -137,7 +137,7 @@
                             <tr>
                                 <th class="table-header">{{ 'table_header_cell.topic'|trans }}</th>
                                 <th class="table-header">{{ 'table_header_cell.start'|trans }}</th>
-                                <th class="table-header">{{ 'table_header_cell.end'|trans }}</th>
+                                <th class="table-header">{{ 'table_header_cell.duration'|trans }}</th>
                                 <th class="table-header">{{ 'table_header_cell.participants'|trans }}</th>
                             </tr>
                         </thead>
@@ -146,7 +146,7 @@
                             <tr style="border-spacing: 5px;" class="table-row">
                                 <td class="table-body">{{ agendas.topic }}</td>
                                 <td class="table-body">{{ agendas.start|date('H:i') }}</td>
-                                <td class="table-body">{{ agendas.end|date('H:i') }}</td>
+                                <td class="table-body">{{ agendas.duration }} {{ 'message.min'|trans }}</td>
                                 <td class="table-body">{{ agendas.responsibilityFullName }}</td>
                             </tr>
                             {% endfor %}
