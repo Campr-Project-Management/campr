@@ -168,6 +168,7 @@ class MeetingControllerTest extends BaseController
                             'fileSize' => 0,
                             'createdAt' => '2017-01-01 00:00:00',
                             'originalName' => '',
+                            'expiresAt' => null,
                             'name' => '',
                         ],
                     ],

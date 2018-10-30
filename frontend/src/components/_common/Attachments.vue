@@ -1,42 +1,56 @@
 <template>
     <div :class="{disabled: disabled}">
-        <input
-                ref="file"
-                type="file"
-                name="attachments"
-                style="display: none;"
-                @change="onChange"/>
+
         <div class="attachments">
-            <template v-for="(media, index) in inputValue">
+            <template v-for="(file, index) in inputValue">
                 <div
                         class="attachment"
-                        v-if="media"
-                        :key="index">
+                        v-if="file"
+                        :key="`attachment_${file.id}`">
                     <view-icon/>
                     <span class="attachment-name">
-                        <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
-                        <span v-else>{{ media.name }}</span>
+                        <a @click="getMediaFile(file)" v-if="file.id">{{ file.name }}</a>
+                        <span v-else>{{ file.name }}</span>
                     </span>
                     <i
                             class="fa fa-times"
                             @click="onRemove(index)"
                             v-if="!disabled && editable"></i>
                 </div>
-                <template v-for="(messages, errIndex) in getErrorMessages(index)">
-                    <error
-                            :key="`error_message${index}_${errIndex}`"
-                            :message="messages"/>
-                </template>
             </template>
-            <error
-                    v-for="(message, index) in validationErrorMessages"
-                    :key="`validation_error_message${index}`"
-                    :message="message"/>
+            <template v-for="uf in uploadingFiles">
+                <div
+                        class="attachment"
+                        :key="`uploading_file_${uf.file.upload.uuid}`">
+                    <div>
+                        <view-icon/>
+                        <span class="attachment-name">
+                            <span>{{ uf.file.name }}</span> &mdash; <strong>{{ Math.floor(uf.progress.percent) }}%</strong>
+                        </span>
+                        <i
+                                v-if="uf.errors.length > 0"
+                                class="fa fa-times"
+                                @click="onRemoveUploadingFile(uf.file)"></i>
+                    </div>
+                    <div class="uploading-file-progress-bar" v-if="uf.errors.length === 0">
+                        <div class="uploading-file-progress" :style="{width: `${uf.progress.percent}%`}"></div>
+                    </div>
+                    <error
+                            :key="`error_message_${uf.file.upload.uuid}`"
+                            :message="uf.errors"/>
+                </div>
+            </template>
         </div>
         <div class="text-center" v-if="editable">
-            <a
-                    class="btn-rounded btn-empty btn-md"
-                    @click="onAdd">{{ translate(this.label) }}</a>
+            <file-field
+                    :url="uploadUrl"
+                    :max-file-size="maxFileSize / (1024 * 1024)"
+                    :label="label"
+                    :chunking="true"
+                    @input="onInput"
+                    @add="onFileAdded"
+                    @uploaded="onFileUploaded"
+                    @queue-complete="onQueueComplete"/>
             <div class="max-upload-file-size-message" v-if="maxFileSize">
                 <em>{{ 'message.max_upload_file_size'|trans({'size': $formatBytes(maxFileSize)}) }}</em>
             </div>
@@ -48,6 +62,7 @@
     import ViewIcon from './_icons/ViewIcon';
     import Vue from 'vue';
     import Error from './_messages/Error';
+    import FileField from './_form-components/FileField';
 
     export default {
         name: 'attachments',
@@ -86,36 +101,43 @@
                 required: false,
                 default: () => [],
             },
+            url: {
+                type: String,
+                required: false,
+                default: null,
+            },
         },
         components: {
+            FileField,
             Error,
             ViewIcon,
         },
-        methods: {
-            onAdd() {
-                if (this.disabled) {
-                    return;
-                }
-
-                this.$refs.file.click();
+        computed: {
+            uploadUrl() {
+                return this.url ? this.url : this.$generateUrl('app_api_project_uploader_media_upload',
+                    {id: this.$route.params.id});
             },
-            onChange(e) {
+        },
+        methods: {
+            onInput(file) {
+                this.inputValue.push(file);
+            },
+            onQueueComplete() {
+                this.$emit('input', this.inputValue);
+            },
+            onFileAdded(uf) {
                 if (this.disabled) {
                     return;
                 }
 
-                let files = e.target.files || e.dataTransfer.files;
-                if (!files.length) {
-                    return;
-                }
-
-                if (!this.isValid(files[0])) {
-                    return;
-                }
-
-                this.inputValue.push(files[0]);
-                this.$emit('input', this.inputValue);
-                e.target.value = '';
+                this.uploadingFiles.push(uf);
+            },
+            onFileUploaded(file) {
+                this.removeUploadingFile(file);
+            },
+            removeUploadingFile(file) {
+                let index = this.uploadingFiles.findIndex((uf) => uf.file.upload.uuid === file.upload.uuid);
+                this.$delete(this.uploadingFiles, index);
             },
             onRemove(index) {
                 if (this.disabled) {
@@ -131,16 +153,17 @@
                     inputValue[key] = value;
                 });
 
-                this.lazyErrorMessages[index] = [];
-
                 this.$emit('input', inputValue);
+            },
+            onRemoveUploadingFile(file) {
+                this.removeUploadingFile(file);
             },
             getMediaFile(media) {
                 if (!media.id) {
                     return;
                 }
 
-                const url = Routing.generate('app_api_media_download', {id: media.id});
+                const url = this.$generateUrl('app_api_media_download', {id: media.id});
                 Vue.http.get(url, {responseType: 'blob'})
                    .then((response) => {
                        if (response.status !== 200) {
@@ -165,41 +188,18 @@
                        }, 100);
                    });
             },
-            isValid(file) {
-                if (!this.validate) {
-                    return true;
-                }
-
-                this.validationErrorMessages = [];
-                if (file.size > this.maxFileSize) {
-                    let message = this.translate(
-                        'message.file_too_large',
-                        {
-                            size: this.$formatBytes(file.size),
-                            limit: this.$formatBytes(this.maxFileSize),
-                        },
-                    );
-
-                    this.validationErrorMessages.push(`${file.name} - ${message}`);
-                    return false;
-                }
-
-                return true;
-            },
-            getErrorMessages(index) {
-                if (!this.lazyErrorMessages[index]) {
-                    return [];
-                }
-
-                return this.lazyErrorMessages[index];
-            },
         },
         watch: {
             value(value) {
                 this.inputValue = [...value];
             },
-            errorMessages(value) {
-                this.lazyErrorMessages = value;
+            uploadingFiles(value) {
+                if (value.length > 0) {
+                    this.$emit('uploading', true);
+                    return;
+                }
+
+                this.$emit('uploading', false);
             },
         },
         mounted() {
@@ -210,8 +210,7 @@
         data() {
             return {
                 inputValue: [],
-                validationErrorMessages: [],
-                lazyErrorMessages: this.errorMessages,
+                uploadingFiles: [],
             };
         },
     };
@@ -283,10 +282,24 @@
                 cursor: pointer;
             }
         }
+
+        .uploading-file-progress-bar {
+            background-color: $mainColor;
+            width: 100%;
+            margin-top: 5px;
+
+            .uploading-file-progress {
+                height: 3px;
+                background-color: $secondColor;
+                width: 0;
+                @include transition(width, 0.2s, ease-in);
+            }
+        }
     }
 
     .max-upload-file-size-message {
         margin-top: 1em;
         color: $lightColor;
     }
+
 </style>

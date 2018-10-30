@@ -121,7 +121,7 @@ services:
     app.subscriber.meeting:
         class: AppBundle\EventListener\MeetingSubscriber
         arguments:
-        - '@doctrine.orm.entity_manager'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -130,4 +130,23 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-        - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.media_uploader:
+        class: AppBundle\EventListener\MediaUploaderListener
+        arguments:
+            - '@app.fs.resolver'
+            - '@app.repository.project'
+            - '@app.repository.media'
+            - '@app.serializer.normalizer.json'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    app.subscriber.media_uploader_validator:
+        class: AppBundle\EventListener\MediaUploaderValidationListener
+        arguments:
+            - '@validator'
+            - '@app.repository.project'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -121,7 +121,7 @@
                     <attachments
                             v-model="medias"
                             :max-file-size="projectMaxUploadFileSize"
-                            :error-messages="mediasValidationMessages"/>
+                            @uploading="onUploading"/>
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
@@ -139,8 +139,10 @@
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
-                        <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
-                        <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
+                        <template v-if="!isUploading">
+                            <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
+                            <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
+                        </template>
                     </div>
                     <!-- /// End Actions /// -->
                 </div>
@@ -338,6 +340,9 @@ export default {
         updateSchedule(value) {
             this.schedule = value;
         },
+        onUploading(uploading) {
+            this.isUploading = uploading;
+        },
     },
     created() {
         this.trafficLight = this.defaultTrafficLightValue;
@@ -357,6 +362,7 @@ export default {
             'defaultTrafficLightValue',
             'projectMaxUploadFileSize',
             'validationMessagesFor',
+            'project',
         ]),
         mediasValidationMessages() {
             let messages = this.validationMessagesFor('medias');
@@ -610,6 +616,7 @@ export default {
             },
             trafficLight: null,
             isSaving: false,
+            isUploading: false,
         };
     },
 };

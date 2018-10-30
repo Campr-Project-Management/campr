@@ -63,14 +63,11 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-md-12">
-                    <!-- /// Decision Attachments /// -->
                     <attachments
                             v-model="lazyValue.medias"
-                            v-bind:value="lazyValue.medias"
                             :max-file-size="projectMaxUploadFileSize"
-                            :error-messages="mediasValidationMessages"
-                            @input="onInput" />
-                    <!-- /// End Decision Attachments /// -->
+                            @uploading="onUploading"
+                            @input="onInput"/>
                 </div>
             </div>
         </div>
@@ -88,7 +85,6 @@
     import moment from 'moment';
     import DateField from '../../../_common/_form-components/DateField';
     import Attachments from '../../../_common/Attachments';
-
 
     export default {
         name: 'meeting-decision-form',
@@ -129,17 +125,8 @@
                 'decisionStatusByValueForSelect',
                 'projectMaxUploadFileSize',
                 'validationMessagesFor',
+                'project',
             ]),
-            mediasValidationMessages() {
-                let messages = this.validationMessagesFor('errorMessages.medias');
-                let out = [];
-
-                Object.keys(messages).forEach((index) => {
-                    out[index] = messages[index].file;
-                });
-
-                return out;
-            },
             decisionsStatusesOptions() {
                 return this.decisionsStatusesForSelect.map((option) => {
                     return Object.assign({}, option, {label: this.translate(option.label)});
@@ -156,11 +143,15 @@
                 let value = Object.assign({}, this.lazyValue, {
                     done: this.lazyValue.done.key,
                     responsibility: responsibility,
-                    dueDate: this.lazyValue.dueDate ? moment(this.lazyValue.dueDate).toDate() : null,
+                    dueDate: this.lazyValue.dueDate ? moment(this.lazyValue.dueDate)
+                        .toDate() : null,
                     medias: this.lazyValue.medias,
                 });
 
                 this.$emit('input', value);
+            },
+            onUploading(uploading) {
+                this.$emit('uploading', uploading);
             },
             toLazyValue(value) {
                 return Object.assign({}, value, {

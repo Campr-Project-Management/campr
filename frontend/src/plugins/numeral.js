@@ -59,6 +59,9 @@ export default {
                 formatNumber(value, options) {
                     return formatNumber(value, options);
                 },
+                formatBytes(value) {
+                    return formatBytes(value);
+                },
                 bytes(value) {
                     return formatBytes(value);
                 },
