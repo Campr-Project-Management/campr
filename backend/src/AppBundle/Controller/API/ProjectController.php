@@ -35,7 +35,6 @@ use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\RasciEvent;
-use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
@@ -52,23 +51,18 @@ use AppBundle\Form\ProjectDeliverable\CreateType as ProjectDeliverableCreateType
 use AppBundle\Form\ProjectLimitation\CreateType as ProjectLimitationCreateType;
 use AppBundle\Form\Unit\CreateType as UnitCreateType;
 use AppBundle\Form\User\ApiCreateType as UserApiCreateType;
-use AppBundle\Form\WorkPackage\ApiCreateType;
 use AppBundle\Form\WorkPackage\MilestoneType;
 use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Form\WorkPackage\ImportType as ImportWorkPackageType;
 use AppBundle\Form\Risk\CreateType as RiskCreateType;
 use AppBundle\Form\Opportunity\ApiType as OpportunityCreateType;
 use AppBundle\Repository\MeasureRepository;
-use AppBundle\Repository\MeetingRepository;
 use AppBundle\Repository\OpportunityRepository;
 use AppBundle\Repository\RasciRepository;
 use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
-use Component\Meeting\MeetingEvent;
-use Component\Meeting\MeetingEvents;
 use Component\Rasci\RasciEvents;
-use Component\WorkPackage\WorkPackageEvents;
 use Doctrine\ORM\EntityManager;
 use MainBundle\Controller\API\ApiController;
 use MainBundle\Form\InviteUserType;
@@ -79,7 +73,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\User;
-use AppBundle\Form\Meeting\ApiCreateType as MeetingApiCreateType;
 use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 use AppBundle\Utils\ImportConstants;
@@ -108,21 +101,28 @@ class ProjectController extends ApiController
         $projectRepo = $this->getDoctrine()->getManager()->getRepository(Project::class);
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             $result = $projects = $projectRepo->findByUserAndFilters($user, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $projectRepo->countTotalByUserAndFilters($user, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
-            usort($result, function ($a, $b) use ($user) {
-                return !in_array($user->getId(), $a->getUserFavoritesIds());
-            });
+            usort(
+                $result,
+                function ($a, $b) use ($user) {
+                    return !in_array($user->getId(), $a->getUserFavoritesIds());
+                }
+            );
             $responseArray['items'] = $result;
 
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => $projectRepo->findByUserAndFilters($user, $filters)->getQuery()->getResult(),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $projectRepo->findByUserAndFilters($user, $filters)->getQuery()->getResult(),
+            ]
+        );
     }
 
     /**
@@ -436,130 +436,6 @@ class ProjectController extends ApiController
     }
 
     /**
-     * All meetings for a specific Project.
-     *
-     * @Route("/{id}/meetings", name="app_api_project_meetings", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @param Meeting $meeting
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function meetingsAction(Request $request, Project $project)
-    {
-        $filters = $request->query->all();
-        /** @var MeetingRepository $repo */
-        $repo = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(Meeting::class)
-        ;
-
-        if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
-            $result = $repo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
-
-            $responseArray['totalItems'] = $repo->countTotalByProjectAndFilters($project, $filters);
-            $responseArray['pageSize'] = $filters['pageSize'];
-            $responseArray['items'] = $result;
-
-            return $this->createApiResponse($responseArray);
-        }
-
-        $items = $repo->findBy(['project' => $project]);
-
-        return $this->createApiResponse([
-            'items' => $items,
-            'totalItems' => count($items),
-        ]);
-    }
-
-    /**
-     * Create a new Meeting.
-     *
-     * @Route("/{id}/meetings", name="app_api_project_meeting_create", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function createMeetingAction(Request $request, Project $project)
-    {
-        $meeting = new Meeting();
-        $meeting->setProject($project);
-        $form = $this->createForm(
-            MeetingApiCreateType::class,
-            $meeting,
-            [
-                'csrf_protection' => false,
-                'max_media_size' => $project->getMaxUploadFileSize(),
-            ]
-        );
-        $this->processForm($request, $form);
-
-        $em = $this->getDoctrine()->getManager();
-        $fileSystem = $project
-            ->getFileSystems()
-            ->filter(function (FileSystem $fs) {
-                return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-            })
-            ->first()
-        ;
-
-        if (!$fileSystem) {
-            $fileSystem = $em
-                ->getRepository(FileSystem::class)
-                ->findOneBy([
-                    'driver' => FileSystem::LOCAL_ADAPTER,
-                ])
-            ;
-            if (!$fileSystem) {
-                return $this->createApiResponse(
-                    [
-                        'messages' => [
-                            'Filesystem is missing. Please contact us.',
-                        ],
-                    ],
-                    Response::HTTP_INTERNAL_SERVER_ERROR
-                );
-            }
-        }
-
-        if ($form->isValid()) {
-            foreach ($meeting->getMedias() as $media) {
-                $media->setFileSystem($fileSystem);
-            }
-
-            foreach ($meeting->getDecisions() as $decision) {
-                foreach ($decision->getMedias() as $media) {
-                    $media->setFileSystem($fileSystem);
-                }
-            }
-
-            $meeting->setCreatedBy($this->getUser());
-            foreach ($meeting->getInfos() as $info) {
-                $info->setProject($project);
-            }
-
-            $this->dispatchEvent(MeetingEvents::CALCULATE_MEETING_AGENDA_START_DATES, new MeetingEvent($meeting));
-
-            $this->persistAndFlush($meeting);
-
-            return $this->createApiResponse($meeting, Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * Get all project teams.
      *
      * @Route("/{id}/project-teams", name="app_api_project_project_teams")
@@ -668,11 +544,12 @@ class ProjectController extends ApiController
         if ($form->isValid()) {
             $pus = $project
                 ->getProjectUsers()
-                ->filter(function (ProjectUser $pu) use ($form, $projectUser) {
-                    return $projectUser->getProject() === $pu->getProject() &&
-                        $projectUser->getUser() === $pu->getUser();
-                })
-            ;
+                ->filter(
+                    function (ProjectUser $pu) use ($form, $projectUser) {
+                        return $projectUser->getProject() === $pu->getProject() &&
+                            $projectUser->getUser() === $pu->getUser();
+                    }
+                );
 
             if ($pus->count()) {
                 return $this->createApiResponse($pus->first(), JsonResponse::HTTP_CREATED);
@@ -724,10 +601,12 @@ class ProjectController extends ApiController
                 $role = $em->getRepository(ProjectRole::class)->find($roleId);
                 $projectUser->addProjectRole($role);
                 if (ProjectRole::ROLE_SPONSOR === $role->getName()) {
-                    $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy([
-                        'project' => $project,
-                        'sequence' => -1,
-                    ]);
+                    $specialDistribution = $em->getRepository(DistributionList::class)->findOneBy(
+                        [
+                            'project' => $project,
+                            'sequence' => -1,
+                        ]
+                    );
                     if ($specialDistribution) {
                         $specialDistribution->addUser($user);
                         $em->persist($specialDistribution);
@@ -757,8 +636,7 @@ class ProjectController extends ApiController
 
             $res = $this
                 ->get('app.service.user')
-                ->createTeamMember($request)
-            ;
+                ->createTeamMember($request);
 
             if ($res) {
                 $this->persistAndFlush($user);
@@ -856,11 +734,12 @@ class ProjectController extends ApiController
         $todoRepo = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(Todo::class)
-        ;
+            ->getRepository(Todo::class);
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             $result = $todoRepo->getQueryBuilderByProjectAndFilters($project, $filters)->getQuery()->getResult();
 
             $responseArray['totalItems'] = $todoRepo->countTotalByProjectAndFilters($project, $filters);
@@ -923,8 +802,7 @@ class ProjectController extends ApiController
         $wppwcts = $this
             ->getDoctrine()
             ->getRepository(WorkPackageProjectWorkCostType::class)
-            ->findByProject($project)
-        ;
+            ->findByProject($project);
 
         return $this->createApiResponse($wppwcts);
     }
@@ -943,11 +821,14 @@ class ProjectController extends ApiController
     public function exportCalendarsAction(Request $request, Project $project)
     {
         if (!$this->getUser()) {
-            return $this->createApiResponse([
-                'message' => $this
-                    ->get('translator')
-                    ->trans('not_found.general', [], 'messages'),
-            ], Response::HTTP_NOT_FOUND);
+            return $this->createApiResponse(
+                [
+                    'message' => $this
+                        ->get('translator')
+                        ->trans('not_found.general', [], 'messages'),
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         $filters = $request->query->all();
@@ -983,7 +864,11 @@ class ProjectController extends ApiController
      */
     public function createObjectiveAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ProjectObjectiveCreateType::class, new ProjectObjective(), ['csrf_protection' => false]);
+        $form = $this->createForm(
+            ProjectObjectiveCreateType::class,
+            new ProjectObjective(),
+            ['csrf_protection' => false]
+        );
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -1030,7 +915,11 @@ class ProjectController extends ApiController
      */
     public function createLimitationAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ProjectLimitationCreateType::class, new ProjectLimitation(), ['csrf_protection' => false]);
+        $form = $this->createForm(
+            ProjectLimitationCreateType::class,
+            new ProjectLimitation(),
+            ['csrf_protection' => false]
+        );
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -1079,7 +968,11 @@ class ProjectController extends ApiController
      */
     public function createDeliverableAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ProjectDeliverableCreateType::class, new ProjectDeliverable(), ['csrf_protection' => false]);
+        $form = $this->createForm(
+            ProjectDeliverableCreateType::class,
+            new ProjectDeliverable(),
+            ['csrf_protection' => false]
+        );
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -1126,7 +1019,9 @@ class ProjectController extends ApiController
         $repo = $this->get('app.repository.work_package');
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             $filters['type'] = WorkPackage::TYPE_PHASE;
 
             $result = $repo->getQueryByProjectAndFilters($project, $filters)->getResult();
@@ -1138,10 +1033,12 @@ class ProjectController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => $repo->findPhasesByProject($project),
-            'totalItems' => $repo->countPhasesByProject($project),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $repo->findPhasesByProject($project),
+                'totalItems' => $repo->countPhasesByProject($project),
+            ]
+        );
     }
 
     /**
@@ -1237,8 +1134,7 @@ class ProjectController extends ApiController
         $repo = $this
             ->getDoctrine()
             ->getManager()
-            ->getRepository(WorkPackage::class)
-        ;
+            ->getRepository(WorkPackage::class);
 
         $filters = $request->query->get('filters', []);
 
@@ -1258,33 +1154,39 @@ class ProjectController extends ApiController
 
         if (isset($filters['milestone'])) {
             /** @var WorkPackage $milestone */
-            $milestone = $repo->findOneBy([
-                'id' => $filters['milestone'],
-                'type' => WorkPackage::TYPE_MILESTONE,
-            ]);
+            $milestone = $repo->findOneBy(
+                [
+                    'id' => $filters['milestone'],
+                    'type' => WorkPackage::TYPE_MILESTONE,
+                ]
+            );
 
             if (!$milestone) {
                 throw $this->createNotFoundException();
             }
 
-            return $this->createApiResponse([
-                'items' => $repo->findTasksByMilestone(
-                    $milestone,
+            return $this->createApiResponse(
+                [
+                    'items' => $repo->findTasksByMilestone(
+                        $milestone,
+                        $orderBy,
+                        $limit
+                    ),
+                    'totalItems' => $repo->countTasksByMilestone($milestone),
+                ]
+            );
+        }
+
+        return $this->createApiResponse(
+            [
+                'items' => $repo->findTasksByProject(
+                    $project,
                     $orderBy,
                     $limit
                 ),
-                'totalItems' => $repo->countTasksByMilestone($milestone),
-            ]);
-        }
-
-        return $this->createApiResponse([
-            'items' => $repo->findTasksByProject(
-                $project,
-                $orderBy,
-                $limit
-            ),
-            'totalItems' => $repo->countTasksByProject($project),
-        ]);
+                'totalItems' => $repo->countTasksByProject($project),
+            ]
+        );
     }
 
     /**
@@ -1327,92 +1229,6 @@ class ProjectController extends ApiController
     }
 
     /**
-     * Create a new WorkPackage.
-     *
-     * @Route("/{id}/tasks", name="app_api_project_tasks_create", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function createTaskAction(Request $request, Project $project)
-    {
-        $wp = new WorkPackage();
-        $form = $this->createForm(
-            ApiCreateType::class,
-            $wp,
-            [
-                'entity_manager' => $this->getDoctrine()->getManager(),
-                'max_media_size' => $project->getMaxUploadFileSize(),
-            ]
-        );
-        $this->processForm($request, $form);
-
-        $em = $this->getDoctrine()->getManager();
-        $fileSystem = $project
-            ->getFileSystems()
-            ->filter(
-                function (FileSystem $fs) {
-                    return FileSystem::LOCAL_ADAPTER === $fs->getDriver();
-                }
-            )
-            ->first();
-
-        if (!$fileSystem) {
-            $fileSystem = $em
-                ->getRepository(FileSystem::class)
-                ->findOneBy(
-                    [
-                        'driver' => FileSystem::LOCAL_ADAPTER,
-                    ]
-                );
-            if (!$fileSystem) {
-                return $this->createApiResponse(
-                    [
-                        'messages' => [
-                            'Filesystem is missing. Please contact us.',
-                        ],
-                    ],
-                    Response::HTTP_INTERNAL_SERVER_ERROR
-                );
-            }
-        }
-
-        $entitySaveErrors = [];
-        if ($form->isValid()) {
-            foreach ($wp->getMedias() as $media) {
-                $media->setFileSystem($fileSystem);
-            }
-
-            try {
-                $wp->setForecastStartAt($wp->getScheduledStartAt());
-                $wp->setForecastFinishAt($wp->getScheduledFinishAt());
-
-                $wp->setProject($project);
-                $this->dispatchEvent(WorkPackageEvents::PRE_CREATE, new WorkPackageEvent($wp));
-                $this->persistAndFlush($wp);
-                $this->dispatchEvent(WorkPackageEvents::POST_CREATE, new WorkPackageEvent($wp));
-                $this->refreshEntity($wp);
-
-                return $this->createApiResponse($wp, Response::HTTP_CREATED);
-            } catch (FileAlreadyExists $exception) {
-                $entitySaveErrors['medias'][] = $exception->getMessage();
-            }
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = array_merge($errors, $entitySaveErrors);
-
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
      * import task from xml file.
      *
      * @Route("/{id}/tasks/import", name="app_api_project_tasks_import", options={"expose"=true})
@@ -1423,7 +1239,11 @@ class ProjectController extends ApiController
      */
     public function importTasksAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ImportWorkPackageType::class, null, ['csrf_protection' => false, 'method' => $request->getMethod()]);
+        $form = $this->createForm(
+            ImportWorkPackageType::class,
+            null,
+            ['csrf_protection' => false, 'method' => $request->getMethod()]
+        );
         $this->processForm(
             $request,
             $form,
@@ -1443,26 +1263,26 @@ class ProjectController extends ApiController
                 }
             } catch (UniqueConstraintViolationException $e) {
                 return $this->createApiResponse(
-                   [
-                       'messages' => [
-                           'file' => [
+                    [
+                        'messages' => [
+                            'file' => [
                                 $this
                                     ->get('translator')
                                     ->trans('exception.unique_contraint_exception'),
-                           ],
-                       ],
-                   ],
-                   Response::HTTP_BAD_REQUEST
-               );
+                            ],
+                        ],
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
             } catch (\Exception $e) {
                 return $this->createApiResponse(
-                   [
-                       'messages' => [
-                           'file' => [$e->getMessage()],
-                       ],
-                   ],
-                   Response::HTTP_BAD_REQUEST
-               );
+                    [
+                        'messages' => [
+                            'file' => [$e->getMessage()],
+                        ],
+                    ],
+                    Response::HTTP_BAD_REQUEST
+                );
             }
 
             return $this->createApiResponse(null, Response::HTTP_OK);
@@ -1492,8 +1312,7 @@ class ProjectController extends ApiController
             ->getDoctrine()
             ->getManager()
             ->getRepository(Unit::class)
-            ->findByProject($project, true)
-        ;
+            ->findByProject($project, true);
 
         return $this->createApiResponse($units);
     }
@@ -1544,7 +1363,9 @@ class ProjectController extends ApiController
         $filters = $request->query->all();
         $subteamRepo = $this->getDoctrine()->getRepository(Subteam::class);
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('admin.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'admin.per_page'
+            );
             $result = $subteamRepo->getQueryFiltered($project, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $subteamRepo->countTotalByFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
@@ -1553,9 +1374,11 @@ class ProjectController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => $subteamRepo->findBy(['project' => $project]),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $subteamRepo->findBy(['project' => $project]),
+            ]
+        );
     }
 
     /**
@@ -1706,18 +1529,20 @@ class ProjectController extends ApiController
         /** @var MeasureRepository $measureRepo */
         $measureRepo = $this->get('app.repository.measure');
 
-        return $this->createApiResponse([
-            'risks' => [
-                'risk_data' => $riskRepo->getStatsByProject($project),
-                'measure_data' => $measureRepo->getStatsForRisk($project),
-                'top_risk' => $riskRepo->findTopByProject($project),
-             ],
-            'opportunities' => [
-                'opportunity_data' => $opportunityRepo->getStatsByProject($project),
-                'measure_data' => $measureRepo->getStatsForOpportunity($project),
-                'top_opportunity' => $opportunityRepo->findTopByProject($project),
-            ],
-        ]);
+        return $this->createApiResponse(
+            [
+                'risks' => [
+                    'risk_data' => $riskRepo->getStatsByProject($project),
+                    'measure_data' => $measureRepo->getStatsForRisk($project),
+                    'top_risk' => $riskRepo->findTopByProject($project),
+                ],
+                'opportunities' => [
+                    'opportunity_data' => $opportunityRepo->getStatsByProject($project),
+                    'measure_data' => $measureRepo->getStatsForOpportunity($project),
+                    'top_opportunity' => $opportunityRepo->findTopByProject($project),
+                ],
+            ]
+        );
     }
 
     /**
@@ -1760,13 +1585,11 @@ class ProjectController extends ApiController
     {
         $byPhase = $this
             ->get('app.graph.generator.project_cost_by_phase')
-            ->generate($project, Cost::TYPE_EXTERNAL)
-        ;
+            ->generate($project, Cost::TYPE_EXTERNAL);
 
         $byDepartment = $this
             ->get('app.graph.generator.project_cost_by_department')
-            ->generate($project, Cost::TYPE_EXTERNAL)
-        ;
+            ->generate($project, Cost::TYPE_EXTERNAL);
 
         return $this->createApiResponse(
             [
@@ -1788,13 +1611,11 @@ class ProjectController extends ApiController
     {
         $byPhase = $this
             ->get('app.graph.generator.project_cost_by_phase')
-            ->generate($project, Cost::TYPE_INTERNAL)
-        ;
+            ->generate($project, Cost::TYPE_INTERNAL);
 
         $byDepartment = $this
             ->get('app.graph.generator.project_cost_by_department')
-            ->generate($project, Cost::TYPE_INTERNAL)
-        ;
+            ->generate($project, Cost::TYPE_INTERNAL);
 
         return $this->createApiResponse(
             [
@@ -1822,7 +1643,9 @@ class ProjectController extends ApiController
         $decisionsRepo = $em->getRepository(Decision::class);
 
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('front.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'front.per_page'
+            );
             if (isset($filters['statusReport'])) {
                 $report = $em->getRepository(StatusReport::class)->findLastByProject($project);
                 $filters['createdAt'] = $report ? $report->getCreatedAt() : null;
@@ -1858,7 +1681,6 @@ class ProjectController extends ApiController
             $decision,
             [
                 'entity_manager' => $this->getDoctrine()->getManager(),
-                'max_media_size' => $project->getMaxUploadFileSize(),
             ]
         );
         $this->processForm($request, $form);
@@ -1932,8 +1754,7 @@ class ProjectController extends ApiController
         $opportunityStrategies = $this
             ->getEntityManager()
             ->getRepository(OpportunityStrategy::class)
-            ->findAllByProjectNullable($project)
-        ;
+            ->findAllByProjectNullable($project);
 
         return $this->createApiResponse($opportunityStrategies);
     }
@@ -1951,8 +1772,7 @@ class ProjectController extends ApiController
         $statuses = $this
             ->getEntityManager()
             ->getRepository(RiskStatus::class)
-            ->findAll()
-        ;
+            ->findAll();
 
         return $this->createApiResponse($statuses);
     }
@@ -1970,8 +1790,7 @@ class ProjectController extends ApiController
         $riskStrategies = $this
             ->getEntityManager()
             ->getRepository(RiskStrategy::class)
-            ->findAll()
-        ;
+            ->findAll();
 
         return $this->createApiResponse($riskStrategies);
     }
@@ -1992,7 +1811,9 @@ class ProjectController extends ApiController
         $filters = $request->query->all();
         $departmentRepo = $this->getDoctrine()->getRepository(ProjectDepartment::class);
         if (isset($filters['page'])) {
-            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter('admin.per_page');
+            $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
+                'admin.per_page'
+            );
             $result = $departmentRepo->getQueryFiltered($project, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $departmentRepo->countTotalByFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
@@ -2001,9 +1822,11 @@ class ProjectController extends ApiController
             return $this->createApiResponse($responseArray);
         }
 
-        return $this->createApiResponse([
-            'items' => $departmentRepo->findAll(),
-        ]);
+        return $this->createApiResponse(
+            [
+                'items' => $departmentRepo->findAll(),
+            ]
+        );
     }
 
     /**
@@ -2050,8 +1873,7 @@ class ProjectController extends ApiController
     {
         $rasciData = $this
             ->get('app.service.rasci_matrix')
-            ->getDataForProject($project)
-        ;
+            ->getDataForProject($project);
 
         return $this->createApiResponse($rasciData);
     }
@@ -2192,7 +2014,11 @@ class ProjectController extends ApiController
      */
     public function createProjectCloseDownAction(Request $request, Project $project)
     {
-        $form = $this->createForm(ProjectCloseDownCreateType::class, new ProjectCloseDown(), ['csrf_protection' => false]);
+        $form = $this->createForm(
+            ProjectCloseDownCreateType::class,
+            new ProjectCloseDown(),
+            ['csrf_protection' => false]
+        );
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -2239,8 +2065,7 @@ class ProjectController extends ApiController
         $roles = $this
             ->getDoctrine()
             ->getRepository(ProjectRole::class)
-            ->findBy(['project' => null])
-        ;
+            ->findBy(['project' => null]);
 
         return $this->createApiResponse($roles);
     }
@@ -2276,8 +2101,7 @@ class ProjectController extends ApiController
 
         $this
             ->get('app.team_invite.inviter')
-            ->invite($email, $this->getParameter('kernel.team_slug'), $project)
-        ;
+            ->invite($email, $this->getParameter('kernel.team_slug'), $project);
 
         return $this->createApiResponse(
             [

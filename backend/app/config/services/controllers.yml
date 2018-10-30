@@ -1,0 +1,9 @@
+services:
+    app.controller.api.project.uploader.media:
+        class: AppBundle\Controller\API\Project\MediaUploaderController
+        arguments:
+            - '@service_container'
+            - '@oneup_uploader.storage.media'
+            - '@oneup_uploader.error_handler.dropzone'
+            - '%oneup_uploader.config.media%'
+            - 'media'

@@ -222,7 +222,7 @@ export default {
             'getProjectMeetings',
             'setMeetingsFilters',
             'deleteProjectMeeting',
-            'editProjectMeeting',
+            'patchProjectMeeting',
             'sendMeetingNotifications',
             'sendMeetingReport',
             'getLastMeetingReport',
@@ -299,7 +299,7 @@ export default {
                 start: this.startTime.HH + ':' + this.startTime.mm,
                 end: this.endTime.HH + ':' + this.endTime.mm,
             };
-            this.editProjectMeeting({
+            this.patchProjectMeeting({
                 id: this.meetingId,
                 data,
             });

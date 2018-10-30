@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Contract;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\StatusReport;
@@ -117,9 +118,9 @@ class PDF
         return $process->isSuccessful() ? $tmpFile : null;
     }
 
-    public function getContractPDF(int $id)
+    public function getContractPDF(Contract $contract)
     {
-        return $this->run(self::CONTRACT_URL, ['%id%' => $id]);
+        return $this->run(self::CONTRACT_URL, ['%id%' => $contract->getProject()->getId()]);
     }
 
     public function getProjectCloseDownPDF(int $id)
