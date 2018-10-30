@@ -3,5 +3,7 @@ main_user_account:
     host: "{domain}"
     defaults:
         domain: "%domain%"
+    requirements:
+        domain: .+
     options:
         expose: true
