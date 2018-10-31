@@ -33,16 +33,11 @@ class SetupBetaDatabaseCommand extends ContainerAwareCommand
         $tables = $this->getTables();
         $now = $this->now();
 
+        $min = $this->getMinimumDate('work_package', 'scheduled_start_at');
+        $days = $this->calculateDiffInDays($min, $now);
         foreach ($tables as $table) {
             $columns = $this->getDateOrDatetimeColumnsFromTable($table);
             foreach ($columns as $column) {
-                $min = $this->getMinimumDate($table, $column['Field']);
-                if (null === $min) {
-                    continue;
-                }
-
-                $days = $this->calculateDiffInDays($min, $now);
-
                 $output->writeln(sprintf('Updating table %s, column %s', $table, $column['Field']));
                 $this->updateData($table, $column['Field'], $days);
                 $output->writeln(sprintf('Finished updating table %s, column %s', $table, $column['Field']));
@@ -70,9 +65,10 @@ class SetupBetaDatabaseCommand extends ContainerAwareCommand
 
     private function calculateDiffInDays($min, $now)
     {
-        $day = 24 * 3600;
+        $nowDate = (new \DateTime($now))->add(new \DateInterval('P7D'));
+        $minDate = new \DateTime($min);
 
-        return floor((strtotime($now) + (7 * $day) - strtotime($min)) / $day);
+        return $nowDate->diff($minDate)->days;
     }
 
     private function updateData($table, $column, $days)
