@@ -789,7 +789,7 @@
             text-align: center;
             font-size: 18px;
             letter-spacing: 1.8px;
-            font-weight: 300;
+            font-weight: 500;
             margin-bottom: 40px;
         }
 
@@ -827,7 +827,7 @@
     h3 {
         font-size: 16px;
         text-transform: uppercase;
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: 1.6px;
         margin-bottom: 15px;
     }

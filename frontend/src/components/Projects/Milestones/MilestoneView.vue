@@ -175,7 +175,7 @@ export default {
             text-align: center;
             font-size: 18px;
             letter-spacing: 1.8px;
-            font-weight: 300;
+            font-weight: 500;
             margin-bottom: 40px;
         }
 
