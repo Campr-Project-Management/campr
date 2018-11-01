@@ -196,7 +196,7 @@
                         height: 30px;
                         line-height: 30px;
                         padding: 0 14px;
-                        font-size: 8px;
+                        font-size: 10px;
                         text-transform: uppercase;
                         text-align: center;
                         border-radius: 30px;
@@ -204,7 +204,7 @@
                         display: inline-block;
                         width: 200px;
                         letter-spacing: 1.2px;
-                        font-weight: 400;
+                        font-weight: 500;
                         transition: all 0.2s ease-in;
                     }
                 }

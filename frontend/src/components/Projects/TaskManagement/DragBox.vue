@@ -203,7 +203,7 @@ export default {
         margin-bottom: 20px;
 
         header {
-            font-weight: 300;
+            font-weight: 500;
             text-transform: uppercase;
             height: 36px;
             border-bottom: 1px solid $mainColor;

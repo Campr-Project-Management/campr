@@ -1,7 +1,7 @@
 @import '_variables.scss';
 
 .box {
-    font-weight: 300;
+    font-weight: 500;
     background: $darkColor;
     padding: 20px;
     color: $lighterColor;
@@ -62,7 +62,7 @@ table {
     th {
         color: $middleColor;
         text-transform: uppercase;
-        font-weight: 400;
+        font-weight: 500;
         width: 100%;
     }
 
