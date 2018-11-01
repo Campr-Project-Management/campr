@@ -145,7 +145,7 @@
         p {
             text-transform: uppercase;
             color: $middleColor;
-            font-size: 8px;
+            font-size: 10px;
             line-height: 12px;
             margin: 4px 0 10px;
         }
