@@ -171,7 +171,7 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            font-weight: 400;
+            font-weight: 500;
             margin: 0 0 0 15px;
         }
     }

@@ -1383,7 +1383,7 @@ export default {
     h3 {
         font-size: 16px;
         text-transform: uppercase;
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: 0.1em;
         margin:0 0 15px;
     }
