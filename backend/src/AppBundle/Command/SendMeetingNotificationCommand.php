@@ -79,14 +79,6 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             )
         );
 
-        $mailer->addFromParameter(
-            $user->getEmail(),
-            [
-                'name' => $user->getFullName(),
-                'email' => $user->getEmail(),
-            ]
-        );
-
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
         $scheme = $this->getContainer()->getParameter('router.request_context.scheme');
@@ -97,7 +89,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
             $mailer->sendEmail(
                 ':meeting:notification.html.twig',
-                $user->getEmail(),
+                'no-reply',
                 $to,
                 ['meeting' => $meeting, 'url' => $url],
                 [$icsAttachment]
