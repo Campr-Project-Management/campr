@@ -283,7 +283,7 @@ export default {
 
         text {
             font-size: 10px;
-            font-weight: 400;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.1em;
 
