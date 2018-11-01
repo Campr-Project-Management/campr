@@ -112,7 +112,7 @@
         .range-slider-legend {
             .legend-item {
                 span {
-                    font-size: 8px !important;
+                    font-size: 10px !important;
                 }
             }
         }

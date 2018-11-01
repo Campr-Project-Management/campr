@@ -147,7 +147,7 @@
                     background-color: $datePickerGreen;
                     font-size: 16px;
                     text-transform: uppercase;
-                    font-weight: 400;
+                    font-weight: 500;
                     padding: 20px 0;
 
                     &.prev, &.next, &.up {
@@ -211,7 +211,7 @@
                     padding: 0 !important;
                     font-size: 11px;
                     text-transform: uppercase;
-                    font-weight: 400;
+                    font-weight: 500;
                     color: $whiteColor;
                     border: none !important;
 
