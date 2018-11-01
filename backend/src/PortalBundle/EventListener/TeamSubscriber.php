@@ -68,7 +68,6 @@ class TeamSubscriber implements EventSubscriberInterface
     {
         /** @var Team $team */
         $team = $event->getSubject();
-        $this->logger->info('user', $team->getUser());
 
         if (!($team instanceof Team)) {
             return;
