@@ -156,7 +156,7 @@ p {
 }
 
 .second-bg {
-    background: $secondColor !important;
+    background: darken($secondColor, 15%) !important;
 }
 
 .warning-bg {
@@ -375,7 +375,7 @@ textarea {
         &:active,
         &:focus {
             outline: 0;
-            background-color: darken($secondColor, 15%) !important;
+            background-color: darken($secondColor, 25%) !important;
         }
     }
 
@@ -424,7 +424,7 @@ textarea {
     height: 30px;
     line-height: 30px;
     padding: 0 14px;
-    font-size: 8px;
+    font-size: 10px;
 
     .icon {
         width: 12px;

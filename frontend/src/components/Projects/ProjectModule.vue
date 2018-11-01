@@ -376,7 +376,7 @@ export default {
 
     .content {
         padding: 8px 10% 0 38px;
-        font-weight: 300;
+        font-weight: 500;
         font-size: 1.16em;
         line-height: 1.5em;
     }
