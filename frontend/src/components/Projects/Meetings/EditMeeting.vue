@@ -208,11 +208,11 @@
                     </div>
                     <div class="row">
                         <div class="form-group form-group">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <member-search  v-bind:selectedUser="agenda.responsibilityFullName" v-model="agenda.responsibility" v-bind:placeholder="translate('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
                             </div>
-                            <div class="col-md-4">
-                                <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" v-bind:min="0" />
+                            <div class="col-md-6">
+                                <input-field type="number" v-bind:label="`${translate('placeholder.duration')} (${translate('placeholder.minutes')})`" v-model="agenda.duration" v-bind:content="agenda.duration" v-bind:min="0" />
                                 <error
                                         v-if="validationMessages.duration && validationMessages.duration.length"
                                         v-for="message in validationMessages.duration"

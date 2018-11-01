@@ -143,7 +143,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group form-group">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="agenda.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
                                     <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
@@ -153,8 +153,8 @@
                                             :message="message" />
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <input-field type="number" v-bind:label="translate('placeholder.duration')" v-model="agenda.duration" v-bind:content="agenda.duration" />
+                                <div class="col-md-6">
+                                    <input-field type="number" v-bind:label="`${translate('placeholder.duration')} (${translate('placeholder.minutes')})`" v-model="agenda.duration" v-bind:content="agenda.duration" />
                                     <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
                                         <error
                                             v-if="validationMessages.meetingAgendas[index.toString()].duration && validationMessages.meetingAgendas[index.toString()].duration.length"
