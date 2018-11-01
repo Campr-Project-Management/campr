@@ -196,7 +196,7 @@
                         height: 30px;
                         line-height: 30px;
                         padding: 0 14px;
-                        font-size: 8px;
+                        font-size: 10px;
                         text-transform: uppercase;
                         text-align: center;
                         border-radius: 30px;

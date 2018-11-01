@@ -288,7 +288,7 @@ export default {
             letter-spacing: 0.1em;
 
             &.status {
-                font-size: 8px !important;
+                font-size: 10px !important;
                 font-weight: bold;
             }
         }

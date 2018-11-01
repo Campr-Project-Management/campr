@@ -124,13 +124,13 @@ export default {
 
     .description {
         width: 400px;
-        font-weight: 300;
+        font-weight: 500;
     }
 
     .tasks {
         text-transform: uppercase;
         letter-spacing: 1.7px;
-        font-weight: 300;
+        font-weight: 500;
     }
 
     .label-icon {
@@ -141,7 +141,7 @@ export default {
         color: $lighterColor;
         text-transform: uppercase;
         font-size: 11px;
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: 1.3px;
     }
 

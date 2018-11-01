@@ -77,7 +77,7 @@
         margin-bottom: 0;
 
         .title-right {
-            font-size: 8px;
+            font-size: 10px;
             text-transform: uppercase;
             font-weight: 600;
             min-height: 11px;
@@ -162,7 +162,7 @@
         font-weight: 900;
 
         span {
-            font-weight: 300;
+            font-weight: 500;
             color: $lightColor;
         }
     }

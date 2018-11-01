@@ -123,7 +123,7 @@ export default {
       .status-label {
           padding: 0 19px;
           margin-left: 5px;
-          font-size: 8px;
+          font-size: 10px;
           height: 23px;
           line-height: 23px;
           display: inline-block;
