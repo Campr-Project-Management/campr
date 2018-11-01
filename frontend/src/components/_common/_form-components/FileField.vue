@@ -204,7 +204,7 @@
                         display: inline-block;
                         width: 200px;
                         letter-spacing: 1.2px;
-                        font-weight: 400;
+                        font-weight: 500;
                         transition: all 0.2s ease-in;
                     }
                 }

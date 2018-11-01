@@ -83,13 +83,13 @@ body {
 }
 
 h2 {
-    font-weight: 300;
+    font-weight: 500;
 }
 
 h3 {
     font-size: 16px;
     text-transform: uppercase;
-    font-weight: 300;
+    font-weight: 500;
     letter-spacing: 1.6px;
     margin-bottom: 20px;
 
@@ -271,7 +271,7 @@ img {
     position: relative;
 
     label {
-        font-weight: 400;
+        font-weight: 500;
         text-transform: uppercase;
         cursor: text;
         position: absolute;
@@ -344,7 +344,7 @@ textarea {
     display: inline-block;
     width: 200px;
     letter-spacing: 1.2px;
-    font-weight: 400;
+    font-weight: 500;
     border: none;
     cursor: pointer;
     @include transition(all, 0.2s, ease-in);
@@ -639,7 +639,7 @@ hr {
         text-transform: uppercase;
         font-size: 10px;
         line-height: 20px;
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: 1.7px;
 
         &.no-margin-bottom {
@@ -685,7 +685,7 @@ hr {
         text-transform: uppercase;
         font-size: 10px;
         line-height: 20px;
-        font-weight: 300;
+        font-weight: 500;
         letter-spacing: 1.7px;
         margin-right: 20px;
     }
@@ -928,7 +928,7 @@ hr {
 .table {
     margin: 0;
     font-size: 10px;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 1.8px;
 
     .table {
@@ -951,7 +951,7 @@ hr {
                 text-transform: uppercase;
                 vertical-align: middle;
                 padding: 10px 30px !important;
-                font-weight: 400;
+                font-weight: 500;
                 border: none;
 
                 th {
@@ -1172,7 +1172,7 @@ hr {
         text-align: center;
         font-size: 18px;
         letter-spacing: 1.8px;
-        font-weight: 300;
+        font-weight: 500;
         margin-bottom: 40px;
     }
 
