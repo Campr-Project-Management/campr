@@ -39,10 +39,12 @@ class UserController extends ApiController
         $request->query->remove('limit');
         $request->query->remove('offset');
 
+        $criteria = $request->query->all();
+        $criteria['deletedAt'] = null;
+
         $users = $this
-            ->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy($request->query->all(), [], $limit, $offset)
+            ->get('app.repository.user')
+            ->findBy($criteria, [], $limit, $offset)
         ;
 
         return $this->createApiResponse($users);

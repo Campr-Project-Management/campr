@@ -7,6 +7,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class RequestListener
 {
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
@@ -15,6 +18,11 @@ class RequestListener
         }
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return bool
+     */
     private function isJsonRequest(Request $request)
     {
         $contentType = $request->headers->get('content-type');

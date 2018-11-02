@@ -28,7 +28,7 @@ $(function () {
                 }
                 routeParams['id'] = row.id;
 
-                if ((typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") >= 0 && currentUserId == row.id)
+                if ((typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") >= 0 && currentUserId === row.id)
                     || (typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") < 0)
                     || url !== Routing.generate('app_admin_user_list_filtered')
                 ) {
@@ -40,7 +40,7 @@ $(function () {
                 commands += downloadLink ? '<a href="' + Routing.generate(downloadLink, {'id': row.id}, true) + '"><button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-download"></span></button></a>' : '';
 
                 if ((typeof row.roles !== 'undefined' && row.roles.indexOf("ROLE_SUPER_ADMIN") < 0)
-                    || url != Routing.generate('app_admin_user_list_filtered')
+                    || url !== Routing.generate('app_admin_user_list_filtered')
                 ) {
                     commands += impersonateUserLink ? '<button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle command-impersonate" data-row-id="' + row.id + '"><span class="zmdi zmdi-account-circle"></span></button></a>' : '';
                     commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';

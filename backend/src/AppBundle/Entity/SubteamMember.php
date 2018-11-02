@@ -312,7 +312,7 @@ class SubteamMember
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("subteamRoleNames")
      *
-     * @return string
+     * @return array
      */
     public function getSubteamRoleNames()
     {
@@ -322,5 +322,14 @@ class SubteamMember
         }
 
         return $roleNames;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userDeleted")
+     */
+    public function isUserDeleted()
+    {
+        return $this->getUser()->isDeleted();
     }
 }

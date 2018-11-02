@@ -132,7 +132,10 @@ class UserControllerTest extends BaseController
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains('Password must contain 1 upper case letter, 1 lower case letter, and 1 number', $crawler->html());
+        $this->assertContains(
+            'Password must contain 1 upper case letter, 1 lower case letter, and 1 number',
+            $crawler->html()
+        );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -187,50 +190,14 @@ class UserControllerTest extends BaseController
         $user = $this
             ->em
             ->getRepository(User::class)
-            ->findOneBy([
-                'email' => 'testuser2@trisoft.ro',
-            ])
+            ->findOneBy(
+                [
+                    'email' => 'testuser2@trisoft.ro',
+                ]
+            )
         ;
         $this->em->remove($user);
         $this->em->flush();
-    }
-
-    public function testDeleteAction()
-    {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $roles = ['ROLE_USER'];
-        $user = new User();
-
-        $encoder = $this
-            ->client
-            ->getContainer()
-            ->get('security.encoder_factory')
-            ->getEncoder($user)
-        ;
-
-        $user->setUsername('testuser2')
-            ->setEmail('testuser2@trisoft.ro')
-            ->setPassword($encoder->encodePassword('Password2', $user->getSalt()))
-            ->setFirstName('FirstName')
-            ->setLastName('LastName')
-            ->setRoles($roles)
-            ->setIsEnabled(true)
-            ->setIsSuspended(false)
-        ;
-        $this->em->persist($user);
-        $this->em->flush();
-
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/user/%d/edit', $user->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
-
-        $this->client->followRedirect();
-        $this->assertContains('User successfully deleted!', $this->client->getResponse()->getContent());
     }
 
     public function testFormIsDisplayedOnEditPage()
@@ -258,7 +225,6 @@ class UserControllerTest extends BaseController
         $this->assertContains('id="edit_isSuspended"', $crawler->html());
         $this->assertContains('name="edit[isSuspended]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
-        $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -325,9 +291,11 @@ class UserControllerTest extends BaseController
         $user = $this
             ->em
             ->getRepository(User::class)
-            ->findOneBy([
-                'email' => 'testuser2@trisoft.ro',
-            ])
+            ->findOneBy(
+                [
+                    'email' => 'testuser2@trisoft.ro',
+                ]
+            )
         ;
         $this->em->remove($user);
         $this->em->flush();
@@ -347,7 +315,6 @@ class UserControllerTest extends BaseController
         $this->assertContains('data-column-id="username"', $crawler->html());
         $this->assertContains('data-column-id="email"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
-        $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

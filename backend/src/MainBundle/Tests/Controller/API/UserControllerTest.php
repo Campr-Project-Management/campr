@@ -99,6 +99,8 @@ class UserControllerTest extends BaseController
                     'locale' => 'en',
                     'avatar' => null,
                     'avatarUrl' => '',
+                    'deleted' => false,
+                    'deletedAt' => null,
                 ],
             ],
         ];
@@ -211,6 +213,8 @@ class UserControllerTest extends BaseController
                     'locale' => 'en',
                     'avatar' => null,
                     'avatarUrl' => '',
+                    'deleted' => false,
+                    'deletedAt' => null,
                 ],
             ],
         ];

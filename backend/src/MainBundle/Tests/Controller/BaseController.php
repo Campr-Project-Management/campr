@@ -54,7 +54,7 @@ class BaseController extends WebTestCase
      */
     public function createUser($username, $email, $password, array $roles)
     {
-        $user = $this->em->getRepository(User::class)->findBy(['username' => $username]);
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => $username]);
         if (!$user) {
             $user = new User();
         }
