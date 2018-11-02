@@ -88,6 +88,9 @@
         created() {
             document.getElementById('app').addEventListener('click', this.closePicker);
         },
+        destroyed() {
+            document.getElementById('app').removeEventListener('click', this.closePicker);
+        },
     };
 
     /**
