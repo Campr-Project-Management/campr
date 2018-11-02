@@ -3,36 +3,22 @@
         <div class="flex flex-direction-reverse">
             <div class="dropdown menu-toggler">
                 <span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="17px" height="17px" viewBox="0 0 17.805 16.354" enable-background="new 0 0 17.805 16.354" xml:space="preserve">
-                        <g>
-                            <g>
-                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="4.354" x2="2.848" y2="4.354"/>
-                            </g>
-                            <g>
-                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="8.354" x2="2.848" y2="8.354"/>
-                            </g>
-                            <g>
-                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="12.354" x2="2.848" y2="12.354"/>
-                            </g>
-                            <g>
-                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="17.805" y1="16.354" x2="2.848" y2="16.354"/>
-                            </g>
-                        </g>
-                    </svg>
+                    <div class="user">
+                        <user-avatar
+                                :name="user.fullName"
+                                :url="userAvatar"
+                                size="small"/>
+                        <p class="user-message">{{ 'message.hi'|trans }}, <span>{{ user.fullName }}</span></p>
+                    </div>
+                    <i class="fa fa-angle-down"></i>
                 </span>
-                <ul class="dropdown-menu dropdown-menu-right">
+
+                <ul class="dropdown-menu dropdown-menu-right" aria-haspopup="true" aria-expanded="false">
                     <li><a :href="routes.account">{{ 'link.account'|trans }}</a></li>
                     <li><a :href="routes.back_to_campr">{{ 'link.back_to_campr'|trans }}</a></li>
                     <li v-if="showDashboard"><a :href="routes.admin_dashboard">{{ 'link.admin_dashboard'|trans }}</a></li>
                     <li><a :href="routes.logout">{{ 'link.logout'|trans }}</a></li>
                 </ul>
-            </div>
-            <div class="user">
-                <p class="user-message">{{ 'message.hi'|trans }}, <span>{{ user.fullName }}</span></p>
-                <user-avatar
-                        :name="user.fullName"
-                        :url="userAvatar"
-                        size="small"/>
             </div>
             <locale-switcher />
             <!--TODO: Further implementation of notifications-->
@@ -159,19 +145,27 @@
     }
 
     .menu-toggler {
-        width: 27px;
         cursor: pointer;
         text-align: right;
-        padding-top: 12px;
 
         svg {
             stroke: $lightColor;
         }
+
+        i {
+            font-size: 20px;
+        }
+
+        .dropdown-toggle {
+            user-select: none;
+            display: flex;
+            align-items: center;
+        }
     }
 
     .user {
-        display: inherit;
-        flex-direction: inherit;
+        display: flex;
+        align-items: center;
     }
 
     .user-message {
