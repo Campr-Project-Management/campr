@@ -41,7 +41,7 @@
                         href="#"
                         @click.prevent="submitProject"
                         class="btn-rounded btn-right second-bg"
-                        :title="translate('button.start_project')">< {{ translate('button.start_project') }}</a>
+                        :title="translate('button.start_project')"> {{ translate('button.start_project') }} ></a>
             </div>
             <!-- /// Show errors modal/// -->
             <modal v-if="showErrorAlert" @close="showErrorAlert = false">
