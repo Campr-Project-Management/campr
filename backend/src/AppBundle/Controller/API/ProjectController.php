@@ -499,7 +499,7 @@ class ProjectController extends ApiController
     public function projectUsersAction(Request $request, Project $project)
     {
         $filters = $request->query->all();
-        $projectUserRepo = $this->getDoctrine()->getRepository(ProjectUser::class);
+        $projectUserRepo = $this->get('app.repository.project_user');
 
         if (isset($filters['page'])) {
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
@@ -1366,7 +1366,11 @@ class ProjectController extends ApiController
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
                 'admin.per_page'
             );
-            $result = $subteamRepo->getQueryFiltered($project, $filters)->getQuery()->getResult();
+            $result = $subteamRepo
+                ->getQueryFiltered($project, $filters)
+                ->getQuery()
+                ->getResult()
+            ;
             $responseArray['totalItems'] = $subteamRepo->countTotalByFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
