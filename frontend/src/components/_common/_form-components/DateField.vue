@@ -1,6 +1,7 @@
 <template>
     <div>
         <date-picker
+            ref="datePicker"
             :inline="inline"
             :monday-first="mondayFirst"
             :format="format"
@@ -12,7 +13,9 @@
             @cleared="onCleared"
             @opened="onOpened"/>
 
-        <calendar-icon fill="middle-fill" v-if="!inline"/>
+        <div @click="openPicker">
+            <calendar-icon fill="middle-fill" v-if="!inline"/>
+        </div>
     </div>
 </template>
 
@@ -51,6 +54,11 @@
                 required: false,
             },
         },
+        data() {
+            return {
+                datePickerOpened: false,
+            };
+        },
         methods: {
             onUpdate(value) {
                 this.$emit('input', value);
@@ -65,6 +73,20 @@
 
                 this.$emit('opened');
             },
+            openPicker(e) {
+                this.datePickerOpened = true;
+                this.$refs.datePicker.$children[0].$emit('showCalendar');
+                e.stopPropagation();
+            },
+            closePicker() {
+                if (this.datePickerOpened) {
+                    this.$refs.datePicker.$children[0].$emit('closeCalendar');
+                    this.datePickerOpened = false;
+                };
+            },
+        },
+        created() {
+            document.getElementById('app').addEventListener('click', this.closePicker);
         },
     };
 
