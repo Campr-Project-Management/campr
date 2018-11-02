@@ -224,7 +224,12 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $location->setName($meeting->getLocation());
 
         $event = new CalendarEvent();
-        $event->setSummary($meeting->getName());
+
+        $projectName = $meeting->getProjectName();
+        $meetingName = $this->getContainer()->get('translator')->trans($meeting->getName(), [], 'messages');
+        $meetingCategory = $meeting->getMeetingCategoryName();
+
+        $event->setSummary($projectName.'_'.$meetingName.'_'.$meetingCategory);
         $event->setStart($meetingStart);
         $event->setEnd($meetingEnd);
         $event->addLocation($location);
