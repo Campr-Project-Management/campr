@@ -14,15 +14,15 @@ class ProjectUserControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param array $expected
      */
     public function testEditAction(
         array $content,
         $isResponseSuccessful,
         $responseStatusCode,
-        $responseContent
+        array $expected
     ) {
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
@@ -40,13 +40,13 @@ class ProjectUserControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $projectUser = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectUser['updatedAt'];
-        $responseContent['userAvatar'] = $projectUser['userAvatar'];
+        $actual = json_decode($response->getContent(), true);
+        $expected['updatedAt'] = $actual['updatedAt'];
+        $expected['userAvatar'] = $actual['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -93,6 +93,7 @@ class ProjectUserControllerTest extends BaseController
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => '',
                     'userAvatar' => '',
+                    'userDeleted' => false,
                 ],
             ],
         ];
@@ -102,9 +103,9 @@ class ProjectUserControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -168,16 +169,20 @@ class ProjectUserControllerTest extends BaseController
         $user = $this
             ->em
             ->getRepository(User::class)
-            ->findOneBy([
-                'email' => 'user6@trisoft.ro',
-            ])
+            ->findOneBy(
+                [
+                    'email' => 'user6@trisoft.ro',
+                ]
+            )
         ;
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
+            ->findOneBy(
+                [
+                    'name' => 'project1',
+                ]
+            )
         ;
 
         $projectUser = (new ProjectUser())
@@ -223,16 +228,16 @@ class ProjectUserControllerTest extends BaseController
     /**
      * @dataProvider getDataForGetAction()
      *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $url
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param array $expected
      */
     public function testGetAction(
         $url,
         $isResponseSuccessful,
         $responseStatusCode,
-        $responseContent
+        array $expected
     ) {
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
@@ -249,13 +254,13 @@ class ProjectUserControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
-        $projectUser = json_decode($response->getContent(), true);
-        $responseContent['updatedAt'] = $projectUser['updatedAt'];
-        $responseContent['userAvatar'] = $projectUser['userAvatar'];
+        $actual = json_decode($response->getContent(), true);
+        $expected['updatedAt'] = $actual['updatedAt'];
+        $expected['userAvatar'] = $actual['userAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -300,6 +305,7 @@ class ProjectUserControllerTest extends BaseController
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
                     'userAvatar' => '',
+                    'userDeleted' => false,
                 ],
             ],
         ];

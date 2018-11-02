@@ -60,7 +60,8 @@ class ProjectControllerTest extends BaseController
             $project = $this
                 ->em
                 ->getRepository(Project::class)
-                ->find($project['id']);
+                ->find($project['id'])
+            ;
             if ($project) {
                 $this->em->remove($project);
             }
@@ -73,7 +74,8 @@ class ProjectControllerTest extends BaseController
                         'user' => $user,
                         'project' => $project,
                     ]
-                );
+                )
+            ;
             if ($projectUser) {
                 $this->em->remove($projectUser);
             }
@@ -270,12 +272,14 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1);
+            ->find(1)
+        ;
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company);
+            ->setCompany($company)
+        ;
         $this->em->persist($project);
         $this->em->flush();
 
@@ -445,6 +449,7 @@ class ProjectControllerTest extends BaseController
                             'userAvatar' => '',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                     ],
                     'projectTeams' => [],
@@ -786,7 +791,8 @@ class ProjectControllerTest extends BaseController
         $contract = $this
             ->em
             ->getRepository(Contract::class)
-            ->find($contract['id']);
+            ->find($contract['id'])
+        ;
         $this->em->remove($contract);
         $this->em->flush();
     }
@@ -935,6 +941,8 @@ class ProjectControllerTest extends BaseController
                                 'locale' => 'en',
                                 'avatar' => null,
                                 'avatarUrl' => null,
+                                'deleted' => false,
+                                'deletedAt' => null,
                             ],
                         ],
                         'meetings' => [],
@@ -982,6 +990,8 @@ class ProjectControllerTest extends BaseController
                                 'locale' => 'en',
                                 'avatar' => null,
                                 'avatarUrl' => null,
+                                'deleted' => false,
+                                'deletedAt' => null,
                             ],
                         ],
                         'meetings' => [],
@@ -1037,7 +1047,8 @@ class ProjectControllerTest extends BaseController
         $distributionList = $this
             ->em
             ->getRepository(DistributionList::class)
-            ->find($distributionList['id']);
+            ->find($distributionList['id'])
+        ;
         $this->em->remove($distributionList);
         $this->em->flush();
     }
@@ -1787,12 +1798,14 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1);
+            ->find(1)
+        ;
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company);
+            ->setCompany($company)
+        ;
         $project->setCurrency($this->findCurrencyByCode('EUR'));
 
         $this->em->persist($project);
@@ -2083,6 +2096,7 @@ class ProjectControllerTest extends BaseController
                             'userAvatar' => '',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 4,
@@ -2116,6 +2130,7 @@ class ProjectControllerTest extends BaseController
                             'userAvatar' => '',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 5,
@@ -2149,6 +2164,7 @@ class ProjectControllerTest extends BaseController
                             'userAvatar' => '',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                     ],
                     'projectTeams' => [
@@ -2386,7 +2402,8 @@ class ProjectControllerTest extends BaseController
         $projectTeam = $this
             ->em
             ->getRepository(ProjectTeam::class)
-            ->find($projectTeam['id']);
+            ->find($projectTeam['id'])
+        ;
         $this->em->remove($projectTeam);
         $this->em->flush();
     }
@@ -2502,6 +2519,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 4,
@@ -2530,6 +2548,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 5,
@@ -2558,6 +2577,7 @@ class ProjectControllerTest extends BaseController
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
                             'userAvatar' => '',
+                            'userDeleted' => false,
                         ],
                     ],
                 ],
@@ -2608,7 +2628,8 @@ class ProjectControllerTest extends BaseController
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
-            ->find($projectUser['id']);
+            ->find($projectUser['id'])
+        ;
         $this->em->remove($projectUser);
         $this->em->flush();
     }
@@ -2657,6 +2678,7 @@ class ProjectControllerTest extends BaseController
                     'userAvatar' => '',
                     'userCompanyName' => null,
                     'rate' => null,
+                    'userDeleted' => false,
                 ],
             ],
         ];
@@ -3087,7 +3109,8 @@ class ProjectControllerTest extends BaseController
             $task = $this
                 ->em
                 ->getRepository(WorkPackage::class)
-                ->find($actual['id']);
+                ->find($actual['id'])
+            ;
             $this->em->remove($task);
             $this->em->flush();
         }
@@ -3208,7 +3231,8 @@ class ProjectControllerTest extends BaseController
         $currency = $this
             ->em
             ->getRepository(Currency::class)
-            ->findOneBy(['code' => $code]);
+            ->findOneBy(['code' => $code])
+        ;
 
         $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
 

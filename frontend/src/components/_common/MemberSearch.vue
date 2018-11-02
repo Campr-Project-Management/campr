@@ -2,18 +2,18 @@
     <div class="search">
         <div class="input-holder">
             <input type="text"
-                class="float-label"
-                :id="'input' + _uid"
-                :ref="`input${_uid}`"
-                autocomplete="off"
-                v-model="query"
-                @keydown.down="down"
-                @keydown.up="up"
-                @keydown.enter="hit"
-                @keydown.esc="reset"
-                @focus="focused = true"
-                @blur="focused = false"
-                @input="update" />
+                   class="float-label"
+                   :id="'input' + _uid"
+                   :ref="`input${_uid}`"
+                   autocomplete="off"
+                   v-model="query"
+                   @keydown.down="down"
+                   @keydown.up="up"
+                   @keydown.enter="hit"
+                   @keydown.esc="reset"
+                   @focus="focused = true"
+                   @blur="focused = false"
+                   @input="update"/>
             <label :class="{ 'active': isActive }" @click="focusInput()">{{ placeholder }}</label>
         </div>
         <i class="member-search-clear-button" @click="clearValue">×</i>
@@ -21,23 +21,29 @@
             <scrollbar class="members customScrollbar">
                 <div class="member flex flex-v-center" v-for="item in items">
                     <div class="checkbox-input clearfix" :class="{'inactive': !item.checked}">
-                        <input v-if="singleSelect" :id="'mid_' + item.id"  type="radio" :name="item.userFullName" :checked="item.checked" @click="toogleRadioButton(item)">
-                        <input v-else="singleSelect" :id="'mid_' + item.id"  type="checkbox" :name="item.userFullName" :checked="item.checked" @click="toggleActivation(item)">
+                        <input v-if="singleSelect" :id="'mid_' + item.id" type="radio" :name="item.userFullName"
+                               :checked="item.checked" @click="toogleRadioButton(item)">
+                        <input v-else="singleSelect" :id="'mid_' + item.id" type="checkbox" :name="item.userFullName"
+                               :checked="item.checked" @click="toggleActivation(item)">
                         <label :for="'mid_' + item.id"></label>
                     </div>
                     <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
                     <div class="info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span></p>
+                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span>
+                        </p>
                     </div>
                 </div>
             </scrollbar>
             <div class="footer">
-                <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span></p>
+                <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span>
+                </p>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="reset" class="cancel">{{ translate('button.cancel') }}</a>
-                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.done') }}</a>
-                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.show_selected') }}</a>
+                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{
+                        translate('button.done') }}</a>
+                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{
+                        translate('button.show_selected') }}</a>
                 </div>
             </div>
         </div>
@@ -56,185 +62,188 @@
 </template>
 
 <script>
-import VueTypeahead from 'vue-typeahead';
-import {mapActions, mapGetters} from 'vuex';
-import $ from 'jquery';
-import _ from 'lodash';
-import UserAvatar from '../_common/UserAvatar';
+    import VueTypeahead from 'vue-typeahead';
+    import {mapActions, mapGetters} from 'vuex';
+    import $ from 'jquery';
+    import _ from 'lodash';
+    import UserAvatar from '../_common/UserAvatar';
 
-export default {
-    components: {
-        UserAvatar,
-    },
-    extends: VueTypeahead,
-    props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
-    computed: {
-        ...mapGetters(['users']),
-        isActive: {
-            get: function() {
-                return _.isEmpty(this.placeholder)
-                    || !_.isEmpty(this.value)
-                    || !_.isEmpty(this.query)
-                    || this.focused;
+    export default {
+        components: {
+            UserAvatar,
+        },
+        extends: VueTypeahead,
+        props: ['placeholder', 'singleSelect', 'value', 'selectedUser'],
+        computed: {
+            ...mapGetters(['users']),
+            isActive: {
+                get: function() {
+                    return _.isEmpty(this.placeholder)
+                        || !_.isEmpty(this.value)
+                        || !_.isEmpty(this.query)
+                        || this.focused;
+                },
+            },
+            displaySelectedMembers() {
+                if (!this.value || !this.value.length) {
+                    return false;
+                }
+
+                return !!this.users.find((user) => {
+                    return this.value.includes(user.id);
+                });
             },
         },
-        displaySelectedMembers() {
-            if (!this.value || !this.value.length) {
-                return false;
-            }
-
-            return !!this.users.find((user) => {
-                return this.value.includes(user.id);
-            });
-        },
-    },
-    watch: {
-        users(val) {
-            if (this.displaySelectedMembers) {
-                this.usersList = this.users;
-            }
-        },
-        value(val) {
-            if (val.length && val[0] != null) {
-                this.getUsers({id: val});
-            } else {
-                this.clearUsers();
-                this.usersList = [];
-                this.selectedUsers = [];
-                this.reset();
-            }
-        },
-        hasItems(val) {
-            if (val) {
-                let scrollTop = $(window).scrollTop();
-                let elementOffset = $(this.$el).offset().top;
-                let currentElementOffset = (elementOffset - scrollTop);
-
-                let windowInnerHeight = window.innerHeight;
-
-                if (windowInnerHeight - currentElementOffset < 260) {
-                    this.resultsTeamBottom = '41px';
-                    this.resultsTeamTop = 'auto';
+        watch: {
+            users(val) {
+                if (this.displaySelectedMembers) {
+                    this.usersList = this.users;
+                }
+            },
+            value(val) {
+                if (val.length && val[0] != null) {
+                    this.getUsers({id: val});
                 } else {
-                    this.resultsTeamBottom = 'auto';
-                    this.resultsTeamTop = '41px';
+                    this.clearUsers();
+                    this.usersList = [];
+                    this.selectedUsers = [];
+                    this.reset();
                 }
-            }
-        },
-    },
-    methods: {
-        ...mapActions(['getUsers', 'clearUsers']),
-        toggleActivation(item) {
-            item.checked = !item.checked;
-        },
-        toogleRadioButton(item) {
-            this.items = this.items.map(item => {
-                item.checked = false;
-                return item;
-            });
-            item.checked = true;
-        },
-        prepareResponseData(data) {
-            let items = data.items;
-            if (!Array.isArray(items) || !items) {
-                return [];
-            }
-            let users = [];
-            let selected = this.selectedUsers;
-            items.map(function(user) {
-                let checked = false;
-                for (let i=0; i < selected.length; i++) {
-                    if (selected[i] === user.user) {
-                        checked = true;
-                    }
-                    user.checked = checked;
-                }
-                users.push(user);
-            });
-            this.noData = users.length === 0;
+            },
+            hasItems(val) {
+                if (val) {
+                    let scrollTop = $(window)
+                        .scrollTop();
+                    let elementOffset = $(this.$el)
+                        .offset().top;
+                    let currentElementOffset = (elementOffset - scrollTop);
 
-            return users;
-        },
-        updateSelected() {
-            let users = [];
-            let selectedUsers = this.selectedUsers;
-            this.items.map(function(user) {
-                if (user.checked) {
-                    users.push(user.user);
-                } else if (selectedUsers.length > 0) {
-                    let index = selectedUsers.indexOf(user.user);
-                    if (index > -1) {
-                        selectedUsers.splice(index, 1);
+                    let windowInnerHeight = window.innerHeight;
+
+                    if (windowInnerHeight - currentElementOffset < 260) {
+                        this.resultsTeamBottom = '41px';
+                        this.resultsTeamTop = 'auto';
+                    } else {
+                        this.resultsTeamBottom = 'auto';
+                        this.resultsTeamTop = '41px';
                     }
                 }
-            });
-            selectedUsers.map(function(id) {
-                if (users.indexOf(id) === -1) {
-                    users.push(id);
+            },
+        },
+        methods: {
+            ...mapActions(['getUsers', 'clearUsers']),
+            toggleActivation(item) {
+                item.checked = !item.checked;
+            },
+            toogleRadioButton(item) {
+                this.items = this.items.map(item => {
+                    item.checked = false;
+                    return item;
+                });
+                item.checked = true;
+            },
+            prepareResponseData(data) {
+                let items = data.items;
+                if (!Array.isArray(items) || !items) {
+                    return [];
                 }
-            });
-            this.selectedUsers = users;
-            this.$emit('input', this.selectedUsers);
-            const items = this.items;
-            this.reset();
-            if (this.singleSelect && items.length > 0) {
-                this.query = items.filter((item) => item.checked)[0].userFullName;
-            }
-        },
-        clearValue() {
-            this.query = '';
-            this.items = [];
-            this.noData = false;
-            this.usersList = [];
-            this.selectedUsers = [];
-            this.updateSelected();
-        },
-        removeSelectedOption(id) {
-            this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
+                let users = [];
+                let selected = this.selectedUsers;
+                items.map(function(user) {
+                    let checked = false;
+                    for (let i = 0; i < selected.length; i++) {
+                        if (selected[i] === user.user) {
+                            checked = true;
+                        }
+                        user.checked = checked;
+                    }
+                    users.push(user);
+                });
+                this.noData = users.length === 0;
 
-            if (this.singleSelect) {
-                this.usersList = [];
-                this.selectedUsers = [];
-            } else {
-                let indexTmp;
-                this.usersList.map(function(user, index) {
-                    if (user.id == id) {
-                        indexTmp = index;
+                return users;
+            },
+            updateSelected() {
+                let users = [];
+                let selectedUsers = this.selectedUsers;
+                this.items.map(function(user) {
+                    if (user.checked) {
+                        users.push(user.user);
+                    } else if (selectedUsers.length > 0) {
+                        let index = selectedUsers.indexOf(user.user);
+                        if (index > -1) {
+                            selectedUsers.splice(index, 1);
+                        }
                     }
                 });
-                this.usersList.splice(indexTmp, 1);
-                this.selectedUsers.splice(indexTmp, 1);
+                selectedUsers.map(function(id) {
+                    if (users.indexOf(id) === -1) {
+                        users.push(id);
+                    }
+                });
+                this.selectedUsers = users;
+                this.$emit('input', this.selectedUsers);
+                const items = this.items;
+                this.reset();
+                if (this.singleSelect && items.length > 0) {
+                    this.query = items.filter((item) => item.checked)[0].userFullName;
+                }
+            },
+            clearValue() {
+                this.query = '';
+                this.items = [];
+                this.noData = false;
+                this.usersList = [];
+                this.selectedUsers = [];
+                this.updateSelected();
+            },
+            removeSelectedOption(id) {
+                this.$emit('input', this.value.filter(item => parseInt(item, 10) !== parseInt(id, 10)));
+
+                if (this.singleSelect) {
+                    this.usersList = [];
+                    this.selectedUsers = [];
+                } else {
+                    let indexTmp;
+                    this.usersList.map(function(user, index) {
+                        if (user.id == id) {
+                            indexTmp = index;
+                        }
+                    });
+                    this.usersList.splice(indexTmp, 1);
+                    this.selectedUsers.splice(indexTmp, 1);
+                }
+            },
+            focusInput() {
+                $(this.$refs[`input${this._uid}`])
+                    .focus();
+            },
+        },
+        data() {
+            return {
+                src: Routing.generate('app_api_project_project_users', {id: this.$route.params.id}),
+                queryParamName: 'search',
+                noData: null,
+                minChars: 1,
+                selectedUsers: [],
+                usersList: [],
+                resultsTeamBottom: '',
+                resultsTeamTop: '',
+                focused: false,
+            };
+        },
+        created() {
+            this.clearUsers();
+        },
+        mounted() {
+            if (this.selectedUser && this.value) {
+                this.query = this.selectedUser;
+                this.selectedUsers = this.value;
+
+                this.getUsers({id: this.value});
             }
         },
-        focusInput() {
-            $(this.$refs[`input${this._uid}`]).focus();
-        },
-    },
-    data() {
-        return {
-            src: Routing.generate('app_api_project_project_users', {id: this.$route.params.id}),
-            queryParamName: 'search',
-            noData: null,
-            minChars: 1,
-            selectedUsers: [],
-            usersList: [],
-            resultsTeamBottom: '',
-            resultsTeamTop: '',
-            focused: false,
-        };
-    },
-    created() {
-        this.clearUsers();
-    },
-    mounted() {
-        if (this.selectedUser && this.value) {
-            this.query = this.selectedUser;
-            this.selectedUsers = this.value;
-
-            this.getUsers({id: this.value});
-        }
-    },
-};
+    };
 </script>
 
 <style scoped lang="scss">
