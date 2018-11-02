@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Component\User\UserEvents;
 use MainBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,8 +35,7 @@ class UserController extends BaseController
     public function listAction()
     {
         $users = $this
-            ->getDoctrine()
-            ->getRepository(User::class)
+            ->get('app.repository.user')
             ->findAll()
         ;
 
@@ -60,7 +61,14 @@ class UserController extends BaseController
     {
         $requestParams = $request->request->all();
         $dataTableService = $this->get('app.service.data_table');
-        $response = $dataTableService->paginateByColumn(User::class, 'username', $requestParams);
+        $response = $dataTableService->paginateByColumn(
+            User::class,
+            'username',
+            $requestParams,
+            [
+                'deleted' => false,
+            ]
+        );
 
         return $this->createApiResponse($response);
     }
@@ -228,9 +236,23 @@ class UserController extends BaseController
             return $this->redirectToRoute('app_admin_user_list');
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($user);
-        $em->flush();
+        $eventDispatcher = $this->get('event_dispatcher');
+        try {
+            $eventDispatcher->dispatch(UserEvents::PRE_REMOVE, new GenericEvent($user));
+            $this->get('app.remover.user')->remove($user);
+            $eventDispatcher->dispatch(UserEvents::POST_REMOVE, new GenericEvent($user));
+        } catch (\Exception $e) {
+            $this
+                ->get('logger')
+                ->error($e->getMessage())
+            ;
+
+            return $this->createApiResponse(
+                [
+                    'message' => $e->getMessage(),
+                ]
+            );
+        }
 
         if ($request->isXmlHttpRequest()) {
             $message = [

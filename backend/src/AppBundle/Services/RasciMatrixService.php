@@ -45,19 +45,22 @@ class RasciMatrixService
     {
         $users = $project
             ->getProjectUsers()
-            ->filter(function (ProjectUser $projectUser) {
-                return $projectUser->getShowInRasci();
-            })
-            ->map(function (ProjectUser $projectUser) {
-                return $projectUser->getUser();
-            })
+            ->filter(
+                function (ProjectUser $projectUser) {
+                    return $projectUser->getShowInRasci();
+                }
+            )
+            ->map(
+                function (ProjectUser $projectUser) {
+                    return $projectUser->getUser();
+                }
+            )
         ;
 
         /** @var WorkPackageRepository $workPackageRepo */
         $workPackageRepo = $this
             ->entityManager
-            ->getRepository(WorkPackage::class)
-        ;
+            ->getRepository(WorkPackage::class);
 
         /** @var WorkPackage[] $workPackages */
         $workPackages = $workPackageRepo->getRasciList($project);
@@ -65,8 +68,7 @@ class RasciMatrixService
         /** @var RasciRepository $rasciRepo */
         $rasciRepo = $this
             ->entityManager
-            ->getRepository(Rasci::class)
-        ;
+            ->getRepository(Rasci::class);
 
         $rascis = $rasciRepo->findByProject($project);
         $out = [];
@@ -77,14 +79,16 @@ class RasciMatrixService
                 ->toArray(
                     $workPackage,
                     (new SerializationContext())->setSerializeNull(true)
-                )
-            ;
+                );
             $row['rasci'] = [];
 
             foreach ($users as $user) {
-                $rasci = array_filter($rascis, function (Rasci $rasci) use ($user, $workPackage) {
-                    return $rasci->getUser() === $user && $rasci->getWorkPackage() === $workPackage;
-                });
+                $rasci = array_filter(
+                    $rascis,
+                    function (Rasci $rasci) use ($user, $workPackage) {
+                        return $rasci->getUser() === $user && $rasci->getWorkPackage() === $workPackage;
+                    }
+                );
 
                 $data = [
                     'id' => null,
@@ -144,15 +148,18 @@ class RasciMatrixService
             );
         }
 
-        $out = array_filter($out, function ($row) {
-            return $row['isTask'];
-        });
+        $out = array_filter(
+            $out,
+            function ($row) {
+                return $row['isTask'];
+            }
+        );
 
         $workPackages = array_merge($workPackages, $out);
 
         return [
             'workPackages' => $workPackages,
-            'users' => $users->getValues(),
+            'users' => array_values(array_unique($users->getValues())),
         ];
     }
 }
