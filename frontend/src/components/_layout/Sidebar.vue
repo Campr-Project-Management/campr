@@ -184,9 +184,9 @@
     @import '../../css/_mixins';
 
     .sidebar {
-        width: 190px;
+        width: 200px;
         height: 90vh;
-        padding-right: 20px;
+        padding-right: 10px;
     }
 
     ul {
