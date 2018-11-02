@@ -13,9 +13,9 @@ class DistributionListControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -105,6 +105,8 @@ class DistributionListControllerTest extends BaseController
                             'locale' => 'en',
                             'avatar' => null,
                             'avatarUrl' => null,
+                            'deleted' => false,
+                            'deletedAt' => null,
                         ],
                     ],
                     'meetings' => [],
@@ -120,9 +122,9 @@ class DistributionListControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnEditAction(
         array $content,
@@ -176,9 +178,9 @@ class DistributionListControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -233,9 +235,9 @@ class DistributionListControllerTest extends BaseController
      * @dataProvider getDataForSequenceIsNumberOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testSequenceIsNumberOnEditAction(
         array $content,
@@ -436,6 +438,8 @@ class DistributionListControllerTest extends BaseController
                             'locale' => 'en',
                             'avatar' => null,
                             'avatarUrl' => null,
+                            'deleted' => false,
+                            'deletedAt' => null,
                         ],
                     ],
                     'meetings' => [],

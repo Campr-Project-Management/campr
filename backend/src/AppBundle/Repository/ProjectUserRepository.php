@@ -60,8 +60,8 @@ class ProjectUserRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->where('q.project = :project')
             ->leftJoin('q.user', 'u')
+            ->where('q.project = :project and u.deletedAt is null')
             ->setParameter('project', $project)
         ;
 

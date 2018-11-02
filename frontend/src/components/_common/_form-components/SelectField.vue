@@ -26,7 +26,7 @@
                 :style="{height: scrollbarHeight + 5 +'px', top: scrollbarTop + 'px'}"
                 class="dropdown-menu dropdown-menu-right customScrollbar">
             <ul ref="ul">
-                <li v-for="option in availableOptions" :style="{height: itemHeight + 'px'}">
+                <li v-for="option in visibleOptions" :style="{height: itemHeight + 'px'}">
                     <a href="javascript:void(0)" @click="onChange(option)">{{ translate(option.label) }}</a>
                 </li>
             </ul>
@@ -71,6 +71,9 @@
             },
         },
         computed: {
+            visibleOptions() {
+                return this.availableOptions.filter(option => !option.hidden);
+            },
             availableOptions() {
                 return _.uniqBy(this.options, 'key');
             },
@@ -89,8 +92,8 @@
                 return this.title;
             },
             scrollbarHeight() {
-                const itemsToShow = this.availableOptions.length < this.maxItems
-                    ? this.availableOptions.length
+                const itemsToShow = this.visibleOptions.length < this.maxItems
+                    ? this.visibleOptions.length
                     : this.maxItems
                 ;
 
