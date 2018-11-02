@@ -30,16 +30,22 @@ abstract class BaseRepository extends SortableRepository implements RepositoryIn
         $qb = $this->createQueryBuilder('q');
 
         foreach ($criteria as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
-
             if ('findIn' === $key) {
                 foreach ($criteria[$key] as $column => $vals) {
                     $qb
                         ->andWhere($qb->expr()->in('q.'.$column, ':vals'))
                         ->setParameter('vals', $vals)
                     ;
+                }
+
+                continue;
+            }
+
+            if ('deleted' === $key) {
+                if (false === $value) {
+                    $qb->andWhere('q.deletedAt is null');
+                } else {
+                    $qb->andWhere('q.deletedAt is not null');
                 }
 
                 continue;

@@ -21,6 +21,13 @@ services:
             - '%portal.api.host%'
             - '@monolog.logger.portal'
 
+    portal.client.http.workspace_member:
+        class: PortalBundle\Client\Http\WorkspaceMemberClient
+        arguments:
+            - '@eight_points_guzzle.client.portal_api'
+            - '%portal.api.host%'
+            - '@monolog.logger.portal'
+
     portal.listener.locale:
         class: PortalBundle\EventListener\LocaleSubscriber
         arguments:
@@ -34,6 +41,9 @@ services:
         class: PortalBundle\EventListener\UserSubscriber
         arguments:
             - '@portal.client.http.user'
+            - '@portal.client.http.workspace_member'
+            - '@app.user.context'
+            - '@app.team.context'
         tags:
             - { name: kernel.event_subscriber }
 
