@@ -32,15 +32,17 @@ const getters = {
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
         let usersSelect = [];
-        if (state.projectUsers && state.projectUsers.items) {
-            usersSelect = state.projectUsers.items.map(item => {
-                return {
-                    'key': item.user,
-                    'label': item.userFullName,
-                };
-            });
+        if (!state.projectUsers || !state.projectUsers.items) {
+            return usersSelect;
         }
-        return usersSelect;
+
+        return state.projectUsers.items.map(item => {
+            return {
+                'key': item.user,
+                'label': item.userFullName,
+                'hidden': item.userDeleted,
+            };
+        });
     },
     projectUsersForSelectOnViewTask: state => {
         let usersSelect = [];
@@ -72,14 +74,15 @@ const actions = {
      */
     getProjectUsers({commit}, data) {
         Vue.http
-            .get(Routing.generate('app_api_project_project_users', data)).then((response) => {
-                if (response.status === 200) {
-                    let projectUsers = response.data;
-                    commit(types.SET_PROJECT_USERS, {projectUsers});
-                    commit(types.SET_MANAGERS, {projectUsers});
-                }
-            }, (response) => {
-            });
+           .get(Routing.generate('app_api_project_project_users', data))
+           .then((response) => {
+               if (response.status === 200) {
+                   let projectUsers = response.data;
+                   commit(types.SET_PROJECT_USERS, {projectUsers});
+                   commit(types.SET_MANAGERS, {projectUsers});
+               }
+           }, (response) => {
+           });
     },
     /**
      * Gets the project user by id
@@ -88,12 +91,12 @@ const actions = {
      */
     getProjectUser({commit}, id) {
         Vue.http
-            .get(Routing.generate('app_api_project_users_get', {id: id}))
-            .then((response) => {
-                let currentMember = response.data;
-                commit(types.SET_CURRENT_MEMBER, {currentMember});
-            }, (response) => {
-            });
+           .get(Routing.generate('app_api_project_users_get', {id: id}))
+           .then((response) => {
+               let currentMember = response.data;
+               commit(types.SET_CURRENT_MEMBER, {currentMember});
+           }, (response) => {
+           });
     },
     /**
      * Update project user
@@ -102,14 +105,15 @@ const actions = {
      */
     updateProjectUser({commit}, data) {
         Vue.http
-            .patch(
-                Routing.generate('app_api_project_users_edit', {'id': data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                let currentMember = response.data;
-                commit(types.SET_CURRENT_MEMBER, {currentMember});
-            }, (response) => {
-            });
+           .patch(
+               Routing.generate('app_api_project_users_edit', {'id': data.id}),
+               JSON.stringify(data),
+           )
+           .then((response) => {
+               let currentMember = response.data;
+               commit(types.SET_CURRENT_MEMBER, {currentMember});
+           }, (response) => {
+           });
     },
     saveProjectUser({commit}, userData) {
         const arrayItems = [
@@ -127,7 +131,7 @@ const actions = {
             } else {
                 if (_.isArray(userData[key])) {
                     userData[key].forEach((item) => {
-                        data.append(key + '[]', + item);
+                        data.append(key + '[]', +item);
                     });
                 }
             }
@@ -135,8 +139,9 @@ const actions = {
         return Vue
             .http
             .post(
-                Routing.generate('app_api_project_team_member_create', {'id': userData.project}),
-                data
+                Routing.generate('app_api_project_team_member_create',
+                    {'id': userData.project}),
+                data,
             )
             .then(
                 (response) => {
@@ -148,7 +153,7 @@ const actions = {
                 },
                 (response) => {
                     return response.body;
-                }
+                },
             );
     },
     /**
@@ -158,13 +163,14 @@ const actions = {
      */
     getProjectSponsors({commit}, data) {
         Vue.http
-            .get(Routing.generate('app_api_project_sponsor_users', data)).then((response) => {
-                if (response.status === 200) {
-                    let projectUsers = response.data;
-                    commit(types.SET_SPONSORS, {projectUsers});
-                }
-            }, (response) => {
-            });
+           .get(Routing.generate('app_api_project_sponsor_users', data))
+           .then((response) => {
+               if (response.status === 200) {
+                   let projectUsers = response.data;
+                   commit(types.SET_SPONSORS, {projectUsers});
+               }
+           }, (response) => {
+           });
     },
     /**
      * Update team member
@@ -175,13 +181,15 @@ const actions = {
      */
     updateTeamMember({commit}, data) {
         return Vue.http
-            .patch(
-                Routing.generate('app_api_project_team_member_update', {'id': data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                return response.body;
-            }, (response) => {
-            });
+                  .patch(
+                      Routing.generate('app_api_project_team_member_update',
+                          {'id': data.id}),
+                      JSON.stringify(data),
+                  )
+                  .then((response) => {
+                      return response.body;
+                  }, (response) => {
+                  });
     },
     /**
      * Edit a project sponspor
@@ -191,16 +199,18 @@ const actions = {
      */
     editProjectSponsor({commit}, data) {
         return Vue.http
-            .patch(
-                Routing.generate('app_api_project_users_update_sponsor', data),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 200) {
-                    let projectUsers = response.data;
-                    commit(types.SET_SPONSORS, {projectUsers});
-                }
-            }, (response) => {
-            });
+                  .patch(
+                      Routing.generate('app_api_project_users_update_sponsor',
+                          data),
+                      JSON.stringify(data),
+                  )
+                  .then((response) => {
+                      if (response.status === 200) {
+                          let projectUsers = response.data;
+                          commit(types.SET_SPONSORS, {projectUsers});
+                      }
+                  }, (response) => {
+                  });
     },
     /**
      * Delete a new objective on project
@@ -212,8 +222,9 @@ const actions = {
         return Vue
             .http
             .delete(
-                Routing.generate('app_api_project_users_delete', {id: id})
-            ).then(
+                Routing.generate('app_api_project_users_delete', {id: id}),
+            )
+            .then(
                 (response) => {
                     commit(types.DELETE_TEAM_MEMBER, {id});
 
@@ -221,19 +232,20 @@ const actions = {
                 },
                 (response) => {
                     return response;
-                }
+                },
             )
-        ;
+            ;
     },
 
     createProjectUser({commit}, {projectId, userId}) {
         return Vue
             .http
             .post(
-                Routing.generate('app_api_project_project_user_create', {id: projectId}),
-                {user: userId}
+                Routing.generate('app_api_project_project_user_create',
+                    {id: projectId}),
+                {user: userId},
             )
-        ;
+            ;
     },
     deleteProjectUser({commit}, {projectId, userId}) {
         const data = {
@@ -244,7 +256,7 @@ const actions = {
         return Vue
             .http
             .delete(Routing.generate('app_api_project_users_delete_user', data))
-        ;
+            ;
     },
     /**
      * Delete a sponsor
@@ -259,15 +271,16 @@ const actions = {
         };
 
         Vue.http
-            .delete(
-                Routing.generate('app_api_project_users_delete_sponsor', data)
-            ).then((response) => {
-                if (response.status === 200) {
-                    let projectUsers = response.data;
-                    commit(types.SET_SPONSORS, {projectUsers});
-                }
-            }, (response) => {
-            });
+           .delete(
+               Routing.generate('app_api_project_users_delete_sponsor', data),
+           )
+           .then((response) => {
+               if (response.status === 200) {
+                   let projectUsers = response.data;
+                   commit(types.SET_SPONSORS, {projectUsers});
+               }
+           }, (response) => {
+           });
     },
     /**
      * Create a project sponsor
@@ -282,13 +295,14 @@ const actions = {
         };
 
         Vue.http
-            .put(
-                Routing.generate('app_api_project_users_create_sponsor', data)
-            ).then((response) => {
-                let projectUsers = response.data;
-                commit(types.SET_SPONSORS, {projectUsers});
-            }, (response) => {
-            });
+           .put(
+               Routing.generate('app_api_project_users_create_sponsor', data),
+           )
+           .then((response) => {
+               let projectUsers = response.data;
+               commit(types.SET_SPONSORS, {projectUsers});
+           }, (response) => {
+           });
     },
 };
 
@@ -325,7 +339,8 @@ const mutations = {
      */
     [types.SET_SPONSORS](state, {projectUsers}) {
         let sponsors = [];
-        if (typeof projectUsers == 'undefined' || !_.isArray(projectUsers.items)) {
+        if (typeof projectUsers == 'undefined' ||
+            !_.isArray(projectUsers.items)) {
             projectUsers.items = [];
         }
         projectUsers.items.map(function(projectUser) {

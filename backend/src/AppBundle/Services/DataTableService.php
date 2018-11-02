@@ -72,6 +72,10 @@ class DataTableService
         if (isset($options['findIn'])) {
             $criteria['findIn'] = $options['findIn'];
         }
+        if (isset($options['deleted'])) {
+            $criteria['deleted'] = $options['deleted'];
+        }
+
         $criteria[$searchField] = $this->requestParser->searchPhrase;
         $entries = $this
             ->em

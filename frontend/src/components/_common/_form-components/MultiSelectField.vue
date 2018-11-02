@@ -6,18 +6,19 @@
                 type="button"
                 data-toggle="dropdown"
                 @click="updateScrollbarTop($event)"
-                ref="btn-dropdown"
+                ref="dropdownButton"
                 :title="title">
 
                 <span class="multi-select-field-title">{{ title }}</span>
                 <span class="caret"></span>
             </button>
-            <scrollbar v-show="availableOptions.length !== 0"
-                       :style="{height: scrollbarHeight + 5 + 'px', top: scrollbarTop + 'px'}"
-                       v-if="!disabled"
-                       class="dropdown-menu dropdown-menu-right customScrollbar">
+            <scrollbar
+                    v-show="visibleOptions.length > 0"
+                    :style="{height: scrollbarHeight + 5 + 'px', top: scrollbarTop + 'px'}"
+                    v-if="!disabled"
+                    class="dropdown-menu dropdown-menu-right customScrollbar">
                 <ul ref="ul">
-                    <li v-for="option in availableOptions" :key="option.key">
+                    <li v-for="option in visibleOptions" :key="option.key">
                         <a href="javascript:void(0)" @click="onSelect(option)">{{ option.label }}</a>
                     </li>
                 </ul>
@@ -77,6 +78,9 @@ export default {
 
             return _.uniqBy(this.options.filter((o) => _.find(this.value, ['key', o.key])), 'key');
         },
+        visibleOptions() {
+            return this.availableOptions.filter(option => !option.hidden);
+        },
         availableOptions() {
             let options = _.uniqBy(this.options, 'key');
 
@@ -85,7 +89,7 @@ export default {
             });
         },
         scrollbarHeight() {
-            const count = Math.min(this.availableOptions.length, this.maxItems);
+            const count = Math.min(this.visibleOptions.length, this.maxItems);
 
             return (count * this.itemHeight)
                 + (this.marginBottom + this.marginTop)
@@ -131,8 +135,9 @@ export default {
     },
     mounted() {
         let $ul = $(this.$refs.ul);
+        let $button = $(this.$refs.dropdownButton);
 
-        this.itemHeight = $(this.$el).height();
+        this.itemHeight = $button.height();
         this.marginTop = parseInt($ul.css('margin-top'), 10);
         this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
         this.paddingTop = parseInt($ul.css('padding-top'), 10);

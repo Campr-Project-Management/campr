@@ -2,12 +2,24 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
+
 class UserRepository extends BaseRepository
 {
+    /**
+     * @param string $token
+     *
+     * @return User|null
+     */
     public function findOneByActivationToken($token)
     {
-        return $this->findOneBy([
-            'activationToken' => $token,
-        ]);
+        /** @var User $user */
+        $user = $this->findOneBy(
+            [
+                'activationToken' => $token,
+            ]
+        );
+
+        return $user;
     }
 }
