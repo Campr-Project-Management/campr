@@ -290,7 +290,7 @@
                                     <b v-else class="danger-color">{{ translate('choices.undone') }}</b>
                                 </div>
                                 <div class="entry-buttons">
-                                    <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                    <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">{{ translate('message.delete') }}</button>
                                     <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
@@ -371,7 +371,7 @@
                                     <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
-                                    <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                    <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">{{ translate('message.edit') }}</button>
                                     <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
@@ -474,7 +474,7 @@
                                     {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
                                 </div>
                                 <div class="entry-buttons">
-                                    <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
+                                    <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">{{ translate('message.delete') }}</button>
                                     <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
                                 </div>
                             </div>
