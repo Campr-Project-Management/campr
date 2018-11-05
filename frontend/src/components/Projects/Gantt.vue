@@ -8,7 +8,7 @@
             <input
                 type="button"
                 id="toggle_minimap"
-                value="Toggle minimap"
+                :value="translate('message.toggle_minimap')"
                 class="btn-rounded btn-auto btn-empty flex"
                 v-on:click="showMinimap = !showMinimap">
         </div>

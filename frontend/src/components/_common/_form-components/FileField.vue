@@ -159,7 +159,7 @@
                     maxFilesize: Math.floor(this.maxFileSize),
                     clickable: true,
                     acceptedFiles: this.acceptedFiles,
-                    dictDefaultMessage: this.label,
+                    dictDefaultMessage: this.translate(this.label),
                     dictFileTooBig: 'message.file_too_large',
                     dictInvalidFileType: '',
                     createImageThumbnails: false,

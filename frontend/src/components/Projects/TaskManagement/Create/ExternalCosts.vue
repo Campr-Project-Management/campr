@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h3>{{ message.external_costs }}</h3>
+        <h3>{{ translate('message.external_costs') }}</h3>
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-10">
                         <input-field
                             type="text"
-                            :label="label.external_cost_description"
+                            :label="translate('label.cost_description')"
                             :value="item.name"
                             :content="item.name"
                             @input="onItemUpdate(index, 'name', $event)" />
@@ -15,7 +15,7 @@
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            :label="label.external_cost_qty"
+                            :label="translate('label.external_cost_qty')"
                             :value="item.quantity"
                             :content="item.quantity"
                             @input="onItemUpdate(index, 'quantity', $event)"
@@ -39,7 +39,7 @@
                     <div class="col-md-2">
                         <input-field
                             type="text"
-                            :label="label.custom"
+                            :label="translate('label.custom')"
                             :value="item.customUnit"
                             :content="item.customUnit"
                             :disabled="item.unit && item.unit !== 'custom'"
@@ -51,7 +51,7 @@
                     </div>
                     <div class="col-md-2">
                         <money-field
-                            :label="label.external_cost_unit_rate"
+                            :label="translate('label.external_cost_unit_rate')"
                             :currency="projectCurrencySymbol"
                             :value="item.rate"
                             @input="onItemUpdate(index, 'rate', $event)"/>
@@ -66,13 +66,13 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-12">
                         <span class="title">
-                            {{ label.external_cost_total }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
+                            {{ translate('message.total') }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
                         </span>
                     </div>
                 </div>
             </div>
             <hr>
-            <h4>{{ message.capex }}</h4>
+            <h4>{{ translate('message.capex') }}</h4>
             <div class="row">
                 <div class="form-group last-form-group">
                     <div class="col-md-10">
@@ -82,7 +82,7 @@
                                     :false-value="1"
                                     :value="item.expenseType"
                                     @input="onItemUpdate(index, 'expenseType', $event)"/>
-                            <span class="note no-margin-bottom"><b>{{ message.note }}</b> {{ message.opex_capex_note }}</span>
+                            <span class="note no-margin-bottom"><b>{{ translate('message.note') }}</b> {{ translate('message.opex_capex_note') }}</span>
                             <error
                                     v-if="getValidationMessages(index, 'expenseType').length"
                                     v-for="message in getValidationMessages(index, 'expenseType')"
@@ -104,19 +104,19 @@
             <hr>
         </div>
         <div class="flex flex-direction-reverse">
-            <a @click="onAdd" class="btn-rounded btn-auto">{{ button.add_external_cost }} +</a>
+            <a @click="onAdd" class="btn-rounded btn-auto">{{ translate('button.add_external_cost') }} +</a>
         </div>
         <hr>
         <div class="row">
             <div class="form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.capex_subtotal }} <b>{{ capexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
+                        {{ translate('message.capex_subtotal') }} <b>{{ capexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.opex_subtotal }} <b>{{ opexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
+                        {{ translate('message.opex_subtotal') }} <b>{{ opexSubtotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
             </div>
@@ -125,19 +125,19 @@
             <div class="form-group last-form-group">
                 <div class="col-md-4">
                     <span class="title">
-                        {{ message.external_costs_total }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b>
+                        {{ translate('message.total') }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b>
                     </span>
                 </div>
                 <div class="col-md-4">
                     <money-field
-                        :label="label.external_cost_forecast"
+                        :label="translate('label.forecast')"
                         :value="value.forecast"
                         :currency="projectCurrencySymbol"
                         @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
                     <money-field
-                        :label="label.external_cost_actual"
+                        :label="translate('label.actual')"
                         :value="value.actual"
                         :currency="projectCurrencySymbol"
                         @input="onUpdate('actual', $event)"/>
@@ -246,31 +246,6 @@ export default {
     },
     created() {
         this.getProjectUnits(this.$route.params.id);
-    },
-    data() {
-        return {
-            message: {
-                external_costs: this.translate('message.external_costs'),
-                note: this.translate('message.note'),
-                capex: this.translate('message.capex'),
-                opex_capex_note: this.translate('message.opex_capex_note'),
-                capex_subtotal: this.translate('message.capex_subtotal'),
-                opex_subtotal: this.translate('message.opex_subtotal'),
-                external_costs_total: this.translate('message.total'),
-            },
-            label: {
-                custom: this.translate('label.custom'),
-                external_cost_description: this.translate('label.cost_description'),
-                external_cost_qty: this.translate('label.external_cost_qty'),
-                external_cost_unit_rate: this.translate('label.external_cost_unit_rate'),
-                external_cost_total: this.translate('message.total'),
-                external_cost_forecast: this.translate('label.forecast'),
-                external_cost_actual: this.translate('label.actual'),
-            },
-            button: {
-                add_external_cost: this.translate('button.add_external_cost'),
-            },
-        };
     },
 };
 </script>
