@@ -145,16 +145,28 @@ class ProjectUserController extends ApiController
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
         try {
             $em = $this->getDoctrine()->getManager();
-            $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
-                'project' => $project,
-                'name' => ProjectRole::ROLE_SPONSOR,
-            ]);
-            $projectUser = $em->getRepository(ProjectUser::class)->findOneBy([
-                'project' => $project->getId(),
-                'user' => $user->getId(),
-            ]);
 
-            $projectUser->removeProjectRole($sponsorRole);
+            /** @var ProjectUser[] $projectUsers */
+            $projectUsers = $project
+                ->getProjectUsers()
+                ->filter(function (ProjectUser $projectUser) use ($user) {
+                    return $projectUser->getUser() === $user && $projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR);
+                })
+            ;
+
+            foreach ($projectUsers as $projectUser) {
+                $projectRoles = $projectUser
+                    ->getProjectRoles()
+                    ->filter(function (ProjectRole $projectRole) {
+                        return ProjectRole::ROLE_SPONSOR === $projectRole->getName();
+                    })
+                ;
+
+                foreach ($projectRoles as $projectRole) {
+                    $projectUser->removeProjectRole($projectRole);
+                }
+            }
+
             $em->flush();
         } catch (\Exception $e) {
             return $this->createApiResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
