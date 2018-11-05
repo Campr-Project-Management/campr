@@ -159,14 +159,14 @@
             <div class="row margintop40">
                 <!-- /// Project Internal Costs /// -->
                 <div class="col-md-6">
-                    <h3>{{ translateText('message.internal_resources') }}</h3>
+                    <h3>{{ translateText('message.internal_costs') }}</h3>
                     <chart :data="internalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
 
                 <!-- /// Project External Costs /// -->
                 <div class="col-md-6">
-                    <h3>{{ translateText('message.external_resources') }}</h3>
+                    <h3>{{ translateText('message.external_costs') }}</h3>
                     <chart :data="externalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project External Costs /// -->
