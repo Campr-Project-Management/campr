@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h3>{{ message.subtasks }}</h3>
+        <h3>{{ translate('message.subtasks') }}</h3>
         <div class="row" v-for="subtask, index in subtasks">
             <div class="create-task__subtasks flex flex-v-center">
                 <div class="form-group col-md-11">
                     <input-field
                         type="text"
-                        v-bind:label="label.subtask_description"
+                        v-bind:label="translate('label.subtask_description')"
                         v-model="subtask.description"
                         v-bind:content="subtask.description" />
                     <error
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="flex flex-direction-reverse">
-            <a v-on:click="addSubtask()" class="btn-rounded btn-auto add-task">{{ button.add_new_subtask }} +</a>
+            <a v-on:click="addSubtask()" class="btn-rounded btn-auto add-task">{{ translate('button.add_new_subtask') }} +</a>
         </div>
     </div>
 </template>
@@ -65,15 +65,6 @@ export default {
     },
     data() {
         return {
-            message: {
-                subtasks: this.translate('message.subtasks'),
-            },
-            label: {
-                subtask_description: this.translate('label.subtask_description'),
-            },
-            button: {
-                add_new_subtask: this.translate('button.add_new_subtask'),
-            },
             subtasks: [],
         };
     },
