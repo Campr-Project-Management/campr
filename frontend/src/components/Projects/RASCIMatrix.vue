@@ -6,27 +6,27 @@
                     <!-- /// Header /// -->
                     <div class="header flex-v-center">
                         <div>
-                            <h1>{{ translateText('message.rasci_matrix') }}</h1>
+                            <h1>{{ translate('message.rasci_matrix') }}</h1>
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="responsible" :disabled="true"/>
-                                    <span>Responsible</span>
+                                    <span>{{ translate('message.responsible') }}</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="accountable" :disabled="true"/>
-                                    <span>Accountable</span>
+                                    <span>{{ translate('message.accountable') }}</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="support" :disabled="true"/>
-                                    <span>Support</span>
+                                    <span>{{ translate('message.support') }}</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="consulted" :disabled="true"/>
-                                    <span>Consulted</span>
+                                    <span>{{ translate('message.consulted') }}</span>
                                 </div>
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="informed" :disabled="true"/>
-                                    <span>Informed</span>
+                                    <span>{{ translate('message.informed') }}</span>
                                 </div>
                             </div>
                         </div>

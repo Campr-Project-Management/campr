@@ -495,7 +495,7 @@
                     <hr class="double">
 
                     <!-- /// Task Labels /// -->
-                    <h3>{{ translateText('label.labels') }}</h3>
+                    <h3>{{ translate('label.labels') }}</h3>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="task-label-holder flex flex-v-center">
@@ -515,7 +515,7 @@
                         </div>
                         <div class="col-md-4">
                             <select-field
-                                    :title="'Add Label'"
+                                    :title="translate('label.add_label')"
                                     :options="labelsForSelect"
                                     v-model="editableData.label"
                                     @input="updateLabel" />
