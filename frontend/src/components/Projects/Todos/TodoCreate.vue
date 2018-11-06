@@ -49,7 +49,7 @@
                     <div class="form-group">
                         <editor
                             v-model="description"
-                            :label="'placeholder.decision_description'"/>
+                            :label="'placeholder.todo_description'"/>
                         <error at-path="description"/>
                     </div>
                     <!-- /// End Todo Title and Description /// -->
