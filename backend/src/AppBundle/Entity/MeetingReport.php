@@ -39,7 +39,7 @@ class MeetingReport
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="meetingReports")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $createdBy;
 

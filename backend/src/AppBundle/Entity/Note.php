@@ -29,7 +29,7 @@ class Note
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -98,7 +98,7 @@ class Note
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\NoteStatus")
-     * @ORM\JoinColumn(name="status_id")
+     * @ORM\JoinColumn(name="status_id", onDelete="CASCADE")
      */
     private $status;
 

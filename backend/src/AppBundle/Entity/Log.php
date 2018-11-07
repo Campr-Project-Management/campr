@@ -65,7 +65,7 @@ class Log
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $user;
 

@@ -49,7 +49,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="opportunities")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -94,7 +94,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OpportunityStrategy")
-     * @ORM\JoinColumn(name="opportunity_strategy_id")
+     * @ORM\JoinColumn(name="opportunity_strategy_id", onDelete="SET NULL")
      */
     private $opportunityStrategy;
 
@@ -111,7 +111,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id")
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $responsibility;
 
@@ -121,7 +121,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="created_by")
+     * @ORM\JoinColumn(name="created_by", onDelete="SET NULL")
      */
     private $createdBy;
 
@@ -140,7 +140,7 @@ class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, Prio
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OpportunityStatus")
-     * @ORM\JoinColumn(name="opportunity_status_id")
+     * @ORM\JoinColumn(name="opportunity_status_id", onDelete="CASCADE")
      */
     private $opportunityStatus;
 

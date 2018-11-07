@@ -29,7 +29,7 @@ class Label
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="labels")
-     * @ORM\JoinColumn(name="project_id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      */
     private $project;
 

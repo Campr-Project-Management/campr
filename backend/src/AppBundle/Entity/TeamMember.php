@@ -38,7 +38,7 @@ class TeamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamMembers")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      * })
      */
     private $user;
@@ -50,7 +50,7 @@ class TeamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamMembers")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="team_id", onDelete="CASCADE")
      * })
      */
     private $team;

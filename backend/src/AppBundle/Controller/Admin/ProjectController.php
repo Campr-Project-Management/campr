@@ -11,6 +11,7 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
 use AppBundle\Form\Project\ImportType;
 use AppBundle\Security\ProjectVoter;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Controller\API\ApiController;
 use Symfony\Component\HttpFoundation\File\File;
@@ -22,7 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Project;
 use AppBundle\Form\Project\CreateType as ProjectCreateType;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * Project admin controller.
@@ -198,47 +198,36 @@ class ProjectController extends ApiController
      * @param Project $project
      *
      * @return RedirectResponse|JsonResponse
+     *
+     * @throws \Exception
      */
     public function deleteAction(Request $request, Project $project)
     {
         $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
 
+        /** @var EntityManagerInterface $em */
+        $em = $this->getDoctrine()->getManager();
+        $connection = $em->getConnection();
+
+        $connection->beginTransaction();
+
         try {
-            $em = $this->getDoctrine()->getManager();
             $em->remove($project);
             $em->flush();
-
-            $message = [
-                'delete' => 'success',
-            ];
-            $flashMessage = $this
-                ->get('translator')
-                ->trans('success.project.delete.from_edit', [], 'flashes')
-            ;
-            $flashKey = 'success';
-        } catch (ForeignKeyConstraintViolationException $ex) {
-            $flashMessage = $this
-                ->get('translator')
-                ->trans('failed.project.delete.dependency_constraint', [], 'flashes')
-            ;
-            $flashKey = 'failed';
-
-            $message = [
-                'delete' => 'failed',
-                'message' => $flashMessage,
-            ];
-        } catch (\Exception $ex) {
-            $flashMessage = $this
-                ->get('translator')
-                ->trans('failed.project.delete.generic', [], 'flashes')
-            ;
-            $flashKey = 'failed';
-
-            $message = [
-                'delete' => 'failed',
-                'message' => $flashMessage,
-            ];
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw $e;
         }
+
+        $message = [
+            'delete' => 'success',
+        ];
+        $flashMessage = $this
+            ->get('translator')
+            ->trans('success.project.delete.from_edit', [], 'flashes')
+        ;
+        $flashKey = 'success';
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
