@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="opportunities-grid-wrapper">
         <h3 class="marginbottom20 margintop0">{{ translate('message.opportunities') }}</h3>
         <div class="ro-grid-wrapper clearfix">
             <opportunity-matrix
@@ -123,6 +123,12 @@
 <style lang="scss" scoped>
     @import '../../../../../frontend/src/css/_variables';
     @import '../../../../../frontend/src/css/_mixins';
+
+    @media print {
+        .opportunities-grid-wrapper {
+            page-break-inside: avoid !important;
+        }
+    }
 
     .ro-grid-wrapper {
         .ro-summary {

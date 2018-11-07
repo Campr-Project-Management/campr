@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="risk-grid-wrapper">
         <h3 class="marginbottom20 margintop0">{{ translate('message.risks') }}</h3>
         <div class="ro-grid-wrapper clearfix">
             <risk-matrix
@@ -127,6 +127,12 @@
 
 <style lang="scss" scoped>
     @import '../../../../../frontend/src/css/_variables';
+
+    @media print {
+        .risk-grid-wrapper {
+            page-break-inside: avoid !important;
+        }
+    }
 
     .ro-grid-wrapper {
         .ro-summary {
