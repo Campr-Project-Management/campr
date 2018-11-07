@@ -180,7 +180,6 @@ button.view_all_tasks: 'View all tasks'
 button.view_info: 'View Info'
 button.view_remaining_action: 'View Remaining Action'
 button.view_tasks_board: 'View tasks board'
-button.view_tasks_grid: 'View tasks grid'
 checkbox.checked: 'Yes'
 checkbox.unchecked: 'No'
 choices.days: Days
@@ -2152,3 +2151,10 @@ title.sponsor: Sponsor
 email.subject.beta.workspace.ready: 'Your CAMPR Beta workspace is ready!'
 email.beta.workspace.message: 'The following workspace for CAMPR Beta is ready'
 placeholder.minutes: minutes
+message.toggle_minimap: 'Toggle minimap'
+message.accountable: Accountable
+message.consulted: Consulted
+message.support: Support
+message.informed: Informierenden
+label.add_label: 'Add Label'
+label.executing: Executing
