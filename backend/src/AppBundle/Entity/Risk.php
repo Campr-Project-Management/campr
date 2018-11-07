@@ -49,7 +49,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="risks")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -94,7 +94,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskStrategy")
-     * @ORM\JoinColumn(name="risk_strategy_id")
+     * @ORM\JoinColumn(name="risk_strategy_id", onDelete="SET NULL")
      */
     private $riskStrategy;
 
@@ -111,7 +111,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskCategory")
-     * @ORM\JoinColumn(name="risk_category_id")
+     * @ORM\JoinColumn(name="risk_category_id", onDelete="SET NULL")
      */
     private $riskCategory;
 
@@ -121,7 +121,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id")
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $responsibility;
 
@@ -131,7 +131,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="created_by")
+     * @ORM\JoinColumn(name="created_by", onDelete="SET NULL")
      */
     private $createdBy;
 
@@ -150,7 +150,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RiskStatus")
-     * @ORM\JoinColumn(name="risk_status_id")
+     * @ORM\JoinColumn(name="risk_status_id", onDelete="SET NULL")
      */
     private $riskStatus;
 

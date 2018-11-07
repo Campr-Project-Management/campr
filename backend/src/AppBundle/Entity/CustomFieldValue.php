@@ -44,7 +44,7 @@ class CustomFieldValue
      * @var CustomField
      *
      * @ORM\ManyToOne(targetEntity="CustomField", inversedBy="customFieldValues")
-     * @ORM\JoinColumn(name="custom_field_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="custom_field_id", onDelete="CASCADE")
      */
     private $customField;
 

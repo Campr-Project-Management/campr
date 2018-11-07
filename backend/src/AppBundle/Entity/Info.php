@@ -28,7 +28,7 @@ class Info
      * @var Project
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="infos")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      * })
      * @Assert\NotBlank(message="not_blank.project")
      * @Serializer\Exclude()
@@ -50,7 +50,7 @@ class Info
      * @var InfoCategory
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\InfoCategory")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="info_category_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="info_category_id", nullable=false, onDelete="CASCADE")
      * })
      * @Assert\NotBlank(message="not_blank.info_category")
      * @Serializer\Exclude()
