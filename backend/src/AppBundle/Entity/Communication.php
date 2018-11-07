@@ -30,7 +30,7 @@ class Communication
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -55,10 +55,10 @@ class Communication
      * @ORM\JoinTable(
      *     name="communication_participant",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="communication_id")
+     *         @ORM\JoinColumn(name="communication_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -68,7 +68,7 @@ class Communication
      * @var Schedule
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Schedule")
-     * @ORM\JoinColumn(name="schedule_id")
+     * @ORM\JoinColumn(name="schedule_id", onDelete="CASCADE")
      */
     private $schedule;
 

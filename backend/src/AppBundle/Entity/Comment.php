@@ -38,7 +38,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      *
-     * @ORM\JoinColumn(name="user_id", nullable=false);
+     * @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      */
     private $author;
 
