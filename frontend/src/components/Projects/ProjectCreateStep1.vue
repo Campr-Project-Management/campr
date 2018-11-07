@@ -5,21 +5,36 @@
             <h2>{{ translate('message.project_create_step1') }}</h2>
 
             <input-field type="text" :label="translate('message.project_name')" v-model="projectName"
-                         :content="projectName"/>
+                         :content="projectName" name="project_name"/>
+            <error
+                    v-if="errorsStep1 && errorsStep1.name && errorsStep1.name.length"
+                    :message="errorsStep1.name" atPath="project_name" />
+
             <input-field type="text" :label="translate('message.project_number')" v-model="projectNumber"
-                         :content="projectNumber"/>
+                         :content="projectNumber" name="project_number"/>
+            <error
+                    v-if="errorsStep1 && errorsStep1.project_number && errorsStep1.project_number.length"
+                    :message="errorsStep1.project_number" atPath="project_number" />
+
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*"
                    @change="updateProjectLogo">
 
             <select-field
                     :title="translate('message.select_customer')"
                     :options="customersForSelect"
-                    v-model="selectedCompany"/>
+                    v-model="selectedCompany" name="selected_company"/>
+            <error
+                    v-if="errorsStep1 && errorsStep1.selected_company && errorsStep1.selected_company.length"
+                    :message="errorsStep1.selected_company" atPath="selected_company" />
 
             <select-field
                     :title="translate('message.currency')"
                     :options="currenciesForSelect"
-                    v-model="selectedCurrency"/>
+                    v-model="selectedCurrency"
+            name="selected_currency"/>
+            <error
+                    v-if="errorsStep1 && errorsStep1.selected_currency && errorsStep1.selected_currency.length"
+                    :message="errorsStep1.selected_currency" atPath="selected_currency" />
 
             <div v-if="!projectLogo">
                 <upload-placeholder/>
@@ -101,6 +116,7 @@
     import InputField from '../_common/_form-components/InputField';
     import SelectField from '../_common/_form-components/SelectField';
     import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
+    import Error from '../_common/_messages/Error.vue';
     import {mapActions, mapGetters} from 'vuex';
 
     export default {
@@ -108,6 +124,7 @@
             InputField,
             SelectField,
             UploadPlaceholder,
+            Error,
         },
         methods: {
             ...mapActions([
@@ -133,8 +150,10 @@
             },
             nextStep: function(e) {
                 e.preventDefault();
-                this.saveStepState();
-                this.$router.push({name: 'projects-create-2'});
+                if (this.validateStep1()) {
+                    this.saveStepState();
+                    this.$router.push({name: 'projects-create-2'});
+                }
             },
             saveStepState: function() {
                 const data = {
@@ -185,9 +204,8 @@
             },
             init() {
                 const stepData = this.projectCreateWizardStep1;
-
-                this.projectName = stepData ? stepData.projectName : '';
-                this.projectNumber = stepData ? stepData.projectNumber : '';
+                this.projectName = stepData && typeof stepData.projectName !== 'undefined' ? stepData.projectName : '';
+                this.projectNumber = stepData && typeof stepData.projectNumber !== 'undefined' ? stepData.projectNumber : '';
                 this.projectLogo = stepData ? stepData.projectLogo : '';
                 this.visiblePortfolio = stepData ? stepData.visiblePortfolio : false;
                 this.visibleAddPortfolioField = stepData ? stepData.visibleAddPortfolioField : false;
@@ -197,8 +215,31 @@
                 this.programmeName = stepData ? stepData.programmeName : '';
                 this.selectedPortfolio = stepData ? stepData.selectedPortfolio : {};
                 this.selectedProgramme = stepData ? stepData.selectedProgramme : {};
-                this.selectedCompany = stepData ? stepData.selectedCompany : {};
-                this.selectedCurrency = stepData ? stepData.selectedCurrency : {};
+                this.selectedCompany = stepData && typeof stepData.selectedCompany !== 'undefined' ? stepData.selectedCompany : {};
+                this.selectedCurrency = stepData && typeof stepData.selectedCurrency !== 'undefined' ? stepData.selectedCurrency : {};
+            },
+            validateStep1() {
+                this.errorsStep1 = [];
+                if (this.projectName.length
+                    && this.projectNumber.length
+                    && typeof this.selectedCurrency.key !== 'undefined'
+                    && typeof this.selectedCompany.key !== 'undefined'
+                ) {
+                    return true;
+                }
+                if (!this.projectName.length) {
+                    this.errorsStep1['name'] = 'This value should not be blank.';
+                }
+                if (!this.projectNumber.length) {
+                    this.errorsStep1['project_number'] = 'This value should not be blank.';
+                }
+                if (typeof this.selectedCurrency.key == 'undefined') {
+                    this.errorsStep1['selected_currency'] = 'This value should not be blank.';
+                }
+                if (typeof this.selectedCompany.key == 'undefined') {
+                    this.errorsStep1['selected_company'] = 'This value should not be blank.';
+                }
+                return false;
             },
         },
         computed: {
@@ -263,6 +304,7 @@
                 selectedProgramme: {},
                 selectedCompany: {},
                 selectedCurrency: {},
+                errorsStep1: [],
             };
         },
     };
