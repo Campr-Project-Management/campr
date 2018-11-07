@@ -1,5 +1,5 @@
 <template>
-    <div class="file-field">
+    <div class="file-field" v-bind:class="{ document: isDocument }">
         <dropzone
                 :id="id"
                 :options="options"
@@ -14,6 +14,7 @@
 <script>
     import Dropzone from 'vue2-dropzone';
     import httpConfig from '../../../config/http';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'file-field',
@@ -36,6 +37,11 @@
                 type: String,
                 required: false,
                 default: 'button.add_attachment',
+            },
+            isDocument: {
+                type: Boolean,
+                required: true,
+                default: false,
             },
             maxFileSize: {
                 type: Number,
@@ -145,6 +151,9 @@
             },
         },
         computed: {
+            ...mapGetters([
+                'locale',
+            ]),
             options() {
                 return Object.assign({}, this.dropzoneOptions, {
                     dictDefaultMessage: this.translate(this.label),
@@ -178,6 +187,21 @@
                 },
                 uploadingFiles: [],
             };
+        },
+        watch: {
+            locale(value) {
+                if (document.querySelectorAll('.dz-message span').length) {
+                    document.querySelectorAll('.dz-message span').forEach( item => {
+                        item.innerHTML = this.translate(this.label);
+                    });
+                }
+
+                if (document.querySelectorAll('.document .dz-message span').length) {
+                    document.querySelectorAll('.document .dz-message span').forEach( item => {
+                        item.innerHTML = this.translate('button.add_document');
+                    });
+                }
+            },
         },
     };
 </script>
