@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form\Project;
 
+use AppBundle\Entity\Company;
 use AppBundle\Entity\Project;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -11,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ApiType extends CreateType
 {
@@ -40,6 +43,24 @@ class ApiType extends CreateType
         $builder
             ->remove('maxUploadFileSize')
             ->add('configuration')
+            ->add(
+                'company',
+                EntityType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotNull(
+                            [
+                                'message' => 'not_null.company',
+                            ]
+                        ),
+                    ],
+                    'class' => Company::class,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.company_choose',
+                    'translation_domain' => 'messages',
+                ]
+            )
             ->add(
                 'projectModules',
                 CollectionType::class,
