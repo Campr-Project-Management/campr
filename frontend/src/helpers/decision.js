@@ -23,7 +23,7 @@ export const createFormData = (data) => {
     }
 
     if (data.done != null) {
-        formData.append('done', data.done);
+        formData.append('done', data.done ? 1 : 0);
     }
 
     if (data.responsibility != null) {
