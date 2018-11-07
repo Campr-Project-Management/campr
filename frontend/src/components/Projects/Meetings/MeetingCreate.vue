@@ -404,7 +404,7 @@
                             class="btn-rounded btn-auto second-bg">{{ translate('button.save_meeting') }}</a>
                 </div>
                 <div class="margintop20 text-right">
-                    <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty">{{ translate('button.edit_distribution_list') }}</a>
+                    <a @click="editDistributionListModal = (details.distributionList && details.distributionList.key)" class="btn-rounded btn-auto btn-md btn-empty" v-if="showEditDistributionListBtn">{{ translate('button.edit_distribution_list') }}</a>
                 </div>
                 <!-- /// End Header /// -->
 
@@ -651,7 +651,6 @@ export default {
         'details.distributionList': {
             handler: function(value) {
                 this.selectedParticipants = [];
-
                 if (!value || !value.key) {
                     return;
                 }
@@ -668,7 +667,6 @@ export default {
                             let projectUser = user.projectUsers.filter((item) => {
                                 return item.project !== this.$route.params.id;
                             });
-
                             this.selectedParticipants.push({
                                 id: user.id,
                                 user: user.id,
@@ -680,6 +678,8 @@ export default {
                             });
                         });
                 });
+
+                this.showEditDistributionListBtn = true;
             },
             deep: true,
         },
@@ -720,6 +720,7 @@ export default {
             selectedParticipants: [],
             participantsPerPage: 10,
             participantsPages: 0,
+            showEditDistributionListBtn: false,
             location: '',
             objectives: [],
             agendas: [],
