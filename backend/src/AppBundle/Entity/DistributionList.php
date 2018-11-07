@@ -77,10 +77,10 @@ class DistributionList
      * @ORM\JoinTable(
      *     name="distribution_list_user",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="distribution_list_id")
+     *         @ORM\JoinColumn(name="distribution_list_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -108,7 +108,7 @@ class DistributionList
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="ownedDistributionLists")
-     * @ORM\JoinColumn(name="user_id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      */
     private $createdBy;
 

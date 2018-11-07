@@ -29,7 +29,7 @@ class FileSystem
      * @var Project
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="fileSystems", cascade={"persist"})
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

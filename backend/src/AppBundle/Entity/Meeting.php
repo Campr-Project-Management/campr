@@ -34,7 +34,7 @@ class Meeting
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="meetings")
      * @Assert\NotBlank(message="not_blank.project")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -44,7 +44,7 @@ class Meeting
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MeetingCategory")
-     * @ORM\JoinColumn(name="meeting_category_id")
+     * @ORM\JoinColumn(name="meeting_category_id", onDelete="CASCADE")
      * @Assert\NotBlank(message="not_blank.meeting_category")
      */
     private $meetingCategory;
@@ -166,7 +166,7 @@ class Meeting
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="ownedMeetings")
-     * @ORM\JoinColumn(name="user_id", nullable=true)
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $createdBy;
 
