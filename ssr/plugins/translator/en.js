@@ -2395,6 +2395,16 @@ module.exports = function (Translator) {
     Translator.add("email.subject.beta.workspace.ready", "Your CAMPR Beta workspace is ready!", "messages", "en");
     Translator.add("email.beta.workspace.message", "The following workspace for CAMPR Beta is ready", "messages", "en");
     Translator.add("placeholder.minutes", "minutes", "messages", "en");
+    Translator.add("message.toggle_minimap", "Toggle minimap", "messages", "en");
+    Translator.add("message.accountable", "Accountable", "messages", "en");
+    Translator.add("message.consulted", "Consulted", "messages", "en");
+    Translator.add("message.support", "Support", "messages", "en");
+    Translator.add("message.informed", "Informierenden", "messages", "en");
+    Translator.add("label.add_label", "Add Label", "messages", "en");
+    Translator.add("label.executing", "Executing", "messages", "en");
+    Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
+    Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
+    Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
     Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
