@@ -116,7 +116,7 @@
                             <circle-chart
                                     :bgStrokeColor="options.backgroundColor"
                                     :stroke-width="8"
-                                    :percentage="projectScheduledProgress"
+                                    :percentage="projectPlannedProgress"
                                     :animation-duration="0"
                                     :title="translate('message.planned_progress')"
                                     class="left center-content"/>
@@ -434,8 +434,8 @@
                     costs: Math.round(this.snapshot.costs.progress),
                 };
             },
-            projectScheduledProgress() {
-                return this.snapshot.scheduledProgress;
+            projectPlannedProgress() {
+                return this.snapshot.plannedProgress;
             },
             internalCostsTrafficLight() {
                 return this.snapshot.costs.internal.total.trafficLight;
@@ -645,6 +645,9 @@
     }
 
     .ro-columns {
+        @media print {
+            padding-top: 20px;
+        }
         @media(min-width: 1601px) {
             > .col-md-6 {
                 &:first-child {
