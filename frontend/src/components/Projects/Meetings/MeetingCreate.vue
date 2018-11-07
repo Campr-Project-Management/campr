@@ -178,6 +178,7 @@
                     <attachments
                             v-model="medias"
                             label="button.add_document"
+                            :isDocument="true"
                             :max-file-size="projectMaxUploadFileSize"
                             @uploading="onUploading"/>
                     <!-- /// End Meeting Documents /// -->
