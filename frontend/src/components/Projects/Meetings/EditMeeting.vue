@@ -76,14 +76,14 @@
                     <h3>{{ translate('message.schedule') }}</h3>
                     <div class="row">
                         <div class="form-group form-group">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
                                     <date-field v-model="schedule.meetingDate"/>
                                 </div>
                                 <error at-path="date"/>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
                                     <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
@@ -94,7 +94,7 @@
                                         :key="`schedule-schedule-${index}`"
                                         :message="message"/>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
                                     <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
@@ -607,7 +607,7 @@ import MemberSearch from '../../_common/MemberSearch';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import {mapGetters, mapActions} from 'vuex';
-import VueTimepicker from 'vue2-timepicker';
+import VueTimepicker from '../../_common/_form-components/Timepicker';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
