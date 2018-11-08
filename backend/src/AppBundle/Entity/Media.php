@@ -33,7 +33,7 @@ class Media implements FileSystemAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="FileSystem", inversedBy="medias")
-     * @ORM\JoinColumn(name="file_system_id", nullable=false)
+     * @ORM\JoinColumn(name="file_system_id", nullable=false, onDelete="CASCADE")
      */
     private $fileSystem;
 
@@ -61,7 +61,7 @@ class Media implements FileSystemAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="medias")
-     * @ORM\JoinColumn(name="user_id", nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
     private $user;
 

@@ -29,7 +29,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team", inversedBy="teamInvites")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="team_id", onDelete="CASCADE")
      * })
      */
     private $team;
@@ -41,7 +41,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="teamInvites")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      * })
      */
     private $user;
@@ -72,7 +72,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_id")
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -84,7 +84,7 @@ class TeamInvite
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="inviter_id", referencedColumnName="id", onDelete="CASCADE")
+     *     @ORM\JoinColumn(name="inviter_id", onDelete="CASCADE")
      * })
      */
     private $inviter;

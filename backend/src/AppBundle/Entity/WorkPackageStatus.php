@@ -75,7 +75,7 @@ class WorkPackageStatus implements CodeAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackageStatuses")
-     * @ORM\JoinColumn(name="project_id", nullable=true)
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

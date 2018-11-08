@@ -45,7 +45,7 @@ class NoteStatus
      *
      * @param string $name
      *
-     * @return OpportunityStatus
+     * @return NoteStatus
      */
     public function setName($name)
     {

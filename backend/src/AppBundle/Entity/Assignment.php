@@ -46,7 +46,7 @@ class Assignment
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="assignments")
-     * @ORM\JoinColumn(name="work_package_id")
+     * @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      */
     private $workPackage;
 
@@ -56,7 +56,7 @@ class Assignment
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageProjectWorkCostType", inversedBy="assignments")
-     * @ORM\JoinColumn(name="work_package_project_work_cost_type_id")
+     * @ORM\JoinColumn(name="work_package_project_work_cost_type_id", onDelete="CASCADE")
      */
     private $workPackageProjectWorkCostType;
 

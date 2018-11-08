@@ -28,7 +28,7 @@ class Resource
      * @var Project|null
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="resources")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      */
@@ -38,7 +38,7 @@ class Resource
      * @var ProjectUser|null
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectUser", inversedBy="resources")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_user_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_user_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      */

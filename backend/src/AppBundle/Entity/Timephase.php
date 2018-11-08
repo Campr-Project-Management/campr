@@ -44,7 +44,7 @@ class Timephase
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Assignment", inversedBy="timephases", cascade={"persist"})
-     * @ORM\JoinColumn(name="assignment_id")
+     * @ORM\JoinColumn(name="assignment_id", onDelete="CASCADE")
      */
     private $assignment;
 

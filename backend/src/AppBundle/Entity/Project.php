@@ -73,7 +73,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company", cascade={"persist"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="company_id", nullable=false, onDelete="CASCADE")
      * })
      */
     private $company;
@@ -85,7 +85,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectComplexity")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_complexity_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_complexity_id", onDelete="SET NULL")
      * })
      */
     private $projectComplexity;
@@ -97,7 +97,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_category_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_category_id", onDelete="SET NULL")
      * })
      */
     private $projectCategory;
@@ -109,7 +109,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectScope")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_scope_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_scope_id", onDelete="SET NULL")
      * })
      */
     private $projectScope;
@@ -121,7 +121,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectStatus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_status_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_status_id", onDelete="SET NULL")
      * })
      */
     private $status;
@@ -147,7 +147,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Portfolio")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="portfolio_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="portfolio_id", onDelete="SET NULL")
      * })
      */
     private $portfolio;
@@ -273,7 +273,7 @@ class Project implements ProjectInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Label")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="label_id", referencedColumnName="id", onDelete="SET NULL")
+     *     @ORM\JoinColumn(name="label_id", onDelete="SET NULL")
      * })
      * @Serializer\Exclude()
      */
@@ -329,10 +329,10 @@ class Project implements ProjectInterface
      * @ORM\JoinTable(
      *     name="project_user_favorites",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="project_id")
+     *         @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -344,7 +344,7 @@ class Project implements ProjectInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Programme", inversedBy="projects")
-     * @ORM\JoinColumn(name="programme_id")
+     * @ORM\JoinColumn(name="programme_id", onDelete="SET NULL")
      */
     private $programme;
 
@@ -516,7 +516,7 @@ class Project implements ProjectInterface
      * @var CurrencyInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Currency")
-     * @ORM\JoinColumn(name="currency_id")
+     * @ORM\JoinColumn(name="currency_id", onDelete="SET NULL")
      * @Assert\NotBlank(message="not_blank.currency")
      */
     private $currency;

@@ -59,7 +59,7 @@ class ProjectTeam
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectTeams")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      * })
      */
     private $project;
@@ -71,7 +71,7 @@ class ProjectTeam
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectTeam", inversedBy="children")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="parent_id", onDelete="CASCADE")
      * })
      */
     private $parent;

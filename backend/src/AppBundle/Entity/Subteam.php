@@ -40,7 +40,7 @@ class Subteam
      * @var Project
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="subteams")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      */
@@ -58,7 +58,7 @@ class Subteam
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Subteam", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="parent_id", onDelete="CASCADE")
      */
     private $parent;
 
@@ -73,7 +73,7 @@ class Subteam
      * @var ProjectDepartment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="subteams")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="department_id", onDelete="SET NULL")
      */
     private $department;
 
