@@ -32,7 +32,7 @@ class Cost
      * @var Project
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="costs")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      * @Assert\NotBlank(message="not_blank.project")
@@ -43,7 +43,7 @@ class Cost
      * @var WorkPackage
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="costs")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="work_package_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      */
@@ -53,7 +53,7 @@ class Cost
      * @var resource
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Resource", inversedBy="costs")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="resource_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="resource_id", onDelete="CASCADE")
      * })
      * @Serializer\Exclude()
      */
@@ -96,7 +96,7 @@ class Cost
      * @var Unit|null
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Unit", cascade={"persist"})
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="unit_id", referencedColumnName="id", onDelete="SET NULL")
+     *     @ORM\JoinColumn(name="unit_id", onDelete="SET NULL")
      * })
      */
     private $unit;

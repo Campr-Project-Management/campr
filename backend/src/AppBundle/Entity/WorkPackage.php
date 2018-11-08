@@ -70,7 +70,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="phaseChildren")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="phase_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="phase_id", onDelete="CASCADE")
      * })
      * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
@@ -90,7 +90,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="milestoneChildren")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="milestone_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="milestone_id", onDelete="CASCADE")
      * })
      * @AppAssert\NonSelfReferencing(message="self_reference.work_package.milestone")
      */
@@ -110,7 +110,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="parent_id", onDelete="CASCADE")
      * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
     private $parent;
@@ -137,7 +137,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -147,7 +147,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="responsibility_id")
+     * @ORM\JoinColumn(name="responsibility_id", onDelete="SET NULL")
      * @Assert\NotBlank()
      */
     private $responsibility;
@@ -158,7 +158,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="accountability_id")
+     * @ORM\JoinColumn(name="accountability_id", onDelete="SET NULL")
      */
     private $accountability;
 
@@ -254,7 +254,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="calendar_id", onDelete="CASCADE")
      */
     private $calendar;
 
@@ -265,10 +265,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_label",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="label_id")
+     *         @ORM\JoinColumn(name="label_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -280,7 +280,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageStatus", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="work_package_status_id")
+     * @ORM\JoinColumn(name="work_package_status_id", onDelete="SET NULL")
      */
     private $workPackageStatus;
 
@@ -290,7 +290,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackageCategory", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="work_package_category_id")
+     * @ORM\JoinColumn(name="work_package_category_id", onDelete="SET NULL")
      */
     private $workPackageCategory;
 
@@ -308,10 +308,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_dependency",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="dependant_id")
+     *         @ORM\JoinColumn(name="dependant_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="dependency_id")
+     *         @ORM\JoinColumn(name="dependency_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -368,10 +368,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_comment",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="comment_id")
+     *         @ORM\JoinColumn(name="comment_id", onDelete="CASCADE")
      *     }
      * )
      */
@@ -384,10 +384,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_support_user",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      *)
      */
@@ -400,10 +400,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_consulted_user",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      *)
      */
@@ -416,10 +416,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      * @ORM\JoinTable(
      *     name="work_package_informed_user",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="work_package_id")
+     *         @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_id")
+     *         @ORM\JoinColumn(name="user_id", onDelete="CASCADE")
      *     }
      *)
      */

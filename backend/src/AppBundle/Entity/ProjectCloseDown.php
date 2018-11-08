@@ -29,7 +29,7 @@ class ProjectCloseDown
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="projectCloseDowns")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

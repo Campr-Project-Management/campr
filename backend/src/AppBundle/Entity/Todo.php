@@ -30,7 +30,7 @@ class Todo
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="todos")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -40,7 +40,7 @@ class Todo
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TodoCategory")
-     * @ORM\JoinColumn(name="todo_category_id")
+     * @ORM\JoinColumn(name="todo_category_id", onDelete="CASCADE")
      */
     private $todoCategory;
 
@@ -103,7 +103,7 @@ class Todo
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TodoStatus")
-     * @ORM\JoinColumn(name="status_id")
+     * @ORM\JoinColumn(name="status_id", onDelete="CASCADE")
      */
     private $status;
 

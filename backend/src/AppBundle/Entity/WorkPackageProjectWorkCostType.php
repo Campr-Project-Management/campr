@@ -46,7 +46,7 @@ class WorkPackageProjectWorkCostType
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage")
-     * @ORM\JoinColumn(name="work_package_id", nullable=true)
+     * @ORM\JoinColumn(name="work_package_id", onDelete="CASCADE")
      */
     private $workPackage;
 
@@ -56,7 +56,7 @@ class WorkPackageProjectWorkCostType
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectWorkCostType")
-     * @ORM\JoinColumn(name="project_work_cost_type_id", nullable=true)
+     * @ORM\JoinColumn(name="project_work_cost_type_id", onDelete="CASCADE")
      */
     private $projectWorkCostType;
 
@@ -101,7 +101,7 @@ class WorkPackageProjectWorkCostType
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="workPackageProjectWorkCostTypes")
-     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="calendar_id", onDelete="CASCADE")
      */
     private $calendar;
 

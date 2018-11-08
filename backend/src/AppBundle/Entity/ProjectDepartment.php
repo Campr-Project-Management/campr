@@ -40,7 +40,7 @@ class ProjectDepartment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectDepartments")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=true)
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -72,7 +72,7 @@ class ProjectDepartment
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectWorkCostType")
-     * @ORM\JoinColumn(name="project_work_cost_type_id")
+     * @ORM\JoinColumn(name="project_work_cost_type_id", onDelete="SET NULL")
      */
     private $projectWorkCostType;
 

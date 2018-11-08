@@ -33,7 +33,7 @@ class Payment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PaymentMethod")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="payment_id", onDelete="CASCADE")
      * })
      */
     private $paymentMethod;
@@ -43,7 +43,7 @@ class Payment
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Team")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="team_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="team_id", onDelete="CASCADE")
      * })
      */
     private $team;
