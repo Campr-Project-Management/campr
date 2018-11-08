@@ -3,13 +3,19 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 class SubteamRepository extends BaseRepository
 {
     /**
      * Return subteam query.
      *
-     * @return Query
+     * @param Project $project
+     * @param         $filters
+     * @param array   $select
+     *
+     * @return QueryBuilder
      */
     public function getQueryFiltered(Project $project, $filters, $select = [])
     {

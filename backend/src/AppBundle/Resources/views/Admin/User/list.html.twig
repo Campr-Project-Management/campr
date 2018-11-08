@@ -6,9 +6,6 @@
     <div class="card">
         <div class="card-header bgm-teal">
             <h2>{{ 'title.user.list'|trans }}<small>{{ 'subtitle.user'|trans }}</small></h2>
-            <a href="{{ path('app_admin_user_create') }}">
-                <button class="btn bgm-red btn-float waves-effect"><i class="zmdi zmdi-plus"></i></button>
-            </a>
         </div>
         <div class="card-body">
             {% for flash_message in app.session.flashBag.get('error') %}

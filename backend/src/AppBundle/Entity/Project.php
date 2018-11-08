@@ -1183,7 +1183,8 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isPhase();
             }
-        );
+        )
+            ;
     }
 
     /**
@@ -1195,7 +1196,8 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isMilestone();
             }
-        );
+        )
+            ;
     }
 
     /**
@@ -1207,7 +1209,8 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isKeyMilestone();
             }
-        );
+        )
+            ;
     }
 
     /**
@@ -1634,8 +1637,7 @@ class Project implements ProjectInterface
     {
         return $this->label
             ? $this->label->getId()
-            : null
-        ;
+            : null;
     }
 
     /**
@@ -1646,8 +1648,7 @@ class Project implements ProjectInterface
     {
         return $this->label
             ? (string) $this->label
-            : null
-        ;
+            : null;
     }
 
     /**
@@ -2071,14 +2072,18 @@ class Project implements ProjectInterface
     {
         return $this
             ->projectModules
-            ->filter(function (ProjectModule $projectModule) {
-                return $projectModule->getIsEnabled();
-            })
-            ->map(function (ProjectModule $projectModule) {
-                return $projectModule->getModule();
-            })
+            ->filter(
+                function (ProjectModule $projectModule) {
+                    return $projectModule->getIsEnabled();
+                }
+            )
+            ->map(
+                function (ProjectModule $projectModule) {
+                    return $projectModule->getModule();
+                }
+            )
             ->getValues()
-        ;
+            ;
     }
 
     /**
@@ -2304,7 +2309,7 @@ class Project implements ProjectInterface
             ->getRisks()
             ->matching($criteria)
             ->first()
-        ;
+            ;
     }
 
     /**
@@ -2322,7 +2327,7 @@ class Project implements ProjectInterface
             ->getOpportunities()
             ->matching($criteria)
             ->first()
-        ;
+            ;
     }
 
     /**
@@ -2772,21 +2777,24 @@ class Project implements ProjectInterface
     {
         return $this
             ->distributionLists
-            ->map(function (DistributionList $dl) {
-                return [
-                    'id' => $dl->getId(),
-                    'name' => $dl->getName(),
-                    'sequence' => $dl->getSequence(),
-                    'users' => $dl
-                        ->getUsers()
-                        ->map(function (User $user) {
-                            return [
-                                'id' => $user->getId(),
-                            ];
-                        }),
-                ];
-            })
-        ;
+            ->map(
+                function (DistributionList $dl) {
+                    return [
+                        'id' => $dl->getId(),
+                        'name' => $dl->getName(),
+                        'sequence' => $dl->getSequence(),
+                        'users' => $dl
+                            ->getUsers()
+                            ->map(
+                                function (User $user) {
+                                    return [
+                                        'id' => $user->getId(),
+                                    ];
+                                }
+                            ),
+                    ];
+                }
+            );
     }
 
     /**
@@ -2820,7 +2828,7 @@ class Project implements ProjectInterface
                 }
             )
             ->first()
-        ;
+            ;
     }
 
     /**
