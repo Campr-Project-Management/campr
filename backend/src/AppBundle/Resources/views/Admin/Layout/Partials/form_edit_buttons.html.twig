@@ -6,9 +6,11 @@
             <i class="zmdi zmdi-floppy"></i>
             {{ 'button.save_changes'|trans }}
         </button>
-        <a class="btn btn-sm bgm-red" href="{{ path(delete_path, {'id': id}) }}">
-            <i class="zmdi zmdi-delete"></i>
-            {{ 'button.delete'|trans }}
-        </a>
+        {% if delete_path is defined %}
+            <a class="btn btn-sm bgm-red" href="{{ path(delete_path, {'id': id}) }}">
+                <i class="zmdi zmdi-delete"></i>
+                {{ 'button.delete'|trans }}
+            </a>
+        {% endif %}
     </div>
 </div>

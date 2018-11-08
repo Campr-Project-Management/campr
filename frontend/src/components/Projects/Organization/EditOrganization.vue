@@ -60,17 +60,14 @@
                         v-model="editSubteamDepartment"/>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{
-                    translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{
-                    translate('button.edit_subteam') }} +</a>
+                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_subteam') }} +</a>
             </div>
         </modal>
         <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
             <p class="modal-title">{{ translate('message.delete_subteam') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{
-                    translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
                 <a href="javascript:void(0)" @click="deleteSelectedSubteam()"
                    class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
@@ -87,10 +84,8 @@
                         v-model="editSponsor"/>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{
-                    translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{
-                    translate('button.edit_sponsor') }} +</a>
+                <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_sponsor') }} +</a>
             </div>
         </modal>
         <modal v-if="showCreateSponsorModal" @close="showCreateSponsorModal = false" v-bind:hasSpecificClass="true">
@@ -102,17 +97,14 @@
                         v-model="newSponsor"/>
             </div>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{
-                    translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{
-                    translate('button.create_sponsor') }} +</a>
+                <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.create_sponsor') }} +</a>
             </div>
         </modal>
         <modal v-if="showDeleteSponsorModal" @close="showDeleteSponsorModal = false">
             <p class="modal-title">{{ translate('message.delete_sponsor') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{
-                    translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
                 <a href="javascript:void(0)" @click="deleteSelectedSponsor()"
                    class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
@@ -247,8 +239,7 @@
                             <error at-path="departmentName"/>
                         </div>
                         <div class="flex flex-direction-reverse">
-                            <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{
-                                translate('button.add_new_department') }} +</a>
+                            <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</a>
                         </div>
                         <!-- /// End Add new Department /// -->
                     </div>
@@ -316,8 +307,7 @@
                                     :message="message"/>
                         </div>
                         <div class="flex flex-direction-reverse">
-                            <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{
-                                translate('button.add_new_subteam') }} +</a>
+                            <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translate('button.add_new_subteam') }} +</a>
                         </div>
                         <!-- /// End Add new Subteam /// -->
                     </div>
@@ -360,16 +350,19 @@
                         </table>
                     </scrollbar>
                     <div class="flex flex-direction-reverse">
-                        <member-badge v-for="(item, index) in sponsors"
-                                      v-bind:item="item" v-bind:key="'sponsor'+index" size="small" />
+                        <member-badge
+                                v-for="(item, index) in sponsors"
+                                v-bind:item="item"
+                                v-bind:key="'sponsor'+index"
+                                size="small"/>
                     </div>
                     <!-- /// End Sponsor /// -->
                     <hr>
                     <div class="form">
                         <!-- /// Add new Sponsor /// -->
                         <div class="flex flex-direction-reverse">
-                            <a v-if="!projectSponsors.length" @click="initCreateSponsorModal()" class="btn-rounded btn-auto">{{
-                                translate('button.add_new_sponsor') }} +</a>
+                            <a v-if="!projectSponsors.length" @click="initCreateSponsorModal()"
+                               class="btn-rounded btn-auto">{{ translate('button.add_new_sponsor') }} +</a>
                         </div>
                         <!-- /// End Add new Sponsor /// -->
                     </div>
@@ -471,20 +464,23 @@
                     abbreviation: this.departmentName ? this.departmentName.toLowerCase() : null,
                     project: this.$route.params.id,
                 };
-                this.createDepartment(data).then((response) => {
-                    if (response.body && response.body.error && response.body.messages) {
+                this.createDepartment(data)
+                    .then((response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                            return;
+                        }
+
+                        this.departmentName = null;
+
+                        if (this.projectDepartments.items.length > this.projectDepartments.pageSize) {
+                            this.getProjectDepartments(
+                                {project: this.$route.params.id, page: this.activeDepartmentPage});
+                        }
+                    })
+                    .catch((err) => {
                         this.showFailed = true;
-                        return;
-                    }
-
-                    this.departmentName = null;
-
-                    if (this.projectDepartments.items.length > this.projectDepartments.pageSize) {
-                        this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
-                    }
-                }).catch((err) => {
-                    this.showFailed = true;
-                });
+                    });
             },
             initEditDepartmentModal(department) {
                 this.showEditDepartmentModal = true;
@@ -506,13 +502,14 @@
                     projectUsers: this.editDepartmentMembers.map(manager => manager.key),
                 };
 
-                this.editDepartment(data).then((response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        return;
-                    }
+                this.editDepartment(data)
+                    .then((response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            return;
+                        }
 
-                    this.showEditDepartmentModal = false;
-                });
+                        this.showEditDepartmentModal = false;
+                    });
             },
             deleteSelectedDepartment() {
                 this.showDeleteDepartmentModal = false;
@@ -529,12 +526,19 @@
                     label: subteam.department.name,
                 };
 
-                subteam.subteamMembers.map(member => {
-                    this.editSubteamMembers.push({key: member.user, label: member.userFullName});
-                    if (member.isLead) {
-                        this.editSubteamLead = {key: member.user, label: member.userFullName};
-                    }
-                });
+                subteam.subteamMembers
+                       .map(member => {
+                           this.editSubteamMembers.push(
+                               {key: member.user, label: member.userFullName, hidden: member.userDeleted});
+
+                           if (member.isLead) {
+                               this.editSubteamLead = {
+                                   key: member.user,
+                                   label: member.userFullName,
+                                   hidden: member.userDeleted,
+                               };
+                           }
+                       });
             },
             initDeleteSubteamModal(subteam) {
                 this.showDeleteSubteamModal = true;
@@ -545,17 +549,19 @@
                     name: this.subteamName,
                     project: this.$route.params.id,
                 };
-                this.createSubteam(data).then((response) => {
-                    if (response.body && response.body.error && response.body.messages) {
+                this.createSubteam(data)
+                    .then((response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.showFailed = true;
+                        }
+                        this.subteamName = null;
+                        if (this.subteams.items.length > this.subteams.pageSize) {
+                            this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
+                        }
+                    })
+                    .catch((response) => {
                         this.showFailed = true;
-                    }
-                    this.subteamName = null;
-                    if (this.subteams.items.length > this.subteams.pageSize) {
-                        this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-                    }
-                }).catch((response) => {
-                    this.showFailed = true;
-                });
+                    });
             },
             editSelectedSubteam() {
                 let data = {
@@ -598,8 +604,9 @@
             initEditSponsorModal(sponsor) {
                 this.showEditSponsorModal = true;
                 this.editSponsor = {key: sponsor.id, label: sponsor.userFullName};
-                this.project.projectUsers.map(member => {
-                    this.editSponsorMembers.push({key: member.user, label: member.userFullName});
+                this.project.projectUsers.map(projectUser => {
+                    this.editSponsorMembers.push(
+                        {key: projectUser.user, label: projectUser.userFullName, hidden: projectUser.userDeleted});
                 });
             },
             initDeleteSponsorModal(sponsor) {
@@ -608,8 +615,9 @@
             },
             initCreateSponsorModal() {
                 this.showCreateSponsorModal = true;
-                this.project.projectUsers.map(member => {
-                    this.sponsorMembers.push({key: member.user, label: member.userFullName});
+                this.project.projectUsers.map(projectUser => {
+                    this.sponsorMembers.push(
+                        {key: projectUser.user, label: projectUser.userFullName, hidden: projectUser.userDeleted});
                 });
             },
             selectSponsor() {
@@ -617,9 +625,10 @@
                     id: this.$route.params.id,
                     user: this.newSponsor.key,
                 };
-                this.createSponsor(data).then(response => {
-                    this.showCreateSponsorModal = false;
-                });
+                this.createSponsor(data)
+                    .then(response => {
+                        this.showCreateSponsorModal = false;
+                    });
             },
             editSelectedSponsor() {
                 let data = {
@@ -665,7 +674,11 @@
             ]),
             departmentMembersOptions() {
                 return this.projectUsers.items.map(
-                    (projectUser) => ({key: projectUser.id, label: projectUser.userFullName}));
+                    (projectUser) => ({
+                        key: projectUser.id,
+                        label: projectUser.userFullName,
+                        hidden: projectUser.userDeleted,
+                    }));
             },
             usersCurrentList: {
                 get() {

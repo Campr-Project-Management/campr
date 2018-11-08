@@ -127,12 +127,8 @@
                             'label': 'label.suspended'|trans
                         }
                     ) }}
-                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
-                        with {
-                            'delete_path': 'app_admin_user_delete',
-                            'id': id,
-                        }
-                    %}
+                    {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig' %}
+
                     <span class="hidden">{{ form_row(form._token) }}</span>
                     {{ form_end(form, {'render_rest': false}) }}
                 </div>
