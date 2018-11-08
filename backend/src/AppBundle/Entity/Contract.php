@@ -57,7 +57,7 @@ class Contract
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="contracts")
-     * @ORM\JoinColumn(name="user_id", nullable=false)
+     * @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      */
     private $createdBy;
 
@@ -67,7 +67,7 @@ class Contract
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="contracts")
-     * @ORM\JoinColumn(name="project_id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      */
     private $project;
 

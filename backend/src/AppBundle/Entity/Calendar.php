@@ -59,7 +59,7 @@ class Calendar
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
-     * @ORM\JoinColumn(name="parent_id")
+     * @ORM\JoinColumn(name="parent_id", onDelete="CASCADE")
      */
     private $parent;
 
@@ -90,7 +90,7 @@ class Calendar
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="calendars", cascade={"persist"})
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

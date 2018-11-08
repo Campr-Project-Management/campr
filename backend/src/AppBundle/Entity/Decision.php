@@ -31,7 +31,7 @@ class Decision
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="decisions")
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 
@@ -94,7 +94,7 @@ class Decision
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DecisionCategory")
-     * @ORM\JoinColumn(name="decision_category_id")
+     * @ORM\JoinColumn(name="decision_category_id", onDelete="CASCADE")
      */
     private $decisionCategory;
 

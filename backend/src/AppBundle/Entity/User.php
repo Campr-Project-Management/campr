@@ -426,7 +426,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="company_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     *     @ORM\JoinColumn(name="company_id", onDelete="SET NULL")
      * })
      */
     private $company;

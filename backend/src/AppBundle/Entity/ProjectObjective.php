@@ -42,7 +42,7 @@ class ProjectObjective
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contract", inversedBy="projectObjectives")
-     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="contract_id", onDelete="CASCADE")
      */
     private $contract;
 
@@ -52,7 +52,7 @@ class ProjectObjective
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectObjectives")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

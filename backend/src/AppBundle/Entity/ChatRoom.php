@@ -35,7 +35,7 @@ class ChatRoom
      * @var Project|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="chatRooms", cascade={"remove"})
-     * @ORM\JoinColumn(name="project_id")
+     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
 

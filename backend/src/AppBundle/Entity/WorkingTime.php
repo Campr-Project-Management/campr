@@ -46,7 +46,7 @@ class WorkingTime
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Day", inversedBy="workingTimes", cascade={"persist"})
-     * @ORM\JoinColumn(name="day_id")
+     * @ORM\JoinColumn(name="day_id", onDelete="CASCADE")
      */
     private $day;
 
