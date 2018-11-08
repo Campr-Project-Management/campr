@@ -114,6 +114,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'userAvatar' => 'https://www.gravatar.com/avatar/96083be540ce27b34e5b5424ea9270ad?d=identicon',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 5,
@@ -147,6 +148,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'userAvatar' => 'https://www.gravatar.com/avatar/07b23578addd736da1cf36ae5efb358e?d=identicon',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                     ],
                     'membersCount' => 2,
@@ -367,6 +369,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'userAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                         [
                             'user' => 6,
@@ -400,6 +403,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'userAvatar' => 'https://www.gravatar.com/avatar/232f46da009f9ab6ab311f012c1e4b26?d=identicon',
                             'userCompanyName' => null,
                             'rate' => null,
+                            'userDeleted' => false,
                         ],
                     ],
                     'membersCount' => 2,

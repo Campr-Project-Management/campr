@@ -922,4 +922,15 @@ class ProjectUser
             ->count() > 0
         ;
     }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("userDeleted")
+     *
+     * @return bool
+     */
+    public function isUserDeleted(): bool
+    {
+        return $this->getUser()->isDeleted();
+    }
 }
