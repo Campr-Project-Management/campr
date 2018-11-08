@@ -11,19 +11,19 @@
         <modal v-if="showRescheduleModal" @close="showRescheduleModal = false" v-bind:hasSpecificClass="true">
             <p class="modal-title">{{ translate('message.reschedule_meeting') }}</p>
             <div class="form-group last-form-group">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.select_date') }}</label>
                         <date-field v-model="date"/>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.start_time') }}</label>
                         <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.finish_time') }}</label>
                         <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
@@ -196,7 +196,7 @@ import RescheduleIcon from '../_common/_icons/RescheduleIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import Modal from '../_common/Modal';
-import VueTimepicker from 'vue2-timepicker';
+import VueTimepicker from '../_common/_form-components/Timepicker';
 import DateField from '../_common/_form-components/DateField';
 import UserAvatar from '../_common/UserAvatar';
 import Editor from '../_common/Editor';
