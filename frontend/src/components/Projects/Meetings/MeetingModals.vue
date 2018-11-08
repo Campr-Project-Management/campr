@@ -192,7 +192,6 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import MemberSearch from '../../_common/MemberSearch';
 import {mapGetters, mapActions} from 'vuex';
-import VueTimepicker from 'vue2-timepicker';
 import moment from 'moment';
 import Modal from '../../_common/Modal';
 import Editor from '../../_common/Editor';
@@ -217,7 +216,6 @@ export default {
         InputField,
         SelectField,
         MemberSearch,
-        VueTimepicker,
         moment,
         Modal,
         Editor,
