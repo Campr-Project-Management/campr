@@ -50,13 +50,13 @@
                     <h3>{{ translate('message.schedule') }}</h3>
                     <div class="row">
                         <div class="form-group last-form-group">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.select_date') }}</label>
                                     <date-field v-model="schedule.meetingDate"/>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
                                     <timepicker
@@ -66,7 +66,7 @@
                                     <error at-path="start"/>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
                                     <timepicker
