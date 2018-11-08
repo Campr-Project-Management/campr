@@ -42,10 +42,10 @@ class SubteamRole
      * @ORM\JoinTable(
      *     name="subteam_role_subteam_member",
      *     joinColumns={
-     *         @ORM\JoinColumn(name="subteam_role_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="subteam_role_id", onDelete="CASCADE")
      *     },
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="subteam_member_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="subteam_member_id", onDelete="CASCADE")
      *     }
      * )
      */

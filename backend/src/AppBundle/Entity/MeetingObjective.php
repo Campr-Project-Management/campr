@@ -35,7 +35,7 @@ class MeetingObjective
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="meetingObjectives")
-     * @ORM\JoinColumn(name="meeting_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
      */
     private $meeting;
 

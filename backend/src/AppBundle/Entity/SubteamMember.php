@@ -27,7 +27,7 @@ class SubteamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="subteamMembers", cascade={"persist"})
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      * })
      * @Assert\NotBlank(message="not_blank.subteam_member.user")
      * @Serializer\Exclude()
@@ -39,7 +39,7 @@ class SubteamMember
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Subteam", inversedBy="subteamMembers")
      * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="subteam_id", referencedColumnName="id", nullable=false)
+     *     @ORM\JoinColumn(name="subteam_id", nullable=false, onDelete="CASCADE")
      * })
      * @Assert\NotBlank(message="not_blank.subteam_member.subteam")
      * @Serializer\Exclude()

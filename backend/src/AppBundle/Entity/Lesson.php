@@ -42,7 +42,7 @@ class Lesson
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCloseDown", inversedBy="lessons")
-     * @ORM\JoinColumn(name="project_close_down_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="project_close_down_id", onDelete="CASCADE")
      */
     private $projectCloseDown;
 

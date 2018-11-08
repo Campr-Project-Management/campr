@@ -50,7 +50,7 @@ class Day
      * @Serializer\Exclude()
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="days", cascade={"persist"})
-     * @ORM\JoinColumn(name="calendar_id")
+     * @ORM\JoinColumn(name="calendar_id", onDelete="CASCADE")
      */
     private $calendar;
 

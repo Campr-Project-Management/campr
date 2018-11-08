@@ -31,7 +31,7 @@ class ProjectUser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="projectUsers")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      * })
      */
     private $user;
@@ -43,7 +43,7 @@ class ProjectUser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="projectUsers")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      * })
      */
     private $project;
@@ -55,7 +55,7 @@ class ProjectUser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_category_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_category_id", onDelete="SET NULL")
      * })
      */
     private $projectCategory;
@@ -103,7 +103,7 @@ class ProjectUser
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectTeam")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_team_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="project_team_id", onDelete="SET NULL")
      * })
      */
     private $projectTeam;

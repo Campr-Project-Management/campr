@@ -29,15 +29,15 @@ class Message
      * @var Project|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="messages", cascade={"remove"})
-     * @ORM\JoinColumn(name="project_id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
      */
     private $project;
 
     /**
-     * @var Chat|null
+     * @var ChatRoom|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ChatRoom", inversedBy="messages", cascade={"remove"})
-     * @ORM\JoinColumn(name="chat_room_id")
+     * @ORM\JoinColumn(name="chat_room_id", onDelete="CASCADE")
      */
     private $chatRoom;
 
@@ -45,7 +45,7 @@ class Message
      * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="from_id", nullable=false)
+     * @ORM\JoinColumn(name="from_id", onDelete="SET NULL")
      */
     private $from;
 
@@ -53,7 +53,7 @@ class Message
      * @var User|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="to_id")
+     * @ORM\JoinColumn(name="to_id", onDelete="SET NULL")
      */
     private $to;
 
