@@ -92,6 +92,9 @@
                 }, {
                     startAt: this.forecastStartAt,
                     finishAt: this.forecastFinishAt,
+                }, {
+                    startAt: this.actualStartAt,
+                    finishAt: this.actualFinishAt,
                 });
             },
             actualRowColor() {
