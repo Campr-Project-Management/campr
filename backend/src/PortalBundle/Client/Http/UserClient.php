@@ -76,17 +76,26 @@ class UserClient
     public function get(User $user): User
     {
         $url = strtr(self::SHOW_ENDPOINT, ['{uuid}' => $user->getUuid()]);
-        $response = $this->client->get(
-            $url,
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer '.$user->getApiToken(),
+                'Host' => $this->host,
+            ],
+        ];
+
+        $response = $this->client->get($url, $options);
+
+        $data = $response->getBody()->getContents();
+
+        $this->logger->info(
+            'User::get',
             [
-                'headers' => [
-                    'Authorization' => 'Bearer '.$user->getApiToken(),
-                    'Host' => $this->host,
-                ],
+                'url' => $url,
+                'options' => $options,
+                'response' => $data,
             ]
         );
 
-        $data = $response->getBody()->getContents();
         $data = json_decode($data, true);
 
         $user->setUsername($data['username']);
@@ -103,6 +112,7 @@ class UserClient
         $user->setMedium($data['medium']);
         $user->setUpdatedAt(new \DateTime($data['updatedAt']));
         $user->setAvatar($data['avatar']);
+        $user->setAvatarUrl($data['avatarUrl']);
         $user->setLocale($data['locale']);
 
         return $user;
