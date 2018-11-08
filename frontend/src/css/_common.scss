@@ -610,9 +610,9 @@ hr {
         width: 20px;
         height: 20px;
         background: $middleColor;
+        margin-right: 10px;
         display: block;
         float: left;
-        margin-right: 10px;
         cursor: pointer;
         position: relative;
         top: -1px;
@@ -624,14 +624,24 @@ hr {
 
     input[type=checkbox]:checked + label:before,
     input[type=radio]:checked + label:before {
-        content: '';
         text-align: center;
         background: $secondColor;
         border: none;
-        line-height: 20px;
-        font-size: 16px;
         color: $darkColor;
         font-weight: 700;
+    }
+
+    input[type=checkbox]:checked + label:before {
+        content: "\2713";
+        line-height: 1.2em;
+        padding-left: 2px;
+        font-size: 20px;
+    }
+
+    input[type=radio]:checked + label:before {
+        content: "\2022";
+        font-size: 40px;
+        padding-left: 1px;
     }
 
     label {
