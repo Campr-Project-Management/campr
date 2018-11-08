@@ -207,6 +207,11 @@ services:
             - '%kernel.team_slug%'
             - '@app.repository.team'
 
+    app.user.context:
+        class: Component\User\Context\UserContext
+        arguments:
+            - '@security.token_storage'
+
     app.analysis.module.project_duration:
         public: false
         class: Component\ProjectModule\Analysis\ProjectDurationModuleAnalyser
@@ -246,6 +251,11 @@ services:
         class: Component\ProjectModule\Analysis\ProjectModulesResolver
         arguments:
             - '@app.analysis.module.chained'
+
+    app.remover.user:
+        class: AppBundle\Remover\UserRemover
+        arguments:
+            - '@app.repository.user'
 
 ### MENU BUILDER ###
     app.admin.menu.builder:

@@ -93,8 +93,8 @@ class UserClient
         $user->setFirstName($data['firstName']);
         $user->setLastName($data['lastName']);
         $user->setPhone($data['phone']);
-        $user->setIsEnabled($data['enabled']);
-        $user->setIsSuspended($data['suspended']);
+        $user->setEnabled($data['enabled']);
+        $user->setSuspended($data['suspended']);
         $user->setFacebook($data['facebook']);
         $user->setTwitter($data['twitter']);
         $user->setInstagram($data['instagram']);
