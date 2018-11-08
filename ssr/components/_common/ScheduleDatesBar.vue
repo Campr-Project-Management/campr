@@ -27,16 +27,16 @@
 
         <div ref="tooltip" v-show="false">
             <schedule-dates-table
-                :base-start-at="baseStartAt"
-                :base-finish-at="baseFinishAt"
-                :base-duration-days="baseDurationDays"
-                :forecast-start-at="forecastStartAt"
-                :forecast-finish-at="forecastFinishAt"
-                :forecast-duration-days="forecastDurationDays"
-                :actual-start-at="actualStartAt"
-                :actual-finish-at="actualFinishAt"
-                :actual-duration-days="actualDurationDays"
-                :activity-completed="activityCompleted"/>
+                    :base-start-at="baseStartAt"
+                    :base-finish-at="baseFinishAt"
+                    :base-duration-days="baseDurationDays"
+                    :forecast-start-at="forecastStartAt"
+                    :forecast-finish-at="forecastFinishAt"
+                    :forecast-duration-days="forecastDurationDays"
+                    :actual-start-at="actualStartAt"
+                    :actual-finish-at="actualFinishAt"
+                    :actual-duration-days="actualDurationDays"
+                    :activity-completed="activityCompleted"/>
         </div>
     </div>
 </template>
@@ -47,7 +47,10 @@
     import Tooltip from '../../plugins/tether-tooltip';
     import moment from 'moment';
     import ScheduleDatesTable from './ScheduleDatesTable';
-    import {getScheduleForecastTrafficLight, getScheduleActualTrafficLight} from '../../../frontend/src/util/traffic-light';
+    import {
+        getScheduleForecastTrafficLight,
+        getScheduleActualTrafficLight,
+    } from '../../../frontend/src/util/traffic-light';
 
     if (process.browser && !$.fn.ionRangeSlider) {
         ionRangeSlider($, document, window, navigator);
@@ -208,6 +211,9 @@
                 }, {
                     startAt: this.forecastStartAt,
                     finishAt: this.forecastFinishAt,
+                }, {
+                    startAt: this.actualStartAt,
+                    finishAt: this.actualFinishAt,
                 });
 
                 if (tl.isYellow()) {
@@ -220,6 +226,9 @@
             },
             actualClass() {
                 let tl = getScheduleActualTrafficLight({
+                    startAt: this.baseStartAt,
+                    finishAt: this.baseFinishAt,
+                }, {
                     startAt: this.forecastStartAt,
                     finishAt: this.forecastFinishAt,
                 }, {
@@ -258,7 +267,7 @@
                     this.createBase();
                     this.createForecast();
                     this.createActual();
-                    this.createOverallTooltip(this.$refs.tooltipOverlay)
+                    this.createOverallTooltip(this.$refs.tooltipOverlay);
                 }
                 // this.createCallback();
             },
@@ -408,6 +417,7 @@
             }
         }
     }
+
     .legend-bar {
         -webkit-print-color-adjust: exact !important;
     }
