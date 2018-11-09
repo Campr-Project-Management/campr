@@ -108,10 +108,8 @@ class PDF
             '%file%' => $tmpFile,
         ]);
 
-        $process = new Process(
-            $this->binaryPath.' '.$options,
-            '/tmp'
-        );
+        $cmd = sprintf('%s %s', $this->binaryPath, $options);
+        $process = new Process($cmd, '/tmp');
 
         $process->run();
 
