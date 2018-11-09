@@ -92,7 +92,7 @@
 
                         <div class="ro-info">
                             <p>{{ translate('label.potential_cost_savings') }}: <b>{{ opportunity.potentialCostSavings | money({symbol: projectCurrencySymbol}) }}</b></p>
-                            <p>{{ translate('label.potential_time_savings') }}: <b>{{ opportunity.potentialTimeSavings }} {{ translate(opportunity.timeUnit) }}</b></p>
+                            <p>{{ translate('label.potential_time_savings') }}: <b>{{ opportunity.potentialTimeSavingsHours | humanizeHours({ units: ['d', 'h'] }) }}</b></p>
                             <p>{{ translate('message.due_date') }}: <b>{{ opportunity.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
