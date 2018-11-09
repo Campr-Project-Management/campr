@@ -465,7 +465,7 @@
                     items: this.snapshot.opportunities.items,
                     summary: {
                         potentialCost: this.snapshot.opportunities.total.potentialCost,
-                        potentialDelay: this.snapshot.opportunities.total.potentialDelay,
+                        potentialTime: this.snapshot.opportunities.total.potentialTime,
                         measuresCount: this.snapshot.opportunities.total.measuresCount,
                         measuresCost: this.snapshot.opportunities.total.measuresCost,
                     },
