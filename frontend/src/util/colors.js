@@ -71,8 +71,8 @@ export function getTrafficLightColorByStatus(status) {
 }
 
 export const schedule = Object.freeze({
-    getForecastColor(scheduled, forecast) {
-        let tl = getScheduleForecastTrafficLight(scheduled, forecast);
+    getForecastColor(scheduled, forecast, actual) {
+        let tl = getScheduleForecastTrafficLight(scheduled, forecast, actual);
 
         if (tl.isGreen()) {
             return;
