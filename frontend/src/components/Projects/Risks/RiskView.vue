@@ -91,7 +91,7 @@
 
                         <div class="ro-info">
                             <p>{{ translate('message.potential_cost') }}: <b>{{ risk.potentialCost | money({symbol: projectCurrencySymbol}) }}</b></p>
-                            <p>{{ translate('message.potential_time_delay') }}: <b>{{ risk.potentialDelay | formatNumber }} {{ translate(risk.delayUnit) }}</b></p>
+                            <p>{{ translate('message.potential_time_delay') }}: <b> {{ risk.potentialDelayHours | humanizeHours({ units: ['d', 'h']}) }}</b></p>
                             <p>{{ translate('message.due_date') }}: <b>{{ risk.dueDate | moment('DD.MM.YYYY') }}</b></p>
                         </div>
 
