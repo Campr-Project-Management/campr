@@ -30,6 +30,16 @@ class SetupBetaDatabaseCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $email = $input->getArgument('email');
 
+        $env = $this->getContainer()->getParameter('kernel.environment');
+        $process = new Process(sprintf('bin/console doctrine:migrations:migrate -n --env=%s', $env));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            $output->writeln(sprintf('<info>Setup failed: %s</info>', $process->getErrorOutput()));
+        } else {
+            $output->writeln('<info>Migrations ok.</info>');
+        }
+
         $tables = $this->getTables();
         $now = $this->now();
 
@@ -51,16 +61,7 @@ class SetupBetaDatabaseCommand extends ContainerAwareCommand
         $user->setUsername($email);
 
         $em->flush();
-
-        $env = $this->getContainer()->getParameter('kernel.environment');
-        $process = new Process(sprintf('bin/console doctrine:migrations:migrate -n --env=%s', $env));
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $output->writeln(sprintf('<info>Setup failed: %s</info>', $process->getErrorOutput()));
-        } else {
-            $output->writeln('<info>Setup done.</info>');
-        }
+        $output->writeln('<info>Setup done.</info>');
     }
 
     private function calculateDiffInDays($min, $now)
