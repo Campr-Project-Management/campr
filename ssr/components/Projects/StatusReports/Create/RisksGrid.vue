@@ -15,8 +15,8 @@
                             {{ translate('message.priority') }}: {{ translate(`message.${value.top.priorityName}`) }}
                         </b>|
                     </template>
-                    {{ translate('message.potential_savings') }}: {{ value.top.potentialCost | money({symbol: currency}) }} |
-                    {{ translate('message.potential_time_savings') }}: {{ value.top.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
+                    {{ translate('message.potential_cost') }}: {{ value.top.potentialCost | money({symbol: currency}) }} |
+                    {{ translate('message.potential_time_delay') }}: {{ value.top.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
                     {{ translate('message.strategy') }}: {{ translate(value.top.strategyName) }} |
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
