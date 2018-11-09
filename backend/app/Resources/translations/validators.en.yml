@@ -134,3 +134,4 @@ greater_than_or_equal.duration: 'The duration field should contain numbers great
 is_greater_than.meeting_duration: 'Meeting has only  %duration% minutes.'
 required.terms_and_conditions: 'You must agree to Term and Conditions'
 not_blank.industry_branch: 'Industry branch is required.'
+not_blank.meeting_category: 'Please select a category'

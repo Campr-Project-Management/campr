@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Date\DateRange;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,6 +79,7 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="start", type="time")
+     * @Assert\NotBlank(message="not_blank.start")
      * @Assert\Time()
      */
     private $start;
@@ -88,6 +90,7 @@ class Meeting
      * @Serializer\Type("DateTime<'H:i'>")
      *
      * @ORM\Column(name="end", type="time")
+     * @Assert\NotBlank(message="not_blank.end")
      * @Assert\Time()
      * @AppAssert\GreaterThan(propertyPath="start", message="invalid.end_time_greater_than_start_time")
      */
@@ -819,6 +822,28 @@ class Meeting
     public function getMeetingDuration()
     {
         return ($this->getEnd()->getTimestamp() - $this->getStart()->getTimestamp()) / 60;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMeetingAgendasTotalDuration()
+    {
+        $totalDuration = 0;
+
+        foreach ($this->getMeetingAgendas() as $agenda) {
+            $totalDuration += $agenda->getDuration();
+        }
+
+        return $totalDuration;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMeetingDuration()
+    {
+        return (new DateRange($this->getStart(), $this->getEnd()))->getDurationMinutes();
     }
 
     /**
