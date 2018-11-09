@@ -218,6 +218,7 @@ module.exports = function (Translator) {
     Translator.add("is_greater_than.meeting_duration", "Meeting has only  %duration% minutes.", "validators", "en");
     Translator.add("required.terms_and_conditions", "You must agree to Term and Conditions", "validators", "en");
     Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
+    Translator.add("not_blank.meeting_category", "Please select a category", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
     Translator.add("Authentication request could not be processed due to a system problem.", "Authentication request could not be processed due to a system problem.", "security", "en");

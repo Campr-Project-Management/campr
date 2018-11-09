@@ -18,4 +18,9 @@ interface DateRangeInterface
      * @return int
      */
     public function getDurationDays(): int;
+
+    /**
+     * @return int
+     */
+    public function getDurationMinutes(): int;
 }
