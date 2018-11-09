@@ -51,16 +51,14 @@ function generateLink(base, data) {
 
 export default {
     getUserAvatar: (user) => {
-        return user.avatar
-            ? '/uploads/avatars/' + user.avatar
-            : user.gravatar;
+        return user.avatarUrl;
     },
     getSocialMedia: (user) => {
         return {
             facebook: generateLink(FACEBOOK_BASE, user.facebook),
             twitter: generateLink(TWITTER_BASE, user.twitter),
             instagram: generateLink(INSTAGRAM_BASE, user.instagram),
-            gPlus: generateLink(GPLUS_BASE, user.gPlus),
+            gplus: generateLink(GPLUS_BASE, user.gplus),
             linkedIn: generateLink(LINKEDIN_BASE, user.linkedIn),
             medium: generateLink(MEDIUM_BASE, user.medium),
             email: generateLink(EMAIL, user.email),
