@@ -36,8 +36,6 @@
                 </div>
             </scrollbar>
             <div class="footer">
-                <p v-show="!singleSelect">Selected: <span v-for="item in items"><span v-if="item.checked">{{ item.userFullName }}, </span></span>
-                </p>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="reset" class="cancel">{{ translate('button.cancel') }}</a>
                     <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{
