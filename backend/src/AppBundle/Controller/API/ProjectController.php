@@ -2118,6 +2118,10 @@ class ProjectController extends ApiController
 
     /**
      * @Route("/{id}/organization-tree", name="app_api_project_organization_tree", options={"expose"=true})
+     *
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function organizationTreeAction(Project $project)
     {

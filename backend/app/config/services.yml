@@ -108,6 +108,7 @@ services:
         class: AppBundle\Services\ProjectOrganizationTreeService
         arguments:
             - '@translator'
+            - '@app.serializer.normalizer.json'
 
     app.formatter.money:
         class: AppBundle\Formatter\MoneyFormatter
