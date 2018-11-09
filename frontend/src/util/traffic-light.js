@@ -91,14 +91,18 @@ TrafficLight.createGreen = () => {
 /**
  * @param {object} scheduled
  * @param {object} forecast
+ * @param {object} actual
  * @return {TrafficLight}
  */
-export function getScheduleForecastTrafficLight(scheduled, forecast) {
+export function getScheduleForecastTrafficLight(scheduled, forecast, actual) {
     if (!scheduled.finishAt || !forecast.finishAt) {
         return TrafficLight.createGreen();
     }
 
-    if (moment(forecast.finishAt).isAfter(scheduled.finishAt)) {
+    let isYellow = moment(forecast.finishAt).isAfter(scheduled.finishAt) ||
+        moment(forecast.startAt).isAfter(scheduled.startAt) ||
+        (actual.finishAt && moment(forecast.finishAt).isAfter(actual.finishAt));
+    if (isYellow) {
         return TrafficLight.createYellow();
     }
 
@@ -114,6 +118,12 @@ export function getScheduleForecastTrafficLight(scheduled, forecast) {
  */
 export function getScheduleActualTrafficLight(
     base, forecast, actual, completed = true) {
+    let today = moment().format('YYYY-MM-DD');
+
+    if (!actual.finishAt && moment(forecast.finishAt).isBefore(today)) {
+        return TrafficLight.createRed();
+    }
+
     if (!forecast.finishAt || !actual.finishAt) {
         return TrafficLight.createGreen();
     }
@@ -123,7 +133,7 @@ export function getScheduleActualTrafficLight(
         return TrafficLight.createYellow();
     }
 
-    if (moment(actual.finishAt).isAfter(forecast.finishAt)) {
+    if (!moment(actual.finishAt).isAfter(forecast.finishAt)) {
         return TrafficLight.createRed();
     }
 
