@@ -12,7 +12,8 @@
                     v-for="(module, key) in recommendedModules"
                     :title="translate(`modules.${module}.title`)"
                     :description="translate(`modules.${module}.description`)"
-                    :id="`recommended_module_${key}`"
+                    :id="module"
+                    :key="`recommended_module_${module}`"
                     :value="isModuleSelected(module)"
                     @input="onModuleSelectionChanged(module, $event)"/>
 
@@ -23,7 +24,8 @@
                         v-for="(module, key) in optionalModules"
                         :title="translate(`modules.${module}.title`)"
                         :description="translate(`modules.${module}.description`)"
-                        :id="`optional_module_${key}`"
+                        :id="module"
+                        :key="`optional_module_${module}`"
                         :inactive="true"
                         :value="isModuleSelected(module)"
                         @input="onModuleSelectionChanged(module, $event)"/>
