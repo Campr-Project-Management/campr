@@ -3099,7 +3099,7 @@ class ProjectControllerTest extends BaseController
                 201 === $response->getStatusCode(),
                 'Response is not successfully'
             );
-            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Reponse status code is different');
+            $this->assertEquals($responseStatusCode, $response->getStatusCode(), 'Response status code is different');
             $this->assertEquals(
                 $responseContent,
                 $actual,
