@@ -5,12 +5,12 @@
         </div>
 
         <div class="right-sided">
-            <input
-                type="button"
+            <button
                 id="toggle_minimap"
-                :value="translate('message.toggle_minimap')"
                 class="btn-rounded btn-auto btn-empty flex"
                 v-on:click="showMinimap = !showMinimap">
+                {{ translate('message.toggle_minimap') }}
+            </button>
         </div>
 
         <ul class="gantt-tabs">

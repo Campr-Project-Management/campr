@@ -47,7 +47,6 @@
                     :max-file-size="maxFileSize / (1024 * 1024)"
                     :label="label"
                     :chunking="true"
-                    :isDocument="isDocument"
                     @input="onInput"
                     @add="onFileAdded"
                     @uploaded="onFileUploaded"
@@ -96,11 +95,6 @@
                 type: Boolean,
                 required: false,
                 default: true,
-            },
-            isDocument: {
-                type: Boolean,
-                required: false,
-                default: false,
             },
             errorMessages: {
                 type: Array,
