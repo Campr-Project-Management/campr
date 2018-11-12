@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Model\RemovalForbiddenInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
  */
-class ProjectStatus
+class ProjectStatus implements RemovalForbiddenInterface
 {
     const NOT_STARTED = 1;
     const IN_PROGRESS = 2;

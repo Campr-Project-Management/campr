@@ -75,6 +75,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
+    app.listener.removal_forbidden:
+        class: AppBundle\EventListener\RemovalForbiddenListener
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+
     app.subscriber.api_problem:
         class: AppBundle\EventListener\ApiExceptionSubscriber
         arguments:

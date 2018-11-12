@@ -127,9 +127,7 @@ class ProjectControllerTest extends BaseController
                 'project' => $project,
             ])
         ;
-        foreach ($project->getWorkPackages() as $workPackage) {
-            $this->em->remove($workPackage);
-        }
+
         $this->em->remove($projectUser);
         $this->em->remove($project);
         $this->em->flush();
