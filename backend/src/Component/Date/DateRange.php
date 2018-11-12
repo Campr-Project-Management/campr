@@ -62,4 +62,16 @@ class DateRange implements DateRangeInterface
 
         return (int) $interval->format('%a') + 1;
     }
+
+    /**
+     * @return int
+     */
+    public function getDurationMinutes(): int
+    {
+        if (!$this->getStart() || !$this->getFinish() || $this->getStart() > $this->getFinish()) {
+            return 0;
+        }
+
+        return ($this->getFinish()->getTimestamp() - $this->getStart()->getTimestamp()) / 60;
+    }
 }
