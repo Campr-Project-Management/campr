@@ -1,5 +1,4 @@
 <script>
-    import Clock from '../../_common/_icons/Clock';
 
     const CONFIG = {
         HOUR_TOKENS: ['HH', 'H', 'hh', 'h', 'kk', 'k'],
@@ -10,10 +9,6 @@
 
     export default {
         name: 'Timepicker',
-
-        components: {
-            Clock,
-        },
 
         props: {
             value: {
@@ -401,9 +396,8 @@
 </script>
 
 <template>
-  <span class="time-picker">
-    <input class="display-time" :id="id" v-model="displayTime" @click.stop="toggleDropdown" type="text" readonly />
-    <clock />
+  <span class="time-picker" @click.stop="toggleDropdown">
+    <input class="display-time" :id="id" v-model="displayTime" type="text" readonly />
     <span class="clear-btn" v-if="!hideClearButton" v-show="!showDropdown && showClearBtn" @click.stop="clearTime">&times;</span>
     <div class="time-picker-overlay" v-if="showDropdown" @click.stop="toggleDropdown"></div>
     <div class="dropdown" v-show="showDropdown">
@@ -429,6 +423,19 @@
   </span>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
   @import '../../../css/vue2-timepicker.css';
+
+  .time-picker {
+    &:before {
+      content: "\f017";
+      font-family: FontAwesome;
+      position:absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 20px;
+      color: #8794C4;
+      opacity: 0.6;
+    }
+  }
 </style>
