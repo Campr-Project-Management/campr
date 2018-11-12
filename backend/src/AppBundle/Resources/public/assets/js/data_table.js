@@ -18,6 +18,7 @@ $(function () {
                     filesLink = $grid.data('files'),
                     downloadLink = $grid.data('download'),
                     impersonateUserLink = $grid.data('impersonate'),
+                    deleteButton = $grid.data('delete'),
                     params = $grid.data('params'),
                     url = $grid.data('url'),
                     routeParams = {},
@@ -43,7 +44,7 @@ $(function () {
                     || url !== Routing.generate('app_admin_user_list_filtered')
                 ) {
                     commands += impersonateUserLink ? '<button type="button" class="btn btn-icon bgm-bluegray waves-effect waves-circle command-impersonate" data-row-id="' + row.id + '"><span class="zmdi zmdi-account-circle"></span></button></a>' : '';
-                    commands += '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>';
+                    commands += deleteButton ? '<button type="button" class="btn btn-icon bgm-red command-delete waves-effect waves-circle" data-row-id="' + row.id + '"><span class="zmdi zmdi-delete"></span></button>' : '';
                 }
 
                 return  commands;

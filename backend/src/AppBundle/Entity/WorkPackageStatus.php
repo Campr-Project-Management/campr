@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Model\RemovalForbiddenInterface;
 use Component\Resource\Model\CodeAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageStatusRepository")
  * @UniqueEntity(fields="code", message="unique.code")
  */
-class WorkPackageStatus implements CodeAwareInterface
+class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
 {
     const OPEN = 1;
     const PENDING = 2;
@@ -107,7 +108,7 @@ class WorkPackageStatus implements CodeAwareInterface
     /**
      * @var bool
      *
-     * @ORM\Column(name="default", type="boolean", nullable=false, options={"default"=0})
+     * @ORM\Column(name="`default`", type="boolean", nullable=false, options={"default"=0})
      */
     private $default;
 
@@ -186,11 +187,15 @@ class WorkPackageStatus implements CodeAwareInterface
     }
 
     /**
-     * @param bool $visible
+     * @param $visible
+     *
+     * @return $this
      */
     public function setVisible($visible)
     {
         $this->visible = $visible;
+
+        return $this;
     }
 
     /**
@@ -393,10 +398,14 @@ class WorkPackageStatus implements CodeAwareInterface
 
     /**
      * @param string|null $code
+     *
+     * @return $this
      */
     public function setCode(string $code = null)
     {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
