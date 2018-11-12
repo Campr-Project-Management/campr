@@ -204,6 +204,7 @@
             border: 2px solid $secondDarkColor;
         }
     }
+
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
@@ -253,5 +254,11 @@
 
     .dropdowns {
         padding-top: 30px;
+    }
+
+    .actions {
+        .btn-rounded {
+            margin-left: 0;
+        }
     }
 </style>
