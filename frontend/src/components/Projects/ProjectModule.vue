@@ -2,7 +2,7 @@
     <div class="module">
         <div class="header flex flex-space-between flex-v-center">
             <div class="flex flex-v-center">
-                <svg v-show="id == 'contract'" version="1.1" id="Layer_1" width="23px" v-bind:class="{'inactive': inactive}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_CONTRACT" version="1.1" id="Layer_1" width="23px" v-bind:class="{'inactive': inactive}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 viewBox="0 0 24.1 28.5" style="enable-background:new 0 0 24.1 28.5;" xml:space="preserve">
                     <g id="XMLID_182_">
                     <g>
@@ -22,7 +22,7 @@
                     </g>
                 </svg>
 
-                <svg v-show="id == 'organization'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_ORGANIZATION" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_82_">
                   <circle id="XMLID_181_" class="st0" cx="13.1" cy="5.2" r="2"/>
@@ -34,7 +34,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'task_management'" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_TASK_MANAGEMENT" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_88_">
                   <g id="XMLID_89_">
@@ -52,7 +52,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'phases_and_milestones'" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_PHASES_AND_MILESTONES" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_248_">
                   <circle id="XMLID_271_" class="st0" cx="6" cy="14.2" r="2"/>
@@ -64,7 +64,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'wbs'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_WBS" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_734_">
                   <line id="XMLID_739_" class="st0" x1="12.4" y1="8" x2="12.4" y2="18.2"/>
@@ -76,7 +76,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'internal_costs'" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_INTERNAL_COSTS" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" width="23px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_93_">
                   <circle id="XMLID_381_" class="st0" cx="17.7" cy="14.9" r="0.4"/>
@@ -99,7 +99,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'external_costs'" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_EXTERNAL_COSTS" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_83_">
                   <polygon id="XMLID_614_" class="st0" points="13.1,12.3 3.8,8.4 3.8,18.5 13.1,22.4 	"/>
@@ -110,7 +110,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'risks_and_opportunities'" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_RISKS_AND_OPPORTUNITIES" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_87_">
                   <polyline id="XMLID_437_" class="st0" points="21.8,22.3 3.8,22.3 3.8,4.3 	"/>
@@ -129,7 +129,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'meetings'" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_MEETINGS" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_651_">
                   <g id="XMLID_660_">
@@ -148,7 +148,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'todos'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_TODOS" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_665_">
                   <g id="XMLID_109_">
@@ -163,7 +163,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'infos'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_INFOS" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_108_">
                   <g id="XMLID_111_">
@@ -182,7 +182,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'status_report'" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_STATUS_REPORT" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_101_">
                   <g id="XMLID_106_">
@@ -199,7 +199,7 @@
                 </g>
                 </svg>               
 
-                <svg v-show="id == 'close_down_project'" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_CLOSE_DOWN_PROJECT" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_113_">
                   <polyline id="XMLID_704_" class="st0" points="16.7,11.2 10.8,16.7 8.8,14.8 	"/>
@@ -207,7 +207,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'rasci_matrix'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_RASCI_MATRIX" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_114_">
                   <rect id="XMLID_752_" x="10.3" y="4.5" class="st0" width="4.9" height="4.9"/>
@@ -222,7 +222,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'gantt_chart'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_GANTT_CHART" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_115_">
                   <rect id="XMLID_765_" x="5.8" y="4.5" class="st0" width="10.2" height="2.3"/>
@@ -233,7 +233,7 @@
                 </g>
                 </svg>
 
-                <svg v-show="id == 'decisions'" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                <svg v-show="id == modules.MODULE_DECISIONS" width="23px" v-bind:class="{'inactive': inactive}" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
                 <g id="XMLID_162_">
                   <circle id="XMLID_812_" class="st0" cx="14.9" cy="12.8" r="3.1"/>
@@ -281,6 +281,7 @@
 </template>
 
 <script>
+import * as modules from '../../helpers/project-module.js';
 
 export default {
     name: 'ProjectModule',
@@ -316,6 +317,7 @@ export default {
     },
     data: function() {
         return {
+            modules: modules,
             contentVisible: false,
         };
     },
