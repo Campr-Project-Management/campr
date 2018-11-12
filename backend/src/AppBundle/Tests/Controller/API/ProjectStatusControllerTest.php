@@ -117,14 +117,6 @@ class ProjectStatusControllerTest extends BaseController
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $projectStatus = $this
-            ->em
-            ->getRepository(ProjectStatus::class)
-            ->find($projectStatus['id'])
-        ;
-        $this->em->remove($projectStatus);
-        $this->em->flush();
     }
 
     /**
@@ -168,7 +160,7 @@ class ProjectStatusControllerTest extends BaseController
         $responseContent
     ) {
         $projectStatus = (new ProjectStatus())
-            ->setName('project-status3')
+            ->setName('project-status6')
             ->setSequence(1)
         ;
         $this->em->persist($projectStatus);
@@ -193,9 +185,6 @@ class ProjectStatusControllerTest extends BaseController
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $this->em->remove($projectStatus);
-        $this->em->flush();
     }
 
     /**
@@ -206,7 +195,7 @@ class ProjectStatusControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'project-status3',
+                    'name' => 'project-status6',
                     'sequence' => 1,
                 ],
                 true,
@@ -318,7 +307,7 @@ class ProjectStatusControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'project-status3',
+                    'name' => 'project-status5',
                     'sequence' => 'project-status',
                 ],
                 true,
@@ -577,7 +566,7 @@ class ProjectStatusControllerTest extends BaseController
         $responseStatusCode
     ) {
         $projectStatus = (new ProjectStatus())
-            ->setName('project-status3')
+            ->setName('project-status5')
             ->setSequence(1)
         ;
         $this->em->persist($projectStatus);
@@ -601,6 +590,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertContains("The entity AppBundle\\\Entity\\\ProjectStatus must not be deleted.", $response->getContent());
     }
 
     /**
@@ -610,8 +600,8 @@ class ProjectStatusControllerTest extends BaseController
     {
         return [
             [
-                true,
-                Response::HTTP_NO_CONTENT,
+                false,
+                Response::HTTP_INTERNAL_SERVER_ERROR,
             ],
         ];
     }
