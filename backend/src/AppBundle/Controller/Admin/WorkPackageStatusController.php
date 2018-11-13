@@ -183,27 +183,37 @@ class WorkPackageStatusController extends BaseController
      */
     public function deleteAction(Request $request, WorkPackageStatus $workPackageStatus)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($workPackageStatus);
-        $em->flush();
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($workPackageStatus);
+            $em->flush();
 
-        if ($request->isXmlHttpRequest()) {
+            $flashKey = 'success';
+            $flashMessage = $this
+                ->get('translator')
+                ->trans('success.workpackage_status.delete.from_edit', [], 'flashes')
+            ;
+
             $message = [
                 'delete' => 'success',
             ];
+        } catch (\Exception $ex) {
+            $flashMessage = $ex->getMessage();
+            $flashKey = 'error';
+            $message = [
+                'delete' => $flashKey,
+                'message' => $flashMessage,
+            ];
+        }
 
+        if ($request->isXmlHttpRequest()) {
             return new JsonResponse($message);
         }
 
         $this
             ->get('session')
             ->getFlashBag()
-            ->set(
-                'success',
-                $this
-                    ->get('translator')
-                    ->trans('success.workpackage_status.delete.from_edit', [], 'flashes')
-            )
+            ->set($flashKey, $flashMessage)
         ;
 
         return $this->redirectToRoute('app_admin_workpackage_status_list');
