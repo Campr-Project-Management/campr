@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{ message.internal_costs }}</h3>
+        <h3>{{ translate('message.internal_costs') }}</h3>
         <div v-for="(item, index) in value.items">
             <div class="row">
                 <div class="form-group">
@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-md-2">
                         <money-field
-                            :label="label.daily_rate"
+                            :label="translate('label.daily_rate')"
                             :currency="projectCurrencySymbol"
                             :value="item.rate"
                             @input="onItemUpdate('rate', index, $event)" />
@@ -27,7 +27,7 @@
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            :label="label.qty"
+                            :label="translate('label.qty')"
                             :value="item.quantity"
                             :content="item.quantity"
                             @input="onItemUpdate('quantity', index, $event)"/>
@@ -35,7 +35,7 @@
                     <div class="col-md-2">
                         <input-field
                             type="number"
-                            :label="label.days"
+                            :label="translate('label.days')"
                             :value="item.duration"
                             :content="item.duration"
                             @input="onItemUpdate('duration', index, $event)"/>
@@ -46,7 +46,7 @@
                 <div class="form-group last-form-group">
                     <div class="col-md-6">
                         <span class="title">
-                            {{ label.internal_cost_subtotal }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
+                            {{ translate('label.internal_cost_subtotal') }} <b>{{ itemTotal(item) | money({symbol: projectCurrencySymbol}) }}</b>
                         </span>
                     </div>
                     <div class="col-md-6">
@@ -66,7 +66,7 @@
             <div class="form-group last-form-group">
                 <div class="col-md-12">
                     <div class="pull-right">
-                        <a @click="onAdd" class="btn-rounded btn-auto">{{ button.add_internal_cost }} +</a>
+                        <a @click="onAdd" class="btn-rounded btn-auto">{{ translate('button.add_internal_cost') }} +</a>
                     </div>
                 </div>
             </div>
@@ -75,18 +75,18 @@
         <div class="row">
             <div class="form-group last-form-group">                
                 <div class="col-md-4">
-                    <span class="title">{{ message.base_total }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b></span>
+                    <span class="title">{{ translate('message.total') }} <b>{{ baseTotal | money({symbol: projectCurrencySymbol}) }}</b></span>
                 </div>
                 <div class="col-md-4">
                     <money-field
-                        :label="label.forecast_total"
+                        :label="translate('label.forecast_total')"
                         :currency="projectCurrencySymbol"
                         :value="value.forecast"
                         @input="onUpdate('forecast', $event)"/>
                 </div>
                 <div class="col-md-4">
                     <money-field
-                        :label="label.actual_total"
+                        :label="translate('label.actual_total')"
                         :currency="projectCurrencySymbol"
                         :value="value.actual"
                         @input="onUpdate('actual', $event)"/>
@@ -191,28 +191,6 @@ export default {
 
             return this.baseTotal;
         },
-    },
-    data() {
-        return {
-            message: {
-                internal_costs: this.translate('message.internal_costs'),
-                base_total: this.translate('message.total'),
-            },
-            label: {
-                daily_rate: this.translate('label.daily_rate'),
-                qty: this.translate('label.qty'),
-                days: this.translate('label.days'),
-                base_start_date: this.translate('label.base_start_date'),
-                forecast_total: this.translate('label.forecast_total'),
-                actual_total: this.translate('label.actual_total'),
-                internal_cost_subtotal: this.translate('label.internal_cost_subtotal'),
-            },
-            button: {
-                add_internal_cost: this.translate('button.add_internal_cost'),
-                cancel: this.translate('button.cancel'),
-                create_task: this.translate('button.create_task'),
-            },
-        };
     },
 };
 </script>
