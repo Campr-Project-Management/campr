@@ -1,19 +1,25 @@
 <template>
     <div class="file-field">
-        <dropzone
-                :id="id"
-                :options="options"
-                @vdropzone-file-added="onFileAdded"
-                @vdropzone-success="onSuccessfullyUploaded"
-                @vdropzone-error="onError"
-                @vdropzone-queue-complete="onQueueCompleted"
-                @vdropzone-upload-progress="onUploadProgress"/>
+
+        <dropzone :options="dropzoneOptions"
+                  id="id"
+                  :useCustomSlot=true
+                  @vdropzone-file-added="onFileAdded"
+                  @vdropzone-success="onSuccessfullyUploaded"
+                  @vdropzone-error="onError"
+                  @vdropzone-queue-complete="onQueueCompleted"
+                  @vdropzone-upload-progress="onUploadProgress">
+            <span class="dropzone-custom-content">
+                {{ translate(label) }}
+            </span>
+        </dropzone>
     </div>
 </template>
 
 <script>
     import Dropzone from 'vue2-dropzone';
     import httpConfig from '../../../config/http';
+    import {mapGetters} from 'vuex';
 
     export default {
         name: 'file-field',
@@ -145,11 +151,9 @@
             },
         },
         computed: {
-            options() {
-                return Object.assign({}, this.dropzoneOptions, {
-                    dictDefaultMessage: this.translate(this.label),
-                });
-            },
+            ...mapGetters([
+                'locale',
+            ]),
         },
         data() {
             return {
@@ -159,7 +163,6 @@
                     maxFilesize: Math.floor(this.maxFileSize),
                     clickable: true,
                     acceptedFiles: this.acceptedFiles,
-                    dictDefaultMessage: this.label,
                     dictFileTooBig: 'message.file_too_large',
                     dictInvalidFileType: '',
                     createImageThumbnails: false,
@@ -185,28 +188,26 @@
 <style lang="scss">
     .file-field {
         .vue-dropzone {
-            .dz-default {
-                &.dz-message {
-                    text-align: center;
+            .dz-message {
+                text-align: center;
 
-                    span {
-                        cursor: pointer;
-                        background: transparent;
-                        border: 1px solid #646EA0;
-                        height: 30px;
-                        line-height: 30px;
-                        padding: 0 14px;
-                        font-size: 10px;
-                        text-transform: uppercase;
-                        text-align: center;
-                        border-radius: 30px;
-                        background-clip: padding-box;
-                        display: inline-block;
-                        width: 200px;
-                        letter-spacing: 1.2px;
-                        font-weight: 500;
-                        transition: all 0.2s ease-in;
-                    }
+                span {
+                    cursor: pointer;
+                    background: transparent;
+                    border: 1px solid #646EA0;
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0 14px;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    text-align: center;
+                    border-radius: 30px;
+                    background-clip: padding-box;
+                    display: inline-block;
+                    width: 200px;
+                    letter-spacing: 1.2px;
+                    font-weight: 500;
+                    transition: all 0.2s ease-in;
                 }
             }
         }
