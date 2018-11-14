@@ -13,9 +13,7 @@ class RasciControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
@@ -33,9 +31,7 @@ class RasciControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
@@ -51,24 +47,13 @@ class RasciControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $workPackage = (new WorkPackage())
-            ->setPuid('1')
-            ->setType(WorkPackage::TYPE_PHASE)
-            ->setName('workpackage10')
-            ->setDuration(0)
-        ;
-        $this->em->persist($workPackage);
-        $this->em->flush();
+        $user = $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[workPackage]'] = $workPackage->getId();
-        $form['create[user]'] = $this->user->getId();
+        $form['create[workPackage]'] = 4;
+        $form['create[user]'] = $user->getId();
         $form['create[data]'] = 'data3';
 
         $this->client->submit($form);
@@ -80,39 +65,28 @@ class RasciControllerTest extends BaseController
         $rasci = $this
             ->em
             ->getRepository(Rasci::class)
-            ->findOneBy([
-                'data' => 'data3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'data' => 'data3',
+                ]
+            );
         $this->em->remove($rasci);
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $user = $this->login();
 
-        $workPackage = (new WorkPackage())
-            ->setType(WorkPackage::TYPE_PHASE)
-            ->setPuid('2')
-            ->setName('workpackage11')
-            ->setDuration(0)
-        ;
-        $this->em->persist($workPackage);
-
+        /** @var WorkPackage $workPackage */
+        $workPackage = $this->em->getRepository(WorkPackage::class)->find(4);
         $rasci = (new Rasci())
             ->setWorkPackage($workPackage)
-            ->setUser($this->user)
-            ->setData('data4')
-        ;
+            ->setUser($user)
+            ->setData('data4');
         $this->em->persist($rasci);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/rasci/%d/edit', $rasci->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/rasci/%d/delete', $rasci->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
@@ -121,9 +95,7 @@ class RasciControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/edit');
@@ -142,9 +114,7 @@ class RasciControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/edit');
@@ -161,9 +131,7 @@ class RasciControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/2/edit');
 
@@ -179,9 +147,7 @@ class RasciControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/list');
@@ -198,9 +164,7 @@ class RasciControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/rasci/1/show');

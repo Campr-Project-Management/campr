@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\API;
 
+use AppBundle\Entity\WorkPackageCategory;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,11 +23,20 @@ class WorkPackageCategoryControllerTest extends BaseController
         $user = $this->getUserByUsername('user4');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/workpackage-categories', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            '/api/workpackage-categories',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -73,11 +83,20 @@ class WorkPackageCategoryControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -102,9 +121,9 @@ class WorkPackageCategoryControllerTest extends BaseController
      * @dataProvider getDataForCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateAction(
         array $content,
@@ -115,11 +134,31 @@ class WorkPackageCategoryControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/workpackage-categories', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/workpackage-categories',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $actual = json_decode($response->getContent(), true);
+
+        try {
+            $responseContent['id'] = $actual['id'];
+
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $category = $this->em
+                ->getRepository(WorkPackageCategory::class)
+                ->find($actual['id']);
+
+            $this->em->remove($category);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -146,9 +185,9 @@ class WorkPackageCategoryControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -159,11 +198,32 @@ class WorkPackageCategoryControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('PATCH', '/api/workpackage-categories/4', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $category = new WorkPackageCategory();
+        $category->setName('foobar');
+        $this->em->persist($category);
+        $this->em->flush($category);
+
+        $this->client->request(
+            'PATCH',
+            sprintf('/api/workpackage-categories/%d', $category->getId()),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
+
         $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $actual = json_decode($response->getContent(), true);
+
+        try {
+            $responseContent['id'] = $actual['id'];
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($category);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -196,14 +256,31 @@ class WorkPackageCategoryControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
+        $category = new WorkPackageCategory();
+        $category->setName('foobar');
+        $this->em->persist($category);
+        $this->em->flush($category);
+
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/workpackage-categories/4', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'DELETE',
+            sprintf('/api/workpackage-categories/%d', $category->getId()),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($category);
+            $this->em->flush();
+        }
     }
 
     /**

@@ -12,9 +12,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForCreateAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateAction(
         array $content,
@@ -36,21 +36,24 @@ class RiskStrategyControllerTest extends BaseController
             ],
             json_encode($content)
         );
+
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
-        $riskStrategy = json_decode($response->getContent(), true);
+        try {
+            $responseContent['id'] = $actual['id'];
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $riskStrategy = $this
-            ->em
-            ->getRepository(RiskStrategy::class)
-            ->find($riskStrategy['id'])
-        ;
-        $this->em->remove($riskStrategy);
-        $this->em->flush();
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $riskStrategy = $this
+                ->em
+                ->getRepository(RiskStrategy::class)
+                ->find($actual['id']);
+            $this->em->remove($riskStrategy);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -61,7 +64,7 @@ class RiskStrategyControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'risk-strategy3',
+                    'name' => 'foobar',
                     'sequence' => 1,
                 ],
                 true,
@@ -70,7 +73,7 @@ class RiskStrategyControllerTest extends BaseController
                     'project' => null,
                     'projectName' => null,
                     'id' => 7,
-                    'name' => 'risk-strategy3',
+                    'name' => 'foobar',
                     'sequence' => 1,
                 ],
             ],
@@ -81,9 +84,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnCreateAction(
         array $content,
@@ -91,10 +94,9 @@ class RiskStrategyControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
-        $riskStrategy = (new RiskStrategy())
-            ->setName('risk-strategy3')
-            ->setSequence(1)
-        ;
+        $riskStrategy = new RiskStrategy();
+        $riskStrategy->setName('foobar');
+        $riskStrategy->setSequence(1);
         $this->em->persist($riskStrategy);
         $this->em->flush();
 
@@ -113,13 +115,16 @@ class RiskStrategyControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
-
-        $this->em->remove($riskStrategy);
-        $this->em->flush();
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isClientError());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($riskStrategy);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -130,7 +135,7 @@ class RiskStrategyControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'risk-strategy3',
+                    'name' => 'foobar',
                     'sequence' => 1,
                 ],
                 true,
@@ -148,9 +153,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnCreateAction(
         array $content,
@@ -205,9 +210,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForSequenceIsNumberOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testSequenceIsNumberOnCreateAction(
         array $content,
@@ -262,9 +267,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -272,12 +277,18 @@ class RiskStrategyControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
+        $strategy = new RiskStrategy();
+        $strategy->setName('foobar');
+        $strategy->setSequence(1);
+        $this->em->persist($strategy);
+        $this->em->flush();
+
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
         $this->client->request(
             'PATCH',
-            '/api/risk-strategies/5',
+            sprintf('/api/risk-strategies/%d', $strategy->getId()),
             [],
             [],
             [
@@ -287,10 +298,17 @@ class RiskStrategyControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        try {
+            $responseContent['id'] = $actual['id'];
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($strategy);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -301,7 +319,7 @@ class RiskStrategyControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'risk-strategy1',
+                    'name' => 'foobar2',
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
@@ -309,7 +327,7 @@ class RiskStrategyControllerTest extends BaseController
                     'project' => null,
                     'projectName' => null,
                     'id' => 5,
-                    'name' => 'risk-strategy1',
+                    'name' => 'foobar2',
                     'sequence' => 1,
                 ],
             ],
@@ -320,9 +338,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnEditAction(
         array $content,
@@ -376,9 +394,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -434,9 +452,9 @@ class RiskStrategyControllerTest extends BaseController
      * @dataProvider getDataForSequenceIsNumberOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testSequenceIsNumberOnEditAction(
         array $content,
@@ -497,10 +515,9 @@ class RiskStrategyControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
-        $riskStrategy = (new RiskStrategy())
-            ->setName('risk-strategy3')
-            ->setSequence(1)
-        ;
+        $riskStrategy = new RiskStrategy();
+        $riskStrategy->setName('risk-strategy3');
+        $riskStrategy->setSequence(1);
         $this->em->persist($riskStrategy);
         $this->em->flush();
 
@@ -520,8 +537,13 @@ class RiskStrategyControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        try {
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        } finally {
+            $this->em->remove($riskStrategy);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -566,10 +588,12 @@ class RiskStrategyControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
+        $responseContent['id'] = $actual['id'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**

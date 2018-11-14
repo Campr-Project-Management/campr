@@ -5,7 +5,6 @@ namespace AppBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\FileSystem as FileSystemEntity;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -18,9 +17,7 @@ class MediaControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/create');
@@ -36,9 +33,7 @@ class MediaControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/create');
@@ -55,9 +50,7 @@ class MediaControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $container = self::$kernel->getContainer();
 
@@ -85,33 +78,12 @@ class MediaControllerTest extends BaseController
         $fd->fwrite('Test document');
         $fd->fflush();
 
-        $company = (new Company())
-            ->setName('company4')
-        ;
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-
-        $fileSystem = (new FileSystemEntity())
-            ->setName('fs_test')
-            ->setProject($project)
-            ->setDriver(FileSystemEntity::LOCAL_ADAPTER)
-            ->setConfig(['path' => $container->getParameter('media_upload_folder_test').'/fs'])
-        ;
-
-        $this->em->persist($company);
-        $this->em->persist($project);
-        $this->em->persist($fileSystem);
-
-        $this->em->flush();
-
+        /** @var Project $project */
+        $project = $this->em->getRepository(Project::class)->find(1);
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/'.$project->getId().'/media/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['media_upload[fileSystem]'] = $fileSystem->getId();
+        $form['media_upload[fileSystem]'] = 1;
         $form['media_upload[file]'] = $file;
 
         $this->client->submit($form);
@@ -119,44 +91,6 @@ class MediaControllerTest extends BaseController
 
         $this->client->followRedirect();
         $this->assertContains('Media file successfully created!', $this->client->getResponse()->getContent());
-
-        $media = $this
-            ->em
-            ->getRepository(Media::class)
-            ->findOneBy([
-                'path' => 'file2.txt',
-            ])
-        ;
-        $this->em->remove($media);
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $fileSystem = $this
-            ->em
-            ->getRepository(FileSystemEntity::class)
-            ->findOneBy([
-                'name' => 'fs_test',
-            ])
-        ;
-        $this->em->remove($fileSystem);
-
-        $this->em->flush();
 
         try {
             $fs->remove($container->getParameter('media_upload_folder').'/file2.txt');
@@ -168,27 +102,17 @@ class MediaControllerTest extends BaseController
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $container = self::$kernel->getContainer();
 
-        $company = (new Company())
-            ->setName('company4')
-        ;
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
+        /** @var Project $project */
+        $project = $this->em->getRepository(Project::class)->find(1);
         $fileSystem = (new FileSystemEntity())
             ->setName('fs_test')
             ->setProject($project)
             ->setDriver(FileSystemEntity::LOCAL_ADAPTER)
-            ->setConfig(['path' => $container->getParameter('media_upload_folder_test').'/fs'])
-        ;
+            ->setConfig(['path' => $container->getParameter('media_upload_folder_test').'/fs']);
         $this->em->persist($project);
         $this->em->persist($fileSystem);
 
@@ -216,48 +140,18 @@ class MediaControllerTest extends BaseController
             ->setFile($file)
             ->setPath($file->getFilename())
             ->setMimeType($file->getMimeType())
-            ->setFileSize($file->getSize())
-        ;
+            ->setFileSize($file->getSize());
         $this->em->persist($media);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project/%d/media/%d/edit', $project->getId(), $media->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/project/%d/media/%d/delete', $project->getId(), $media->getId())
+        );
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Media file successfully deleted!', $this->client->getResponse()->getContent());
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $fileSystem = $this
-            ->em
-            ->getRepository(FileSystemEntity::class)
-            ->findOneBy([
-                'name' => 'fs_test',
-            ])
-        ;
-        $this->em->remove($fileSystem);
-
-        $this->em->flush();
 
         try {
             $fs->remove($container->getParameter('media_upload_folder_test'));
@@ -268,9 +162,7 @@ class MediaControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/1/edit');
@@ -286,9 +178,7 @@ class MediaControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/1/edit');
@@ -303,15 +193,12 @@ class MediaControllerTest extends BaseController
 
     public function testEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $media = $this
             ->em
             ->getRepository(Media::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $container = self::$kernel->getContainer();
         $fs = new Filesystem();
@@ -354,9 +241,7 @@ class MediaControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/list');
@@ -376,9 +261,7 @@ class MediaControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/media/1/show');
 
@@ -391,13 +274,14 @@ class MediaControllerTest extends BaseController
 
     public function testDownloadAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $container = self::$kernel->getContainer();
-        $fs = new Filesystem();
+        $filename = 'file2.txt';
+        $file = new File(sprintf('/tmp/%s', $filename), false);
+
         try {
+            $fs = new Filesystem();
             $oldmask = umask(0);
             if (!$fs->exists($container->getParameter('media_upload_folder_test'))) {
                 $fs->mkdir($container->getParameter('media_upload_folder_test'));
@@ -406,26 +290,36 @@ class MediaControllerTest extends BaseController
                 $fs->touch($container->getParameter('media_upload_folder_test').'/file2.txt');
             }
             umask($oldmask);
-        } catch (IOExceptionInterface $e) {
-            sprintf($e->getMessage());
-        }
-        $file = new File($container->getParameter('media_upload_folder_test').'/file2.txt');
-        $fd = $file->openFile('w');
-        $fd->fwrite('Test document');
-        $fd->fflush();
 
-        $this->client->request(Request::METHOD_GET, '/admin/project/media/1/download');
-        $headers = $this->client->getResponse()->headers->all();
+            $file = new File($container->getParameter('media_upload_folder_test').'/file2.txt');
+            $fd = $file->openFile('w');
+            $fd->fwrite('Test document');
+            $fd->fflush();
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $this->assertEquals('mime/type', $headers['content-type'][0]);
-        $this->assertEquals('attachment;filename="file2.txt', $headers['content-disposition'][0]);
-        $this->assertEquals('Test document', $this->client->getResponse()->getContent());
+            $fileSystem = $this->em->find(FileSystemEntity::class, 1);
 
-        try {
-            $fs->remove($container->getParameter('media_upload_folder_test'));
-        } catch (IOExceptionInterface $e) {
-            sprintf($e->getMessage());
+            $media = new Media();
+            $media->setFile($file);
+            $media->setFileSystem($fileSystem);
+            $media->setMimeType('plain/text');
+            $media->setOriginalName($filename);
+            $media->setFileSize($file->getSize());
+
+            $this->em->persist($media);
+            $this->em->flush();
+
+            $this->client->request(Request::METHOD_GET, sprintf('/admin/project/media/%d/download', $media->getId()));
+            $headers = $this->client->getResponse()->headers->all();
+
+            $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+            $this->assertEquals('mime/type', $headers['content-type'][0]);
+            $this->assertEquals(
+                sprintf('attachment;filename="%s', $media->getPath()),
+                $headers['content-disposition'][0]
+            );
+            $this->assertEquals('Test document', $this->client->getResponse()->getContent());
+        } finally {
+            unlink($file->getRealPath());
         }
     }
 }

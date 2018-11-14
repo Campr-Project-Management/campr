@@ -1,0 +1,12 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block subject %}
+    {{ 'email.subject.user.project.cloned'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.general.hello'|trans }} {{ full_name }},</p>
+    <p>{{ 'email.message.project.cloned'|trans }} <a href="{{ url }}">{{ 'email.general.link'|trans }}</a></p>
+{% endblock %}

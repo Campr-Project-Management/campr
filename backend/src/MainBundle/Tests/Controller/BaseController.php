@@ -37,11 +37,15 @@ class BaseController extends WebTestCase
         $bundle = explode('\\', get_class($this));
         $host = 'AppBundle' === $bundle[0] ? 'team.'.$domain : $domain;
 
-        $this->client->setServerParameters([
-            'HTTP_HOST' => $host,
-        ]);
+        $this->client->setServerParameters(
+            [
+                'HTTP_HOST' => $host,
+            ]
+        );
+        $this->client->disableReboot();
 
         $this->em = $this->client->getContainer()->get('doctrine')->getManager();
+        $this->em->beginTransaction();
     }
 
     /**
@@ -63,8 +67,7 @@ class BaseController extends WebTestCase
             ->client
             ->getContainer()
             ->get('security.encoder_factory')
-            ->getEncoder($user)
-        ;
+            ->getEncoder($user);
         $user
             ->setUsername($username)
             ->setEmail($email)
@@ -73,8 +76,7 @@ class BaseController extends WebTestCase
             ->setLastName('LastName')
             ->setRoles($roles)
             ->setIsEnabled(true)
-            ->setIsSuspended(false)
-        ;
+            ->setIsSuspended(false);
 
         $this->em->persist($user);
         $this->em->flush();
@@ -92,30 +94,35 @@ class BaseController extends WebTestCase
         return $this
             ->em
             ->getRepository(User::class)
-            ->findOneByUsername($username)
-        ;
+            ->findOneByUsername($username);
     }
 
     /**
-     * @param User $user
+     * @param User|null $user
+     *
+     * @return User
      */
-    public function login(User $user)
+    public function login(User $user = null): User
     {
-        if ($this->user) {
-            $session = $this->client->getContainer()->get('session');
-
-            $firewalls = ['main', 'app'];
-
-            foreach ($firewalls as $firewall) {
-                $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
-                $session->set(sprintf('_security_%s', $firewall), serialize($token));
-            }
-
-            $session->save();
-
-            $cookie = new Cookie($session->getName(), $session->getId());
-            $this->client->getCookieJar()->set($cookie);
+        if (!$user) {
+            $user = $this->getUserByUsername('superadmin');
+            $this->user = $user;
         }
+
+        $session = $this->client->getContainer()->get('session');
+        $firewalls = ['main', 'app'];
+
+        foreach ($firewalls as $firewall) {
+            $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
+            $session->set(sprintf('_security_%s', $firewall), serialize($token));
+        }
+
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->client->getCookieJar()->set($cookie);
+
+        return $user;
     }
 
     public function logout()
@@ -134,8 +141,7 @@ class BaseController extends WebTestCase
         $subteam = new Subteam();
         $subteam
             ->setName($name)
-            ->setDescription($description)
-        ;
+            ->setDescription($description);
         $this->em->persist($subteam);
         $this->em->flush();
 
@@ -153,8 +159,7 @@ class BaseController extends WebTestCase
         $subteamMember = new SubteamMember();
         $subteamMember
             ->setUser($user)
-            ->setSubteam($subteam)
-        ;
+            ->setSubteam($subteam);
         $this->em->persist($subteamMember);
         $this->em->flush();
 
@@ -173,8 +178,7 @@ class BaseController extends WebTestCase
         $subteamRole = new SubteamRole();
         $subteamRole
             ->setName($name)
-            ->setDescription($description)
-        ;
+            ->setDescription($description);
 
         foreach ($subteamMembers as $subteamMember) {
             $subteamRole->addSubteamMember($subteamMember);
@@ -191,20 +195,9 @@ class BaseController extends WebTestCase
      */
     protected function tearDown()
     {
-        if ($this->user) {
-            $this->em->clear();
-            $user = $this
-                ->em
-                ->getRepository(User::class)
-                ->findOneBy([
-                    'email' => $this->user->getEmail(),
-                ]);
-            $this
-                ->em
-                ->remove($user)
-            ;
-
-            $this->em->flush();
+        try {
+            $this->em->rollback();
+        } catch (\Exception $e) {
         }
 
         $this->client = null;
@@ -212,5 +205,13 @@ class BaseController extends WebTestCase
         $this->user = null;
 
         parent::tearDown();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getClientJsonResponse(): array
+    {
+        return json_decode($this->client->getResponse()->getContent(), true);
     }
 }

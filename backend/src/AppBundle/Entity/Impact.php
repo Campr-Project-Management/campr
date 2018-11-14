@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ImpactRepository")
  * @UniqueEntity(fields="name", message="unique.name")
  */
-class Impact
+class Impact implements ResourceInterface
 {
     /**
      * @var int

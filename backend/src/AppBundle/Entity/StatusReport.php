@@ -2,8 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\BlameableInterface;
 use Component\Resource\Model\BlameableTrait;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\SnapshotAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -19,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="status_report")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusReportRepository")
  */
-class StatusReport implements SnapshotAwareInterface, TimestampableInterface, BlameableInterface
+class StatusReport implements SnapshotAwareInterface, TimestampableInterface, BlameableInterface, ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait, BlameableTrait;
 
@@ -125,11 +129,11 @@ class StatusReport implements SnapshotAwareInterface, TimestampableInterface, Bl
     }
 
     /**
-     * @param Project|null $project
+     * @param ProjectInterface|null $project
      *
      * @return $this
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

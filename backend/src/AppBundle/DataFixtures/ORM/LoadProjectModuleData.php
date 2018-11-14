@@ -19,22 +19,21 @@ class LoadProjectModuleData extends AbstractFixture implements OrderedFixtureInt
     {
         $project = $this->getReference('project1');
         for ($i = 1; $i <= 2; ++$i) {
-            $projectModule = (new ProjectModule())
-                ->setModule('project-module'.$i)
-                ->setIsEnabled(true)
-                ->setProject($project)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectModule = new ProjectModule();
+            $projectModule->setModule('project-module'.$i);
+            $projectModule->setIsEnabled(true);
+            $projectModule->setProject($project);
+            $projectModule->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+
             $manager->persist($projectModule);
         }
 
-        $projectModule = (new ProjectModule())
-            ->setModule('project-module'.$i)
-            ->setProject($project)
-            ->setIsEnabled(true)
-            ->setIsRequired(true)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $projectModule = new ProjectModule();
+        $projectModule->setModule('project-module'.$i);
+        $projectModule->setProject($project);
+        $projectModule->setIsEnabled(true);
+        $projectModule->setIsRequired(true);
+        $projectModule->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $manager->persist($projectModule);
 
         $manager->flush();

@@ -2,16 +2,19 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Timephase.
  *
  * @ORM\Table(name="timephase")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TimephaseRepository")
+ * @Cloner\Exclude()
  */
-class Timephase
+class Timephase implements ResourceInterface
 {
     /**
      * @var int

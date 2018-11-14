@@ -13,9 +13,7 @@ class SubteamMemberControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('subteam_user1', 'subteam_user1@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/subteam-member/create');
@@ -33,9 +31,7 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('subteam_user2', 'subteam_user2@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/subteam-member/create');
@@ -51,9 +47,7 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('subteam_user3', 'subteam_user3@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $user = $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
@@ -62,7 +56,7 @@ class SubteamMemberControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/subteam-member/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[user]'] = $this->user->getId();
+        $form['create[user]'] = $user->getId();
         $form['create[subteam]'] = $subteam->getId();
         $this->client->submit($form);
 
@@ -73,51 +67,38 @@ class SubteamMemberControllerTest extends BaseController
         $subteam = $this
             ->em
             ->getRepository(Subteam::class)
-            ->findOneBy([
-                'id' => $subteam->getId(),
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'id' => $subteam->getId(),
+                ]
+            );
         $this->em->remove($subteam);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('subteam_user4', 'subteam_user4@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
         /** @var SubteamMember $subteamMember */
         $subteamMember = $this->createSubteamMember($this->user, $subteam);
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId()));
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/subteam-member/%d/delete', $subteamMember->getId())
+        );
 
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Subteam Member successfully deleted!', $this->client->getResponse()->getContent());
-
-        $subteam = $this
-            ->em
-            ->getRepository(Subteam::class)
-            ->findOneBy([
-                'id' => $subteam->getId(),
-            ])
-        ;
-        $this->em->remove($subteam);
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('subteam_user5', 'subteam_user5@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
@@ -125,7 +106,10 @@ class SubteamMemberControllerTest extends BaseController
         $subteamMember = $this->createSubteamMember($this->user, $subteam);
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId()));
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId())
+        );
 
         $this->assertContains('id="create_user"', $crawler->html());
         $this->assertContains('name="create[user]"', $crawler->html());
@@ -145,9 +129,7 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('subteam_user6', 'subteam_user6@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
@@ -155,7 +137,10 @@ class SubteamMemberControllerTest extends BaseController
         $subteamMember = $this->createSubteamMember($this->user, $subteam);
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId()));
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId())
+        );
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[user]'] = '';
@@ -167,17 +152,19 @@ class SubteamMemberControllerTest extends BaseController
         $subteam = $this
             ->em
             ->getRepository(Subteam::class)
-            ->findOneBy([
-                'id' => $subteam->getId(),
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'id' => $subteam->getId(),
+                ]
+            );
         $subteamMember = $this
             ->em
             ->getRepository(SubteamMember::class)
-            ->findOneBy([
-                'id' => $subteamMember->getId(),
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'id' => $subteamMember->getId(),
+                ]
+            );
         $this->em->remove($subteam);
         $this->em->remove($subteamMember);
         $this->em->flush();
@@ -187,9 +174,7 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('subteam_user7', 'subteam_user7@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
@@ -197,7 +182,10 @@ class SubteamMemberControllerTest extends BaseController
         $subteamMember = $this->createSubteamMember($this->user, $subteam);
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId()));
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/subteam-member/%d/edit', $subteamMember->getId())
+        );
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[user]']->select($this->user->getId());
@@ -212,17 +200,19 @@ class SubteamMemberControllerTest extends BaseController
         $subteam = $this
             ->em
             ->getRepository(Subteam::class)
-            ->findOneBy([
-                'id' => $subteam->getId(),
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'id' => $subteam->getId(),
+                ]
+            );
         $subteamMember = $this
             ->em
             ->getRepository(SubteamMember::class)
-            ->findOneBy([
-                'id' => $subteamMember->getId(),
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'id' => $subteamMember->getId(),
+                ]
+            );
         $this->em->remove($subteam);
         $this->em->remove($subteamMember);
         $this->em->flush();
@@ -232,9 +222,7 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('subteam_user8', 'subteam_user8@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/subteam-member/list');
@@ -251,24 +239,25 @@ class SubteamMemberControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('subteam_user9', 'subteam_user9@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $user = $this->login();
 
         /** @var Subteam $subteam */
         $subteam = $this->createSubteam('Generic name', 'Lorem ipsum dolor sit amet');
         /** @var SubteamMember $subteamMember */
-        $subteamMember = $this->createSubteamMember($this->user, $subteam);
+        $subteamMember = $this->createSubteamMember($user, $subteam);
 
         /** @var Crawler $crawler */
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/subteam-member/%d/show', $subteamMember->getId()));
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/subteam-member/%d/show', $subteamMember->getId())
+        );
 
         $this->assertEquals(1, $crawler->filter('.dropdown-menu-right')->count());
         $this->assertEquals(1, $crawler->filter('.table-responsive')->count());
         $this->assertEquals(1, $crawler->filter('.table-striped')->count());
         $this->assertEquals(5, $crawler->filter('.table-striped tr')->count());
         $this->assertContains('Generic name', $crawler->html());
-        $this->assertContains('subteam_user9@trisoft.ro', $crawler->html());
+        $this->assertContains($user->getEmail(), $crawler->html());
 
         $this->em->remove($subteam);
         $this->em->remove($subteamMember);

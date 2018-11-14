@@ -3,6 +3,7 @@
         <div class="page-section">
             <div class="header flex">
                 <h1>{{ translate('message.project_dashboard') }}</h1>
+                <button v-if="$can('roles.project_manager|roles.project_sponsor', project)" v-on:click="openCopyProjectModal()" class="btn-rounded btn-md btn-auto info-bg">{{ translate('message.duplicate') }}</button>
             </div>
 
             <div class="content widget-grid">
@@ -119,17 +120,12 @@
                             </div>
                         </scrollbar>
 
-                        <div class="flex flex-direction-reverse margintop20"
-                             v-if="project.status !== projectStatus.PROJECT_STATUS_CLOSED">
-                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{
-                                translate('button.close_project') }}
-                            </button>
+                        <div class="flex flex-direction-reverse margintop20">
+                            <button v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED" v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translate('button.close_project') }}</button>
                         </div>
                         <hr>
 
-                        <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color"
-                                                                                              v-if="project.projectUsers">{{
-                            project.projectUsers.length }}</b></h4>
+                        <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">
                             View entire team
                         </router-link>
@@ -179,15 +175,9 @@
                                     <b>{{ item }}</b>
                                 </div>
                                 <div v-else>
-                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{
-                                        translate('color_status.not_started') }}: {{
-                                        item['color_status.not_started'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{
-                                        translate('color_status.in_progress') }}: {{
-                                        item['color_status.in_progress'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{
-                                        translate('color_status.finished') }}: {{ item['color_status.finished'].count
-                                        }}</p>
+                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{ translate('color_status.not_started') }}: {{ item['color_status.not_started'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{ translate('color_status.in_progress') }}: {{ item['color_status.in_progress'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{ translate('color_status.finished') }}: {{ item['color_status.finished'].count }}</p>
                                 </div>
                             </li>
                         </ul>
@@ -206,55 +196,83 @@
         </div>
 
         <alert-modal v-if="showClosed" body="message.project_closed" @close="showClosed = false;"/>
+        <alert-modal v-if="showCloned" body="message.project.clone.in_progress" @close="showCloned = false;" />
+        <modal v-if="showCopyProjectModal" @close="showCopyProjectModal = false" v-bind:hasSpecificClass="true">
+            <p class="modal-title">{{ translate('message.duplicate') }}</p>
+            <div class="form-group">
+                <input-field
+                        v-model="projectName"
+                        type="text"
+                        :label="translate('message.project_name')"/>
+                <error at-path="projectName" v-if="validationMessages"
+                       v-for="message in validationMessages"
+                       :message="message" />
+            </div>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showCopyProjectModal = false"
+                   class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="doCopyProjectModal()" v-if="projectName"
+                   class="btn-rounded btn-auto second-bg">{{ translate('button.copy_project') }} +</a>
+            </div>
+        </modal>
     </div>
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import CircleChart from '../_common/_charts/CircleChart';
-    import SmallTaskBox from '../Dashboard/SmallTaskBox';
-    import AlertModal from '../_common/AlertModal.vue';
-    import moment from 'moment';
-    import * as projectStatus from '../../store/modules/project-status';
-    import TrafficLight from '../_common/TrafficLight';
-    import tl from '../../util/traffic-light';
-    import ProjectDashboardRecentTasks from './Dashboard/RecentTasks';
+import {mapGetters, mapActions} from 'vuex';
+import InputField from '../_common/_form-components/InputField.vue';
+import Modal from '../_common/Modal.vue';
+import Error from '../_common/_messages/Error.vue';
+import CircleChart from '../_common/_charts/CircleChart';
+import SmallTaskBox from '../Dashboard/SmallTaskBox';
+import AlertModal from '../_common/AlertModal.vue';
+import moment from 'moment';
+import * as projectStatus from '../../store/modules/project-status';
+import TrafficLight from '../_common/TrafficLight';
+import tl from '../../util/traffic-light';
+import ProjectDashboardRecentTasks from './Dashboard/RecentTasks';
 
-    export default {
-        props: {
-            locale: {
-                type: String,
-            },
+export default {
+    props: {
+        locale: {
+            type: String,
         },
-        components: {
-            ProjectDashboardRecentTasks,
-            TrafficLight,
-            CircleChart,
-            SmallTaskBox,
-            moment,
-            AlertModal,
+    },
+    components: {
+        InputField,
+        Modal,
+        Error,
+        ProjectDashboardRecentTasks,
+        TrafficLight,
+        CircleChart,
+        SmallTaskBox,
+        moment,
+        AlertModal,
+    },
+    methods: {
+        ...mapActions([
+            'getProjectById',
+            'getContractByProjectId',
+            'getRecentTasksByProject',
+            'getProjectUsers',
+            'getTasksForSchedule',
+            'getTasksStatus',
+            'closeProject',
+            'editProject',
+            'cloneProject',
+        ]),
+        onUpdateProjectTrafficLight(trafficLight) {
+            this.editProject({
+                trafficLight: trafficLight,
+                projectId: this.$route.params.id,
+            });
+            this.projectTrafficLight = trafficLight;
         },
-        methods: {
-            ...mapActions([
-                'getProjectById',
-                'getContractByProjectId',
-                'getRecentTasksByProject',
-                'getProjectUsers',
-                'getTasksForSchedule',
-                'getTasksStatus',
-                'closeProject',
-                'editProject',
-            ]),
-            onUpdateProjectTrafficLight(trafficLight) {
-                this.editProject({
-                    trafficLight: trafficLight,
-                    projectId: this.$route.params.id,
-                });
-                this.projectTrafficLight = trafficLight;
-            },
-            doCloseProject() {
-                const {id} = this.project;
-                this.closeProject({id}).then(
+        doCloseProject() {
+            const {id} = this.project;
+            this
+                .closeProject({id})
+                .then(
                     (response) => {
                         if (response.status === 200) {
                             this.showClosed = true;
@@ -266,62 +284,89 @@
                         this.$flashError('message.unable_to_save');
                     },
                 )
-                ;
-            },
+            ;
         },
-        created() {
-            this.getProjectById(this.$route.params.id);
-            this.getTasksForSchedule(this.$route.params.id);
-            this.getProjectUsers({id: this.$route.params.id});
-            this.getTasksStatus(this.$route.params.id);
-            this.getRecentTasksByProject(this.$route.params.id);
-            this.getContractByProjectId(this.$route.params.id);
+        openCopyProjectModal() {
+            this.showCopyProjectModal = true;
         },
-        computed: {
-            ...mapGetters({
-                contract: 'currentContract',
-            }),
-            ...mapGetters([
-                'trafficLights',
-                'project',
-                'tasks',
-                'tasksForSchedule',
-                'projectTasksStatus',
-                'localUser',
-            ]),
-            projectContractId() {
-                if (this.contract && this.contract.id) {
-                    return this.contract.id;
+        doCopyProjectModal() {
+            let data = {id: this.project.id, name: this.projectName};
+            this
+            .cloneProject(data)
+             .then(
+                (response) => {
+                    this.showCopyProjectModal = false;
+                    this.projectName = null;
+                    if(response.status === 200) {
+                        this.showFailed = false;
+                        this.showCloned = true;
+                    }else{
+                        this.showFailed = true;
+                        this.showCloned = false;
+                    }
                 }
+            )
+            ;
+        },
+    },
+    created() {
+        this.getProjectById(this.$route.params.id);
+        this.getTasksForSchedule(this.$route.params.id);
+        this.getProjectUsers({id: this.$route.params.id});
+        this.getTasksStatus(this.$route.params.id);
+        this.getRecentTasksByProject(this.$route.params.id);
+        this.getContractByProjectId(this.$route.params.id);
+    },
+    computed: {
+        ...mapGetters({
+            contract: 'currentContract',
+        }),
+        ...mapGetters([
+            'trafficLights',
+            'project',
+            'tasks',
+            'tasksForSchedule',
+            'projectTasksStatus',
+            'localUser',
+        ]),
+        projectContractId() {
+            if (this.contract && this.contract.id) {
+                return this.contract.id;
+            }
 
-                return null;
-            },
-            downloadPdf() {
-                return Routing.generate('app_contract_pdf', {id: this.projectContractId});
-            },
-            recentTasks() {
-                let tasks = this.tasks;
-                if (!tasks) {
-                    return [];
-                }
+            return null;
+        },
+        downloadPdf() {
+            return Routing.generate('app_contract_pdf', {id: this.projectContractId});
+        },
+        recentTasks() {
+            let tasks = this.tasks;
+            if (!tasks) {
+                return [];
+            }
 
-                return tasks;
-            },
+            return tasks;
         },
-        watch: {
-            project(value) {
-                this.projectTrafficLight = value && value.trafficLight;
-            },
+    },
+    watch: {
+        project(value) {
+            this.projectTrafficLight = value && value.trafficLight;
         },
-        data() {
-            return {
-                showClosed: false,
-                activePage: 1,
-                projectStatus,
-                projectTrafficLight: tl.TrafficLight.GREEN,
-            };
-        },
-    };
+    },
+    data() {
+        return {
+            showClosed: false,
+            showFailed: false,
+            showCloned: false,
+            activePage: 1,
+            projectStatus,
+            projectTrafficLight: tl.TrafficLight.GREEN,
+            showCopyProjectModal: false,
+            projectName: '',
+            cloneErrorMessages: null,
+        };
+    },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
