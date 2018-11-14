@@ -9,7 +9,6 @@ use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Label;
-use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\Project;
@@ -34,6 +33,7 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
+use AppBundle\Event\ProjectEvent;
 use AppBundle\Event\RasciEvent;
 use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
@@ -61,6 +61,7 @@ use AppBundle\Repository\RiskRepository;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\ProjectVoter;
 use Component\Rasci\RasciEvents;
+use Component\Project\ProjectEvents;
 use Doctrine\ORM\EntityManager;
 use MainBundle\Controller\API\ApiController;
 use MainBundle\Form\InviteUserType;
@@ -1123,6 +1124,8 @@ class ProjectController extends ApiController
      *
      * @param Request $request
      * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function importTasksAction(Request $request, Project $project)
     {
@@ -1558,7 +1561,7 @@ class ProjectController extends ApiController
      * @Method({"POST"})
      *
      * @param Request $request
-     * @param Meeting $meeting
+     * @param Project $project
      *
      * @return JsonResponse
      */
@@ -2032,5 +2035,36 @@ class ProjectController extends ApiController
                 'items' => $project->getProjectSponsors(),
             ]
         );
+    }
+
+    /**
+     * Clone a specific Project.
+     *
+     * @Route("/{id}", name="app_api_project_clone", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function cloneAction(Request $request, Project $project)
+    {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $name = $request->request->get('name');
+
+        if (null === $name) {
+            $errors = [
+                'messages' => [
+                    'number' => $this->get('translator')->trans('not_blank.number', [], 'validators'),
+                ],
+            ];
+
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->get('event_dispatcher')->dispatch(ProjectEvents::ON_CLONE, new ProjectEvent($project, $this->getUser(), $name));
+
+        return $this->createApiResponse($project, Response::HTTP_CREATED);
     }
 }

@@ -74,7 +74,7 @@ class DefaultController extends Controller
 
             $this
                 ->get('app.service.mailer')
-                ->sentRegistrationEmail($user)
+                ->sendRegistrationEmail($user)
             ;
 
             $this->addFlash('registration_success', 'success.registration_success');

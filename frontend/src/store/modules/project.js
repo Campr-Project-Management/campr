@@ -710,6 +710,29 @@ const actions = {
     clearProject({commit}) {
         commit(types.SET_PROJECT, {project: {}});
     },
+    /**
+     * Clones a project
+     * @param {function} commit
+     * @param {object} data
+     * @return {object}
+     */
+    cloneProject({commit}, data) {
+        return Vue
+            .http
+            .post(Routing.generate('app_api_project_clone', {id: data.id}), {name: data.name})
+            .then(
+                (response) => {
+                    if (response.status === 200 && !response.data.error) {
+                        let project = response.data;
+                        commit(types.SET_PROJECT, {project});
+                    }
+
+                    return response;
+                },
+                (response) => response
+            )
+        ;
+    },
 };
 
 const mutations = {

@@ -18,11 +18,10 @@ class LoadProjectStatusData extends AbstractFixture implements OrderedFixtureInt
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 2; ++$i) {
-            $projectStatus = (new ProjectStatus())
-                ->setName('project-status'.$i)
-                ->setSequence($i)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectStatus = new ProjectStatus();
+            $projectStatus->setName('project-status'.$i);
+            $projectStatus->setSequence($i);
+            $projectStatus->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
             $this->setReference('project-status'.$i, $projectStatus);
             $manager->persist($projectStatus);
         }

@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Media\MediasAwareInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -17,7 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="measure")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeasureRepository")
  */
-class Measure implements TimestampableInterface, ResponsibilityAwareInterface
+class Measure implements TimestampableInterface, ResponsibilityAwareInterface, MediasAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -402,5 +405,17 @@ class Measure implements TimestampableInterface, ResponsibilityAwareInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->addMeasure($this);
+        }
+
+        $this->medias = $medias;
     }
 }

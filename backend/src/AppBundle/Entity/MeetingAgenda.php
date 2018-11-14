@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,7 +16,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table(name="meeting_agenda")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingAgendaRepository")
  */
-class MeetingAgenda implements ResponsibilityAwareInterface
+class MeetingAgenda implements ResponsibilityAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int

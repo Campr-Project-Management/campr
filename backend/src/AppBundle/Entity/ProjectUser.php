@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Component\User\Model\UserAwareInterface;
@@ -17,7 +19,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="project_user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectUserRepository")
  */
-class ProjectUser implements UserAwareInterface, TimestampableInterface
+class ProjectUser implements UserAwareInterface, TimestampableInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -89,7 +91,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="projectUsers", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="projectUsers", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="project_user_project_department",
      *     joinColumns={

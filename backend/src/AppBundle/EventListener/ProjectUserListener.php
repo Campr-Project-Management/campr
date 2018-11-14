@@ -10,7 +10,7 @@ use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Resource;
 
 /**
- * Class ProjectUserListner.
+ * Class ProjectUserListener.
  */
 class ProjectUserListener
 {
@@ -53,7 +53,7 @@ class ProjectUserListener
                 }
             }
 
-            if ($entity instanceof ProjectUser) {
+            if ($entity instanceof ProjectUser && $entity->getProject()) {
                 $resource = $em
                     ->getRepository(Resource::class)
                     ->findOneBy(['projectUser' => $entity->getId(), 'project' => $entity->getProject()->getId()])

@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MessageRepository")
  */
-class Message
+class Message implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -189,11 +193,11 @@ class Message
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Message
      */
-    public function setProject(Project $project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

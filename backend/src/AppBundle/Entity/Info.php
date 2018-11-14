@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -16,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="info")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InfoRepository")
  */
-class Info implements TimestampableInterface, ResponsibilityAwareInterface
+class Info implements TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -185,11 +189,11 @@ class Info implements TimestampableInterface, ResponsibilityAwareInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface|null $project
      *
      * @return Info
      */
-    public function setProject(Project $project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -269,7 +273,7 @@ class Info implements TimestampableInterface, ResponsibilityAwareInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("distributionListName")
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDistributionListName()
     {

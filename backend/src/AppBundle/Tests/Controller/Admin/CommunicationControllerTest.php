@@ -15,9 +15,7 @@ class CommunicationControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/create');
@@ -41,9 +39,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/create');
@@ -63,28 +59,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->find(1)
-        ;
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-        $this->em->persist($project);
-
-        $schedule = (new Schedule())
-            ->setName('schedule3')
-        ;
-        $this->em->persist($schedule);
-        $this->em->flush();
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/create');
 
@@ -92,8 +67,8 @@ class CommunicationControllerTest extends BaseController
         $form['create[meetingName]'] = 'communication2';
         $form['create[location]'] = 'location2';
         $form['create[content]'] = 'content2';
-        $form['create[project]'] = $project->getId();
-        $form['create[schedule]'] = $schedule->getId();
+        $form['create[project]'] = 1;
+        $form['create[schedule]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -109,32 +84,12 @@ class CommunicationControllerTest extends BaseController
             ])
         ;
         $this->em->remove($communication);
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $schedule = $this
-            ->em
-            ->getRepository(Schedule::class)
-            ->findOneBy([
-                'name' => 'schedule3',
-            ])
-        ;
-        $this->em->remove($schedule);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $company = $this
             ->em
@@ -165,40 +120,16 @@ class CommunicationControllerTest extends BaseController
         $this->em->persist($communication);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/communication/%d/edit', $communication->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/communication/%d/delete', $communication->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Communication successfully deleted!', $this->client->getResponse()->getContent());
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $schedule = $this
-            ->em
-            ->getRepository(Schedule::class)
-            ->findOneBy([
-                'name' => 'schedule3',
-            ])
-        ;
-        $this->em->remove($schedule);
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/1/edit');
@@ -223,9 +154,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/1/edit');
@@ -250,9 +179,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/1/edit');
 
@@ -268,9 +195,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/list');
@@ -288,9 +213,7 @@ class CommunicationControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/communication/1/show');
 

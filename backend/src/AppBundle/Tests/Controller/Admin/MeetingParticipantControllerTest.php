@@ -13,9 +13,7 @@ class MeetingParticipantControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/create');
@@ -39,9 +37,7 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/create');
@@ -58,25 +54,16 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $user = $this->login();
 
-        $meeting = (new Meeting())
-            ->setName('meeting3')
-            ->setLocation('meeting-location')
-            ->setDate(new \DateTime())
-            ->setStart(new \DateTime())
-            ->setEnd(new \DateTime('+1 hour'))
-        ;
-        $this->em->persist($meeting);
-        $this->em->flush();
+        /** @var Meeting $meeting */
+        $meeting = $this->em->getRepository(Meeting::class)->find(1);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[meeting]'] = $meeting->getId();
-        $form['create[user]'] = $this->user->getId();
+        $form['create[user]'] = $user->getId();
         $form['create[remark]'] = 'test-meeting-participant';
 
         $this->client->submit($form);
@@ -85,72 +72,45 @@ class MeetingParticipantControllerTest extends BaseController
         $this->client->followRedirect();
         $this->assertContains('Meeting participant successfully created!', $this->client->getResponse()->getContent());
 
-        $meeting = $this
-            ->em
-            ->getRepository(Meeting::class)
-            ->findOneBy([
-                'name' => 'meeting3',
-            ])
-        ;
         $meetingParticipant = $this
             ->em
             ->getRepository(MeetingParticipant::class)
-            ->findOneBy([
-                'remark' => 'test-meeting-participant',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'remark' => 'test-meeting-participant',
+                ]
+            );
         $this->em->remove($meetingParticipant);
-        $this->em->remove($meeting);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
-        $meeting = (new Meeting())
-            ->setName('meeting3')
-            ->setLocation('meeting-location')
-            ->setDate(new \DateTime())
-            ->setStart(new \DateTime())
-            ->setEnd(new \DateTime('+1 hour'))
-        ;
-        $this->em->persist($meeting);
+        /** @var Meeting $meeting */
+        $meeting = $this->em->getRepository(Meeting::class)->find(1);
 
         $meetingParticipant = (new MeetingParticipant())
             ->setMeeting($meeting)
-            ->setUser($this->user)
-        ;
+            ->setUser($this->user);
         $this->em->persist($meetingParticipant);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/meeting-participant/%d/edit', $meetingParticipant->getId()));
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/meeting-participant/%d/delete', $meetingParticipant->getId())
+        );
 
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Meeting participant successfully deleted!', $this->client->getResponse()->getContent());
-
-        $meeting = $this
-            ->em
-            ->getRepository(Meeting::class)
-            ->findOneBy([
-                'name' => 'meeting3',
-            ])
-        ;
-        $this->em->remove($meeting);
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
@@ -175,9 +135,7 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
@@ -196,9 +154,7 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/edit');
 
@@ -214,9 +170,7 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/list');
@@ -233,9 +187,7 @@ class MeetingParticipantControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/meeting-participant/1/show');
 

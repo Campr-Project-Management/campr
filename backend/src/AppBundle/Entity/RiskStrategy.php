@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * RiskStrategy.
@@ -12,8 +16,9 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="risk_strategy")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskStrategyRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class RiskStrategy
+class RiskStrategy implements ProjectAwareInterface, ResourceInterface
 {
     /**
      * @var int
@@ -115,9 +120,9 @@ class RiskStrategy
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface $project
      */
-    public function setProject(Project $project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

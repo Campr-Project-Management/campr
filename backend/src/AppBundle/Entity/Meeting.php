@@ -3,6 +3,11 @@
 namespace AppBundle\Entity;
 
 use Component\Date\DateRange;
+use Component\Media\MediasAwareInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +22,10 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @ORM\Table(name="meeting")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingRepository")
  */
-class Meeting
+class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -186,7 +193,7 @@ class Meeting
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -196,7 +203,7 @@ class Meeting
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Meeting constructor.
@@ -701,45 +708,6 @@ class Meeting
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Meeting
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Meeting
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * @return MeetingCategory|null
      */
     public function getMeetingCategory()
@@ -840,8 +808,6 @@ class Meeting
      * Add meetingReport.
      *
      * @param MeetingReport $meetingReport
-     *
-     * @return Meeting
      */
     public function addMeetingReport(MeetingReport $meetingReport)
     {

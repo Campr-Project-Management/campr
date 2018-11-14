@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="meeting_participant")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingParticipantRepository")
  */
-class MeetingParticipant implements UserAwareInterface
+class MeetingParticipant implements UserAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int

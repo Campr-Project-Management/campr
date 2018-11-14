@@ -35,8 +35,8 @@ class WorkPackageControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
+        $content = $this->getClientJsonResponse();
 
-        $content = json_decode($response->getContent(), true);
         $tasks = $content['items'];
         for ($i = 0; $i < sizeof($tasks); ++$i) {
             $responseContent['items'][$i]['responsibilityAvatarUrl'] = $tasks[$i]['responsibilityAvatarUrl'];
