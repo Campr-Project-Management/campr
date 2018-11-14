@@ -10,6 +10,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
+use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use Component\TrafficLight\TrafficLight;
 use MainBundle\Tests\Controller\BaseController;
@@ -877,6 +878,9 @@ class ProjectControllerTest extends BaseController
 
         $responseContent[0]['users'][0]['avatarUrl'] = $responseArray[0]['users'][0]['avatarUrl'];
         $responseContent[1]['users'][0]['avatarUrl'] = $responseArray[1]['users'][0]['avatarUrl'];
+
+        $responseContent[0]['users'][0]['theme'] = User::THEME_DARK;
+        $responseContent[1]['users'][0]['theme'] = User::THEME_DARK;
 
         $email = md5(strtolower(trim($responseArray[0]['users'][0]['email'])));
         $responseContent[0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);

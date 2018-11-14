@@ -46,6 +46,10 @@ class UserControllerTest extends BaseController
         if (isset($responseContent['updatedAt'])) {
             $responseContent['updatedAt'] = $user->getUpdatedAt() ? $user->getUpdatedAt()->format('Y-m-d H:i:s') : null;
         }
+        if (array_key_exists('theme', $userContent)) {
+            $responseContent['theme'] = $userContent['theme'];
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContent, $userContent);
@@ -149,6 +153,9 @@ class UserControllerTest extends BaseController
         if (isset($actual['avatarUrl'])) {
             $responseContent['avatarUrl'] = $actual['avatarUrl'];
             $responseContent['avatar'] = $actual['avatar'];
+        }
+        if (array_key_exists('theme', $actual)) {
+            $responseContent['theme'] = $actual['theme'];
         }
 
         $this->assertEquals($responseContent, $actual);
