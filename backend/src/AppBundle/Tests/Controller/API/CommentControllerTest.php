@@ -35,7 +35,7 @@ class CommentControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/comments/1',
+            sprintf('/api/comments/%d', $comment->getId()),
             [],
             [],
             [
@@ -45,16 +45,17 @@ class CommentControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
-        $comment = json_decode($response->getContent(), true);
+        $actual = $this->getClientJsonResponse();
 
         if ($isResponseSuccessful) {
-            $responseContent['createdAt'] = $comment['createdAt'];
-            $responseContent['updatedAt'] = $comment['updatedAt'];
+            $responseContent['createdAt'] = $actual['createdAt'];
+            $responseContent['updatedAt'] = $actual['updatedAt'];
+            $responseContent['id'] = $comment->getId();
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -93,9 +94,18 @@ class CommentControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
+        /** @var User $author */
+        $author = $this->em->getRepository(User::class)->find(1);
+
+        $comment = new Comment();
+        $comment->setBody('Comment body');
+        $comment->setAuthor($author);
+        $this->em->persist($comment);
+        $this->em->flush();
+
         $this->client->request(
             'DELETE',
-            '/api/comments/1',
+            sprintf('/api/comments/%d', $comment->getId()),
             [],
             [],
             [

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Component\User\Model\UserAwareInterface;
@@ -14,6 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Team a.k.a. Workspace.
@@ -27,8 +30,9 @@ use JMS\Serializer\Annotation as Serializer;
  * @UniqueEntity(fields={"uuid"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Vich\Uploadable
+ * @Cloner\Exclude()
  */
-class Team implements UserAwareInterface, TimestampableInterface
+class Team implements UserAwareInterface, TimestampableInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Component\Resource\Model\FileSystemAwareInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Component\User\Model\UserAwareInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @ORM\Table(name="media")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MediaRepository")
  */
-class Media implements FileSystemAwareInterface, UserAwareInterface, TimestampableInterface
+class Media implements FileSystemAwareInterface, UserAwareInterface, TimestampableInterface, ResourceInterface
 {
     use TimestampableTrait;
 
@@ -628,5 +629,15 @@ class Media implements FileSystemAwareInterface, UserAwareInterface, Timestampab
     public function makeAsPermanent()
     {
         $this->expiresAt = null;
+    }
+
+    /**
+     * Get real path.
+     *
+     * @return string
+     */
+    public function getRealPath()
+    {
+        return sprintf('%s/%s', $this->getFileSystem()->getConfig()['path'], $this->getPath());
     }
 }

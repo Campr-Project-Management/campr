@@ -466,7 +466,7 @@ class TeamController extends Controller
             if ($newUser) {
                 $this
                     ->get('app.service.mailer')
-                    ->sentRegistrationEmail($user)
+                    ->sendRegistrationEmail($user)
                 ;
             }
 

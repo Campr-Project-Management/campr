@@ -156,3 +156,12 @@ services:
             - '@app.repository.project'
         tags:
             - { name: kernel.event_subscriber }
+
+    app.subscriber.project:
+        class: AppBundle\EventListener\ProjectSubscriber
+        arguments:
+            - '%kernel.environment%'
+            - '@redis.client'
+            - '@monolog.logger.cloner'
+        tags:
+            - { name: kernel.event_subscriber }

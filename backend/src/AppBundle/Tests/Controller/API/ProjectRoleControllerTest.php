@@ -32,18 +32,24 @@ class ProjectRoleControllerTest extends BaseController
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token), ],
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
             ''
         );
         $response = $this->client->getResponse();
-        for ($i = 5; $i <= 8; ++$i) {
-            $pr = $this->em->getRepository(ProjectRole::class)->find($i);
-            $responseContent[$i - 1]['updatedAt'] = $pr->getUpdatedAt()->format('Y-m-d H:i:s');
+
+        /** @var ProjectRole $pr */
+        foreach ($this->em->getRepository(ProjectRole::class)->findAll() as $pr) {
+            foreach ($responseContent as $index => $r) {
+                if ($r['id'] === $pr->getId()) {
+                    $responseContent[$index]['updatedAt'] = $pr->getUpdatedAt() ? $pr->getUpdatedAt()->format('Y-m-d H:i:s') : null;
+                }
+            }
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -59,7 +65,7 @@ class ProjectRoleControllerTest extends BaseController
                 [
                     [
                         'id' => 1,
-                        'name' => 'roles.project_sponsor',
+                        'name' => ProjectRole::ROLE_SPONSOR,
                         'sequence' => 1,
                         'isLead' => false,
                         'children' => [],
@@ -68,7 +74,7 @@ class ProjectRoleControllerTest extends BaseController
                     ],
                     [
                         'id' => 2,
-                        'name' => 'roles.project_manager',
+                        'name' => ProjectRole::ROLE_MANAGER,
                         'sequence' => 2,
                         'isLead' => false,
                         'children' => [],
@@ -77,7 +83,7 @@ class ProjectRoleControllerTest extends BaseController
                     ],
                     [
                         'id' => 3,
-                        'name' => 'roles.team_member',
+                        'name' => ProjectRole::ROLE_TEAM_MEMBER,
                         'sequence' => 3,
                         'isLead' => false,
                         'children' => [],
@@ -86,47 +92,11 @@ class ProjectRoleControllerTest extends BaseController
                     ],
                     [
                         'id' => 4,
-                        'name' => 'roles.team_leader',
+                        'name' => ProjectRole::ROLE_TEAM_LEADER,
                         'sequence' => 4,
                         'isLead' => false,
                         'children' => [],
                         'createdAt' => '2017-01-01 00:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'id' => 5,
-                        'name' => 'manager',
-                        'sequence' => 1,
-                        'isLead' => false,
-                        'children' => [],
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'id' => 6,
-                        'name' => 'sponsor',
-                        'sequence' => 1,
-                        'isLead' => false,
-                        'children' => [],
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'id' => 7,
-                        'name' => 'team-member',
-                        'sequence' => 2,
-                        'isLead' => false,
-                        'children' => [],
-                        'createdAt' => '2017-01-01 12:00:00',
-                        'updatedAt' => null,
-                    ],
-                    [
-                        'id' => 8,
-                        'name' => 'team-participant',
-                        'sequence' => 2,
-                        'isLead' => false,
-                        'children' => [],
-                        'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
                     ],
                 ],
@@ -138,9 +108,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForCreateAction()
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateAction(
         array $content,
@@ -164,21 +134,24 @@ class ProjectRoleControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $projectRole = json_decode($response->getContent(), true);
-        $responseContent['createdAt'] = $projectRole['createdAt'];
-        $responseContent['updatedAt'] = $projectRole['updatedAt'];
+        try {
+            $actual = json_decode($response->getContent(), true);
 
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+            $responseContent['id'] = $actual['id'];
+            $responseContent['createdAt'] = $actual['createdAt'];
+            $responseContent['updatedAt'] = $actual['updatedAt'];
 
-        $projectRole = $this
-            ->em
-            ->getRepository(ProjectRole::class)
-            ->find($projectRole['id'])
-        ;
-        $this->em->remove($projectRole);
-        $this->em->flush();
+            $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $projectRole = $this
+                ->em
+                ->getRepository(ProjectRole::class)
+                ->find($actual['id']);
+            $this->em->remove($projectRole);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -189,14 +162,14 @@ class ProjectRoleControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'project-role',
+                    'name' => 'foobar',
                     'sequence' => 1,
                 ],
                 true,
                 Response::HTTP_CREATED,
                 [
                     'id' => 9,
-                    'name' => 'project-role',
+                    'name' => 'foobar',
                     'sequence' => 1,
                     'isLead' => false,
                     'children' => [],
@@ -211,9 +184,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnCreateAction(
         array $content,
@@ -221,10 +194,9 @@ class ProjectRoleControllerTest extends BaseController
         $responseStatusCode,
         $responseContent
     ) {
-        $projectRole = (new ProjectRole())
-            ->setName('project-role')
-            ->setSequence(1)
-        ;
+        $projectRole = new ProjectRole();
+        $projectRole->setName('project-role');
+        $projectRole->setSequence(1);
         $this->em->persist($projectRole);
         $this->em->flush();
 
@@ -242,14 +214,18 @@ class ProjectRoleControllerTest extends BaseController
             ],
             json_encode($content)
         );
-        $response = $this->client->getResponse();
 
-        $this->assertEquals($isResponseSuccessful, $response->isClientError());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        try {
+            $response = $this->client->getResponse();
+            $actual = json_decode($response->getContent(), true);
 
-        $this->em->remove($projectRole);
-        $this->em->flush();
+            $this->assertEquals($isResponseSuccessful, $response->isClientError());
+            $this->assertEquals($responseStatusCode, $response->getStatusCode());
+            $this->assertEquals($responseContent, $actual);
+        } finally {
+            $this->em->remove($projectRole);
+            $this->em->flush();
+        }
     }
 
     /**
@@ -278,9 +254,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnCreateAction(
         array $content,
@@ -333,9 +309,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForSequenceIsNumberOnCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testSequenceIsNumberOnCreateAction(
         array $content,
@@ -390,9 +366,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -403,11 +379,10 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $role = (new ProjectRole())
-            ->setName(uniqid())
-            ->setSequence(1)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $role = new ProjectRole();
+        $role->setName(uniqid());
+        $role->setSequence(1);
+        $role->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $this->em->persist($role);
         $this->em->flush();
 
@@ -467,9 +442,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnEditAction(
         array $content,
@@ -480,9 +455,14 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
+        /** @var ProjectRole $role */
+        $role = $this->em
+            ->getRepository(ProjectRole::class)
+            ->findOneBy(['name' => ProjectRole::ROLE_MANAGER]);
+
         $this->client->request(
             'PATCH',
-            '/api/project-roles/5',
+            sprintf('/api/project-roles/%d', $role->getId()),
             [],
             [],
             [
@@ -492,10 +472,11 @@ class ProjectRoleControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -506,7 +487,7 @@ class ProjectRoleControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'sponsor',
+                    'name' => ProjectRole::ROLE_SPONSOR,
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,
@@ -523,9 +504,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -536,9 +517,14 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
+        /** @var ProjectRole $role */
+        $role = $this->em
+            ->getRepository(ProjectRole::class)
+            ->findOneBy(['name' => ProjectRole::ROLE_MANAGER]);
+
         $this->client->request(
             'PATCH',
-            '/api/project-roles/5',
+            sprintf('/api/project-roles/%d', $role->getId()),
             [],
             [],
             [
@@ -548,10 +534,11 @@ class ProjectRoleControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -581,9 +568,9 @@ class ProjectRoleControllerTest extends BaseController
      * @dataProvider getDataForSequenceIsNumberOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testSequenceIsNumberOnEditAction(
         array $content,
@@ -594,9 +581,14 @@ class ProjectRoleControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
+        /** @var ProjectRole $role */
+        $role = $this->em
+            ->getRepository(ProjectRole::class)
+            ->findOneBy(['name' => ProjectRole::ROLE_MANAGER]);
+
         $this->client->request(
             'PATCH',
-            '/api/project-roles/5',
+            sprintf('/api/project-roles/%d', $role->getId()),
             [],
             [],
             [
@@ -609,7 +601,7 @@ class ProjectRoleControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
     }
 
     /**
@@ -620,7 +612,7 @@ class ProjectRoleControllerTest extends BaseController
         return [
             [
                 [
-                    'name' => 'manager',
+                    'name' => ProjectRole::ROLE_MANAGER,
                     'sequence' => 'project-role',
                 ],
                 true,
@@ -644,10 +636,9 @@ class ProjectRoleControllerTest extends BaseController
         $isResponseSuccessful,
         $responseStatusCode
     ) {
-        $projectRole = (new ProjectRole())
-            ->setName('project-role')
-            ->setSequence(1)
-        ;
+        $projectRole = new ProjectRole();
+        $projectRole->setName('project-role');
+        $projectRole->setSequence(1);
         $this->em->persist($projectRole);
         $this->em->flush();
 
@@ -691,11 +682,10 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testGetAction()
     {
-        $role = (new ProjectRole())
-            ->setName(uniqid())
-            ->setSequence(1)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $role = new ProjectRole();
+        $role->setName(uniqid());
+        $role->setSequence(1);
+        $role->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $this->em->persist($role);
         $this->em->flush();
 

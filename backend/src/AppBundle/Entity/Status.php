@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Risk Status.
@@ -12,8 +16,9 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class Status
+class Status implements ResourceInterface, ProjectAwareInterface
 {
     /**
      * @var int
@@ -84,9 +89,11 @@ class Status
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface|null $project
+     *
+     * @return $this
      */
-    public function setProject(Project $project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

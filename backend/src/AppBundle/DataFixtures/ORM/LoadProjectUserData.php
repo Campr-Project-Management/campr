@@ -2,6 +2,7 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -20,7 +21,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $user = $this->getReference('user3');
         $project = $this->getReference('project1');
         $projectCategory = $this->getReference('project-category1');
-        $projectRole = $this->getReference('manager');
+        $projectRole = $manager->getRepository(ProjectRole::class)->findOneBy(['name' => ProjectRole::ROLE_MANAGER]);
         $projectDepartment = $this->getReference('project-department1');
         $projectTeam = $this->getReference('project-team1');
 
@@ -38,7 +39,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $user = $this->getReference('user4');
         $project = $this->getReference('project1');
         $projectCategory = $this->getReference('project-category2');
-        $projectRole = $this->getReference('sponsor');
+        $projectRole = $manager->getRepository(ProjectRole::class)->findOneBy(['name' => ProjectRole::ROLE_SPONSOR]);
         $projectDepartment = $this->getReference('project-department2');
         $projectTeam = $this->getReference('project-team2');
 
@@ -56,7 +57,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $user = $this->getReference('user5');
         $project = $this->getReference('project1');
         $projectCategory = $this->getReference('project-category1');
-        $projectRole = $this->getReference('team-member');
+        $projectRole = $manager->getRepository(ProjectRole::class)->findOneBy(['name' => ProjectRole::ROLE_TEAM_MEMBER]);
         $projectDepartment = $this->getReference('project-department1');
         $projectTeam = $this->getReference('project-team1');
 
@@ -74,7 +75,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $user = $this->getReference('user6');
         $project = $this->getReference('project2');
         $projectCategory = $this->getReference('project-category2');
-        $projectRole = $this->getReference('team-participant');
+        $projectRole = $manager->getRepository(ProjectRole::class)->findOneBy(['name' => ProjectRole::ROLE_TEAM_LEADER]);
         $projectDepartment = $this->getReference('project-department2');
         $projectTeam = $this->getReference('project-team2');
 

@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Model\RemovalForbiddenInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use Component\Resource\Model\CodeAwareInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * WorkPackageStatus.
@@ -16,8 +20,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="work_package_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageStatusRepository")
  * @UniqueEntity(fields="code", message="unique.code")
+ * @Cloner\Exclude()
  */
-class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
+class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface, ProjectAwareInterface, ResourceInterface
 {
     const OPEN = 1;
     const PENDING = 2;
@@ -239,11 +244,11 @@ class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return WorkPackageStatus
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

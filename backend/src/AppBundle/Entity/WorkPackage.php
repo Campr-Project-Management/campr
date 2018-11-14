@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Media\MediasAwareInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\BaseScheduleDatesAwareInterface;
 use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
@@ -24,7 +28,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @AppAssert\WorkPackageScheduledDates(groups={"create"})
  * @AppAssert\WorkPackageForecastDates(groups={"edit"})
  */
-class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface, TimestampableInterface, ResponsibilityAwareInterface
+class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface, TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, MediasAwareInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -73,7 +77,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      * @var WorkPackage
      *
      * @Serializer\Exclude()
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="phaseChildren")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="phaseChildren", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="phase_id", onDelete="CASCADE")
      * })
@@ -85,7 +89,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      * @var WorkPackage[]|ArrayCollection
      *
      * @Serializer\Exclude()
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="phase")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="phase", cascade={"persist"})
      */
     private $phaseChildren;
 
@@ -105,7 +109,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      * @var WorkPackage[]|ArrayCollection
      *
      * @Serializer\Exclude()
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="milestone")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="milestone", cascade={"persist"})
      */
     private $milestoneChildren;
 
@@ -114,7 +118,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\WorkPackage", inversedBy="children", cascade={"persist"})
      * @ORM\JoinColumn(name="parent_id", onDelete="CASCADE")
      * @AppAssert\NonSelfReferencing(message="self_reference.work_package.parent")
      */
@@ -141,7 +145,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
@@ -266,7 +270,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     /**
      * @var ArrayCollection|Label[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label", inversedBy="workPackages")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Label", inversedBy="workPackages", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="work_package_label",
      *     joinColumns={
@@ -369,7 +373,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     /**
      * @var ArrayCollection|Comment[]
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Comment", inversedBy="workPackages")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Comment", inversedBy="workPackages", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="work_package_comment",
      *     joinColumns={
@@ -557,28 +561,33 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      */
     public function getPUIDForDisplay()
     {
+        $puids = [];
         if ($this->parent) {
-            return $this->parent->getPUIDForDisplay().'.'.$this->puid;
+            $puids[] = $this->parent->getPuid();
+            if ($this->parent->hasMilestone()) {
+                $puids[] = $this->parent->getMilestone()->getPuid();
+            }
+
+            if ($this->parent->hasPhase()) {
+                $puids[] = $this->parent->getPhase()->getPuid();
+            }
+
+            $puids[] = $this->getPuid();
+
+            return implode('', $puids);
         }
 
-        switch ($this->type) {
-            //            case self::TYPE_PHASE: // placeholder
-            //                break;
-            case self::TYPE_MILESTONE:
-                if ($this->phase) {
-                    return $this->phase->getPUIDForDisplay().'.'.$this->puid;
-                }
-                break;
-            case self::TYPE_TASK:
-                if ($this->milestone) {
-                    return $this->milestone->getPUIDForDisplay().'.'.$this->puid;
-                } elseif ($this->phase) {
-                    return $this->phase->getPUIDForDisplay().'.'.$this->puid;
-                }
-                break;
+        if ($this->hasPhase()) {
+            $puids[] = $this->getPhase()->getPuid();
         }
 
-        return $this->puid;
+        if ($this->hasMilestone()) {
+            $puids[] = $this->getMilestone()->getPuid();
+        }
+
+        $puids[] = $this->getPuid();
+
+        return implode('', $puids);
     }
 
     /**
@@ -990,6 +999,14 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     }
 
     /**
+     * @return bool
+     */
+    public function hasMilestone()
+    {
+        return (bool) $this->getMilestone();
+    }
+
+    /**
      * @return int|null
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("phase")
@@ -1208,11 +1225,11 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface|null $project
      *
      * @return WorkPackage
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
         foreach ($this->getChildren() as $child) {
@@ -1901,7 +1918,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      */
     public function removeComment(Comment $comment)
     {
-        $this->comments->remove($comment);
+        $this->comments->removeElement($comment);
 
         return $this;
     }
@@ -2441,6 +2458,14 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     }
 
     /**
+     * @param WorkPackage $phaseChild
+     */
+    public function addPhaseChild(WorkPackage $phaseChild)
+    {
+        $this->phaseChildren[] = $phaseChild;
+    }
+
+    /**
      * @return WorkPackage[]|ArrayCollection
      */
     public function getMilestoneChildren()
@@ -2457,10 +2482,102 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     }
 
     /**
+     * @param WorkPackage $milestoneChild
+     */
+    public function addMilestoneChild(WorkPackage $milestoneChild)
+    {
+        $this->milestoneChildren[] = $milestoneChild;
+    }
+
+    /**
      * @return bool
      */
     public function isRoot()
     {
         return !$this->getParent();
+    }
+
+    /**
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->addWorkPackage($this);
+        }
+
+        $this->medias = $medias;
+    }
+
+    /**
+     * @param Assignment[]|ArrayCollection $assignments
+     */
+    public function setAssignments($assignments)
+    {
+        $this->assignments = $assignments;
+    }
+
+    /**
+     * @param Label[]|ArrayCollection $labels
+     */
+    public function setLabels($labels)
+    {
+        $this->labels = $labels;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $dependencies
+     */
+    public function setDependencies($dependencies)
+    {
+        $this->dependencies = $dependencies;
+    }
+
+    /**
+     * @param WorkPackage[]|ArrayCollection $dependants
+     */
+    public function setDependants($dependants)
+    {
+        $this->dependants = $dependants;
+    }
+
+    /**
+     * @param Cost[]|ArrayCollection $costs
+     */
+    public function setCosts($costs)
+    {
+        $this->costs = $costs;
+    }
+
+    /**
+     * @param Comment[]|ArrayCollection $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @param User[]|ArrayCollection $supportUsers
+     */
+    public function setSupportUsers($supportUsers)
+    {
+        $this->supportUsers = $supportUsers;
+    }
+
+    /**
+     * @param User[]|ArrayCollection $consultedUsers
+     */
+    public function setConsultedUsers($consultedUsers)
+    {
+        $this->consultedUsers = $consultedUsers;
+    }
+
+    /**
+     * @param User[]|ArrayCollection $informedUsers
+     */
+    public function setInformedUsers($informedUsers)
+    {
+        $this->informedUsers = $informedUsers;
     }
 }

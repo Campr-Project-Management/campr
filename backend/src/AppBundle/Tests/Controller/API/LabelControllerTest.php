@@ -37,7 +37,7 @@ class LabelControllerTest extends BaseController
 
         $this->client->request(
             'PATCH',
-            '/api/labels/3',
+            '/api/labels/1',
             [],
             [],
             [
@@ -47,10 +47,11 @@ class LabelControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = $this->getClientJsonResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -67,13 +68,13 @@ class LabelControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => 2,
-                    'projectName' => 'project2',
+                    'project' => 1,
+                    'projectName' => 'project1',
                     'openWorkPackagesNumber' => 0,
-                    'id' => 3,
+                    'id' => 1,
                     'title' => 'new-label',
                     'description' => 'descript',
-                    'color' => '123',
+                    'color' => 'color1',
                 ],
             ],
         ];
@@ -94,7 +95,7 @@ class LabelControllerTest extends BaseController
 
         $this->client->request(
             'DELETE',
-            '/api/labels/3',
+            '/api/labels/1',
             [],
             [],
             [
