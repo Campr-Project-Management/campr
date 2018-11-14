@@ -3,6 +3,9 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\User;
+use Component\Project\ProjectInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Class MailerService
@@ -10,28 +13,48 @@ use AppBundle\Entity\User;
  */
 class MailerService
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var \Swift_Mailer
+     */
     private $mailer;
 
+    /**
+     * @var \Twig_Environment
+     */
     private $twig;
 
+    /**
+     * @var array
+     */
     private $parameters = [];
 
+    /**
+     * @var array
+     */
     private $options;
 
     /**
      * MailerService constructor.
      *
+     * @param RouterInterface   $router
      * @param \Swift_Mailer     $mailer
      * @param \Twig_Environment $twig
      * @param array             $fromParameters
      * @param array             $options
      */
     public function __construct(
+        RouterInterface $router,
         \Swift_Mailer $mailer,
         \Twig_Environment $twig,
         array $fromParameters,
         array $options
     ) {
+        $this->router = $router;
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->parameters = $fromParameters;
@@ -97,7 +120,7 @@ class MailerService
         return $this->mailer->send($message);
     }
 
-    public function sentRegistrationEmail(User $user)
+    public function sendRegistrationEmail(User $user)
     {
         $params = [
             'token' => $user->getActivationToken(),
@@ -112,6 +135,31 @@ class MailerService
         return $this
             ->sendEmail(
                 'MainBundle:Email:user_register.html.twig',
+                'info',
+                $user->getEmail(),
+                $params
+            )
+        ;
+    }
+
+    /**
+     * @param User             $user
+     * @param ProjectInterface $project
+     *
+     * @return int
+     */
+    public function sendProjectClonedEmail(User $user, ProjectInterface $project)
+    {
+        $baseUrl = $this->router->generate('app_homepage', [], Router::ABSOLUTE_URL);
+        $params = [
+            'url' => sprintf('%s#/projects/%d/dashboard', $baseUrl, $project->getId()),
+            'full_name' => $user->getFullName(),
+            'project_name' => $project->getName(),
+        ];
+
+        return $this
+            ->sendEmail(
+                'MainBundle:Email:project_cloned.html.twig',
                 'info',
                 $user->getEmail(),
                 $params

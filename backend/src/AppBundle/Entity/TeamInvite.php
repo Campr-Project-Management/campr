@@ -2,18 +2,21 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * TeamInvite.
  *
  * @ORM\Table(name="team_invite")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamInviteRepository")
+ * @Cloner\Exclude()
  */
-class TeamInvite implements UserAwareInterface
+class TeamInvite implements UserAwareInterface, ResourceInterface
 {
     /**
      * @var int

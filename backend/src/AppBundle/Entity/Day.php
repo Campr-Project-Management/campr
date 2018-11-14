@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
@@ -12,7 +14,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="day")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DayRepository")
  */
-class Day
+class Day implements ResourceInterface, CloneableInterface
 {
     /**
      * @var int

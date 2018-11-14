@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,12 +77,12 @@ class ProjectUserControllerTest extends BaseController
                     'projectName' => 'project1',
                     'projectCategory' => 1,
                     'projectCategoryName' => 'project-category1',
-                    'projectRoles' => [5],
+                    'projectRoles' => [2],
                     'projectDepartments' => [1],
                     'projectDepartmentNames' => ['project-department1'],
                     'projectTeam' => 1,
                     'projectTeamName' => 'project-team1',
-                    'projectRoleNames' => ['manager'],
+                    'projectRoleNames' => [ProjectRole::ROLE_MANAGER],
                     'subteams' => [],
                     'subteamNames' => [],
                     'id' => 1,
@@ -288,12 +289,12 @@ class ProjectUserControllerTest extends BaseController
                     'projectName' => 'project1',
                     'projectCategory' => 2,
                     'projectCategoryName' => 'project-category2',
-                    'projectRoles' => [6],
+                    'projectRoles' => [1],
                     'projectDepartments' => [2],
                     'projectDepartmentNames' => ['project-department2'],
                     'projectTeam' => 2,
                     'projectTeamName' => 'project-team2',
-                    'projectRoleNames' => ['sponsor'],
+                    'projectRoleNames' => [ProjectRole::ROLE_SPONSOR],
                     'subteams' => [],
                     'subteamNames' => [],
                     'id' => 2,

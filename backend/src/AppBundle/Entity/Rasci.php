@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rasci")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RasciRepository")
  */
-class Rasci implements UserAwareInterface
+class Rasci implements UserAwareInterface, ResourceInterface, CloneableInterface
 {
     const DATA_RESPONSIBLE = 'responsible';
     const DATA_ACCOUNTABLE = 'accountable';

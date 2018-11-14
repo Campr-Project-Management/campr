@@ -20,7 +20,7 @@ class ProjectRepository extends BaseRepository
     /**
      * @param string $name
      *
-     * @return null|Project
+     * @return Project|null
      */
     public function findOneByName(string $name)
     {
@@ -34,6 +34,7 @@ class ProjectRepository extends BaseRepository
      *
      * @param User  $user
      * @param array $filters
+     * @param null  $select
      *
      * @return QueryBuilder
      */

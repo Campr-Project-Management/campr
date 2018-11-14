@@ -26,7 +26,14 @@ class AssignmentControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -74,9 +81,9 @@ class AssignmentControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -88,20 +95,27 @@ class AssignmentControllerTest extends BaseController
         $token = $user->getApiToken();
 
         $workPackage = $this->em->getRepository(WorkPackage::class)->find(1);
-        $assignment = (new Assignment())
-            ->setMilestone(1)
-            ->setPercentWorkComplete(0)
-            ->setWorkPackage($workPackage)
-        ;
+        $assignment = new Assignment();
+        $assignment->setMilestone(1);
+        $assignment->setPercentWorkComplete(0);
+        $assignment->setWorkPackage($workPackage);
         $this->em->persist($assignment);
         $this->em->flush();
 
-        $this->client->request('PATCH', '/api/assignments/4', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'PATCH',
+            '/api/assignments/1',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
+        $actual = $this->getClientJsonResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -118,17 +132,27 @@ class AssignmentControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'workPackage' => 1,
-                    'workPackageName' => 'work-package1',
+                    'workPackage' => 2,
+                    'workPackageName' => 'work-package2',
                     'percentWorkComplete' => 100,
-                    'workPackageProjectWorkCostType' => null,
-                    'workPackageProjectWorkCostTypeName' => null,
-                    'id' => 4,
-                    'timephases' => [],
+                    'workPackageProjectWorkCostType' => 1,
+                    'workPackageProjectWorkCostTypeName' => 'work-package-project-work-cost-type1',
+                    'id' => 1,
+                    'timephases' => [
+                        [
+                            'assignment' => 1,
+                            'id' => 1,
+                            'type' => 1,
+                            'unit' => 1,
+                            'value' => 'value1',
+                            'startedAt' => '2016-12-12 11:30:00',
+                            'finishedAt' => '2016-12-12 13:00:00',
+                        ],
+                    ],
                     'milestone' => 2,
                     'confirmed' => false,
-                    'startedAt' => null,
-                    'finishedAt' => null,
+                    'startedAt' => '2016-12-12 00:00:00',
+                    'finishedAt' => '2017-01-01 00:00:00',
                 ],
             ],
         ];
@@ -147,7 +171,14 @@ class AssignmentControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/assignments/4', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'DELETE',
+            '/api/assignments/1',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());

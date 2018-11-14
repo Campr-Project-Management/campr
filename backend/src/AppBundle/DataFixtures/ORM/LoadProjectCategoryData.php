@@ -18,11 +18,11 @@ class LoadProjectCategoryData extends AbstractFixture implements OrderedFixtureI
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 2; ++$i) {
-            $projectCategory = (new ProjectCategory())
-                ->setName('project-category'.$i)
-                ->setSequence($i)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectCategory = new ProjectCategory();
+            $projectCategory->setName('project-category'.$i);
+            $projectCategory->setSequence($i);
+            $projectCategory->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+
             $this->setReference('project-category'.$i, $projectCategory);
             $manager->persist($projectCategory);
         }

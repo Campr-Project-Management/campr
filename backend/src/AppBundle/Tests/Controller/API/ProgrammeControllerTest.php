@@ -22,7 +22,14 @@ class ProgrammeControllerTest extends BaseController
         $user = $this->getUserByUsername('user4');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', '/api/programmes', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            '/api/programmes',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -69,7 +76,14 @@ class ProgrammeControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -98,9 +112,9 @@ class ProgrammeControllerTest extends BaseController
      * @dataProvider getDataForCreateAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testCreateAction(
         array $content,
@@ -111,11 +125,22 @@ class ProgrammeControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('POST', '/api/programmes', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'POST',
+            '/api/programmes',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
+        $actual = $this->getClientJsonResponse();
+
+        $responseContent['id'] = $actual['id'];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -142,9 +167,9 @@ class ProgrammeControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -155,11 +180,20 @@ class ProgrammeControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('PATCH', '/api/programmes/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'PATCH',
+            '/api/programmes/1',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
+        $actual = $this->getClientJsonResponse();
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -175,7 +209,7 @@ class ProgrammeControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'id' => 3,
+                    'id' => 1,
                     'name' => 'spacex2',
                 ],
             ],
@@ -195,7 +229,14 @@ class ProgrammeControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/programmes/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'DELETE',
+            '/api/programmes/1',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());

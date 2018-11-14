@@ -12,9 +12,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/create');
@@ -54,9 +52,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/create');
@@ -71,9 +67,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/create');
 
@@ -84,46 +78,48 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Work Package Project Work Cost Type successfully created!', $this->client->getResponse()->getContent());
+        $this->assertContains(
+            'Work Package Project Work Cost Type successfully created!',
+            $this->client->getResponse()->getContent()
+        );
 
         $workPackageProjectWorkCostType = $this
             ->em
             ->getRepository(WorkPackageProjectWorkCostType::class)
-            ->findOneBy([
-                'name' => 'work-package-project-work-cost-type3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'work-package-project-work-cost-type3',
+                ]
+            );
         $this->em->remove($workPackageProjectWorkCostType);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $workPackageProjectWorkCostType = (new WorkPackageProjectWorkCostType())
-            ->setName('work-package-project-work-cost-type4')
-        ;
+            ->setName('work-package-project-work-cost-type4');
         $this->em->persist($workPackageProjectWorkCostType);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/workpackage-projectworkcost/%d/edit', $workPackageProjectWorkCostType->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/workpackage-projectworkcost/%d/delete', $workPackageProjectWorkCostType->getId())
+        );
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Work Package Project Work Cost Type successfully deleted!', $this->client->getResponse()->getContent());
+        $this->assertContains(
+            'Work Package Project Work Cost Type successfully deleted!',
+            $this->client->getResponse()->getContent()
+        );
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/1/edit');
@@ -164,9 +160,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/1/edit');
@@ -183,9 +177,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/2/edit');
 
@@ -196,14 +188,15 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
-        $this->assertContains('Work Package Project Work Cost Type successfully edited!', $this->client->getResponse()->getContent());
+        $this->assertContains(
+            'Work Package Project Work Cost Type successfully edited!',
+            $this->client->getResponse()->getContent()
+        );
     }
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/list');
@@ -222,9 +215,7 @@ class WorkPackageProjectWorkCostTypeControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/workpackage-projectworkcost/1/show');

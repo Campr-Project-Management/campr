@@ -2,20 +2,30 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ResourceRepository")
  * @ORM\Table(name="resource")
  * @UniqueEntity(fields={"name"}, message="unique.name")
+ * @Cloner\Exclude()
  */
-class Resource
+class Resource implements ProjectAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      * @ORM\Id()
@@ -71,7 +81,7 @@ class Resource
      * @Gedmo\Timestampable(on="create")
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -79,7 +89,7 @@ class Resource
      * @Gedmo\Timestampable(on="update")
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -148,42 +158,6 @@ class Resource
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime|null $updatedAt
-     *
-     * @return resource
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * @return Project|null
      */
     public function getProject()
@@ -192,11 +166,11 @@ class Resource
     }
 
     /**
-     * @param Project|null $project
+     * @param ProjectInterface|null $project
      *
      * @return resource
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

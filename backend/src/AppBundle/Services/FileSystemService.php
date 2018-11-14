@@ -90,7 +90,7 @@ class FileSystemService
         $path = $media->getPath();
         $fs = $this->getFileSystem($media);
         if ($fs->has($path)) {
-            $path = $this->generateUniquePath($media, $file);
+            $path = $this->generateUniquePath($media);
         }
 
         $fs->createFile($path);
@@ -113,11 +113,10 @@ class FileSystemService
 
     /**
      * @param Media $media
-     * @param File  $file
      *
      * @return string
      */
-    private function generateUniquePath(Media $media, File $file): string
+    private function generateUniquePath(Media $media): string
     {
         $dirname = dirname($media->getPath());
         if ('.' === $dirname) {
@@ -125,7 +124,13 @@ class FileSystemService
         }
 
         $filename = basename($media->getPath());
-        $extension = $file->guessExtension();
+        if ($media->getOriginalName()) {
+            $filename = $media->getOriginalName();
+        }
+
+        $index = strrpos($filename, '.');
+        $extension = substr($filename, $index + 1);
+
         if (!empty($extension)) {
             $filename = str_replace(sprintf('.%s', $extension), '', $filename);
         }

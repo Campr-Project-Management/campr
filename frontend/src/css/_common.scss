@@ -541,6 +541,26 @@ textarea {
     }
 }
 
+.btn-sm {
+    height: 20px;
+    line-height: 20px;
+    padding: 0 14px;
+    font-size: 10px;
+
+    .icon {
+        width: 12px;
+        height: 12px;
+        margin-left: 5px;
+        position: relative;
+        top: 2px;
+
+        svg {
+            width: 12px;
+            height: 12px;
+        }
+    }
+}
+
 .btn-empty {
     background: transparent;
     border: 1px solid $middleColor;

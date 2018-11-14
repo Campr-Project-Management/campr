@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * User.
@@ -36,6 +37,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable
+ * @Cloner\Exclude()
  */
 class User implements UserInterface
 {
@@ -1550,8 +1552,7 @@ class User implements UserInterface
                     return $projectUser->getProject()->getId() === $project->getId();
                 }
             )
-            ->first()
-            ;
+            ->first();
     }
 
     public function addSubteam(Subteam $subteam)

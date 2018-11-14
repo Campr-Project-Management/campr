@@ -3,16 +3,19 @@
 namespace AppBundle\Entity;
 
 use Component\Resource\Model\CodeAwareInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Table(name="todo_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TodoStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
  * @UniqueEntity(fields="code", message="unique.code")
+ * @Cloner\Exclude()
  */
-class TodoStatus implements CodeAwareInterface
+class TodoStatus implements CodeAwareInterface, ResourceInterface
 {
     const CODE_DISCONTINUED = 'discontinued';
 

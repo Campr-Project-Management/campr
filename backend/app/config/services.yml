@@ -473,3 +473,46 @@ services:
         class: Component\Form\Extension\CheckboxTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\CheckboxType }
+
+### CLONER ###
+    app.clone.storage:
+        class: Component\Resource\Cloner\ResourceCloneStorage
+
+    app.clone.cloner.default:
+        class: Component\Resource\Cloner\ResourceCloner
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@app.clone.cloner_registry'
+            - '@app.clone.storage'
+            - '@annotation_reader'
+        tags:
+            - { name: app.clone.cloner }
+
+    app.clone.cloner.project:
+        class: Component\Resource\Cloner\ProjectCloner
+        arguments:
+            - '@app.clone.cloner.default'
+            - '@app.clone.storage'
+        tags:
+            - { name: app.clone.cloner, class: AppBundle\Entity\Project }
+
+    app.clone.cloner.contract:
+        class: Component\Resource\Cloner\ContractCloner
+        arguments:
+            - '@app.clone.cloner.default'
+        tags:
+            - { name: app.clone.cloner, class: AppBundle\Entity\Contract }
+
+    app.clone.cloner.work_package:
+        class: Component\Resource\Cloner\WorkPackageCloner
+        arguments:
+            - '@app.clone.cloner.default'
+        tags:
+            - { name: app.clone.cloner, class: AppBundle\Entity\WorkPackage }
+
+    app.clone.cloner.media:
+        class: Component\Resource\Cloner\MediaCloner
+        arguments:
+            - '@app.clone.cloner.default'
+        tags:
+            - { name: app.clone.cloner, class: AppBundle\Entity\Media }

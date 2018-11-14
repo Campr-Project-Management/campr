@@ -4,8 +4,10 @@ namespace AppBundle\Entity;
 
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\BlameableInterface;
 use Component\Resource\Model\BlameableTrait;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +27,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     message="unique.name"
  *  )
  */
-class Contract implements TimestampableInterface, BlameableInterface, ProjectAwareInterface
+class Contract implements TimestampableInterface, BlameableInterface, ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait, BlameableTrait;
 

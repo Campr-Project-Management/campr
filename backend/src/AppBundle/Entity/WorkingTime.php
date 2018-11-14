@@ -2,16 +2,19 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * WorkingTime.
  *
  * @ORM\Table(name="working_time")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkingTimeRepository")
+ * @Cloner\Exclude()
  */
-class WorkingTime
+class WorkingTime implements ResourceInterface
 {
     /**
      * @var int

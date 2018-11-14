@@ -70,19 +70,22 @@ class ProjectListener
 
             $em->persist($specialDistribution);
 
-            $tasks = $this->getTasksFromTranslation();
-            foreach ($tasks as $task) {
-                $wp = new WorkPackage();
-                $wp->setProject($entity);
-                $wp->setResponsibility($user);
-                $wp->setType(WorkPackage::TYPE_TUTORIAL);
-                $wp->setName($task['title']);
-                $wp->setContent($task['description']);
-                $wp->setWorkPackageStatus(
-                    $em->getReference(WorkPackageStatus::class, WorkPackageStatus::OPEN)
-                );
+            // Cloned projects already have these tasks
+            if (!count($entity->getWorkPackages())) {
+                $tasks = $this->getTasksFromTranslation();
+                foreach ($tasks as $task) {
+                    $wp = new WorkPackage();
+                    $wp->setProject($entity);
+                    $wp->setResponsibility($user);
+                    $wp->setType(WorkPackage::TYPE_TUTORIAL);
+                    $wp->setName($task['title']);
+                    $wp->setContent($task['description']);
+                    $wp->setWorkPackageStatus(
+                        $em->getReference(WorkPackageStatus::class, WorkPackageStatus::OPEN)
+                    );
 
-                $em->persist($wp);
+                    $em->persist($wp);
+                }
             }
         }
     }
