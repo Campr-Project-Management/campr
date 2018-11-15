@@ -1252,22 +1252,6 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
         }
 
-        foreach ($actual['items'][0]['decisions'] as $key => $decision) {
-            $responseContent['items'][0]['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
-            $responseContent['items'][0]['decisions'][$key]['createdAt'] = $decision['createdAt'];
-        }
-
-        foreach ($actual['items'][0]['todos'] as $key => $todo) {
-            $responseContent['items'][0]['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
-        }
-
-        foreach ($actual['items'][0]['infos'] as $key => $info) {
-            $responseContent['items'][0]['infos'][$key]['createdAt'] = $info['createdAt'];
-            $responseContent['items'][0]['infos'][$key]['updatedAt'] = $info['updatedAt'];
-            $responseContent['items'][0]['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
-            $responseContent['items'][0]['infos'][$key]['infoCategory'] = $info['infoCategory'];
-        }
-
         foreach ($actual['items'][0]['medias'] as $key => $info) {
             $responseContent['items'][0]['medias'][$key]['fileName'] = $info['path'];
             $responseContent['items'][0]['medias'][$key]['path'] = $info['path'];
@@ -1379,122 +1363,6 @@ class ProjectControllerTest extends BaseController
                                     'expiresAt' => null,
                                 ],
                             ],
-                            'decisions' => [
-                                [
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'decisionCategory' => null,
-                                    'decisionCategoryName' => null,
-                                    'id' => 1,
-                                    'title' => 'decision1',
-                                    'description' => 'description1',
-                                    'showInStatusReport' => false,
-                                    'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
-                                    'isDone' => false,
-                                    'done' => false,
-                                    'medias' => [],
-                                ],
-                                [
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'decisionCategory' => null,
-                                    'decisionCategoryName' => null,
-                                    'id' => 2,
-                                    'title' => 'decision2',
-                                    'description' => 'description2',
-                                    'showInStatusReport' => false,
-                                    'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
-                                    'isDone' => false,
-                                    'done' => false,
-                                    'medias' => [],
-                                ],
-                            ],
-                            'todos' => [
-                                [
-                                    'status' => null,
-                                    'statusName' => null,
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'todoCategory' => null,
-                                    'todoCategoryName' => null,
-                                    'id' => 1,
-                                    'title' => 'todo1',
-                                    'description' => 'description for todo1',
-                                    'showInStatusReport' => false,
-                                    'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
-                                ],
-                                [
-                                    'status' => null,
-                                    'statusName' => null,
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'todoCategory' => null,
-                                    'todoCategoryName' => null,
-                                    'id' => 2,
-                                    'title' => 'todo2',
-                                    'description' => 'description for todo2',
-                                    'showInStatusReport' => false,
-                                    'dueDate' => '2017-05-01 00:00:00',
-                                    'responsibilityAvatar' => '',
-                                ],
-                            ],
-                            'infos' => [
-                                [
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'infoCategory' => 11,
-                                    'infoCategoryName' => 'Info Category 1',
-                                    'id' => 1,
-                                    'topic' => 'note1',
-                                    'description' => 'description1',
-                                    'expiresAt' => '2017-05-01',
-                                    'createdAt' => date('Y-m-d H:i:s'),
-                                    'updatedAt' => date('Y-m-d H:i:s'),
-                                    'isExpired' => true,
-                                    'responsibilityAvatar' => null,
-                                ],
-                                [
-                                    'responsibility' => 4,
-                                    'responsibilityFullName' => 'FirstName4 LastName4',
-                                    'project' => 1,
-                                    'projectName' => 'project1',
-                                    'meeting' => 1,
-                                    'meetingName' => 'meeting1',
-                                    'infoCategory' => 12,
-                                    'infoCategoryName' => 'Info Category 2',
-                                    'id' => 2,
-                                    'topic' => 'note2',
-                                    'description' => 'description2',
-                                    'expiresAt' => '2017-05-01',
-                                    'createdAt' => date('Y-m-d H:i:s'),
-                                    'updatedAt' => date('Y-m-d H:i:s'),
-                                    'isExpired' => true,
-                                    'responsibilityAvatar' => null,
-                                ],
-                            ],
                             'distributionLists' => [],
                             'createdAt' => null,
                             'updatedAt' => null,
@@ -1593,9 +1461,6 @@ class ProjectControllerTest extends BaseController
                     'meetingParticipants' => [],
                     'meetingAgendas' => [],
                     'medias' => [],
-                    'decisions' => [],
-                    'todos' => [],
-                    'infos' => [],
                     'distributionLists' => [],
                     'createdAt' => null,
                     'updatedAt' => null,
@@ -1675,6 +1540,8 @@ class ProjectControllerTest extends BaseController
                             'isExpired' => true,
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
+                            'distributionList' => null,
+                            'distributionListName' => null,
                         ],
                         [
                             'responsibility' => 4,
@@ -1693,6 +1560,8 @@ class ProjectControllerTest extends BaseController
                             'isExpired' => true,
                             'createdAt' => date('Y-m-d H:i:s'),
                             'updatedAt' => date('Y-m-d H:i:s'),
+                            'distributionList' => null,
+                            'distributionListName' => null,
                         ],
                     ],
                     'currentPage' => 0,
@@ -1776,6 +1645,8 @@ class ProjectControllerTest extends BaseController
                     'updatedAt' => '2018-02-16 04:14:42',
                     'isExpired' => false,
                     'responsibilityAvatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
+                    'distributionList' => null,
+                    'distributionListName' => null,
                 ],
             ],
         ];
@@ -2801,6 +2672,8 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
+                        'distributionList' => null,
+                        'distributionListName' => null,
                     ],
                     [
                         'status' => null,
@@ -2819,6 +2692,8 @@ class ProjectControllerTest extends BaseController
                         'showInStatusReport' => false,
                         'dueDate' => '2017-05-01 00:00:00',
                         'responsibilityAvatar' => '',
+                        'distributionList' => null,
+                        'distributionListName' => null,
                     ],
                 ],
             ],
@@ -2869,6 +2744,7 @@ class ProjectControllerTest extends BaseController
             [
                 [
                     'meeting' => 1,
+                    'distributionList' => 1,
                     'title' => 'do this',
                     'description' => 'descript',
                 ],
@@ -2877,8 +2753,8 @@ class ProjectControllerTest extends BaseController
                 [
                     'status' => null,
                     'statusName' => null,
-                    'meeting' => 1,
-                    'meetingName' => 'meeting1',
+                    'meeting' => null,
+                    'meetingName' => null,
                     'project' => 1,
                     'projectName' => 'project1',
                     'responsibility' => null,
@@ -2890,6 +2766,8 @@ class ProjectControllerTest extends BaseController
                     'description' => 'descript',
                     'showInStatusReport' => false,
                     'dueDate' => null,
+                    'distributionList' => 1,
+                    'distributionListName' => 'distribution-list-1',
                 ],
             ],
         ];

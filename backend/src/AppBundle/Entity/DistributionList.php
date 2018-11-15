@@ -132,6 +132,33 @@ class DistributionList
     private $updatedAt;
 
     /**
+     * @var ArrayCollection|Decision[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="distributionList", cascade={"all"})
+     */
+    private $decisions;
+
+    /**
+     * @var ArrayCollection|Decision[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="distributionList", cascade={"all"})
+     */
+    private $todos;
+
+    /**
+     * @var ArrayCollection|Decision[]
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="distributionList", cascade={"all"})
+     */
+    private $infos;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -139,6 +166,14 @@ class DistributionList
         $this->createdAt = new \DateTime();
         $this->users = new ArrayCollection();
         $this->meetings = new ArrayCollection();
+        $this->decisions = new ArrayCollection();
+        $this->todos = new ArrayCollection();
+        $this->infos = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
     }
 
     /**
@@ -460,5 +495,98 @@ class DistributionList
         }
 
         return [];
+    }
+
+    /**
+     * Add decision.
+     *
+     * @param Decision $decision
+     */
+    public function addDecision(Decision $decision)
+    {
+        $this->decisions[] = $decision;
+        $decision->setMeeting($this);
+    }
+
+    /**
+     * Remove decision.
+     *
+     * @param Decision $decision
+     */
+    public function removeDecision(Decision $decision)
+    {
+        $this->decisions->removeElement($decision);
+    }
+
+    /**
+     * Get decisions.
+     *
+     * @return ArrayCollection|Decision[]
+     */
+    public function getDecisions()
+    {
+        return $this->decisions;
+    }
+
+    /**
+     * Add todo.
+     *
+     * @param Todo $todo
+     */
+    public function addTodo(Todo $todo)
+    {
+        $this->todos[] = $todo;
+        $todo->setDistributionList($this);
+    }
+
+    /**
+     * Remove todo.
+     *
+     * @param Todo $todo
+     */
+    public function removeTodo(Todo $todo)
+    {
+        $this->todos->removeElement($todo);
+    }
+
+    /**
+     * Get todos.
+     *
+     * @return ArrayCollection|Todo[]
+     */
+    public function getTodos()
+    {
+        return $this->todos;
+    }
+
+    /**
+     * Add Info.
+     *
+     * @param Info $info
+     */
+    public function addInfo(Info $info)
+    {
+        $this->infos[] = $info;
+        $info->setMeeting($this);
+    }
+
+    /**
+     * Remove Info.
+     *
+     * @param Info $info
+     */
+    public function removeInfo(Info $info)
+    {
+        $this->infos->removeElement($info);
+    }
+
+    /**
+     * Get Infos.
+     *
+     * @return ArrayCollection|Info[]
+     */
+    public function getInfos()
+    {
+        return $this->infos;
     }
 }

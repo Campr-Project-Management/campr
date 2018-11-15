@@ -4,6 +4,7 @@ namespace AppBundle\Form\Decision;
 
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DecisionCategory;
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\User;
@@ -97,6 +98,17 @@ class CreateType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'label.done',
+                ]
+            )
+            ->add(
+                'distributionList',
+                EntityType::class,
+                [
+                    'class' => DistributionList::class,
+                    'required' => false,
+                    'choice_label' => 'name',
+                    'placeholder' => 'placeholder.distribution_list',
+                    'translation_domain' => 'messages',
                 ]
             )
             ->add('showInStatusReport', CheckboxType::class)
