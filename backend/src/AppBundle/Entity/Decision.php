@@ -40,9 +40,19 @@ class Decision
      *
      * @Serializer\Exclude()
      *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\DistributionList", inversedBy="decisions")
+     * @ORM\JoinColumn(name="distribution_list_id", onDelete="CASCADE")
+     * Assert\NotBlank(message="not_blank.distribution_list")
+     */
+    private $distributionList;
+
+    /**
+     * @var Meeting|null
+     *
+     * @Serializer\Exclude()
+     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meeting", inversedBy="decisions")
      * @ORM\JoinColumn(name="meeting_id", onDelete="CASCADE")
-     * @Assert\NotBlank(message="not_blank.meeting")
      */
     private $meeting;
 
@@ -349,7 +359,7 @@ class Decision
     {
         $this->meeting = $meeting;
 
-        if ($meeting->getProject()) {
+        if ($meeting && $meeting->getProject()) {
             $this->project = $meeting->getProject();
         } else {
             $this->project = null;
@@ -366,6 +376,52 @@ class Decision
     public function getMeeting()
     {
         return $this->meeting;
+    }
+
+    /**
+     * Set meeting.
+     *
+     * @param DistributionList $distributionList
+     */
+    public function setDistributionList(DistributionList $distributionList = null)
+    {
+        $this->distributionList = $distributionList;
+    }
+
+    /**
+     * Get meeting.
+     *
+     * @return Meeting
+     */
+    public function getDistributionList()
+    {
+        return $this->distributionList;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("distributionList")
+     *
+     * @return int|null
+     */
+    public function getDistributionListId()
+    {
+        return $this->distributionList
+            ? $this->distributionList->getId()
+            : null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @Serializer\SerializedName("distributionListName")
+     *
+     * @return null|string
+     */
+    public function getDistributionListName()
+    {
+        return $this->distributionList
+            ? $this->distributionList->getName()
+            : null;
     }
 
     /**
