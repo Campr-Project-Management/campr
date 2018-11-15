@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Todo;
 
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\TodoStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
-use AppBundle\Entity\Meeting;
 use AppBundle\Entity\TodoCategory;
 
 class BaseCreateType extends AbstractType
@@ -25,14 +25,6 @@ class BaseCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('meeting', EntityType::class, [
-                'class' => Meeting::class,
-                'required' => true,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.meeting',
-                'translation_domain' => 'messages',
-                'choice_translation_domain' => 'messages',
-            ])
             ->add('title', TextType::class, [
                 'required' => true,
             ])
@@ -64,6 +56,13 @@ class BaseCreateType extends AbstractType
                 'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'placeholder.todo_category',
+                'translation_domain' => 'messages',
+            ])
+            ->add('distributionList', EntityType::class, [
+                'class' => DistributionList::class,
+                'required' => false,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.distribution_list',
                 'translation_domain' => 'messages',
             ])
             ->add('showInStatusReport', CheckboxType::class)

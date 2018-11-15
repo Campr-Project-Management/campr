@@ -550,11 +550,20 @@ export default {
                     objectives: this.objectives,
                     agendas: this.agendas,
                     medias: this.medias,
-                    decisions: this.decisions,
-                    todos: this.todos,
+                    decisions: this.decisions.map(decision => {
+                        return Object.assign({}, decision, {
+                            distributionList: this.details.distributionList,
+                        });
+                    }),
+                    todos: this.todos.map(todo => {
+                        return Object.assign({}, todo, {
+                            distributionList: this.details.distributionList,
+                        });
+                    }),
                     infos: this.infos.map((info) => {
                         return Object.assign({}, info, {
                             expiresAt: this.$formatToSQLDate(info.expiresAt),
+                            distributionList: this.details.distributionList,
                         });
                     }),
                     meetingParticipants: this.selectedParticipants.map(participant => {
@@ -565,6 +574,7 @@ export default {
                         };
                     }),
                 };
+
                 this.isSaving = true;
 
                 if (data.distributionLists && data.distributionLists.length > 0) {

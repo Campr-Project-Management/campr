@@ -21,10 +21,11 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <select-field
-                                    :title="translate('placeholder.meeting')"
-                                    :options="projectMeetingsForSelect"
-                                    v-model="details.meeting"/>
-                                <error at-path="meeting"/>
+                                    :title="translate('placeholder.distribution_list')"
+                                    :options="distributionListsForSelect"
+                                    v-model="distributionList"
+                                    :currentOption="distributionList" />
+                                <error at-path="distributionList" />
                             </div>
 
                             <div class="col-md-6">
@@ -152,7 +153,7 @@
         },
         methods: {
             ...mapActions([
-                'getProjectMeetings',
+                'getDistributionLists',
                 'getDecisionCategories',
                 'createDecision',
                 'getDecision',
@@ -165,7 +166,7 @@
             getData() {
                 return {
                     project: this.$route.params.id,
-                    meeting: this.details.meeting ? this.details.meeting.key : null,
+                    distributionList: this.distributionList ? this.distributionList.key : null,
                     title: this.title,
                     description: this.description,
                     done: this.done.key,
@@ -217,7 +218,7 @@
         computed: {
             ...mapGetters([
                 'decisionCategoriesForSelect',
-                'projectMeetingsForSelect',
+                'distributionListsForSelect',
                 'validationMessages',
                 'currentDecision',
                 'decisionsStatusesForSelect',
@@ -247,7 +248,7 @@
         },
         created() {
             this.getDecisionCategories();
-            this.getProjectMeetings({projectId: this.$route.params.id});
+            this.getDistributionLists({projectId: this.$route.params.id});
             if (this.$route.params.decisionId) {
                 this.getDecision(this.$route.params.decisionId);
             }
@@ -260,10 +261,9 @@
                 this.title = this.currentDecision.title;
                 this.description = this.currentDecision.description;
                 this.done = this.currentDecisionStatusForSelect;
-                this.details.meeting = this.currentDecision.meeting
-                    ? {key: this.currentDecision.meeting, label: this.currentDecision.meetingName}
-                    : null
-                ;
+                this.distributionList = value.distributionList
+                    ? {key: value.distributionList, label: value.distributionListName}
+                    : null;
                 this.details.decisionCategory = this.currentDecision.decisionCategory
                     ? {key: this.currentDecision.decisionCategory, label: this.currentDecision.decisionCategoryName}
                     : null
@@ -286,9 +286,9 @@
                 },
                 dueDate: null,
                 details: {
-                    meeting: null,
                     decisionCategory: null,
                 },
+                distributionList: null,
                 medias: [],
                 isEdit: this.$route.params.decisionId,
                 showFailed: false,
