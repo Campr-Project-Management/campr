@@ -60,6 +60,7 @@ export const createFormData = (data) => {
             formData.append('decisions[' + i + '][done]', data.decisions[i].done);
             formData.append('decisions[' + i + '][responsibility]', data.decisions[i].responsibility);
             formData.append('decisions[' + i + '][dueDate]', moment(data.decisions[i].dueDate).format('DD-MM-YYYY'));
+            formData.append('decisions[' + i + '][distributionList]', data.decisions[i].distributionList ? data.infos[i].distributionList.key : null);
             if (data.decisions[i].medias) {
                 for (let j = 0; j < data.decisions[i].medias.length; j++) {
                     formData.append(
@@ -80,6 +81,7 @@ export const createFormData = (data) => {
             formData.append('todos[' + i + '][responsibility]', data.todos[i].responsible.length > 0 ? data.todos[i].responsible[0] : null);
             formData.append('todos[' + i + '][dueDate]', moment(data.todos[i].dueDate).format('DD-MM-YYYY'));
             formData.append('todos[' + i + '][status]', data.todos[i].status ? data.todos[i].status.key : null);
+            formData.append('todos[' + i + '][distributionList]', data.todos[i].distributionList ? data.todos[i].distributionList.key : null);
         }
     }
 
@@ -90,6 +92,7 @@ export const createFormData = (data) => {
             formData.append('infos[' + i + '][responsibility]', data.infos[i].responsible.length > 0 ? data.infos[i].responsible[0] : null);
             formData.append('infos[' + i + '][expiresAt]', data.infos[i].expiresAt);
             formData.append('infos[' + i + '][infoCategory]', data.infos[i].infoCategory ? data.infos[i].infoCategory.key : null);
+            formData.append('infos[' + i + '][distributionList]', data.infos[i].distributionList ? data.infos[i].distributionList.key : null);
         }
     }
 

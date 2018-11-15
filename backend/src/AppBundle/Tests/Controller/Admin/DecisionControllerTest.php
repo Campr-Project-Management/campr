@@ -27,8 +27,8 @@ class DecisionControllerTest extends BaseController
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());
         $this->assertContains('name="create[project]"', $crawler->html());
-        $this->assertContains('id="create_meeting"', $crawler->html());
-        $this->assertContains('name="create[meeting]"', $crawler->html());
+        $this->assertContains('id="create_distributionList"', $crawler->html());
+        $this->assertContains('name="create[distributionList]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_showInStatusReport"', $crawler->html());
@@ -66,7 +66,7 @@ class DecisionControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/decision/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[meeting]'] = 1;
+        $form['create[distributionList]'] = 1;
         $form['create[title]'] = 'decision3';
         $form['create[description]'] = 'decision-description3';
 
@@ -127,8 +127,8 @@ class DecisionControllerTest extends BaseController
         $this->assertContains('name="create[dueDate]"', $crawler->html());
         $this->assertContains('id="create_project"', $crawler->html());
         $this->assertContains('name="create[project]"', $crawler->html());
-        $this->assertContains('id="create_meeting"', $crawler->html());
-        $this->assertContains('name="create[meeting]"', $crawler->html());
+        $this->assertContains('id="create_distributionList"', $crawler->html());
+        $this->assertContains('name="create[distributionList]"', $crawler->html());
         $this->assertContains('id="create_responsibility"', $crawler->html());
         $this->assertContains('name="create[responsibility]"', $crawler->html());
         $this->assertContains('id="create_showInStatusReport"', $crawler->html());

@@ -41,6 +41,8 @@
                                 <span v-if="info.isExpired">{{ translate('message.expired_at') }}</span>
                                 <span v-else>{{ translate('message.expiry_date') }}: </span>
                                 <b :class="{'middle-color': info.isExpired}">{{ info.expiresAt | date }}</b>
+
+                                | {{ translate('label.distribution_list') }}: <b v-if="info.distributionList">{{ translate(info.distributionListName) }}</b><b v-else>-</b>
                             </h4>
 
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
