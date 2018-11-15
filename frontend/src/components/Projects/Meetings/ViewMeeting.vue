@@ -193,7 +193,7 @@
                 <!-- /// Decisions /// -->
                 <h3>{{ translate('message.decisions') }}</h3>
 
-                <div class="entries-wrapper" v-if="meeting.decisions || meeting.openDecisions">
+                <div class="entries-wrapper" v-if="meeting.openDecisions">
                     <div class="entry" v-for="decision in meeting.openDecisions">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
@@ -226,45 +226,6 @@
                             </template>
                         </div>
                     </div>
-
-                    <!-- /// Decision /// -->
-                    <div class="entry" v-for="decision in meeting.decisions">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button @click="initEditDecision(decision)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteDecision(decision)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
-                            </div>
-                        </div>
-                        <div class="entry-responsible flex flex-v-center">
-                            <user-avatar
-                                    size="small"
-                                    :url="decision.responsibilityAvatar"
-                                    :name="decision.responsibilityFullName"/>
-                            <div>
-                                {{ translate('message.responsible') }}:
-                                <b>{{ decision.responsibilityFullName }}</b>
-                            </div>
-                        </div>
-                        <div class="entry-body" v-html="decision.description"></div>
-                        <div class="attachments">
-                            <template v-for="(media, index) in decision.medias">
-                                <div
-                                        class="attachment"
-                                        v-if="media"
-                                        :key="index">
-                                    <view-icon/>
-                                    <span class="attachment-name">
-                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
-                                            <span v-else>{{ media.name }}</span>
-                                        </span>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                    <!-- /// End Decision /// -->
                 </div>
                 <!-- /// End Decisions /// -->
 
@@ -273,7 +234,7 @@
                 <!-- /// ToDos /// -->
                 <h3>{{ translate('message.todos') }}</h3>
 
-                <div class="entries-wrapper" v-if="meeting.todos || meeting.openTodos">
+                <div class="entries-wrapper" v-if="meeting.openTodos">
                     <div class="entry" v-for="todo in meeting.openTodos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
@@ -292,31 +253,6 @@
                         </div>
                         <div class="entry-body" v-html="todo.description"></div>
                     </div>
-
-                    <!-- /// ToDo /// -->
-                    <div class="entry" v-for="todo in meeting.todos">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button @click="initEditTodo(todo)"  class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteTodo(todo)"  type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
-                            </div>
-                        </div>
-                        <div class="entry-responsible flex flex-v-center">
-                            <user-avatar
-                                    size="small"
-                                    :url="todo.responsibilityAvatar"
-                                    :name="todo.responsibilityFullName"/>
-                            <div>
-                                {{ translate('message.responsible') }}:
-                                <b>{{ todo.responsibilityFullName }}</b>
-                            </div>
-                        </div>
-                        <div class="entry-body" v-html="todo.description"></div>
-                    </div>
-                    <!-- /// End ToDo /// -->
                 </div>
                 <!-- /// End ToDos /// -->
 
@@ -325,7 +261,7 @@
                 <!-- /// Infos /// -->
                 <h3>{{ translate('message.infos') }}</h3>
 
-                <div class="entries-wrapper" v-if="meeting.infos || meeting.openInfos">
+                <div class="entries-wrapper" v-if="meeting.openInfos">
                     <div class="entry" v-for="info in meeting.openInfos">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
@@ -352,39 +288,6 @@
                         </div>
                         <div class="entry-body" v-html="info.description"></div>
                     </div>
-
-                    <!-- /// Info /// -->
-                    <div class="entry" v-for="info in meeting.infos">
-                        <div class="entry-header flex flex-space-between flex-v-center">
-                            <div class="entry-title">
-                                <h4>{{ info.topic }}</h4> |
-                                <template v-if="info.isExpired">
-                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
-                                </template>
-                                <template v-else>
-                                    {{ translate('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
-                                </template> |
-
-                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
-                            </div>
-                            <div class="entry-buttons">
-                                <button @click="initEditInfo(info)" class="btn btn-rounded second-bg btn-auto btn-md" data-toggle="modal" type="button">edit</button>
-                                <button @click="initDeleteInfo(info)" type="button" class="btn btn-rounded btn-auto btn-md danger-bg" >{{ translate('message.delete') }}</button>
-                            </div>
-                        </div>
-                        <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <user-avatar
-                                    size="small"
-                                    :url="info.responsibilityAvatar"
-                                    :name="info.responsibilityFullName"/>
-                            <div>
-                                {{ translate('message.responsible') }}:
-                                <b>{{ info.responsibilityFullName }}</b>
-                            </div>
-                        </div>
-                        <div class="entry-body" v-html="info.description"></div>
-                    </div>
-                    <!-- /// End Info /// -->
                 </div>
                 <!-- /// End Infos /// -->
             </div>
@@ -582,6 +485,7 @@ export default {
                 meeting: this.$route.params.meetingId,
                 project: this.$route.params.id,
                 medias: decision.medias,
+                distributionList: decision.distributionList,
             };
         },
         initDeleteDecision: function(decision) {
@@ -599,6 +503,7 @@ export default {
                 dueDate: todo.dueDate ? moment(todo.dueDate).toDate() : new Date(),
                 status: {key: todo.status, label: this.translate(todo.statusName)},
                 meeting: this.$route.params.meetingId,
+                distributionList: todo.distributionList,
             };
         },
         initDeleteTodo: function(todo) {
@@ -616,6 +521,7 @@ export default {
                 expiresAt: info.expiresAt ? moment(info.expiresAt).toDate() : new Date(),
                 infoCategory: {key: info.infoCategory, label: info.infoCategoryName},
                 meeting: this.$route.params.meetingId,
+                distributionList: info.distributionList,
             };
         },
         initDeleteInfo: function(info) {

@@ -37,7 +37,15 @@
                             <h1>{{todo.title}}</h1>
                             <!-- /// to implement this after the categories will be added /// -->
                             <h3 class="category"><b>{{todo.todoCategoryName}}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{ todo.createdAt | moment('DD.MM.YYYY') }}</b> | {{ translate('message.due_date') }}: <b>{{todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b></h4>
+                            <h4>
+                                {{ translate('message.created') }}: <b>{{ todo.createdAt | moment('DD.MM.YYYY') }}</b>
+                                |
+                                {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b>
+                                |
+                                {{ translate('message.status') }}: <b v-if="todo.statusName">{{ translate(todo.statusName) }}</b><b v-else>-</b>
+                                |
+                                {{ translate('label.distribution_list') }}: <b v-if="todo.distributionList">{{ translate(todo.distributionListName) }}</b><b v-else>-</b>
+                            </h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <user-avatar
                                         size="small"

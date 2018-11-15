@@ -136,8 +136,8 @@ class DecisionRepository extends BaseRepository
             ->setParameter('project', $meeting->getProject())
         ;
 
-        if ($meeting->getId()) {
-            $qb->andWhere($qb->expr()->neq('o.meeting', $meeting->getId()));
+        if ($meeting->getDistributionLists()->count()) {
+            $qb->andWhere($qb->expr()->neq('o.distributionList', $meeting->getDistributionLists()->first()->getId()));
         }
 
         return $qb->getQuery()->getResult();
