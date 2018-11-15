@@ -598,7 +598,8 @@ hr {
 }
 
 .checkbox-input {
-
+    font-family: FontAwesome;
+    
     input[type=checkbox],
     input[type=radio] {
         display: none;
@@ -625,23 +626,28 @@ hr {
     input[type=checkbox]:checked + label:before,
     input[type=radio]:checked + label:before {
         text-align: center;
-        background: $secondColor;
+        background: $darkColor;
         border: none;
-        color: $darkColor;
+        color: $secondColor;
         font-weight: 700;
     }
 
     input[type=checkbox]:checked + label:before {
+        color: $darkColor;
+        background: $secondColor;
+    }
+
+    input[type=checkbox]:checked + label:before {
         content: "\2713";
-        line-height: 1.2em;
-        padding-left: 2px;
-        font-size: 20px;
+        line-height: 0.9em;
+        padding-left: 0px;
+        padding-top: 0.8px;
+        font-size: 25px;
     }
 
     input[type=radio]:checked + label:before {
-        content: "\2022";
-        font-size: 40px;
-        padding-left: 1px;
+        content: '\f192';
+        font-size: 20px;
     }
 
     label {
