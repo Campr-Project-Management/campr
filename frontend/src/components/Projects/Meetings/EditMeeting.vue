@@ -241,46 +241,8 @@
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.decisions || meeting.openDecisions">
-                        <!-- previous decisions -->
+                    <div class="entries-wrapper" v-if="meeting.openDecisions">
                         <div class="entry" v-for="decision in meeting.openDecisions">
-                            <div class="entry-header flex flex-space-between flex-v-center">
-                                <div class="entry-title">
-                                    <h4>{{ decision.title }}</h4>
-                                    | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
-                                    | {{ translate('message.status') }}:
-                                    <b v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</b>
-                                    <b v-else class="danger-color">{{ translate('choices.undone') }}</b>
-                                </div>
-                            </div>
-                            <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
-                                <user-avatar
-                                    :name="decision.responsibilityFullName"
-                                    :url="decision.responsibilityAvatar"/>
-                                <div>
-                                    {{ translate('message.responsible') }}:
-                                    <b>{{ decision.responsibilityFullName }}</b>
-                                </div>
-                            </div>
-                            <div class="entry-body" v-html="decision.description"></div>
-                            <div class="attachments">
-                                <template v-for="(media, index) in decision.medias">
-                                    <div
-                                        class="attachment"
-                                        v-if="media"
-                                        :key="index">
-                                        <view-icon/>
-                                        <span class="attachment-name">
-                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
-                                            <span v-else>{{ media.name }}</span>
-                                        </span>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <!-- /// Decision /// -->
-                        <div class="entry" v-for="decision in meeting.decisions">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
                                     <h4>{{ decision.title }}</h4>
@@ -319,7 +281,6 @@
                                 </template>
                             </div>
                         </div>
-                        <!-- /// End Decision /// -->
                     </div>
 
                     <meeting-decision-form
@@ -343,29 +304,8 @@
                     <!-- /// ToDos /// -->
                     <h3>{{ translate('message.todos') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.todos || meeting.openTodos">
-                        <!-- previous decisions -->
+                    <div class="entries-wrapper" v-if="meeting.openTodos">
                         <div class="entry" v-for="todo in meeting.openTodos">
-                            <div class="entry-header flex flex-space-between flex-v-center">
-                                <div class="entry-title">
-                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
-                                </div>
-                            </div>
-                            <div class="entry-responsible flex flex-v-center">
-                                <user-avatar
-                                        size="small"
-                                        :url="todo.responsibilityAvatar"
-                                        :name="todo.responsibilityFullName"/>
-                                <div>
-                                    {{ translate('message.responsible') }}:
-                                    <b>{{ todo.responsibilityFullName }}</b>
-                                </div>
-                            </div>
-                            <div class="entry-body" v-html="todo.description"></div>
-                        </div>
-
-                        <!-- /// ToDo /// -->
-                        <div class="entry" v-for="todo in meeting.todos">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
                                     <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
@@ -387,7 +327,6 @@
                             </div>
                             <div class="entry-body" v-html="todo.description"></div>
                         </div>
-                        <!-- /// End ToDo /// -->
                     </div>
 
                     <input-field type="text" v-bind:label="translate('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
@@ -442,31 +381,8 @@
                     <!-- /// Infos /// -->
                     <h3>{{ translate('message.infos') }}</h3>
 
-                    <div class="entries-wrapper" v-if="meeting.infos || meeting.openInfos">
-                        <!-- previous infos -->
+                    <div class="entries-wrapper" v-if="meeting.openInfos">
                         <div class="entry" v-for="info in meeting.openInfos">
-                            <div class="entry-header flex flex-space-between flex-v-center">
-                                <div class="entry-title">
-                                    <h4>{{ info.topic }}</h4> |
-                                    {{ translate('message.expiry_date') }}: <b :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</b> |
-                                    {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
-                                </div>
-                            </div>
-                            <div class="entry-responsible flex flex-v-center">
-                                <user-avatar
-                                    size="small"
-                                    :name="info.responsibilityFullName"
-                                    :url="info.responsibilityAvatar"/>
-                                <div>
-                                    {{ translate('message.responsible') }}:
-                                    <b>{{ info.responsibilityFullName }}</b>
-                                </div>
-                            </div>
-                            <div class="entry-body" v-html="info.description"></div>
-                        </div>
-
-                        <!-- /// Info /// -->
-                        <div class="entry" v-for="info in meeting.infos">
                             <div class="entry-header flex flex-space-between flex-v-center">
                                 <div class="entry-title">
                                     <h4>{{ info.topic }}</h4> |
@@ -490,7 +406,6 @@
                             </div>
                             <div class="entry-body" v-html="info.description"></div>
                         </div>
-                        <!-- /// End Info /// -->
                     </div>
 
                     <input-field type="text"

@@ -37,12 +37,16 @@
                             </router-link>
                             <h1>{{ currentDecision.title }}</h1>
                             <h3 class="category"><b>{{ currentDecision.meetingName }}</b> | <b>{{ currentDecision.decisionCategoryName }}</b></h3>
-                            <h4>{{ translate('message.created') }}: <b>{{ currentDecision.createdAt | date }}</b> | {{ translate('message.due_date') }}: <b>{{currentDecision.dueDate | date }}</b> </h4>
+                            <h4>
+                                {{ translate('message.created') }}: <b>{{ currentDecision.createdAt | date }}</b>
+                                | {{ translate('message.due_date') }}: <b>{{currentDecision.dueDate | date }}</b>|
+                                {{ translate('label.distribution_list') }}: <b v-if="currentDecision.distributionList">{{ translate(currentDecision.distributionListName) }}</b><b v-else>-</b>
+                            </h4>
                             <div class="entry-responsible flex flex-v-center">
                                 <user-avatar
-                                        size="small"
-                                        :url="currentDecision.responsibilityAvatar"
-                                        :name="currentDecision.responsibilityFullName"/>
+                                    size="small"
+                                    :url="currentDecision.responsibilityAvatar"
+                                    :name="currentDecision.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{currentDecision.responsibilityFullName}}</b>

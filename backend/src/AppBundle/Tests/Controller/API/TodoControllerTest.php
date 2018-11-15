@@ -47,6 +47,8 @@ class TodoControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
+                    'distributionList' => null,
+                    'distributionListName' => null,
                     'status' => null,
                     'statusName' => null,
                     'meeting' => 1,
@@ -113,10 +115,12 @@ class TodoControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
+                    'distributionList' => 1,
+                    'distributionListName' => 'distribution-list-1',
                     'status' => null,
                     'statusName' => null,
-                    'meeting' => 1,
-                    'meetingName' => 'meeting1',
+                    'meeting' => null,
+                    'meetingName' => null,
                     'project' => 1,
                     'projectName' => 'project1',
                     'responsibility' => null,

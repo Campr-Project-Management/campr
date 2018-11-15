@@ -134,6 +134,8 @@ class Meeting
     /**
      * @var ArrayCollection|Decision[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="meeting", cascade={"all"})
      * @Assert\Valid()
      */
@@ -142,6 +144,8 @@ class Meeting
     /**
      * @var ArrayCollection|Decision[]
      *
+     * @Serializer\Exclude()
+     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="meeting", cascade={"all"})
      * @Assert\Valid()
      */
@@ -149,6 +153,8 @@ class Meeting
 
     /**
      * @var ArrayCollection|Decision[]
+     *
+     * @Serializer\Exclude()
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="meeting", cascade={"all"})
      * @Assert\Valid()

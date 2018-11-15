@@ -2,7 +2,9 @@
 
 namespace AppBundle\Form\Info;
 
+use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Info;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,6 +39,13 @@ class BaseCreateType extends AbstractType
                     'format' => 'yyyy-MM-dd',
                 ]
             )
+            ->add('distributionList', EntityType::class, [
+                'class' => DistributionList::class,
+                'required' => false,
+                'choice_label' => 'name',
+                'placeholder' => 'placeholder.distribution_list',
+                'translation_domain' => 'messages',
+            ])
         ;
     }
 
