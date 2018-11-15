@@ -318,6 +318,7 @@ export default {
                 done: this.editDecisionObject.done,
                 responsibility: this.editDecisionObject.responsibility,
                 medias: this.editDecisionObject.medias,
+                distributionList: this.editDecisionObject.distributionList,
             });
             let formData = createFormDataDecision(data);
             this.editDecision({

@@ -31,11 +31,11 @@
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    :title="translate('placeholder.meeting')"
-                                    :options="projectMeetingsForSelect"
-                                    v-model="meeting"
-                                    :currentOption="meeting" />
-                                <error at-path="meeting" />
+                                    :title="translate('placeholder.distribution_list')"
+                                    :options="distributionListsForSelect"
+                                    v-model="distributionList"
+                                    :currentOption="distributionList" />
+                                <error at-path="distributionList" />
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ export default {
             'getTodoStatuses',
             'getTodoById',
             'getTodoCategories',
-            'getProjectMeetings',
+            'getDistributionLists',
             'emptyValidationMessages',
         ]),
         saveTodo: function() {
@@ -148,9 +148,10 @@ export default {
                         description: this.description,
                         status: this.status ? this.status.key : null,
                         todoCategory: this.todoCategory ? this.todoCategory.key : null,
-                        meeting: this.meeting ? this.meeting.key : null,
+                        distributionList: this.distributionList ? this.distributionList.key : null,
                     },
                 };
+
                 this.isSaving = true;
 
                 this
@@ -181,7 +182,8 @@ export default {
                 description: this.description,
                 status: this.status ? this.status.key : null,
                 todoCategory: this.todoCategory ? this.todoCategory.key : null,
-                meeting: this.meeting ? this.meeting.key : null,
+                distributionList: this.distributionList ? this.distributionList.key : null,
+                project: this.$route.params.id,
             };
 
             this
@@ -204,7 +206,7 @@ export default {
     },
     created() {
         this.getTodoStatuses();
-        this.getProjectMeetings({projectId: this.$route.params.id});
+        this.getDistributionLists({projectId: this.$route.params.id});
         this.getTodoCategories();
         if (this.$route.params.todoId) {
             this.getTodoById(this.$route.params.todoId);
@@ -216,7 +218,7 @@ export default {
             'todoStatusesForSelect',
             'validationMessages',
             'todoCategoriesForSelect',
-            'projectMeetingsForSelect',
+            'distributionListsForSelect',
         ]),
         todo() {
             return this.currentTodo;
@@ -236,8 +238,8 @@ export default {
             this.todoCategory = this.todo.todoCategory
                 ? {key: this.todo.todoCategory, label: this.todo.todoCategoryName}
                 : null;
-            this.meeting = this.todo.meeting
-                ? {key: this.todo.meeting, label: this.todo.meetingName}
+            this.distributionList = this.todo.distributionList
+                ? {key: this.todo.distributionList, label: this.todo.distributionListName}
                 : null;
         },
     },
@@ -251,10 +253,10 @@ export default {
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
-            meeting: null,
             showSaved: false,
             showFailed: false,
             isSaving: false,
+            distributionList: null,
         };
     },
 };

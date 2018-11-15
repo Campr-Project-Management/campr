@@ -46,27 +46,11 @@ class MeetingControllerTest extends BaseController
             $responseContent['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
         }
 
-        foreach ($actual['decisions'] as $key => $decision) {
-            $responseContent['decisions'][$key]['responsibilityAvatar'] = $decision['responsibilityAvatar'];
-            $responseContent['decisions'][$key]['createdAt'] = $decision['createdAt'];
-        }
-
-        foreach ($actual['todos'] as $key => $todo) {
-            $responseContent['todos'][$key]['responsibilityAvatar'] = $todo['responsibilityAvatar'];
-        }
-
         foreach ($actual['medias'] as $key => $media) {
             $responseContent['medias'][$key]['name'] = $media['name'];
             $responseContent['medias'][$key]['originalName'] = $media['originalName'];
             $responseContent['medias'][$key]['path'] = $media['path'];
             $responseContent['medias'][$key]['fileName'] = $media['fileName'];
-        }
-
-        foreach ($actual['infos'] as $key => $info) {
-            $responseContent['infos'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
-            $responseContent['infos'][$key]['createdAt'] = $info['createdAt'];
-            $responseContent['infos'][$key]['updatedAt'] = $info['updatedAt'];
-            $responseContent['infos'][$key]['infoCategory'] = $info['infoCategory'];
         }
 
         $responseContent['openDecisions'] = $actual['openDecisions'];
@@ -172,122 +156,6 @@ class MeetingControllerTest extends BaseController
                             'name' => '',
                         ],
                     ],
-                    'decisions' => [
-                        [
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'decisionCategory' => null,
-                            'decisionCategoryName' => null,
-                            'id' => 1,
-                            'isDone' => false,
-                            'done' => false,
-                            'title' => 'decision1',
-                            'description' => 'description1',
-                            'showInStatusReport' => false,
-                            'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
-                            'medias' => [],
-                        ],
-                        [
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'decisionCategory' => null,
-                            'decisionCategoryName' => null,
-                            'id' => 2,
-                            'isDone' => false,
-                            'done' => false,
-                            'title' => 'decision2',
-                            'description' => 'description2',
-                            'showInStatusReport' => false,
-                            'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
-                            'medias' => [],
-                        ],
-                    ],
-                    'todos' => [
-                        [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'todoCategory' => null,
-                            'todoCategoryName' => null,
-                            'id' => 1,
-                            'title' => 'todo1',
-                            'description' => 'description for todo1',
-                            'showInStatusReport' => false,
-                            'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
-                        ],
-                        [
-                            'status' => null,
-                            'statusName' => null,
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'todoCategory' => null,
-                            'todoCategoryName' => null,
-                            'id' => 2,
-                            'title' => 'todo2',
-                            'description' => 'description for todo2',
-                            'showInStatusReport' => false,
-                            'dueDate' => '2017-05-01 00:00:00',
-                            'responsibilityAvatar' => '',
-                        ],
-                    ],
-                    'infos' => [
-                        [
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'infoCategory' => 11,
-                            'infoCategoryName' => 'Info Category 1',
-                            'id' => 1,
-                            'topic' => 'note1',
-                            'description' => 'description1',
-                            'expiresAt' => '2017-05-01',
-                            'createdAt' => date('Y-m-d H:i:s'),
-                            'updatedAt' => date('Y-m-d H:i:s'),
-                            'isExpired' => true,
-                            'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
-                        ],
-                        [
-                            'responsibility' => 4,
-                            'responsibilityFullName' => 'FirstName4 LastName4',
-                            'project' => 1,
-                            'projectName' => 'project1',
-                            'meeting' => 1,
-                            'meetingName' => 'meeting1',
-                            'infoCategory' => 12,
-                            'infoCategoryName' => 'Info Category 2',
-                            'id' => 2,
-                            'topic' => 'note2',
-                            'description' => 'description2',
-                            'expiresAt' => '2017-05-01',
-                            'createdAt' => date('Y-m-d H:i:s'),
-                            'updatedAt' => date('Y-m-d H:i:s'),
-                            'isExpired' => true,
-                            'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
-                        ],
-                    ],
                     'distributionLists' => [],
                     'createdAt' => '',
                     'updatedAt' => '',
@@ -372,9 +240,6 @@ class MeetingControllerTest extends BaseController
                     'meetingReports' => [],
                     'meetingAgendas' => [],
                     'medias' => [],
-                    'decisions' => [],
-                    'todos' => [],
-                    'infos' => [],
                     'distributionLists' => [],
                     'createdAt' => '',
                     'updatedAt' => '',

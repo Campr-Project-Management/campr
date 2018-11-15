@@ -27,11 +27,11 @@
                             </div>
                             <div class="col-md-6">
                                 <select-field
-                                    :title="translate('placeholder.meeting')"
-                                    :options="projectMeetingsForSelect"
-                                    v-model="meeting"
-                                    :currentOption="meeting" />
-                                <error at-path="meeting" />
+                                    :title="translate('placeholder.distribution_list')"
+                                    :options="distributionListsForSelect"
+                                    v-model="distributionList"
+                                    :currentOption="distributionList" />
+                                <error at-path="distributionList" />
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@ export default {
             'createInfo',
             'editInfo',
             'emptyValidationMessages',
-            'getProjectMeetings',
+            'getDistributionLists',
         ]),
         doSave() {
             if (!this.isSaving) {
@@ -133,9 +133,7 @@ export default {
                     responsibility: this.responsibility && this.responsibility.length
                         ? this.responsibility[0]
                         : null,
-                    meeting: this.meeting
-                        ? this.meeting.key
-                        : null,
+                    distributionList: this.distributionList ? this.distributionList.key : null,
                 };
 
                 this.isSaving = true;
@@ -193,8 +191,8 @@ export default {
                     label: this.translate(val.infoCategoryName),
                 };
                 this.responsibility = [val.responsibility];
-                this.meeting = val.meeting
-                    ? {key: val.meeting, label: val.meetingName}
+                this.distributionList = val.distributionList
+                    ? {key: val.distributionList, label: val.distributionListName}
                     : null;
             }
         },
@@ -204,7 +202,7 @@ export default {
             'info',
             'infoCategoriesForDropdown',
             'validationMessages',
-            'projectMeetingsForSelect',
+            'distributionListsForSelect',
         ]),
         isEdit() {
             return !!this.$route.params.infoId;
@@ -212,7 +210,7 @@ export default {
     },
     created() {
         this.getInfoCategories();
-        this.getProjectMeetings({projectId: this.$route.params.id});
+        this.getDistributionLists({projectId: this.$route.params.id});
         if (this.$route.params.infoId) {
             this.getInfo(this.$route.params.infoId);
         }
@@ -230,8 +228,8 @@ export default {
             expiresAt: null,
             infoCategory: null,
             responsibility: [],
-            meeting: null,
             isSaving: false,
+            distributionList: null,
         };
     },
 };

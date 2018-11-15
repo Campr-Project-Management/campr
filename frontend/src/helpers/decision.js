@@ -18,8 +18,8 @@ export const createFormData = (data) => {
         formData.append('project', data.project);
     }
 
-    if (data.meeting != null) {
-        formData.append('meeting', data.meeting);
+    if (data.distributionList != null) {
+        formData.append('distributionList', data.distributionList);
     }
 
     if (data.done != null) {
@@ -82,6 +82,10 @@ export const createFormDataDecision = (data) => {
 
     if (data.decisionCategory != null) {
         formData.append('decisionCategory', data.decisionCategory);
+    }
+
+    if (data.distributionList != null) {
+        formData.append('distributionList', data.distributionList);
     }
 
     // Attachments
