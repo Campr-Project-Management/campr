@@ -36,12 +36,8 @@ export const createFormData = (data) => {
 
     // Attachments
     if (data.medias && data.medias.length) {
-        data.medias.forEach((media, index) => {
-            if (!media) {
-                return;
-            }
-
-            formData.append('medias[' + index + ']', media.id);
+        data.medias.forEach((media, i) => {
+            formData.append('medias[' + i + ']', media.id);
         });
     }
 
@@ -90,13 +86,8 @@ export const createFormDataDecision = (data) => {
 
     // Attachments
     if (data.medias && data.medias.length) {
-        data.medias.forEach((media, index) => {
-            if (!media) {
-                return;
-            }
-
-            formData.append('medias[' + index + '][file]',
-                media instanceof window.File ? media : '');
+        data.medias.forEach((media, i) => {
+            formData.append('medias[' + i + ']', media.id);
         });
     }
 
