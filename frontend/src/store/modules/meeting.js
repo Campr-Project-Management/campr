@@ -313,8 +313,8 @@ const mutations = {
      * @param {Object} decision
      */
     [types.ADD_MEETING_DECISION](state, {decision}) {
-        if (state.meeting.decisions) {
-            state.meeting.decisions.push(decision);
+        if (state.meeting.openDecisions) {
+            state.meeting.openDecisions.push(decision);
         }
     },
     /**
@@ -323,17 +323,17 @@ const mutations = {
      * @param {array} decision
      */
     [types.EDIT_MEETING_DECISION](state, {decision}) {
-        if (!state.meeting.decisions) {
+        if (!state.meeting.openDecisions) {
             return;
         }
 
-        let index = _.findIndex(state.meeting.decisions,
+        let index = _.findIndex(state.meeting.openDecisions,
             (item) => item.id === decision.id);
         if (index < 0) {
             return;
         }
 
-        Vue.set(state.meeting.decisions, index, decision);
+        Vue.set(state.meeting.openDecisions, index, decision);
     },
     /**
      * Delete meeting decision
@@ -341,20 +341,20 @@ const mutations = {
      * @param {integer} decisionId
      */
     [types.DELETE_MEETING_DECISION](state, {decisionId}) {
-        if (state.meeting.decisions) {
-            state.meeting.decisions = state.meeting.decisions.filter((item) => {
+        if (state.meeting.openDecisions) {
+            state.meeting.openDecisions = state.meeting.openDecisions.filter((item) => {
                 return item.id !== decisionId;
             });
         }
     },
     [types.ADD_MEETING_INFO](state, {info}) {
-        if (state.meeting && _.isArray(state.meeting.infos)) {
-            state.meeting.infos.push(info);
+        if (state.meeting && _.isArray(state.meeting.openInfos)) {
+            state.meeting.openInfos.push(info);
         }
     },
     [types.EDIT_MEETING_INFO](state, {info}) {
-        if (state.meeting && _.isArray(state.meeting.infos)) {
-            state.meeting.infos.map(item => {
+        if (state.meeting && _.isArray(state.meeting.openInfos)) {
+            state.meeting.openInfos.map(item => {
                 if (item.id === info.id) {
                     _.mapKeys(info, (value, key) => {
                         item[key] = value;
@@ -364,8 +364,8 @@ const mutations = {
         }
     },
     [types.DELETE_MEETING_INFO](state, {infoId}) {
-        if (state.meeting && _.isArray(state.meeting.infos)) {
-            state.meeting.infos = state.meeting.infos.filter((item) => {
+        if (state.meeting && _.isArray(state.meeting.openInfos)) {
+            state.meeting.openInfos = state.meeting.openInfos.filter((item) => {
                 return item.id !== infoId;
             });
         }
@@ -376,7 +376,7 @@ const mutations = {
      * @param {Object} todo
      */
     [types.ADD_MEETING_TODO](state, {todo}) {
-        state.meeting.todos.push(todo);
+        state.meeting.openTodos.push(todo);
     },
     /**
      * Edit meeting todo
@@ -384,8 +384,8 @@ const mutations = {
      * @param {array} todo
      */
     [types.EDIT_MEETING_TODO](state, {todo}) {
-        if (state.meeting.todos) {
-            state.meeting.todos.map(item => {
+        if (state.meeting.openTodos) {
+            state.meeting.openTodos.map(item => {
                 if (item.id === todo.id) {
                     item.title = todo.title;
                     item.description = todo.description;
@@ -405,8 +405,8 @@ const mutations = {
      * @param {integer} todoId
      */
     [types.DELETE_MEETING_TODO](state, {todoId}) {
-        if (state.meeting.todos) {
-            state.meeting.todos = state.meeting.todos.filter((item) => {
+        if (state.meeting.openTodos) {
+            state.meeting.openTodos = state.meeting.openTodos.filter((item) => {
                 return item.id !== todoId;
             });
         }
