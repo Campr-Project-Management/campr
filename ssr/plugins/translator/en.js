@@ -2400,9 +2400,13 @@ module.exports = function (Translator) {
     Translator.add("message.accountable", "Accountable", "messages", "en");
     Translator.add("message.consulted", "Consulted", "messages", "en");
     Translator.add("message.support", "Support", "messages", "en");
-    Translator.add("message.informed", "Informierenden", "messages", "en");
+    Translator.add("message.informed", "Informed", "messages", "en");
     Translator.add("label.add_label", "Add Label", "messages", "en");
     Translator.add("label.executing", "Executing", "messages", "en");
+    Translator.add("label.choose.theme", "Choose theme display", "messages", "en");
+    Translator.add("label.theme.dark", "Dark theme", "messages", "en");
+    Translator.add("label.theme.light", "Light theme", "messages", "en");
+    Translator.add("button.save_task", "Save Task", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");
