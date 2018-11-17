@@ -2155,6 +2155,10 @@ message.toggle_minimap: 'Toggle minimap'
 message.accountable: Accountable
 message.consulted: Consulted
 message.support: Support
-message.informed: Informierenden
+message.informed: Informed
 label.add_label: 'Add Label'
 label.executing: Executing
+label.choose.theme: 'Choose theme display'
+label.theme.dark: 'Dark theme'
+label.theme.light: 'Light theme'
+button.save_task: 'Save Task'
