@@ -152,7 +152,7 @@ class TodoRepository extends BaseRepository
         ;
 
         if ($meeting->getDistributionLists()->count()) {
-            $qb->andWhere($qb->expr()->neq('o.distributionList', $meeting->getDistributionLists()->first()->getId()));
+            $qb->andWhere($qb->expr()->eq('o.distributionList', $meeting->getDistributionLists()->first()->getId()));
         }
 
         return $qb->getQuery()->getResult();
