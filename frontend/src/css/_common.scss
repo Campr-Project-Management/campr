@@ -599,7 +599,7 @@ hr {
 
 .checkbox-input {
     font-family: FontAwesome;
-    
+
     input[type=checkbox],
     input[type=radio] {
         display: none;
@@ -638,11 +638,11 @@ hr {
     }
 
     input[type=checkbox]:checked + label:before {
-        content: "\2713";
+        content: "\f00c";
         line-height: 0.9em;
-        padding-left: 0px;
-        padding-top: 0.8px;
-        font-size: 25px;
+        padding-left: 1px;
+        padding-top: 2px;
+        font-size: 18px;
     }
 
     input[type=radio]:checked + label:before {
