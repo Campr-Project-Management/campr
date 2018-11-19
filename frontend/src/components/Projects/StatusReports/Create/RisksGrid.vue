@@ -127,7 +127,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../../css/_variables';
+    @import '~theme/variables';
 
     .ro-grid-wrapper {
         .ro-summary {

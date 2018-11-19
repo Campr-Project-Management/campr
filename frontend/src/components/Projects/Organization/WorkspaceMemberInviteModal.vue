@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../../css/_variables.scss';
+@import '~theme/variables';
 
 .st0 {
     stroke: $secondColor;
