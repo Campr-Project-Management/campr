@@ -14,7 +14,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../css/_mixins';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
 	.indicator-icon {
         position: absolute;

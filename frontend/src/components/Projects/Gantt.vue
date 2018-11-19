@@ -706,7 +706,7 @@ export default {
 </style>
 
 <style lang="scss">
-    @import '../../css/_variables';
+    @import '~theme/variables';
     @import '../../css/_mixins';
 
     .gantt-tabs {
@@ -765,7 +765,7 @@ export default {
         position: absolute;
         bottom: 40px;
         right: 20px;
-        background: #232D4B;
+        background: $mainColor;
         border: 2px solid #000000;
     }
 
