@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\User;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,6 +47,7 @@ class DistributionListControllerTest extends BaseController
         $responseContent['users'][0]['avatarUrl'] = $distributionList['users'][0]['avatarUrl'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent['users'][0]['theme'] = User::THEME_DARK;
         $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -381,6 +383,7 @@ class DistributionListControllerTest extends BaseController
         $responseContent['users'][0]['avatarUrl'] = $distributionList['users'][0]['avatarUrl'];
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
+        $responseContent['users'][0]['theme'] = User::THEME_DARK;
         $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
