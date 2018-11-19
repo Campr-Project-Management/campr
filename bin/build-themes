@@ -5,4 +5,4 @@ dir=`dirname $binDir`
 
 cd $dir
 
-bin/console app:process-manager -c "cd frontend && npm run build-dark" -c "cd frontend && npm run build-light" -p --parallelism=2
+bin/console app:process-manager -c "cd frontend && yarn run build-dark" -c "cd frontend && yarn run build-light" -p --parallelism=2
