@@ -195,7 +195,7 @@ choices.red: Rot
 choices.task: Aufgabe
 choices.weeks: Wochen
 choices.yellow: Gelb
-color_status.finished: 'Im Plan'
+color_status.finished: planmäßig
 color_status.in_progress: Warnung
 color_status.not_started: Kritisch
 copyright: 'Copyright &copy; %year% CAMPR'
@@ -278,7 +278,7 @@ failed.workpackage.delete.generic: 'Beim Löschen des Arbeitspaketes ist ein Feh
 filter.clear: 'Filter leeren'
 label.abbreviation: Abkürzung
 label.accept: Akzeptieren
-label.accountable: Verantwortlich
+label.accountable: Rechenschaftspflichtig
 label.actual: Ist
 label.actual_finish: 'Tatsächliches Ende um'
 label.actual_start: 'Tatsächlicher Start um'
@@ -372,13 +372,13 @@ label.finish_time: Enddatum
 label.finished_at: 'Beendet am'
 label.first_name: Vorname
 label.firstname: Vorname
-label.forecast: Vorschau
-label.forecast_due_date: 'Forecast Fälligkeitsdatum'
-label.forecast_end_date: 'Erwartetes Enddatum'
+label.forecast: Prognose
+label.forecast_due_date: 'Prognostizierter Fristdatum'
+label.forecast_end_date: 'Prognostiziertes Enddatum'
 label.forecast_finish: 'Voraussichtliches Ende um'
 label.forecast_start: 'Voraussichtlicher Start um'
-label.forecast_start_date: 'Erwartetes Startdatum'
-label.forecast_total: 'Erwartete Summe'
+label.forecast_start_date: 'Prognositiziertes Startdatum'
+label.forecast_total: 'Prognostizierte Summe'
 label.freezed: Eingefroren
 label.from_time: 'Von Zeit'
 label.frozen: Eingefroren
@@ -667,7 +667,7 @@ message.campr_moto: 'Campr - The tool for industrious people'
 message.capex: Capex
 message.capex_subtotal: 'Capex Subtotal'
 message.category: Kategorie
-message.change_accountable: 'Ändere Accountable'
+message.change_accountable: 'Rechenschaftspflichtigen wechseln'
 message.clear_selection: 'Auswahl löschen'
 message.click: Klick
 message.close: Schließen
@@ -752,7 +752,7 @@ message.edit_deliverable: 'Anforderung bearbeiten'
 message.edit_department: 'Abteilung bearbeiten'
 message.edit_evaluation: 'Beurteilung bearbeiten'
 message.edit_external_costs: 'Externe Kosten bearbeiten'
-message.edit_forecast_total: 'Vorschau bearbeiten'
+message.edit_forecast_total: 'Prognostizierte Summe bearbeiten'
 message.edit_info: 'Info bearbeiten'
 message.edit_internal_costs: 'Interne Kosten bearbeiten'
 message.edit_label: 'Label bearbeiten'
@@ -790,7 +790,7 @@ message.filter_by: 'Filtern nach'
 message.finish: Ende
 message.finish_date: Enddatum
 message.first_task: 'Erste Aufgabe'
-message.forecast_schedule: 'Voraussichtlicher Zeitplan'
+message.forecast_schedule: 'Prognostizierter Zeitplan'
 message.from: von
 message.gantt_chart: 'Gantt Chart'
 message.has_commented_task: 'hat die Aufgabe kommentiert'
@@ -818,10 +818,10 @@ message.lessons_learned: 'Lessons Learned'
 message.loading_more_tasks: 'Mehr Aufgaben werden geladen...'
 message.location: Standort
 message.low: Niedrig
-message.manual_phase_schedule_note_first: 'Daten für Basis und Forcast-Terminplan händisch eingeben.'
+message.manual_phase_schedule_note_first: 'Daten für Basis und Prognose-Terminplan händisch eingeben.'
 message.manual_phase_schedule_note_second: 'Basis Start- und Enddatum wurden durch automatisch kalkulierte Daten überschrieben.'
 message.manual_schedule: 'Manueller Terminplan'
-message.manual_schedule_note: 'Basis Start- und Enddaten sowie Forecast Start- und Enddaten definieren.'
+message.manual_schedule_note: 'Basis Start- und Enddaten sowie Prognose Start- und Enddaten definieren.'
 message.measures: Maßnahmen
 message.measures_cost: 'Kosten der Maßnahmen'
 message.medium: Medium
@@ -965,7 +965,7 @@ message.save_schedule: 'Terminplan speichern'
 message.saved: Gespeichert!
 message.schedule: Terminplan
 message.schedule_base: 'Terminplan Basis'
-message.schedule_forecast: 'Terminplan Forecast'
+message.schedule_forecast: 'Terminplan Prognose'
 message.scope: Umfang
 message.select_customer: 'Kunden auswählen'
 message.select_phase_milestone: 'Phase & Meilenstein auswählen'
@@ -1190,7 +1190,7 @@ placeholder.workpackage_category: 'Kategorie Arbeitspaket'
 placeholder.workpackage_status: 'Status Arbeitspaket'
 placeholder.wppcwct: 'Kostentyp für Arbeitspaket auswählen'
 project_color_status.critical: Kritisch
-project_color_status.on_track: 'Im Plan'
+project_color_status.on_track: planmäßig
 project_color_status.warning: Warnung
 reset.expired: 'Der Reset-Token ist abgelaufen!'
 reset.not_found: 'Es wurde kein Reset-Token gefunden!'
@@ -1644,13 +1644,13 @@ table_header_cell.file: Datei
 table_header_cell.filesystem: Dateiensystem
 table_header_cell.finish: Abschluss
 table_header_cell.finished_at: 'Fertiggestellt um'
-table_header_cell.forecast: Forecast
-table_header_cell.forecast_due_date: 'Vorschau Frist'
-table_header_cell.forecast_end_date: 'Forecast Enddatum'
-table_header_cell.forecast_finish: 'Voraussichtliches Ende'
-table_header_cell.forecast_schedule: Forecast-Zeitplan
-table_header_cell.forecast_start: 'Voraussichtlicher Start'
-table_header_cell.forecast_start_date: 'Erwartetes Startdatum'
+table_header_cell.forecast: Prognose
+table_header_cell.forecast_due_date: 'Prognostizierter Fristdatum'
+table_header_cell.forecast_end_date: 'Prognostiziertes Enddatum'
+table_header_cell.forecast_finish: 'Prognostiziertes Ende'
+table_header_cell.forecast_schedule: 'Prognose Zeitplan'
+table_header_cell.forecast_start: 'Prognostizierter Start'
+table_header_cell.forecast_start_date: 'Prognostiziertes Startdatum'
 table_header_cell.from_time: 'Von Zeit'
 table_header_cell.frozen: Eingefroren
 table_header_cell.full_name: 'Vollständiger Name'
@@ -1719,7 +1719,7 @@ table_header_cell.project_role: Projektrollen
 table_header_cell.project_scope: Projektumfang
 table_header_cell.project_team: Projektteam
 table_header_cell.project_teams: Projektteams
-table_header_cell.project_work_cost_type: 'Art der Projektkosten'
+table_header_cell.project_work_cost_type: Projektkostenart
 table_header_cell.projectworkcosttype: Kostenart
 table_header_cell.proposed_end_date: 'Vorgeschlagenes Enddatum'
 table_header_cell.proposed_start_date: 'Vorgeschlagenes Startdatum'
@@ -1790,8 +1790,8 @@ table_header_cell.workpackage_assignment: Arbeitspaket-Anweisung
 table_header_cell.workpackage_category: 'Kategorie des Arbeitspakets'
 table_header_cell.workpackage_status: 'Status Arbeitspaket'
 table_header_cell.workpackages: Arbeitspakete
-table_header_cell.wppwct: 'Art der Arbeitspaketkosten'
-table_header_cell.wppwcts: 'Art der Arbeitspaketkosten'
+table_header_cell.wppwct: Arbeitspaketkostenart
+table_header_cell.wppwcts: Arbeitspaketkostenart
 title.account_activation: Accountaktivierung
 title.add_distribution_list: 'Verteilerliste hinzufügen'
 title.assignment.create: 'Neue Zuordnung erstellen'
@@ -1971,9 +1971,9 @@ title.project_team.list: Projektteam
 title.project_user.create: 'Neues Nutzer erstellen'
 title.project_user.edit: 'Nutzer bearbeiten'
 title.project_user.list: Nutzer
-title.project_work_cost_type.create: 'Neue Projektarbeitskostenart erstellen'
-title.project_work_cost_type.edit: 'Projektarbeitskostenart bearbeiten'
-title.project_work_cost_type.list: Projektarbeitskostenart
+title.project_work_cost_type.create: 'Neue Projektkostenart erstellen'
+title.project_work_cost_type.edit: 'Projektkostenart bearbeiten'
+title.project_work_cost_type.list: Arbeitskostenart
 title.rasci.create: 'Neue RASCI erstellen'
 title.rasci.edit: 'RASCI bearbeiten'
 title.rasci.list: RASCI
@@ -2070,7 +2070,7 @@ token.used: 'Token wurde bereits genutzt.'
 unknown_route: 'Ich weiß nicht wo Sie hin wollen'
 message.expired_at: 'Endete am'
 message.all_conditions: 'Alle Zustände'
-message.change_responsible: 'Verantwortlichkeit ändern'
+message.change_responsible: 'Verantwortlichen ändern'
 message.not_enough_data: 'Nicht genügend Daten.'
 label.meeting_category: Meetingkategorie
 label.project_start_event: Startereignis
@@ -2081,7 +2081,7 @@ choices.done: Erledigt
 choices.undone: 'Nicht erledigt'
 traffic_light.red: Kritisch
 traffic_light.yellow: Warnung
-traffic_light.green: 'Im Plan'
+traffic_light.green: planmäßig
 message.reschedule_info: Neuterminierung
 label.time_delay: 'Zeitliche Verzögerung'
 label.cost_savings: Kosteneinsparungen
@@ -2117,6 +2117,25 @@ email.table_header_cell.duration: Dauer
 placeholder.duration: Dauer
 button.send_meeting_report: 'Bericht senden'
 message.send_meeting_report: 'Meetingbericht senden'
+message.project_duration_slider.label.lte: '<= %number% Monate'
+message.project_duration_slider.label.gt: '> %number% Monate'
+message.project_duration_slider.label.months: '%number% Monate'
+message.project_budget_slider.label.lte: '<= %amount%'
+message.project_budget_slider.label.gt: '> %amount%'
+message.project_strategical_meaning: 'Strategische Bedeutung'
+message.project_strategical_meaning_slider.label.low: gering
+message.project_strategical_meaning_slider.label.medium: Mittel
+message.project_strategical_meaning_slider.label.high: Hoch
+message.project_innovation_degree_slider.label.incremental: inkrementell
+message.project_innovation_degree_slider.label.strategic_innovation: 'Strategische Innovation'
+message.project_innovation_degree_slider.label.radical_innovation: 'Radikale Innovation'
+message.project_technology_complexity: 'Komplexität der Technologie'
+message.project_technology_complexity_slider.label.low: Niedrig
+message.project_technology_complexity_slider.label.medium: Mittel
+message.project_technology_complexity_slider.label.high: Hoch
+message.project_members: 'Projektteilnehmer involviert'
+message.project_members_slider.label.lte: '<= %count%'
+message.project_members_slider.label.gt: '>= %count%'
 placeholder.email_content: Message
 button.add_new_sponsor: 'Neues Sponsor hinzufügen'
 button.create_sponsor: 'Sponsor erstellen'
@@ -2126,10 +2145,14 @@ message.create_sponsor: 'Neues Sponsor'
 message.delete_sponsor: 'Sponsor löschen'
 message.edit_sponsor: 'Sponsor bearbeiten'
 title.sponsor: Sponsor
+email.subject.beta.workspace.ready: 'Ihr CAMPR Beta Arbeitsbereich ist nun bereit!'
+email.beta.workspace.message: 'Der folgende Arbeitsbereich für CAMPR Beta ist bereit'
 placeholder.minutes: minuten
 message.toggle_minimap: 'Minikarte umschalten'
-message.accountable: Verantwortlich
-message.consulted: Konsultiert
-message.support: Unterstützung
+message.accountable: Rechenschaftspflichtig
+message.consulted: Konsultierend
+message.support: Unterstützend
+message.informed: Informierend
 label.add_label: 'Label Hinzufügen'
 label.executing: Ausführen
+button.save_task: 'Task speichern'
