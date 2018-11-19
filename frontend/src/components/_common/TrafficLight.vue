@@ -100,7 +100,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../css/_variables';
+    @import '~theme/variables';
 
     @mixin normal_box {
         background: $darkerColor;

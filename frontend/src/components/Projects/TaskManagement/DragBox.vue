@@ -191,7 +191,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_common';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .box.gu-transit {
         border: 1px solid $lighterColor;

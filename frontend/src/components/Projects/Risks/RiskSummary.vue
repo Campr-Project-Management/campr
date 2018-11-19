@@ -63,7 +63,7 @@
 <style scoped lang="scss">
     @import '../../../css/page-section';
     @import '../../../css/_mixins';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .ro-summary {
         margin-top: 60px;

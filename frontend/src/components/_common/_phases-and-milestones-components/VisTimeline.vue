@@ -195,7 +195,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
     @import '../../../css/_mixins';
     @import '../../../../node_modules/vis/dist/vis-timeline-graph2d.min.css';
     @import '../../../css/box';

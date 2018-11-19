@@ -6,7 +6,11 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
+    "dev-dark": "THEME=dark node build/dev-server.js",
+    "dev-light": "THEME=light node build/dev-server.js",
     "build": "node build/build.js",
+    "build-dark": "THEME=dark node build/build.js",
+    "build-light": "THEME=light node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
