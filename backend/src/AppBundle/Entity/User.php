@@ -44,6 +44,8 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
     const GRAVATAR_BASE_URL = 'https://www.gravatar.com/avatar/';
+    const THEME_DARK = 'dark';
+    const THEME_LIGHT = 'light';
 
     /**
      * @var string
@@ -446,6 +448,13 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     private $deletedAt;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="theme", type="string", length=20, options={"default": "dark"})
+     */
+    private $theme;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -469,6 +478,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
         $this->projectUsers = new ArrayCollection();
         $this->statusReports = new ArrayCollection();
         $this->meetingReports = new ArrayCollection();
+        $this->theme = User::THEME_DARK;
     }
 
     public function __toString()
@@ -1885,5 +1895,29 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function isDeleted()
     {
         return (bool) $this->deletedAt;
+    }
+
+    /**
+     * Get theme.
+     *
+     * @return string
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * Set theme.
+     *
+     * @param string|null $theme
+     *
+     * @return $this
+     */
+    public function setTheme(string $theme = null)
+    {
+        $this->theme = $theme;
+
+        return $this;
     }
 }
