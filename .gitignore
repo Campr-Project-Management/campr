@@ -20,6 +20,7 @@
 /frontend/node_modules
 /backend/app/config/parameters_test.yml
 /backend/src/AppBundle/Resources/views/Default/index.html.twig
+/backend/src/AppBundle/Resources/views/Default/index-*.html.twig
 /backend/src/AppBundle/Tests/Resources/
 /backend/src/AppBundle/Resources/docs/cache/
 /backend/src/AppBundle/Resources/docs/build/

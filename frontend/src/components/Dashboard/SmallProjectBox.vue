@@ -68,7 +68,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../../css/_variables.scss';
+  @import '~theme/variables';
   @import '../../css/box';
   @import '../../css/box-project';
 

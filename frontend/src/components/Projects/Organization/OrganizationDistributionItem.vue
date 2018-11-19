@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
     @import '../../../css/_mixins';
     @import '../../../css/page-section';
 

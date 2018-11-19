@@ -51,7 +51,7 @@
 </script>
 
 <style lang="scss">
-    @import 'css/_variables.scss';
+    @import '~theme/variables';
     @import 'css/_mixins.scss';
 
     html, body {
@@ -209,7 +209,7 @@
 
         .page {
             padding: 0 20px;
-            background: #232D4B;
+            background: $mainColor;
             min-height: 100vh;
         }
     }
