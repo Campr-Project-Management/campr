@@ -114,6 +114,7 @@ class UserClient
         $user->setAvatar($data['avatar']);
         $user->setAvatarUrl($data['avatarUrl']);
         $user->setLocale($data['locale']);
+        $user->setTheme($data['theme']);
 
         return $user;
     }

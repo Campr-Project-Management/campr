@@ -26,8 +26,7 @@ class DefaultController extends Controller
         // @TODO: this explodes, needs to be rewritten
         // $this->denyAccessUnlessGranted(TeamVoter::VIEW);
 
-        // @TODO: replace $theme with the value from db
-        $theme = 'dark';
+        $theme = $this->getUser()->getTheme();
         $response = $this->render(sprintf('AppBundle:Default:index-%s.html.twig', $theme));
         $routeParams = $request->attributes->get('_route_params');
         if (isset($routeParams['subdomain'])) {
