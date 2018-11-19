@@ -491,7 +491,7 @@
 
 <style lang="scss">
     @import '../../css/page-section';
-    @import '../../css/_variables';
+    @import '~theme/variables';
     @import '../../css/common';
 
     .datepicker-clear-button {

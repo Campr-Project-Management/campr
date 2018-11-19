@@ -67,7 +67,7 @@ export default {
 </script>
 <style scoped lang="scss">
     @import '../../../css/_mixins';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .avatars {
         > div {

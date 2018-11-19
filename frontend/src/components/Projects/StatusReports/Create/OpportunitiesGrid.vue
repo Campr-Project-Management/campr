@@ -120,7 +120,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../../css/_variables';
+    @import '~theme/variables';
     @import '../../../../css/_mixins';
 
     .ro-grid-wrapper {

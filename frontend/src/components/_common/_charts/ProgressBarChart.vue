@@ -67,7 +67,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .progress-bar-chart {
         width: 100%;

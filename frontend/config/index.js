@@ -1,11 +1,12 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 'use strict';
-let path = require('path');
+var path = require('path');
+var theme = require('../build/theme')();
 
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../../backend/src/AppBundle/Resources/views/Default/index.html.twig'),
+    index: path.resolve(__dirname, '../../backend/src/AppBundle/Resources/views/Default/index-' + theme + '.html.twig'),
     assetsRoot: path.resolve(__dirname, '../../web'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

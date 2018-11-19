@@ -81,7 +81,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../css/_variables';
+    @import '~theme/variables';
 
     .editor {
         position: relative;
@@ -108,14 +108,14 @@
 
     .ql-toolbar {
         border: none !important;
-        border-bottom: 1px solid #646EA0 !important;
+        border-bottom: 1px solid $middleColor !important;
         text-align: right;
 
         .ql-formats {
-            color: #646EA0 !important;
+            color: $middleColor !important;
 
             .ql-picker {
-                color: #646EA0 !important;
+                color: $middleColor !important;
 
                 .ql-picker-label {
                     font-size: 12px;
@@ -126,16 +126,16 @@
     }
 
     .ql-snow {
-        background-color: #191E37;
+        background-color: $darkColor;
         color: #8794C4;
         font-size: 10px;
 
         .ql-stroke {
-            stroke: #646EA0 !important;
+            stroke: $middleColor !important;
             stroke-width: 1px !important;
         }
         .ql-fill {
-            fill: #646EA0 !important;
+            fill: $middleColor !important;
         }
     }
 

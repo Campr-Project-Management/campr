@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+binDir=`cd "$(dirname "${BASH_SOURCE[0]}")" && pwd`
+dir=`dirname $binDir`
+
+cd $dir
+
+bin/console app:process-manager -c "cd frontend && npm run build-dark" -c "cd frontend && npm run build-light" -p --parallelism=2

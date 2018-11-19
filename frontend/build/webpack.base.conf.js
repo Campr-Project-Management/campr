@@ -1,6 +1,7 @@
 var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
+var theme = require('../build/theme')()
 var projectRoot = path.resolve(__dirname, '../')
 
 var env = process.env.NODE_ENV
@@ -10,13 +11,19 @@ var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
 var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
 var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
+var entry = {}
+
+if ('production' === env) {
+    entry['theme-' + theme] = './src/main.js'
+} else {
+    entry['app'] = './src/main.js'
+}
+
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry: entry,
   output: {
     path: config.build.assetsRoot,
-    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    publicPath: env === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
     filename: '[name].js'
   },
   resolve: {
@@ -27,7 +34,9 @@ module.exports = {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
-      Translator: path.resolve(__dirname, '../src/util/Translator')
+      Translator: path.resolve(__dirname, '../src/util/Translator'),
+      // css shit yo
+      'theme': path.resolve(__dirname, '../src/css/themes/' + theme),
     }
   },
   resolveLoader: {
