@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\Decision;
+use AppBundle\Entity\FileSystem;
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\MeetingAgenda;
@@ -460,6 +461,8 @@ class MeetingController extends ApiController
      * @param Project $project
      *
      * @return FileSystem
+     *
+     * @throws \Exception
      */
     private function getFileSystem(Project $project): FileSystem
     {
