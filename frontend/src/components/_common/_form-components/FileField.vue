@@ -186,6 +186,8 @@
 </script>
 
 <style lang="scss">
+    @import '~theme/variables';
+
     .file-field {
         .vue-dropzone {
             .dz-message {
@@ -194,7 +196,7 @@
                 span {
                     cursor: pointer;
                     background: transparent;
-                    border: 1px solid #646EA0;
+                    border: 1px solid $middleColor;
                     height: 30px;
                     line-height: 30px;
                     padding: 0 14px;

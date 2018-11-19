@@ -160,7 +160,7 @@
 </script>
 
 <style lang="scss" scoped="scoped">
-    @import '../../css/_variables';
+    @import '~theme/variables';
     @import '../../css/_mixins';
     @import '../../css/box';
     @import '../../css/box-task';

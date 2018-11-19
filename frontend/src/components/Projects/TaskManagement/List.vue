@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .vue-scrollbar__scrollbar-vertical {
         padding: 30px 10px !important;

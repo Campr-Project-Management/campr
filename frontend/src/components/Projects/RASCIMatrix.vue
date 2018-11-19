@@ -215,11 +215,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../css/_mixins';
-    @import '../../css/_variables';
+    @import '~theme/variables';
     @import '../../css/common';
 
     .rasci-matrix {
-        background: #232D4B;
+        background: $mainColor;
         padding: 0;
         margin-bottom: -60px;
         position: absolute;

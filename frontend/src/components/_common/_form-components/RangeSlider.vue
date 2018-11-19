@@ -254,7 +254,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../../css/_variables.scss';
+    @import '~theme/variables';
 
     .slider-holder {
         .irs-min, .irs-max, .irs-from, .irs-to, .irs-single {
@@ -299,7 +299,7 @@
 </style>
 
 <style scoped lang="scss">
-    @import '../../../css/_variables.scss';
+    @import '~theme/variables';
 
     .slider-holder {
         text-transform: uppercase;
