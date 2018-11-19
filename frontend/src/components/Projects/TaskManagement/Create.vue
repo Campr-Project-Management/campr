@@ -141,7 +141,7 @@
                         <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
                         <template v-if="!isUploading">
                             <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
-                            <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_task') }}</a>
+                            <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.save_task') }}</a>
                         </template>
                     </div>
                     <!-- /// End Actions /// -->
