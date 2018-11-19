@@ -272,12 +272,13 @@
 
                     &.admin-link {
                         a {
-                            background: $secondColor;
+                            background: darken($secondColor, 15%);
                             color: $whiteColor;
                             @include transition(all, 0.2s, ease);
+                            text-align: center;
 
                             &:hover {
-                                background: $secondDarkColor;
+                                background: darken($secondColor, 25%);
                                 color: $whiteColor;
                             }
                         }
