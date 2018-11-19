@@ -716,6 +716,9 @@ export default {
                 meeting: this.$route.params.meetingId,
                 project: this.$route.params.id,
                 medias: this.decision.medias,
+                distributionList: this.details.distributionList && this.details.distributionList.key
+                    ? this.details.distributionList.key
+                    : null,
             };
 
             let formData = createFormDataDecision(data);
@@ -759,6 +762,9 @@ export default {
                 dueDate: moment(this.todo.dueDate, 'DD-MM-YYYY').format('DD-MM-YYYY'),
                 status: this.todo.status ? this.todo.status.key : null,
                 meeting: this.$route.params.meetingId,
+                distributionList: this.details.distributionList && this.details.distributionList.key
+                    ? this.details.distributionList.key
+                    : null,
             });
             this.todo.responsibility = [];
             this.todo.title = null;
@@ -789,6 +795,9 @@ export default {
                 expiresAt: this.$formatToSQLDate(this.info.expiresAt),
                 infoCategory: this.info.infoCategory ? this.info.infoCategory.key : null,
                 meeting: this.$route.params.meetingId,
+                distributionList: this.details.distributionList && this.details.distributionList.key
+                    ? this.details.distributionList.key
+                    : null,
             };
             const projectId = this.$route.params.id;
             this.createInfo({projectId, data});
