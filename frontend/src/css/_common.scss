@@ -598,6 +598,7 @@ hr {
 }
 
 .checkbox-input {
+    font-family: FontAwesome;
 
     input[type=checkbox],
     input[type=radio] {
@@ -610,9 +611,9 @@ hr {
         width: 20px;
         height: 20px;
         background: $middleColor;
+        margin-right: 10px;
         display: block;
         float: left;
-        margin-right: 10px;
         cursor: pointer;
         position: relative;
         top: -1px;
@@ -624,14 +625,29 @@ hr {
 
     input[type=checkbox]:checked + label:before,
     input[type=radio]:checked + label:before {
-        content: '';
         text-align: center;
-        background: $secondColor;
+        background: $darkColor;
         border: none;
-        line-height: 20px;
-        font-size: 16px;
-        color: $darkColor;
+        color: $secondColor;
         font-weight: 700;
+    }
+
+    input[type=checkbox]:checked + label:before {
+        color: $darkColor;
+        background: $secondColor;
+    }
+
+    input[type=checkbox]:checked + label:before {
+        content: "\f00c";
+        line-height: 0.9em;
+        padding-left: 1px;
+        padding-top: 2px;
+        font-size: 18px;
+    }
+
+    input[type=radio]:checked + label:before {
+        content: '\f192';
+        font-size: 20px;
     }
 
     label {
