@@ -45,7 +45,7 @@
 
 <style scoped lang="scss">
     @import '../../css/_common';
-    @import '../../css/_variables';
+    @import '~theme/variables';
 
     .locale-switcher {
         margin-right: 20px;

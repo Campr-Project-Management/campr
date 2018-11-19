@@ -65,7 +65,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .error {
         background: $dangerColor;
