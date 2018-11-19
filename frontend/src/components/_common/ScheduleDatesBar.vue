@@ -378,7 +378,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../css/_variables';
+    @import '~theme/variables';
 
     .task-range-slider {
         &.no-pins {

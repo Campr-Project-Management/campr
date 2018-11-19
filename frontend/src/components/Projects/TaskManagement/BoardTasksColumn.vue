@@ -126,7 +126,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../../css/page-section';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .board-view {
         display: inline-block;

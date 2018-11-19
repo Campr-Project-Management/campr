@@ -229,7 +229,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
     @import '../../../css/_mixins';
-    @import '../../../css/_variables';
+    @import '~theme/variables';
     @import '../../../css/common';
 
     .disabledpicker {

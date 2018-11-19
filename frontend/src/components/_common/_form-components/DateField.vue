@@ -134,7 +134,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
 
     .vdp-datepicker {
         input {

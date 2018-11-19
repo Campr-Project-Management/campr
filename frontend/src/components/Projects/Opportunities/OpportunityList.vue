@@ -46,7 +46,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/_variables';
+    @import '~theme/variables';
     
     .ro-list {
         height: 100%;
