@@ -247,7 +247,7 @@ task('server:provision', function () {
     }
 });
 task('project:build:frontend_and_ssr', function () {
-    run("echo '>cd {{release_path}}/frontend && yarn install --check-files && yarn run build>cd {{release_path}}/ssr && yarn install --check-files' | {{bin/rush}} -D '>' {} -e");
+    run("echo '>cd {{release_path}} && bin/build-themes>cd {{release_path}}/ssr && yarn install --check-files' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
     set('localUser', sprintf(
