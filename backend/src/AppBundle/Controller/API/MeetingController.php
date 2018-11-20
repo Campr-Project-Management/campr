@@ -272,25 +272,23 @@ class MeetingController extends ApiController
 
         $this->processForm($request, $form);
 
-        if ($form->isValid()) {
-            $decision = $form->getData();
-            $decision->setMeeting($meeting);
-            $decision->setProject($meeting->getProject());
-            $fs = $this->getFileSystem($meeting->getProject());
-            foreach ($decision->getMedias() as $media) {
-                $media->setFileSystem($fs);
-            }
-            $this->persistAndFlush($decision);
+        $decision->setMeeting($meeting);
+        if (!$form->isValid()) {
+            $errors = $this->getFormErrors($form);
+            $errors = [
+                'messages' => $errors,
+            ];
 
-            return $this->createApiResponse($decision, Response::HTTP_CREATED);
+            return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
+        foreach ($decision->getMedias() as $media) {
+            $media->makeAsPermanent();
+        }
 
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+        $this->get('app.repository.decisions')->add($decision);
+
+        return $this->createApiResponse($decision, Response::HTTP_CREATED);
     }
 
     /**
