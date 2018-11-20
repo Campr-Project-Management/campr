@@ -130,6 +130,7 @@ class SecurityController extends Controller
         $user->setLocale($userData['locale']);
         $user->setUuid($userData['uuid']);
         $user->setAvatarUrl($userData['avatarUrl'] ?? null);
+        $user->setTheme($userData['theme']);
 
         $em->persist($user);
         $em->flush();
