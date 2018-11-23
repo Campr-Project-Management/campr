@@ -20,7 +20,6 @@ class LoadTodoData extends AbstractFixture implements OrderedFixtureInterface
         $project = $this->getReference('project1');
         $meeting = $this->getReference('meeting1');
         $responsible = $this->getReference('user4');
-        $date = new \DateTime('2017-01-01');
         $dueDate = new \DateTime('2017-05-01');
 
         for ($i = 1; $i <= 2; ++$i) {

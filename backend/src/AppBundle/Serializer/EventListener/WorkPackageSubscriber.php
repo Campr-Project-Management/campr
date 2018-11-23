@@ -6,6 +6,7 @@ use AppBundle\Entity\WorkPackage;
 use Component\WorkPackage\Calculator\DateRangeCalculatorInterface;
 use Component\WorkPackage\Calculator\StatusCalculatorInterface;
 use Component\WorkPackage\Calculator\WorkPackageProgressCalculatorInterface;
+use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\GenericSerializationVisitor;
@@ -83,7 +84,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         return [
             [
-                'event' => 'serializer.post_serialize',
+                'event' => Events::POST_SERIALIZE,
                 'method' => 'onPostSerialize',
                 'class' => WorkPackage::class,
             ],

@@ -2,6 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\BlameableInterface;
+use Component\Resource\Model\BlameableTrait;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -19,8 +25,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     message="unique.name"
  *  )
  */
-class Contract
+class Contract implements TimestampableInterface, BlameableInterface, ProjectAwareInterface
 {
+    use TimestampableTrait, BlameableTrait;
+
     /**
      * @var int
      *
@@ -59,7 +67,7 @@ class Contract
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="contracts")
      * @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      */
-    private $createdBy;
+    protected $createdBy;
 
     /**
      * @var Project
@@ -135,7 +143,7 @@ class Contract
      *
      * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -145,7 +153,7 @@ class Contract
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var bool
@@ -347,85 +355,13 @@ class Contract
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Contract
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Contract
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @param User $createdBy
-     *
-     * @return Contract
-     */
-    public function setCreatedBy(User $createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface|null $project
      *
      * @return Contract
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -435,7 +371,7 @@ class Contract
     /**
      * Get project.
      *
-     * @return Project
+     * @return Project|null
      */
     public function getProject()
     {

@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,8 +15,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="close_down_action")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CloseDownActionRepository")
  */
-class CloseDownAction
+class CloseDownAction implements TimestampableInterface, ResponsibilityAwareInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -73,7 +78,7 @@ class CloseDownAction
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -83,7 +88,7 @@ class CloseDownAction
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * CloseDownAction constructor.
@@ -173,54 +178,6 @@ class CloseDownAction
     public function getDueDate()
     {
         return $this->dueDate;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return CloseDownAction
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return CloseDownAction
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

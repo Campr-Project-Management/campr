@@ -19,12 +19,11 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
     {
         $user = $this->getReference('user3');
         for ($i = 1; $i <= 3; ++$i) {
-            $team = (new Team())
-                ->setName('team_'.$i)
-                ->setSlug('team-'.$i)
-                ->setUser($user)
-                ->setCreatedAt(new \DateTime('2017-01-01'))
-            ;
+            $team = new Team();
+            $team->setName('team_'.$i);
+            $team->setSlug('team-'.$i);
+            $team->setUser($user);
+            $team->setCreatedAt(new \DateTime('2017-01-01'));
             $this->setReference('team'.$i, $team);
             $manager->persist($team);
         }

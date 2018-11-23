@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Component\Currency\Model\CurrencyInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Component\TrafficLight\TrafficLight;
 use Doctrine\Common\Collections\Criteria;
 use JMS\Serializer\Annotation as Serializer;
@@ -24,8 +26,10 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @UniqueEntity(fields="number", message="unique.number")
  * @Vich\Uploadable
  */
-class Project implements ProjectInterface
+class Project implements ProjectInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     const DEFAULT_MAX_UPLOAD_FILE_SIZE = 10485760;
 
     /**
@@ -301,7 +305,7 @@ class Project implements ProjectInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -311,7 +315,7 @@ class Project implements ProjectInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var ArrayCollection|Contract[]
@@ -684,54 +688,6 @@ class Project implements ProjectInterface
     public function getApprovedAt()
     {
         return $this->approvedAt;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Project
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Project
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -1183,8 +1139,7 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isPhase();
             }
-        )
-            ;
+        );
     }
 
     /**
@@ -1196,8 +1151,7 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isMilestone();
             }
-        )
-            ;
+        );
     }
 
     /**
@@ -1209,8 +1163,7 @@ class Project implements ProjectInterface
             function (WorkPackage $wp) {
                 return $wp->isKeyMilestone();
             }
-        )
-            ;
+        );
     }
 
     /**
@@ -2082,8 +2035,7 @@ class Project implements ProjectInterface
                     return $projectModule->getModule();
                 }
             )
-            ->getValues()
-            ;
+            ->getValues();
     }
 
     /**
@@ -2302,14 +2254,12 @@ class Project implements ProjectInterface
         $criteria = Criteria::create();
         $criteria
             ->orderBy(['priority' => Criteria::DESC])
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         return $this
             ->getRisks()
             ->matching($criteria)
-            ->first()
-            ;
+            ->first();
     }
 
     /**
@@ -2320,14 +2270,12 @@ class Project implements ProjectInterface
         $criteria = Criteria::create();
         $criteria
             ->orderBy(['priority' => Criteria::DESC])
-            ->setMaxResults(1)
-        ;
+            ->setMaxResults(1);
 
         return $this
             ->getOpportunities()
             ->matching($criteria)
-            ->first()
-            ;
+            ->first();
     }
 
     /**
@@ -2827,8 +2775,7 @@ class Project implements ProjectInterface
                     return $fs->getIsDefault();
                 }
             )
-            ->first()
-            ;
+            ->first();
     }
 
     /**

@@ -65,7 +65,7 @@
                             {{ translateText('message.created_on') }} {{ task.createdAt | moment('DD.MM.YYYY') }} {{ translateText('message.by') }}
                             <user-avatar
                                     size="small"
-                                    :url="task.responsibilityAvatar"
+                                    :url="task.responsibilityAvatarUrl"
                                     :name="task.responsiblityFullName"/>
                             <b class="uppercase">{{ task.responsibilityFullName }}</b>
                             <span class="task-subtasks" v-if="task && task.children && task.children.length">
