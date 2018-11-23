@@ -127,7 +127,7 @@
 
     .ql-snow {
         background-color: $darkColor;
-        color: #8794C4;
+        color: $lightColor;
         font-size: 10px;
 
         .ql-stroke {
@@ -162,11 +162,13 @@
 </style>
 
 <style scoped lang="scss">
+    @import '../../css/_variables';
+    
     .editor {
         margin-top: 1em;
 
         .label {
-            color: #8794C4;
+            color: $lightColor;
             z-index: 2;
             font-size: 10px;
             text-transform: uppercase;

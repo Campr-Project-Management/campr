@@ -1,5 +1,5 @@
 <template>
-    <div id="app" :class="{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }">
+    <div id="app" :class="[{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }, themeClass]">
         <pulse-loader
                 :color="color"
                 :size="size"
@@ -41,6 +41,9 @@
                 'localUser',
                 'locale',
             ]),
+            themeClass() {
+                return this.localUser.theme === 'light' ? 'light-theme': '';
+            },
         },
         data() {
             return {
@@ -198,7 +201,7 @@
 
     #app {
         font-family: 'Poppins', sans-serif;
-        color: #D8DAE5;
+        color: $lighterColor;
         height: 100%;
         padding: 0 0 0 210px;
         min-height: 100vh;

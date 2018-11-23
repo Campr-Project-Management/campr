@@ -1,6 +1,101 @@
 @import '~theme/variables';
 @import '_mixins';
 
+/*////////////////////////////////////
+LIGHT THEME CSS
+////////////////////////////////////*/
+.light-theme {
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    input[type=email],
+    input[type=password],
+    textarea {
+        &:focus,
+        &:active {
+            background: $whiteColor;
+            color: $lightColor;
+        }
+    }
+
+    .table {
+        > tbody > tr.inactive:nth-of-type(odd) {
+            background: darken($whiteColor, 5%);
+        }
+
+        > tbody > tr.inactive:nth-of-type(even) {
+            background: darken($whiteColor, 5%);
+        }
+    }
+
+    .dropdown-menu {
+        li {
+            a {
+                &:hover {
+                    color: #fff;
+                    background-color: #646EA0;
+                }
+            }
+        }
+    }
+
+    .box,
+    .widget-content{
+        @include box-shadow(0, 2px, 10px, rgba(0,0,0,.15));
+    }
+
+    .new-box {
+        a {
+            border: 2px dashed darken($secondColor, 10%);
+            color: darken($secondColor, 10%);
+        }
+
+        &:hover {
+            a {
+                color: $secondDarkColor;
+                border-color: $secondDarkColor;
+            }
+        }
+    }
+
+    .btn-rounded {
+        color: $lighterColor;
+        background-color: fade-out($middleColor, 0.8);
+
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: darken($middleColor, 15%);
+            color: $whiteColor;
+        }
+    }
+
+    .vis-item,
+    .task-status-box {
+        color: $whiteColor;
+    }
+
+    .multiselect-option {
+        background-color: darken($middleColor, 15%);
+        color: $whiteColor;
+    }
+
+    .vdp-datepicker .vdp-datepicker__calendar {
+        background-color: $whiteColor;
+    }
+
+    .vdp-datepicker .vdp-datepicker__calendar .cell.day {
+        color: $lightColor;
+    }
+
+    .vdp-datepicker .vdp-datepicker__calendar .cell:not(.blank):hover {
+        background-color: $darkerColor;
+    }
+}
+/*////////////////////////////////////
+END LIGHT THEME CSS
+////////////////////////////////////*/
+
 .flex {
     display: flex !important;
 }
@@ -334,6 +429,7 @@ textarea {
 
 .btn-rounded {
     background: $middleColor;
+    color: $whiteColor;
     text-transform: uppercase;
     text-align: center;
     height: 40px;
@@ -366,6 +462,7 @@ textarea {
     &:focus {
         outline: 0;
         background-color: darken($middleColor, 15%);
+        color: $whiteColor;
     }
 
     &.second-bg {
