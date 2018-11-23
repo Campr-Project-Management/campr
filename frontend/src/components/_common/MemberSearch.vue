@@ -408,7 +408,7 @@
         padding: 0 0 0 10px;
         background-color: $fadeColor;
         margin-top: 3px;
-        color: $whiteColor;
+        color: $lighterColor;
         position: relative;
         text-transform: uppercase;
         font-size: 11px;
