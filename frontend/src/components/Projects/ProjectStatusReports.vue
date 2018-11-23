@@ -34,7 +34,7 @@
                                 <td class="small-avatar text-center">
                                     <user-avatar
                                             size="small"
-                                            :url="report.createdByAvatar"
+                                            :url="report.createdByAvatarUrl"
                                             :name="report.createdByFullName"
                                             :tooltip="report.createdByFullName"/>
                                 </td>

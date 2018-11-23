@@ -1,12 +1,12 @@
 <?php
 
-namespace Component\User;
+namespace Component\Avatar;
 
-use AppBundle\Entity\User;
+use Component\Avatar\Model\AvatarAwareInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
-class UserUploadedAvatarUrlResolver implements UserAvatarUrlResolverInterface
+class UploadedAvatarUrlResolver implements AvatarUrlResolverInterface
 {
     /**
      * @var StorageInterface
@@ -31,11 +31,11 @@ class UserUploadedAvatarUrlResolver implements UserAvatarUrlResolverInterface
     }
 
     /**
-     * @param User $user
+     * @param AvatarAwareInterface $user
      *
      * @return string
      */
-    public function resolve(User $user): string
+    public function resolve(AvatarAwareInterface $user): string
     {
         $avatar = (string) $this->storage->resolveUri($user, 'avatarFile');
 

@@ -34,7 +34,7 @@ class JsonSerializableNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = []): array
     {
         $context = new SerializationContext();
-        $context->setSerializeNull(null);
+        $context->setSerializeNull(true);
 
         return $this
             ->serializer

@@ -39,7 +39,7 @@
                         <td>
                             <div class="avatars flex flex-v-center">
                                 <div>
-                                    <div class="avatar" :style="{ backgroundImage: 'url('+participant.userAvatar+')' }"></div>
+                                    <div class="avatar" :style="{ backgroundImage: 'url('+participant.userAvatarUrl+')' }"></div>
                                 </div>
                                 <span>{{ participant.userFullName }}</span>
                             </div>
@@ -105,7 +105,7 @@
                             <td>
                                 <div class="avatars collapse in" id="tp-meeting-20032017-1">
                                     <div>
-                                        <div class="avatar" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatar+')' }"></div>
+                                        <div class="avatar" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
                                     </div>
                                 </div>
                             </td>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -175,7 +175,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -192,7 +192,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -227,7 +227,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -252,7 +252,7 @@
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatar + ')' }"></div>
+                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>

@@ -15,12 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ApiCreateType extends AbstractType
 {
@@ -87,16 +85,6 @@ class ApiCreateType extends AbstractType
             ])
             ->add('linkedIn', TextType::class, [
                 'required' => false,
-            ])
-            ->add('avatarFile', VichImageType::class, [
-                'required' => false,
-                'download_link' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'invalid.image',
-                    ]),
-                ],
             ])
             ->add('subdomain', TextType::class, [
                 'required' => false,

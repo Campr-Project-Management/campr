@@ -61,23 +61,22 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 ->setEmail('user'.$i.'@trisoft.ro')
                 ->setPlainPassword('Password'.$i)
                 ->setRoles(['ROLE_USER'])
-                ->setIsEnabled(true)
-            ;
+                ->setIsEnabled(true);
             $user->setPassword($this->encodePassword($user, $user->getPlainPassword()));
             $this->setReference('user'.$i, $user);
             $manager->persist($user);
         }
 
         /* User10 is used for DistributionList */
-        $user10 = (new User())
-            ->setUsername('user10')
-            ->setFirstName('FirstName10')
-            ->setLastName('LastName10')
-            ->setEmail('user10@trisoft.ro')
-            ->setPlainPassword('Password10')
-            ->setRoles(['ROLE_USER'])
-            ->setIsEnabled(true)
-            ->setCreatedAt(new \DateTime('2017-01-01'));
+        $user10 = new User();
+        $user10->setUsername('user10');
+        $user10->setFirstName('FirstName10');
+        $user10->setLastName('LastName10');
+        $user10->setEmail('user10@trisoft.ro');
+        $user10->setPlainPassword('Password10');
+        $user10->setRoles(['ROLE_USER']);
+        $user10->setIsEnabled(true);
+        $user10->setCreatedAt(new \DateTime('2017-01-01'));
         $user10->setPassword($this->encodePassword($user10, $user10->getPlainPassword()));
         $this->setReference('user10', $user10);
         $manager->persist($user10);

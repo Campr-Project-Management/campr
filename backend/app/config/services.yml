@@ -152,16 +152,9 @@ services:
     app.graph.generator.status_report_project_traffic_light:
         class: Component\StatusReport\Graph\ProjectTrafficLightTrendGraphDataGenerator
 
-    app.resolver.user_uploaded_avatar_url:
-        class: Component\User\UserUploadedAvatarUrlResolver
+    app.resolver.avatar.url:
+        class: Component\Avatar\AvatarUrlResolver
         arguments:
-            - '@vich_uploader.storage'
-            - '@router'
-
-    app.resolver.user_avatar_url:
-        class: Component\User\UserAvatarUrlResolver
-        arguments:
-            - '@app.resolver.user_uploaded_avatar_url'
             - '%gravatar.base_url%'
 
     app.locale.context:

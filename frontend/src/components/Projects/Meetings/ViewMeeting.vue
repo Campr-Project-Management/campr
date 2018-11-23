@@ -149,7 +149,7 @@
                                         <td>
                                             <div class="avatars collapse in" id="tp-meeting-20032017-1">
                                                 <div>
-                                                    <div class="avatar" v-tooltip.top-center="agenda.responsibilityFullName" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatar+')' }"></div>
+                                                    <div class="avatar" v-tooltip.top-center="agenda.responsibilityFullName" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
                                                 </div>
                                             </div>
                                         </td>
@@ -203,7 +203,7 @@
                         <div class="entry-responsible flex flex-v-center">
                             <user-avatar
                                     size="small"
-                                    :url="decision.responsibilityAvatar"
+                                    :url="decision.responsibilityAvatarUrl"
                                     :name="decision.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
@@ -244,7 +244,7 @@
                         <div class="entry-responsible flex flex-v-center">
                             <user-avatar
                                     size="small"
-                                    :url="todo.responsibilityAvatar"
+                                    :url="todo.responsibilityAvatarUrl"
                                     :name="todo.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
@@ -279,7 +279,7 @@
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                             <user-avatar
                                     size="small"
-                                    :url="info.responsibilityAvatar"
+                                    :url="info.responsibilityAvatarUrl"
                                     :name="info.responsibilityFullName"/>
                             <div>
                                 {{ translate('message.responsible') }}:
@@ -643,7 +643,7 @@ export default {
                 return {
                     user: mp.user,
                     userFullName: mp.userFullName,
-                    userAvatar: mp.userAvatar,
+                    userAvatar: mp.userAvatarUrl,
                     departments: mp.userDepartmentNames,
                     isPresent: mp.isPresent,
                     inDistributionList: mp.inDistributionList,

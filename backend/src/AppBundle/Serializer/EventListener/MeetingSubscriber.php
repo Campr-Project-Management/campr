@@ -8,6 +8,7 @@ use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Todo;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Context;
+use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\GenericSerializationVisitor;
@@ -36,7 +37,7 @@ class MeetingSubscriber implements EventSubscriberInterface
     {
         return [
             [
-                'event' => 'serializer.post_serialize',
+                'event' => Events::POST_SERIALIZE,
                 'method' => 'onPostSerialize',
                 'class' => Meeting::class,
             ],

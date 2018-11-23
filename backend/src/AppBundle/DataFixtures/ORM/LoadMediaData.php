@@ -41,16 +41,15 @@ class LoadMediaData extends AbstractFixture implements OrderedFixtureInterface, 
         $file = new File($this->container->getParameter('media_upload_folder_test').'/file1.txt');
         $fileName = basename($file->getFilename(), '.txt');
 
-        $media = (new Media())
-            ->setFileSystem($fileSystem)
-            ->setUser($user)
-            ->addMeeting($meeting)
-            ->setFile($file)
-            ->setPath($fileName)
-            ->setMimeType($file->getMimeType())
-            ->setFileSize($file->getSize())
-            ->setCreatedAt(new \DateTime('2017-01-01'))
-        ;
+        $media = new Media();
+        $media->setFileSystem($fileSystem);
+        $media->setUser($user);
+        $media->addMeeting($meeting);
+        $media->setFile($file);
+        $media->setPath($fileName);
+        $media->setMimeType($file->getMimeType());
+        $media->setFileSize($file->getSize());
+        $media->setCreatedAt(new \DateTime('2017-01-01'));
 
         $manager->persist($media);
         $manager->flush();

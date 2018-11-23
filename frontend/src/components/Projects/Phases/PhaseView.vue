@@ -70,7 +70,7 @@
                             <div class="user-info">
                                 <user-avatar
                                         size="small"
-                                        :url="phase.responsibilityAvatar"
+                                        :url="phase.responsibilityAvatarUrl"
                                         :name="phase.responsibilityFullName"/>
                                 <span class="uppercase">
                                     {{ phase.responsibilityFullName }}

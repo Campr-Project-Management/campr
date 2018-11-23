@@ -1,6 +1,9 @@
 <template>
     <div class="member-badge" v-bind:class="size">
-        <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+        <user-avatar
+                size="normal"
+                :name="item.userFullName"
+                :url="item.userAvatarUrl" />
         <div class="name">{{ item.userFullName }}</div>
         <div class="title" v-for="role in item.projectRoleNames" :key="'project_role_name_' + role">{{ translateText(role) }}</div>
         <div class="title" v-for="role in item.subteamRoleNames" :key="'subteam_role_name_' + role">{{ translateText(role) }}</div>
@@ -15,11 +18,13 @@
 
 <script>
 import SocialLinks from './SocialLinks';
+import UserAvatar from './_common/UserAvatar';
 
 export default {
     props: ['size', 'item'],
     components: {
         SocialLinks,
+        UserAvatar,
     },
     methods: {
         translateText: function(text) {
@@ -38,17 +43,6 @@ export default {
         text-align: center;
         display: inline-block;
         margin: 0 30px 30px;
-
-        .avatar {
-            width: 100%;
-            height: 0;
-            padding-bottom: 100%;
-            @include border-radius(50%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            -webkit-print-color-adjust: exact !important;
-        }
 
         .social-links {
             margin-top: 5px;

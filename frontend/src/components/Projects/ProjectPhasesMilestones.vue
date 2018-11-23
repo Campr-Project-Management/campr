@@ -139,7 +139,7 @@
                                 <user-avatar
                                         size="small"
                                         :tooltip="phase.responsibilityFullName"
-                                        :url="phase.responsibilityAvatar"
+                                        :url="phase.responsibilityAvatarUrl"
                                         :name="phase.responsibilityFullName"/>
                             </td>
                             <td>
@@ -230,7 +230,7 @@
                                 <user-avatar
                                         size="small"
                                         :tooltip="milestone.responsibilityFullName"
-                                        :url="milestone.responsibilityAvatar"
+                                        :url="milestone.responsibilityAvatarUrl"
                                         :name="milestone.responsibilityFullName"/>
                             </td>
                             <td>

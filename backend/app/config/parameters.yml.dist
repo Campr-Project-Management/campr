@@ -50,8 +50,6 @@ parameters:
     main.team.uri_prefix: /uploads/teams
     main.project.images_path: '%uploads.root_folder%/projects'
     main.project.uri_prefix: /uploads/projects
-    app.user.avatars_path: '%uploads.root_folder%/avatars'
-    app.user.uri_prefix: /uploads/avatars
     tests_import_folder: '%kernel.root_dir%/../../web/tests/import'
     media_upload_folder_test: '%kernel.root_dir%/../../web/uploads/tests'
 

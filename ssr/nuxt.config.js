@@ -9,11 +9,11 @@ module.exports = {
         meta: [
             {charset: 'utf-8'},
             {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-            {hid: 'description', name: 'description', content: 'Campr'}
+            {hid: 'description', name: 'description', content: 'Campr'},
         ],
         link: [
-            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
-        ]
+            {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+        ],
     },
     /*
     ** Customize the progress bar color
@@ -33,14 +33,15 @@ module.exports = {
         '~/plugins/numeral',
         '~/plugins/tooltip',
         '~/plugins/humanize-duration',
-        '~/plugins/templating'
+        '~/plugins/templating',
     ],
     /*
     ** CSS
     */
     css: [
-        '../frontend/src/css/bootstrap.less'
+        '../frontend/src/css/bootstrap.less',
     ],
+    dev: (process.env.NODE_ENV !== 'production'),
     /*
     ** Build configuration
     */
@@ -48,8 +49,8 @@ module.exports = {
         /*
         ** Run ESLint on save
         */
-        extend(config, {isDev, isClient}) {
-            if (isDev && isClient) {
+        extend(config, {isDev}) {
+            if (isDev && process.client) {
                 config.module.rules.push({
                     enforce: 'pre',
                     test: /\.(js|vue)$/,
@@ -58,15 +59,19 @@ module.exports = {
                 });
             }
 
-            config.resolve.alias.Translator = path.join(__dirname, 'plugins/translator.js');
+            config.resolve.alias.Translator = path.join(__dirname,
+                'plugins/translator.js');
             config.externals = {
-                canvas: 'canvas'
+                canvas: 'canvas',
             };
-        }
+            config.resolve.alias['theme'] = path.resolve(__dirname,
+                '../frontend/src/css/themes/dark');
+            config.resolve.alias['components'] = path.resolve(__dirname, '../frontend/src/components');
+        },
     },
     generate: {
         routes: () => {
             return [];
-        }
-    }
+        },
+    },
 };

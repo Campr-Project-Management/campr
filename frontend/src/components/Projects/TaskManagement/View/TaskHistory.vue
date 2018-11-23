@@ -8,7 +8,7 @@
                         <div class="comment-header">
                             <user-avatar
                                     size="small"
-                                    :url="item.userAvatar"
+                                    :url="item.userAvatarUrl"
                                     :name="item.userFullName"/>
                             <router-link
                                     :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
@@ -34,7 +34,7 @@
                         <div class="comment-header">
                             <user-avatar
                                     size="small"
-                                    :url="item.userAvatar"
+                                    :url="item.userAvatarUrl"
                                     :name="item.userFullName"/>
                             <router-link
                                     :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
@@ -56,7 +56,7 @@
                         <div class="comment-header">
                             <user-avatar
                                     size="small"
-                                    :url="item.userAvatar"
+                                    :url="item.userAvatarUrl"
                                     :name="item.userFullName"/>
                             <router-link
                                     :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"
@@ -79,7 +79,7 @@
                         <div class="comment-header">
                             <user-avatar
                                     size="small"
-                                    :url="item.userAvatar"
+                                    :url="item.userAvatarUrl"
                                     :name="item.userFullName"/>
                             <router-link
                                     :to="{name: 'project-organization-view-member', params: {userId: item.projectUserId} }"

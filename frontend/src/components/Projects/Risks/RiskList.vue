@@ -8,7 +8,7 @@
                 <user-avatar
                         size="very-small"
                         :name="item.responsibilityFullName"
-                        :url="item.responsibilityAvatar"
+                        :url="item.responsibilityAvatarUrl"
                         :tooltip="item.responsibilityFullName"/>
             </div>
             <p>{{ translate('message.potential_cost') }}: <b v-if="item.cost">{{ item.potentialCost | money({symbol: projectCurrencySymbol}) }}</b><b v-else>-</b></p>
