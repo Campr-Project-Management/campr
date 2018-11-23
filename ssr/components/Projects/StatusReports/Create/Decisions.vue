@@ -21,7 +21,7 @@
             <td>
                 <user-avatar
                         size="small"
-                        :url="item.responsibilityAvatar"
+                        :url="item.responsibilityAvatarUrl"
                         :name="item.responsibilityFullName"
                         :tooltip="item.responsibilityFullName"/>
             </td>

@@ -154,24 +154,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{%- block _edit_avatarFile_delete_widget -%}
-    <div class="form-group fg-float">
-        <div class="col-md-10 col-md-offset-2">
-            <label class="checkbox checkbox-inline m-r-10 fix-margin">
-                <label for="{{ name }}">
-                    {% if label is not none %}
-                        {{ label }}
-                    {% else %}
-                        {{ 'label.label'|trans({}, 'messages') }}
-                    {% endif %}
-                </label>
-                <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} class="form-control input-sm" />
-                <i class="input-helper"></i>
-            </label>
-        </div>
-    </div>
-{%- endblock _edit_avatarFile_delete_widget -%}
-
 {% block form_errors %}
     {% spaceless %}
         {% if errors|length > 0 %}

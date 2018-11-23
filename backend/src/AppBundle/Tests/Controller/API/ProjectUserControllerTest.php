@@ -42,7 +42,7 @@ class ProjectUserControllerTest extends BaseController
 
         $actual = json_decode($response->getContent(), true);
         $expected['updatedAt'] = $actual['updatedAt'];
-        $expected['userAvatar'] = $actual['userAvatar'];
+        $expected['userAvatarUrl'] = $actual['userAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -92,7 +92,7 @@ class ProjectUserControllerTest extends BaseController
                     'rate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => '',
-                    'userAvatar' => '',
+                    'userAvatarUrl' => '',
                     'userDeleted' => false,
                 ],
             ],
@@ -256,7 +256,7 @@ class ProjectUserControllerTest extends BaseController
         $response = $this->client->getResponse();
         $actual = json_decode($response->getContent(), true);
         $expected['updatedAt'] = $actual['updatedAt'];
-        $expected['userAvatar'] = $actual['userAvatar'];
+        $expected['userAvatarUrl'] = $actual['userAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -304,7 +304,7 @@ class ProjectUserControllerTest extends BaseController
                     'rate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
-                    'userAvatar' => '',
+                    'userAvatarUrl' => '',
                     'userDeleted' => false,
                 ],
             ],

@@ -5,12 +5,12 @@ namespace Component\Project;
 interface ProjectAwareInterface
 {
     /**
-     * @param ProjectInterface $project
+     * @param ProjectInterface|null $project
      */
-    public function setProject(ProjectInterface $project);
+    public function setProject(ProjectInterface $project = null);
 
     /**
-     * @return ProjectInterface
+     * @return ProjectInterface|null
      */
     public function getProject();
 }

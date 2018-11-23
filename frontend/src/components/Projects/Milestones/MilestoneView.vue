@@ -58,7 +58,7 @@
                             <div class="user-info">
                                 <user-avatar
                                         size="small"
-                                        :url="milestone.responsibilityAvatar"
+                                        :url="milestone.responsibilityAvatarUrl"
                                         :name="milestone.responsibilityFullName"/>
                                 <span class="uppercase">
                                     {{ milestone.responsibilityFullName }}

@@ -13,9 +13,9 @@ class RiskControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -40,7 +40,7 @@ class RiskControllerTest extends BaseController
         $response = $this->client->getResponse();
         $risk = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $risk['updatedAt'];
-        $responseContent['responsibilityAvatar'] = $risk['responsibilityAvatar'];
+        $responseContent['responsibilityAvatarUrl'] = $risk['responsibilityAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -68,9 +68,11 @@ class RiskControllerTest extends BaseController
                     'riskCategoryName' => 'risk-category1',
                     'responsibility' => 3,
                     'responsibilityFullName' => 'FirstName3 LastName3',
+                    'responsibilityAvatarUrl' => '',
                     'status' => 3,
                     'statusName' => 'risk-status1',
                     'createdBy' => null,
+                    'updatedBy' => null,
                     'createdByFullName' => null,
                     'id' => 1,
                     'title' => 'title1',
@@ -101,9 +103,9 @@ class RiskControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -249,7 +251,7 @@ class RiskControllerTest extends BaseController
         $response = $this->client->getResponse();
         $risk = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $risk['updatedAt'];
-        $responseContent['responsibilityAvatar'] = $risk['responsibilityAvatar'];
+        $responseContent['responsibilityAvatarUrl'] = $risk['responsibilityAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -278,6 +280,7 @@ class RiskControllerTest extends BaseController
                     'status' => 4,
                     'statusName' => 'risk-status2',
                     'createdBy' => null,
+                    'updatedBy' => null,
                     'createdByFullName' => null,
                     'id' => 2,
                     'title' => 'title2',

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResponsibilityAwareInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table(name="meeting_agenda")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingAgendaRepository")
  */
-class MeetingAgenda
+class MeetingAgenda implements ResponsibilityAwareInterface
 {
     /**
      * @var int

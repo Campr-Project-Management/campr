@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-7">
                 <div class="flex flex-v-center" v-if="responsibilityUser">
-                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + responsibilityUser.userAvatar + ')' }"></div>
+                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + responsibilityUser.avatarUrl + ')' }"></div>
                     <div>
                         <b class="uppercase"> {{ responsibilityUser.userFullName }}</b><br/>
                         <router-link
@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="flex flex-v-center" v-if="accountabilityUser">
-                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + accountabilityUser.userAvatar + ')' }"></div>
+                    <div class="user-avatar flex flex-v-center" v-bind:style="{ backgroundImage: 'url(' + accountabilityUser.avatarUrl + ')' }"></div>
                     <div>
                         <b class="uppercase"> {{accountabilityUser.userFullName}}</b><br/>
                         <router-link

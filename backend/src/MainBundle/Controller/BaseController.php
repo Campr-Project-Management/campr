@@ -2,7 +2,6 @@
 
 namespace MainBundle\Controller;
 
-use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +45,13 @@ abstract class BaseController extends Controller
         }
     }
 
+    /**
+     * @param        $data
+     * @param int    $statusCode
+     * @param string $emptyData
+     *
+     * @return JsonResponse
+     */
     protected function createApiResponse($data, $statusCode = Response::HTTP_OK, $emptyData = '')
     {
         if (empty($data)) {
@@ -56,16 +62,11 @@ abstract class BaseController extends Controller
             return new JsonResponse($emptyData, JsonResponse::HTTP_NO_CONTENT);
         }
 
-        $serializedData = $this
-            ->container
-            ->get('jms_serializer')
-            ->toArray(
-                $data,
-                (new SerializationContext())->setSerializeNull(true)
-            )
-        ;
+        $data = $this
+            ->get('app.serializer.normalizer.json')
+            ->normalize($data);
 
-        return new JsonResponse($serializedData, $statusCode);
+        return new JsonResponse($data, $statusCode);
     }
 
     protected function createdTranslatedAccessDeniedException(string $message)

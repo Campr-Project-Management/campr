@@ -66,7 +66,7 @@
                         potentialTimeHours: null,
                         potentialCost: null,
                         responsibilityFullName: null,
-                        responsibilityAvatar: null,
+                        responsibilityAvatarUrl: null,
                     },
                     items: [],
                     summary: {},

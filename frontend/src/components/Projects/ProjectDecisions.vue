@@ -53,7 +53,7 @@
                                             size="small"
                                             :name="decision.responsibilityFullName"
                                             :tooltip="decision.responsibilityFullName"
-                                            :url="decision.responsibilityAvatar"/>
+                                            :url="decision.responsibilityAvatarUrl"/>
                                 </td>
                                 <td>
                                     <div class="text-right">

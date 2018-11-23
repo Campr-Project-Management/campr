@@ -25,17 +25,16 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $company = $this->getReference('company1');
         $currencyEUR = $this->getReference('currencyEUR');
 
-        $project1 = (new Project())
-            ->setName('project1')
-            ->setNumber('project-number-1')
-            ->setProjectComplexity($projectComplexity)
-            ->setProjectCategory($projectCategory)
-            ->setProjectScope($projectScope)
-            ->setStatus($projectStatus)
-            ->setPortfolio($portfolio)
-            ->setCompany($company)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $project1 = new Project();
+        $project1->setName('project1');
+        $project1->setNumber('project-number-1');
+        $project1->setProjectComplexity($projectComplexity);
+        $project1->setProjectCategory($projectCategory);
+        $project1->setProjectScope($projectScope);
+        $project1->setStatus($projectStatus);
+        $project1->setPortfolio($portfolio);
+        $project1->setCompany($company);
+        $project1->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $project1->setCurrency($currencyEUR);
 
         $manager->persist($project1);
@@ -48,17 +47,16 @@ class LoadProjectData extends AbstractFixture implements OrderedFixtureInterface
         $portfolio = $this->getReference('portfolio2');
         $company = $this->getReference('company2');
 
-        $project2 = (new Project())
-            ->setName('project2')
-            ->setNumber('project-number-2')
-            ->setProjectComplexity($projectComplexity)
-            ->setProjectCategory($projectCategory)
-            ->setProjectScope($projectScope)
-            ->setStatus($projectStatus)
-            ->setPortfolio($portfolio)
-            ->setCompany($company)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $project2 = new Project();
+        $project2->setName('project2');
+        $project2->setNumber('project-number-2');
+        $project2->setProjectComplexity($projectComplexity);
+        $project2->setProjectCategory($projectCategory);
+        $project2->setProjectScope($projectScope);
+        $project2->setStatus($projectStatus);
+        $project2->setPortfolio($portfolio);
+        $project2->setCompany($company);
+        $project2->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $project2->setCurrency($currencyEUR);
         $manager->persist($project2);
         $this->setReference('project2', $project2);
