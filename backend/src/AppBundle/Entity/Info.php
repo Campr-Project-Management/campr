@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,8 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="info")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\InfoRepository")
  */
-class Info
+class Info implements TimestampableInterface, ResponsibilityAwareInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -104,7 +109,7 @@ class Info
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -112,7 +117,7 @@ class Info
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -175,54 +180,6 @@ class Info
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Info
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Info
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

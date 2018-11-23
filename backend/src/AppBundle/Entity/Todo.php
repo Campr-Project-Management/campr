@@ -2,19 +2,22 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Todo.
- *
  * @ORM\Table(name="todo")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TodoRepository")
  */
-class Todo
+class Todo implements TimestampableInterface, ResponsibilityAwareInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -124,7 +127,7 @@ class Todo
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -134,7 +137,7 @@ class Todo
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var \DateTime
@@ -259,54 +262,6 @@ class Todo
     public function getDueDate()
     {
         return $this->dueDate;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Todo
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Todo
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

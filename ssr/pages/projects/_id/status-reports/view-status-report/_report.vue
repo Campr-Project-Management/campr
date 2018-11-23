@@ -331,7 +331,7 @@
                             })
                         ;
                         if (projectUser.length) {
-                            report.information[key].items[k].responsibilityAvatar = projectUser[0].userAvatar;
+                            report.information[key].items[k].responsibilityAvatarUrl = projectUser[0].userAvatarUrl;
                         }
                     });
                 });

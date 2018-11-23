@@ -151,7 +151,7 @@
                                         <td>
                                             {{ action.responsibilityFullName }}
                                             &nbsp;
-                                            <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
+                                            <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatarUrl + ')' }"></div>
                                         </td>
                                     </tr>
                                 </template>

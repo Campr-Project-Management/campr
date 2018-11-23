@@ -38,7 +38,11 @@
                             <h1>{{ currentCloseDownAction.title }}</h1>
                             <h4>{{ translateText('message.created') }}: <b>{{ currentCloseDownAction.createdAt|moment('DD.MM.YYYY') }}</b> | {{ translateText('message.due_date') }}: <b>{{ dueDate|moment('DD.MM.YYYY')  }}</b></h4>
                             <div class="entry-responsible flex flex-v-center">
-                                <div class="avatar" v-tooltip.top-center="currentCloseDownAction.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + currentCloseDownAction.responsibilityAvatar + ')' }"></div>
+                                <user-avatar
+                                        size="normal"
+                                        :name="currentCloseDownAction.reponsibilityFullName"
+                                        :url="currentCloseDownAction.responsibilityAvatarUrl"
+                                        :tooltip="currentCloseDownAction.reponsibilityFullName"/>
                                 <div>
                                     {{ translateText('message.responsible') }}:
                                     <b>{{ currentCloseDownAction.responsibilityFullName }}</b>
@@ -96,12 +100,14 @@ import {mapActions, mapGetters} from 'vuex';
 import router from '../../../router';
 import moment from 'moment';
 import DateField from '../../_common/_form-components/DateField';
+import UserAvatar from '../../_common/UserAvatar';
 
 export default {
     components: {
         DateField,
         RescheduleIcon,
         Modal,
+        UserAvatar,
     },
     methods: {
         ...mapActions(['getCloseDownAction', 'editCloseDownAction', 'deleteCloseDownAction']),
@@ -168,15 +174,6 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/_mixins';
     @import '~theme/variables';
-
-    .avatar {
-        width: 30px;
-        height: 30px;
-        @include border-radius(50%);
-        background-size: cover;
-        display: inline-block;
-        margin-right: 10px;
-    }
 
     .entry-body {
         ul {

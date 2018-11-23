@@ -5,7 +5,7 @@
                 <div v-if="task.responsibility" class="user-info flex flex-v-center">
                     <user-avatar
                             size="small"
-                            :url="task.responsibilityAvatar"
+                            :url="task.responsibilityAvatarUrl"
                             :name="task.responsibilityFullName"/>
                     <p class="user-name">{{ task.responsibilityFullName }}</p>
                 </div>

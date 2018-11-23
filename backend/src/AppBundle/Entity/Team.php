@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -24,8 +28,10 @@ use JMS\Serializer\Annotation as Serializer;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Vich\Uploadable
  */
-class Team
+class Team implements UserAwareInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var string
      *
@@ -108,7 +114,7 @@ class Team
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -118,7 +124,7 @@ class Team
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var \DateTime
@@ -211,7 +217,7 @@ class Team
     }
 
     /**
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {
@@ -219,11 +225,11 @@ class Team
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return Team
      */
-    public function setUser(User $user = null): self
+    public function setUser(UserInterface $user = null): self
     {
         $this->user = $user;
 
@@ -359,30 +365,6 @@ class Team
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Team
-     */
-    public function setCreatedAt(\DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * Add teamMember.
      *
      * @param TeamMember $teamMember
@@ -489,30 +471,6 @@ class Team
     public function getTeamSlugs()
     {
         return $this->teamSlugs;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Team
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
