@@ -47,6 +47,7 @@
                     </div>
                 </div>
             </div>
+            <hr class="double">
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showEditMeasureModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
                 <a href="javascript:void(0)" @click="editSelectedMeasure()" class="btn-rounded btn-auto second-bg">{{ translate('button.save') }}</a>
