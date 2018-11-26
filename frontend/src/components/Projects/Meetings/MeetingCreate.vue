@@ -186,6 +186,45 @@
 
                     <!-- /// Decisions /// -->
                     <h3>{{ translate('message.decisions') }}</h3>
+
+                    <div class="entries-wrapper" v-if="openDecisions">
+                        <div class="entry" v-for="decision in openDecisions">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ decision.title }}</h4>
+                                    | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                    | {{ translate('message.status') }}:
+                                    <b v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</b>
+                                    <b v-else class="danger-color">{{ translate('choices.undone') }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
+                                <user-avatar
+                                    :name="decision.responsibilityFullName"
+                                    :url="decision.responsibilityAvatar"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ decision.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="decision.description"></div>
+                            <div class="attachments">
+                                <template v-for="(media, index) in decision.medias">
+                                    <div
+                                        class="attachment"
+                                        v-if="media"
+                                        :key="index">
+                                        <view-icon/>
+                                        <span class="attachment-name">
+                                            <a @click="getMediaFile(media)" v-if="media.id">{{ media.name }}</a>
+                                            <span v-else>{{ media.name }}</span>
+                                        </span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
                     <div v-for="(decision, index) in decisions" :key="`decision-${index}`">
                         <div class="row">
                             <div class="col-xs-offset-10 col-md-2">
@@ -206,6 +245,7 @@
                             :error-messages="decisionErrors(index)"/>
                         <hr>
                     </div>
+
                     <div class="flex flex-direction-reverse">
                         <a @click="addDecision()" class="btn-rounded btn-auto">{{ translate('message.add_new_decision') }} +</a>
                     </div>
@@ -215,6 +255,28 @@
 
                     <!-- /// ToDos /// -->
                     <h3>{{ translate('message.todos') }}</h3>
+
+                    <div class="entries-wrapper" v-if="openTodos">
+                        <div class="entry" v-for="todo in openTodos">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center">
+                                <user-avatar
+                                    size="small"
+                                    :url="todo.responsibilityAvatar"
+                                    :name="todo.responsibilityFullName"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ todo.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="todo.description"></div>
+                        </div>
+                    </div>
+
                     <div v-for="(todo, index) in todos" :key="`todo-${index}`">
                         <div class="row">
                             <div class="col-xs-offset-10 col-md-2">
@@ -299,6 +361,30 @@
 
                     <!-- /// Infos /// -->
                     <h3>{{ translate('message.infos') }}</h3>
+
+                    <div class="entries-wrapper" v-if="openInfos">
+                        <div class="entry" v-for="info in openInfos">
+                            <div class="entry-header flex flex-space-between flex-v-center">
+                                <div class="entry-title">
+                                    <h4>{{ info.topic }}</h4> |
+                                    {{ translate('message.expiry_date') }}: <b :class="{'danger-color': info.isExpired}">{{ info.expiresAt | date }}</b> |
+                                    {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
+                                </div>
+                            </div>
+                            <div class="entry-responsible flex flex-v-center">
+                                <user-avatar
+                                    size="small"
+                                    :name="info.responsibilityFullName"
+                                    :url="info.responsibilityAvatar"/>
+                                <div>
+                                    {{ translate('message.responsible') }}:
+                                    <b>{{ info.responsibilityFullName }}</b>
+                                </div>
+                            </div>
+                            <div class="entry-body" v-html="info.description"></div>
+                        </div>
+                    </div>
+
                     <div v-for="(info, index) in infos" :key="`info-${index}`">
                         <div class="row">
                             <div class="col-xs-offset-10 col-md-2">
@@ -444,6 +530,8 @@ import EditDistributionListModal from '../../_common/EditDistributionListModal';
 import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
+import UserAvatar from '../../_common/UserAvatar';
+import ViewIcon from '../../_common/_icons/ViewIcon';
 
 export default {
     components: {
@@ -461,8 +549,40 @@ export default {
         Editor,
         MeetingParticipants,
         EditDistributionListModal,
+        UserAvatar,
+        ViewIcon,
     },
     methods: {
+        getMediaFile(media) {
+            if (!media.id) {
+                return;
+            }
+
+            const url = Routing.generate('app_api_media_download', {id: media.id});
+            Vue.http.get(url, {responseType: 'blob'})
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    let options = {};
+                    if (response.headers && response.headers.map && response.headers.map['content-type']) {
+                        options.type = response.headers.map['content-type'][0];
+                    }
+
+                    let blob = new Blob([response.body], options);
+                    let a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(blob);
+                    a.download = media.originalName;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    }, 100);
+                });
+        },
         ...mapActions([
             'getDistributionLists',
             'getMeetingCategories',
@@ -656,6 +776,45 @@ export default {
                 return messages[index] ? messages[index] : {};
             };
         },
+        openInfos() {
+            const dl = this
+                .distributionLists
+                .filter(dl => {
+                    return dl.id === (this.details.distributionList && this.details.distributionList.key);
+                })
+            ;
+
+            return dl && dl.length
+                ? dl[0].meetings.map(m => m.openInfos ? m.openInfos : null).flat()
+                : []
+            ;
+        },
+        openTodos() {
+            const dl = this
+                .distributionLists
+                .filter(dl => {
+                    return dl.id === (this.details.distributionList && this.details.distributionList.key);
+                })
+            ;
+
+            return dl && dl.length
+                ? dl[0].meetings.map(m => m.openTodos ? m.openTodos : null).flat()
+                : []
+            ;
+        },
+        openDecisions() {
+            const dl = this
+                .distributionLists
+                .filter(dl => {
+                    return dl.id === (this.details.distributionList && this.details.distributionList.key);
+                })
+            ;
+
+            return dl && dl.length
+                ? dl[0].meetings.map(m => m.openDecisions ? m.openDecisions : null).flat()
+                : []
+            ;
+        },
     },
     watch: {
         'details.distributionList': {
@@ -757,6 +916,9 @@ export default {
             isSaving: false,
             isUploading: false,
             isDecisionUploading: false,
+            // openTodos: [],
+            // openInfos: [],
+            // openDecisions: [],
         };
     },
 };
