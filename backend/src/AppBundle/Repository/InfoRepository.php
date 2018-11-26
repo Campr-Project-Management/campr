@@ -80,12 +80,23 @@ class InfoRepository extends BaseRepository
     {
         $qb = $this->createQueryBuilder('o');
 
+        $meetingDate = $meeting->getDate();
+        $meetingTime = $meeting->getEnd() ?: $meeting->getStart();
+        if ($meetingTime) {
+            $meetingDate->setTime(
+                (int) $meetingTime->format('G'),
+                (int) ltrim($meetingTime->format('i'), 0),
+                (int) ltrim($meetingTime->format('s'), 0)
+            );
+        }
+
         $date = new \DateTime('-6 days');
 
         $qb
-            ->andWhere('o.project = :project')
+            ->andWhere('o.project = :project AND o.createdAt <= :createdAt')
             ->andWhere('o.expiresAt >= :date')
             ->setParameter('date', $date)
+            ->setParameter('createdAt', $meetingDate)
             ->setParameter('project', $meeting->getProject())
         ;
 
