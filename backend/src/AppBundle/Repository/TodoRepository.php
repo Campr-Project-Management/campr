@@ -134,6 +134,16 @@ class TodoRepository extends BaseRepository
         $qb = $this->createQueryBuilder('o');
         $expr = $qb->expr();
 
+        $meetingDate = $meeting->getDate();
+        $meetingTime = $meeting->getEnd() ?: $meeting->getStart();
+        if ($meetingTime) {
+            $meetingDate->setTime(
+                (int) $meetingTime->format('G'),
+                (int) ltrim($meetingTime->format('i'), 0),
+                (int) ltrim($meetingTime->format('s'), 0)
+            );
+        }
+
         $date = new \DateTime('-6 days');
 
         $qb
@@ -147,7 +157,8 @@ class TodoRepository extends BaseRepository
                     )
                 )
             )
-            ->andWhere('o.project = :project')
+            ->andWhere('o.project = :project AND o.createdAt <= :createdAt')
+            ->setParameter('createdAt', $meetingDate)
             ->setParameter('project', $meeting->getProject())
         ;
 
