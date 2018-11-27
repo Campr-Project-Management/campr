@@ -59,8 +59,12 @@ LIGHT THEME CSS
     }
 
     .btn-rounded {
-        color: $lighterColor;
+        color: $middleColor;
         background-color: fade-out($middleColor, 0.8);
+
+        &.disable-bg {
+            color: $whiteColor;
+        }
 
         &:hover,
         &:active,
