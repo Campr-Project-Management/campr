@@ -299,8 +299,6 @@
                 <!-- /// End Footer Buttons /// -->
             </div>
         </div>
-        <alert-modal v-if="showSavedComponent" @close="showSavedComponent = false" body="message.saved" />
-        <alert-modal v-if="showFailedComponent" @close="showFailedComponent = false" body="message.saved" />
     </div>
 </template>
 
@@ -316,7 +314,6 @@ import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import MemberSearch from '../_common/MemberSearch';
 import Error from '../_common/_messages/Error.vue';
-import AlertModal from '../_common/AlertModal.vue';
 import Modal from '../_common/Modal';
 import Editor from '../_common/Editor';
 import DateField from '../_common/_form-components/DateField';
@@ -334,7 +331,6 @@ export default {
         DeleteIcon,
         MemberSearch,
         Error,
-        AlertModal,
         Modal,
         Editor,
         UserAvatar,
@@ -388,7 +384,21 @@ export default {
                 projectManagement: this.projectManagement,
                 frozen: true,
             };
-            this.editProjectCloseDown(data);
+            this.editProjectCloseDown(data)
+            .then(
+                (response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        this.$flashError('message.unable_to_save');
+                        return;
+                    }
+
+                    this.$flashSuccess('message.saved');
+                    window.scrollTo(0, 0);
+                },
+                () => {
+                    this.$flashError('message.unable_to_save');
+                }
+            );
         },
         createObjective: function() {
             this.createEvaluationObjective({

@@ -83,9 +83,6 @@
                 </div>
             </div>
         </div>
-
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -95,7 +92,6 @@ import SelectField from '../../_common/_form-components/SelectField';
 import MemberSearch from '../../_common/MemberSearch';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
-import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
 import moment from 'moment';
@@ -109,7 +105,6 @@ export default {
         MemberSearch,
         Error,
         Editor,
-        AlertModal,
     },
     methods: {
         ...mapActions([
@@ -171,7 +166,8 @@ export default {
     },
     watch: {
         showSaved(val) {
-            if (val === false) {
+            if (val === true) {
+                this.$flashSuccess('message.saved');
                 router.push({
                     name: 'project-infos-view',
                     params: {
@@ -179,6 +175,11 @@ export default {
                         infoId: this.info.id,
                     },
                 });
+            }
+        },
+        showFailed(val) {
+            if (val === true) {
+                this.$flashError('message.unable_to_save');
             }
         },
         info(val) {

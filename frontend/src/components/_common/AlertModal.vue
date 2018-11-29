@@ -1,11 +1,11 @@
 <template>
     <transition type="modal">
         <div class="modal modal-mask">
-            <div class="modal-wrapper">
-                <div class="modal-container">
+            <div class="modal-wrapper" @click="closeModal">
+                <div class="modal-container" @click.prevent>
                     <div class="modal-inner">
                         <slot name="header" v-if="header">
-                            <a href="javascript:void(0)" class="modal-close" @click="$emit('close')">
+                            <a href="javascript:void(0)" class="modal-close" @click="closeModal">
                                 <svg
                                     version="1.1"
                                     width="32px"
@@ -17,10 +17,9 @@
                                     </g>
                                 </svg>
                             </a>
-                            <p class="modal-title danger-color">{{ translateText(header) }}</p>
                         </slot>
                         <slot name="body" v-if="body">
-                            <a href="javascript:void(0)" class="modal-close" @click="$emit('close')" v-if="!header">
+                            <a href="javascript:void(0)" class="modal-close" @click="closeModal" v-if="!header">
                                 <svg
                                     version="1.1"
                                     width="32px"
@@ -32,16 +31,9 @@
                                     </g>
                                 </svg>
                             </a>
-                            <h3 class="text-center">{{ translateText(body) }}</h3>
+                            <h3 class="text-center" :class="textClass">{{ translate(body) }}</h3>
                         </slot>
                         <br>
-                        <slot name="footer">
-                            <div class="flex flex-center">
-                                <button class="btn-rounded btn-empty btn-auto danger-color danger-border" @click="$emit('close')">
-                                    {{ translateText(buttonText) }}
-                                </button>
-                            </div>
-                        </slot>
                     </div>
                 </div>
             </div>
@@ -72,10 +64,27 @@ export default {
                 return 'message.close';
             },
         },
+        type: {
+            type: String,
+            default: 'success',
+            validator(value) {
+                return ['success', 'error'].indexOf(value) !== -1;
+            },
+        },
     },
     methods: {
-        translateText: function(text) {
-            return this.translate(text);
+        closeModal() {
+            this.$emit('close');
+        },
+    },
+    computed: {
+        textClass() {
+            let classes = {
+                'error': 'text-danger',
+                'success': 'text-success',
+            };
+
+            return classes[this.type];
         },
     },
 };
@@ -85,7 +94,7 @@ export default {
     @import '~theme/variables';
 
     .st0 {
-        stroke: $secondColor;
+        stroke: $whiteColor;
     }
 
     .modal-mask {

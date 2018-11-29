@@ -196,7 +196,6 @@
                 </div>
             </div>
         </div>
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -209,7 +208,6 @@ import Switches from '../../3rdparty/vue-switches';
 import AvatarPlaceholder from '../../_common/_form-components/AvatarPlaceholder';
 import Error from '../../_common/_messages/Error.vue';
 import router from '../../../router';
-import AlertModal from '../../_common/AlertModal.vue';
 
 export default {
     components: {
@@ -219,7 +217,6 @@ export default {
         AvatarPlaceholder,
         MultiSelectField,
         Error,
-        AlertModal,
     },
     methods: {
         ...mapActions([
@@ -279,15 +276,16 @@ export default {
                 .then(
                     (data) => {
                         if (data && !data.error) {
+                            this.$flashSuccess('message.saved');
                             router.push({
                                 name: 'project-organization',
                             });
                         } else {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         }
                     },
                     (error) => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 );
         },
@@ -313,15 +311,16 @@ export default {
                 .then(
                     (data) => {
                         if (data && !data.error) {
+                            this.$flashSuccess('message.saved');
                             router.push({
                                 name: 'project-organization',
                             });
                         } else {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         }
                     },
                     (error) => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 );
         },
@@ -392,7 +391,6 @@ export default {
     },
     data: function() {
         return {
-            showFailed: false,
             avatar: '',
             avatarFile: '',
             firstName: '',
