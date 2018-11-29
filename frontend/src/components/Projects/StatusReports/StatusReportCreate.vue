@@ -45,8 +45,15 @@
                         .then(
                             (response) => {
                                 this.isSaving = false;
+                                if (response.body && response.body.error && response.body.messages) {
+                                    this.$flashError('message.unable_to_save');
+                                    return;
+                                }
+
+                                this.$flashSuccess('message.saved');
                             },
                             () => {
+                                this.$flashError('message.unable_to_save');
                                 this.isSaving = false;
                             }
                         )

@@ -99,9 +99,6 @@
                 </div>
             </div>
         </div>
-
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -113,13 +110,11 @@ import {mapGetters, mapActions} from 'vuex';
 import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
-import AlertModal from '../../_common/AlertModal.vue';
 import DateField from '../../_common/_form-components/DateField';
 
 export default {
     components: {
         DateField,
-        AlertModal,
         InputField,
         SelectField,
         MemberSearch,
@@ -160,14 +155,15 @@ export default {
                         (response) => {
                             this.isSaving = false;
                             if (response.body && response.body.error && response.body.messages) {
-                                this.showFailed = true;
+                                this.$flashError('message.unable_to_save');
                                 return;
                             }
 
-                            this.showSaved = true;
+                            this.$flashSuccess('message.saved');
                         },
                         () => {
                             this.isSaving = true;
+                            this.$flashError('message.unable_to_save');
                         }
                     )
                 ;
@@ -191,14 +187,14 @@ export default {
                 .then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
-                        this.showSaved = true;
+                        this.$flashSuccess('message.saved');
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 )
             ;
@@ -253,8 +249,6 @@ export default {
             responsibility: [],
             responsibilityFullName: '',
             todoCategory: null,
-            showSaved: false,
-            showFailed: false,
             isSaving: false,
             distributionList: null,
         };

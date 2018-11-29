@@ -303,16 +303,20 @@
                     let data = this.getFormData();
                     this.isSaving = true;
                     data.project = this.$route.params.id;
-                    this.createProjectRisk(data)
-                        .then(
-                            (response) => {
-                                this.isSaving = false;
-                            },
-                            () => {
-                                this.isSaving = false;
+                    this.createProjectRisk(data).then(
+                        (response) => {
+                            this.isSaving = false;
+                            if (response.body && response.body.error && response.body.messages) {
+                                this.$flashError('message.unable_to_save');
+                            } else {
+                                this.$flashSuccess('message.saved');
                             }
-                        )
-                    ;
+                        },
+                        () => {
+                            this.isSaving = false;
+                            this.$flashError('message.unable_to_save');
+                        },
+                    );
                 }
             },
             editRisk: function() {

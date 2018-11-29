@@ -217,6 +217,7 @@
                 riskRightColStyle: {
                     height: 'auto',
                 },
+                opportunitySaved: false,
             };
         },
         mounted() {
