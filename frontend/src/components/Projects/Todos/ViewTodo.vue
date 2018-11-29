@@ -49,7 +49,7 @@
                             <div class="entry-responsible flex flex-v-center">
                                 <user-avatar
                                         size="small"
-                                        :url="todo.responsibilityAvatar"
+                                        :url="todo.responsibilityAvatarUrl"
                                         :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:

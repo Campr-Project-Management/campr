@@ -39,6 +39,13 @@ class UserControllerTest extends BaseController
         $response = $this->client->getResponse();
         $actual = json_decode($response->getContent(), true);
 
+        foreach ($actual as $i => $team) {
+            $expected[$i]['userAvatarUrl'] = $team['userAvatarUrl'];
+            foreach ($team['teamMembers'] as $j => $member) {
+                $expected[$i]['teamMembers'][$j]['userAvatarUrl'] = $member['userAvatarUrl'];
+            }
+        }
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($expected, $actual);
@@ -68,6 +75,7 @@ class UserControllerTest extends BaseController
                             [
                                 'user' => 3,
                                 'userFullName' => 'FirstName3 LastName3',
+                                'userAvatarUrl' => '',
                                 'team' => 1,
                                 'teamName' => 'team_1',
                                 'id' => 1,
@@ -76,6 +84,7 @@ class UserControllerTest extends BaseController
                             [
                                 'user' => 3,
                                 'userFullName' => 'FirstName3 LastName3',
+                                'userAvatarUrl' => '',
                                 'team' => 1,
                                 'teamName' => 'team_1',
                                 'id' => 2,
@@ -84,6 +93,7 @@ class UserControllerTest extends BaseController
                             [
                                 'user' => 3,
                                 'userFullName' => 'FirstName3 LastName3',
+                                'userAvatarUrl' => '',
                                 'team' => 1,
                                 'teamName' => 'team_1',
                                 'id' => 3,
@@ -93,8 +103,8 @@ class UserControllerTest extends BaseController
                         'teamSlugs' => [],
                         'teamInvites' => [],
                         'available' => false,
-                        'logo' => null,
                         'logoUrl' => null,
+                        'userAvatarUrl' => '',
                     ],
                     [
                         'user' => 3,
@@ -109,8 +119,8 @@ class UserControllerTest extends BaseController
                         'teamSlugs' => [],
                         'teamInvites' => [],
                         'available' => false,
-                        'logo' => null,
                         'logoUrl' => null,
+                        'userAvatarUrl' => '',
                     ],
                     [
                         'user' => 3,
@@ -125,8 +135,8 @@ class UserControllerTest extends BaseController
                         'teamSlugs' => [],
                         'teamInvites' => [],
                         'available' => false,
-                        'logo' => null,
                         'logoUrl' => null,
+                        'userAvatarUrl' => '',
                     ],
                 ],
             ],

@@ -2,7 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\BlameableInterface;
+use Component\Resource\Model\BlameableTrait;
 use Component\Resource\Model\SnapshotAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Component\Snapshot\Snapshot;
 use Component\Snapshot\Model\SnapshotInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,8 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="status_report")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusReportRepository")
  */
-class StatusReport implements SnapshotAwareInterface
+class StatusReport implements SnapshotAwareInterface, TimestampableInterface, BlameableInterface
 {
+    use TimestampableTrait, BlameableTrait;
+
     /**
      * @var int
      *
@@ -74,7 +80,7 @@ class StatusReport implements SnapshotAwareInterface
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="statusReports")
      * @ORM\JoinColumn(name="user_id", onDelete="SET NULL")
      */
-    private $createdBy;
+    protected $createdBy;
 
     /**
      * @var \DateTime
@@ -83,7 +89,7 @@ class StatusReport implements SnapshotAwareInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * StatusReport constructor.
@@ -140,50 +146,6 @@ class StatusReport implements SnapshotAwareInterface
     public function setInformation(array $information = [])
     {
         $this->information = $information;
-
-        return $this;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @param User $createdBy
-     *
-     * @return StatusReport
-     */
-    public function setCreatedBy(User $createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }

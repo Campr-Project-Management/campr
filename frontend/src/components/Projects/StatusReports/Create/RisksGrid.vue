@@ -65,7 +65,7 @@
                         potentialDelayHours: null,
                         potentialCost: null,
                         responsibilityFullName: null,
-                        responsibilityAvatar: null,
+                        responsibilityAvatarUrl: null,
                     },
                     items: [],
                     summary: {},
@@ -120,7 +120,7 @@
                     return null;
                 }
 
-                return projectUser.userAvatar;
+                return projectUser.userAvatarUrl;
             },
         },
     };

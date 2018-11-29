@@ -111,7 +111,7 @@
                             <user-avatar
                                     :name="opportunity.createdByFullName"
                                     size="small"
-                                    :url="opportunity.createdByAvatar"/>
+                                    :url="opportunity.createdByAvatarUrl"/>
                             <b>{{ opportunity.createdByFullName }}</b>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                             <user-avatar
                                     :name="opportunity.responsibilityFullName"
                                     size="small"
-                                    :url="opportunity.responsibilityAvatar"/>
+                                    :url="opportunity.responsibilityAvatarUrl"/>
                             <b>{{ opportunity.responsibilityFullName }}</b>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                                 <user-avatar
                                         :name="measure.responsibilityFullName"
                                         size="small"
-                                        :url="measure.responsibilityAvatar"/>
+                                        :url="measure.responsibilityAvatarUrl"/>
                                 <b class="uppercase">{{ measure.responsibilityFullName }}</b>
                                 <a href="#link-to-member-page" class="simple-link">@{{ measure.responsibilityUsername }}</a>
                                 {{ translate('message.added_a_measure') }} {{ moment(measure.createdAt).fromNow() }} | {{ translate('message.edited') }} {{ moment(measure.updatedAt).fromNow() }}
@@ -194,7 +194,7 @@
                                         <user-avatar
                                                 :name="comment.responsibilityFullName"
                                                 size="small"
-                                                :url="comment.responsibilityAvatar"/>
+                                                :url="comment.responsibilityAvatarUrl"/>
                                         <b class="uppercase">{{ comment.responsibilityFullName }}</b>
                                         <a href="#link-to-member-page" class="simple-link">@{{ comment.responsibilityUsername }}</a>
                                         {{ translate('message.commented') }} {{ moment(comment.createdAt).fromNow() }}

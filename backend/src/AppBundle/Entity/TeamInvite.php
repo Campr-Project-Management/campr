@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
@@ -11,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="team_invite")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamInviteRepository")
  */
-class TeamInvite
+class TeamInvite implements UserAwareInterface
 {
     /**
      * @var int
@@ -186,11 +188,11 @@ class TeamInvite
     /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return TeamInvite
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -200,7 +202,7 @@ class TeamInvite
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

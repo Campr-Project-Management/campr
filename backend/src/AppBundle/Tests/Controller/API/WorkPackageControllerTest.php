@@ -39,7 +39,7 @@ class WorkPackageControllerTest extends BaseController
         $content = json_decode($response->getContent(), true);
         $tasks = $content['items'];
         for ($i = 0; $i < sizeof($tasks); ++$i) {
-            $responseContent['items'][$i]['responsibilityAvatar'] = $tasks[$i]['responsibilityAvatar'];
+            $responseContent['items'][$i]['responsibilityAvatarUrl'] = $tasks[$i]['responsibilityAvatarUrl'];
             $responseContent['items'][$i]['createdAt'] = $tasks[$i]['createdAt'];
         }
 
@@ -128,7 +128,7 @@ class WorkPackageControllerTest extends BaseController
                             'externalForecastCost' => 0,
                             'internalActualCost' => 0,
                             'internalForecastCost' => 0,
-                            'responsibilityAvatar' => null,
+                            'responsibilityAvatarUrl' => null,
                             'totalForecastCosts' => 0,
                             'totalActualCosts' => 0,
                             'actualCostColor' => 'green',
@@ -212,7 +212,7 @@ class WorkPackageControllerTest extends BaseController
                             'externalForecastCost' => 0,
                             'internalActualCost' => 0,
                             'internalForecastCost' => 0,
-                            'responsibilityAvatar' => null,
+                            'responsibilityAvatarUrl' => null,
                             'totalForecastCosts' => 0,
                             'totalActualCosts' => 0,
                             'actualCostColor' => 'green',
@@ -262,7 +262,7 @@ class WorkPackageControllerTest extends BaseController
         $response = $this->client->getResponse();
 
         $task = json_decode($response->getContent(), true);
-        $responseContent['responsibilityAvatar'] = $task['responsibilityAvatar'];
+        $responseContent['responsibilityAvatarUrl'] = $task['responsibilityAvatarUrl'];
         $responseContent['createdAt'] = $task['createdAt'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -348,7 +348,7 @@ class WorkPackageControllerTest extends BaseController
                     'externalForecastCost' => 0,
                     'internalActualCost' => 0,
                     'internalForecastCost' => 0,
-                    'responsibilityAvatar' => null,
+                    'responsibilityAvatarUrl' => null,
                     'totalForecastCosts' => 0,
                     'totalActualCosts' => 0,
                     'actualCostColor' => 'green',
@@ -437,7 +437,7 @@ class WorkPackageControllerTest extends BaseController
                     'responsibility' => 4,
                     'responsibilityFullName' => 'FirstName4 LastName4',
                     'responsibilityEmail' => 'user4@trisoft.ro',
-                    'responsibilityAvatar' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
+                    'responsibilityAvatarUrl' => 'https://www.gravatar.com/avatar/8654c6441d88fdebf45f198f27b3decc?d=identicon',
                     'accountability' => null,
                     'accountabilityFullName' => null,
                     'accountabilityEmail' => null,

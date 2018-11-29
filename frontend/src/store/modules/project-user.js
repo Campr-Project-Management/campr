@@ -25,7 +25,7 @@ const getters = {
             return null;
         }
 
-        return projectUser.userAvatar;
+        return projectUser.userAvatarUrl;
     },
     currentMember: state => state.currentMember,
     projectSponsors: state => state.sponsors,
@@ -51,7 +51,7 @@ const getters = {
                 return {
                     'key': item.user,
                     'label': item.userFullName,
-                    'avatar': item.userAvatar,
+                    'avatar': item.userAvatarUrl,
                     'email': item.userEmail,
                 };
             });

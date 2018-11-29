@@ -46,7 +46,7 @@
                                     <user-avatar
                                             size="small"
                                             :tooltip="todo.responsibilityFullName"
-                                            :url="todo.responsibilityAvatar"
+                                            :url="todo.responsibilityAvatarUrl"
                                             :name="todo.responsibilityFullName"/>
                                 </td>
                                 <td>

@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\BlameableInterface;
+use Component\Resource\Model\BlameableTrait;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -21,8 +25,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     message="unique.name"
  *  )
  */
-class DistributionList
+class DistributionList implements TimestampableInterface, BlameableInterface
 {
+    use TimestampableTrait, BlameableTrait;
+
     const STATUS_REPORT_DISTRIBUTION = 'label.status_report_distribution';
 
     /**
@@ -110,7 +116,7 @@ class DistributionList
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="ownedDistributionLists")
      * @ORM\JoinColumn(name="user_id", nullable=false, onDelete="CASCADE")
      */
-    private $createdBy;
+    protected $createdBy;
 
     /**
      * @var \DateTime
@@ -119,7 +125,7 @@ class DistributionList
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -129,7 +135,7 @@ class DistributionList
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var ArrayCollection|Decision[]
@@ -232,54 +238,6 @@ class DistributionList
     public function getSequence()
     {
         return $this->sequence;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return DistributionList
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return DistributionList
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

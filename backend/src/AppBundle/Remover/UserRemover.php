@@ -43,7 +43,6 @@ class UserRemover implements UserRemoverInterface
         $user->setLinkedIn(null);
         $user->setMedium(null);
         $user->setTwitter(null);
-        $user->setAvatarFile(null);
         $user->setSignUpDetails([]);
         $user->setPhone(null);
         $user->setTrustedComputers([]);

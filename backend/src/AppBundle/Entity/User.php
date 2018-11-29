@@ -2,18 +2,17 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\TimestampableTrait;
+use Component\Resource\Model\ToggleableTrait;
+use Component\User\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
-use Scheb\TwoFactorBundle\Model\TrustedComputerInterface;
 
 /**
  * User.
@@ -38,8 +37,10 @@ use Scheb\TwoFactorBundle\Model\TrustedComputerInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable
  */
-class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, TrustedComputerInterface
+class User implements UserInterface
 {
+    use TimestampableTrait, ToggleableTrait;
+
     const ROLE_USER = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
@@ -139,7 +140,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @ORM\Column(name="enabled", type="boolean", nullable=false, options={"default"=0})
      */
-    private $enabled = false;
+    protected $enabled = false;
 
     /**
      * @var bool
@@ -191,7 +192,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -201,7 +202,7 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var \DateTime|null
@@ -259,21 +260,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
      * @ORM\Column(name="widget_settings", type="json_array", nullable=false)
      */
     private $widgetSettings;
-
-    /**
-     * @Vich\UploadableField(mapping="user_avatars", fileNameProperty="avatar")
-     * @Serializer\Exclude()
-     *
-     * @var File
-     */
-    private $avatarFile;
-
-    /**
-     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
-     *
-     * @var string
-     */
-    private $avatar;
 
     /**
      * @var string
@@ -948,40 +934,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return User
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
      * Serialize id, email and password.
      *
      * @return mixed
@@ -1017,16 +969,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function eraseCredentials()
     {
         $this->setPlainPassword(null);
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -1229,46 +1171,6 @@ class User implements AdvancedUserInterface, \Serializable, TwoFactorInterface, 
     public function getTeamInvites()
     {
         return $this->teamInvites;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    /**
-     * @param string $avatar
-     */
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
-    }
-
-    /**
-     * Set avatarFile.
-     *
-     * @param File|null $image
-     */
-    public function setAvatarFile(File $image = null)
-    {
-        $this->avatarFile = $image;
-
-        if ($image) {
-            $this->updatedAt = new \DateTime();
-        }
-    }
-
-    /**
-     * Get avatarFile.
-     *
-     * @return File
-     */
-    public function getAvatarFile()
-    {
-        return $this->avatarFile;
     }
 
     /**
