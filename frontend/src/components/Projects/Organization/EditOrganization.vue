@@ -369,7 +369,6 @@
                 </div>
             </div>
         </div>
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save"/>
     </div>
 </template>
 
@@ -385,7 +384,6 @@
     import SelectField from '../../_common/_form-components/SelectField';
     import MultiSelectField from '../../_common/_form-components/MultiSelectField';
     import OrganizationDistributionItem from './OrganizationDistributionItem';
-    import AlertModal from '../../_common/AlertModal.vue';
     import Error from '../../_common/_messages/Error.vue';
     import Switches from '../../3rdparty/vue-switches';
     import Pagination from '../../_common/Pagination';
@@ -401,7 +399,6 @@
             SelectField,
             MultiSelectField,
             OrganizationDistributionItem,
-            AlertModal,
             Error,
             Switches,
             Pagination,
@@ -467,7 +464,7 @@
                 this.createDepartment(data)
                     .then((response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
@@ -479,7 +476,7 @@
                         }
                     })
                     .catch((err) => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     });
             },
             initEditDepartmentModal(department) {
@@ -552,7 +549,7 @@
                 this.createSubteam(data)
                     .then((response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         }
                         this.subteamName = null;
                         if (this.subteams.items.length > this.subteams.pageSize) {
@@ -560,7 +557,7 @@
                         }
                     })
                     .catch((response) => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     });
             },
             editSelectedSubteam() {
@@ -730,7 +727,6 @@
                 showDeleteSponsorModal: false,
                 subteamPages: 0,
                 subteamName: '',
-                showFailed: false,
                 usersCurrentPage: 1,
                 userMembershipCached: {},
             };

@@ -135,7 +135,6 @@
             </div>
         </div>
 
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
         <workspace-member-invite-modal v-if="showWorkspaceMemberInviteModal" @close="showWorkspaceMemberInviteModal = false" />
     </div>
 </template>
@@ -151,7 +150,6 @@ import Modal from '../_common/Modal';
 import EditIcon from '../_common/_icons/EditIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import ViewIcon from '../_common/_icons/ViewIcon';
-import AlertModal from '../_common/AlertModal.vue';
 import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
 import ProjectOrganizationTree from './ProjectOrganizationTree';
@@ -169,7 +167,6 @@ export default {
         EditIcon,
         DeleteIcon,
         ViewIcon,
-        AlertModal,
         Error,
         WorkspaceMemberInviteModal,
         ProjectOrganizationTree,
@@ -208,11 +205,11 @@ export default {
                             this.distributionTitle = '';
                             this.distributionList = [];
                         } else {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         }
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 );
         },
@@ -297,7 +294,6 @@ export default {
     data() {
         return {
             showWorkspaceMemberInviteModal: false,
-            showFailed: false,
             selectedDistribution: [],
             distributionLists: [],
             gridList: [],

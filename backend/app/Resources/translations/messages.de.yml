@@ -962,7 +962,7 @@ message.role: Rolle
 message.roles: Rollen
 message.sales: Verkäufe
 message.save_schedule: 'Terminplan speichern'
-message.saved: Gespeichert!
+message.saved: Erfolgreich gespeichert!
 message.schedule: Terminplan
 message.schedule_base: 'Terminplan Basis'
 message.schedule_forecast: 'Terminplan Prognose'

@@ -50,7 +50,7 @@ export default {
     }
     
     .st0 {
-        stroke: $secondColor;
+        stroke: $whiteColor;
     }
 
     .modal-mask {
