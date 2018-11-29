@@ -79,21 +79,29 @@ class StatusReportController extends ApiController
      * @Method({"GET"})
      *
      * @param Project $project
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function trendGraphAction(Project $project): JsonResponse
+    public function trendGraphAction(Project $project, Request $request): JsonResponse
     {
+        $before = $request->get('before');
+        if ($before) {
+            $before = \DateTime::createFromFormat('Y-m-d H:i:s', $before);
+        }
+
         $reports = $this
             ->get('app.repository.status_report')
-            ->findBy(['project' => $project])
+            ->findTrendReportsByProjectBefore($project, $before)
         ;
 
-        $report = new StatusReport();
-        $report->setCreatedAt(new \DateTime());
-        $report->setProjectTrafficLight($project->getTrafficLight());
+        if ($request->query->has('includeCurrent')) {
+            $report = new StatusReport();
+            $report->setCreatedAt(new \DateTime());
+            $report->setProjectTrafficLight($project->getTrafficLight());
 
-        $reports[] = $report;
+            $reports[] = $report;
+        }
 
         $data = $this
             ->get('app.graph.generator.status_report_project_traffic_light')
