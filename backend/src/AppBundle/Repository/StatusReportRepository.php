@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
+use AppBundle\Entity\StatusReport;
 use Doctrine\ORM\QueryBuilder;
 use AppBundle\Repository\Traits\ProjectSortingTrait;
 use AppBundle\Repository\Traits\UserSortingTrait;
@@ -14,6 +15,11 @@ class StatusReportRepository extends BaseRepository
         UserSortingTrait::setOrder as setUserOrder;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return StatusReport[]|null
+     */
     public function findLastByProject(Project $project)
     {
         return $this
@@ -23,10 +29,14 @@ class StatusReportRepository extends BaseRepository
             ->orderBy('sr.createdAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return StatusReport[]
+     */
     public function findTrendReports(Project $project)
     {
         $qb = $this->createQueryBuilder('sr');
@@ -43,8 +53,29 @@ class StatusReportRepository extends BaseRepository
             ->setParameter('end', $end)
             ->orderBy('sr.createdAt', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    /**
+     * @param Project        $project
+     * @param \DateTime|null $before
+     *
+     * @return StatusReport[]
+     */
+    public function findTrendReportsByProjectBefore(Project $project, \DateTime $before = null)
+    {
+        if (!$before) {
+            $before = new \DateTime();
+        }
+
+        return $this
+            ->createQueryBuilder('o')
+            ->andWhere('o.project = :project and o.createdAt <= :before')
+            ->setParameter('project', $project)
+            ->setParameter('before', $before)
+            ->orderBy('o.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -62,8 +93,7 @@ class StatusReportRepository extends BaseRepository
             ->createQueryBuilder('sr')
             ->where('sr.project = :project')
             ->setParameter('project', $project)
-            ->orderBy('sr.createdAt', 'DESC')
-        ;
+            ->orderBy('sr.createdAt', 'DESC');
 
         if ($select) {
             $qb->select($select);
@@ -78,15 +108,13 @@ class StatusReportRepository extends BaseRepository
                 ->andWhere('sr.createdAt > :date_start')
                 ->andWhere('sr.createdAt < :date_end')
                 ->setParameter('date_start', $date->format('Y-m-d 00:00:00'))
-                ->setParameter('date_end', $date->format('Y-m-d 23:59:59'))
-            ;
+                ->setParameter('date_end', $date->format('Y-m-d 23:59:59'));
         }
 
         if (isset($filters['pageSize']) && isset($filters['page'])) {
             $qb
                 ->setFirstResult($filters['pageSize'] * ($filters['page'] - 1))
-                ->setMaxResults($filters['pageSize'])
-            ;
+                ->setMaxResults($filters['pageSize']);
         }
 
         return $qb;

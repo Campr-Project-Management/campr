@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
+import * as loading from '../loading-types';
 
 const state = {
     statusReports: [],
@@ -38,22 +39,22 @@ const actions = {
      * @return {object}
      */
     createStatusReport({commit}, {id, data}) {
-        return Vue.http
-            .post(
-                Routing.generate('app_api_project_status_reports_create', {'id': id}),
-                data
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-status-reports'});
-                }
+        return Vue.http.post(
+            Routing.generate('app_api_project_status_reports_create',
+                {'id': id}),
+            data,
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                router.push({name: 'project-status-reports'});
+            }
 
-                return response;
-            }, (response) => {
-            });
+            return response;
+        }, (response) => {
+        });
     },
     /**
      * Gets the todos associated to a product
@@ -68,26 +69,27 @@ const actions = {
         if (data.queryParams && data.queryParams.trend !== undefined) {
             paramObject.params.trend = data.queryParams.trend;
         }
-        if (state.statusReportFilters && state.statusReportFilters.createdBy && state.statusReportFilters.createdBy[0]) {
+        if (state.statusReportFilters && state.statusReportFilters.createdBy &&
+            state.statusReportFilters.createdBy[0]) {
             paramObject.params.createdBy = state.statusReportFilters.createdBy[0];
         }
         if (state.statusReportFilters && state.statusReportFilters.date) {
             paramObject.params.date = state.statusReportFilters.date;
         }
-        Vue.http
-            .get(
-                Routing.generate('app_api_project_status_reports', {id: data.projectId}),
-                paramObject,
-            ).then((response) => {
-                if (response.status === 200) {
-                    let statusReports = response.data;
-                    commit(types.SET_STATUS_REPORTS, {statusReports});
-                } else {
-                    commit(types.SET_STATUS_REPORTS, {statusReports: []});
-                }
-            }, () => {
+        Vue.http.get(
+            Routing.generate('app_api_project_status_reports',
+                {id: data.projectId}),
+            paramObject,
+        ).then((response) => {
+            if (response.status === 200) {
+                let statusReports = response.data;
+                commit(types.SET_STATUS_REPORTS, {statusReports});
+            } else {
                 commit(types.SET_STATUS_REPORTS, {statusReports: []});
-            });
+            }
+        }, () => {
+            commit(types.SET_STATUS_REPORTS, {statusReports: []});
+        });
     },
     /**
      * Get status report by id
@@ -95,16 +97,23 @@ const actions = {
      * @param {integer} id
      * @return {object}
      */
-    getStatusReport({commit, state}, id) {
-        return Vue.http.get(
-            Routing.generate('app_api_status_reports_get', {id: id}),
-        ).then((response) => {
+    async getStatusReport({commit, dispatch}, id) {
+        dispatch('wait/start', loading.GET_STATUS_REPORT, {root: true});
+
+        try {
+            let response = await Vue.http.get(
+                Routing.generate('app_api_status_reports_get', {id: id}),
+            );
+
             if (response.status === 200) {
                 let report = response.data;
                 commit(types.SET_STATUS_REPORT, {report});
             }
-        }, (response) => {
-        });
+
+            return response;
+        } finally {
+            dispatch('wait/end', loading.GET_STATUS_REPORT, {root: true});
+        }
     },
     /**
      * Email status report to special distribution list
@@ -114,12 +123,11 @@ const actions = {
      * @return {object}
      */
     emailStatusReport({commit}, id) {
-        return Vue.http
-            .get(
-                Routing.generate('app_api_status_reports_email', {id: id})
-            ).then((response) => {
-            }, (response) => {
-            });
+        return Vue.http.get(
+            Routing.generate('app_api_status_reports_email', {id: id}),
+        ).then((response) => {
+        }, (response) => {
+        });
     },
     setStatusReportFilters({commit}, filters) {
         commit(types.SET_STATUS_REPORT_FILTERS, {filters});
@@ -127,19 +135,19 @@ const actions = {
     /**
      * Get status report by id
      * @param {function} commit
-     * @param {number} id
+     * @param {object} data
      * @return {object}
      */
-    getStatusReportTrendGraph({commit}, id) {
-        return Vue.http.get(
+    async getStatusReportTrendGraph({commit}, data) {
+        let response = await Vue.http.get(
             Routing.generate('app_api_project_status_reports_trend_graph',
-                {id: id}),
-        ).then((response) => {
-            if (response.status === 200) {
-                commit(types.SET_STATUS_REPORT_TREND_GRAPH, response.data);
-            }
-        }, (response) => {
-        });
+                data));
+
+        if (response.status === 200) {
+            commit(types.SET_STATUS_REPORT_TREND_GRAPH, response.data);
+        }
+
+        return response;
     },
 };
 
@@ -174,7 +182,8 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_STATUS_REPORT_FILTERS](state, {filters}) {
-        state.statusReportFilters = !filters.clear ? Object.assign({}, state.statusReportFilters, filters) : [];
+        state.statusReportFilters = !filters.clear ? Object.assign({},
+            state.statusReportFilters, filters) : [];
     },
 
     /**

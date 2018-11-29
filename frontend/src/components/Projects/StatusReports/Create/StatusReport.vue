@@ -58,7 +58,7 @@
                     <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
 
                     <status-report-trend-chart
-                            v-if="trendChartData.length > 0"
+                            v-if="trendChartData.length > 0 && !fetchingTrendChart"
                             :data="trendChartData"
                             :labels="trendChartLabels"
                             :point-color="trendChartPointColor"/>
@@ -293,7 +293,15 @@
         },
         created() {
             this.getProjectUsers({id: this.$route.params.id});
-            this.getStatusReportTrendGraph(this.$route.params.id);
+            this.fetchStatusReportTrendGraph(this.report);
+        },
+        watch: {
+            report: {
+                handler(value, oldValue) {
+                    this.fetchStatusReportTrendGraph(value);
+                },
+            },
+            deep: true,
         },
         methods: {
             ...mapActions([
@@ -302,7 +310,20 @@
                 'getStatusReportTrendGraph',
                 'createStatusReport',
                 'getProjectUsers',
+                'resetStatusReportTrendGraph',
             ]),
+            fetchStatusReportTrendGraph(report) {
+                let data = {
+                    id: this.$route.params.id,
+                    before: report.createdAt,
+                };
+
+                if (!report.id) {
+                    data.includeCurrent = 1;
+                }
+
+                this.getStatusReportTrendGraph(data);
+            },
             onActionNeededUpdate(event) {
                 if (!this.editable) {
                     return;
