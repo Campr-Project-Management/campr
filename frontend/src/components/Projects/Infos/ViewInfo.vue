@@ -48,7 +48,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
                                 <user-avatar
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatar"
+                                        :url="info.responsibilityAvatarUrl"
                                         :tooltip="info.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:

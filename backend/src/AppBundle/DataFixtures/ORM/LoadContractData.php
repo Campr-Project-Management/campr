@@ -22,30 +22,28 @@ class LoadContractData extends AbstractFixture implements OrderedFixtureInterfac
         $proposedStartDate = new \DateTime('2017-01-01');
         $proposedEndDate = new \DateTime('2017-05-01');
 
-        $contract = (new Contract())
-            ->setName('contract1')
-            ->setDescription('contract-description1')
-            ->setCreatedBy($user)
-            ->setProject($project)
-            ->setProposedStartDate($proposedStartDate)
-            ->setProposedEndDate($proposedEndDate)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $contract = new Contract();
+        $contract->setName('contract1');
+        $contract->setDescription('contract-description1');
+        $contract->setCreatedBy($user);
+        $contract->setProject($project);
+        $contract->setProposedStartDate($proposedStartDate);
+        $contract->setProposedEndDate($proposedEndDate);
+        $contract->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $this->setReference('contract1', $contract);
         $manager->persist($contract);
 
         $proposedStartDate = new \DateTime('2017-05-01');
         $proposedEndDate = new \DateTime('2017-08-01');
 
-        $contract = (new Contract())
-            ->setName('contract2')
-            ->setDescription('contract-description2')
-            ->setCreatedBy($user)
-            ->setProject($project)
-            ->setProposedStartDate($proposedStartDate)
-            ->setProposedEndDate($proposedEndDate)
-            ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-        ;
+        $contract = new Contract();
+        $contract->setName('contract2');
+        $contract->setDescription('contract-description2');
+        $contract->setCreatedBy($user);
+        $contract->setProject($project);
+        $contract->setProposedStartDate($proposedStartDate);
+        $contract->setProposedEndDate($proposedEndDate);
+        $contract->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
         $this->setReference('contract2', $contract);
         $manager->persist($contract);
 

@@ -40,10 +40,10 @@ class MeetingControllerTest extends BaseController
         $responseContent['createdAt'] = $actual['createdAt'];
         $responseContent['updatedAt'] = $actual['updatedAt'];
         foreach ($actual['meetingParticipants'] as $key => $participant) {
-            $responseContent['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
+            $responseContent['meetingParticipants'][$key]['userAvatarUrl'] = $participant['userAvatarUrl'];
         }
         foreach ($actual['meetingAgendas'] as $key => $agenda) {
-            $responseContent['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
+            $responseContent['meetingAgendas'][$key]['responsibilityAvatarUrl'] = $agenda['responsibilityAvatarUrl'];
         }
 
         foreach ($actual['medias'] as $key => $media) {
@@ -51,6 +51,7 @@ class MeetingControllerTest extends BaseController
             $responseContent['medias'][$key]['originalName'] = $media['originalName'];
             $responseContent['medias'][$key]['path'] = $media['path'];
             $responseContent['medias'][$key]['fileName'] = $media['fileName'];
+            $responseContent['medias'][$key]['userAvatarUrl'] = $media['userAvatarUrl'];
         }
 
         $responseContent['openDecisions'] = $actual['openDecisions'];
@@ -115,7 +116,6 @@ class MeetingControllerTest extends BaseController
                     'meetingReports' => [],
                     'meetingAgendas' => [
                         [
-                            'duration' => '30',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'responsibility' => 3,
@@ -124,10 +124,9 @@ class MeetingControllerTest extends BaseController
                             'topic' => 'topic1',
                             'start' => '07:30',
                             'duration' => 0,
-                            'responsibilityAvatar' => '',
+                            'responsibilityAvatarUrl' => '',
                         ],
                         [
-                            'duration' => '30',
                             'meeting' => 1,
                             'meetingName' => 'meeting1',
                             'responsibility' => 3,
@@ -136,7 +135,7 @@ class MeetingControllerTest extends BaseController
                             'topic' => 'topic2',
                             'start' => '11:30',
                             'duration' => 0,
-                            'responsibilityAvatar' => '',
+                            'responsibilityAvatarUrl' => '',
                         ],
                     ],
                     'medias' => [
@@ -154,6 +153,8 @@ class MeetingControllerTest extends BaseController
                             'originalName' => '',
                             'expiresAt' => null,
                             'name' => '',
+                            'updatedAt' => null,
+                            'userAvatarUrl' => '',
                         ],
                     ],
                     'distributionLists' => [],

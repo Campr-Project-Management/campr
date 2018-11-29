@@ -155,7 +155,11 @@
                                             <p class="action-description" v-html="action.description"></p>
                                         </td>
                                         <td class="text-center">
-                                            <div class="avatar" v-tooltip.top-center="action.responsibilityFullName" v-bind:style="{ backgroundImage: 'url(' + action.responsibilityAvatar + ')' }"></div>
+                                            <user-avatar
+                                                    size="normal"
+                                                    :name="action.reponsibilityFullName"
+                                                    :url="action.responsibilityAvatarUrl"
+                                                    :tooltip="action.reponsibilityFullName"/>
                                         </td>
                                         <td>
                                             <div class="text-right" v-if="!projectCloseDown.frozen">
@@ -316,6 +320,7 @@ import AlertModal from '../_common/AlertModal.vue';
 import Modal from '../_common/Modal';
 import Editor from '../_common/Editor';
 import DateField from '../_common/_form-components/DateField';
+import UserAvatar from '../_common/UserAvatar';
 
 export default {
     components: {
@@ -332,6 +337,7 @@ export default {
         AlertModal,
         Modal,
         Editor,
+        UserAvatar,
     },
     methods: {
         ...mapActions([

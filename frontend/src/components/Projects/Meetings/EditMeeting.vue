@@ -172,7 +172,7 @@
                                             <td>
                                                 <div class="avatars collapse in" id="tp-meeting-20032017-1">
                                                     <div>
-                                                        <div class="avatar" v-tooltip.top-center="agenda.responsibilityFullName" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatar+')' }"></div>
+                                                        <div class="avatar" v-tooltip.top-center="agenda.responsibilityFullName" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
                                                     </div>
                                                 </div>
                                             </td>
@@ -259,7 +259,7 @@
                             <div class="entry-responsible flex flex-v-center" v-if="decision.responsibility">
                                 <user-avatar
                                         :name="decision.responsibilityFullName"
-                                        :url="decision.responsibilityAvatar"/>
+                                        :url="decision.responsibilityAvatarUrl"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ decision.responsibilityFullName }}</b>
@@ -318,7 +318,7 @@
                             <div class="entry-responsible flex flex-v-center">
                                 <user-avatar
                                         size="small"
-                                        :url="todo.responsibilityAvatar"
+                                        :url="todo.responsibilityAvatarUrl"
                                         :name="todo.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
@@ -398,7 +398,7 @@
                                 <user-avatar
                                         size="small"
                                         :name="info.responsibilityFullName"
-                                        :url="info.responsibilityAvatar"/>
+                                        :url="info.responsibilityAvatarUrl"/>
                                 <div>
                                     {{ translate('message.responsible') }}:
                                     <b>{{ info.responsibilityFullName }}</b>

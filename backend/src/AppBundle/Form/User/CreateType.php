@@ -10,14 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Company;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CreateType extends AbstractType
 {
@@ -91,16 +89,6 @@ class CreateType extends AbstractType
                     'translation_domain' => 'messages',
                 ]
             )
-            ->add('avatarFile', VichImageType::class, [
-                'required' => false,
-                'download_link' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'invalid.image',
-                    ]),
-                ],
-            ])
             ->add('roles', ChoiceType::class, array(
                 'expanded' => true,
                 'multiple' => true,

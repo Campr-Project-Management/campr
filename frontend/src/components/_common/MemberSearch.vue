@@ -27,21 +27,21 @@
                                :checked="item.checked" @click="toggleActivation(item)">
                         <label :for="'mid_' + item.id"></label>
                     </div>
-                    <div class="avatar" v-bind:style="{ backgroundImage: 'url(' + item.userAvatar + ')' }"></div>
+                    <user-avatar
+                            size="normal"
+                            :name="item.userFullName"
+                            :url="item.userAvatarUrl" />
                     <div class="info">
                         <p class="title">{{ item.userFullName }}</p>
-                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span>
-                        </p>
+                        <p class="description"><span v-for="roleName in item.projectRoleNames">{{ translate(roleName) }}, </span></p>
                     </div>
                 </div>
             </scrollbar>
             <div class="footer">
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="reset" class="cancel">{{ translate('button.cancel') }}</a>
-                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{
-                        translate('button.done') }}</a>
-                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{
-                        translate('button.show_selected') }}</a>
+                    <a v-if="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.done') }}</a>
+                    <a v-else="singleSelect" href="javascript:void(0)" @click="updateSelected()" class="show">{{ translate('button.show_selected') }}</a>
                 </div>
             </div>
         </div>

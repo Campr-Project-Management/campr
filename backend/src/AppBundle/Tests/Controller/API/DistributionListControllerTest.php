@@ -48,7 +48,7 @@ class DistributionListControllerTest extends BaseController
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $responseContent['users'][0]['theme'] = User::THEME_DARK;
-        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
+        $responseContent['createdByAvatarUrl'] = $distributionList['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -71,6 +71,7 @@ class DistributionListControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
                     'createdByDepartmentNames' => [],
                     'id' => 1,
@@ -105,7 +106,6 @@ class DistributionListControllerTest extends BaseController
                             'projectUsers' => [],
                             'signUpDetails' => [],
                             'locale' => 'en',
-                            'avatar' => null,
                             'avatarUrl' => null,
                             'deleted' => false,
                             'deletedAt' => null,
@@ -114,7 +114,7 @@ class DistributionListControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => '2017-01-01 07:00:00',
                     'updatedAt' => null,
-                    'createdByAvatar' => '',
+                    'createdByAvatarUrl' => '',
                 ],
             ],
         ];
@@ -384,7 +384,7 @@ class DistributionListControllerTest extends BaseController
         $email = md5(strtolower(trim($distributionList['users'][0]['email'])));
         $responseContent['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $responseContent['users'][0]['theme'] = User::THEME_DARK;
-        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
+        $responseContent['createdByAvatarUrl'] = $distributionList['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -405,6 +405,7 @@ class DistributionListControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
                     'createdByDepartmentNames' => [],
                     'id' => 1,
@@ -439,7 +440,6 @@ class DistributionListControllerTest extends BaseController
                             'projectUsers' => [],
                             'signUpDetails' => [],
                             'locale' => 'en',
-                            'avatar' => null,
                             'avatarUrl' => null,
                             'deleted' => false,
                             'deletedAt' => null,
@@ -448,7 +448,7 @@ class DistributionListControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => '2017-01-01 07:00:00',
                     'updatedAt' => null,
-                    'createdByAvatar' => [],
+                    'createdByAvatarUrl' => [],
                 ],
             ],
         ];

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
@@ -11,7 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="log")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LogRepository")
  */
-class Log
+class Log implements UserAwareInterface
 {
     /**
      * @var int
@@ -223,13 +225,11 @@ class Log
     }
 
     /**
-     * Set user.
+     * @param UserInterface|null $user
      *
-     * @param User $user
-     *
-     * @return Log
+     * @return $this
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -239,7 +239,7 @@ class Log
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

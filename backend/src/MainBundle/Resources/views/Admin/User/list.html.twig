@@ -32,7 +32,6 @@
                     <thead>
                     <tr>
                         <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
-                        <th class="avatar text-center">{{ 'table_header_cell.avatar'|trans }}</th>
                         <th>{{ 'table_header_cell.username'|trans }}</th>
                         <th>{{ 'table_header_cell.email'|trans }}</th>
                         <th>{{ 'placeholder.actions'|trans }}</th>
@@ -42,15 +41,6 @@
                     {% for user in users %}
                         <tr>
                             <td>{{ user.id }}</td>
-                            <td class="avatar text-center">
-                                <div class="user-avatar-wrapper">
-                                    {% if user.avatar %}
-                                        <img src="{{ vich_uploader_asset(user, 'avatarFile') }}">
-                                    {% else %}
-                                        <img src="{{ user.gravatar }}">
-                                    {% endif %}
-                                </div>
-                            </td>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
                             <td>

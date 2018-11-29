@@ -4,6 +4,9 @@ namespace AppBundle\Entity;
 
 use Component\Resource\Model\BaseScheduleDatesAwareInterface;
 use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Component\TrafficLight\TrafficLight;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,8 +24,10 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @AppAssert\WorkPackageScheduledDates(groups={"create"})
  * @AppAssert\WorkPackageForecastDates(groups={"edit"})
  */
-class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
+class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface, TimestampableInterface, ResponsibilityAwareInterface
 {
+    use TimestampableTrait;
+
     const TYPE_PHASE = 0;
     const TYPE_MILESTONE = 1;
     const TYPE_TASK = 2;
@@ -430,7 +435,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -440,7 +445,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var float
@@ -948,54 +953,6 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface
     public function isKeyMilestone()
     {
         return $this->getIsKeyMilestone();
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return WorkPackage
-     */
-    public function setCreatedAt(\DateTime $createdAt = null)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return WorkPackage
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
