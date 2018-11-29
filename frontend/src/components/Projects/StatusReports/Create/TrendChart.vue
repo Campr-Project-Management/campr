@@ -61,6 +61,14 @@
                     ],
                 };
             },
+            chartOptions() {
+                return Object.assign({}, this.defaultOptions, this.options);
+            },
+        },
+        methods: {
+            doRenderChart() {
+                this.renderChart(this.chartData, this.chartOptions);
+            },
         },
         data() {
             return {
@@ -131,8 +139,16 @@
                 },
             };
         },
+        watch: {
+            chartData: {
+                handler(value, oldValue) {
+                    this.doRenderChart();
+                },
+                deep: true,
+            },
+        },
         mounted() {
-            this.renderChart(this.chartData, Object.assign({}, this.defaultOptions, this.options));
+            this.doRenderChart();
         },
     };
 </script>
