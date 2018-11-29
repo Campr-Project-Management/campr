@@ -95,8 +95,8 @@ const actions = {
                     commit(types.EDIT_MEETING_TODO, {todo});
                 } else {
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-todos'});
                 }
+                router.push({name: 'project-todos'});
 
                 return response;
             }, (response) => {

@@ -509,9 +509,6 @@
                 <meeting-participants v-model="selectedParticipants" />
             </div>
         </div>
-
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -530,7 +527,6 @@ import MeetingModals from './MeetingModals';
 import MeetingParticipants from './MeetingParticipants';
 import Error from '../../_common/_messages/Error.vue';
 import ViewIcon from '../../_common/_icons/ViewIcon';
-import AlertModal from '../../_common/AlertModal.vue';
 import router from '../../../router';
 import Editor from '../../_common/Editor';
 import Modal from '../../_common/Modal';
@@ -561,7 +557,6 @@ export default {
         MeetingModals,
         MeetingParticipants,
         Error,
-        AlertModal,
         Modal,
         EditDistributionListModal,
     },
@@ -862,13 +857,14 @@ export default {
                 .then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         } else {
                             this.showSaved = true;
+                            this.$flashSuccess('message.saved');
                         }
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 )
             ;
@@ -943,7 +939,6 @@ export default {
 
         return {
             showSaved: false,
-            showFailed: false,
             agendasActivePage: 1,
             participantsPerPage: 10,
             participantsPages: 0,
@@ -1088,7 +1083,7 @@ export default {
             this.medias = this.meeting.medias;
         },
         showSaved(value) {
-            if (value === false) {
+            if (value === true) {
                 router.push({
                     name: 'project-meetings',
                     params: {

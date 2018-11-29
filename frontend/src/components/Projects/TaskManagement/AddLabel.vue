@@ -47,9 +47,6 @@
                     <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
                 </div>
             </div>
-
-            <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved"/>
-            <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save"/>
         </div>
     </can>
 </template>
@@ -59,7 +56,6 @@ import InputField from '../../_common/_form-components/InputField';
 import ColorField from '../../_common/_form-components/ColorField';
 import {mapGetters, mapActions} from 'vuex';
 import Error from '../../_common/_messages/Error.vue';
-import AlertModal from '../../_common/AlertModal';
 import router from '../../../router';
 
 export default {
@@ -69,7 +65,6 @@ export default {
         InputField,
         ColorField,
         Error,
-        AlertModal,
     },
     created() {
         if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
@@ -121,14 +116,15 @@ export default {
                         (response) => {
                             this.isSaving = false;
                             if (response.body && response.body.error) {
-                                this.showFailed = true;
+                                this.$flashError('message.unable_to_save');
                             } else {
                                 this.showSaved = true;
+                                this.$flashSuccess('message.saved');
                             }
                             this.active = true;
                         },
                         () => {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             this.active = true;
                         }
                     )
@@ -147,13 +143,14 @@ export default {
                 .then(
                     (response) => {
                         if (response.body && response.body.error) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         } else {
                             this.showSaved = true;
+                            this.$flashSuccess('message.saved');
                         }
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     },
                 )
             ;
@@ -162,7 +159,6 @@ export default {
     data() {
         return {
             showSaved: false,
-            showFailed: false,
             color: '',
             title: '',
             description: '',
