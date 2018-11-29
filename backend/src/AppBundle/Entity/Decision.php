@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,8 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="decision")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DecisionRepository")
  */
-class Decision
+class Decision implements TimestampableInterface, ResponsibilityAwareInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -115,7 +120,7 @@ class Decision
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -125,7 +130,7 @@ class Decision
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var bool
@@ -274,54 +279,6 @@ class Decision
     public function getDueDate()
     {
         return $this->dueDate;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Decision
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Decision
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

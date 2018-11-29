@@ -23,11 +23,10 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
-    app.serializer.listener.user:
-        class: AppBundle\Serializer\EventListener\UserSubscriber
+    app.serializer.listener.avatar_aware:
+        class: AppBundle\Serializer\EventListener\AvatarAwareSubscriber
         arguments:
-             - '@app.resolver.user_avatar_url'
-             - '@app.resolver.user_uploaded_avatar_url'
+            - '@app.resolver.avatar.url'
         tags:
             - { name: jms_serializer.event_subscriber }
 

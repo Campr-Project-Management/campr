@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -13,8 +17,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="project_user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectUserRepository")
  */
-class ProjectUser
+class ProjectUser implements UserAwareInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -159,7 +165,7 @@ class ProjectUser
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -169,7 +175,7 @@ class ProjectUser
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * ProjectUser constructor.
@@ -182,6 +188,9 @@ class ProjectUser
         $this->resources = new ArrayCollection();
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->getUser()->getFullName();
@@ -270,61 +279,13 @@ class ProjectUser
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return ProjectUser
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return ProjectUser
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return ProjectUser
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -334,7 +295,7 @@ class ProjectUser
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

@@ -66,10 +66,11 @@ class DistributionListControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project1',
+                ]
+            );
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'distribution-list-1';
@@ -112,10 +113,11 @@ class DistributionListControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project1',
+                ]
+            );
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/distribution-list/create');
 
@@ -133,10 +135,11 @@ class DistributionListControllerTest extends BaseController
         $distributionList = $this
             ->em
             ->getRepository(DistributionList::class)
-            ->findOneBy([
-                'name' => 'distribution-list-3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'distribution-list-3',
+                ]
+            );
         $this->em->remove($distributionList);
         $this->em->flush();
     }
@@ -150,20 +153,23 @@ class DistributionListControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project1',
+                ]
+            );
         $distributionList = (new DistributionList())
             ->setName('distribution-list-4')
             ->setSequence('1')
             ->setProject($project)
-            ->setCreatedBy($this->user)
-        ;
+            ->setCreatedBy($this->user);
         $this->em->persist($distributionList);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/distribution-list/%d/edit', $distributionList->getId()));
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/distribution-list/%d/edit', $distributionList->getId())
+        );
 
         $link = $crawler->selectLink('Delete')->link();
         $this->client->click($link);

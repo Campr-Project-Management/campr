@@ -13,9 +13,9 @@ class ContractControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -41,10 +41,11 @@ class ContractControllerTest extends BaseController
 
         $contract = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $contract['updatedAt'];
+        $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $contract);
     }
 
     /**
@@ -63,6 +64,7 @@ class ContractControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
                     'id' => 1,
                     'name' => 'contract1',
@@ -79,6 +81,7 @@ class ContractControllerTest extends BaseController
                     'updatedAt' => null,
                     'frozen' => false,
                     'approvedAt' => null,
+                    'createdByAvatarUrl' => '',
                 ],
             ],
         ];
@@ -88,9 +91,9 @@ class ContractControllerTest extends BaseController
      * @dataProvider getDataForFieldsNotBlankOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testFieldsNotBlankOnEditAction(
         array $content,
@@ -113,10 +116,11 @@ class ContractControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -145,9 +149,9 @@ class ContractControllerTest extends BaseController
      * @dataProvider getDataForNameIsUniqueOnEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testNameIsUniqueOnEditAction(
         array $content,
@@ -170,10 +174,11 @@ class ContractControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
+        $actual = json_decode($response->getContent(), true);
 
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -211,15 +216,15 @@ class ContractControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneBy([
-                'name' => 'project1',
-            ])
-        ;
-        $contract = (new Contract())
-            ->setName('contract-test')
-            ->setProject($project)
-            ->setCreatedBy($user)
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project1',
+                ]
+            );
+        $contract = new Contract();
+        $contract->setName('contract-test');
+        $contract->setProject($project);
+        $contract->setCreatedBy($user);
         $this->em->persist($contract);
         $this->em->flush();
 
@@ -287,10 +292,11 @@ class ContractControllerTest extends BaseController
 
         $contract = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $contract['updatedAt'];
+        $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $contract);
     }
 
     /**
@@ -307,6 +313,7 @@ class ContractControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
                     'id' => 2,
                     'name' => 'contract2',
@@ -323,6 +330,7 @@ class ContractControllerTest extends BaseController
                     'updatedAt' => null,
                     'frozen' => false,
                     'approvedAt' => null,
+                    'createdByAvatarUrl' => '',
                 ],
             ],
         ];

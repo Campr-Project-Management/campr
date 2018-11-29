@@ -12,13 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\User;
 use Symfony\Component\Validator\Constraints\Regex;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 /**
  * Class AccountType.
@@ -66,16 +64,6 @@ class AccountType extends AbstractType
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.last_name',
-                    ]),
-                ],
-            ])
-            ->add('avatarFile', VichImageType::class, [
-                'required' => false,
-                'download_link' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'invalid.image',
                     ]),
                 ],
             ])
