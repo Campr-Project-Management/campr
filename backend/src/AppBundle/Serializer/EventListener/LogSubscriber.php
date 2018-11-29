@@ -10,6 +10,7 @@ use AppBundle\Entity\WorkPackage;
 use AppBundle\Repository\ProjectUserRepository;
 use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
+use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\JsonSerializationVisitor;
@@ -55,7 +56,7 @@ class LogSubscriber implements EventSubscriberInterface
     {
         return [
             [
-                'event' => 'serializer.post_serialize',
+                'event' => Events::POST_SERIALIZE,
                 'method' => 'onPostSerialize',
                 'class' => Log::class,
                 'format' => 'json',

@@ -3,9 +3,14 @@
 namespace AppBundle\Entity;
 
 use Component\Opportunity\Model\OpportunityPriorityTrait;
+use Component\Resource\Model\BlameableInterface;
+use Component\Resource\Model\BlameableTrait;
 use Component\Resource\Model\PriorityAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResponsibilityAwareInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Component\TimeUnit\TimeUnitAwareInterface;
 use Component\TimeUnit\TimeUnitsConvertor;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,9 +24,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="risk")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskRepository")
  */
-class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface
+class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface, TimestampableInterface, BlameableInterface, ResponsibilityAwareInterface
 {
-    use OpportunityPriorityTrait;
+    use OpportunityPriorityTrait, TimestampableTrait, BlameableTrait;
 
     const PRIORITY_VERY_LOW = 0;
     const PRIORITY_LOW = 1;
@@ -133,7 +138,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", onDelete="SET NULL")
      */
-    private $createdBy;
+    protected $createdBy;
 
     /**
      * @var \DateTime|null
@@ -161,7 +166,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -171,7 +176,7 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * Risk constructor.
@@ -360,54 +365,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
     public function getDueDate()
     {
         return $this->dueDate;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Risk
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Risk
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -676,30 +633,6 @@ class Risk implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwa
         $this->delayUnit = $delayUnit;
 
         return $this;
-    }
-
-    /**
-     * Set createdBy.
-     *
-     * @param User $createdBy
-     *
-     * @return Risk
-     */
-    public function setCreatedBy(User $createdBy = null)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy.
-     *
-     * @return User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
     }
 
     /**

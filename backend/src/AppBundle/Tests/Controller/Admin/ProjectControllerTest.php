@@ -362,7 +362,8 @@ class ProjectControllerTest extends BaseController
 
         $this->client->request(Request::METHOD_GET, '/admin/project/1/participants');
 
-        $this->assertEquals(json_encode($expected), $this->client->getResponse()->getContent());
+        $actual = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($expected, $actual);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 

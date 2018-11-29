@@ -128,11 +128,10 @@ class ContractControllerTest extends BaseController
             ])
         ;
 
-        $contract = (new Contract())
-            ->setName('contract4')
-            ->setProject($project)
-            ->setCreatedBy($this->user)
-        ;
+        $contract = new Contract();
+        $contract->setName('contract4');
+        $contract->setProject($project);
+        $contract->setCreatedBy($this->user);
         $this->em->persist($contract);
         $this->em->flush();
 

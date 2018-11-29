@@ -6,6 +6,7 @@ use AppBundle\Entity\Project;
 use Component\Cost\Calculator\ProjectTotalCostCalculatorInterface;
 use Component\Project\Calculator\DateRangeCalculatorInterface;
 use Component\Project\Calculator\ProjectProgressCalculatorInterface;
+use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\GenericSerializationVisitor;
@@ -67,7 +68,7 @@ class ProjectSubscriber implements EventSubscriberInterface
     {
         return [
             [
-                'event' => 'serializer.post_serialize',
+                'event' => Events::POST_SERIALIZE,
                 'method' => 'onPostSerialize',
                 'class' => Project::class,
             ],

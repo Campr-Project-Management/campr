@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -13,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamMemberRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class TeamMember
+class TeamMember implements UserAwareInterface
 {
     /**
      * @var int
@@ -138,11 +140,11 @@ class TeamMember
     /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return TeamMember
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -152,7 +154,7 @@ class TeamMember
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

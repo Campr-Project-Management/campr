@@ -22,15 +22,14 @@ class LoadMeetingData extends AbstractFixture implements OrderedFixtureInterface
         $start = new \DateTime('2017-01-01 07:00:00');
         $end = new \DateTime('2017-01-01 12:00:00');
 
-        $meeting = (new Meeting())
-            ->setCreatedBy($this->getReference('superadmin'))
-            ->setName('meeting1')
-            ->setLocation('location1')
-            ->setProject($project)
-            ->setDate($date)
-            ->setStart($start)
-            ->setEnd($end)
-        ;
+        $meeting = new Meeting();
+        $meeting->setCreatedBy($this->getReference('superadmin'));
+        $meeting->setName('meeting1');
+        $meeting->setLocation('location1');
+        $meeting->setProject($project);
+        $meeting->setDate($date);
+        $meeting->setStart($start);
+        $meeting->setEnd($end);
         $this->setReference('meeting1', $meeting);
         $manager->persist($meeting);
         $manager->flush();

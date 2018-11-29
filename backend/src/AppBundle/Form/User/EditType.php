@@ -7,13 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\Company;
 use AppBundle\Entity\User;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class EditType extends AbstractType
 {
@@ -54,16 +52,6 @@ class EditType extends AbstractType
                     'translation_domain' => 'messages',
                 ]
             )
-            ->add('avatarFile', VichImageType::class, [
-                'required' => false,
-                'download_link' => false,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => ['image/jpg', 'image/jpeg', 'image/png'],
-                        'mimeTypesMessage' => 'invalid.image',
-                    ]),
-                ],
-            ])
             ->add('roles', ChoiceType::class, array(
                 'expanded' => true,
                 'multiple' => true,

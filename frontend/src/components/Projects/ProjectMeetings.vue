@@ -111,7 +111,7 @@
                                                 <user-avatar
                                                         size="small"
                                                         :tooltip="participant.userFullName"
-                                                        :url="participant.avatarUrl"
+                                                        :url="participant.userAvatarUrl"
                                                         :name="participant.userFullName"/>
                                             </span>
                                             <button v-if="participants(meeting).length > 3" type="button" v-bind:class="[{collapsed: !showMore[meeting.id]}, 'two-state']" @click="setShowMore(meeting.id, !showMore[meeting.id])">

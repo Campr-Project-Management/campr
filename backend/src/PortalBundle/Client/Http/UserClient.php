@@ -111,7 +111,6 @@ class UserClient
         $user->setLinkedIn($data['linkedIn']);
         $user->setMedium($data['medium']);
         $user->setUpdatedAt(new \DateTime($data['updatedAt']));
-        $user->setAvatar($data['avatar']);
         $user->setAvatarUrl($data['avatarUrl']);
         $user->setLocale($data['locale']);
         $user->setTheme($data['theme']);

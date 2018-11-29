@@ -61,8 +61,7 @@ class ProjectControllerTest extends BaseController
             $project = $this
                 ->em
                 ->getRepository(Project::class)
-                ->find($project['id'])
-            ;
+                ->find($project['id']);
             if ($project) {
                 $this->em->remove($project);
             }
@@ -75,8 +74,7 @@ class ProjectControllerTest extends BaseController
                         'user' => $user,
                         'project' => $project,
                     ]
-                )
-            ;
+                );
             if ($projectUser) {
                 $this->em->remove($projectUser);
             }
@@ -273,14 +271,12 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $this->em->persist($project);
         $this->em->flush();
 
@@ -356,7 +352,7 @@ class ProjectControllerTest extends BaseController
 
         $responseContent['updatedAt'] = $actual['updatedAt'];
         $responseContent['projectUsers'][0]['updatedAt'] = $actual['projectUsers'][0]['updatedAt'];
-        $responseContent['projectUsers'][0]['userAvatar'] = $actual['projectUsers'][0]['userAvatar'];
+        $responseContent['projectUsers'][0]['userAvatarUrl'] = $actual['projectUsers'][0]['userAvatarUrl'];
         $responseContent['projectUsers'][0]['projectRoles'] = $actual['projectUsers'][0]['projectRoles'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -447,7 +443,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userCompanyName' => null,
                             'rate' => null,
                             'userDeleted' => false,
@@ -472,7 +468,6 @@ class ProjectControllerTest extends BaseController
                     'projectDepartments' => [],
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
-                    'logo' => null,
                     'currency' => [
                         'id' => 1,
                         'code' => 'EUR',
@@ -685,7 +680,9 @@ class ProjectControllerTest extends BaseController
 
         $responseArray = json_decode($response->getContent(), true);
         $responseContent[0]['updatedAt'] = $responseArray[0]['updatedAt'];
+        $responseContent[0]['createdByAvatarUrl'] = $responseArray[0]['createdByAvatarUrl'];
         $responseContent[1]['updatedAt'] = $responseArray[1]['updatedAt'];
+        $responseContent[1]['createdByAvatarUrl'] = $responseArray[1]['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -707,6 +704,7 @@ class ProjectControllerTest extends BaseController
                         'project' => 1,
                         'projectName' => 'project1',
                         'createdBy' => 1,
+                        'updatedBy' => null,
                         'createdByFullName' => 'FirstName1 LastName1',
                         'id' => 1,
                         'name' => 'contract1',
@@ -723,11 +721,13 @@ class ProjectControllerTest extends BaseController
                         'updatedAt' => null,
                         'frozen' => false,
                         'approvedAt' => null,
+                        'createdByAvatarUrl' => '',
                     ],
                     [
                         'project' => 1,
                         'projectName' => 'project1',
                         'createdBy' => 1,
+                        'updatedBy' => null,
                         'createdByFullName' => 'FirstName1 LastName1',
                         'id' => 2,
                         'name' => 'contract2',
@@ -744,6 +744,7 @@ class ProjectControllerTest extends BaseController
                         'updatedAt' => null,
                         'frozen' => false,
                         'approvedAt' => null,
+                        'createdByAvatarUrl' => '',
                     ],
                 ],
             ],
@@ -784,6 +785,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['createdAt'] = $contract['createdAt'];
         $responseContent['updatedAt'] = $contract['updatedAt'];
         $responseContent['id'] = $contract['id'];
+        $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -792,8 +794,7 @@ class ProjectControllerTest extends BaseController
         $contract = $this
             ->em
             ->getRepository(Contract::class)
-            ->find($contract['id'])
-        ;
+            ->find($contract['id']);
         $this->em->remove($contract);
         $this->em->flush();
     }
@@ -814,7 +815,9 @@ class ProjectControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
+                    'createdByAvatarUrl' => '',
                     'id' => 4,
                     'name' => 'contract-test',
                     'description' => null,
@@ -886,8 +889,8 @@ class ProjectControllerTest extends BaseController
         $responseContent[0]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
         $email = md5(strtolower(trim($responseArray[1]['users'][0]['email'])));
         $responseContent[1]['users'][0]['gravatar'] = sprintf('https://www.gravatar.com/avatar/%s?d=identicon', $email);
-        $responseContent[0]['createdByAvatar'] = $responseArray[0]['createdByAvatar'];
-        $responseContent[1]['createdByAvatar'] = $responseArray[1]['createdByAvatar'];
+        $responseContent[0]['createdByAvatarUrl'] = $responseArray[0]['createdByAvatarUrl'];
+        $responseContent[1]['createdByAvatarUrl'] = $responseArray[1]['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -909,6 +912,7 @@ class ProjectControllerTest extends BaseController
                         'project' => 1,
                         'projectName' => 'project1',
                         'createdBy' => 1,
+                        'updatedBy' => null,
                         'createdByFullName' => 'FirstName1 LastName1',
                         'createdByDepartmentNames' => [],
                         'id' => 1,
@@ -943,7 +947,6 @@ class ProjectControllerTest extends BaseController
                                 'projectUsers' => [],
                                 'signUpDetails' => [],
                                 'locale' => 'en',
-                                'avatar' => null,
                                 'avatarUrl' => null,
                                 'deleted' => false,
                                 'deletedAt' => null,
@@ -952,12 +955,13 @@ class ProjectControllerTest extends BaseController
                         'meetings' => [],
                         'createdAt' => '2017-01-01 07:00:00',
                         'updatedAt' => null,
-                        'createdByAvatar' => '',
+                        'createdByAvatarUrl' => '',
                     ],
                     [
                         'project' => 1,
                         'projectName' => 'project1',
                         'createdBy' => 1,
+                        'updatedBy' => null,
                         'createdByFullName' => 'FirstName1 LastName1',
                         'createdByDepartmentNames' => [],
                         'id' => 2,
@@ -992,7 +996,6 @@ class ProjectControllerTest extends BaseController
                                 'projectUsers' => [],
                                 'signUpDetails' => [],
                                 'locale' => 'en',
-                                'avatar' => null,
                                 'avatarUrl' => null,
                                 'deleted' => false,
                                 'deletedAt' => null,
@@ -1001,7 +1004,7 @@ class ProjectControllerTest extends BaseController
                         'meetings' => [],
                         'createdAt' => '2017-01-01 07:00:00',
                         'updatedAt' => null,
-                        'createdByAvatar' => '',
+                        'createdByAvatarUrl' => '',
                     ],
                 ],
             ],
@@ -1042,7 +1045,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['createdAt'] = $distributionList['createdAt'];
         $responseContent['updatedAt'] = $distributionList['updatedAt'];
         $responseContent['id'] = $distributionList['id'];
-        $responseContent['createdByAvatar'] = $distributionList['createdByAvatar'];
+        $responseContent['createdByAvatarUrl'] = $distributionList['createdByAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1051,8 +1054,7 @@ class ProjectControllerTest extends BaseController
         $distributionList = $this
             ->em
             ->getRepository(DistributionList::class)
-            ->find($distributionList['id'])
-        ;
+            ->find($distributionList['id']);
         $this->em->remove($distributionList);
         $this->em->flush();
     }
@@ -1074,6 +1076,7 @@ class ProjectControllerTest extends BaseController
                     'project' => 1,
                     'projectName' => 'project1',
                     'createdBy' => 1,
+                    'updatedBy' => null,
                     'createdByFullName' => 'FirstName1 LastName1',
                     'createdByDepartmentNames' => [],
                     'id' => null,
@@ -1083,7 +1086,7 @@ class ProjectControllerTest extends BaseController
                     'meetings' => [],
                     'createdAt' => null,
                     'updatedAt' => null,
-                    'createdByAvatar' => '',
+                    'createdByAvatarUrl' => '',
                 ],
             ],
         ];
@@ -1247,13 +1250,17 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
 
         $actual = json_decode($response->getContent(), true);
-        $responseContent['items'][0]['createdAt'] = $actual['items'][0]['createdAt'];
-        $responseContent['items'][0]['updatedAt'] = $actual['items'][0]['updatedAt'];
+
+        foreach ($actual['items'] as $i => $item) {
+            $responseContent['items'][$i]['createdAt'] = $item['createdAt'];
+            $responseContent['items'][$i]['updatedAt'] = $item['updatedAt'];
+        }
+
         foreach ($actual['items'][0]['meetingParticipants'] as $key => $participant) {
-            $responseContent['items'][0]['meetingParticipants'][$key]['userAvatar'] = $participant['userAvatar'];
+            $responseContent['items'][0]['meetingParticipants'][$key]['userAvatarUrl'] = $participant['userAvatarUrl'];
         }
         foreach ($actual['items'][0]['meetingAgendas'] as $key => $agenda) {
-            $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatar'] = $agenda['responsibilityAvatar'];
+            $responseContent['items'][0]['meetingAgendas'][$key]['responsibilityAvatarUrl'] = $agenda['responsibilityAvatarUrl'];
         }
 
         foreach ($actual['items'][0]['medias'] as $key => $info) {
@@ -1261,6 +1268,7 @@ class ProjectControllerTest extends BaseController
             $responseContent['items'][0]['medias'][$key]['path'] = $info['path'];
             $responseContent['items'][0]['medias'][$key]['name'] = $info['name'];
             $responseContent['items'][0]['medias'][$key]['originalName'] = $info['originalName'];
+            $responseContent['items'][0]['medias'][$key]['userAvatarUrl'] = $info['userAvatarUrl'];
         }
 
         foreach ($actual['items'] as $key => $item) {
@@ -1306,6 +1314,7 @@ class ProjectControllerTest extends BaseController
                                     'user' => 4,
                                     'userFullName' => 'FirstName4 LastName4',
                                     'userDepartmentNames' => ['project-department2'],
+                                    'userAvatarUrl' => '',
                                     'id' => 1,
                                     'remark' => null,
                                     'isPresent' => false,
@@ -1318,6 +1327,7 @@ class ProjectControllerTest extends BaseController
                                     'user' => 5,
                                     'userFullName' => 'FirstName5 LastName5',
                                     'userDepartmentNames' => ['project-department1'],
+                                    'userAvatarUrl' => '',
                                     'id' => 2,
                                     'remark' => null,
                                     'isPresent' => false,
@@ -1336,7 +1346,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic1',
                                     'start' => '07:30',
                                     'duration' => 0,
-                                    'responsibilityAvatar' => '',
+                                    'responsibilityAvatarUrl' => '',
                                 ],
                                 [
                                     'meeting' => 1,
@@ -1347,7 +1357,7 @@ class ProjectControllerTest extends BaseController
                                     'topic' => 'topic2',
                                     'start' => '11:30',
                                     'duration' => 0,
-                                    'responsibilityAvatar' => '',
+                                    'responsibilityAvatarUrl' => '',
                                 ],
                             ],
                             'medias' => [
@@ -1365,6 +1375,8 @@ class ProjectControllerTest extends BaseController
                                     'name' => null,
                                     'originalName' => null,
                                     'expiresAt' => null,
+                                    'userAvatarUrl' => '',
+                                    'updatedAt' => null,
                                 ],
                             ],
                             'distributionLists' => [],
@@ -1503,7 +1515,7 @@ class ProjectControllerTest extends BaseController
         $responseArray = json_decode($response->getContent(), true);
 
         foreach ($responseArray['items'] as $key => $info) {
-            $responseContent['items'][$key]['responsibilityAvatar'] = $info['responsibilityAvatar'];
+            $responseContent['items'][$key]['responsibilityAvatarUrl'] = $info['responsibilityAvatarUrl'];
             $responseContent['items'][$key]['infoCategory'] = $info['infoCategory'];
             $responseContent['items'][$key]['infoCategoryName'] = $info['infoCategoryName'];
             $responseContent['items'][$key]['createdAt'] = $info['createdAt'];
@@ -1530,7 +1542,7 @@ class ProjectControllerTest extends BaseController
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
-                            'responsibilityAvatar' => null,
+                            'responsibilityAvatarUrl' => null,
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -1550,7 +1562,7 @@ class ProjectControllerTest extends BaseController
                         [
                             'responsibility' => 4,
                             'responsibilityFullName' => 'FirstName4 LastName4',
-                            'responsibilityAvatar' => null,
+                            'responsibilityAvatarUrl' => null,
                             'project' => 1,
                             'projectName' => 'project1',
                             'meeting' => 1,
@@ -1608,7 +1620,7 @@ class ProjectControllerTest extends BaseController
         $responseContent['id'] = $responseArray['id'];
         $responseContent['createdAt'] = $responseArray['createdAt'];
         $responseContent['updatedAt'] = $responseArray['updatedAt'];
-        $responseContent['responsibilityAvatar'] = $responseArray['responsibilityAvatar'];
+        $responseContent['responsibilityAvatarUrl'] = $responseArray['responsibilityAvatarUrl'];
         $responseContent['infoCategoryName'] = $responseArray['infoCategoryName'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -1648,7 +1660,7 @@ class ProjectControllerTest extends BaseController
                     'createdAt' => '2018-02-16 04:14:42',
                     'updatedAt' => '2018-02-16 04:14:42',
                     'isExpired' => false,
-                    'responsibilityAvatar' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
+                    'responsibilityAvatarUrl' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                     'distributionList' => null,
                     'distributionListName' => null,
                 ],
@@ -1673,14 +1685,12 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $project = (new Project())
             ->setName('project3')
             ->setNumber('project-number-3')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $project->setCurrency($this->findCurrencyByCode('EUR'));
 
         $this->em->persist($project);
@@ -1837,8 +1847,6 @@ class ProjectControllerTest extends BaseController
         $responseContent['scheduledFinishAt'] = $project['scheduledFinishAt'];
         $responseContent['projectTeams'][0]['updatedAt'] = $project['projectTeams'][0]['updatedAt'];
         $responseContent['projectTeams'][1]['updatedAt'] = $project['projectTeams'][1]['updatedAt'];
-        $responseContent['contracts'][0]['updatedAt'] = $project['contracts'][0]['updatedAt'];
-        $responseContent['contracts'][1]['updatedAt'] = $project['contracts'][1]['updatedAt'];
         $responseContent['units'][0]['createdAt'] = $project['units'][0]['createdAt'];
         $responseContent['units'][1]['createdAt'] = $project['units'][1]['createdAt'];
         $responseContent['units'][0]['updatedAt'] = $project['units'][0]['updatedAt'];
@@ -1847,8 +1855,13 @@ class ProjectControllerTest extends BaseController
         foreach ($project['projectUsers'] as $k => $projectUser) {
             $responseContent['projectUsers'][$k]['id'] = $projectUser['id'];
             $responseContent['projectUsers'][$k]['updatedAt'] = $projectUser['updatedAt'];
-            $responseContent['projectUsers'][$k]['userAvatar'] = $projectUser['userAvatar'];
+            $responseContent['projectUsers'][$k]['userAvatarUrl'] = $projectUser['userAvatarUrl'];
             $responseContent['projectUsers'][$k]['projectRoles'] = $projectUser['projectRoles'];
+        }
+
+        foreach ($project['contracts'] as $k => $contract) {
+            $responseContent['contracts'][$k]['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
+            $responseContent['contracts'][$k]['updatedAt'] = $contract['updatedAt'];
         }
 
         foreach ($project['units'] as $k => $unit) {
@@ -1857,7 +1870,7 @@ class ProjectControllerTest extends BaseController
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+        $this->assertEquals($responseContent, $project);
     }
 
     /**
@@ -1968,7 +1981,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userCompanyName' => null,
                             'rate' => null,
                             'userDeleted' => false,
@@ -2002,7 +2015,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userCompanyName' => null,
                             'rate' => null,
                             'userDeleted' => false,
@@ -2036,7 +2049,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userCompanyName' => null,
                             'rate' => null,
                             'userDeleted' => false,
@@ -2076,6 +2089,8 @@ class ProjectControllerTest extends BaseController
                             'project' => 1,
                             'projectName' => 'project1',
                             'createdBy' => 1,
+                            'updatedBy' => null,
+                            'createdByAvatarUrl' => null,
                             'createdByFullName' => 'FirstName1 LastName1',
                             'id' => 1,
                             'name' => 'contract1',
@@ -2097,7 +2112,9 @@ class ProjectControllerTest extends BaseController
                             'project' => 1,
                             'projectName' => 'project1',
                             'createdBy' => 1,
+                            'updatedBy' => null,
                             'createdByFullName' => 'FirstName1 LastName1',
+                            'createdByAvatarUrl' => null,
                             'id' => 2,
                             'name' => 'contract2',
                             'description' => 'contract-description2',
@@ -2146,7 +2163,6 @@ class ProjectControllerTest extends BaseController
                     'projectDepartments' => [],
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
-                    'logo' => null,
                     'currency' => [
                         'id' => 1,
                         'code' => 'EUR',
@@ -2277,8 +2293,7 @@ class ProjectControllerTest extends BaseController
         $projectTeam = $this
             ->em
             ->getRepository(ProjectTeam::class)
-            ->find($projectTeam['id'])
-        ;
+            ->find($projectTeam['id']);
         $this->em->remove($projectTeam);
         $this->em->flush();
     }
@@ -2345,7 +2360,7 @@ class ProjectControllerTest extends BaseController
         $responseArray = json_decode($response->getContent(), true);
         foreach ($responseArray['items'] as $index => $data) {
             $responseContent['items'][$index]['updatedAt'] = $data['updatedAt'];
-            $responseContent['items'][$index]['userAvatar'] = $data['userAvatar'];
+            $responseContent['items'][$index]['userAvatarUrl'] = $data['userAvatarUrl'];
         }
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -2393,7 +2408,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userDeleted' => false,
                         ],
                         [
@@ -2422,7 +2437,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userDeleted' => false,
                         ],
                         [
@@ -2451,7 +2466,7 @@ class ProjectControllerTest extends BaseController
                             'company' => null,
                             'createdAt' => '2017-01-01 12:00:00',
                             'updatedAt' => null,
-                            'userAvatar' => '',
+                            'userAvatarUrl' => '',
                             'userDeleted' => false,
                         ],
                     ],
@@ -2493,7 +2508,7 @@ class ProjectControllerTest extends BaseController
         $projectUser = json_decode($response->getContent(), true);
         $responseContent['createdAt'] = $projectUser['createdAt'];
         $responseContent['updatedAt'] = $projectUser['updatedAt'];
-        $responseContent['userAvatar'] = $projectUser['userAvatar'];
+        $responseContent['userAvatarUrl'] = $projectUser['userAvatarUrl'];
         $responseContent['id'] = $projectUser['id'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
@@ -2503,8 +2518,7 @@ class ProjectControllerTest extends BaseController
         $projectUser = $this
             ->em
             ->getRepository(ProjectUser::class)
-            ->find($projectUser['id'])
-        ;
+            ->find($projectUser['id']);
         $this->em->remove($projectUser);
         $this->em->flush();
     }
@@ -2550,7 +2564,7 @@ class ProjectControllerTest extends BaseController
                     'company' => null,
                     'createdAt' => '',
                     'updatedAt' => null,
-                    'userAvatar' => '',
+                    'userAvatarUrl' => '',
                     'userCompanyName' => null,
                     'rate' => null,
                     'userDeleted' => false,
@@ -2640,8 +2654,8 @@ class ProjectControllerTest extends BaseController
         $response = $this->client->getResponse();
 
         $responseArray = json_decode($response->getContent(), true);
-        $responseContent[0]['responsibilityAvatar'] = $responseArray[0]['responsibilityAvatar'];
-        $responseContent[1]['responsibilityAvatar'] = $responseArray[1]['responsibilityAvatar'];
+        $responseContent[0]['responsibilityAvatarUrl'] = $responseArray[0]['responsibilityAvatarUrl'];
+        $responseContent[1]['responsibilityAvatarUrl'] = $responseArray[1]['responsibilityAvatarUrl'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -2675,7 +2689,7 @@ class ProjectControllerTest extends BaseController
                         'description' => 'description for todo1',
                         'showInStatusReport' => false,
                         'dueDate' => '2017-05-01 00:00:00',
-                        'responsibilityAvatar' => '',
+                        'responsibilityAvatarUrl' => '',
                         'distributionList' => null,
                         'distributionListName' => null,
                     ],
@@ -2695,7 +2709,7 @@ class ProjectControllerTest extends BaseController
                         'description' => 'description for todo2',
                         'showInStatusReport' => false,
                         'dueDate' => '2017-05-01 00:00:00',
-                        'responsibilityAvatar' => '',
+                        'responsibilityAvatarUrl' => '',
                         'distributionList' => null,
                         'distributionListName' => null,
                     ],
@@ -2991,8 +3005,7 @@ class ProjectControllerTest extends BaseController
             $task = $this
                 ->em
                 ->getRepository(WorkPackage::class)
-                ->find($actual['id'])
-            ;
+                ->find($actual['id']);
             $this->em->remove($task);
             $this->em->flush();
         }
@@ -3083,7 +3096,7 @@ class ProjectControllerTest extends BaseController
                     'responsibility' => 3,
                     'responsibilityEmail' => 'user3@trisoft.ro',
                     'responsibilityFullName' => 'FirstName3 LastName3',
-                    'responsibilityAvatar' => 'https://www.gravatar.com/avatar/96083be540ce27b34e5b5424ea9270ad?d=identicon',
+                    'responsibilityAvatarUrl' => 'https://www.gravatar.com/avatar/96083be540ce27b34e5b5424ea9270ad?d=identicon',
                     'results' => null,
                     'scheduledDurationDays' => 10,
                     'scheduledFinishAt' => '2018-01-10',
@@ -3113,8 +3126,7 @@ class ProjectControllerTest extends BaseController
         $currency = $this
             ->em
             ->getRepository(Currency::class)
-            ->findOneBy(['code' => $code])
-        ;
+            ->findOneBy(['code' => $code]);
 
         $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
 

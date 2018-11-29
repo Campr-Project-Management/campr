@@ -76,7 +76,7 @@
                             <tr v-for="item in projectUsers.items">
                                 <td class="text-center">
                                     <user-avatar
-                                            :url="item.userAvatar"
+                                            :url="item.userAvatarUrl"
                                             :name="item.userFullName"/>
                                 </td>
                                 <td class="text-center switchers">

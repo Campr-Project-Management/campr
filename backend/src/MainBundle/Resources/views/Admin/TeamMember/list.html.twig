@@ -36,7 +36,6 @@
                 <table class="custom-table">
                     <thead>
                     <th class="cell-auto">{{ 'table_header_cell.id'|trans }}</th>
-                    <th class="avatar text-center">{{ 'table_header_cell.avatar'|trans }}</th>
                     <th>{{ 'table_header_cell.username'|trans }}</th>
                     <th>{{ 'table_header_cell.created_at'|trans }}</th>
                     <th>{{ 'table_header_cell.updated_at'|trans }}</th>
@@ -47,15 +46,6 @@
                     {% for team_member in team_members %}
                         <tr>
                             <td>{{ team_member.id }}</td>
-                            <td class="avatar text-center">
-                                <div class="user-avatar-wrapper">
-                                    {% if team_member.user.avatar %}
-                                        <img src="{{ vich_uploader_asset(team_member.user, 'avatarFile') }}">
-                                    {% else %}
-                                        <img src="{{ team_member.user.gravatar }}">
-                                    {% endif %}
-                                </div>
-                            </td>
                             <td>{{ team_member.user.username }}</td>
                             <td>{{ team_member.createdAt|date('d/m/Y') }}</td>
                             <td>{{ team_member.updatedAt|date('d/m/Y') }}</td>

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubteamMemberRepository")
  * @ORM\Table(name="subteam_member")
  */
-class SubteamMember
+class SubteamMember implements UserAwareInterface
 {
     /**
      * @var int
@@ -113,11 +115,11 @@ class SubteamMember
     /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return SubteamMember
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -127,7 +129,7 @@ class SubteamMember
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

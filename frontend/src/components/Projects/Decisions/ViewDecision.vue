@@ -45,7 +45,7 @@
                             <div class="entry-responsible flex flex-v-center">
                                 <user-avatar
                                     size="small"
-                                    :url="currentDecision.responsibilityAvatar"
+                                    :url="currentDecision.responsibilityAvatarUrl"
                                     :name="currentDecision.responsibilityFullName"/>
                                 <div>
                                     {{ translate('message.responsible') }}:

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\User\Model\UserAwareInterface;
+use Component\User\Model\UserInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="rasci")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RasciRepository")
  */
-class Rasci
+class Rasci implements UserAwareInterface
 {
     const DATA_RESPONSIBLE = 'responsible';
     const DATA_ACCOUNTABLE = 'accountable';
@@ -146,11 +148,11 @@ class Rasci
     /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return Rasci
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -160,7 +162,7 @@ class Rasci
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {
