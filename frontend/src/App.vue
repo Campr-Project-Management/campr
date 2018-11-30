@@ -1,5 +1,6 @@
 <template>
     <div id="app" :class="[{ bg: bgRoutes.indexOf(this.$route.name) >= 0 }, themeClass]">
+        <flash-message></flash-message>
         <pulse-loader
                 :color="color"
                 :size="size"

@@ -203,10 +203,8 @@
         </div>
 
         <!-- Contract stuff -->
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
         <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
         <!-- Contract component stuff -->
-        <alert-modal v-if="showSavedComponent" @close="showSavedComponent = false" body="message.saved" />
         <alert-modal v-if="showFailedComponent" @close="showFailedComponent = false" body="message.saved" />
     </div>
 </template>
@@ -244,7 +242,7 @@ export default {
     },
     watch: {
         showSaved(value) {
-            if (value === false) {
+            if (value === true) {
                 router.push({
                     name: 'project-dashboard',
                     params: {
