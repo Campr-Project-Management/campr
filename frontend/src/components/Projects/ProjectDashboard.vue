@@ -197,7 +197,6 @@
         </div>
 
         <alert-modal v-if="showClosed" body="message.project_closed" @close="showClosed = false;" />
-        <alert-modal v-if="showFailed" body="message.unable_to_save" @close="showFailed = false;" />
     </div>
 </template>
 
@@ -251,11 +250,11 @@ export default {
                         if (response.status === 200) {
                             this.showClosed = true;
                         } else {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         }
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 )
             ;
@@ -302,7 +301,6 @@ export default {
     data() {
         return {
             showClosed: false,
-            showFailed: false,
             activePage: 1,
             projectStatus,
             projectTrafficLight: tl.TrafficLight.GREEN,

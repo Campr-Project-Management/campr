@@ -162,16 +162,20 @@ export default {
                 };
 
                 this.isSaving = true;
-                this.createProjectPhase(data)
-                    .then(
-                        (response) => {
-                            this.isSaving = false;
-                        },
-                        () => {
-                            this.isSaving = false;
+                this.createProjectPhase(data).then(
+                    (response) => {
+                        this.isSaving = false;
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.$flashError('message.unable_to_save');
+                        } else {
+                            this.$flashSuccess('message.saved');
                         }
-                    )
-                ;
+                    },
+                    () => {
+                        this.isSaving = false;
+                        this.$flashError('message.unable_to_save');
+                    },
+                );
             }
         },
         editPhase: function() {

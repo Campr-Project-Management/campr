@@ -506,9 +506,6 @@
                 <meeting-participants v-model="selectedParticipants" />
             </div>
         </div>
-
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -521,7 +518,6 @@ import MemberSearch from '../../_common/MemberSearch';
 import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
-import AlertModal from '../../_common/AlertModal.vue';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import router from '../../../router';
@@ -544,7 +540,6 @@ export default {
         MemberSearch,
         Timepicker,
         MultiSelectField,
-        AlertModal,
         Error,
         Editor,
         MeetingParticipants,
@@ -713,14 +708,15 @@ export default {
                     .then((response) => {
                         this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                         } else {
                             this.showSaved = true;
+                            this.$flashSuccess('message.saved');
                         }
                     },
                     () => {
                         this.isSaving = false;
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     })
                 ;
             }
@@ -860,7 +856,7 @@ export default {
             }
         },
         showSaved(value) {
-            if (value === false) {
+            if (value === true) {
                 router.push({
                     name: 'project-meetings',
                     params: {
@@ -885,7 +881,6 @@ export default {
     data() {
         return {
             showSaved: false,
-            showFailed: false,
             selectedParticipants: [],
             participantsPerPage: 10,
             participantsPages: 0,

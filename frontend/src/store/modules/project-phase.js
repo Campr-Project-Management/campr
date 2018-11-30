@@ -107,6 +107,8 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         router.push({name: 'project-phases-and-milestones'});
                     }
+
+                    return response;
                 }, (response) => {
                 }
             )
