@@ -64,6 +64,8 @@ const actions = {
             ).then((response) => {
                 let projectCloseDown = response.data;
                 commit(types.SET_PROJECT_CLOSE_DOWN, {projectCloseDown});
+
+                return response;
             }, (response) => {
             });
     },

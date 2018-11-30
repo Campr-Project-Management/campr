@@ -113,15 +113,6 @@
                 </div>
             </div>
         </div>
-
-        <alert-modal
-                v-if="showSaved"
-                @close="showSaved = false"
-                body="message.saved"/>
-        <alert-modal
-                v-if="showFailed"
-                @close="showFailed = false"
-                body="message.unable_to_save"/>
     </div>
 </template>
 
@@ -134,7 +125,6 @@
     import moment from 'moment';
     import Error from '../../_common/_messages/Error.vue';
     import Editor from '../../_common/Editor.vue';
-    import AlertModal from '../../_common/AlertModal.vue';
     import Attachments from '../../_common/Attachments';
     import DateField from '../../_common/_form-components/DateField';
     import {createFormData} from '../../../helpers/decision';
@@ -148,7 +138,6 @@
             moment,
             Error,
             Editor,
-            AlertModal,
             Attachments,
         },
         methods: {
@@ -184,14 +173,14 @@
                 }).then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
-                        this.showSaved = true;
+                        this.$flashSuccess('message.saved');
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     },
                 );
             },
@@ -203,14 +192,14 @@
                 }).then(
                     (response) => {
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
-                        this.showSaved = true;
+                        this.$flashSuccess('message.saved');
                     },
                     () => {
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     },
                 );
             },
@@ -291,7 +280,6 @@
                 distributionList: null,
                 medias: [],
                 isEdit: this.$route.params.decisionId,
-                showFailed: false,
                 showSaved: false,
                 isUploading: false,
             };

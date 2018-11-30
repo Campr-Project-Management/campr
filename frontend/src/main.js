@@ -26,11 +26,14 @@ import Rbac from './plugins/rbac';
 import Scrollbar from './components/_common/Scrollbar';
 import VueWait from 'vue-wait';
 import Routing from './plugins/routing';
+import FlashMessagesPlugin from './plugins/flash-messages';
+import FlashMessage from './components/_common/FlashMessages';
 
 Vue.use(VueResource);
 Vue.use(Vue2Dragula);
 Vue.use(VeeValidate);
 Vue.use(VTooltip);
+Vue.use(FlashMessagesPlugin);
 Vue.use(Translator, {
     store,
 });
@@ -40,6 +43,7 @@ Vue.use(DateFormat);
 Vue.use(Templating);
 Vue.use(Routing);
 Vue.component(Scrollbar.name, Scrollbar);
+Vue.component(FlashMessage);
 
 sync(store, router);
 Vue.use(require('vue-moment'));
