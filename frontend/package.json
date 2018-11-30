@@ -55,6 +55,7 @@
     "vue-charts": "0.2.1",
     "vue-color": "^2.4.5",
     "vue-cookie": "1.1.4",
+    "vue-flash-message": "^0.7.2",
     "vue-masonry": "0.10.1",
     "vue-moment": "2.0.2",
     "vue-perfect-scrollbar": "^0.1.0",

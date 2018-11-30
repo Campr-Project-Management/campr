@@ -143,16 +143,20 @@ export default {
                     isKeyMilestone: this.isKeyMilestone,
                 };
                 this.isSaving = true;
-                this.createProjectMilestone(data)
-                    .then(
-                        (response) => {
-                            this.isSaving = false;
-                        },
-                        () => {
-                            this.isSaving = false;
+                this.createProjectMilestone(data).then(
+                    (response) => {
+                        this.isSaving = false;
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.$flashError('message.unable_to_save');
+                        } else {
+                            this.$flashSuccess('message.saved');
                         }
-                    )
-                ;
+                    },
+                    () => {
+                        this.isSaving = false;
+                        this.$flashError('message.unable_to_save');
+                    },
+                );
             }
         },
         editMilestone: function() {

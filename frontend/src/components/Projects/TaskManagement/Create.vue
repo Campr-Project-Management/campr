@@ -149,8 +149,6 @@
             </div>
         </div>
 
-        <alert-modal v-if="showSaved" @close="showSaved = false" body="message.saved" />
-        <alert-modal v-if="showFailed" @close="showFailed = false" body="message.unable_to_save" />
     </div>
 </template>
 
@@ -169,7 +167,6 @@ import Attachments from '../../_common/Attachments';
 import Switches from '../../3rdparty/vue-switches';
 import Editor from '../../_common/Editor.vue';
 import Error from '../../_common/_messages/Error.vue';
-import AlertModal from '../../_common/AlertModal.vue';
 import {mapGetters, mapActions} from 'vuex';
 import {createFormData} from '../../../helpers/task';
 import router from '../../../router';
@@ -194,7 +191,6 @@ export default {
         Attachments,
         Editor,
         Error,
-        AlertModal,
     },
     methods: {
         ...mapActions(
@@ -224,15 +220,16 @@ export default {
                     (response) => {
                         this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
                         this.showSaved = true;
+                        this.$flashSuccess('message.saved');
                     },
                     () => {
                         this.isSaving = false;
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 )
             ;
@@ -260,7 +257,7 @@ export default {
                     (response) => {
                         this.isSaving = false;
                         if (response.body && response.body.error && response.body.messages) {
-                            this.showFailed = true;
+                            this.$flashError('message.unable_to_save');
                             return;
                         }
 
@@ -269,10 +266,11 @@ export default {
                         }
 
                         this.showSaved = true;
+                        this.$flashSuccess('message.saved');
                     },
                     () => {
                         this.isSaving = false;
-                        this.showFailed = true;
+                        this.$flashError('message.unable_to_save');
                     }
                 )
             ;
@@ -469,7 +467,7 @@ export default {
     },
     watch: {
         showSaved(value) {
-            if (!this.isEdit && value === false) {
+            if (value === true) {
                 router.push({
                     name: 'project-task-management-list',
                 });
@@ -576,7 +574,6 @@ export default {
     data() {
         return {
             showSaved: false,
-            showFailed: false,
             schedule: {
                 baseStartDate: null,
                 baseEndDate: null,

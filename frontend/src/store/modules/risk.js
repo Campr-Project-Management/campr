@@ -61,6 +61,8 @@ const actions = {
                         commit(types.SET_VALIDATION_MESSAGES, {messages: []});
                         router.push({name: 'project-risks-and-opportunities'});
                     }
+
+                    return response;
                 }, (response) => {
                 }
             )

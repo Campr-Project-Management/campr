@@ -962,7 +962,7 @@ message.role: Role
 message.roles: Roles
 message.sales: Sales
 message.save_schedule: 'Save Schedule'
-message.saved: Saved!
+message.saved: Successfully saved!
 message.schedule: Schedule
 message.schedule_base: 'Schedule Base'
 message.schedule_forecast: 'Schedule Forecast'
