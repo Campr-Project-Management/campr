@@ -79,7 +79,7 @@
             let defaultOptions = {
                 hAxis: {
                     textStyle: {
-                        color: '#D8DAE5',
+                        color: this.$theme.lighter,
                     },
                 },
                 vAxis: {
@@ -87,23 +87,23 @@
                     minValue: 0,
                     maxValue: 0,
                     textStyle: {
-                        color: '#D8DAE5',
+                        color: this.$theme.lighter,
                     },
                 },
                 width: '100%',
                 height: 350,
                 curveType: 'function',
                 colors: [colors.base, colors.actual, colors.forecast, colors.remaining],
-                backgroundColor: '#191E37',
+                backgroundColor: this.$theme.dark,
                 titleTextStyle: {
-                    color: '#D8DAE5',
+                    color: this.$theme.lighter,
                 },
                 legend: {
                     position: 'bottom',
                     maxLines: 5,
                 },
                 legendTextStyle: {
-                    color: '#D8DAE5',
+                    color: this.$theme.lighter,
                 },
             };
 

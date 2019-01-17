@@ -9,4 +9,6 @@ final class UserEvents
     const PRE_REMOVE = 'app.user.pre_remove';
 
     const POST_REMOVE = 'app.user.post_remove';
+
+    const SWITCH_THEME = 'app.user.switch_theme';
 }

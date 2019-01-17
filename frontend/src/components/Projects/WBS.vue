@@ -270,7 +270,7 @@ export default {
 
 <style lang="scss">
     @import '../../css/mixins';
-    @import '../../css/variables';
+    @import '~theme/variables';
 
     .link {
         fill: none;
@@ -301,7 +301,7 @@ export default {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 padding: 28px 5px 5px 5px;
-                color: $whiteColor;
+                color: $fgColor;
                 height: 70px;
                 text-align: center;
                 text-transform: uppercase;
@@ -324,7 +324,7 @@ export default {
     .d3-context-menu-theme {
         position: absolute;
         background-color: $semiDarkColor;
-        color: $lighterColor;
+        color: $fgColor;
         font-size: 12px;
         min-width: 200px;
         text-transform: uppercase;
@@ -360,7 +360,7 @@ export default {
 
                 &.is-header:not(.is-divider) {
                     padding: 10px 10px;
-                    background-color: $darkColor;
+                    background-color: $bgColor;
                     color: $middleColor;
                 }
                 &.is-divider {
