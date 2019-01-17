@@ -962,7 +962,7 @@ message.role: Rolle
 message.roles: Rollen
 message.sales: Verkäufe
 message.save_schedule: 'Terminplan speichern'
-message.saved: Erfolgreich gespeichert!
+message.saved: Gespeichert!
 message.schedule: Terminplan
 message.schedule_base: 'Terminplan Basis'
 message.schedule_forecast: 'Terminplan Prognose'
@@ -2000,7 +2000,7 @@ title.schedule.list: Terminplan
 title.status.edit: Bearbeiten
 title.status_report.list: 'Status Report'
 title.status_report_config.create: 'Neue Statusreport-Konfiguration erstellen'
-title.status_report_config.edit: 'Statusreport-Koniguration bearbeiten'
+title.status_report_config.edit: 'Statusreport-Konfiguration bearbeiten'
 title.status_report_config.list: Statusreport-Kofiguration
 title.subteam.create: 'Team erstellen'
 title.subteam.edit: 'Team bearbeiten'
@@ -2155,4 +2155,10 @@ message.support: Unterstützend
 message.informed: Informierend
 label.add_label: 'Label Hinzufügen'
 label.executing: Ausführen
+label.choose.theme: 'Wählen Sie Ihre Darstellung'
 button.save_task: 'Task speichern'
+button.copy_project: 'Projekt kopieren'
+title.copy_project: 'Projekt kopieren'
+email.message.project.cloned: 'Sie können Ihr neues Projekt hier finden'
+message.theme_switcher.light: 'Schalten Sie auf Dunkelheit um'
+message.theme_switcher.dark: 'Auf Licht umschalten'

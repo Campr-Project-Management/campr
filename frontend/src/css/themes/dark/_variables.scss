@@ -14,6 +14,8 @@ $dangerDarkColor: #C64444;
 $whiteColor: #ffffff;
 $grayColor: #5a5a5a;
 $blackColor: #000000;
+$bgColor: $mainColor;
+$fgColor: $lighterColor;
 
 $additionalColor1: #E2C94D;
 $additionalColor2: #E04FCC;
@@ -33,3 +35,4 @@ $trafficLightGreen: $secondColor;
 
 $datePickerGreen: #009688;
 $datePickerDarkGreen: #00877a;
+$bgImage: '../../assets/bg-dark.jpg'

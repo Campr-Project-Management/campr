@@ -184,7 +184,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../../../css/variables';
+    @import '~theme/variables';
     @import '../../../css/mixins';
 
     .matrix-grid {

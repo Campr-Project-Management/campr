@@ -7,7 +7,7 @@
         <div class="right-sided">
             <button
                 id="toggle_minimap"
-                class="btn-rounded btn-auto btn-empty flex"
+                class="btn-rounded btn-blank btn-auto flex"
                 v-on:click="showMinimap = !showMinimap">
                 {{ translate('message.toggle_minimap') }}
             </button>
@@ -253,7 +253,7 @@ export default {
             this.rect = this.g
                 .append('rect')
                 .attr('fill', 'transparent')
-                .attr('stroke', '#000000')
+                .attr('stroke', this.$theme.lighter)
                 .attr('stroke-width', 1)
                 .attr('width', rectWidth)
                 .attr('height', rectHeight)

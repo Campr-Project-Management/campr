@@ -156,7 +156,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.internal_costs') }}</h3>
                     <no-ssr>
-                        <chart :data="internalCostsGraphData.byPhase | graphData" />
+                        <chart :data="internalCostsGraphData.byPhase | graphData" theme="print" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
@@ -165,7 +165,7 @@
                 <div class="col-md-6">
                     <h3>{{ translateText('message.external_costs') }}</h3>
                     <no-ssr>
-                        <chart :data="externalCostsGraphData.byPhase | graphData" />
+                        <chart :data="externalCostsGraphData.byPhase | graphData" theme="print" />
                     </no-ssr>
                 </div>
                 <!-- /// End Project External Costs /// -->
