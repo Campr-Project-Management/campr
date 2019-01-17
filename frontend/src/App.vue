@@ -173,8 +173,8 @@
 
         &:hover {
             a {
-                color: $whiteColor;
-                border-color: $whiteColor;
+                color: $secondDarkColor;
+                border-color: $secondDarkColor;
             }
         }
     }

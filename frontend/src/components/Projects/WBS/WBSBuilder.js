@@ -2,6 +2,9 @@ import router from '../../../router';
 import {trans} from '../../../util/Translator';
 import contextMenu from 'd3-context-menu';
 import * as d3 from 'd3';
+import currentTheme from '../../../util/theme';
+
+let theme = currentTheme();
 
 /**
  * Create
@@ -18,7 +21,7 @@ export default function create() {
         $calls: [],
         config: {
             entityForegroundColor(entity) {
-                return '#fff';
+                return theme.fg;
             },
             svg: null,
         },
@@ -47,7 +50,7 @@ export default function create() {
                 // display the box
                 this
                     .append('rect')
-                    .attr('fill', '#191E37')
+                    .attr('fill', theme.dark)
                     .attr('stroke', d => config.entityForegroundColor(d.data))
                     .attr('stroke-width', 1)
                     .attr('width', 220)
@@ -202,7 +205,7 @@ export default function create() {
                     .attr('text-anchor', 'middle')
                     .attr('x', -(100 * 0.66))
                     .attr('y', 220 - 11)
-                    .attr('fill', '#fff')
+                    .attr('fill', theme.fg)
                     .attr('transform', 'rotate(-90)')
                     .text(d => trans(d.data.workPackageStatusName))
                 ;
@@ -219,7 +222,7 @@ export default function create() {
                     .attr('dy', '20px')
                     .attr('x', -(100 * 0.166))
                     .attr('y', 220 - 31)
-                    .attr('fill', '#8794c4')
+                    .attr('fill', theme.light)
                     .attr('transform', 'rotate(-90)')
                     .text(d => {
                         return (+d.data.progress || 0) + '%';

@@ -232,7 +232,7 @@
 </style>
 
 <style scoped lang="scss">
-    @import '../../css/variables';
+    @import '~theme/variables';
     @import '../../css/mixins';
     @import '../../css/common';
 

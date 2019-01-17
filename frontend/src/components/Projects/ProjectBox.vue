@@ -47,12 +47,14 @@
                     title-right="Progress"/>
             <div class="content-bottom flex circles">
                 <circle-chart
+                        :bg-stroke-color="$theme.darker"
                         :percentage="project.progress"
                         :precision="0"
                         :title="translate('message.task_status')"
                         class="left"/>
 
                 <circle-chart
+                        :bg-stroke-color="$theme.darker"
                         :percentage="project.costProgress"
                         :precision="0"
                         :title="translate('message.cost_status')"
