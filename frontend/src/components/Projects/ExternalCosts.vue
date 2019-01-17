@@ -5,9 +5,6 @@
                 <h1>{{ translate('message.external_costs') }}</h1>
             </div>
         </div>
-        <chart
-                title="message.by_phase"
-                :data="externalCostsGraphData.byPhase | chartData"/>
         <hr class="double">
 
         <chart

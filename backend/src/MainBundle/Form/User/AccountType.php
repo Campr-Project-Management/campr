@@ -2,6 +2,7 @@
 
 namespace MainBundle\Form\User;
 
+use AppBundle\Form\User\UserThemeChoiceType;
 use MainBundle\Form\LocaleType;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
 use Symfony\Component\Form\AbstractType;
@@ -45,67 +46,128 @@ class AccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, [
-                'disabled' => true,
-            ])
-            ->add('email', EmailType::class, [
-                'disabled' => true,
-            ])
-            ->add('firstName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.first_name',
-                    ]),
-                ],
-            ])
-            ->add('lastName', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.last_name',
-                    ]),
-                ],
-            ])
+            ->add(
+                'username',
+                TextType::class,
+                [
+                    'disabled' => true,
+                ]
+            )
+            ->add(
+                'email',
+                EmailType::class,
+                [
+                    'disabled' => true,
+                ]
+            )
+            ->add(
+                'firstName',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.first_name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'lastName',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.last_name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
             ->add('locale', LocaleType::class)
-            ->add('phone', TextType::class, [
-                'required' => false,
-            ])
-            ->add('facebook', TextType::class, [
-                'required' => false,
-            ])
-            ->add('twitter', TextType::class, [
-                'required' => false,
-            ])
-            ->add('instagram', TextType::class, [
-                'required' => false,
-            ])
-            ->add('gplus', TextType::class, [
-                'required' => false,
-            ])
-            ->add('linkedIn', TextType::class, [
-                'required' => false,
-            ])
-            ->add('medium', TextType::class, [
-                'required' => false,
-            ])
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'match.password',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(array(
-                        'message' => 'not_blank.password',
-                    )),
-                    new Regex([
-                        'pattern' => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
-                        'message' => 'regex.password',
-                    ]),
-                ],
-            ])
-            ->add('twoFactor', CheckboxType::class, [
-                'mapped' => false,
-            ])
+            ->add(
+                'phone',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'facebook',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'twitter',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'instagram',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'gplus',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'linkedIn',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'medium',
+                TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'match.password',
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.password',
+                            ]
+                        ),
+                        new Regex(
+                            [
+                                'pattern' => "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/",
+                                'message' => 'regex.password',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'twoFactor',
+                CheckboxType::class,
+                [
+                    'mapped' => false,
+                ]
+            )
+            ->add('theme', UserThemeChoiceType::class)
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
@@ -114,8 +176,7 @@ class AccountType extends AbstractType
 
                     $plainPassword = isset($data['plainPassword'])
                         ? $data['plainPassword']
-                        : []
-                    ;
+                        : [];
                     if (empty($plainPassword['first']) && empty($plainPassword['second'])) {
                         $form->remove('plainPassword');
                         unset($data['plainPassword']);
@@ -145,8 +206,7 @@ class AccountType extends AbstractType
                         $user->setGoogleAuthenticatorSecret(null);
                     }
                 }
-            )
-        ;
+            );
     }
 
     /**
@@ -154,8 +214,10 @@ class AccountType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+            ]
+        );
     }
 }
