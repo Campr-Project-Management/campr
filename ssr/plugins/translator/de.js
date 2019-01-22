@@ -2245,7 +2245,7 @@ module.exports = function (Translator) {
     Translator.add("title.status.edit", "Bearbeiten", "messages", "de");
     Translator.add("title.status_report.list", "Status Report", "messages", "de");
     Translator.add("title.status_report_config.create", "Neue Statusreport-Konfiguration erstellen", "messages", "de");
-    Translator.add("title.status_report_config.edit", "Statusreport-Koniguration bearbeiten", "messages", "de");
+    Translator.add("title.status_report_config.edit", "Statusreport-Konfiguration bearbeiten", "messages", "de");
     Translator.add("title.status_report_config.list", "Statusreport-Kofiguration", "messages", "de");
     Translator.add("title.subteam.create", "Team erstellen", "messages", "de");
     Translator.add("title.subteam.edit", "Team bearbeiten", "messages", "de");
@@ -2400,7 +2400,13 @@ module.exports = function (Translator) {
     Translator.add("message.informed", "Informierend", "messages", "de");
     Translator.add("label.add_label", "Label Hinzuf\u00fcgen", "messages", "de");
     Translator.add("label.executing", "Ausf\u00fchren", "messages", "de");
+    Translator.add("label.choose.theme", "W\u00e4hlen Sie Ihre Darstellung", "messages", "de");
     Translator.add("button.save_task", "Task speichern", "messages", "de");
+    Translator.add("button.copy_project", "Projekt kopieren", "messages", "de");
+    Translator.add("title.copy_project", "Projekt kopieren", "messages", "de");
+    Translator.add("email.message.project.cloned", "Sie k\u00f6nnen Ihr neues Projekt hier finden", "messages", "de");
+    Translator.add("message.theme_switcher.light", "Schalten Sie auf Dunkelheit um", "messages", "de");
+    Translator.add("message.theme_switcher.dark", "Auf Licht umschalten", "messages", "de");
     Translator.add("task.cost_groups_and_resources.description", "<p>Diese Aufgabe besch\u00e4ftigt sich mit dem Kosten- und Ressourcenmanagement in Ihrem Projekt. Die Kosten und Ressourcen sind pr\u00e4zise definiert.<\/p>\n<p><strong>Interne Kosten:<\/strong> Hier definieren Sie die Kostengruppen Ihrer Organisation. Diese beinhalten tats\u00e4chliche Kosten Ihrer internen Projektmitglieder, um ihre Mitwirkung in Ihrem Projekt zu begleichen.<\/p>\n<p><strong>Externe Kosten:<\/strong> Definieren die Kostengruppen f\u00fcr externe Ausgaben. Diese k\u00f6nnen externe Projektmitarbeiter, die tempor\u00e4r im Projekt t\u00e4tig sind, sein oder andere Dienstleistungen und G\u00fcter zur Erf\u00fcllung Ihrer Projektziele.<\/p>\n", "tasks", "de");
     Translator.add("task.cost_groups_and_resources.title", "Kostengruppen und Ressourcen", "tasks", "de");
     Translator.add("task.nice_to_have.description", "<p>Um Ihre Arbeit in einer komplexen Umgebung mit mehreren Projekten und einer Vielzahl an Aufgaben \u00fcbersichtlicher zu gestalten, k\u00f6nnen Sie Farblabels zuordnen. Im Adminbereich k\u00f6nnen Sie eine beliebige Anzahl Labels benennen und ihnen Farben zuordnen.<\/p>\n<p>\n    <a href=\"\/assets\/tasks\/en\/big\/Task-Project-Labels.jpg\" target=\"_blank\">\n        <img src=\"\/assets\/tasks\/en\/Task-Project-Labels.jpg\" alt=\"Task-Read-Me-Dashboard-Super-Admin\" \/>\n    <\/a>\n<\/p>\n<p><strong>Label:<\/strong> Geben Sie einem Label einen Namen, definieren Sie ein Farbe und ordnen Sie es einem Projekt oder einer Aufgabe zu, um einen besseren \u00dcberblick zu erhalten.<\/p>\n", "tasks", "de");

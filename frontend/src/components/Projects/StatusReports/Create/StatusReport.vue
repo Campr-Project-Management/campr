@@ -539,9 +539,9 @@
                 projectId: this.$route.params.id,
                 actionNeeded: null,
                 comment: '',
-                milestoneColorClass: '#5FC3A5',
+                milestoneColorClass: this.$theme.second,
                 options: {
-                    backgroundColor: '#191E37',
+                    backgroundColor: this.$theme.darker,
                 },
             };
         },
@@ -616,7 +616,7 @@
             height: 30px;
             line-height: 30px;
             text-align: center;
-            color: $whiteColor;
+            color: $lightColor;
             font-weight: 500;
             font-size: 10px;
             text-transform: uppercase;

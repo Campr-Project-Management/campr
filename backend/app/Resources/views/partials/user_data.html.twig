@@ -1,7 +1,7 @@
 {% if app.user is object %}
-<script type="text/javascript">
-    var user = {{ user|json_encode|raw }};
-</script>
+    <script type="text/javascript">
+        var user = {{ user|json_encode|raw }};
+    </script>
 {% endif %}
 
 {{ piwik_tracking() }}
