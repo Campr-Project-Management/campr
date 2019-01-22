@@ -1127,6 +1127,11 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/tasks", name="app_api_project_tasks", options={"expose"=true})
      * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function tasksAction(Request $request, Project $project)
     {
@@ -1561,20 +1566,11 @@ class ProjectController extends ApiController
      */
     public function ganttAction(Project $project)
     {
-        $data = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(WorkPackage::class)
-            ->findBy(
-                [
-                    'project' => $project,
-                ],
-                [
-                    'puid' => 'ASC',
-                ]
-            );
+        $workPackages = $this
+            ->get('app.repository.work_package')
+            ->getGantt($project);
 
-        return $this->createApiResponse($data);
+        return $this->createApiResponse($workPackages);
     }
 
     /**
