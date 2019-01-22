@@ -27,38 +27,6 @@ const getters = {
 };
 
 const actions = {
-    /**
-     * Gets this month tasks from the API and commits SET_TASKS mutation
-     * @param {function} commit
-     * @param {array} data
-     */
-    getRecentTasks({commit}, data) {
-        let paramObject = {params: {
-            recent: true,
-            type: 2,
-        }};
-        if (data && data.queryParams && data.queryParams.page !== undefined) {
-            paramObject.params.page = data.queryParams.page;
-        }
-        if (state.taskFilters && state.taskFilters.trafficLight != null) {
-            paramObject.params.trafficLight = state.taskFilters.trafficLight;
-        }
-        if (state.taskFilters && state.taskFilters.status) {
-            paramObject.params.status = state.taskFilters.status;
-        }
-        if (state.taskFilters && state.taskFilters.project) {
-            paramObject.params.project = state.taskFilters.project;
-        }
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_list'), paramObject)
-            .then((response) => {
-                if (response.status === 200) {
-                    let tasks = response.data;
-                    commit(types.SET_TASKS, {tasks});
-                }
-            }, (response) => {
-            });
-    },
     async getRecentTasksByProject({commit, dispatch}, projectId) {
         try {
             commit(types.SET_TASKS, {tasks: []});
@@ -66,12 +34,12 @@ const actions = {
 
             let params = {
                 id: projectId,
-                sort: 'updatedAt',
-                order: 'desc',
-                limit: 6,
+                page: 1,
+                sorting: {updatedAt: 'desc'},
+                pageSize: 6,
             };
             let response = await Vue.http.get(
-                Routing.generate('app_api_project_tasks', params));
+                Routing.generate('app_api_projects_workpackages', params));
             if (response.status === 200) {
                 let tasks = response.data;
                 commit(types.SET_TASKS, {tasks});
@@ -314,7 +282,7 @@ const actions = {
             data.params.criteria = Object.assign(data.params.criteria, state.taskFilters);
 
             let response = await Vue.http.get(
-                Routing.generate('app_api_projects_workpackages',
+                Routing.generate('app_api_projects_workpackages_by_status',
                     {'id': project}), data);
             if (response.status === 200) {
                 let tasks = response.data;

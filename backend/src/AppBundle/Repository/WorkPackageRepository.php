@@ -38,8 +38,7 @@ class WorkPackageRepository extends BaseRepository
         $qb = $this
             ->createQueryBuilder('wp')
             ->where('wp.responsibility = :user')
-            ->setParameter('user', $user)
-        ;
+            ->setParameter('user', $user);
 
         if ($select) {
             $qb->select($select);
@@ -48,8 +47,7 @@ class WorkPackageRepository extends BaseRepository
         if (isset($criteria['type'])) {
             $qb
                 ->andWhere('wp.type = :type')
-                ->setParameter('type', $criteria['type'])
-            ;
+                ->setParameter('type', $criteria['type']);
         }
 
         if (isset($criteria['userRasci'])) {
@@ -71,42 +69,36 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('wp.workPackageStatus != :workPackageStatus')
                 ->setParameter('workPackageStatus', WorkPackageStatus::CLOSED)
                 ->addOrderBy('FIELD(wp.workPackageStatus, '.implode(',', $statuses).')')
-                ->addOrderBy('wp.forecastStartAt', 'DESC')
-            ;
+                ->addOrderBy('wp.forecastStartAt', 'DESC');
         }
 
         if (isset($criteria['project'])) {
             $qb
                 ->andWhere('wp.project = :project')
-                ->setParameter('project', $criteria['project'])
-            ;
+                ->setParameter('project', $criteria['project']);
         }
 
         if (isset($criteria['trafficLight']) && '' != $criteria['trafficLight']) {
             $qb
                 ->andWhere('wp.trafficLight = :trafficLight')
-                ->setParameter('trafficLight', $criteria['trafficLight'])
-            ;
+                ->setParameter('trafficLight', $criteria['trafficLight']);
         }
 
         if (isset($criteria['status'])) {
             $qb
                 ->andWhere('wp.workPackageStatus = :status')
-                ->setParameter('status', $criteria['status'])
-            ;
+                ->setParameter('status', $criteria['status']);
         }
 
         if (isset($criteria['milestone'])) {
             $qb
                 ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $criteria['milestone'])
-            ;
+                ->setParameter('milestone', $criteria['milestone']);
         }
         if (isset($criteria['pageSize']) && isset($criteria['page'])) {
             $qb
                 ->setFirstResult($criteria['pageSize'] * ($criteria['page'] - 1))
-                ->setMaxResults($criteria['pageSize'])
-            ;
+                ->setMaxResults($criteria['pageSize']);
         }
 
         return $qb;
@@ -130,8 +122,7 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -149,36 +140,31 @@ class WorkPackageRepository extends BaseRepository
             ->createQueryBuilder('wp')
             ->innerJoin('wp.project', 'p')
             ->where('p.id = :project')
-            ->setParameter('project', $project)
-        ;
+            ->setParameter('project', $project);
 
         if (isset($workPackageStatus)) {
             $qb
                 ->andWhere('wp.workPackageStatus = :workPackageStatus')
-                ->setParameter('workPackageStatus', $workPackageStatus)
-            ;
+                ->setParameter('workPackageStatus', $workPackageStatus);
         }
 
         if (isset($criteria['status'])) {
             $qb
                 ->innerJoin('wp.workPackageStatus', 'wps')
                 ->andWhere('wps.name = :statusName')
-                ->setParameter('statusName', $criteria['status'])
-            ;
+                ->setParameter('statusName', $criteria['status']);
         }
 
         if (isset($criteria['type'])) {
             $qb
                 ->andWhere('wp.type = :type')
-                ->setParameter('type', $criteria['type'])
-            ;
+                ->setParameter('type', $criteria['type']);
         }
 
         if (isset($criteria['milestone'])) {
             $qb
                 ->andWhere('wp.isKeyMilestone = :milestone')
-                ->setParameter('milestone', $criteria['milestone'])
-            ;
+                ->setParameter('milestone', $criteria['milestone']);
         }
 
         return $qb->getQuery();
@@ -201,8 +187,7 @@ class WorkPackageRepository extends BaseRepository
         } else {
             $qb
                 ->where('q.parent = :workPackage')
-                ->setParameter('workPackage', $workPackage)
-            ;
+                ->setParameter('workPackage', $workPackage);
         }
 
         if (!$project) {
@@ -210,38 +195,33 @@ class WorkPackageRepository extends BaseRepository
         } else {
             $qb
                 ->andWhere('q.project = :project')
-                ->setParameter('project', $project)
-            ;
+                ->setParameter('project', $project);
         }
 
         return $qb
             ->orderBy('q.puid', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function findMaxPuid(Project $project = null)
     {
         $qb = $this
             ->createQueryBuilder('q')
-            ->select('MAX(q.puid)')
-        ;
+            ->select('MAX(q.puid)');
 
         if (!$project) {
             $qb->andWhere('q.project IS NULL');
         } else {
             $qb
                 ->andWhere('q.project = :project')
-                ->setParameter('project', $project)
-            ;
+                ->setParameter('project', $project);
         }
 
         return (int) $qb
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     public function findPhasesByProject(Project $project)
@@ -261,8 +241,7 @@ class WorkPackageRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('wp')
-            ->select('COUNT(DISTINCT wp.id)')
-        ;
+            ->select('COUNT(DISTINCT wp.id)');
 
         $qb->where(
             $qb->expr()->eq(
@@ -298,8 +277,7 @@ class WorkPackageRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('wp')
-            ->select('COUNT(DISTINCT wp.id)')
-        ;
+            ->select('COUNT(DISTINCT wp.id)');
 
         $qb->where(
             $qb->expr()->eq(
@@ -358,8 +336,7 @@ class WorkPackageRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('wp')
-            ->select('COUNT(DISTINCT wp.id)')
-        ;
+            ->select('COUNT(DISTINCT wp.id)');
 
         $qb->where(
             $qb->expr()->eq(
@@ -412,8 +389,7 @@ class WorkPackageRepository extends BaseRepository
     {
         $qb = $this
             ->createQueryBuilder('wp')
-            ->select('COUNT(DISTINCT wp.id)')
-        ;
+            ->select('COUNT(DISTINCT wp.id)');
 
         $qb->where(
             $qb->expr()->eq(
@@ -456,8 +432,7 @@ class WorkPackageRepository extends BaseRepository
             $qBuilder
                 ->setParameter('statusOngoing', WorkPackageStatus::ONGOING)
                 ->setParameter('statusPending', WorkPackageStatus::PENDING)
-                ->setParameter('statusClosed', WorkPackageStatus::CLOSED)
-            ;
+                ->setParameter('statusClosed', WorkPackageStatus::CLOSED);
 
             $qBuilder->addOrderBy('tempFieldForSorting', 'ASC');
             $qBuilder->addOrderBy('wp.actualStartAt', 'ASC');
@@ -493,11 +468,34 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('statusOngoing', WorkPackageStatus::ONGOING)
             ->setParameter('statusPending', WorkPackageStatus::PENDING)
             ->setParameter('statusClosed', WorkPackageStatus::CLOSED)
-            ->addOrderBy('tempFieldForSorting', 'ASC')
-        ;
+            ->addOrderBy('tempFieldForSorting', 'ASC');
 
         $this->applyCriteria($qb, $criteria);
         $this->applySorting($qb, array_merge($sorting, ['actualStartAt' => 'asc']));
+
+        return $this->getPaginator($qb);
+    }
+
+    /**
+     * @param Project $project
+     * @param array   $criteria
+     * @param array   $sorting
+     *
+     * @return Pagerfanta
+     */
+    public function createTasksPaginator(Project $project, array $criteria = [], array $sorting = [])
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb = $this->addNotSubtaskWhere($qb);
+        $qb = $this->addIsTaskWhere($qb);
+
+        $qb
+            ->innerJoin('o.project', 'p')
+            ->andWhere('p.id = :project')
+            ->setParameter('project', $project);
+
+        $this->applyCriteria($qb, $criteria);
+        $this->applySorting($qb, $sorting);
 
         return $this->getPaginator($qb);
     }
@@ -517,8 +515,7 @@ class WorkPackageRepository extends BaseRepository
             ->addNotSubtaskWhere($qb)
             ->innerJoin('o.project', 'p')
             ->andWhere('p.id = :project')
-            ->setParameter('project', $project)
-        ;
+            ->setParameter('project', $project);
 
         $this->applyCriteria($qb, $criteria);
         $this->applySorting($qb, $sorting);
@@ -539,8 +536,7 @@ class WorkPackageRepository extends BaseRepository
     {
         return $this
             ->getQueryBuilderByProjectAndFilters($project, $criteria, $select)
-            ->getQuery()
-        ;
+            ->getQuery();
     }
 
     /**
@@ -558,8 +554,7 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -577,8 +572,7 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -601,8 +595,34 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param Project $project
+     * @param array   $criteria
+     * @param array   $sorting
+     *
+     * @return array
+     */
+    public function getGantt(Project $project, array $criteria = [], array $sorting = [])
+    {
+        $sorting = array_merge($sorting, ['puid' => 'ASC']);
+
+        $qb = $this->createQueryBuilder('o');
+        $qb = $this->addNotSubtaskWhere($qb);
+
+        $qb
+            ->innerJoin('o.project', 'p')
+            ->andWhere('p.id = :project')
+            ->setParameter('project', $project);
+
+        $this->applyCriteria($qb, $criteria);
+        $this->applySorting($qb, $sorting);
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -620,8 +640,7 @@ class WorkPackageRepository extends BaseRepository
             ->createQueryBuilder('wp')
             ->innerJoin('wp.project', 'p')
             ->where('p.id = :project')
-            ->setParameter('project', $project)
-        ;
+            ->setParameter('project', $project);
 
         if ($select) {
             $qb->select($select);
@@ -630,50 +649,43 @@ class WorkPackageRepository extends BaseRepository
         if (isset($criteria['phase'])) {
             $qb
                 ->andWhere('wp.phase = :phase')
-                ->setParameter('phase', $criteria['phase'])
-            ;
+                ->setParameter('phase', $criteria['phase']);
         }
 
         if (isset($criteria['status'])) {
             $qb
                 ->andWhere('wp.workPackageStatus = :workPackageStatus')
-                ->setParameter('workPackageStatus', $criteria['status'])
-            ;
+                ->setParameter('workPackageStatus', $criteria['status']);
         }
 
         if (isset($criteria['searchString'])) {
             $qb
                 ->andWhere('wp.name LIKE :searchString')
-                ->setParameter('searchString', '%'.$criteria['searchString'].'%')
-            ;
+                ->setParameter('searchString', '%'.$criteria['searchString'].'%');
         }
 
         if (isset($criteria['type'])) {
             if (WorkPackage::TYPE_TASK == $criteria['type']) {
                 $qb
                     ->andWhere('wp.type IN (:type)')
-                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL])
-                ;
+                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL]);
             } else {
                 $qb
                     ->andWhere('wp.type = :type')
-                    ->setParameter('type', $criteria['type'])
-                ;
+                    ->setParameter('type', $criteria['type']);
             }
         }
 
         if (isset($criteria['projectUser'])) {
             $qb
                 ->andWhere('wp.responsibility = :projectUser')
-                ->setParameter('projectUser', $criteria['projectUser'])
-            ;
+                ->setParameter('projectUser', $criteria['projectUser']);
         }
 
         if (isset($criteria['trafficLight']) && '' != $criteria['trafficLight']) {
             $qb
                 ->andWhere('wp.trafficLight = :trafficLight')
-                ->setParameter('trafficLight', $criteria['trafficLight'])
-            ;
+                ->setParameter('trafficLight', $criteria['trafficLight']);
         }
 
         if (isset($criteria['isKeyMilestone'])) {
@@ -683,22 +695,19 @@ class WorkPackageRepository extends BaseRepository
         if (isset($criteria['startDate'])) {
             $qb
                 ->andWhere('wp.scheduledStartAt >= :startDate')
-                ->setParameter('startDate', $criteria['startDate'])
-            ;
+                ->setParameter('startDate', $criteria['startDate']);
         }
 
         if (isset($criteria['endDate'])) {
             $qb
                 ->andWhere('wp.scheduledFinishAt <= :endDate')
-                ->setParameter('endDate', $criteria['endDate'])
-            ;
+                ->setParameter('endDate', $criteria['endDate']);
         }
 
         if (isset($criteria['dueDate'])) {
             $qb
                 ->andWhere('wp.scheduledFinishAt = :dueDate')
-                ->setParameter('dueDate', $criteria['dueDate'])
-            ;
+                ->setParameter('dueDate', $criteria['dueDate']);
         }
 
         if (isset($criteria['orderBy']) && isset($criteria['order'])) {
@@ -721,35 +730,38 @@ class WorkPackageRepository extends BaseRepository
     public function getScheduleForProjectSchedule(Project $project)
     {
         $baseStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
+            ->getQueryByProjectAndFilters(
+                $project,
+                ['orderBy' => 'scheduledStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true]
+            )
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
         $baseFinish = $this
             ->getQueryByProjectAndFilters($project, ['orderBy' => 'scheduledFinishAt', 'order' => 'DESC'])
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
         $forecastStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
+            ->getQueryByProjectAndFilters(
+                $project,
+                ['orderBy' => 'forecastStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true]
+            )
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
         $forecastFinish = $this
             ->getQueryByProjectAndFilters($project, ['orderBy' => 'forecastFinishAt', 'order' => 'DESC'])
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
         $actualStart = $this
-            ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true])
+            ->getQueryByProjectAndFilters(
+                $project,
+                ['orderBy' => 'actualStartAt', 'order' => 'ASC', 'excludeNullValuesFromOrderBy' => true]
+            )
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
         $actualFinish = $this
             ->getQueryByProjectAndFilters($project, ['orderBy' => 'actualFinishAt', 'order' => 'DESC'])
             ->setMaxResults(1)
-            ->getResult()
-        ;
+            ->getResult();
 
         return [
             'base_start' => !empty($baseStart) ? $baseStart[0] : null,
@@ -779,8 +791,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('status', WorkPackageStatus::OPEN)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -801,8 +812,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('status', WorkPackageStatus::CLOSED)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -821,10 +831,12 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('project', $project)
             ->setParameter('type', WorkPackage::TYPE_TASK)
-            ->setParameter('status', [WorkPackageStatus::PENDING, WorkPackageStatus::ONGOING, WorkPackageStatus::COMPLETED])
+            ->setParameter(
+                'status',
+                [WorkPackageStatus::PENDING, WorkPackageStatus::ONGOING, WorkPackageStatus::COMPLETED]
+            )
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -842,21 +854,18 @@ class WorkPackageRepository extends BaseRepository
             ->createQueryBuilder('wp')
             ->select('COUNT(wp.id)')
             ->andWhere('wp.type = :type AND wp.parent IS NULL')
-            ->setParameter('type', $type)
-        ;
+            ->setParameter('type', $type);
 
         if ($project) {
             $qb
                 ->andWhere('wp.project = :project')
-                ->setParameter('project', $project)
-            ;
+                ->setParameter('project', $project);
         }
 
         if ($status) {
             $qb
                 ->andWhere('wp.workPackageStatus = :status')
-                ->setParameter('status', $status)
-            ;
+                ->setParameter('status', $status);
         }
 
         return (int) $qb->getQuery()->getSingleScalarResult();
@@ -864,8 +873,8 @@ class WorkPackageRepository extends BaseRepository
 
     /**
      * @param Project $project
-     * @param $type
-     * @param array $userIds
+     * @param         $type
+     * @param array   $userIds
      *
      * @return array
      */
@@ -879,8 +888,7 @@ class WorkPackageRepository extends BaseRepository
             ->where('p.id = :project and o.type = :type')
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('project', $project)
-            ->setParameter('type', WorkPackage::TYPE_TASK)
-        ;
+            ->setParameter('type', WorkPackage::TYPE_TASK);
 
         if (Cost::TYPE_EXTERNAL === intval($type)) {
             $qb->select('SUM(o.externalActualCost) as actual, SUM(o.externalForecastCost) as forecast');
@@ -896,8 +904,7 @@ class WorkPackageRepository extends BaseRepository
             $qb
                 ->addSelect('ph.name as phaseName')
                 ->innerJoin('o.phase', 'ph')
-                ->groupBy('o.phase')
-            ;
+                ->groupBy('o.phase');
         }
 
         return $qb->getQuery()->getArrayResult();
@@ -918,8 +925,7 @@ class WorkPackageRepository extends BaseRepository
             ->where('p.id = :project and o.type = :type')
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('project', $project)
-            ->setParameter('type', WorkPackage::TYPE_TASK)
-        ;
+            ->setParameter('type', WorkPackage::TYPE_TASK);
 
         $selectInternal = 'SUM(o.internalActualCost) as actual, SUM(o.internalForecastCost) as forecast';
         $selectExternal = 'SUM(o.externalActualCost) as actual, SUM(o.externalForecastCost) as forecast';
@@ -927,13 +933,11 @@ class WorkPackageRepository extends BaseRepository
         $internalResult = $qb
             ->select($selectInternal)
             ->getQuery()
-            ->getSingleResult()
-        ;
+            ->getSingleResult();
         $externalResult = $qb
             ->select($selectExternal)
             ->getQuery()
-            ->getSingleResult()
-        ;
+            ->getSingleResult();
 
         return [
             'internal' => [
@@ -977,8 +981,7 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1000,8 +1003,7 @@ class WorkPackageRepository extends BaseRepository
             ->setFirstResult(0)
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1019,8 +1021,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere('o.project = :project')
             ->setParameter('project', $project->getId())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -1041,8 +1042,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1060,8 +1060,7 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('o.type = :type and o.project = :project')
                 ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
-                ->setParameter('type', WorkPackage::TYPE_TASK)
-            ;
+                ->setParameter('type', WorkPackage::TYPE_TASK);
         };
 
         $qb = $createQueryBuilder();
@@ -1072,8 +1071,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.scheduledFinishAt'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         if ($found > 0) {
             return null;
@@ -1082,8 +1080,7 @@ class WorkPackageRepository extends BaseRepository
         return $createQueryBuilder()
             ->select('MAX(o.scheduledFinishAt)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1104,8 +1101,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1123,8 +1119,7 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('o.type = :type and o.project = :project')
                 ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
-                ->setParameter('type', WorkPackage::TYPE_TASK)
-            ;
+                ->setParameter('type', WorkPackage::TYPE_TASK);
         };
 
         $qb = $createQueryBuilder();
@@ -1135,8 +1130,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.actualFinishAt'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         if ($found > 0) {
             return null;
@@ -1145,8 +1139,7 @@ class WorkPackageRepository extends BaseRepository
         return $createQueryBuilder()
             ->select('MAX(o.actualFinishAt)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1167,8 +1160,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('project', $project)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1187,8 +1179,7 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('o.type = :type and o.project = :project')
                 ->andWhere($expr->isNull('o.parent'))
                 ->setParameter('project', $project)
-                ->setParameter('type', WorkPackage::TYPE_TASK)
-            ;
+                ->setParameter('type', WorkPackage::TYPE_TASK);
         };
 
         $qb = $createQueryBuilder();
@@ -1199,8 +1190,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.forecastFinishAt'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         if ($found > 0) {
             return null;
@@ -1209,8 +1199,7 @@ class WorkPackageRepository extends BaseRepository
         return $createQueryBuilder()
             ->select('MAX(o.forecastFinishAt)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1230,8 +1219,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('phase', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1247,8 +1235,7 @@ class WorkPackageRepository extends BaseRepository
             return $qb
                 ->andWhere('o.phase = :phase and o.type = :type')
                 ->setParameter('phase', $workPackage->getId())
-                ->setParameter('type', WorkPackage::TYPE_TASK)
-            ;
+                ->setParameter('type', WorkPackage::TYPE_TASK);
         };
 
         $qb = $createQueryBuilder();
@@ -1259,8 +1246,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.actualFinishAt'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         if ($found > 0) {
             return null;
@@ -1269,8 +1255,7 @@ class WorkPackageRepository extends BaseRepository
         return $createQueryBuilder()
             ->select('MAX(o.actualFinishAt)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1290,8 +1275,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('phase', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1308,8 +1292,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('phase', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1329,8 +1312,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('milestone', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1346,8 +1328,7 @@ class WorkPackageRepository extends BaseRepository
             return $qb
                 ->andWhere('o.milestone = :milestone and o.type = :type')
                 ->setParameter('milestone', $workPackage->getId())
-                ->setParameter('type', WorkPackage::TYPE_TASK)
-                ;
+                ->setParameter('type', WorkPackage::TYPE_TASK);
         };
 
         $qb = $createQueryBuilder();
@@ -1358,8 +1339,7 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere($expr->isNull('o.actualFinishAt'))
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         if ($found > 0) {
             return null;
@@ -1368,8 +1348,7 @@ class WorkPackageRepository extends BaseRepository
         return $createQueryBuilder()
             ->select('MAX(o.actualFinishAt)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1389,8 +1368,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('milestone', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1407,8 +1385,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('milestone', $workPackage->getId())
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1424,8 +1401,7 @@ class WorkPackageRepository extends BaseRepository
             ->where('o.type = :type and o.createdAt <= :createdAt')
             ->setParameter('type', WorkPackage::TYPE_TUTORIAL)
             ->setParameter('createdAt', $date)
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return $qb->getResult();
     }
@@ -1445,26 +1421,22 @@ class WorkPackageRepository extends BaseRepository
             ->andWhere('o.type = :type and o.project = :project and o.trafficLight = :trafficLight')
             ->andWhere($expr->isNull('o.parent'))
             ->setParameter('type', WorkPackage::TYPE_TASK)
-            ->setParameter('project', $project)
-        ;
+            ->setParameter('project', $project);
 
         $red = (int) $qb
             ->setParameter('trafficLight', TrafficLight::RED)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         $green = (int) $qb
             ->setParameter('trafficLight', TrafficLight::GREEN)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         $yellow = (int) $qb
             ->setParameter('trafficLight', TrafficLight::YELLOW)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         return [
             'red' => $red,
@@ -1483,15 +1455,13 @@ class WorkPackageRepository extends BaseRepository
         if (isset($criteria['phase'])) {
             $qb
                 ->andWhere('o.phase = :phase')
-                ->setParameter('phase', $criteria['phase'])
-            ;
+                ->setParameter('phase', $criteria['phase']);
         }
 
         if (!empty($criteria['status'])) {
             $qb
                 ->andWhere('o.workPackageStatus = :workPackageStatus')
-                ->setParameter('workPackageStatus', $criteria['status'])
-            ;
+                ->setParameter('workPackageStatus', $criteria['status']);
         }
 
         if (!empty($criteria['searchString'])) {
@@ -1502,28 +1472,24 @@ class WorkPackageRepository extends BaseRepository
             if (WorkPackage::TYPE_TASK == $criteria['type']) {
                 $qb
                     ->andWhere('o.type IN (:type)')
-                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL])
-                ;
+                    ->setParameter('type', [$criteria['type'], WorkPackage::TYPE_TUTORIAL]);
             } else {
                 $qb
                     ->andWhere('o.type = :type')
-                    ->setParameter('type', $criteria['type'])
-                ;
+                    ->setParameter('type', $criteria['type']);
             }
         }
 
         if (!empty($criteria['assignee'])) {
             $qb
                 ->andWhere('o.responsibility = :assignee')
-                ->setParameter('assignee', $criteria['assignee'])
-            ;
+                ->setParameter('assignee', $criteria['assignee']);
         }
 
         if (isset($criteria['trafficLight']) && '' !== $criteria['trafficLight']) {
             $qb
                 ->andWhere('o.trafficLight = :trafficLight')
-                ->setParameter('trafficLight', $criteria['trafficLight'])
-            ;
+                ->setParameter('trafficLight', $criteria['trafficLight']);
         }
 
         if (!empty($criteria['isKeyMilestone'])) {
@@ -1533,22 +1499,19 @@ class WorkPackageRepository extends BaseRepository
         if (!empty($criteria['startDate'])) {
             $qb
                 ->andWhere('o.scheduledStartAt >= :startDate')
-                ->setParameter('startDate', $criteria['startDate'])
-            ;
+                ->setParameter('startDate', $criteria['startDate']);
         }
 
         if (!empty($criteria['endDate'])) {
             $qb
                 ->andWhere('o.scheduledFinishAt <= :endDate')
-                ->setParameter('endDate', $criteria['endDate'])
-            ;
+                ->setParameter('endDate', $criteria['endDate']);
         }
 
         if (!empty($criteria['dueDate'])) {
             $qb
                 ->andWhere('o.scheduledFinishAt = :dueDate')
-                ->setParameter('dueDate', $criteria['dueDate'])
-            ;
+                ->setParameter('dueDate', $criteria['dueDate']);
         }
     }
 
@@ -1571,6 +1534,18 @@ class WorkPackageRepository extends BaseRepository
         );
 
         return $qb;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return QueryBuilder
+     */
+    private function addIsTaskWhere(QueryBuilder $qb)
+    {
+        $expr = $qb->expr();
+
+        return $qb->andWhere($expr->eq('o.type', WorkPackage::TYPE_TASK));
     }
 
     /**
@@ -1609,8 +1584,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_MILESTONE)
             ->setParameter('project', $project->getId())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -1626,8 +1600,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('type', WorkPackage::TYPE_PHASE)
             ->setParameter('project', $project->getId())
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -1642,8 +1615,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('task', WorkPackage::TYPE_TASK)
             ->setParameter('tutorial', WorkPackage::TYPE_TUTORIAL)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -1663,8 +1635,7 @@ class WorkPackageRepository extends BaseRepository
             ->setParameter('status', $status->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /**
@@ -1678,13 +1649,14 @@ class WorkPackageRepository extends BaseRepository
         return $this
             ->createQueryBuilder('o')
             ->select('COUNT(o)')
-            ->where('o.type = :type and o.milestone = :milestone and o.parent is null and o.workPackageStatus = :status')
+            ->where(
+                'o.type = :type and o.milestone = :milestone and o.parent is null and o.workPackageStatus = :status'
+            )
             ->setParameter('type', WorkPackage::TYPE_TASK)
             ->setParameter('milestone', $workPackage->getId())
             ->setParameter('status', $status->getId())
             ->setMaxResults(1)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 }
