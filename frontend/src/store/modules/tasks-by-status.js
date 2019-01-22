@@ -43,7 +43,7 @@ const actions = {
         };
 
         return Vue.http
-            .get(Routing.generate('app_api_projects_workpackages', {'id': project}), data)
+            .get(Routing.generate('app_api_projects_workpackages_by_status', {'id': project}), data)
             .then((response) => {
                 if (response.status === 200) {
                     let tasksByStatus = response.data;
