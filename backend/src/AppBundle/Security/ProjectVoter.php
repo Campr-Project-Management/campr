@@ -6,7 +6,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Component\Repository\RepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -23,18 +23,18 @@ class ProjectVoter extends Voter
     const DELETE = 'delete';
 
     /**
-     * @var EntityManager
+     * @var RepositoryInterface
      */
-    private $em;
+    private $projectUserRepository;
 
     /**
      * ProjectVoter constructor.
      *
-     * @param EntityManager $em
+     * @param RepositoryInterface $projectUserRepository
      */
-    public function __construct(EntityManager $em)
+    public function __construct(RepositoryInterface $projectUserRepository)
     {
-        $this->em = $em;
+        $this->projectUserRepository = $projectUserRepository;
     }
 
     /**
@@ -71,7 +71,7 @@ class ProjectVoter extends Voter
             return false;
         }
 
-        if (count(array_intersect([User::ROLE_SUPER_ADMIN, User::ROLE_ADMIN], $user->getRoles()))) {
+        if ($user->isAdmin()) {
             return true;
         }
 
@@ -97,11 +97,7 @@ class ProjectVoter extends Voter
      */
     private function canView(Project $project, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
+        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
 
         return null !== $projectUser;
     }
@@ -117,11 +113,7 @@ class ProjectVoter extends Voter
     private function canEdit(Project $project, User $user)
     {
         /** @var ProjectUser $projectUser */
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
+        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
 
         return $projectUser
             && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER, ProjectRole::ROLE_SPONSOR)
@@ -138,14 +130,10 @@ class ProjectVoter extends Voter
      */
     private function canDelete(Project $project, User $user)
     {
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy(['user' => $user, 'project' => $project])
-        ;
+        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
 
         return $projectUser
-            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)
+            && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER, ProjectRole::ROLE_SPONSOR)
         ;
     }
 }

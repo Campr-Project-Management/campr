@@ -85,11 +85,11 @@
                         </h3>
                     </div>
                     <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                        <member-badge v-for="(item, index) in projectSponsors"
+                        <member-badge v-for="(item, index) in project.projectSponsors"
                             v-bind:item="item" v-bind:key="'projectSponsors'+index" size="small"></member-badge>
-                        <member-badge v-for="(item, index) in projectManagers"
+                        <member-badge v-for="(item, index) in project.projectManagers"
                             v-bind:index="index" v-bind:key="'projectManagers'+index" v-bind:item="item" size="small"></member-badge>
-                        <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
+                        <p v-if="project.projectSponsors.length === 0 && project.projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
                     </div>
                 </div>
                 <!-- /// End Project Sponsors & Managers /// -->
@@ -243,8 +243,6 @@ export default {
         let contracts = [];
         let externalCostsGraphData = {};
         let internalCostsGraphData = {};
-        let projectSponsors = [];
-        let projectManagers = [];
 
         if (query.host && query.key) {
             // project
@@ -262,18 +260,6 @@ export default {
             // internal cost data
             res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/internal-costs-graph-data`, query.key);
             internalCostsGraphData = await res.json();
-
-            // project users
-            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
-            const users = await res.json();
-            projectSponsors = users && users.items
-                ? users.items.filter(projectUser => projectUser.projectRoleNames.indexOf('roles.project_sponsor') !== -1)
-                : []
-            ;
-            projectManagers = users && users.items
-                ? users.items.filter(projectUser => projectUser.projectRoleNames.indexOf('roles.project_manager') !== -1)
-                : []
-            ;
         }
 
         const contract = contracts && contracts.length ? contracts[0] : {};
@@ -283,8 +269,6 @@ export default {
             contract,
             externalCostsGraphData,
             internalCostsGraphData,
-            projectSponsors,
-            projectManagers,
             validationMessages: {},
 
             objectiveTitle: '-',
