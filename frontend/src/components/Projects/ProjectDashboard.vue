@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ locale }}
         <div class="page-section">
             <div class="header flex">
                 <h1>{{ translate('message.project_dashboard') }}</h1>
@@ -56,7 +55,8 @@
                                 <span>{{ translate('message.project_sponsor') }}:</span>
                                 <div>
                                     <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors" :key="index">
-                                        {{ sponsor.userFullName }}<span v-if="index != projectSponsors.length - 1">, </span>
+                                        {{ sponsor.userFullName }}<span
+                                            v-if="index != projectSponsors.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>
@@ -65,7 +65,8 @@
                                 <span>{{ translate('message.project_managers') }}:</span>
                                 <div>
                                     <b v-if="projectManagers" v-for="(manager, index) in projectManagers" :key="index">
-                                        {{ manager.userFullName }}<span v-if="index != projectManagers.length - 1">, </span>
+                                        {{ manager.userFullName }}<span
+                                            v-if="index != projectManagers.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>
@@ -82,44 +83,48 @@
                             <div class="scroll-wrapper">
                                 <table class="table table-small">
                                     <thead>
-                                        <tr>
-                                            <th>{{ translate('message.schedule') }}</th>
-                                            <th>{{ translate('message.start') }}</th>
-                                            <th>{{ translate('message.finish') }}</th>
-                                            <th>{{ translate('message.duration') }}</th>
-                                        </tr>
+                                    <tr>
+                                        <th>{{ translate('message.schedule') }}</th>
+                                        <th>{{ translate('message.start') }}</th>
+                                        <th>{{ translate('message.finish') }}</th>
+                                        <th>{{ translate('message.duration') }}</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>{{ translate('table_header_cell.base') }}</td>
-                                            <td>{{ project.scheduledStartAt | date }}</td>
-                                            <td>{{ project.scheduledFinishAt | date }}</td>
-                                            <td>{{ project.scheduledDurationDays | formatNumber }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ translate('table_header_cell.forecast') }}</td>
-                                            <td>{{ project.forecastStartAt | date }}</td>
-                                            <td>{{ project.forecastFinishAt | date }}</td>
-                                            <td>{{ project.forecastDurationDays | formatNumber }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ translate('table_header_cell.actual') }}</td>
-                                            <td>{{ project.actualStartAt | date }}</td>
-                                            <td>{{ project.actualFinishAt | date }}</td>
-                                            <td>{{ project.actualDurationDays | formatNumber }}</td>
-                                        </tr>
+                                    <tr>
+                                        <td>{{ translate('table_header_cell.base') }}</td>
+                                        <td>{{ project.scheduledStartAt | date }}</td>
+                                        <td>{{ project.scheduledFinishAt | date }}</td>
+                                        <td>{{ project.scheduledDurationDays | formatNumber }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ translate('table_header_cell.forecast') }}</td>
+                                        <td>{{ project.forecastStartAt | date }}</td>
+                                        <td>{{ project.forecastFinishAt | date }}</td>
+                                        <td>{{ project.forecastDurationDays | formatNumber }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ translate('table_header_cell.actual') }}</td>
+                                        <td>{{ project.actualStartAt | date }}</td>
+                                        <td>{{ project.actualFinishAt | date }}</td>
+                                        <td>{{ project.actualDurationDays | formatNumber }}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </scrollbar>
 
-                        <div class="flex flex-direction-reverse margintop20" v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
-                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translate('button.close_project') }}</button>
+                        <div class="flex flex-direction-reverse margintop20"
+                             v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
+                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translate('button.close_project') }}
+                            </button>
                         </div>
                         <hr>
 
                         <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
-                        <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">View entire team</router-link>
+                        <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">
+                            View entire team
+                        </router-link>
                         <hr>
 
                         <h4 class="widget-title">
@@ -139,9 +144,9 @@
 
                         <!-- /// End Project Condition /// -->
                         <a
-                            class="btn-rounded btn-md btn-empty btn-auto"
-                            v-if="contract && contract.id"
-                            :href="downloadPdf">
+                                class="btn-rounded btn-md btn-empty btn-auto"
+                                v-if="contract && contract.id"
+                                :href="downloadPdf">
                             {{ translate('button.print_project_contract') }}
                         </a>
                     </div>
@@ -149,20 +154,9 @@
                 <!-- /// End Project Summary Widget /// -->
 
                 <!-- /// Recent Tasks Widget /// -->
+
                 <div class="widget recent-tasks-widget">
-                    <div class="widget-content">
-                        <h4 class="widget-title">{{ translate('message.project_summary') }}</h4>
-                        <div>
-                            <small-task-box
-                                    v-for="(task, index) in tasks"
-                                    :key="index"
-                                    v-bind:task="task"/>
-                        </div>
-                        <div class="margintop20 buttons">
-                            <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translate('button.view_tasks_board') }}</router-link>
-                            <router-link :to="{name: 'project-task-management-list-grid'}" class="btn-rounded btn-md btn-empty btn-auto">{{ translate('button.view_tasks_grid') }}</router-link>
-                        </div>
-                    </div>
+                    <project-dashboard-recent-tasks :tasks="recentTasks"/>
                 </div>
                 <!-- /// End Recent Tasks Widget /// -->
 
@@ -197,56 +191,56 @@
             </div>
         </div>
 
-        <alert-modal v-if="showClosed" body="message.project_closed" @close="showClosed = false;" />
+        <alert-modal v-if="showClosed" body="message.project_closed" @close="showClosed = false;"/>
     </div>
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
-import CircleChart from '../_common/_charts/CircleChart';
-import SmallTaskBox from '../Dashboard/SmallTaskBox';
-import AlertModal from '../_common/AlertModal.vue';
-import moment from 'moment';
-import * as projectStatus from '../../store/modules/project-status';
-import TrafficLight from '../_common/TrafficLight';
-import tl from '../../util/traffic-light';
+    import {mapGetters, mapActions} from 'vuex';
+    import CircleChart from '../_common/_charts/CircleChart';
+    import SmallTaskBox from '../Dashboard/SmallTaskBox';
+    import AlertModal from '../_common/AlertModal.vue';
+    import moment from 'moment';
+    import * as projectStatus from '../../store/modules/project-status';
+    import TrafficLight from '../_common/TrafficLight';
+    import tl from '../../util/traffic-light';
+    import ProjectDashboardRecentTasks from './Dashboard/RecentTasks';
 
-export default {
-    props: {
-        locale: {
-            type: String,
+    export default {
+        props: {
+            locale: {
+                type: String,
+            },
         },
-    },
-    components: {
-        TrafficLight,
-        CircleChart,
-        SmallTaskBox,
-        moment,
-        AlertModal,
-    },
-    methods: {
-        ...mapActions([
-            'getProjectById',
-            'getContractByProjectId',
-            'getRecentTasksByProject',
-            'getProjectUsers',
-            'getTasksForSchedule',
-            'getTasksStatus',
-            'closeProject',
-            'editProject',
-        ]),
-        onUpdateProjectTrafficLight(trafficLight) {
-            this.editProject({
-                trafficLight: trafficLight,
-                projectId: this.$route.params.id,
-            });
-            this.projectTrafficLight = trafficLight;
+        components: {
+            ProjectDashboardRecentTasks,
+            TrafficLight,
+            CircleChart,
+            SmallTaskBox,
+            moment,
+            AlertModal,
         },
-        doCloseProject() {
-            const {id} = this.project;
-            this
-                .closeProject({id})
-                .then(
+        methods: {
+            ...mapActions([
+                'getProjectById',
+                'getContractByProjectId',
+                'getRecentTasksByProject',
+                'getProjectUsers',
+                'getTasksForSchedule',
+                'getTasksStatus',
+                'closeProject',
+                'editProject',
+            ]),
+            onUpdateProjectTrafficLight(trafficLight) {
+                this.editProject({
+                    trafficLight: trafficLight,
+                    projectId: this.$route.params.id,
+                });
+                this.projectTrafficLight = trafficLight;
+            },
+            doCloseProject() {
+                const {id} = this.project;
+                this.closeProject({id}).then(
                     (response) => {
                         if (response.status === 200) {
                             this.showClosed = true;
@@ -256,58 +250,66 @@ export default {
                     },
                     () => {
                         this.$flashError('message.unable_to_save');
-                    }
+                    },
                 )
-            ;
+                ;
+            },
         },
-    },
-    created() {
-        this.getProjectById(this.$route.params.id);
-        this.getTasksForSchedule(this.$route.params.id);
-        this.getProjectUsers({id: this.$route.params.id});
-        this.getTasksStatus(this.$route.params.id);
-        this.getRecentTasksByProject(this.$route.params.id);
-        this.getContractByProjectId(this.$route.params.id);
-    },
-    computed: {
-        ...mapGetters({
-            project: 'project',
-            tasks: 'tasks',
-            projectSponsors: 'projectSponsors',
-            projectManagers: 'projectManagers',
-            tasksForSchedule: 'tasksForSchedule',
-            projectTasksStatus: 'projectTasksStatus',
-            contract: 'currentContract',
-            localUser: 'localUser',
-        }),
-        ...mapGetters([
-            'trafficLights',
-        ]),
-        projectContractId() {
-            if (this.contract && this.contract.id) {
-                return this.contract.id;
-            }
+        created() {
+            this.getProjectById(this.$route.params.id);
+            this.getTasksForSchedule(this.$route.params.id);
+            this.getProjectUsers({id: this.$route.params.id});
+            this.getTasksStatus(this.$route.params.id);
+            this.getRecentTasksByProject(this.$route.params.id);
+            this.getContractByProjectId(this.$route.params.id);
+        },
+        computed: {
+            ...mapGetters({
+                contract: 'currentContract',
+            }),
+            ...mapGetters([
+                'trafficLights',
+                'project',
+                'tasks',
+                'projectSponsors',
+                'projectManagers',
+                'tasksForSchedule',
+                'projectTasksStatus',
+                'localUser',
+            ]),
+            projectContractId() {
+                if (this.contract && this.contract.id) {
+                    return this.contract.id;
+                }
 
-            return null;
+                return null;
+            },
+            downloadPdf() {
+                return Routing.generate('app_contract_pdf', {id: this.projectContractId});
+            },
+            recentTasks() {
+                let tasks = this.tasks;
+                if (!tasks) {
+                    return [];
+                }
+
+                return tasks;
+            },
         },
-        downloadPdf() {
-            return Routing.generate('app_contract_pdf', {id: this.projectContractId});
+        watch: {
+            project(value) {
+                this.projectTrafficLight = value && value.trafficLight;
+            },
         },
-    },
-    watch: {
-        project(value) {
-            this.projectTrafficLight = value && value.trafficLight;
+        data() {
+            return {
+                showClosed: false,
+                activePage: 1,
+                projectStatus,
+                projectTrafficLight: tl.TrafficLight.GREEN,
+            };
         },
-    },
-    data() {
-        return {
-            showClosed: false,
-            activePage: 1,
-            projectStatus,
-            projectTrafficLight: tl.TrafficLight.GREEN,
-        };
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -336,7 +338,7 @@ export default {
                 }
             }
 
-            hr{
+            hr {
                 border-color: $middleColor;
             }
 
@@ -345,13 +347,13 @@ export default {
             }
         }
 
-        @media (max-width:1280px) {
+        @media (max-width: 1280px) {
             .widget {
                 width: 50%;
             }
         }
 
-        @media (max-width:800px) {
+        @media (max-width: 800px) {
             .widget {
                 width: 100%;
             }
@@ -359,18 +361,18 @@ export default {
     }
 
     .table-small {
-        >thead {
-            >tr {
-                >th {
+        > thead {
+            > tr {
+                > th {
                     height: 30px;
                     padding: 5px 15px !important;
                 }
             }
         }
 
-        >tbody {
-            >tr {
-                >td {
+        > tbody {
+            > tr {
+                > td {
                     height: 30px;
                     padding: 5px 15px;
                 }
@@ -457,7 +459,7 @@ export default {
             width: 100%;
         }
 
-        @media (max-width: 1440px) and (min-width:1280px) {
+        @media (max-width: 1440px) and (min-width: 1280px) {
             padding: 0;
         }
     }
