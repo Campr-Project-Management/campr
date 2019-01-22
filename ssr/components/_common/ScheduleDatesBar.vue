@@ -406,7 +406,6 @@
 
 <style lang="scss">
     @import '../../../frontend/src/css/task-range-slider';
-    @import '../../../frontend/src/css/variables';
     @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.css';
     @import '../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css';
 

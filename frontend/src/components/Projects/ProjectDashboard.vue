@@ -185,6 +185,7 @@
                         </ul>
                         <div class="task-status">
                             <circle-chart
+                                    :bg-stroke-color="$theme.darker"
                                     :percentage="project.progress"
                                     :precision="0"
                                     :title="translate('message.task_status')"
