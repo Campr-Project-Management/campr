@@ -2,6 +2,7 @@ module.exports = {
     user: {
         api_token: '- your token here -',
         locale: 'en',
+        theme: 'dark',
     },
     subdomain: '- the slug of the team you want to use for development -',
 };

@@ -1357,10 +1357,6 @@ export default {
         background-color: $darkColor;
         padding: 30px;
 
-        hr.double {
-            border-top: 4px double $middleColor;
-        }
-
         .dropdown {
             border: 1px solid $middleColor;
         }

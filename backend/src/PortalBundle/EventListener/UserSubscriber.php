@@ -62,6 +62,7 @@ class UserSubscriber implements EventSubscriberInterface
         return [
             UserEvents::SYNC => 'onSync',
             UserEvents::PRE_REMOVE => 'onPreRemove',
+            UserEvents::SWITCH_THEME => 'onSwitchTheme',
         ];
     }
 
@@ -107,5 +108,18 @@ class UserSubscriber implements EventSubscriberInterface
 
             throw $e;
         }
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function onSwitchTheme(GenericEvent $event)
+    {
+        $user = $event->getSubject();
+        if (!($user instanceof User)) {
+            return;
+        }
+
+        $this->client->update($user, ['theme' => $user->getTheme()]);
     }
 }

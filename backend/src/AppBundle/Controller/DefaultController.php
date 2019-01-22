@@ -19,6 +19,8 @@ class DefaultController extends Controller
      *
      * @Route("/", name="app_homepage", options={"expose"=true})
      *
+     * @param Request $request
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -34,6 +36,7 @@ class DefaultController extends Controller
                 'user' => [
                     'api_token' => $this->getUser()->getApiToken(),
                     'locale' => $this->getUser()->getLocale(),
+                    'theme' => $theme,
                 ],
             ]);
             $content = $response->getContent();

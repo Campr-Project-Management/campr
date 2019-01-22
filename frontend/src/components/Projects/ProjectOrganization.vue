@@ -363,7 +363,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../css/common';
-    @import '../../css/variables';
+    @import '~theme/variables';
     @import '../../css/mixins';
 
     .modal {

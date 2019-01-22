@@ -962,7 +962,7 @@ message.role: Role
 message.roles: Roles
 message.sales: Sales
 message.save_schedule: 'Save Schedule'
-message.saved: Successfully saved!
+message.saved: Saved!
 message.schedule: Schedule
 message.schedule_base: 'Schedule Base'
 message.schedule_forecast: 'Schedule Forecast'
@@ -2162,3 +2162,17 @@ label.choose.theme: 'Choose theme display'
 label.theme.dark: 'Dark theme'
 label.theme.light: 'Light theme'
 button.save_task: 'Save Task'
+button.copy_project: 'Copy Project'
+title.copy_project: 'Copy Project'
+message.project.clone.in_progress: 'We''re cloning your project. Stay tuned.'
+email.subject.user.project.cloned: 'Project cloned'
+email.message.project.cloned: 'You can find your new project here'
+email.register.thank_you: 'Thank you for signing up!'
+email.register.change_password: 'To change your password, click on your profile in the top right corner and go to “account”.'
+email.register.content: 'Check out our %link_tag_open% blog %link_tag_close% and follow us on social media to stay updated with the latest developments around CAMPR.'
+email.subject.workspace.ready: 'Your CAMPR workspace is ready!'
+email.workspace.message: 'Your workspace is now ready:'
+email.workspace.content: "You will find three projects of different sizes: The company anniversary, the machine relocation and the “Welcome to CAMPR”-project. The last one is a project showing the different stages of the classic project management approach. <br/>\nIf you want to learn more about how CAMPR adopts proven project management standards, check out this %link_tag_open% blog post %link_tag_close%  "
+warning.scan_qr_code: 'After you click save, the QR code needed for 2 factor authentication will appear! Remember to scan the QR code before logging out or you will not be able to login again.'
+message.theme_switcher.light: 'Switch to Dark'
+message.theme_switcher.dark: 'Switch to Light'

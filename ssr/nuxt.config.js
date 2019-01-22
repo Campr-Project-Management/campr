@@ -34,6 +34,7 @@ module.exports = {
         '~/plugins/tooltip',
         '~/plugins/humanize-duration',
         '~/plugins/templating',
+        '~/plugins/theme',
     ],
     /*
     ** CSS

@@ -1,12 +1,18 @@
 import _ from 'lodash';
-import {getScheduleForecastTrafficLight, getScheduleActualTrafficLight} from './traffic-light';
+import {
+    getScheduleForecastTrafficLight,
+    getScheduleActualTrafficLight,
+} from './traffic-light';
+import currentTheme from './theme';
 
-export const LIGHT_RED = '#c87369';
-export const LIGHT_YELLOW = '#ccba54';
-export const LIGHT_GREEN = '#5FC3A5';
-export const RED = '#C64444';
-export const YELLOW = '#ccba54';
-export const GREEN = '#197252';
+let theme = currentTheme();
+
+export const LIGHT_RED = theme.lightRed;
+export const LIGHT_YELLOW = theme.lightYellow;
+export const LIGHT_GREEN = theme.lightGreen;
+export const RED = theme.red;
+export const YELLOW = theme.yellow;
+export const GREEN = theme.green;
 
 export const trafficLight = Object.freeze({
     red: LIGHT_RED,
@@ -21,8 +27,8 @@ export const green = Object.freeze({
 export const costChart = Object.freeze({
     base: trafficLight.green,
     actual: trafficLight.red,
-    forecast: '#646EA0',
-    remaining: '#2E3D60',
+    forecast: theme.middle,
+    remaining: theme.light,
 });
 
 const statusToTrafficLightMap = Object.freeze({
@@ -85,7 +91,8 @@ export const schedule = Object.freeze({
         return trafficLight.red;
     },
     getActualColor(base, forecast, actual, completed = true) {
-        let tl = getScheduleActualTrafficLight(base, forecast, actual, completed);
+        let tl = getScheduleActualTrafficLight(base, forecast, actual,
+            completed);
 
         if (tl.isGreen()) {
             return;
