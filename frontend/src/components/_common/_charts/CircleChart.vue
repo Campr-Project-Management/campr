@@ -41,7 +41,7 @@ export default {
         },
         strokeWidth: {
             type: Number,
-            default: 1,
+            default: 3,
         },
         animationDuration: {
             type: Number,
@@ -194,7 +194,7 @@ export default {
             padding: 0;
             margin: 0;
             transform: translate(-50%, -50%);
-            color: rgb(216, 218, 229);
+            color: $fgColor;
             line-height: 1em;
 
             .title {

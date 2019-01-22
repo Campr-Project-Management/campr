@@ -116,7 +116,7 @@
         width: 56px;
         height: 56px;
         margin-right: 5px;
-        background-color: $fadeColor;
+        background-color: $darkerColor;
         border-radius: 50%;
         -webkit-print-color-adjust: exact !important;
     }

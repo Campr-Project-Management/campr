@@ -48,14 +48,14 @@
     @import '~theme/variables';
 
     .locale-switcher {
-        margin-right: 20px;
+        margin: 0 10px 0 10px;
         padding-top: 9px;
 
         button {
             border: none;
             background: transparent;
             padding: 0;
-            margin: 0 0 0 10px;
+            margin: 0 5px 0 5px;
             height: 24px;
             width: 24px;
             opacity: 0.3;

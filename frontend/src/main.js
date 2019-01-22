@@ -26,6 +26,7 @@ import Rbac from './plugins/rbac';
 import Scrollbar from './components/_common/Scrollbar';
 import VueWait from 'vue-wait';
 import Routing from './plugins/routing';
+import Theme from './plugins/theme';
 import FlashMessagesPlugin from './plugins/flash-messages';
 import FlashMessage from './components/_common/FlashMessages';
 
@@ -57,6 +58,11 @@ Vue.use(
         },
     }
 );
+Vue.use(Theme, {
+    theme() {
+        return window.user.theme;
+    },
+});
 
 Vue.http.headers.common = Object.assign(Vue.http.headers.common, httpConfig.headers);
 

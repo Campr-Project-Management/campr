@@ -173,6 +173,35 @@ class UserController extends ApiController
     }
 
     /**
+     * @Route("/me/theme", name="app_api_switch_theme", options={"expose"=true})
+     * @Method({"PATCH"})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function switchThemeAction(Request $request)
+    {
+        $response = $this->updateMeAction($request);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        try {
+            $this
+                ->get('event_dispatcher')
+                ->dispatch(UserEvents::SWITCH_THEME, new GenericEvent($user))
+            ;
+        } catch (\Exception $e) {
+            $this
+                ->get('logger')
+                ->error(sprintf('Error updating master user theme: %s', $e->getMessage()), ['user' => $user->getId()])
+            ;
+        }
+
+        return $response;
+    }
+
+    /**
      * Retrieve all user teams.
      *
      * @Route("/{id}/teams", name="app_api_users_teams_get")
