@@ -161,16 +161,10 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      */
-    getProjectSponsors({commit}, data) {
-        Vue.http
-           .get(Routing.generate('app_api_project_sponsor_users', data))
-           .then((response) => {
-               if (response.status === 200) {
-                   let projectUsers = response.data;
-                   commit(types.SET_SPONSORS, {projectUsers});
-               }
-           }, (response) => {
-           });
+    async getProjectSponsors({commit}, data) {
+        let response = await Vue.http.get(Routing.generate('app_api_project_sponsor_users', data));
+        let projectUsers = response.data;
+        commit(types.SET_SPONSORS, {projectUsers});
     },
     /**
      * Update team member
@@ -338,15 +332,11 @@ const mutations = {
      * @param {Object} projectUsers
      */
     [types.SET_SPONSORS](state, {projectUsers}) {
-        let sponsors = [];
-        if (typeof projectUsers == 'undefined' ||
-            !_.isArray(projectUsers.items)) {
-            projectUsers.items = [];
+        if (!projectUsers || !projectUsers.items) {
+            return;
         }
-        projectUsers.items.map(function(projectUser) {
-            sponsors.push(projectUser);
-        });
-        state.sponsors = sponsors;
+
+        state.sponsors = projectUsers.items;
     },
     /**
      * Sets the current member on member page to state

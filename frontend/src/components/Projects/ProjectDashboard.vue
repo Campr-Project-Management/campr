@@ -54,9 +54,12 @@
                             <li>
                                 <span>{{ translate('message.project_sponsor') }}:</span>
                                 <div>
-                                    <b v-if="projectSponsors" v-for="(sponsor, index) in projectSponsors" :key="index">
+                                    <b
+                                            v-if="project.projectSponsors"
+                                            v-for="(sponsor, index) in project.projectSponsors"
+                                            :key="`project_sponsor_${index}`">
                                         {{ sponsor.userFullName }}<span
-                                            v-if="index != projectSponsors.length - 1">, </span>
+                                            v-if="index !== project.projectSponsors.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>
@@ -64,9 +67,11 @@
                             <li>
                                 <span>{{ translate('message.project_managers') }}:</span>
                                 <div>
-                                    <b v-if="projectManagers" v-for="(manager, index) in projectManagers" :key="index">
+                                    <b v-if="project.projectManagers"
+                                       v-for="(manager, index) in project.projectManagers"
+                                       :key="`project_manager_${index}`">
                                         {{ manager.userFullName }}<span
-                                            v-if="index != projectManagers.length - 1">, </span>
+                                            v-if="index !== project.projectManagers.length - 1">, </span>
                                     </b>
                                     <b v-else>-</b>
                                 </div>
@@ -115,13 +120,16 @@
                         </scrollbar>
 
                         <div class="flex flex-direction-reverse margintop20"
-                             v-if="project.status != projectStatus.PROJECT_STATUS_CLOSED">
-                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{ translate('button.close_project') }}
+                             v-if="project.status !== projectStatus.PROJECT_STATUS_CLOSED">
+                            <button v-on:click="doCloseProject()" class="btn-rounded btn-md btn-auto danger-bg">{{
+                                translate('button.close_project') }}
                             </button>
                         </div>
                         <hr>
 
-                        <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color" v-if="project.projectUsers">{{ project.projectUsers.length }}</b></h4>
+                        <h4 class="widget-title">{{ translate('message.team_members') }} - <b class="second-color"
+                                                                                              v-if="project.projectUsers">{{
+                            project.projectUsers.length }}</b></h4>
                         <router-link :to="{name: 'project-organization'}" class="btn-rounded btn-md btn-empty btn-auto">
                             View entire team
                         </router-link>
@@ -171,9 +179,15 @@
                                     <b>{{ item }}</b>
                                 </div>
                                 <div v-else>
-                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{ translate('color_status.not_started') }}: {{ item['color_status.not_started'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{ translate('color_status.in_progress') }}: {{ item['color_status.in_progress'].count }}</p>
-                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{ translate('color_status.finished') }}: {{ item['color_status.finished'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.not_started'].color}">{{
+                                        translate('color_status.not_started') }}: {{
+                                        item['color_status.not_started'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.in_progress'].color}">{{
+                                        translate('color_status.in_progress') }}: {{
+                                        item['color_status.in_progress'].count }}</p>
+                                    <p v-bind:style="{color: item['color_status.finished'].color}">{{
+                                        translate('color_status.finished') }}: {{ item['color_status.finished'].count
+                                        }}</p>
                                 </div>
                             </li>
                         </ul>
@@ -271,8 +285,6 @@
                 'trafficLights',
                 'project',
                 'tasks',
-                'projectSponsors',
-                'projectManagers',
                 'tasksForSchedule',
                 'projectTasksStatus',
                 'localUser',
