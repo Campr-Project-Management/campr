@@ -35,6 +35,36 @@ class WorkPackageController extends ApiController
     public function indexAction(Request $request, Project $project)
     {
         $criteria = $request->query->get('criteria', []);
+        $sorting = $request->query->get('sorting', []);
+        $pageSize = $request->query->get('pageSize', $this->getParameter('front.per_page'));
+        $page = $request->query->get('page', 1);
+
+        /** @var WorkPackageRepository $wpRepo */
+        $wpRepo = $this->get('app.repository.work_package');
+
+        $paginator = $wpRepo->createTasksPaginator($project, $criteria, $sorting);
+        $paginator->setMaxPerPage($pageSize);
+        $paginator->setCurrentPage($page);
+
+        $paginator = new SerializablePagerfanta($paginator);
+
+        return $this->createApiResponse($paginator);
+    }
+
+    /**
+     * All project work packages.
+     *
+     * @Route("/work-packages-by-status", name="app_api_projects_workpackages_by_status", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
+     */
+    public function gridAction(Request $request, Project $project)
+    {
+        $criteria = $request->query->get('criteria', []);
         $pageSize = $request->query->get('pageSize', $this->getParameter('front.per_page'));
         $page = $request->query->get('page', 1);
 
