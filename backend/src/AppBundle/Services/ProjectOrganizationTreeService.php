@@ -4,9 +4,11 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Subteam;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\User;
+use Component\User\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -39,14 +41,22 @@ class ProjectOrganizationTreeService
         return $this->getSponsorData($project);
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     private function getSponsorData(Project $project)
     {
         if (!count($project->getProjectSponsors())) {
             return [];
         }
 
+        /** @var ProjectUser $sponsor */
+        $sponsor = $project->getProjectSponsors()[0];
+
         return $this->extractUserData(
-            current($project->getProjectSponsors()),
+            $sponsor->getUser(),
             [
                 'titles' => [
                     $this->translator->trans('roles.project_sponsor', [], 'messages'),
@@ -56,6 +66,11 @@ class ProjectOrganizationTreeService
         );
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     private function getManagerData(Project $project)
     {
         if (!count($project->getProjectManagers())) {
@@ -65,7 +80,7 @@ class ProjectOrganizationTreeService
         $users = [];
         foreach ($project->getProjectManagers() as $projectSponsor) {
             $users[] = $this->extractUserData(
-                $projectSponsor,
+                $projectSponsor->getUser(),
                 [
                     'titles' => [
                         $this->translator->trans('roles.project_manager', [], 'messages'),
@@ -106,8 +121,7 @@ class ProjectOrganizationTreeService
                     );
                 }
             )
-            ->getValues()
-            ;
+            ->getValues();
     }
 
     private function getSubteamData(ProjectDepartment $projectDepartment)
@@ -122,13 +136,12 @@ class ProjectOrganizationTreeService
             ->map(
                 function (Subteam $subteam) {
                     $manager = $subteam->getSubteamMembers()
-                        ->filter(
-                            function (SubteamMember $subteamMember) {
-                                return $subteamMember->getIsLead();
-                            }
-                        )
-                        ->first()
-                    ;
+                                       ->filter(
+                                           function (SubteamMember $subteamMember) {
+                                               return $subteamMember->getIsLead();
+                                           }
+                                       )
+                                       ->first();
 
                     if (!$manager) {
                         $manager = $subteam->getSubteamMembers()->first();
@@ -175,17 +188,16 @@ class ProjectOrganizationTreeService
                     return count($data) > 0;
                 }
             )
-            ->getValues()
-        ;
+            ->getValues();
     }
 
     /**
-     * @param User  $user
-     * @param array $extraData
+     * @param UserInterface $user
+     * @param array         $extraData
      *
      * @return array
      */
-    private function extractUserData(User $user, array $extraData = [])
+    private function extractUserData(UserInterface $user, array $extraData = [])
     {
         $data = $this->jsonNormalizer->normalize($user);
 

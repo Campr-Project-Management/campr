@@ -1393,9 +1393,16 @@ class ProjectController extends ApiController
     /**
      * @Route("/{id}/subteams", name="app_api_project_create_subteam", options={"expose"=true})
      * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param Project $project
+     *
+     * @return JsonResponse
      */
     public function createSubteamAction(Request $request, Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $subteam = new Subteam();
         $form = $this->createForm(SubteamCreateType::class, $subteam, ['csrf_protection' => false]);
 
