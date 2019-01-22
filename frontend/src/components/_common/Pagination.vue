@@ -4,7 +4,7 @@
             <span
                     v-for="page in pagesToShow()"
                     :key="page"
-                    :class="{active: isActive(page)}"
+                    :class="{active: (page === value)}"
                     @click="onChange(page)">
                 {{ page ? page : '...' }}
             </span>
@@ -12,7 +12,7 @@
         <div v-if="showDescription">
             <span class="pagination-info">
                 {{ translate('message.displaying') }}
-                {{ currPage }}
+                {{ value }}
                 {{ translate('message.results_out_of') }}
                 {{ numberOfPages || 1 }}
             </span>
@@ -32,9 +32,6 @@ export default {
             type: Number,
             default: 1,
         },
-        currentPage: {
-            type: Number,
-        },
         showPages: {
             type: Number,
             default() {
@@ -47,30 +44,22 @@ export default {
             default: true,
         },
     },
-    computed: {
-        currPage() {
-            return Number(this.value || this.currentPage);
-        },
-    },
     methods: {
-        isActive(page) {
-            return this.value === Number(page);
-        },
         pagesToShow() {
             const out = [];
             const half = Math.floor(this.showPages / 2);
             if (this.showPages < this.numberOfPages) {
-                if (this.currPage === 1) {
+                if (this.value === 1) {
                     for (let c = 1; c <= this.showPages; c++) {
                         out.push(c);
                     }
-                } else if (this.currPage === this.numberOfPages) {
-                    for (let c = this.currPage; c >= (this.currPage - this.showPages + 1); c--) {
+                } else if (this.value === this.numberOfPages) {
+                    for (let c = this.value; c >= (this.value - this.showPages + 1); c--) {
                         out.unshift(c);
                     }
                 } else {
-                    let start = this.currPage - half;
-                    let end = this.currPage + half;
+                    let start = this.value - half;
+                    let end = this.value + half;
 
                     if (end < this.showPages) {
                         start = 1;
@@ -110,11 +99,10 @@ export default {
         },
         onChange(page) {
             page = Number(page);
-            if (page === this.currPage) {
+            if (page === this.value) {
                 return;
             }
 
-            this.$emit('change-page', page);
             this.$emit('input', page);
         },
     },

@@ -74,10 +74,9 @@
             </scrollbar>
 
             <pagination
-                :current-page="infosFilters.currentPage"
-                :number-of-pages="infosFilters.numberOfPages"
-                :value="infosFilters.currentPage"
-                v-on:change-page="setFiltersInfoPage"/>
+                    :number-of-pages="infosFilters.numberOfPages"
+                    :value="infosFilters.currentPage"
+                    @input="setFiltersInfoPage"/>
         </div>
     </div>
 </template>

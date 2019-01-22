@@ -1,47 +1,50 @@
 <template>
     <div class="project-organization page-section">
         <modal v-if="showModal" @close="showModal = false">
-            <p class="modal-title">{{ translateText('title.add_distribution_list') }}</p>
+            <p class="modal-title">{{ translate('title.add_distribution_list') }}</p>
             <div class="form-group">
-                <input-field v-model="distributionTitle" type="text" v-bind:label="translateText('label.distribution_list_title')"></input-field>
+                <input-field v-model="distributionTitle" type="text" v-bind:label="translate('label.distribution_list_title')"></input-field>
                 <error
                     v-if="validationMessages.name && validationMessages.name.length"
                     v-for="message in validationMessages.name"
                     :message="message" />
             </div>
-            <member-search v-model="selectedDistribution" v-bind:placeholder="translateText('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
+            <member-search v-model="selectedDistribution" v-bind:placeholder="translate('placeholder.search_members')" v-bind:singleSelect="false"></member-search>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translateText('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded btn-auto second-bg">{{ translateText('button.create_distribution') }} +</a>
+                <a href="javascript:void(0)" @click="showModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="createDistributionList()" class="btn-rounded btn-auto second-bg">{{ translate('button.create_distribution') }} +</a>
             </div>
         </modal>
 
         <modal v-if="showDeleteMemberModal" @close="showDeleteMemberModal = false">
-            <p class="modal-title">{{ translateText('message.delete_team_member') }}</p>
+            <p class="modal-title">{{ translate('message.delete_team_member') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteMemberModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteMember()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showDeleteMemberModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="deleteMember()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
             </div>
         </modal>
 
-        <div class="header flex flex-space-between">
-            <h1>{{ translateText('message.project_organization') }}</h1>
-            <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.edit_project_organization') }}</router-link>
+        <can role="roles.project_manager|roles.project_sponsor" :subject="project" silent>
+            <div class="header flex flex-space-between">
+                <h1>{{ translate('message.project_organization') }}</h1>
+                <div class="flex flex-v-center">
+                    <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ translate('message.edit_project_organization') }}
+                    </router-link>
+                </div>
             </div>
-        </div>
+        </can>
 
         <div class="team-graph">
             <project-organization-tree />
         </div>
         <div class="flex flex-space-between actions">
-            <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translateText('placeholder.search_members')"></member-search>
+            <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translate('placeholder.search_members')"></member-search>
             <div class="flex">
-                <button @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</button>
+                <button @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</button>
                 <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg" @click="showWorkspaceMemberInviteModal = true">
-                    {{ translateText('label.invite_workspace_member') }}
+                    {{ translate('label.invite_workspace_member') }}
                 </a>
-                <a href="javascript:void(0)" class="btn-rounded btn-empty btn-auto" @click="showModal = true">{{ translateText('button.create_distribution') }}</a>
+                <a href="javascript:void(0)" class="btn-rounded btn-empty btn-auto" @click="showModal = true">{{ translate('button.create_distribution') }}</a>
             </div>
         </div>
         <div class="team-list">
@@ -51,25 +54,25 @@
                         <thead>
                             <!-- <tr v-if='project.distributionLists'>
                                 <th colspan="10"></th>
-                                <th class="text-center " :colspan="project.distributionLists.length">{{ translateText('table_header_cell.distribution_lists') }}</th>
+                                <th class="text-center " :colspan="project.distributionLists.length">{{ translate('table_header_cell.distribution_lists') }}</th>
                                 <th></th>
                             </tr> -->
                             <tr>
                                 <th class="avatar"></th>
-                                <th class="text-center switchers">{{ translateText('table_header_cell.resource') }}</th>
-                                <th>{{ translateText('table_header_cell.company') }}</th>
-                                <th>{{ translateText('table_header_cell.name') }}</th>
-                                <th>{{ translateText('table_header_cell.role') }}</th>
-                                <th>{{ translateText('table_header_cell.subteam') }}</th>
-                                <th>{{ translateText('table_header_cell.department') }}</th>
-                                <th>{{ translateText('table_header_cell.contact') }}</th>
-                                <th class="text-center switchers">{{ translateText('table_header_cell.rasci') }}</th>
-                                <th class="text-center switchers">{{ translateText('table_header_cell.org') }}</th>
-                                <th class="text-center switchers" v-if='project.distributionLists' v-for="dl in project.distributionLists">
-                                    <span v-if="dl.sequence === -1">{{ translateText(dl.name) }}</span>
+                                <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.resource') }}</th>
+                                <th>{{ translate('table_header_cell.company') }}</th>
+                                <th>{{ translate('table_header_cell.name') }}</th>
+                                <th>{{ translate('table_header_cell.role') }}</th>
+                                <th>{{ translate('table_header_cell.subteam') }}</th>
+                                <th>{{ translate('table_header_cell.department') }}</th>
+                                <th>{{ translate('table_header_cell.contact') }}</th>
+                                <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.rasci') }}</th>
+                                <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.org') }}</th>
+                                <th class="text-center switchers" v-if="canEditProject && project.distributionLists" v-for="dl in project.distributionLists">
+                                    <span v-if="dl.sequence === -1">{{ translate(dl.name) }}</span>
                                     <span v-else>{{ dl.name }}</span>
                                 </th>
-                                <th>{{ translateText('table_header_cell.actions') }}</th>
+                                <th v-if="canEditProject">{{ translate('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,7 +82,7 @@
                                             :url="item.userAvatarUrl"
                                             :name="item.userFullName"/>
                                 </td>
-                                <td class="text-center switchers">
+                                <td class="text-center switchers" v-if="canEditProject">
                                     <switches
                                         @click.native="updateUserOption(item, 'resource')"
                                         :selected="item.showInResources" />
@@ -88,7 +91,7 @@
                                 <td>{{ item.userFullName }}</td>
                                 <td>
                                     <span v-for="role in item.projectRoleNames">
-                                        {{ translateText(role) }}<span v-if="index < item.projectRoleNames.length - 1">,</span>
+                                        {{ translate(role) }}<span v-if="index < item.projectRoleNames.length - 1">,</span>
                                     </span>
                                 </td>
                                 <td>
@@ -104,16 +107,16 @@
                                 <td>
                                     <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                                 </td>
-                                <td class="text-center switchers">
+                                <td class="text-center switchers" v-if="canEditProject">
                                     <switches @click.native="updateUserOption(item, 'rasci')" :selected="item.showInRasci"></switches>
                                 </td>
-                                <td class="text-center switchers">
+                                <td class="text-center switchers" v-if="canEditProject">
                                     <switches @click.native="updateUserOption(item, 'org')" :selected="item.showInOrg"></switches>
                                 </td>
-                                <td class="text-center switchers" v-for="dl in project.distributionLists" :key="dl.id+'-'+item.user.id">
+                                <td class="text-center switchers" v-if="canEditProject" v-for="dl in project.distributionLists" :key="dl.id+'-'+item.user.id">
                                     <switches @click.native="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
                                 </td>
-                                <td>
+                                <td v-if="canEditProject">
                                     <router-link :to="{name: 'project-organization-view-member', params: {id: projectId, userId: item.id} }" class="btn-icon">
                                         <view-icon fill="second-fill"></view-icon>
                                     </router-link>
@@ -126,12 +129,10 @@
             </scrollbar>
 
             <div class="flex flex-direction-reverse flex-v-center">
-                <div class="pagination" v-if="pages > 1">
-                    <span v-for="page in pages" :class="{'active': page == activePage}" @click="changePage(page)">{{ page }}</span>
-                </div>
-                <div v-if='projectUsers.items'>
-                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ projectUsers.items.length }} {{ translateText('message.results_out_of') }} {{ projectUsers.totalItems }}</span>
-                </div>
+                <pagination
+                        :value="activePage"
+                        :number-of-pages="numberOfPages"
+                        @input="changePage"/>
             </div>
         </div>
 
@@ -154,9 +155,11 @@ import Error from '../_common/_messages/Error.vue';
 import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModal.vue';
 import ProjectOrganizationTree from './ProjectOrganizationTree';
 import UserAvatar from '../_common/UserAvatar';
+import Pagination from '../_common/Pagination';
 
 export default {
     components: {
+        Pagination,
         UserAvatar,
         MemberBadge,
         SocialLinks,
@@ -176,9 +179,6 @@ export default {
             'getProjectById', 'createDistribution', 'updateProjectUser', 'deleteTeamMember',
             'getProjectUsers', 'addToDistribution', 'removeFromDistribution',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         changePage: function(page) {
             this.activePage = page;
             this.getProjectUsers({id: this.$route.params.id, page: page, users: this.gridList});
@@ -276,7 +276,10 @@ export default {
             distributionList: 'distributionList',
             projectUser: 'currentMember',
         }),
-        pages: function() {
+        canEditProject() {
+            return this.$can('roles.project_manager|roles.project_sponsor', this.project);
+        },
+        numberOfPages: function() {
             if (!this.projectUsers || !this.projectUsers.totalItems) {
                 return 1;
             }
