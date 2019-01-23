@@ -101,6 +101,13 @@ class SecurityController extends Controller
             ]
         );
 
+        if (!$user) {
+            $em
+                ->getRepository(User::class)
+                ->setRandomApiTokenIfEmailDoesNotMatch($userData['email'], $userData['apiToken'])
+            ;
+        }
+
         if (!count($userData['roles'])) {
             throw $this->createAccessDeniedException();
         }
