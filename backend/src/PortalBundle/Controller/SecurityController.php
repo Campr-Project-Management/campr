@@ -106,6 +106,10 @@ class SecurityController extends Controller
                 ->getRepository(User::class)
                 ->setRandomApiTokenIfEmailDoesNotMatch($userData['email'], $userData['apiToken'])
             ;
+            $em
+                ->getRepository(User::class)
+                ->setRandomUUIDIfEmailDoesNotMatch($userData['email'], $userData['uuid'])
+            ;
         }
 
         if (!count($userData['roles'])) {
