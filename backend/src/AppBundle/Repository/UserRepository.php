@@ -34,4 +34,16 @@ class UserRepository extends BaseRepository
             )
         ;
     }
+
+    public function setRandomUUIDIfEmailDoesNotMatch($email, $uuid)
+    {
+        $this
+            ->getEntityManager()
+            ->getConnection()
+            ->executeUpdate(
+                'UPDATE user SET `uuid` = UUID() WHERE email != ? AND `uuid` = ?',
+                [$email, $uuid]
+            )
+        ;
+    }
 }
