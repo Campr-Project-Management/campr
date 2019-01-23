@@ -22,4 +22,16 @@ class UserRepository extends BaseRepository
 
         return $user;
     }
+
+    public function setRandomApiTokenIfEmailDoesNotMatch($email, $apiToken)
+    {
+        $this
+            ->getEntityManager()
+            ->getConnection()
+            ->executeUpdate(
+                'UPDATE user SET api_token = UUID() WHERE email != ? AND api_token = ?',
+                [$email, $apiToken]
+            )
+        ;
+    }
 }
