@@ -301,7 +301,7 @@ services:
     app.project_voter:
         class: AppBundle\Security\ProjectVoter
         arguments:
-            - '@app.repository.project_user'
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: security.voter }
         public: false

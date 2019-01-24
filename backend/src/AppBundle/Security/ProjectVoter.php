@@ -6,7 +6,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
-use Component\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -23,18 +23,18 @@ class ProjectVoter extends Voter
     const DELETE = 'delete';
 
     /**
-     * @var RepositoryInterface
+     * @var EntityManagerInterface
      */
-    private $projectUserRepository;
+    private $em;
 
     /**
      * ProjectVoter constructor.
      *
-     * @param RepositoryInterface $projectUserRepository
+     * @param EntityManagerInterface $em
      */
-    public function __construct(RepositoryInterface $projectUserRepository)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->projectUserRepository = $projectUserRepository;
+        $this->em = $em;
     }
 
     /**
@@ -97,7 +97,7 @@ class ProjectVoter extends Voter
      */
     private function canView(Project $project, User $user)
     {
-        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
+        $projectUser = $this->em->getRepository(ProjectUser::class)->findOneBy(['user' => $user, 'project' => $project]);
 
         return null !== $projectUser;
     }
@@ -113,7 +113,7 @@ class ProjectVoter extends Voter
     private function canEdit(Project $project, User $user)
     {
         /** @var ProjectUser $projectUser */
-        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
+        $projectUser = $this->em->getRepository(ProjectUser::class)->findOneBy(['user' => $user, 'project' => $project]);
 
         return $projectUser
             && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER, ProjectRole::ROLE_SPONSOR)
@@ -130,7 +130,7 @@ class ProjectVoter extends Voter
      */
     private function canDelete(Project $project, User $user)
     {
-        $projectUser = $this->projectUserRepository->findOneBy(['user' => $user, 'project' => $project]);
+        $projectUser = $this->em->getRepository(ProjectUser::class)->findOneBy(['user' => $user, 'project' => $project]);
 
         return $projectUser
             && $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER, ProjectRole::ROLE_SPONSOR)
