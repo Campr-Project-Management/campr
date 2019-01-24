@@ -4,6 +4,7 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Subteam;
 use AppBundle\Form\Subteam\CreateType;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -29,6 +30,8 @@ class SubteamController extends ApiController
      */
     public function editAction(Request $request, Subteam $subteam)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $subteam->getProject());
+
         $form = $this->getForm($subteam, ['csrf_protection' => false]);
 
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
@@ -50,9 +53,15 @@ class SubteamController extends ApiController
     /**
      * @Route("/{id}", name="app_api_subteam_delete", options={"expose"=true})
      * @Method({"DELETE"})
+     *
+     * @param Subteam $subteam
+     *
+     * @return JsonResponse
      */
     public function deleteAction(Subteam $subteam)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $subteam->getProject());
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($subteam);
         $em->flush();
