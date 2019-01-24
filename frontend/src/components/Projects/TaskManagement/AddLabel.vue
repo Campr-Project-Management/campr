@@ -5,11 +5,9 @@
                 <h1>{{ isEdit ? translate('message.edit_label') : translate('message.new_label') }}</h1>
 
                 <div class="flex flex-v-center">
-                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{
-                        message.view_grid }}
+                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_grid }}
                     </router-link>
-                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{
-                        message.view_board }}
+                    <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto">{{ message.view_board }}
                     </router-link>
                     <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">
                         {{ message.new_task }}

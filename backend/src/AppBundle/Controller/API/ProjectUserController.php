@@ -96,7 +96,7 @@ class ProjectUserController extends ApiController
         if (!$project) {
             throw new \LogicException('Project does not exist!');
         }
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectUser);
@@ -111,20 +111,24 @@ class ProjectUserController extends ApiController
      * @Route("/{id}/{user}", name="app_api_project_users_delete_user", options={"expose"=true})
      * @Method({"DELETE"})
      *
-     * @param ProjectUser $projectUser
-     * @param User        $user
+     * @param Project $project
+     * @param User    $user
      *
      * @return JsonResponse
      */
     public function deleteUserAction(Project $project, User $user)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $em = $this->getDoctrine()->getManager();
-        $project->getProjectUsers()->map(function (ProjectUser $projectUser) use ($user, $em) {
-            if ($projectUser->getUser() === $user) {
-                $em->remove($projectUser);
-                $em->flush();
+        $project->getProjectUsers()->map(
+            function (ProjectUser $projectUser) use ($user, $em) {
+                if ($projectUser->getUser() === $user) {
+                    $em->remove($projectUser);
+                    $em->flush();
+                }
             }
-        });
+        );
 
         return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
     }
@@ -132,42 +136,21 @@ class ProjectUserController extends ApiController
     /**
      * Delete sponsor role.
      *
-     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_delete_sponsor", options={"expose"=true})
+     * @Route("/{id}/sponsor/{projectUser}", name="app_api_project_users_delete_sponsor", options={"expose"=true})
      * @Method({"DELETE"})
      *
-     * @param Project $project
-     * @param User    $user
+     * @param Project     $project
+     * @param ProjectUser $projectUser
      *
      * @return JsonResponse
      */
-    public function deleteSponsorAction(Project $project, User $user)
+    public function deleteSponsorAction(Project $project, ProjectUser $projectUser)
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         try {
-            $em = $this->getDoctrine()->getManager();
-
-            /** @var ProjectUser[] $projectUsers */
-            $projectUsers = $project
-                ->getProjectUsers()
-                ->filter(function (ProjectUser $projectUser) use ($user) {
-                    return $projectUser->getUser() === $user && $projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR);
-                })
-            ;
-
-            foreach ($projectUsers as $projectUser) {
-                $projectRoles = $projectUser
-                    ->getProjectRoles()
-                    ->filter(function (ProjectRole $projectRole) {
-                        return ProjectRole::ROLE_SPONSOR === $projectRole->getName();
-                    })
-                ;
-
-                foreach ($projectRoles as $projectRole) {
-                    $projectUser->removeProjectRole($projectRole);
-                }
-            }
-
-            $em->flush();
+            $projectUser->removeProjectRoleByName(ProjectRole::ROLE_SPONSOR);
+            $this->get('app.repository.project_user')->add($projectUser);
         } catch (\Exception $e) {
             return $this->createApiResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
@@ -178,45 +161,36 @@ class ProjectUserController extends ApiController
     /**
      * Update project sponsor.
      *
-     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_update_sponsor", options={"expose"=true})
+     * @Route("/{id}/sponsor/{projectUser}", name="app_api_project_users_update_sponsor", options={"expose"=true})
      * @Method({"PATCH"})
      *
-     * @param Project $project
-     * @param User    $user
+     * @param Project     $project
+     * @param ProjectUser $projectUser
      *
      * @return JsonResponse
      */
-    public function updateSponsorAction(Project $project, User $user)
+    public function updateSponsorAction(Project $project, ProjectUser $projectUser)
     {
-        $em = $this->getDoctrine()->getManager();
-        $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
-            'project' => $project,
-            'name' => ProjectRole::ROLE_SPONSOR,
-        ]);
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        if (!$sponsorRole) {
-            $sponsorRole = (new ProjectRole())
-                ->setProject($project)
-                ->setName(ProjectRole::ROLE_SPONSOR)
-            ;
-            $em->persist($sponsorRole);
+        $projectRoleRepository = $this->get('app.repository.project_role');
+        $role = $projectRoleRepository->getSponsor($project);
+
+        if (!$role) {
+            $role = new ProjectRole();
+            $role->setProject($project);
+            $role->setName(ProjectRole::ROLE_SPONSOR);
+            $projectRoleRepository->add($role);
         }
+
         try {
-            $project->getProjectUsers()->map(function (ProjectUser $projectUser) use ($sponsorRole, $user, $em) {
-                if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
-                    $projectUser->removeProjectRole($sponsorRole);
-                }
-            });
+            foreach ($project->getProjectSponsors() as $projectSponsor) {
+                $projectSponsor->removeProjectRoleByName(ProjectRole::ROLE_SPONSOR);
+                $this->get('app.repository.project_user')->add($projectSponsor);
+            }
 
-            $projectUser = $em->getRepository(ProjectUser::class)->findOneBy(
-                [
-                    'project' => $project->getId(),
-                    'user' => $user->getId(),
-                ]
-            );
-            $projectUser->addProjectRole($sponsorRole);
-
-            $em->flush();
+            $projectUser->addProjectRole($role);
+            $this->get('app.repository.project_user')->add($projectUser);
         } catch (\Exception $e) {
             return $this->createApiResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
@@ -227,35 +201,30 @@ class ProjectUserController extends ApiController
     /**
      * Create project sponsor.
      *
-     * @Route("/{id}/sponsor/{user}", name="app_api_project_users_create_sponsor", options={"expose"=true})
+     * @Route("/{id}/sponsor/{projectUser}", name="app_api_project_users_create_sponsor", options={"expose"=true})
      * @Method({"PUT"})
      *
-     * @param Project $project
-     * @param User    $user
+     * @param Project     $project
+     * @param ProjectUser $projectUser
      *
      * @return JsonResponse
-     **/
-    public function createSponsorAction(Project $project, User $user)
+     */
+    public function createSponsorAction(Project $project, ProjectUser $projectUser)
     {
-        $em = $this->getDoctrine()->getManager();
-        $sponsorRole = $em->getRepository(ProjectRole::class)->findOneBy([
-            'project' => $project,
-            'name' => ProjectRole::ROLE_SPONSOR,
-        ]);
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        if (!$sponsorRole) {
-            $sponsorRole = (new ProjectRole())
-                ->setProject($project)
-                ->setName(ProjectRole::ROLE_SPONSOR);
-            $em->persist($sponsorRole);
+        $projectRoleRepository = $this->get('app.repository.project_role');
+        $role = $projectRoleRepository->getSponsor($project);
+
+        if (!$role) {
+            $role = new ProjectRole();
+            $role->setProject($project);
+            $role->setName(ProjectRole::ROLE_SPONSOR);
+            $projectRoleRepository->add($role);
         }
-        $projectUser = $em->getRepository(ProjectUser::class)->findOneBy([
-                'project' => $project->getId(),
-                'user' => $user->getId(),
-        ]);
 
-        $projectUser->addProjectRole($sponsorRole);
-        $em->flush();
+        $projectUser->addProjectRole($role);
+        $this->get('app.repository.project_user')->add($projectUser);
 
         return $this->createApiResponse(['items' => $project->getProjectSponsors()]);
     }

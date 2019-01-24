@@ -87,9 +87,9 @@
                         </router-link>
                     </div>
                     <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                        <member-badge v-for="item in projectSponsors" v-bind:item="item" size="small" />
-                        <member-badge v-for="item in projectManagers" v-bind:item="item" size="small" />
-                        <p v-if="projectSponsors.length === 0 && projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
+                        <member-badge v-for="item in project.projectSponsors" v-bind:item="item" size="small" />
+                        <member-badge v-for="item in project.projectManagers" v-bind:item="item" size="small" />
+                        <p v-if="project.projectSponsors.length === 0 && project.projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
                     </div>
                 </div>
                 <!-- /// End Project Sponsors & Managers /// -->
@@ -490,8 +490,6 @@ export default {
             'project',
             'externalCostsGraphData',
             'internalCostsGraphData',
-            'projectSponsors',
-            'projectManagers',
             'validationMessages',
         ]),
         downloadPdf() {

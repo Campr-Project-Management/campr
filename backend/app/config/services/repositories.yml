@@ -148,3 +148,9 @@ services:
         arguments: ~
         tags:
             - { name: app.repository, class: AppBundle\Entity\MeetingReport }
+
+    app.repository.project_role:
+        class: AppBundle\Repository\ProjectRoleRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\ProjectRole }

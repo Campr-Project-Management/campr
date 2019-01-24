@@ -253,7 +253,7 @@
                                 <div class="job-title">
                                     {{ translateText('label.project_sponsors') }}
                                 </div>
-                                <div class="member-name" v-for="sponsor in sponsors">
+                                <div class="member-name" v-for="sponsor in project.projectSponsors">
                                     {{ sponsor.userFullName }}
                                 </div>
                             </div>
@@ -263,7 +263,7 @@
                                 <div class="job-title">
                                     {{ translateText('label.project_managers') }}
                                 </div>
-                                <div class="member-name" v-for="manager in managers">
+                                <div class="member-name" v-for="manager in project.projectManagers">
                                     {{ manager.userFullName }}
                                 </div>
                             </div>
@@ -496,8 +496,6 @@ export default {
         ...mapGetters({
             project: 'project',
             projectCloseDown: 'projectCloseDown',
-            managers: 'projectManagers',
-            sponsors: 'projectSponsors',
             validationMessages: 'validationMessages',
             closeDownActions: 'closeDownActions',
         }),
