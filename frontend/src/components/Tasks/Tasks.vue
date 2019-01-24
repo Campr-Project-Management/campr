@@ -15,72 +15,71 @@
             </div>
         </div>
         <pagination
-            :current-page="activePage"
-            :number-of-pages="pages"
-            :value="activePage"
-            v-on:change-page="changePage"/>
+                :value="activePage"
+                :number-of-pages="pages"
+                @input="changePage"/>
     </div>
 </template>
 
 <script>
-import TaskFilters from '../_common/TaskFilters';
-import TaskBox from './TaskBox';
-import {mapActions, mapGetters} from 'vuex';
-import Pagination from '../_common/Pagination.vue';
+    import TaskFilters from '../_common/TaskFilters';
+    import TaskBox from './TaskBox';
+    import {mapActions, mapGetters} from 'vuex';
+    import Pagination from '../_common/Pagination.vue';
 
-export default {
-    components: {
-        TaskFilters,
-        TaskBox,
-        Pagination,
-    },
-    methods: {
-        ...mapActions(['getTasks', 'setFilters']),
-        changePage(page) {
-            this.activePage = page;
+    export default {
+        components: {
+            TaskFilters,
+            TaskBox,
+            Pagination,
+        },
+        methods: {
+            ...mapActions(['getTasks', 'setFilters']),
+            changePage(page) {
+                this.activePage = page;
+                this.getTasksData();
+            },
+            translateText: function(text) {
+                return this.translate(text);
+            },
+            applyFilters: function(key, value) {
+                let filterObj = {};
+                filterObj[key] = value;
+                this.setFilters(filterObj);
+                this.getTasksData();
+            },
+            getTasksData: function() {
+                this.getTasks({
+                    queryParams: {
+                        page: this.activePage,
+                        userRasci: this.userRasci,
+                    },
+                });
+            },
+        },
+        created() {
+            this.setFilters({clear: true});
             this.getTasksData();
         },
-        translateText: function(text) {
-            return this.translate(text);
+        computed: {
+            ...mapGetters({
+                user: 'user',
+                tasks: 'tasks',
+                count: 'tasksCount',
+                tasksPerPage: 'tasksPerPage',
+            }),
+            pages: function() {
+                return Math.ceil(this.count / this.tasksPerPage);
+            },
         },
-        applyFilters: function(key, value) {
-            let filterObj = {};
-            filterObj[key] = value;
-            this.setFilters(filterObj);
-            this.getTasksData();
+        data() {
+            return {
+                items: [],
+                activePage: 1,
+                userRasci: true,
+            };
         },
-        getTasksData: function() {
-            this.getTasks({
-                queryParams: {
-                    page: this.activePage,
-                    userRasci: this.userRasci,
-                },
-            });
-        },
-    },
-    created() {
-        this.setFilters({clear: true});
-        this.getTasksData();
-    },
-    computed: {
-        ...mapGetters({
-            user: 'user',
-            tasks: 'tasks',
-            count: 'tasksCount',
-            tasksPerPage: 'tasksPerPage',
-        }),
-        pages: function() {
-            return Math.ceil(this.count / this.tasksPerPage);
-        },
-    },
-    data() {
-        return {
-            items: [],
-            activePage: 1,
-            userRasci: true,
-        };
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

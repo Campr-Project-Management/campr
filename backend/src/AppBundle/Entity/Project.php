@@ -784,18 +784,15 @@ class Project implements ProjectInterface, TimestampableInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectManagers")
      *
-     * @return User[]
+     * @return ProjectUser[]
      */
     public function getProjectManagers()
     {
-        $managers = [];
-        foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
-                $managers[] = $projectUser->getUser();
+        return $this->projectUsers->filter(
+            function (ProjectUser $projectUser) {
+                return $projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER);
             }
-        }
-
-        return $managers;
+        )->getValues();
     }
 
     /**
@@ -842,18 +839,15 @@ class Project implements ProjectInterface, TimestampableInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectSponsors")
      *
-     * @return User[]
+     * @return ProjectUser[]
      */
     public function getProjectSponsors()
     {
-        $sponsors = [];
-        foreach ($this->projectUsers as $projectUser) {
-            if ($projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR)) {
-                $sponsors[] = $projectUser->getUser();
+        return $this->projectUsers->filter(
+            function (ProjectUser $projectUser) {
+                return $projectUser->hasProjectRole(ProjectRole::ROLE_SPONSOR);
             }
-        }
-
-        return $sponsors;
+        )->getValues();
     }
 
     /**
