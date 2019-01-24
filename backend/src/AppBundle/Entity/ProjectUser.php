@@ -694,23 +694,39 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface
      *
      * @param ProjectRole $projectRole
      *
-     * @return ProjectUser
+     * @return bool
      */
     public function addProjectRole(ProjectRole $projectRole)
     {
-        $this->projectRoles[] = $projectRole;
+        if ($this->projectRoles->contains($projectRole)) {
+            return false;
+        }
 
-        return $this;
+        return $this->projectRoles->add($projectRole);
     }
 
     /**
      * Remove projectRole.
      *
      * @param ProjectRole $projectRole
+     *
+     * @return bool
      */
     public function removeProjectRole(ProjectRole $projectRole)
     {
-        $this->projectRoles->removeElement($projectRole);
+        return $this->projectRoles->removeElement($projectRole);
+    }
+
+    /**
+     * @param string $name
+     */
+    public function removeProjectRoleByName(string $name)
+    {
+        foreach ($this->projectRoles as $projectRole) {
+            if ($projectRole->getName() === $name) {
+                $this->projectRoles->removeElement($projectRole);
+            }
+        }
     }
 
     /**
@@ -781,7 +797,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("projectRoleNames")
      *
-     * @return string
+     * @return array
      */
     public function getProjectRoleNames()
     {
@@ -799,7 +815,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("subteams")
      *
-     * @return string
+     * @return array
      */
     public function getSubteamIds()
     {

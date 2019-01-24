@@ -1,375 +1,387 @@
 <template>
-    <div class="create-task page-section">
-        <!-- /// DEPARTMENT MODALS /// -->
-        <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false" v-bind:hasSpecificClass="true">
-            <p class="modal-title">{{ translate('message.edit_department') }}</p>
-            <input-field
-                    v-model="editDepartmentName"
-                    type="text"
-                    :label="translate('label.department_name')"/>
-            <error at-path="name"/>
-            <br/>
-
-            <multi-select-field
-                    :title="translate('label.select_members')"
-                    :options="departmentMembersOptions"
-                    v-model="editDepartmentMembers"/>
-            <error at-path="projectUsers"/>
-            <br/>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_department') }} +</a>
-            </div>
-        </modal>
-        <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
-            <p class="modal-title">{{ translate('message.delete_department') }}</p>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedDepartment()"
-                   class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
-            </div>
-        </modal>
-
-        <!-- /// SUBTEAM MODALS /// -->
-        <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false" v-bind:hasSpecificClass="true">
-            <p class="modal-title">{{ translate('message.edit_subteam') }}</p>
-            <div class="form-group">
+    <can role="roles.project_manager|roles.project_sponsor" :subject="project">
+        <div class="create-task page-section">
+            <!-- /// DEPARTMENT MODALS /// -->
+            <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false" v-bind:hasSpecificClass="true">
+                <p class="modal-title">{{ translate('message.edit_department') }}</p>
                 <input-field
-                        v-model="editSubteamName"
-                        :content="editSubteamName"
+                        v-model="editDepartmentName"
                         type="text"
-                        :label="translate('label.subteam_name')"/>
-            </div>
-            <div class="form-group">
+                        :label="translate('label.department_name')"/>
+                <error at-path="name"/>
+                <br/>
+
                 <multi-select-field
-                        :title="translate('label.select_users')"
-                        :options="projectUsersForSelect"
-                        v-model="editSubteamMembers"/>
-            </div>
-            <div class="form-group">
-                <select-field
-                        :title="translate('roles.team_leader')"
-                        :options="editSubteamMembers"
-                        :current-option="editSubteamLead"
-                        v-model="editSubteamLead"/>
-            </div>
-            <div class="form-group">
-                <select-field
-                        :title="translate('label.select_department')"
-                        :options="projectDepartmentsForSelect"
-                        v-model="editSubteamDepartment"/>
-            </div>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_subteam') }} +</a>
-            </div>
-        </modal>
-        <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
-            <p class="modal-title">{{ translate('message.delete_subteam') }}</p>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedSubteam()"
-                   class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
-            </div>
-        </modal>
-
-        <!-- /// SPONSOR MODALS /// -->
-        <modal v-if="showEditSponsorModal" @close="showEditSponsorModal = false" v-bind:hasSpecificClass="true">
-            <p class="modal-title">{{ translate('message.edit_sponsor') }}</p>
-            <div class="form-group">
-                <select-field
-                        :title="translate('label.select_user')"
-                        :options="editSponsorMembers"
-                        :current-option="editSponsor"
-                        v-model="editSponsor"/>
-            </div>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_sponsor') }} +</a>
-            </div>
-        </modal>
-        <modal v-if="showCreateSponsorModal" @close="showCreateSponsorModal = false" v-bind:hasSpecificClass="true">
-            <p class="modal-title">{{ translate('message.create_sponsor') }}</p>
-            <div class="form-group">
-                <select-field
-                        :title="translate('label.select_user')"
-                        :options="sponsorMembers"
-                        v-model="newSponsor"/>
-            </div>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.create_sponsor') }} +</a>
-            </div>
-        </modal>
-        <modal v-if="showDeleteSponsorModal" @close="showDeleteSponsorModal = false">
-            <p class="modal-title">{{ translate('message.delete_sponsor') }}</p>
-            <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedSponsor()"
-                   class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
-            </div>
-        </modal>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="header">
-                    <div>
-                        <router-link :to="{name: 'project-organization'}" class="small-link">
-                            <i class="fa fa-angle-left"></i>
-                            {{ translate('message.back_to_organization') }}
-                        </router-link>
-                        <h1>{{ translate('message.edit_organization') }}</h1>
-                    </div>
+                        :title="translate('label.select_members')"
+                        :options="departmentMembersOptions"
+                        v-model="editDepartmentMembers"/>
+                <error at-path="projectUsers"/>
+                <br/>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_department') }} +</a>
                 </div>
+            </modal>
+            <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
+                <p class="modal-title">{{ translate('message.delete_department') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteSelectedDepartment()"
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                </div>
+            </modal>
 
-                <ul class="tabs">
-                    <li role="presentation" v-for="tab in availableTabs" :key="tab"
-                        :class="{active: tab === currentTab}">
-                        <button v-on:click="currentTab = tab">{{ translate('title.' + tab) }}</button>
-                    </li>
-                </ul>
+            <!-- /// SUBTEAM MODALS /// -->
+            <modal v-if="showEditSubteamModal" @close="showEditSubteamModal = false" v-bind:hasSpecificClass="true">
+                <p class="modal-title">{{ translate('message.edit_subteam') }}</p>
+                <div class="form-group">
+                    <input-field
+                            v-model="editSubteamName"
+                            :content="editSubteamName"
+                            type="text"
+                            :label="translate('label.subteam_name')"/>
+                </div>
+                <div class="form-group">
+                    <multi-select-field
+                            :title="translate('label.select_users')"
+                            :options="projectUsersForSelect"
+                            v-model="editSubteamMembers"/>
+                </div>
+                <div class="form-group">
+                    <select-field
+                            :title="translate('roles.team_leader')"
+                            :options="editSubteamMembers"
+                            :current-option="editSubteamLead"
+                            v-model="editSubteamLead"/>
+                </div>
+                <div class="form-group">
+                    <select-field
+                            :title="translate('label.select_department')"
+                            :options="projectDepartmentsForSelect"
+                            v-model="editSubteamDepartment"/>
+                </div>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_subteam') }} +</a>
+                </div>
+            </modal>
+            <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
+                <p class="modal-title">{{ translate('message.delete_subteam') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteSelectedSubteam()"
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                </div>
+            </modal>
 
-                <div v-if="currentTab === 'members'">
-                    <div class="team-list">
-                        <scrollbar class="customScrollbar">
-                            <div class="scroll-wrapper">
-                                <table class="table table-striped table-responsive">
-                                    <thead>
-                                    <tr>
-                                        <th class="avatar"></th>
-                                        <th>{{ translate('table_header_cell.name') }}</th>
-                                        <th>{{ translate('table_header_cell.email') }}</th>
-                                        <th>{{ translate('table_header_cell.project_member') }}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="user in usersCurrentList" :key="user.id">
-                                        <td class="avatar text-center">
-                                            <div class="user-avatar-wrapper"
-                                                 :style="{ backgroundImage: 'url(' + user.avatarUrl + ')' }"></div>
-                                        </td>
-                                        <td>{{ user.firstName + ' ' + user.lastName }}</td>
-                                        <td>{{ user.email }}</td>
-                                        <td>
-                                            <switches
-                                                    v-if="!isSpecial(user)"
-                                                    @input="toggleUserMembership(user, $event)"
-                                                    :emit-on-mount="false"
-                                                    :selected="isUserMember(user)"/>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+            <!-- /// SPONSOR MODALS /// -->
+            <modal v-if="showEditSponsorModal" @close="showEditSponsorModal = false" v-bind:hasSpecificClass="true">
+                <p class="modal-title">{{ translate('message.edit_sponsor') }}</p>
+                <div class="form-group">
+                    <select-field
+                            :title="translate('label.select_user')"
+                            :options="editSponsorMembers"
+                            :current-option="editSponsor"
+                            v-model="editSponsor"/>
+                </div>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_sponsor') }} +</a>
+                </div>
+            </modal>
+            <modal v-if="showCreateSponsorModal" @close="showCreateSponsorModal = false" v-bind:hasSpecificClass="true">
+                <p class="modal-title">{{ translate('message.create_sponsor') }}</p>
+                <div class="form-group">
+                    <select-field
+                            :title="translate('label.select_user')"
+                            :options="sponsorMembers"
+                            v-model="newSponsor"/>
+                </div>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.create_sponsor') }} +</a>
+                </div>
+            </modal>
+            <modal v-if="showDeleteSponsorModal" @close="showDeleteSponsorModal = false">
+                <p class="modal-title">{{ translate('message.delete_sponsor') }}</p>
+                <div class="flex flex-space-between">
+                    <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="deleteSelectedSponsor()"
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                </div>
+            </modal>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="header">
+                        <div>
+                            <router-link :to="{name: 'project-organization'}" class="small-link">
+                                <i class="fa fa-angle-left"></i>
+                                {{ translate('message.back_to_organization') }}
+                            </router-link>
+                            <h1>{{ translate('message.edit_organization') }}</h1>
+                        </div>
+                    </div>
+
+                    <ul class="tabs">
+                        <li role="presentation" v-for="tab in availableTabs" :key="tab"
+                            :class="{active: tab === currentTab}">
+                            <button v-on:click="currentTab = tab">{{ translate('title.' + tab) }}</button>
+                        </li>
+                    </ul>
+
+                    <div v-if="currentTab === 'members'">
+                        <div class="team-list">
+                            <scrollbar class="customScrollbar">
+                                <div class="scroll-wrapper">
+                                    <table class="table table-striped table-responsive">
+                                        <thead>
+                                        <tr>
+                                            <th class="avatar"></th>
+                                            <th>{{ translate('table_header_cell.name') }}</th>
+                                            <th>{{ translate('table_header_cell.email') }}</th>
+                                            <th>{{ translate('table_header_cell.project_member') }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="user in usersCurrentList" :key="user.id">
+                                            <td class="avatar text-center">
+                                                <user-avatar
+                                                        size="small"
+                                                        :url="user.avatarUrl"
+                                                        :name="user.fullName"
+                                                        :tooltip="user.fullName"/>
+                                            </td>
+                                            <td>{{ user.fullName }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                <switches
+                                                        v-if="!isSpecial(user)"
+                                                        @input="toggleUserMembership(user, $event)"
+                                                        :emit-on-mount="false"
+                                                        :selected="isUserMember(user)"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </scrollbar>
+
+                            <div class="flex flex-direction-reverse flex-v-center">
+                                <pagination
+                                        :value="usersCurrentPage"
+                                        :number-of-pages="usersNumberOfPages"
+                                        @input="changeUsersCurrentPage"/>
                             </div>
+                        </div>
+                    </div>
+
+                    <div v-if="currentTab === 'departments'">
+                        <!-- /// Departments /// -->
+                        <h3>{{ translate('title.departments') }}</h3>
+                        <scrollbar class="customScrollbar">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{ translate('table_header_cell.department_name') }}</th>
+                                    <th>{{ translate('table_header_cell.managers') }}</th>
+                                    <th>{{ translate('table_header_cell.no_of_members') }}</th>
+                                    <th>{{ translate('table_header_cell.created_at') }}</th>
+                                    <th>{{ translate('table_header_cell.actions') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr v-for="department in projectDepartments.items">
+                                    <td>{{ department.name }}</td>
+
+                                    <td class="avatar">
+                                        <div v-for="manager in department.managers">
+                                            <user-avatar
+                                                    size="small"
+                                                    :url="manager.userAvatarUrl"
+                                                    :name="manager.userFullName"
+                                                    :tooltip="manager.userFullName"/>
+                                        </div>
+                                    </td>
+                                    <td>{{ department.membersCount }}</td>
+                                    <td>{{ department.createdAt | date }}</td>
+                                    <td>
+                                        <button @click="initEditDepartmentModal(department)"
+                                                data-target="#logistics-edit-modal" data-toggle="modal" type="button"
+                                                class="btn-icon">
+                                            <edit-icon fill="second-fill"></edit-icon>
+                                        </button>
+                                        <button @click="initDeleteDepartmentModal(department)"
+                                                data-target="#logistics-delete-modal" data-toggle="modal" type="button"
+                                                class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </scrollbar>
-
-                        <div class="flex flex-direction-reverse flex-v-center">
-                            <pagination
-                                    :current-page="usersCurrentPage"
-                                    :number-of-pages="usersNumberOfPages"
-                                    v-on:change-page="changeUsersCurrentPage"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div v-if="currentTab === 'departments'">
-                    <!-- /// Departments /// -->
-                    <h3>{{ translate('title.departments') }}</h3>
-                    <scrollbar class="customScrollbar">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>{{ translate('table_header_cell.department_name') }}</th>
-                                <th>{{ translate('table_header_cell.managers') }}</th>
-                                <th>{{ translate('table_header_cell.no_of_members') }}</th>
-                                <th>{{ translate('table_header_cell.created_at') }}</th>
-                                <th>{{ translate('table_header_cell.actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr v-for="department in projectDepartments.items">
-                                <td>{{ department.name }}</td>
-
-                                <td class="avatar">
-                                    <div v-for="manager in department.managers">
-                                        <div
-                                                class="avatar-image"
-                                                :style="{ backgroundImage: 'url(' + manager.userAvatar + ')' }"
-                                                v-tooltip.top-center="manager.userFullName"></div>
-                                    </div>
-                                </td>
-                                <td>{{ department.membersCount }}</td>
-                                <td>{{ moment(department.createdAt).format('DD.MM.YYYY') }}</td>
-                                <td>
-                                    <button @click="initEditDepartmentModal(department)"
-                                            data-target="#logistics-edit-modal" data-toggle="modal" type="button"
-                                            class="btn-icon">
-                                        <edit-icon fill="second-fill"></edit-icon>
-                                    </button>
-                                    <button @click="initDeleteDepartmentModal(department)"
-                                            data-target="#logistics-delete-modal" data-toggle="modal" type="button"
-                                            class="btn-icon">
-                                        <delete-icon fill="danger-fill"></delete-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </scrollbar>
-                    <div class="flex flex-direction-reverse">
-                        <div class="pagination flex flex-center" v-if="departmentPages > 1">
-                            <span v-for="page in departmentPages" :class="{'active': page == activeDepartmentPage}"
-                                  @click="changeDepartmentPage(page)">{{ page }}</span>
-                        </div>
-                        <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translate('message.displaying') }} {{ projectDepartments.items.length }} {{ translate('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
-                    </div>
-                    <!-- /// End Departments /// -->
-
-                    <hr>
-
-                    <div class="form">
-                        <!-- /// Add new Department /// -->
-                        <div class="form-group">
-                            <input-field
-                                    v-model="departmentName"
-                                    type="text"
-                                    :label="translate('placeholder.new_department')"/>
-                            <error at-path="departmentName"/>
-                        </div>
                         <div class="flex flex-direction-reverse">
-                            <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</a>
+                            <div class="pagination flex flex-center" v-if="departmentPages > 1">
+                                <span v-for="page in departmentPages" :class="{'active': page === activeDepartmentPage}"
+                                      @click="changeDepartmentPage(page)">{{ page }}</span>
+                            </div>
+                            <span class="pagination-info" v-if="projectDepartments && projectDepartments.items">{{ translate('message.displaying') }} {{ projectDepartments.items.length }} {{ translate('message.results_out_of') }} {{ projectDepartments.totalItems }}</span>
                         </div>
-                        <!-- /// End Add new Department /// -->
+                        <!-- /// End Departments /// -->
+
+                        <hr>
+
+                        <div class="form">
+                            <!-- /// Add new Department /// -->
+                            <div class="form-group">
+                                <input-field
+                                        v-model="departmentName"
+                                        type="text"
+                                        :label="translate('placeholder.new_department')"/>
+                                <error at-path="departmentName"/>
+                            </div>
+                            <div class="flex flex-direction-reverse">
+                                <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</a>
+                            </div>
+                            <!-- /// End Add new Department /// -->
+                        </div>
                     </div>
-                </div>
 
 
-                <div v-if="currentTab === 'subteams'">
-                    <!-- /// Subteams /// -->
-                    <h3>{{ translate('title.subteams') }}</h3>
-                    <scrollbar class="customScrollbar">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>{{ translate('table_header_cell.subteam_name') }}</th>
-                                <th>{{ translate('table_header_cell.team_leader') }}</th>
-                                <th>{{ translate('table_header_cell.no_of_members') }}</th>
-                                <th>{{ translate('table_header_cell.department') }}</th>
-                                <th>{{ translate('table_header_cell.actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="subteam in subteams.items">
-                                <td>{{ subteam.name }}</td>
-                                <td class="avatar">
-                                    <div v-for="member in subteam.subteamMembers">
-                                        <div v-if="member.isLead" class="avatar-image"
-                                             :style="{ backgroundImage: 'url(' + member.userAvatar + ')' }"
-                                             v-tooltip.top-center="member.userName"></div>
-                                    </div>
-                                </td>
-                                <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
-                                <td>{{ subteamProjectDepartmentName(subteam.department) }}</td>
-                                <td>
-                                    <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal"
-                                            data-toggle="modal" type="button" class="btn-icon">
-                                        <edit-icon fill="second-fill"></edit-icon>
-                                    </button>
-                                    <button @click="initDeleteSubteamModal(subteam)"
-                                            data-target="#logistics-delete-modal" data-toggle="modal" type="button"
-                                            class="btn-icon">
-                                        <delete-icon fill="danger-fill"></delete-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </scrollbar>
-                    <div class="flex flex-direction-reverse">
-                        <div class="pagination flex flex-center" v-if="subteamPages > 1">
-                            <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}"
-                                  @click="changeSubteamPage(page)">{{ page }}</span>
-                        </div>
-                        <span class="pagination-info" v-if="subteams && subteams.items">{{ translate('message.displaying') }} {{ subteams.items.length }} {{ translate('message.results_out_of') }} {{ subteams.totalItems }}</span>
-                    </div>
-                    <!-- /// End Subteams /// -->
-                    <hr>
-                    <div class="form">
-                        <!-- /// Add new Subteam /// -->
-                        <div class="form-group">
-                            <input-field :content="subteamName" v-model="subteamName" type="text"
-                                         :label="translate('label.new_subteam')"></input-field>
-                            <error
-                                    v-if="validationMessages.subteamName && validationMessages.subteamName.length"
-                                    v-for="message in validationMessages.subteamName"
-                                    :message="message"/>
-                        </div>
+                    <div v-if="currentTab === 'subteams'">
+                        <!-- /// Subteams /// -->
+                        <h3>{{ translate('title.subteams') }}</h3>
+                        <scrollbar class="customScrollbar">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{ translate('table_header_cell.subteam_name') }}</th>
+                                    <th>{{ translate('table_header_cell.team_leader') }}</th>
+                                    <th>{{ translate('table_header_cell.no_of_members') }}</th>
+                                    <th>{{ translate('table_header_cell.department') }}</th>
+                                    <th>{{ translate('table_header_cell.actions') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="subteam in subteams.items">
+                                    <td>{{ subteam.name }}</td>
+                                    <td class="avatar">
+                                        <div v-for="member in subteam.subteamMembers">
+                                            <user-avatar
+                                                    v-if="member.isLead"
+                                                    size="small"
+                                                    :url="member.userAvatarUrl"
+                                                    :name="member.userFullName"
+                                                    :tooltip="member.userFullName"/>
+                                        </div>
+                                    </td>
+                                    <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
+                                    <td>{{ subteamProjectDepartmentName(subteam.department) }}</td>
+                                    <td>
+                                        <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal"
+                                                data-toggle="modal" type="button" class="btn-icon">
+                                            <edit-icon fill="second-fill"></edit-icon>
+                                        </button>
+                                        <button @click="initDeleteSubteamModal(subteam)"
+                                                data-target="#logistics-delete-modal" data-toggle="modal" type="button"
+                                                class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </scrollbar>
                         <div class="flex flex-direction-reverse">
-                            <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translate('button.add_new_subteam') }} +</a>
+                            <div class="pagination flex flex-center" v-if="subteamPages > 1">
+                                <span v-for="page in subteamPages" :class="{'active': page == activeSubteamPage}"
+                                      @click="changeSubteamPage(page)">{{ page }}</span>
+                            </div>
+                            <span class="pagination-info" v-if="subteams && subteams.items">{{ translate('message.displaying') }} {{ subteams.items.length }} {{ translate('message.results_out_of') }} {{ subteams.totalItems }}</span>
                         </div>
-                        <!-- /// End Add new Subteam /// -->
+                        <!-- /// End Subteams /// -->
+                        <hr>
+                        <div class="form">
+                            <!-- /// Add new Subteam /// -->
+                            <div class="form-group">
+                                <input-field :content="subteamName" v-model="subteamName" type="text"
+                                             :label="translate('label.new_subteam')"></input-field>
+                                <error
+                                        v-if="validationMessages.subteamName && validationMessages.subteamName.length"
+                                        v-for="message in validationMessages.subteamName"
+                                        :message="message"/>
+                            </div>
+                            <div class="flex flex-direction-reverse">
+                                <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translate('button.add_new_subteam') }} +</a>
+                            </div>
+                            <!-- /// End Add new Subteam /// -->
+                        </div>
                     </div>
-                </div>
 
-                <div v-if="currentTab === 'sponsor'">
-                    <!-- /// Sponsor /// -->
-                    <h3>{{ translate('title.sponsor') }}</h3>
-                    <scrollbar class="customScrollbar">
-                        <table class="table table-striped table-responsive">
-                            <thead>
-                            <tr>
-                                <th class="avatar"></th>
-                                <th>{{ translate('table_header_cell.name') }}</th>
-                                <th>{{ translate('table_header_cell.email') }}</th>
-                                <th>{{ translate('table_header_cell.actions') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="user in projectSponsors" :key="user.id">
-                                <td class="avatar text-center">
-                                    <div class="user-avatar-wrapper"
-                                         :style="{ backgroundImage: 'url(' + user.avatarUrl + ')' }"></div>
-                                </td>
-                                <td>{{ user.firstName + ' ' + user.lastName }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>
-                                    <button @click="initEditSponsorModal(user)" data-target="#logistics-edit-modal"
-                                            data-toggle="modal" type="button" class="btn-icon">
-                                        <edit-icon fill="second-fill"></edit-icon>
-                                    </button>
-                                    <button @click="initDeleteSponsorModal(user)"
-                                            data-target="#logistics-delete-modal" data-toggle="modal" type="button"
-                                            class="btn-icon">
-                                        <delete-icon fill="danger-fill"></delete-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </scrollbar>
-                    <div class="flex flex-direction-reverse">
-                        <member-badge
-                                v-for="(item, index) in sponsors"
-                                v-bind:item="item"
-                                v-bind:key="'sponsor'+index"
-                                size="small"/>
-                    </div>
-                    <!-- /// End Sponsor /// -->
-                    <hr>
-                    <div class="form">
-                        <!-- /// Add new Sponsor /// -->
+                    <div v-if="currentTab === 'sponsor'">
+                        <!-- /// Sponsor /// -->
+                        <h3>{{ translate('title.sponsor') }}</h3>
+                        <scrollbar class="customScrollbar">
+                            <table class="table table-striped table-responsive">
+                                <thead>
+                                <tr>
+                                    <th class="avatar"></th>
+                                    <th>{{ translate('table_header_cell.name') }}</th>
+                                    <th>{{ translate('table_header_cell.email') }}</th>
+                                    <th>{{ translate('table_header_cell.actions') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="projectUser in projectSponsors" :key="projectUser.id">
+                                    <td class="avatar text-center">
+                                        <user-avatar
+                                                size="small"
+                                                :url="projectUser.userAvatarUrl"
+                                                :name="projectUser.userFullName"/>
+                                    </td>
+                                    <td>{{ projectUser.userFullName }}</td>
+                                    <td>{{ projectUser.userEmail }}</td>
+                                    <td>
+                                        <button @click="initEditSponsorModal(projectUser)" data-target="#logistics-edit-modal"
+                                                data-toggle="modal" type="button" class="btn-icon">
+                                            <edit-icon fill="second-fill"></edit-icon>
+                                        </button>
+                                        <button @click="initDeleteSponsorModal(projectUser)"
+                                                data-target="#logistics-delete-modal" data-toggle="modal" type="button"
+                                                class="btn-icon">
+                                            <delete-icon fill="danger-fill"></delete-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </scrollbar>
                         <div class="flex flex-direction-reverse">
-                            <a v-if="!projectSponsors.length" @click="initCreateSponsorModal()"
-                               class="btn-rounded btn-auto">{{ translate('button.add_new_sponsor') }} +</a>
+                            <member-badge
+                                    v-for="(item, index) in sponsors"
+                                    :item="item"
+                                    :key="'sponsor'+index"
+                                    size="small"/>
                         </div>
-                        <!-- /// End Add new Sponsor /// -->
+                        <template>
+                            <!-- /// End Sponsor /// -->
+                            <hr>
+                            <div class="form">
+                                <!-- /// Add new Sponsor /// -->
+                                <div class="flex flex-direction-reverse">
+                                    <a v-if="!projectSponsors || !projectSponsors.length" @click="initCreateSponsorModal"
+                                       class="btn-rounded btn-auto">{{ translate('button.add_new_sponsor') }} +</a>
+                                </div>
+                                <!-- /// End Add new Sponsor /// -->
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </can>
 </template>
 
 <script>
@@ -379,7 +391,6 @@
     import EditIcon from '../../_common/_icons/EditIcon';
     import DeleteIcon from '../../_common/_icons/DeleteIcon';
     import VTooltip from 'v-tooltip';
-    import moment from 'moment';
     import Modal from '../../_common/Modal';
     import SelectField from '../../_common/_form-components/SelectField';
     import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -387,9 +398,11 @@
     import Error from '../../_common/_messages/Error.vue';
     import Switches from '../../3rdparty/vue-switches';
     import Pagination from '../../_common/Pagination';
+    import UserAvatar from '../../_common/UserAvatar';
 
     export default {
         components: {
+            UserAvatar,
             InputField,
             ViewIcon,
             EditIcon,
@@ -442,9 +455,6 @@
                 }).length !== 0
                     ;
             },
-            moment: function(date) {
-                return moment(date);
-            },
             changeDepartmentPage: function(page) {
                 this.activeDepartmentPage = page;
                 this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
@@ -461,23 +471,21 @@
                     abbreviation: this.departmentName ? this.departmentName.toLowerCase() : null,
                     project: this.$route.params.id,
                 };
-                this.createDepartment(data)
-                    .then((response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.$flashError('message.unable_to_save');
-                            return;
-                        }
-
-                        this.departmentName = null;
-
-                        if (this.projectDepartments.items.length > this.projectDepartments.pageSize) {
-                            this.getProjectDepartments(
-                                {project: this.$route.params.id, page: this.activeDepartmentPage});
-                        }
-                    })
-                    .catch((err) => {
+                this.createDepartment(data).then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
                         this.$flashError('message.unable_to_save');
-                    });
+                        return;
+                    }
+
+                    this.departmentName = null;
+
+                    if (this.projectDepartments.items.length > this.projectDepartments.pageSize) {
+                        this.getProjectDepartments(
+                            {project: this.$route.params.id, page: this.activeDepartmentPage});
+                    }
+                }).catch((err) => {
+                    this.$flashError('message.unable_to_save');
+                });
             },
             initEditDepartmentModal(department) {
                 this.showEditDepartmentModal = true;
@@ -499,14 +507,13 @@
                     projectUsers: this.editDepartmentMembers.map(manager => manager.key),
                 };
 
-                this.editDepartment(data)
-                    .then((response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            return;
-                        }
+                this.editDepartment(data).then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
+                        return;
+                    }
 
-                        this.showEditDepartmentModal = false;
-                    });
+                    this.showEditDepartmentModal = false;
+                });
             },
             deleteSelectedDepartment() {
                 this.showDeleteDepartmentModal = false;
@@ -523,19 +530,18 @@
                     label: subteam.department.name,
                 };
 
-                subteam.subteamMembers
-                       .map(member => {
-                           this.editSubteamMembers.push(
-                               {key: member.user, label: member.userFullName, hidden: member.userDeleted});
+                subteam.subteamMembers.map(member => {
+                    this.editSubteamMembers.push(
+                        {key: member.user, label: member.userFullName, hidden: member.userDeleted});
 
-                           if (member.isLead) {
-                               this.editSubteamLead = {
-                                   key: member.user,
-                                   label: member.userFullName,
-                                   hidden: member.userDeleted,
-                               };
-                           }
-                       });
+                    if (member.isLead) {
+                        this.editSubteamLead = {
+                            key: member.user,
+                            label: member.userFullName,
+                            hidden: member.userDeleted,
+                        };
+                    }
+                });
             },
             initDeleteSubteamModal(subteam) {
                 this.showDeleteSubteamModal = true;
@@ -546,19 +552,17 @@
                     name: this.subteamName,
                     project: this.$route.params.id,
                 };
-                this.createSubteam(data)
-                    .then((response) => {
-                        if (response.body && response.body.error && response.body.messages) {
-                            this.$flashError('message.unable_to_save');
-                        }
-                        this.subteamName = null;
-                        if (this.subteams.items.length > this.subteams.pageSize) {
-                            this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
-                        }
-                    })
-                    .catch((response) => {
+                this.createSubteam(data).then((response) => {
+                    if (response.body && response.body.error && response.body.messages) {
                         this.$flashError('message.unable_to_save');
-                    });
+                    }
+                    this.subteamName = null;
+                    if (this.subteams.items.length > this.subteams.pageSize) {
+                        this.getSubteams({project: this.$route.params.id, page: this.activeSubteamPage});
+                    }
+                }).catch((response) => {
+                    this.$flashError('message.unable_to_save');
+                });
             },
             editSelectedSubteam() {
                 let data = {
@@ -603,7 +607,7 @@
                 this.editSponsor = {key: sponsor.id, label: sponsor.userFullName};
                 this.project.projectUsers.map(projectUser => {
                     this.editSponsorMembers.push(
-                        {key: projectUser.user, label: projectUser.userFullName, hidden: projectUser.userDeleted});
+                        {key: projectUser.id, label: projectUser.userFullName, hidden: projectUser.userDeleted});
                 });
             },
             initDeleteSponsorModal(sponsor) {
@@ -614,23 +618,22 @@
                 this.showCreateSponsorModal = true;
                 this.project.projectUsers.map(projectUser => {
                     this.sponsorMembers.push(
-                        {key: projectUser.user, label: projectUser.userFullName, hidden: projectUser.userDeleted});
+                        {key: projectUser.id, label: projectUser.userFullName, hidden: projectUser.userDeleted});
                 });
             },
             selectSponsor() {
                 let data = {
                     id: this.$route.params.id,
-                    user: this.newSponsor.key,
+                    projectUser: this.newSponsor.key,
                 };
-                this.createSponsor(data)
-                    .then(response => {
-                        this.showCreateSponsorModal = false;
-                    });
+                this.createSponsor(data).then(response => {
+                    this.showCreateSponsorModal = false;
+                });
             },
             editSelectedSponsor() {
                 let data = {
                     id: this.$route.params.id,
-                    user: this.editSponsor.key,
+                    projectUser: this.editSponsor.key,
                 };
 
                 this.editProjectSponsor(data);
@@ -639,8 +642,8 @@
             deleteSelectedSponsor() {
                 this.showDeleteSponsorModal = false;
                 let projectSponsorData = {
-                    projectId: this.project.id,
-                    userId: this.deleteSponsorId,
+                    id: this.project.id,
+                    projectUser: this.deleteSponsorId,
                 };
                 this.deleteSponsor(projectSponsorData);
             },
