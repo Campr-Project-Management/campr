@@ -92,8 +92,7 @@ class StatusReportController extends ApiController
 
         $reports = $this
             ->get('app.repository.status_report')
-            ->findTrendReportsByProjectBefore($project, $before)
-        ;
+            ->findTrendReportsByProjectBefore($project, $before);
 
         if ($request->query->has('includeCurrent')) {
             $report = new StatusReport();
@@ -103,10 +102,11 @@ class StatusReportController extends ApiController
             $reports[] = $report;
         }
 
+        $settings = $this->get('app.settings.manager.project')->load($project);
+
         $data = $this
             ->get('app.graph.generator.status_report_project_traffic_light')
-            ->generate($reports)
-        ;
+            ->generate($reports, $settings->get('statusReportTrendChartAggregatorType'));
 
         return $this->createApiResponse($data);
     }
@@ -160,24 +160,29 @@ class StatusReportController extends ApiController
         /** @var StatusReportConfig $config */
         $config = $statusReportConfigRepo->findOneBy(['project' => $project, 'isDefault' => true]);
 
-        if ($config) {
-            $today = new \DateTime();
-            $lastReport = $statusReportRepo->findLastByProject($project);
-            $todayReports = $statusReportRepo->countTotalByProjectAndFilters($project, ['date' => $today->format('Y-m-d')]);
-            $perDay = $config->getPerDay();
-            $minutesInterval = $config->getMinutesInterval();
-            if ($perDay && $todayReports === $perDay) {
-                return $this->createApiResponse(['error' => 'message.per_day_reports_exceeded']);
-            } elseif ($minutesInterval) {
-                $lastReportCreatedAt = $lastReport->getCreatedAt();
-                $now = new \DateTime();
-                $datetime1 = strtotime($lastReportCreatedAt->format('d-m-Y H:i:s'));
-                $datetime2 = strtotime($now->format('d-m-Y H:i:s'));
-                $interval = abs($datetime2 - $datetime1);
-                $minutes = intval($interval / 60);
-                if ($minutes < $minutesInterval) {
-                    return $this->createApiResponse(['error' => 'message.minutes_under_interval']);
-                }
+        if (!$config) {
+            return $this->createApiResponse(null);
+        }
+
+        $today = new \DateTime();
+        $lastReport = $statusReportRepo->findLastByProject($project);
+        $todayReports = $statusReportRepo->countTotalByProjectAndFilters($project, ['date' => $today->format('Y-m-d')]);
+        $perDay = $config->getPerDay();
+        $minutesInterval = $config->getMinutesInterval();
+        if ($perDay && $todayReports === $perDay) {
+            return $this->createApiResponse(['error' => 'message.per_day_reports_exceeded']);
+        }
+
+        if ($minutesInterval) {
+            $lastReportCreatedAt = $lastReport->getCreatedAt();
+            $now = new \DateTime();
+            $datetime1 = strtotime($lastReportCreatedAt->format('d-m-Y H:i:s'));
+            $datetime2 = strtotime($now->format('d-m-Y H:i:s'));
+            $interval = abs($datetime2 - $datetime1);
+            $minutes = intval($interval / 60);
+
+            if ($minutes < $minutesInterval) {
+                return $this->createApiResponse(['error' => 'message.minutes_under_interval']);
             }
         }
 
@@ -191,11 +196,10 @@ class StatusReportController extends ApiController
      */
     private function createStatusReport(Project $project): StatusReport
     {
-        $snapshot = $this->get('app.snapshot.factory.project')->create($project);
-        $statusReport = new StatusReport();
-        $statusReport->setSnapshot($snapshot);
-        $statusReport->setProject($project);
-        $statusReport->setProjectTrafficLight($project->getTrafficLight());
+        $statusReport = $this
+            ->get('app.factory.status_report')
+            ->createNewWithProject($project);
+
         $statusReport->setCreatedBy($this->getUser());
 
         return $statusReport;
