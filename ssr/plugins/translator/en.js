@@ -2421,6 +2421,11 @@ module.exports = function (Translator) {
     Translator.add("warning.scan_qr_code", "After you click save, the QR code needed for 2 factor authentication will appear! Remember to scan the QR code before logging out or you will not be able to login again.", "messages", "en");
     Translator.add("message.theme_switcher.light", "Switch to Dark", "messages", "en");
     Translator.add("message.theme_switcher.dark", "Switch to Light", "messages", "en");
+    Translator.add("message.daily", "Daily", "messages", "en");
+    Translator.add("message.weekly", "Weekly", "messages", "en");
+    Translator.add("message.biweekly", "BiWeekly", "messages", "en");
+    Translator.add("message.monthly", "Monthly", "messages", "en");
+    Translator.add("label.status_report_trend_chart_agg_type", "Status Report Trend Chart", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");

@@ -1,9 +1,9 @@
 @mixin transition($transition-property, $transition-time, $method) {
-	-webkit-transition: $transition-property $transition-time $method;
-	-moz-transition: $transition-property $transition-time $method;
-	-ms-transition: $transition-property $transition-time $method;
-	-o-transition: $transition-property $transition-time $method;
-	transition: $transition-property $transition-time $method;
+  -webkit-transition: $transition-property $transition-time $method;
+  -moz-transition: $transition-property $transition-time $method;
+  -ms-transition: $transition-property $transition-time $method;
+  -o-transition: $transition-property $transition-time $method;
+  transition: $transition-property $transition-time $method;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   border-radius: $radius;
-  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+  background-clip: padding-box; /* stops bg color from leaking outside the border: */
 }
 
 /* .button {
@@ -36,14 +36,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 @mixin clearfix() {
-    &:before,
-    &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
 }
 
 /* .article {
@@ -67,9 +67,9 @@
 
 @mixin box-shadow($top, $left, $blur, $color, $inset: false) {
   @if $inset {
-    -webkit-box-shadow:inset $top $left $blur $color;
-    -moz-box-shadow:inset $top $left $blur $color;
-    box-shadow:inset $top $left $blur $color;
+    -webkit-box-shadow: inset $top $left $blur $color;
+    -moz-box-shadow: inset $top $left $blur $color;
+    box-shadow: inset $top $left $blur $color;
   } @else {
     -webkit-box-shadow: $top $left $blur $color;
     -moz-box-shadow: $top $left $blur $color;
@@ -88,29 +88,33 @@
 }
 
 // Rotate
-@mixin rotate ($deg) { 
-	@include transform(rotate(#{$deg}deg));
+@mixin rotate($deg) {
+  @include transform(rotate(#{$deg}deg));
 }
 
 // Scale
 @mixin scale($scale) {
-	@include transform(scale($scale));
+  @include transform(scale($scale));
 }
 
 // Translate
-@mixin translate ($x, $y) {
-	@include transform(translate($x, $y));
+@mixin translate($x, $y) {
+  @include transform(translate($x, $y));
 }
 
 // Skew
-@mixin skew ($x, $y) {
-	@include transform(skew(#{$x}deg, #{$y}deg));
+@mixin skew($x, $y) {
+  @include transform(skew(#{$x}deg, #{$y}deg));
 }
 
 // Transform Origin
-@mixin transform-origin ($origin) {
-    	-webkit-transform-origin: $origin;
-    	-moz-transform-origin: $origin;
-	-ms-transform-origin: $origin;
-	transform-origin: $origin;
+@mixin transform-origin($origin) {
+  -webkit-transform-origin: $origin;
+  -moz-transform-origin: $origin;
+  -ms-transform-origin: $origin;
+  transform-origin: $origin;
+}
+
+@mixin default-font() {
+  font-family: Poppins,sans-serif;
 }

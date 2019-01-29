@@ -1,12 +1,13 @@
 <?php
 
-namespace Component\Snapshot;
+namespace Component\Snapshot\Factory;
 
 use AppBundle\Entity\Project;
+use Component\Snapshot\Snapshot;
 use Component\Snapshot\Transformer\TransformerInterface;
 use Component\Snapshot\Model\SnapshotInterface;
 
-class ProjectSnapshotFactory
+class ProjectSnapshotFactory implements ProjectSnapshotFactoryInterface
 {
     /**
      * @var TransformerInterface
@@ -28,7 +29,7 @@ class ProjectSnapshotFactory
      *
      * @return SnapshotInterface
      */
-    public function create(Project $project): SnapshotInterface
+    public function createNew(Project $project): SnapshotInterface
     {
         $data = $this->projectTransformer->transform($project);
 

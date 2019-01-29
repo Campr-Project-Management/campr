@@ -18,7 +18,7 @@ class StatusReportRepository extends BaseRepository
     /**
      * @param Project $project
      *
-     * @return StatusReport[]|null
+     * @return StatusReport|null
      */
     public function findLastByProject(Project $project)
     {
