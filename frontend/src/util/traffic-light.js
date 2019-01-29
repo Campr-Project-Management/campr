@@ -133,7 +133,7 @@ export function getScheduleActualTrafficLight(
         return TrafficLight.createYellow();
     }
 
-    if (!moment(actual.finishAt).isAfter(forecast.finishAt)) {
+    if (moment(actual.finishAt).isAfter(forecast.finishAt)) {
         return TrafficLight.createRed();
     }
 
