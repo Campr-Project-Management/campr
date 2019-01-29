@@ -17,10 +17,10 @@ class DateRange implements DateRangeInterface
     /**
      * DateRange constructor.
      *
-     * @param \DateTime|null $start
-     * @param \DateTime|null $finish
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $finish
      */
-    public function __construct(\DateTime $start = null, \DateTime $finish = null)
+    public function __construct(\DateTimeInterface $start = null, \DateTimeInterface $finish = null)
     {
         $this->start = $start;
         $this->finish = $finish;

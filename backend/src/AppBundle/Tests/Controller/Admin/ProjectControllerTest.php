@@ -23,26 +23,26 @@ class ProjectControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/create');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_number"', $crawler->html());
-        $this->assertContains('name="create[number]"', $crawler->html());
-        $this->assertContains('id="create_logoFile_file"', $crawler->html());
-        $this->assertContains('name="create[logoFile][file]"', $crawler->html());
-        $this->assertContains('id="create_programme"', $crawler->html());
-        $this->assertContains('name="create[programme]"', $crawler->html());
-        $this->assertContains('id="create_company"', $crawler->html());
-        $this->assertContains('name="create[company]"', $crawler->html());
-        $this->assertContains('id="create_projectComplexity"', $crawler->html());
-        $this->assertContains('name="create[projectComplexity]"', $crawler->html());
-        $this->assertContains('id="create_projectCategory"', $crawler->html());
-        $this->assertContains('name="create[projectCategory]"', $crawler->html());
-        $this->assertContains('id="create_projectScope"', $crawler->html());
-        $this->assertContains('name="create[projectScope]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
-        $this->assertContains('id="create_portfolio"', $crawler->html());
-        $this->assertContains('name="create[portfolio]"', $crawler->html());
+        $this->assertContains('id="project_name"', $crawler->html());
+        $this->assertContains('name="project[name]"', $crawler->html());
+        $this->assertContains('id="project_number"', $crawler->html());
+        $this->assertContains('name="project[number]"', $crawler->html());
+        $this->assertContains('id="project_logoFile_file"', $crawler->html());
+        $this->assertContains('name="project[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="project_programme"', $crawler->html());
+        $this->assertContains('name="project[programme]"', $crawler->html());
+        $this->assertContains('id="project_company"', $crawler->html());
+        $this->assertContains('name="project[company]"', $crawler->html());
+        $this->assertContains('id="project_projectComplexity"', $crawler->html());
+        $this->assertContains('name="project[projectComplexity]"', $crawler->html());
+        $this->assertContains('id="project_projectCategory"', $crawler->html());
+        $this->assertContains('name="project[projectCategory]"', $crawler->html());
+        $this->assertContains('id="project_projectScope"', $crawler->html());
+        $this->assertContains('name="project[projectScope]"', $crawler->html());
+        $this->assertContains('id="project_status"', $crawler->html());
+        $this->assertContains('name="project[status]"', $crawler->html());
+        $this->assertContains('id="project_portfolio"', $crawler->html());
+        $this->assertContains('name="project[portfolio]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -75,15 +75,14 @@ class ProjectControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneByName('project1')
-        ;
+            ->findOneByName('project1');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'project';
-        $form['create[number]'] = $project->getNumber();
+        $form['project[name]'] = 'project';
+        $form['project[number]'] = $project->getNumber();
 
         $crawler = $this->client->submit($form);
 
@@ -103,34 +102,43 @@ class ProjectControllerTest extends BaseController
         $currency = $this->findCurrencyByCode('EUR');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'project3';
-        $form['create[number]'] = 'project-number-3';
-        $form['create[company]'] = 1;
-        $form['create[currency]'] = $currency->getId();
+        $form['project[name]'] = 'project3';
+        $form['project[number]'] = 'project-number-3';
+        $form['project[company]'] = 1;
+        $form['project[currency]'] = $currency->getId();
 
-        $this->client->submit($form);
-        $this->assertTrue($this->client->getResponse()->isRedirect());
+        try {
+            $this->client->submit($form);
+            $response = $this->client->getResponse();
+        } finally {
+            $this->assertTrue($response->isRedirection(), $response->getContent());
 
-        $this->client->followRedirect();
-        $this->assertContains('Project successfully created!', $this->client->getResponse()->getContent());
+            $this->client->followRedirect();
+            $this->assertContains('Project successfully created!', $this->client->getResponse()->getContent());
 
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneByName('project3')
-        ;
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy([
-                'user' => $this->user,
-                'project' => $project,
-            ])
-        ;
+            $project = $this
+                ->em
+                ->getRepository(Project::class)
+                ->findOneByName('project3');
+            if ($project) {
+                $this->em->remove($project);
+            }
 
-        $this->em->remove($projectUser);
-        $this->em->remove($project);
-        $this->em->flush();
+            $projectUser = $this
+                ->em
+                ->getRepository(ProjectUser::class)
+                ->findOneBy(
+                    [
+                        'user' => $this->user,
+                        'project' => $project,
+                    ]
+                );
+            if ($projectUser) {
+                $this->em->remove($projectUser);
+            }
+
+            $this->em->flush();
+        }
     }
 
     public function testDeleteAction()
@@ -142,14 +150,12 @@ class ProjectControllerTest extends BaseController
         $company = $this
             ->em
             ->getRepository(Company::class)
-            ->find(1)
-        ;
+            ->find(1);
 
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $this->em->persist($project);
         $this->em->flush();
 
@@ -172,26 +178,26 @@ class ProjectControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/edit');
 
-        $this->assertContains('id="create_name"', $crawler->html());
-        $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_number"', $crawler->html());
-        $this->assertContains('name="create[number]"', $crawler->html());
-        $this->assertContains('id="create_logoFile_file"', $crawler->html());
-        $this->assertContains('name="create[logoFile][file]"', $crawler->html());
-        $this->assertContains('id="create_programme"', $crawler->html());
-        $this->assertContains('name="create[programme]"', $crawler->html());
-        $this->assertContains('id="create_company"', $crawler->html());
-        $this->assertContains('name="create[company]"', $crawler->html());
-        $this->assertContains('id="create_projectComplexity"', $crawler->html());
-        $this->assertContains('name="create[projectComplexity]"', $crawler->html());
-        $this->assertContains('id="create_projectCategory"', $crawler->html());
-        $this->assertContains('name="create[projectCategory]"', $crawler->html());
-        $this->assertContains('id="create_projectScope"', $crawler->html());
-        $this->assertContains('name="create[projectScope]"', $crawler->html());
-        $this->assertContains('id="create_status"', $crawler->html());
-        $this->assertContains('name="create[status]"', $crawler->html());
-        $this->assertContains('id="create_portfolio"', $crawler->html());
-        $this->assertContains('name="create[portfolio]"', $crawler->html());
+        $this->assertContains('id="project_name"', $crawler->html());
+        $this->assertContains('name="project[name]"', $crawler->html());
+        $this->assertContains('id="project_number"', $crawler->html());
+        $this->assertContains('name="project[number]"', $crawler->html());
+        $this->assertContains('id="project_logoFile_file"', $crawler->html());
+        $this->assertContains('name="project[logoFile][file]"', $crawler->html());
+        $this->assertContains('id="project_programme"', $crawler->html());
+        $this->assertContains('name="project[programme]"', $crawler->html());
+        $this->assertContains('id="project_company"', $crawler->html());
+        $this->assertContains('name="project[company]"', $crawler->html());
+        $this->assertContains('id="project_projectComplexity"', $crawler->html());
+        $this->assertContains('name="project[projectComplexity]"', $crawler->html());
+        $this->assertContains('id="project_projectCategory"', $crawler->html());
+        $this->assertContains('name="project[projectCategory]"', $crawler->html());
+        $this->assertContains('id="project_projectScope"', $crawler->html());
+        $this->assertContains('name="project[projectScope]"', $crawler->html());
+        $this->assertContains('id="project_status"', $crawler->html());
+        $this->assertContains('name="project[status]"', $crawler->html());
+        $this->assertContains('id="project_portfolio"', $crawler->html());
+        $this->assertContains('name="project[portfolio]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -208,8 +214,8 @@ class ProjectControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = '';
-        $form['create[number]'] = '';
+        $form['project[name]'] = '';
+        $form['project[number]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -227,15 +233,14 @@ class ProjectControllerTest extends BaseController
         $project = $this
             ->em
             ->getRepository(Project::class)
-            ->findOneByName('project2')
-        ;
+            ->findOneByName('project2');
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'project';
-        $form['create[number]'] = $project->getNumber();
+        $form['project[name]'] = 'project';
+        $form['project[number]'] = $project->getNumber();
 
         $crawler = $this->client->submit($form);
 
@@ -253,7 +258,7 @@ class ProjectControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project/2/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'project2';
+        $form['project[name]'] = 'project2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -405,8 +410,7 @@ class ProjectControllerTest extends BaseController
         $currency = $this
             ->em
             ->getRepository(Currency::class)
-            ->findOneBy(['code' => $code])
-        ;
+            ->findOneBy(['code' => $code]);
 
         $this->assertNotNull($currency, sprintf('Currency "EUR" not found'));
 

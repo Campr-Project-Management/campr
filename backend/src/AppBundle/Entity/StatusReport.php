@@ -73,6 +73,13 @@ class StatusReport implements SnapshotAwareInterface, TimestampableInterface, Bl
     private $projectTrafficLight;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="modules", type="json_array", nullable=true)
+     */
+    private $modules;
+
+    /**
      * @var User
      *
      * @Serializer\Exclude()
@@ -98,6 +105,7 @@ class StatusReport implements SnapshotAwareInterface, TimestampableInterface, Bl
     {
         $this->createdAt = new \DateTime();
         $this->projectActionNeeded = false;
+        $this->modules = [];
     }
 
     /**
@@ -278,5 +286,21 @@ class StatusReport implements SnapshotAwareInterface, TimestampableInterface, Bl
     public function setProjectTrafficLight(int $projectTrafficLight = null)
     {
         $this->projectTrafficLight = $projectTrafficLight;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModules(): array
+    {
+        return (array) $this->modules;
+    }
+
+    /**
+     * @param array $modules
+     */
+    public function setModules(array $modules)
+    {
+        $this->modules = $modules;
     }
 }
