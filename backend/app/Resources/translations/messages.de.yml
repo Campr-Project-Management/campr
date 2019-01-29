@@ -2162,3 +2162,8 @@ title.copy_project: 'Projekt kopieren'
 email.message.project.cloned: 'Sie können Ihr neues Projekt hier finden'
 message.theme_switcher.light: 'Schalten Sie auf Dunkelheit um'
 message.theme_switcher.dark: 'Auf Licht umschalten'
+message.daily: Täglich
+message.weekly: Wöchentlich
+message.biweekly: Zweiwöchentlich
+message.monthly: Monatlich
+label.status_report_trend_chart_agg_type: 'Statusbericht Trenddiagramm'

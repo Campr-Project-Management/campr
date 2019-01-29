@@ -24,12 +24,16 @@ const state = {
 
 const getters = {
     project: state => state.currentProject,
-    projectCurrency: (state, getters) => getters.project && state.currentProject.currency,
-    projectCurrencySymbol: (state, getters) => getters.projectCurrency && getters.projectCurrency.symbol,
-    projectCurrencyCode: (state, getters) => getters.projectCurrency && getters.projectCurrency.code,
+    projectCurrency: (state, getters) => getters.project &&
+        state.currentProject.currency,
+    projectCurrencySymbol: (state, getters) => getters.projectCurrency &&
+        getters.projectCurrency.symbol,
+    projectCurrencyCode: (state, getters) => getters.projectCurrency &&
+        getters.projectCurrency.code,
     projects: state => state.filteredProjects.items,
     labels: state => state.projects,
-    currentProjectName: (state) => state.currentProject && state.currentProject.name,
+    currentProjectName: (state) => state.currentProject &&
+        state.currentProject.name,
     projectsForFilter: state => state.projectsForFilter,
     labelsForChoice: state => state.labelsForChoice,
     label: state => state.label,
@@ -71,7 +75,15 @@ const getters = {
     projectCostsAndResources: state => state.projectCostsAndResources,
     progresses: state => state.progresses,
     statusReportAvailability: state => state.statusReportAvailability,
-    projectMaxUploadFileSize: (state, getters) => getters.project.maxUploadFileSize,
+    projectMaxUploadFileSize: (
+        state, getters) => getters.project.maxUploadFileSize,
+    isProjectModuleActive: (state, getters) => (module) => {
+        if (!getters.project || !getters.project.projectModules) {
+            return false;
+        }
+
+        return getters.project.projectModules.indexOf(module) !== -1;
+    },
 };
 
 const actions = {
@@ -84,21 +96,19 @@ const actions = {
      * @return {object}
      */
     closeProject({commit}, {id}) {
-        return Vue
-            .http
-            .patch(Routing.generate('app_api_project_edit', {id}), {status: projectStatus.PROJECT_STATUS_CLOSED})
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let project = response.data;
-                        commit(types.SET_PROJECT, {project});
-                    }
+        return Vue.http.patch(Routing.generate('app_api_project_edit', {id}),
+            {status: projectStatus.PROJECT_STATUS_CLOSED}).then(
+            (response) => {
+                if (response.status === 200) {
+                    let project = response.data;
+                    commit(types.SET_PROJECT, {project});
+                }
 
-                    return response;
-                },
-                (response) => response
-            )
-        ;
+                return response;
+            },
+            (response) => response,
+        )
+            ;
     },
 
     /**
@@ -109,17 +119,16 @@ const actions = {
      * @return {object}
      */
     toggleFavorite({commit}, data) {
-        return Vue
-            .http
-            .patch(Routing.generate('app_api_project_edit', {id: data.project.id}), {favorite: data.favorite})
-            .then(
-                (response) => {
-                    commit(types.TOGGLE_FAVORITE, response.body);
-                },
-                () => {
-                }
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_edit', {id: data.project.id}),
+            {favorite: data.favorite}).then(
+            (response) => {
+                commit(types.TOGGLE_FAVORITE, response.body);
+            },
+            () => {
+            },
+        )
+            ;
     },
 
     /**
@@ -128,27 +137,26 @@ const actions = {
      * @return {object}
      */
     editProject({commit}, data) {
-        return Vue
-            .http
-            .patch(Routing.generate('app_api_project_edit', {id: data.projectId}), data)
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        const project = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.EDIT_PROJECT, {project});
-                        commit(types.SET_PROJECT, {project});
-                    }
-                    return response;
-                },
-                (response) => {
-                    return response;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_edit', {id: data.projectId}),
+            data).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    const project = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.EDIT_PROJECT, {project});
+                    commit(types.SET_PROJECT, {project});
                 }
-            )
-        ;
+                return response;
+            },
+            (response) => {
+                return response;
+            },
+        )
+            ;
     },
 
     /**
@@ -163,7 +171,8 @@ const actions = {
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
         }
-        if (data && data.queryParams && data.queryParams.favorites !== undefined) {
+        if (data && data.queryParams && data.queryParams.favorites !==
+            undefined) {
             paramObject.params.favorites = data.queryParams.favorites;
         }
         if (state.projectFilters && state.projectFilters.status) {
@@ -175,19 +184,17 @@ const actions = {
         if (state.projectFilters && state.projectFilters.customer) {
             paramObject.params.customer = state.projectFilters.customer;
         }
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_list'), paramObject)
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let projects = response.data;
-                        commit(types.SET_PROJECTS, {projects});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(Routing.generate('app_api_project_list'),
+            paramObject).then(
+            (response) => {
+                if (response.status === 200) {
+                    let projects = response.data;
+                    commit(types.SET_PROJECTS, {projects});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -198,19 +205,17 @@ const actions = {
      */
     getProjectsForDropdown({commit}) {
         let paramObject = {params: {}};
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_list'), paramObject)
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let projects = response.data;
-                        commit(types.SET_PROJECTS_FOR_DROPDOWN, {projects});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(Routing.generate('app_api_project_list'),
+            paramObject).then(
+            (response) => {
+                if (response.status === 200) {
+                    let projects = response.data;
+                    commit(types.SET_PROJECTS_FOR_DROPDOWN, {projects});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     setProjectFilters({commit}, filters) {
@@ -224,19 +229,17 @@ const actions = {
      * @return {object}
      */
     getProjectById({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_get', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let project = response.data;
-                        commit(types.SET_PROJECT, {project});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_get', {'id': id})).then(
+            (response) => {
+                if (response.status === 200) {
+                    let project = response.data;
+                    commit(types.SET_PROJECT, {project});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -246,19 +249,17 @@ const actions = {
      * @return {object}
      */
     getProjectLabels({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_labels', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let labels = response.data;
-                        commit(types.SET_LABELS, {labels});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_labels', {'id': id})).then(
+            (response) => {
+                if (response.status === 200) {
+                    let labels = response.data;
+                    commit(types.SET_LABELS, {labels});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -268,19 +269,17 @@ const actions = {
      * @return {object}
      */
     getProjectLabel({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_label_get', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let label = response.data;
-                        commit(types.SET_LABEL, {label});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(Routing.generate('app_api_label_get', {'id': id})).
+                   then(
+                       (response) => {
+                           if (response.status === 200) {
+                               let label = response.data;
+                               commit(types.SET_LABEL, {label});
+                           }
+                       },
+                       (response) => {},
+                   )
+            ;
     },
 
     /**
@@ -290,26 +289,24 @@ const actions = {
      * @return {object}
      */
     createProjectLabel({commit}, data) {
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_create_label', {'id': data.projectId}),
-                JSON.stringify(data)
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    }
+        return Vue.http.post(
+            Routing.generate('app_api_project_create_label',
+                {'id': data.projectId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
 
-                    return response;
-                },
-                () => {}
-            )
-        ;
+                return response;
+            },
+            () => {},
+        )
+            ;
     },
 
     /**
@@ -319,26 +316,23 @@ const actions = {
      * @return {object}
      */
     editProjectLabel({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_label_edit', {'id': data.labelId}),
-                JSON.stringify(data)
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    }
+        return Vue.http.patch(
+            Routing.generate('app_api_label_edit', {'id': data.labelId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                }
 
-                    return response;
-                },
-                () => {}
-            )
-        ;
+                return response;
+            },
+            () => {},
+        )
+            ;
     },
 
     /**
@@ -348,10 +342,9 @@ const actions = {
      * @return {object}
      */
     deleteProjectLabel({commit}, id) {
-        return Vue
-            .http
-            .delete(Routing.generate('app_api_label_delete', {'id': id}))
-        ;
+        return Vue.http.delete(
+            Routing.generate('app_api_label_delete', {'id': id}))
+            ;
     },
 
     /**
@@ -361,25 +354,25 @@ const actions = {
      * @return {object}
      */
     createObjective({commit}, data) {
-        return Vue.http
-            .post(
-                Routing.generate('app_api_project_create_objective', {'id': data.projectId}),
-                JSON.stringify(data)
-            ).then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        messages.createProjectObjectiveForm = true;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        let objective = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.ADD_PROJECT_OBJECTIVE, {objective});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.post(
+            Routing.generate('app_api_project_create_objective',
+                {'id': data.projectId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    messages.createProjectObjectiveForm = true;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let objective = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_PROJECT_OBJECTIVE, {objective});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -389,13 +382,12 @@ const actions = {
      * @return {object}
      */
     editObjective({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_objective_edit', {'id': data.itemId}),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_objective_edit',
+                {'id': data.itemId}),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -405,13 +397,11 @@ const actions = {
      * @return {object}
      */
     reorderObjectives({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_objective_reorder'),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_objective_reorder'),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -421,27 +411,25 @@ const actions = {
      * @return {object}
      */
     createLimitation({commit}, data) {
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_create_limitation', {'id': data.projectId}),
-                JSON.stringify(data)
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        messages.createProjectLimitationForm = true;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        let limitation = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.ADD_PROJECT_LIMITATION, {limitation});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.post(
+            Routing.generate('app_api_project_create_limitation',
+                {'id': data.projectId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    messages.createProjectLimitationForm = true;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let limitation = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_PROJECT_LIMITATION, {limitation});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -451,13 +439,11 @@ const actions = {
      * @return {object}
      */
     reorderLimitations({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_limitation_reorder'),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_limitation_reorder'),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -467,13 +453,12 @@ const actions = {
      * @return {object}
      */
     editLimitation({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_limitation_edit', {'id': data.itemId}),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_limitation_edit',
+                {'id': data.itemId}),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -483,26 +468,24 @@ const actions = {
      * @return {object}
      */
     createDeliverable({commit}, data) {
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_create_deliverable', {'id': data.projectId}),
-                JSON.stringify(data)
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        messages.createProjectDeliverableForm = true;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        let deliverable = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
-                    }
-                },
-                (response) => {}
-            );
+        return Vue.http.post(
+            Routing.generate('app_api_project_create_deliverable',
+                {'id': data.projectId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    messages.createProjectDeliverableForm = true;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    let deliverable = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_PROJECT_DELIVERABLE, {deliverable});
+                }
+            },
+            (response) => {},
+        );
     },
 
     /**
@@ -512,13 +495,12 @@ const actions = {
      * @return {object}
      */
     editDeliverable({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_deliverable_edit', {'id': data.itemId}),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_deliverable_edit',
+                {'id': data.itemId}),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -528,13 +510,11 @@ const actions = {
      * @return {object}
      */
     reorderDeliverables({commit}, data) {
-        return Vue
-            .http
-            .patch(
-                Routing.generate('app_api_project_deliverable_reorder'),
-                JSON.stringify(data)
-            )
-        ;
+        return Vue.http.patch(
+            Routing.generate('app_api_project_deliverable_reorder'),
+            JSON.stringify(data),
+        )
+            ;
     },
 
     /**
@@ -572,27 +552,26 @@ const actions = {
      * @return {object}
      */
     createDistribution({commit}, data) {
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_distribution_list_create', {'id': data.projectId}),
-                JSON.stringify(data)
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        const distributionList = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        commit(types.ADD_PROJECT_DISTRIBUTION_LIST, {distributionList});
-                    }
-                    return response.body;
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.post(
+            Routing.generate('app_api_project_distribution_list_create',
+                {'id': data.projectId}),
+            JSON.stringify(data),
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                } else {
+                    const distributionList = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                    commit(types.ADD_PROJECT_DISTRIBUTION_LIST,
+                        {distributionList});
+                }
+                return response.body;
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -602,20 +581,18 @@ const actions = {
      * @return {object}
      */
     getTasksForSchedule({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_schedule', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let tasks = response.data;
-                        commit(types.SET_TASKS_FOR_SCHEDULE, {tasks});
-                    }
-                },
-                (response) => {
+        return Vue.http.get(
+            Routing.generate('app_api_project_schedule', {'id': id})).then(
+            (response) => {
+                if (response.status === 200) {
+                    let tasks = response.data;
+                    commit(types.SET_TASKS_FOR_SCHEDULE, {tasks});
                 }
-            )
-        ;
+            },
+            (response) => {
+            },
+        )
+            ;
     },
 
     /**
@@ -625,19 +602,17 @@ const actions = {
      * @return {object}
      */
     getTasksStatus({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_tasks_status', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let tasksStatus = response.data;
-                        commit(types.SET_PROJECT_TASKS_STATUS, {tasksStatus});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_tasks_status', {'id': id})).then(
+            (response) => {
+                if (response.status === 200) {
+                    let tasksStatus = response.data;
+                    commit(types.SET_PROJECT_TASKS_STATUS, {tasksStatus});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
     /**
      * Gets project risks and opportunities stats
@@ -646,19 +621,19 @@ const actions = {
      * @return {object}
      */
     getProjectRiskAndOpportunitiesStats({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_risks_opportunities_stats', {'id': id}))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        let roStats = response.data;
-                        commit(types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS, {roStats});
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_risks_opportunities_stats',
+                {'id': id})).then(
+            (response) => {
+                if (response.status === 200) {
+                    let roStats = response.data;
+                    commit(types.SET_PROJECT_RISKS_OPPORTUNITIES_STATS,
+                        {roStats});
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
 
     /**
@@ -668,18 +643,18 @@ const actions = {
      * @return {object}
      */
     getProjectExternalCostsGraphData({commit}, data) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_external_costs_graph_data', data))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        commit(types.SET_PROJECT_EXTERNAL_COSTS_GRAPH_DATA, response.data);
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_external_costs_graph_data',
+                data)).then(
+            (response) => {
+                if (response.status === 200) {
+                    commit(types.SET_PROJECT_EXTERNAL_COSTS_GRAPH_DATA,
+                        response.data);
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
     /**
      * Gets project internal costs data
@@ -688,18 +663,18 @@ const actions = {
      * @return {object}
      */
     getProjectInternalCostsGraphData({commit}, data) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_project_internal_costs_graph_data', data))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        commit(types.SET_PROJECT_INTERNAL_COSTS_GRAPH_DATA, response.data);
-                    }
-                },
-                (response) => {}
-            )
-        ;
+        return Vue.http.get(
+            Routing.generate('app_api_project_internal_costs_graph_data',
+                data)).then(
+            (response) => {
+                if (response.status === 200) {
+                    commit(types.SET_PROJECT_INTERNAL_COSTS_GRAPH_DATA,
+                        response.data);
+                }
+            },
+            (response) => {},
+        )
+            ;
     },
     /**
      * Check if the user cand create a status report
@@ -707,19 +682,19 @@ const actions = {
      * @param {integer} id
      */
     checkReportAvailability({commit}, id) {
-        Vue.http
-            .get(
-                Routing.generate('app_api_project_status_reports_availability', {id: id})
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const error = response.body.error;
-                    commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
-                } else {
-                    const error = null;
-                    commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
-                }
-            }, (response) => {
-            });
+        Vue.http.get(
+            Routing.generate('app_api_project_status_reports_availability',
+                {id: id}),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const error = response.body.error;
+                commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
+            } else {
+                const error = null;
+                commit(types.SET_STATUS_REPORT_AVAILABILITY, {error});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Clears projects.
@@ -744,7 +719,8 @@ const mutations = {
      * @param {array} filters
      */
     [types.SET_PROJECT_FILTERS](state, {filters}) {
-        state.projectFilters = !filters.clear ? Object.assign({}, state.projectFilters, filters) : [];
+        state.projectFilters = !filters.clear ? Object.assign({},
+            state.projectFilters, filters) : [];
     },
     /**
      * Sets the status report availability
@@ -771,10 +747,15 @@ const mutations = {
      */
     [types.SET_PROJECTS_FOR_DROPDOWN](state, {projects}) {
         let projectsTmp = projects;
-        let projectsForFilter = [{'key': '', 'label': Translator.trans('message.all_projects_filter')}];
+        let projectsForFilter = [
+            {
+                'key': '',
+                'label': Translator.trans('message.all_projects_filter'),
+            }];
         if (projectsTmp.items !== undefined) {
-            projectsTmp.items.map( function(project) {
-                projectsForFilter.push({'key': project.id, 'label': project.name});
+            projectsTmp.items.map(function(project) {
+                projectsForFilter.push(
+                    {'key': project.id, 'label': project.name});
             });
         }
         state.projectsForFilter = projectsForFilter;
@@ -810,15 +791,16 @@ const mutations = {
             return item.id === project.id
                 ? project
                 : item
-            ;
+                ;
         });
 
-        state.filteredProjects.items = state.filteredProjects.items.map((item) => {
-            return item.id === project.id
-                ? project
-                : item
-            ;
-        });
+        state.filteredProjects.items = state.filteredProjects.items.map(
+            (item) => {
+                return item.id === project.id
+                    ? project
+                    : item
+                    ;
+            });
     },
     /**
      * Edit project
@@ -843,7 +825,8 @@ const mutations = {
         state.projects = labels;
         let choiceLabel = [];
         state.projects.map(function(label) {
-            choiceLabel.push({'key': label.id, 'label': label.title, 'color': label.color});
+            choiceLabel.push(
+                {'key': label.id, 'label': label.title, 'color': label.color});
         });
         state.labelsForChoice = choiceLabel;
     },
@@ -934,7 +917,8 @@ const mutations = {
     [types.SET_PROJECT_PROGRESSES](state, {progresses}) {
         for (let key in progresses) {
             if (!progresses.hasOwnProperty(key)) continue;
-            progresses[key].value = Math.floor(progresses[key].value * 100) / 100;
+            progresses[key].value = Math.floor(progresses[key].value * 100) /
+                100;
         }
         state.progresses = progresses;
     },

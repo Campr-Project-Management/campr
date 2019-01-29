@@ -143,6 +143,14 @@
                             }
                         ) }}
 
+                        {{ form_widget(
+                            form.configuration.statusReportTrendChartAggregatorType,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.status_report_trend_chart_agg_type'|trans,
+                            }
+                        ) }}
+
                         {% include '@App/Admin/Layout/Partials/form_edit_buttons.html.twig'
                             with {
                             'delete_path': 'app_admin_project_delete',

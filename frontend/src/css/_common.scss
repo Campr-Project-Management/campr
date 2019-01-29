@@ -699,7 +699,6 @@ hr {
 }
 
 .checkbox-input {
-    font-family: FontAwesome;
 
     input[type=checkbox],
     input[type=radio] {
@@ -718,6 +717,7 @@ hr {
         cursor: pointer;
         position: relative;
         top: -1px;
+        font-family: FontAwesome;
     }
 
     input[type=radio] + label:before {

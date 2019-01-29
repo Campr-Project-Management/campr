@@ -90,7 +90,7 @@
                             <span v-bind:class="'tablet'"></span>
                         </router-link>
                     </li>
-                    <li v-for="(module, key) in modules" v-if="displayModule(module)">
+                    <li v-for="(module, key) in modules" v-if="isProjectModuleActive(module)">
                         <router-link
                                 :to="{name: moduleToRoute[module], params: {id: projectId}}"
                                 :title="translate(`modules.${module}.title`)">
@@ -135,7 +135,12 @@
             this.projectId = this.$route.params.id;
         },
         computed: {
-            ...mapGetters(['modules', 'project', 'sidebarStats']),
+            ...mapGetters([
+                'modules',
+                'project',
+                'sidebarStats',
+                'isProjectModuleActive',
+            ]),
         },
         methods: {
             ...mapActions([
@@ -144,12 +149,6 @@
                 'clearProject',
                 'getSidebarInformation',
             ]),
-            displayModule(module) {
-                return this.project && this.project.projectModules && (
-                    this.project.projectModules.indexOf(module) !== -1
-                    && this.project.projectModules.length > 0
-                );
-            },
         },
         data() {
             return {
