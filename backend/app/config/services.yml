@@ -151,6 +151,27 @@ services:
 
     app.graph.generator.status_report_project_traffic_light:
         class: Component\StatusReport\Graph\ProjectTrafficLightTrendGraphDataGenerator
+        arguments:
+            -
+              - '@app.status_report.aggregator.daily'
+              - '@app.status_report.aggregator.weekly'
+              - '@app.status_report.aggregator.biweekly'
+              - '@app.status_report.aggregator.monthly'
+            - '@translator'
+
+    app.status_report.aggregator.daily:
+        class: Component\StatusReport\Aggregator\StatusReportsDailyAggregator
+
+    app.status_report.aggregator.weekly:
+        class: Component\StatusReport\Aggregator\StatusReportsWeeklyAggregator
+
+    app.status_report.aggregator.biweekly:
+        class: Component\StatusReport\Aggregator\StatusReportsBiWeeklyAggregator
+        arguments:
+            - '@app.status_report.aggregator.weekly'
+
+    app.status_report.aggregator.monthly:
+        class: Component\StatusReport\Aggregator\StatusReportsMonthlyAggregator
 
     app.resolver.avatar.url:
         class: Component\Avatar\AvatarUrlResolver
@@ -250,6 +271,27 @@ services:
         class: AppBundle\Remover\UserRemover
         arguments:
             - '@app.repository.user'
+
+    app.settings.schema.project:
+        class: Component\Project\Settings\ProjectSettingsSchema
+        tags:
+            - { name: 'app.settings.schema' }
+
+    app.settings.manager.project:
+        class: Component\Project\Settings\ProjectSettingsManager
+        arguments:
+            - '@app.settings.schema.project'
+
+    app.settings.schema.registry:
+        class: Component\Settings\SchemaRegistry
+        tags:
+            - { name: 'app.settings.schema.registry' }
+
+#### FACTORIES ####
+    app.factory.status_report:
+        class: Component\StatusReport\Factory\StatusReportFactory
+        arguments:
+            - '@app.snapshot.factory.project'
 
 ### MENU BUILDER ###
     app.admin.menu.builder:
@@ -422,9 +464,9 @@ services:
             - '@app.snapshot.transformer.infos'
 
     app.snapshot.factory.project:
-        class: Component\Snapshot\ProjectSnapshotFactory
+        class: Component\Snapshot\Factory\ProjectSnapshotFactory
         arguments:
-          - '@app.snapshot.transformer.project'
+            - '@app.snapshot.transformer.project'
 
 ### FORM ###
     app.form.extension.checkbox_type_extension:

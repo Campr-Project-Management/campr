@@ -9,6 +9,7 @@ use AppBundle\Entity\Media;
 use AppBundle\Entity\Message;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\User;
+use AppBundle\Form\Project\Admin\ProjectType;
 use AppBundle\Form\Project\ImportType;
 use AppBundle\Security\ProjectVoter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Project;
-use AppBundle\Form\Project\CreateType as ProjectCreateType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -89,7 +89,11 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
-        $form = $this->createForm(ProjectCreateType::class, $project);
+        $settings = $this->get('app.settings.manager.project')->load($project);
+
+        $project->setConfiguration($settings->all());
+
+        $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -134,8 +138,10 @@ class ProjectController extends ApiController
     public function editAction(Request $request, Project $project)
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $settings = $this->get('app.settings.manager.project')->load($project);
+        $project->setConfiguration($settings->all());
 
-        $form = $this->createForm(ProjectCreateType::class, $project);
+        $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -197,9 +203,9 @@ class ProjectController extends ApiController
      * @param Request $request
      * @param Project $project
      *
-     * @return RedirectResponse|JsonResponse
-     *
      * @throws \Exception
+     *
+     * @return RedirectResponse|JsonResponse
      */
     public function deleteAction(Request $request, Project $project)
     {
