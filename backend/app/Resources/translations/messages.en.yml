@@ -2176,3 +2176,8 @@ email.workspace.content: "You will find three projects of different sizes: The c
 warning.scan_qr_code: 'After you click save, the QR code needed for 2 factor authentication will appear! Remember to scan the QR code before logging out or you will not be able to login again.'
 message.theme_switcher.light: 'Switch to Dark'
 message.theme_switcher.dark: 'Switch to Light'
+message.daily: Daily
+message.weekly: Weekly
+message.biweekly: BiWeekly
+message.monthly: Monthly
+label.status_report_trend_chart_agg_type: 'Status Report Trend Chart'

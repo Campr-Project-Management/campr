@@ -40,3 +40,10 @@ services:
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: form.type }
+
+    app.settings.form.type.settings:
+        class: Component\Settings\Form\Type\SettingsType
+        arguments:
+            - '@app.settings.schema.registry'
+        tags:
+            - { name: form.type }

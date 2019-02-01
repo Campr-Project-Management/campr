@@ -132,6 +132,13 @@
                                 'label': 'label.max_upload_file_size'|trans,
                             }
                         ) }}
+                        {{ form_widget(
+                            form.configuration.statusReportTrendChartAggregatorType,
+                            {
+                                'attr': {'class': 'selectpicker'},
+                                'label': 'label.status_report_trend_chart_agg_type'|trans,
+                            }
+                        ) }}
                         {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
                         <span class="hidden">{{ form_row(form._token) }}</span>
