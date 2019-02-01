@@ -3,7 +3,9 @@
 namespace Component\StatusReport\Graph;
 
 use AppBundle\Entity\StatusReport;
+use Component\StatusReport\Aggregator\StatusReportsAggregatorInterface;
 use Component\TrafficLight\TrafficLight;
+use Symfony\Component\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 class ProjectTrafficLightTrendGraphDataGenerator
@@ -28,16 +30,44 @@ class ProjectTrafficLightTrendGraphDataGenerator
             TrafficLight::RED => -1,
         ],
     ];
+    /**
+     * @var array
+     */
+    private $aggregators = [];
 
     /**
-     * @param array $reports
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * ProjectTrafficLightTrendGraphDataGenerator constructor.
+     *
+     * @param StatusReportsAggregatorInterface[] $aggregators
+     * @param TranslatorInterface                $translator
+     */
+    public function __construct(array $aggregators, TranslatorInterface $translator)
+    {
+        foreach ($aggregators as $aggregator) {
+            $this->aggregators[$aggregator->getType()] = $aggregator;
+        }
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param array  $reports
+     * @param string $aggregatorType
      *
      * @return array
      */
-    public function generate(array $reports): array
-    {
+    public function generate(
+        array $reports,
+        string $aggregatorType = StatusReportsAggregatorInterface::TYPE_WEEKLY
+    ): array {
         $data = [];
-        $reports = $this->prepareReports($reports);
+        $reports = $this->stripInvalidReports($reports);
+        $aggregator = $this->getAggregator($aggregatorType);
+        $reports = $aggregator->aggregate($reports);
         if (count($reports) < 2) {
             return $data;
         }
@@ -52,7 +82,7 @@ class ProjectTrafficLightTrendGraphDataGenerator
 
             $data[] = [
                 'date' => $report->getCreatedAt()->format('Y-m-d'),
-                'week' => $report->getCreatedAt()->format('W'),
+                'label' => $this->getLabel($report, $aggregator),
                 'value' => $total,
                 'color' => (new TrafficLight($report->getProjectTrafficLight()))->__toString(),
             ];
@@ -63,16 +93,52 @@ class ProjectTrafficLightTrendGraphDataGenerator
     }
 
     /**
-     * @param StatusReport[] $reports
+     * @param StatusReport                     $statusReport
+     * @param StatusReportsAggregatorInterface $aggregator
      *
-     * @return StatusReport[]
+     * @return string
      */
-    private function prepareReports(array $reports): array
+    private function getLabel(StatusReport $statusReport, StatusReportsAggregatorInterface $aggregator): string
     {
-        $reports = $this->stripInvalidReports($reports);
-        $reports = $this->sortByDate($reports);
+        if (StatusReportsAggregatorInterface::TYPE_DAILY === $aggregator->getType()) {
+            return $statusReport->getCreatedAt()->format('d/m/Y');
+        }
 
-        return $this->getWeeklyReports($reports);
+        if (in_array(
+            $aggregator->getType(),
+            [StatusReportsAggregatorInterface::TYPE_WEEKLY, StatusReportsAggregatorInterface::TYPE_BIWEEKLY]
+        )) {
+            return sprintf(
+                '%s %s',
+                $this->translator->trans('message.week'),
+                $statusReport->getCreatedAt()->format('W, y')
+            );
+        }
+
+        if (StatusReportsAggregatorInterface::TYPE_MONTHLY === $aggregator->getType()) {
+            return $statusReport->getCreatedAt()->format('M y');
+        }
+
+        throw new \InvalidArgumentException('Invalid aggregator type: %s', $aggregator->getType());
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return StatusReportsAggregatorInterface
+     */
+    private function getAggregator(string $type): StatusReportsAggregatorInterface
+    {
+        Assert::true(
+            isset($this->aggregators[$type]),
+            sprintf(
+                'Unknown aggregator type: %s; Must be one of: %s',
+                $type,
+                implode(', ', array_keys($this->aggregators))
+            )
+        );
+
+        return $this->aggregators[$type];
     }
 
     /**
@@ -88,40 +154,6 @@ class ProjectTrafficLightTrendGraphDataGenerator
                 return !is_null($report->getProjectTrafficLight());
             }
         );
-    }
-
-    /**
-     * @param StatusReport[] $reports
-     *
-     * @return StatusReport[]
-     */
-    private function getWeeklyReports(array $reports): array
-    {
-        $reports = $this->sortByDate($reports);
-        $results = [];
-        foreach ($reports as $report) {
-            $week = $report->getWeekNumber();
-            $results[$week] = $report;
-        }
-
-        return array_values($results);
-    }
-
-    /**
-     * @param StatusReport[] $reports
-     *
-     * @return StatusReport[]
-     */
-    private function sortByDate(array $reports): array
-    {
-        usort(
-            $reports,
-            function (StatusReport $report1, StatusReport $report2) {
-                return $report1->getCreatedAt() <=> $report2->getCreatedAt();
-            }
-        );
-
-        return $reports;
     }
 
     /**

@@ -153,7 +153,7 @@
 
             <hr class="double">
 
-            <template v-if="phases || milestones">
+            <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
                 <div class="row">
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
@@ -167,7 +167,7 @@
                             <status-report-timeline
                                     style="width: 90%;"
                                     :phases="phases"
-                                    :milestones="milestones" />
+                                    :milestones="milestones"/>
                         </no-ssr>
                     </div>
                 </div>
@@ -175,82 +175,94 @@
                 <hr class="double">
             </template>
 
-            <div class="row" v-if="internalCostsGraphData">
-                <div class="col-md-12">
-                    <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
-                    <div class="marginbottom20" style="text-align: center">
-                        <traffic-light :value="internalCostsTrafficLight"/>
+            <template v-if="isInternalCostsModuleActive && internalCostsGraphData">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
+                        <div class="marginbottom20" style="text-align: center">
+                            <traffic-light :value="internalCostsTrafficLight"/>
+                        </div>
+
+                        <no-ssr>
+                            <chart
+                                    theme="print"
+                                    :data="internalCostsGraphData"
+                                    style="width: 90%;"/>
+                        </no-ssr>
+                    </div>
+                </div>
+
+                <hr class="double">
+            </template>
+
+            <template v-if="isExternalCostsModuleActive && externalCostsGraphData">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="margintop0">{{ translate('message.external_costs') }}</h3>
+                        <div class="marginbottom20" style="text-align: center">
+                            <traffic-light :value="externalCostsTrafficLight"/>
+                        </div>
+
+                        <no-ssr>
+                            <chart
+                                    theme="print"
+                                    :data="externalCostsGraphData"
+                                    style="width: 90%;"/>
+                        </no-ssr>
+                    </div>
+                </div>
+
+                <hr class="double">
+            </template>
+
+            <template v-if="isRiskAndOpportunitiesModuleActive">
+                <div class="row ro-columns">
+                    <div class="col-md-6 col-xs-6 dark-border-right">
+                        <no-ssr>
+                            <opportunities-grid :value="opportunitiesGrid" :currency="currency"/>
+                        </no-ssr>
                     </div>
 
-                    <no-ssr>
-                        <chart
-                                theme="print"
-                                :data="internalCostsGraphData"
-                                style="width: 90%;"/>
-                    </no-ssr>
-                </div>
-            </div>
-
-            <hr class="double">
-
-            <div class="row" v-if="externalCostsGraphData">
-                <div class="col-md-12">
-                    <h3 class="margintop0">{{ translate('message.external_costs') }}</h3>
-                    <div class="marginbottom20" style="text-align: center">
-                        <traffic-light :value="externalCostsTrafficLight"/>
+                    <div class="col-md-6 col-xs-6">
+                        <no-ssr>
+                            <risks-grid :value="risksGrid" :currency="currency"/>
+                        </no-ssr>
                     </div>
-
-                    <no-ssr>
-                        <chart
-                                theme="print"
-                                :data="externalCostsGraphData"
-                                style="width: 90%;"/>
-                    </no-ssr>
-                </div>
-            </div>
-
-            <hr class="double">
-
-            <div class="row ro-columns">
-                <div class="col-md-6 col-xs-6 dark-border-right">
-                    <no-ssr>
-                        <opportunities-grid :value="opportunitiesGrid" :currency="currency"/>
-                    </no-ssr>
                 </div>
 
-                <div class="col-md-6 col-xs-6">
-                    <no-ssr>
-                        <risks-grid :value="risksGrid" :currency="currency"/>
-                    </no-ssr>
+                <hr class="double">
+            </template>
+
+            <template v-if="isTodosModuleActive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="margintop0">{{ translate('message.todos') }}</h3>
+                        <status-report-todos :items="todosItems"/>
+                    </div>
                 </div>
-            </div>
 
-            <hr class="double">
+                <hr class="double">
+            </template>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="margintop0">{{ translate('message.todos') }}</h3>
-                    <status-report-todos :items="todosItems"/>
+            <template v-if="isDecisionsModuleActive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="margintop0">{{ translate('message.decisions') }}</h3>
+                        <status-report-decisions :items="decisionsItems"/>
+                    </div>
                 </div>
-            </div>
 
-            <hr class="double">
+                <hr class="double">
+            </template>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="margintop0">{{ translate('message.decisions') }}</h3>
-                    <status-report-decisions :items="decisionsItems"/>
+            <template v-if="isInfosModuleActive">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="margintop0">{{ translate('message.infos') }}</h3>
+                        <status-report-infos :items="infosItems"/>
+                    </div>
                 </div>
-            </div>
-
-            <hr class="double">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <h3 class="margintop0">{{ translate('message.infos') }}</h3>
-                    <status-report-infos :items="infosItems"/>
-                </div>
-            </div>
+            </template>
             <br>
             <br>
         </div>
@@ -264,14 +276,24 @@
     import TrafficLight from '~/components/_common/TrafficLight.vue';
     import CircleChart from '~/components/_common/_charts/CircleChart';
     import ProgressBarChart from '~/components/_common/_charts/ProgressBarChart';
-    import StatusReportTrendChart from '../../../../../../frontend/src/components/Projects/StatusReports/Create/TrendChart';
+    import StatusReportTrendChart
+        from '../../../../../../frontend/src/components/Projects/StatusReports/Create/TrendChart';
     import StatusReportSchedule from '~/components/Projects/StatusReports/Create/Schedule';
     import StatusReportTimeline from '~/components/Projects/StatusReports/Create/Timeline';
     import StatusReportTodos from '~/components/Projects/StatusReports/Create/Todos';
     import StatusReportDecisions from '~/components/Projects//StatusReports/Create/Decisions';
-    import StatusReportInfos from '~/components/Projects/StatusReports/Create/Infos'
+    import StatusReportInfos from '~/components/Projects/StatusReports/Create/Infos';
     import OpportunitiesGrid from '~/components/Projects/StatusReports/Create/OpportunitiesGrid';
     import RisksGrid from '~/components/Projects/StatusReports/Create/RisksGrid';
+    import {
+        MODULE_PHASES_AND_MILESTONES,
+        MODULE_INTERNAL_COSTS,
+        MODULE_EXTERNAL_COSTS,
+        MODULE_RISKS_AND_OPPORTUNITIES,
+        MODULE_TODOS,
+        MODULE_DECISIONS,
+        MODULE_INFOS,
+    } from '../../../../../../frontend/src/helpers/project-module';
 
     export default {
         components: {
@@ -308,7 +330,9 @@
                 // res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
 
                 // status report trend graph
-                res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`, query.key);
+                res = await Vue.doFetch(
+                    `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`,
+                    query.key);
                 if (res.status === 200) {
                     statusReportTrendGraph = await res.json();
                 }
@@ -324,9 +348,7 @@
                             return;
                         }
 
-                        let projectUser = project
-                            .projectUsers
-                            .filter(pu => {
+                        let projectUser = project.projectUsers.filter(pu => {
                                 return pu.user === item.responsibilityId;
                             })
                         ;
@@ -350,7 +372,33 @@
                 },
             };
         },
+        methods: {
+            isModuleActive(module) {
+                return this.report && this.report.modules && this.report.modules.indexOf(module) >= 0;
+            },
+        },
         computed: {
+            isPhasesAndMilestoneModuleActive() {
+                return this.isModuleActive(MODULE_PHASES_AND_MILESTONES);
+            },
+            isInternalCostsModuleActive() {
+                return this.isModuleActive(MODULE_INTERNAL_COSTS);
+            },
+            isExternalCostsModuleActive() {
+                return this.isModuleActive(MODULE_EXTERNAL_COSTS);
+            },
+            isRiskAndOpportunitiesModuleActive() {
+                return this.isModuleActive(MODULE_RISKS_AND_OPPORTUNITIES);
+            },
+            isTodosModuleActive() {
+                return this.isModuleActive(MODULE_TODOS);
+            },
+            isInfosModuleActive() {
+                return this.isModuleActive(MODULE_INFOS);
+            },
+            isDecisionsModuleActive() {
+                return this.isModuleActive(MODULE_DECISIONS);
+            },
             projectName() {
                 return this.report.projectName;
             },
@@ -532,7 +580,7 @@
             currency() {
                 return this.snapshot.currency.symbol;
             },
-        }
+        },
     };
 </script>
 

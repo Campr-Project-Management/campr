@@ -3,6 +3,7 @@
 namespace AppBundle;
 
 use AppBundle\DependencyInjection\CompilerPass\RegisterRepositoryPass;
+use AppBundle\DependencyInjection\CompilerPass\RegisterSettingsSchemasPass;
 use AppBundle\DependencyInjection\ContainerBuilder\DynamicDatabaseConnectionPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -19,5 +20,6 @@ class AppBundle extends Bundle
 
         $container->addCompilerPass(new DynamicDatabaseConnectionPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
         $container->addCompilerPass(new RegisterRepositoryPass());
+        $container->addCompilerPass(new RegisterSettingsSchemasPass());
     }
 }
