@@ -273,7 +273,7 @@ class Project implements ProjectInterface, TimestampableInterface
     private $labels;
 
     /**
-     * @var null|Label
+     * @var Label|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Label")
      * @ORM\JoinColumns({
@@ -1953,7 +1953,7 @@ class Project implements ProjectInterface, TimestampableInterface
      */
     public function getConfiguration()
     {
-        return $this->configuration;
+        return (array) $this->configuration;
     }
 
     /**
@@ -1963,7 +1963,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @return Project
      */
-    public function setConfiguration($configuration)
+    public function setConfiguration(array $configuration = null)
     {
         $this->configuration = $configuration;
 
