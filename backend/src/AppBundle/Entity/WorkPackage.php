@@ -505,6 +505,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
         $this->trafficLight = TrafficLight::GREEN;
         $this->phaseChildren = new ArrayCollection();
         $this->milestoneChildren = new ArrayCollection();
+        $this->type = self::TYPE_TASK;
     }
 
     public function __toString()
@@ -561,8 +562,8 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
         }
 
         switch ($this->type) {
-//            case self::TYPE_PHASE: // placeholder
-//                break;
+            //            case self::TYPE_PHASE: // placeholder
+            //                break;
             case self::TYPE_MILESTONE:
                 if ($this->phase) {
                     return $this->phase->getPUIDForDisplay().'.'.$this->puid;
@@ -1935,12 +1936,14 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
         }
         if ($futureDuration > $this->getParent()->getDuration()) {
             $context
-                ->buildViolation('invalid.work_package.duration', [
-                    '%duration%' => $this->getDuration(),
-                ])
+                ->buildViolation(
+                    'invalid.work_package.duration',
+                    [
+                        '%duration%' => $this->getDuration(),
+                    ]
+                )
                 ->atPath('duration')
-                ->addViolation()
-            ;
+                ->addViolation();
         }
     }
 
@@ -2337,8 +2340,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
                 function (Cost $cost) {
                     return $cost->isOPEX();
                 }
-            )
-        ;
+            );
 
         /** @var Cost $cost */
         foreach ($costs as $cost) {
@@ -2362,8 +2364,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
                 function (Cost $cost) {
                     return $cost->isCAPEX();
                 }
-            )
-        ;
+            );
 
         /** @var Cost $cost */
         foreach ($costs as $cost) {

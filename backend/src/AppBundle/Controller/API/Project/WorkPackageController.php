@@ -91,7 +91,7 @@ class WorkPackageController extends ApiController
      *
      * @return JsonResponse
      */
-    public function createTaskAction(Request $request, Project $project): JsonResponse
+    public function createAction(Request $request, Project $project): JsonResponse
     {
         $form = $this->createForm(
             ApiCreateType::class,
