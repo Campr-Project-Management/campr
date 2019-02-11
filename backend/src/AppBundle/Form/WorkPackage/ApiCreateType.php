@@ -4,7 +4,6 @@ namespace AppBundle\Form\WorkPackage;
 
 use AppBundle\Entity\Media;
 use AppBundle\Form\Cost\ApiCreateType as CostCreateType;
-use AppBundle\Form\WorkPackage\BaseType as WorkPackageBaseType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,16 +31,7 @@ class ApiCreateType extends CreateType
                     'by_reference' => false,
                 ]
             )
-            ->add(
-                'children',
-                CollectionType::class,
-                [
-                    'entry_type' => WorkPackageBaseType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ]
-            )
+            ->add('children', ChildrenType::class)
             ->add(
                 'medias',
                 EntityType::class,
@@ -49,8 +39,7 @@ class ApiCreateType extends CreateType
                     'class' => Media::class,
                     'multiple' => true,
                 ]
-            )
-        ;
+            );
     }
 
     /**
