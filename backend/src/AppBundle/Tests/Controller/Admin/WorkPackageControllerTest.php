@@ -84,7 +84,6 @@ class WorkPackageControllerTest extends BaseController
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
-        $this->assertContains('The type field should not be blank', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

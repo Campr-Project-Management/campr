@@ -104,6 +104,11 @@ class WorkPackageSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $this->ensureWorkPackageHasStatus($wp);
+        foreach ($wp->getChildren() as $child) {
+            $this->ensureWorkPackageHasStatus($child);
+        }
+
         $this->setWorkPackageChildrenSchedule($wp);
     }
 
@@ -140,6 +145,10 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         } elseif ($isStatusChanged) {
             $this->onStatusChanged($wp);
         }
+
+        foreach ($wp->getChildren() as $child) {
+            $this->ensureWorkPackageHasStatus($child);
+        }
     }
 
     /**
@@ -156,13 +165,16 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->workPackageRepository->add($wp);
 
         if ($wp->getProject()) {
-            $this->redis->rpush(RedisQueueManagerCommand::DEFAULT, [
-                sprintf(
-                    '--env=%s app:update:puids %s',
-                    $this->env,
-                    $wp->getProjectId()
-                ),
-            ]);
+            $this->redis->rpush(
+                RedisQueueManagerCommand::DEFAULT,
+                [
+                    sprintf(
+                        '--env=%s app:update:puids %s',
+                        $this->env,
+                        $wp->getProjectId()
+                    ),
+                ]
+            );
         }
     }
 
@@ -306,5 +318,23 @@ class WorkPackageSubscriber implements EventSubscriberInterface
                 $child->setForecastFinishAt($wp->getForecastFinishAt());
             }
         }
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function ensureWorkPackageHasStatus(WorkPackage $wp)
+    {
+        $status = $wp->getWorkPackageStatus();
+        if ($status) {
+            return;
+        }
+
+        $status = $this->workPackageStatusRepository->getDefault();
+        if (!$status) {
+            return;
+        }
+
+        $wp->setWorkPackageStatus($status);
     }
 }

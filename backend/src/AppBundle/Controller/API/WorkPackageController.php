@@ -426,7 +426,7 @@ class WorkPackageController extends ApiController
      *
      * @param WorkPackage $workPackage
      *
-     * @return xml file
+     * @return Response
      */
     public function exportAction(WorkPackage $workPackage)
     {
