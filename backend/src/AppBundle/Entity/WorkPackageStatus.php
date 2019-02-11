@@ -31,6 +31,8 @@ class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
     const CODE_COMPLETED = 'completed';
     const CODE_CLOSED = 'closed';
 
+    const DEFAULT_STATUS_CODE = self::CODE_OPEN;
+
     /**
      * @var int
      *

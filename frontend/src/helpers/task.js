@@ -146,7 +146,6 @@ export const createFormData = (data) => {
         // Subtasks
         for (let i = 0; i < data.subtasks.length; i++) {
             formData.append('children[' + i + '][name]', data.subtasks[i].description);
-            formData.append('children[' + i + '][type]', 2);
         }
     }
 
