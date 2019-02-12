@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="tree_container"></div>
-        <alert-modal v-if="showSaveFailed" @close="showSaveFailed = false" :body="errorMessage" header="message.error" />
+        <alert-modal v-if="showSaveFailed" @close="showSaveFailed = false" :body="errorMessage" header="message.error"/>
     </div>
 </template>
 
@@ -274,7 +274,7 @@ export default {
 
     .link {
         fill: none;
-        stroke: #8794c4;
+        stroke: $lightColor;
         stroke-width: 1px;
     }
 
@@ -309,7 +309,7 @@ export default {
         }
 
         .top-menu {
-            color: #ffffff;
+            color: $middleColor;
             background: transparent;
             height: auto;
             min-height: inherit;
