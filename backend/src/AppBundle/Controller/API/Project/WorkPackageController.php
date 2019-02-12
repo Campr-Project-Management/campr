@@ -93,9 +93,12 @@ class WorkPackageController extends ApiController
      */
     public function createAction(Request $request, Project $project): JsonResponse
     {
+        $wp = new WorkPackage();
+        $wp->setProject($project);
+
         $form = $this->createForm(
             ApiCreateType::class,
-            new WorkPackage(),
+            $wp,
             [
                 'entity_manager' => $this->getDoctrine()->getManager(),
             ]

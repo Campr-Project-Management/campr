@@ -127,6 +127,7 @@ class WorkPackageControllerTest extends BaseController
         $form['create[forecastStartAt]'] = '01-01-2018';
         $form['create[forecastFinishAt]'] = '02-01-2018';
         $form['create[responsibility]'] = 3;
+        $form['create[project]'] = 1;
 
         $this->client->submit($form);
         $response = $this->client->getResponse();
