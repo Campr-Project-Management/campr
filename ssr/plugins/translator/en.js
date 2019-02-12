@@ -219,6 +219,7 @@ module.exports = function (Translator) {
     Translator.add("required.terms_and_conditions", "You must agree to Term and Conditions", "validators", "en");
     Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
     Translator.add("not_blank.meeting_category", "Please select a category", "validators", "en");
+    Translator.add("work_package.assignment.rasci_user", "%name% is not a RASCI user", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
     Translator.add("Authentication request could not be processed due to a system problem.", "Authentication request could not be processed due to a system problem.", "security", "en");
@@ -284,7 +285,7 @@ module.exports = function (Translator) {
     Translator.add("add.programme", "Add new programme", "messages", "en");
     Translator.add("add.project", "Add new project", "messages", "en");
     Translator.add("add.project_category", "Add new project category", "messages", "en");
-    Translator.add("add.project_close_down", "Add new project close down", "messages", "en");
+    Translator.add("add.project_close_down", "Add new project close out", "messages", "en");
     Translator.add("add.project_complexity", "Add new project complexity", "messages", "en");
     Translator.add("add.project_cost_type", "Add new project cost type", "messages", "en");
     Translator.add("add.project_deliverable", "Add new project deliverable", "messages", "en");
@@ -719,7 +720,7 @@ module.exports = function (Translator) {
     Translator.add("label.progress", "Progress", "messages", "en");
     Translator.add("label.project", "Project", "messages", "en");
     Translator.add("label.project_category", "Project Category", "messages", "en");
-    Translator.add("label.project_close_down", "Project Close Down", "messages", "en");
+    Translator.add("label.project_close_down", "Project Close Out", "messages", "en");
     Translator.add("label.project_complexity", "Project Complexity", "messages", "en");
     Translator.add("label.project_department", "Project Department", "messages", "en");
     Translator.add("label.project_management", "Project Management", "messages", "en");
@@ -916,7 +917,7 @@ module.exports = function (Translator) {
     Translator.add("message.clear_selection", "Clear selection", "messages", "en");
     Translator.add("message.click", "Click", "messages", "en");
     Translator.add("message.close", "Close", "messages", "en");
-    Translator.add("message.close_down_project", "Close Down Project", "messages", "en");
+    Translator.add("message.close_down_project", "Close Out", "messages", "en");
     Translator.add("message.close_down_report", "Close Down Report", "messages", "en");
     Translator.add("message.close_task", "Close Task", "messages", "en");
     Translator.add("message.close_team", "Close Team", "messages", "en");
@@ -972,7 +973,7 @@ module.exports = function (Translator) {
     Translator.add("message.delete_meeting", "Delete Meeting", "messages", "en");
     Translator.add("message.delete_milestone", "Delete Milestone", "messages", "en");
     Translator.add("message.delete_objective", "Delete objective", "messages", "en");
-    Translator.add("message.delete_opportunity", "Delete Opoortunity", "messages", "en");
+    Translator.add("message.delete_opportunity", "Delete Opportunity", "messages", "en");
     Translator.add("message.delete_phase", "Delete Phase", "messages", "en");
     Translator.add("message.delete_remaining_action", "Delete remaining action", "messages", "en");
     Translator.add("message.delete_risk", "Delete Risk", "messages", "en");
@@ -1145,7 +1146,7 @@ module.exports = function (Translator) {
     Translator.add("message.project_create_step3", "Step 3: Project Builder", "messages", "en");
     Translator.add("message.project_create_wizard", "Project Creation Wizard", "messages", "en");
     Translator.add("message.project_currency", "Project Currency", "messages", "en");
-    Translator.add("message.project_dashboard", "Project Dashboard", "messages", "en");
+    Translator.add("message.project_dashboard", "Dashboard", "messages", "en");
     Translator.add("message.project_decisions", "Project Decisions", "messages", "en");
     Translator.add("message.project_deliverables", "Project Deliverables", "messages", "en");
     Translator.add("message.project_description", "Project Description", "messages", "en");
@@ -1202,7 +1203,7 @@ module.exports = function (Translator) {
     Translator.add("message.results_out_of", "results out of", "messages", "en");
     Translator.add("message.return", "to return to your original user.", "messages", "en");
     Translator.add("message.risks", "Risks", "messages", "en");
-    Translator.add("message.risks_oportunities", "Risks & Oportunities", "messages", "en");
+    Translator.add("message.risks_oportunities", "Risks & Opportunities", "messages", "en");
     Translator.add("message.role", "Role", "messages", "en");
     Translator.add("message.roles", "Roles", "messages", "en");
     Translator.add("message.sales", "Sales", "messages", "en");
@@ -1289,7 +1290,7 @@ module.exports = function (Translator) {
     Translator.add("message.your_teams", "Your teams", "messages", "en");
     Translator.add("message.your_workspaces", "Your workspaces", "messages", "en");
     Translator.add("modules.close_down_project.description", "The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.", "messages", "en");
-    Translator.add("modules.close_down_project.title", "Close Down Project", "messages", "en");
+    Translator.add("modules.close_down_project.title", "Close Out Project", "messages", "en");
     Translator.add("modules.contract.description", "The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.", "messages", "en");
     Translator.add("modules.contract.title", "Contract", "messages", "en");
     Translator.add("modules.decisions.description", "In the \"Decisions\"-module, you can document the decisions made during project execution.", "messages", "en");
@@ -1311,7 +1312,7 @@ module.exports = function (Translator) {
     Translator.add("modules.rasci_matrix.description", "A responsibility assignment matrix describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes. RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportable, Consulted, and Informed.", "messages", "en");
     Translator.add("modules.rasci_matrix.title", "Rasci matrix", "messages", "en");
     Translator.add("modules.risks_and_opportunities.description", "Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to react proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.", "messages", "en");
-    Translator.add("modules.risks_and_opportunities.title", "Risks & Oportunities", "messages", "en");
+    Translator.add("modules.risks_and_opportunities.title", "Risks & Opportunities", "messages", "en");
     Translator.add("modules.status_report.description", "The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions.", "messages", "en");
     Translator.add("modules.status_report.title", "Status Report", "messages", "en");
     Translator.add("modules.task_management.description", "The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are a geographical area, engineering discipline, technology, or the time needed to accomplish them.", "messages", "en");
@@ -1482,7 +1483,7 @@ module.exports = function (Translator) {
     Translator.add("subtitle.programme", "List of programmes", "messages", "en");
     Translator.add("subtitle.project", "List of projects", "messages", "en");
     Translator.add("subtitle.project_category", "List of project categories", "messages", "en");
-    Translator.add("subtitle.project_close_down", "List of project close downs", "messages", "en");
+    Translator.add("subtitle.project_close_down", "List of project close outs", "messages", "en");
     Translator.add("subtitle.project_complexity", "List of project complexities", "messages", "en");
     Translator.add("subtitle.project_cost_type", "List of project cost types", "messages", "en");
     Translator.add("subtitle.project_deliverable", "List of project deliverables", "messages", "en");
@@ -1678,10 +1679,10 @@ module.exports = function (Translator) {
     Translator.add("success.project_category.delete.from_data_table", "Project category with ID", "messages", "en");
     Translator.add("success.project_category.delete.from_edit", "Project category successfully deleted!", "messages", "en");
     Translator.add("success.project_category.edit", "Project category successfully edited!", "messages", "en");
-    Translator.add("success.project_close_down.create", "Project Close Down successfully created!", "messages", "en");
-    Translator.add("success.project_close_down.delete.from_data_table", "Project Close Down config with ID", "messages", "en");
-    Translator.add("success.project_close_down.delete.from_edit", "Project Close Down successfully deleted!", "messages", "en");
-    Translator.add("success.project_close_down.edit", "Project Close Down successfully edited!", "messages", "en");
+    Translator.add("success.project_close_down.create", "Project Close Out successfully created!", "messages", "en");
+    Translator.add("success.project_close_down.delete.from_data_table", "Project Close Out config with ID", "messages", "en");
+    Translator.add("success.project_close_down.delete.from_edit", "Project Close Out successfully deleted!", "messages", "en");
+    Translator.add("success.project_close_down.edit", "Project Close Out successfully edited!", "messages", "en");
     Translator.add("success.project_complexity.create", "Projektkomplexit\u00e4t erfolgreich erstellt!", "messages", "en");
     Translator.add("success.project_complexity.delete.from_data_table", "Project complexity with ID", "messages", "en");
     Translator.add("success.project_complexity.delete.from_edit", "Project complexity successfully deleted!", "messages", "en");
@@ -2178,9 +2179,9 @@ module.exports = function (Translator) {
     Translator.add("title.project_category.create", "Create new project category", "messages", "en");
     Translator.add("title.project_category.edit", "Edit project category", "messages", "en");
     Translator.add("title.project_category.list", "Category", "messages", "en");
-    Translator.add("title.project_close_down.create", "Create new project close down", "messages", "en");
-    Translator.add("title.project_close_down.edit", "Edit project close down", "messages", "en");
-    Translator.add("title.project_close_down.list", "Project Close Down", "messages", "en");
+    Translator.add("title.project_close_down.create", "Create new project close out", "messages", "en");
+    Translator.add("title.project_close_down.edit", "Edit project close out", "messages", "en");
+    Translator.add("title.project_close_down.list", "Project Close Out", "messages", "en");
     Translator.add("title.project_complexity.create", "Create new project complexity", "messages", "en");
     Translator.add("title.project_complexity.edit", "Edit project complexity", "messages", "en");
     Translator.add("title.project_complexity.list", "Complexity", "messages", "en");
@@ -2426,6 +2427,18 @@ module.exports = function (Translator) {
     Translator.add("message.biweekly", "BiWeekly", "messages", "en");
     Translator.add("message.monthly", "Monthly", "messages", "en");
     Translator.add("label.status_report_trend_chart_agg_type", "Status Report Trend Chart", "messages", "en");
+    Translator.add("twitter.tags.site.default", "@campr", "messages", "en");
+    Translator.add("twitter.tags.creator.default", "@campr", "messages", "en");
+    Translator.add("twitter.tags.card.default", "summary_large_image", "messages", "en");
+    Translator.add("twitter.tags.title.default", "C A M P R", "messages", "en");
+    Translator.add("twitter.tags.description.default", "Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.", "messages", "en");
+    Translator.add("facebook.tags.title.default", "C A M P R", "messages", "en");
+    Translator.add("facebook.tags.description.default", "Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.", "messages", "en");
+    Translator.add("facebook.tags.type.default", "website", "messages", "en");
+    Translator.add("table_header_cell.has_marketing_consent", "Marketing Consent?", "messages", "en");
+    Translator.add("portal.footer.imprint", "Imprint", "messages", "en");
+    Translator.add("portal.footer.status", "Status", "messages", "en");
+    Translator.add("portal.footer.copyright", "&copy; %year% Campr. All rights reserved.", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");

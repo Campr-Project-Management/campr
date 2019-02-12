@@ -1960,9 +1960,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @return $this
      */
-    public function setExternalActualCost($externalActualCost)
+    public function setExternalActualCost(float $externalActualCost = null)
     {
-        $this->externalActualCost = $externalActualCost;
+        $this->externalActualCost = (float) $externalActualCost;
 
         return $this;
     }
@@ -1980,9 +1980,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @return $this
      */
-    public function setExternalForecastCost($externalForecastCost)
+    public function setExternalForecastCost(float $externalForecastCost = null)
     {
-        $this->externalForecastCost = $externalForecastCost;
+        $this->externalForecastCost = (float) $externalForecastCost;
 
         return $this;
     }
@@ -2000,9 +2000,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @return $this
      */
-    public function setInternalActualCost($internalActualCost)
+    public function setInternalActualCost(float $internalActualCost = null)
     {
-        $this->internalActualCost = $internalActualCost;
+        $this->internalActualCost = (float) $internalActualCost;
 
         return $this;
     }
@@ -2020,9 +2020,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @return $this
      */
-    public function setInternalForecastCost($internalForecastCost)
+    public function setInternalForecastCost(float $internalForecastCost = null)
     {
-        $this->internalForecastCost = $internalForecastCost;
+        $this->internalForecastCost = (float) $internalForecastCost;
 
         return $this;
     }

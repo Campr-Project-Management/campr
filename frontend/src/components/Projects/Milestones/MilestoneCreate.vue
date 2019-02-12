@@ -57,7 +57,11 @@
                     <div class="row">
                         <div class="form-group last-form-group">
                             <div class="col-md-12">
-                                <member-search v-model="details.responsible" v-bind:placeholder="translateText('placeholder.responsible')" v-bind:singleSelect="true"></member-search>
+                                <select-field
+                                        :allow-clear="true"
+                                        :title="translate('label.responsible')"
+                                        :options="responsibilityOptions"
+                                        v-model="details.responsibility"/>
                                 <error at-path="responsibility" />
                             </div>
                         </div>
@@ -123,8 +127,13 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectUsers', 'getWorkPackageStatuses', 'getProjectPhases',
-            'createProjectMilestone', 'getProjectMilestone', 'editProjectMilestone', 'emptyValidationMessages',
+            'getProjectUsers',
+            'getWorkPackageStatuses',
+            'getProjectPhases',
+            'createProjectMilestone',
+            'getProjectMilestone',
+            'editProjectMilestone',
+            'emptyValidationMessages',
         ]),
         translateText: function(text) {
             return this.translate(text);
@@ -137,7 +146,7 @@ export default {
                     type: 1,
                     content: this.content,
                     scheduledFinishAt: moment(this.schedule.scheduledFinishAt).format('DD-MM-YYYY'),
-                    responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
+                    responsibility: this.details.responsibility ? this.details.responsibility.key : null,
                     workPackageStatus: this.details.status ? this.details.status.key: null,
                     phase: this.details.phase ? this.details.phase.key : null,
                     isKeyMilestone: this.isKeyMilestone,
@@ -166,7 +175,7 @@ export default {
                 name: this.name,
                 type: 1,
                 content: this.content,
-                responsibility: this.details.responsible.length > 0 ? this.details.responsible[0] : null,
+                responsibility: this.details.responsibility ? this.details.responsibility.key : null,
                 workPackageStatus: this.details.status ? this.details.status.key: null,
                 phase: this.details.phase ? this.details.phase.key : null,
                 isKeyMilestone: this.isKeyMilestone,
@@ -174,14 +183,20 @@ export default {
             this.editProjectMilestone(data);
         },
     },
-    computed: mapGetters({
-        projectUsersForSelect: 'projectUsersForSelect',
-        workPackageStatusesForMilestone: 'workPackageStatusesForMilestone',
-        projectPhasesForSelect: 'projectPhasesForSelect',
-        projectPhases: 'projectPhases',
-        milestone: 'currentMilestone',
-        validationMessages: 'validationMessages',
-    }),
+    computed: {
+        ...mapGetters([
+            'rasciProjectUsersForSelect',
+            'workPackageStatusesForMilestone',
+            'projectPhasesForSelect',
+            'projectPhases',
+        ]),
+        ...mapGetters({
+            milestone: 'currentMilestone',
+        }),
+        responsibilityOptions() {
+            return this.rasciProjectUsersForSelect;
+        },
+    },
     watch: {
         milestone(value) {
             this.name = this.milestone.name;
@@ -190,7 +205,7 @@ export default {
                 ? {key: this.milestone.workPackageStatus, label: this.translateText(this.milestone.workPackageStatusName)}
                 : null
             ;
-            this.details.responsible.push(this.milestone.responsibility);
+            this.details.responsibility = {key: this.milestone.responsibility};
             this.details.phase = this.milestone.phase
                 ? {key: this.milestone.phase, label: this.translateText(this.milestone.phaseName)}
                 : null
@@ -219,7 +234,7 @@ export default {
             },
             details: {
                 status: null,
-                responsible: [],
+                responsibility: null,
                 phase: null,
             },
             isKeyMilestone: false,

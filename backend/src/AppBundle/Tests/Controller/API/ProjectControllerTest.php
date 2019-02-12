@@ -3026,6 +3026,7 @@ class ProjectControllerTest extends BaseController
                     'scheduledStartAt' => '01-01-2018',
                     'scheduledFinishAt' => '10-01-2018',
                     'responsibility' => 3,
+                    'project' => 1,
                 ],
                 true,
                 Response::HTTP_CREATED,

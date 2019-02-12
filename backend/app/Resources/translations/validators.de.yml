@@ -135,3 +135,4 @@ is_greater_than.meeting_duration: 'Das Meeting ist nur für %duration% Minuten a
 required.terms_and_conditions: 'Sie müssen den allgemeinen Geschäftsbedingungen zustimmen'
 not_blank.industry_branch: 'Bitte geben Sie Ihre Branche an.'
 not_blank.meeting_category: 'Bitte wählen Sie eine Kategorie'
+work_package.assignment.rasci_user: '%name% ist kein RASCI-Benutzer'
