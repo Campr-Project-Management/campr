@@ -10,8 +10,6 @@ use AppBundle\Entity\Log;
 use AppBundle\Entity\Comment;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Form\WorkPackage\ApiEditType;
-use AppBundle\Form\WorkPackage\MilestoneType;
-use AppBundle\Form\WorkPackage\PhaseType;
 use AppBundle\Paginator\SerializablePagerfanta;
 use AppBundle\Repository\WorkPackageRepository;
 use AppBundle\Security\WorkPackageVoter;
@@ -193,66 +191,6 @@ class WorkPackageController extends ApiController
                 ? Response::HTTP_OK
                 : Response::HTTP_ACCEPTED
         );
-    }
-
-    /**
-     * Edit a specific WorkPackage.
-     *
-     * @Route("/phase/{id}", name="app_api_workpackage_phase_edit", options={"expose"=true})
-     * @Method({"PATCH", "PUT"})
-     *
-     * @param Request     $request
-     * @param WorkPackage $phase
-     *
-     * @return JsonResponse
-     */
-    public function editPhaseAction(Request $request, WorkPackage $phase)
-    {
-        $form = $this->createForm(PhaseType::class, $phase, ['csrf_protection' => false]);
-        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
-
-        if ($form->isValid()) {
-            $this->persistAndFlush($phase);
-
-            return $this->createApiResponse($phase, Response::HTTP_ACCEPTED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * Edit a specific WorkPackage.
-     *
-     * @Route("/milestone/{id}", name="app_api_workpackage_milestone_edit", options={"expose"=true})
-     * @Method({"PATCH", "PUT"})
-     *
-     * @param Request     $request
-     * @param WorkPackage $milestone
-     *
-     * @return JsonResponse
-     */
-    public function editMilestoneAction(Request $request, WorkPackage $milestone)
-    {
-        $form = $this->createForm(MilestoneType::class, $milestone, ['csrf_protection' => false]);
-        $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
-
-        if ($form->isValid()) {
-            $this->persistAndFlush($milestone);
-
-            return $this->createApiResponse($milestone, Response::HTTP_ACCEPTED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
     }
 
     /**

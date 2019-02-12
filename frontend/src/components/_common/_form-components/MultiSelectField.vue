@@ -2,12 +2,12 @@
     <div :class="{disabled: disabled}">
         <div class="dropdown">
             <button
-                class="btn btn-primary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                @click="updateScrollbarTop($event)"
-                ref="dropdownButton"
-                :title="title">
+                    class="btn btn-primary dropdown-toggle"
+                    type="button"
+                    data-toggle="dropdown"
+                    @click="updateScrollbarTop($event)"
+                    ref="dropdownButton"
+                    :title="title">
 
                 <span class="multi-select-field-title">{{ title }}</span>
                 <span class="caret"></span>
@@ -27,12 +27,12 @@
         <scrollbar class="multiselect-content customScrollbar">
             <div>
                 <p v-for="option in selection"
-                :key="option.key"
-                class="multiselect-option">
+                   :key="option.key"
+                   class="multiselect-option">
                     {{ option.label }}
                     <a v-if="!disabled"
-                    @click="onRemove(option)"
-                    :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
+                       @click="onRemove(option)"
+                       :title="translate('message.clear_selection')"> <i class="fa fa-times"></i></a>
                 </p>
             </div>
         </scrollbar>
@@ -40,121 +40,121 @@
 </template>
 
 <script>
-import $ from 'jquery';
-import _ from 'lodash';
+    import $ from 'jquery';
+    import _ from 'lodash';
 
-export default {
-    props: {
-        value: {
-            type: Array,
-            required: false,
-            default: () => [],
+    export default {
+        props: {
+            value: {
+                type: Array,
+                required: false,
+                default: () => [],
+            },
+            title: {
+                type: String,
+                required: false,
+                default: null,
+            },
+            options: {
+                type: Array,
+                required: true,
+                default: () => [],
+            },
+            maxItems: {
+                type: Number,
+                default: 3,
+            },
+            disabled: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
         },
-        title: {
-            type: String,
-            required: false,
-            default: null,
-        },
-        options: {
-            type: Array,
-            required: true,
-            default: () => [],
-        },
-        maxItems: {
-            type: Number,
-            default: 3,
-        },
-        disabled: {
-            type: Boolean,
-            required: false,
-            default: false,
-        },
-    },
-    computed: {
-        selection() {
-            if (!this.value) {
-                return [];
-            }
+        computed: {
+            selection() {
+                if (!this.value) {
+                    return [];
+                }
 
-            return _.uniqBy(this.options.filter((o) => _.find(this.value, ['key', o.key])), 'key');
+                return _.uniqBy(this.options.filter((o) => _.find(this.value, ['key', o.key])), 'key');
+            },
+            visibleOptions() {
+                return this.availableOptions.filter(option => !option.hidden);
+            },
+            availableOptions() {
+                let options = _.uniqBy(this.options, 'key');
+
+                return options.filter((option) => {
+                    return !_.find(this.value, ['key', option.key]);
+                });
+            },
+            scrollbarHeight() {
+                const count = Math.min(this.visibleOptions.length, this.maxItems);
+
+                return (count * this.itemHeight)
+                    + (this.marginBottom + this.marginTop)
+                    + (this.paddingBottom + this.paddingTop);
+            },
         },
-        visibleOptions() {
-            return this.availableOptions.filter(option => !option.hidden);
+        methods: {
+            onSelect(option) {
+                if (this.disabled) {
+                    return;
+                }
+
+                let value = _.uniqBy([...this.value, option], 'key');
+
+                this.$emit('input', value);
+            },
+            onRemove(option) {
+                if (this.disabled) {
+                    return;
+                }
+
+                let value = this.value.filter((selected) => selected.key !== option.key);
+
+                this.$emit('input', value);
+            },
+            updateScrollbarTop(event) {
+                if (this.disabled) {
+                    event.stopPropagation();
+                    return;
+                }
+
+                let scrollTop = $(window).scrollTop();
+                let elementOffset = $(this.$el).offset().top;
+                let currentElementOffset = (elementOffset - scrollTop);
+                let windowInnerHeight = window.innerHeight;
+
+                if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + (this.itemHeight / 1.1))) {
+                    this.scrollbarTop = -1 * this.scrollbarHeight;
+                } else {
+                    this.scrollbarTop = this.itemHeight / 1.1;
+                }
+            },
         },
-        availableOptions() {
-            let options = _.uniqBy(this.options, 'key');
+        mounted() {
+            let $ul = $(this.$refs.ul);
+            let buttonHeight = $(this.$refs.dropdownButton).outerHeight();
 
-            return options.filter((option) => {
-                return !_.find(this.value, ['key', option.key]);
-            });
+            this.itemHeight = buttonHeight * 1.1;
+            this.marginTop = parseInt($ul.css('margin-top'), 10);
+            this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+            this.paddingTop = parseInt($ul.css('padding-top'), 10);
+            this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+            this.scrollbarTop = buttonHeight;
         },
-        scrollbarHeight() {
-            const count = Math.min(this.visibleOptions.length, this.maxItems);
-
-            return (count * this.itemHeight)
-                + (this.marginBottom + this.marginTop)
-                + (this.paddingBottom + this.paddingTop);
+        data() {
+            return {
+                itemHeight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                scrollbarTop: 0,
+            };
         },
-    },
-    methods: {
-        onSelect(option) {
-            if (this.disabled) {
-                return;
-            }
-
-            let value = _.uniqBy([...this.value, option], 'key');
-
-            this.$emit('input', value);
-        },
-        onRemove(option) {
-            if (this.disabled) {
-                return;
-            }
-
-            let value = this.value.filter((selected) => selected.key !== option.key);
-
-            this.$emit('input', value);
-        },
-        updateScrollbarTop(event) {
-            if (this.disabled) {
-                event.stopPropagation();
-                return;
-            }
-
-            let scrollTop = $(window).scrollTop();
-            let elementOffset = $(this.$el).offset().top;
-            let currentElementOffset = (elementOffset - scrollTop);
-            let windowInnerHeight = window.innerHeight;
-
-            if (windowInnerHeight - currentElementOffset < (this.scrollbarHeight + this.itemHeight)) {
-                this.scrollbarTop = -1 * this.scrollbarHeight;
-            } else {
-                this.scrollbarTop = this.itemHeight;
-            }
-        },
-    },
-    mounted() {
-        let $ul = $(this.$refs.ul);
-        let $button = $(this.$refs.dropdownButton);
-
-        this.itemHeight = $button.height();
-        this.marginTop = parseInt($ul.css('margin-top'), 10);
-        this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
-        this.paddingTop = parseInt($ul.css('padding-top'), 10);
-        this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
-        this.scrollbarTop = this.itemHeight;
-    },
-    data() {
-        return {
-            itemHeight: 0,
-            paddingTop: 0,
-            paddingBottom: 0,
-            marginTop: 0,
-            marginBottom: 0,
-            scrollbarTop: 0,
-        };
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -198,7 +198,6 @@ export default {
         text-transform: uppercase;
         height: 40px;
         font-size: 11px;
-        letter-spacing: 0.1em;
         border-radius: 1px;
         text-align: left;
         padding-left: 20px;
@@ -207,7 +206,6 @@ export default {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 11px;
         letter-spacing: 1.5px;
         @include transition(all, 0.2s, ease-in);
 
@@ -233,7 +231,7 @@ export default {
         background-color: $middleColor;
         border-color: $darkColor;
 
-        &:hover, 
+        &:hover,
         &:focus {
             background-color: $middleColor;
             border-color: $darkColor;

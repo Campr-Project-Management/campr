@@ -33,6 +33,7 @@ const actions = {
      * Get all project milestones
      * @param {function} commit
      * @param {Object} apiParams
+     * @return {object}
      */
     getProjectMilestones({commit, state}, {projectId, apiParams}) {
         let paramObject = {params: {}};
@@ -62,19 +63,20 @@ const actions = {
             paramObject.params.isKeyMilestone = state.filters.isKeyMilestone;
         }
 
-        Vue.http
-            .get(Routing.generate('app_api_project_milestones', {'id': projectId}), paramObject)
-            .then((response) => {
-                if (response.status === 200) {
-                    let milestones = response.data;
-                    if (apiParams === undefined) {
-                        commit(types.SET_ALL_PROJECT_MILESTONES, {milestones});
-                    } else {
-                        commit(types.SET_PROJECT_MILESTONES, {milestones});
-                    }
+        return Vue.http.get(
+            Routing.generate('app_api_project_milestones', {'id': projectId}),
+            paramObject,
+        ).then((response) => {
+            if (response.status === 200) {
+                let milestones = response.data;
+                if (apiParams === undefined) {
+                    commit(types.SET_ALL_PROJECT_MILESTONES, {milestones});
+                } else {
+                    commit(types.SET_PROJECT_MILESTONES, {milestones});
                 }
-            }, (response) => {
-            });
+            }
+        }, (response) => {
+        });
     },
     /**
      * Creates a new project milestone
@@ -83,25 +85,22 @@ const actions = {
      * @return {object}
      */
     createProjectMilestone({commit}, data) {
-        return Vue
-                .http
-                .post(
-                    Routing.generate('app_api_project_milestones_create', {id: data.project}),
-                    JSON.stringify(data)
-                ).then((response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        router.push({name: 'project-phases-and-milestones'});
-                    }
+        return Vue.http.post(
+            Routing.generate('app_api_project_milestones_create',
+                {id: data.project}),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                router.push({name: 'project-phases-and-milestones'});
+            }
 
-                    return response;
-                }, (response) => {
-                }
-            )
-        ;
+            return response;
+        }, (response) => {
+        });
     },
     /**
      * Edit project milestone
@@ -109,20 +108,20 @@ const actions = {
      * @param {array}    data
      */
     editProjectMilestone({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_milestone_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
+        Vue.http.patch(
+            Routing.generate('app_api_workpackage_milestone_edit',
+                {id: data.project, milestone: data.id}),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                router.push({name: 'project-phases-and-milestones'});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Gets project milestone
@@ -130,8 +129,8 @@ const actions = {
      * @param {number} id
      */
     getProjectMilestone({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
+        Vue.http.get(Routing.generate('app_api_workpackage_get', {'id': id})).
+            then((response) => {
                 if (response.status === 200) {
                     let milestone = response.data;
                     commit(types.SET_MILESTONE, {milestone});
@@ -145,19 +144,18 @@ const actions = {
      * @param {integer} id
      */
     deleteProjectMilestone({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_workpackage_delete', {id: id})
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.DELETE_PROJECT_MILESTONE, {id});
-                }
-            }, (response) => {
-            });
+        Vue.http.delete(
+            Routing.generate('app_api_workpackage_delete', {id: id}),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                commit(types.DELETE_PROJECT_MILESTONE, {id});
+            }
+        }, (response) => {
+        });
     },
     setMilestonesFilters({commit}, filters) {
         commit(types.SET_MILESTONES_FILTERS, {filters});
@@ -174,7 +172,8 @@ const mutations = {
         state.milestones = milestones;
     },
     [types.SET_MILESTONES_FILTERS](state, {filters}) {
-        state.filters = !filters.clear ? Object.assign({}, state.filters, filters) : [];
+        state.filters = !filters.clear ? Object.assign({}, state.filters,
+            filters) : [];
     },
     /**
      * Sets project milestone to state
