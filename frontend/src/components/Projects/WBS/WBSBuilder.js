@@ -444,12 +444,7 @@ function getEntityTopMenuItems(entity) {
     let url = getEntityTargetUrl(entity);
 
     html.push(
-        `<a href="${url}" target="_blank" class="glyphicon glyphicon-new-window" title="Go to"></a>`);
-
-    // if (entity.isTask) {
-    //     html.push(
-    //         `<a href="javascript:void(0)" target="_blank" class="glyphicon glyphicon-menu-hamburger" title="Menu"></a>`);
-    // }
+        `<a href="${url}" target="_blank" class="glyphicon glyphicon-new-window" title="${trans('button.view')}"></a>`);
 
     return html.join('');
 }
