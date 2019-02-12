@@ -5,8 +5,7 @@
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showDeletePhaseModal = false"
                    class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="deleteSelectedPhase()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{
-                    translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="deleteSelectedPhase()" class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translateText('message.yes') }}</a>
             </div>
         </modal>
         <modal v-if="showDeleteMilestoneModal" @close="showDeleteMilestoneModal = false">

@@ -51,23 +51,24 @@ const actions = {
         if (state.projectPhaseFilters && state.projectPhaseFilters.status) {
             paramObject.params.status = state.projectPhaseFilters.status;
         }
-        if (state.projectPhaseFilters && state.projectPhaseFilters.responsible) {
+        if (state.projectPhaseFilters &&
+            state.projectPhaseFilters.responsible) {
             paramObject.params.projectUser = state.projectPhaseFilters.responsible;
         }
-        Vue.http
-            .get(Routing.generate('app_api_project_phases', {'id': projectId}),
-                paramObject,
-            ).then((response) => {
-                if (response.status === 200) {
-                    let phases = response.data;
-                    if (apiParams === undefined) {
-                        commit(types.SET_PROJECT_ALL_PHASES, {phases});
-                    } else {
-                        commit(types.SET_PROJECT_PHASES, {phases});
-                    }
+        Vue.http.get(
+            Routing.generate('app_api_project_phases', {'id': projectId}),
+            paramObject,
+        ).then((response) => {
+            if (response.status === 200) {
+                let phases = response.data;
+                if (apiParams === undefined) {
+                    commit(types.SET_PROJECT_ALL_PHASES, {phases});
+                } else {
+                    commit(types.SET_PROJECT_PHASES, {phases});
                 }
-            }, (response) => {
-            });
+            }
+        }, (response) => {
+        });
     },
     /**
      * Gets project phase
@@ -75,8 +76,8 @@ const actions = {
      * @param {number} id
      */
     getProjectPhase({commit}, id) {
-        Vue.http
-            .get(Routing.generate('app_api_workpackage_get', {'id': id})).then((response) => {
+        Vue.http.get(Routing.generate('app_api_workpackage_get', {'id': id})).
+            then((response) => {
                 if (response.status === 200) {
                     let phase = response.data;
                     commit(types.SET_PHASE, {phase});
@@ -94,25 +95,22 @@ const actions = {
      * @return {object}
      */
     createProjectPhase({commit}, data) {
-        return Vue
-                .http
-                .post(
-                    Routing.generate('app_api_project_phases_create', {id: data.project}),
-                    JSON.stringify(data)
-                ).then((response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    } else {
-                        commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                        router.push({name: 'project-phases-and-milestones'});
-                    }
+        return Vue.http.post(
+            Routing.generate('app_api_project_phases_create',
+                {id: data.project}),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                router.push({name: 'project-phases-and-milestones'});
+            }
 
-                    return response;
-                }, (response) => {
-                }
-            )
-        ;
+            return response;
+        }, (response) => {
+        });
     },
     /**
      * Edit project phase
@@ -120,20 +118,20 @@ const actions = {
      * @param {array}    data
      */
     editProjectPhase({commit}, data) {
-        Vue.http
-            .patch(
-                Routing.generate('app_api_workpackage_phase_edit', {id: data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    router.push({name: 'project-phases-and-milestones'});
-                }
-            }, (response) => {
-            });
+        Vue.http.patch(
+            Routing.generate('app_api_workpackage_phase_edit',
+                {id: data.project, phase: data.id}),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                router.push({name: 'project-phases-and-milestones'});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Delete project phase
@@ -141,19 +139,18 @@ const actions = {
      * @param {integer} id
      */
     deleteProjectPhase({commit}, id) {
-        Vue.http
-            .delete(
-                Routing.generate('app_api_workpackage_delete', {id: id})
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                    commit(types.DELETE_PROJECT_PHASE, {id});
-                }
-            }, (response) => {
-            });
+        Vue.http.delete(
+            Routing.generate('app_api_workpackage_delete', {id: id}),
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES, {messages});
+            } else {
+                commit(types.SET_VALIDATION_MESSAGES, {messages: []});
+                commit(types.DELETE_PROJECT_PHASE, {id});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Gets phase workpackages
@@ -161,17 +158,16 @@ const actions = {
      * @param {array} data
      */
     getPhaseWorkpackages({commit}, data) {
-        Vue.http
-            .get(
-                Routing.generate('app_api_phase_workpackages_get', {'id': data.id}),
-                JSON.stringify(data)
-            ).then((response) => {
-                if (response.status === 200) {
-                    let workPackages = response.data;
-                    commit(types.SET_PHASE_WORKPACKAGES, {workPackages});
-                }
-            }, (response) => {
-            });
+        Vue.http.get(
+            Routing.generate('app_api_phase_workpackages_get', {'id': data.id}),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.status === 200) {
+                let workPackages = response.data;
+                commit(types.SET_PHASE_WORKPACKAGES, {workPackages});
+            }
+        }, (response) => {
+        });
     },
 };
 
@@ -193,7 +189,8 @@ const mutations = {
         state.currentPhase = phase;
     },
     [types.SET_PHASES_FILTERS](state, {filters}) {
-        state.projectPhaseFilters = !filters.clear ? Object.assign({}, state.projectPhaseFilters, filters) : [];
+        state.projectPhaseFilters = !filters.clear ? Object.assign({},
+            state.projectPhaseFilters, filters) : [];
     },
     /**
      * Sets all project phases

@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Webmozart\Assert\Assert;
 
 class WorkPackageAssignmentsValidator extends ConstraintValidator
 {
@@ -35,6 +36,17 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
             return true;
         }
 
+        if (!$this->isRASCIUser($wp, $user)) {
+            $this
+                ->context
+                ->buildViolation($constraint->rasciUserMessage)
+                ->atPath('responsibility')
+                ->setParameter('%name%', $user->getFullName())
+                ->addViolation();
+
+            return false;
+        }
+
         $ids = $this->getAssignmentsIds($wp);
         $count = count(array_intersect($ids, [$user->getId()]));
         if ($count <= 1) {
@@ -43,11 +55,10 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
 
         $this
             ->context
-            ->buildViolation($constraint->message)
+            ->buildViolation($constraint->alreadyUsedMessage)
             ->atPath('responsibility')
             ->setParameter('%name%', $user->getFullName())
-            ->addViolation()
-        ;
+            ->addViolation();
 
         return false;
     }
@@ -65,6 +76,17 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
             return true;
         }
 
+        if (!$this->isRASCIUser($wp, $user)) {
+            $this
+                ->context
+                ->buildViolation($constraint->rasciUserMessage)
+                ->atPath('accountability')
+                ->setParameter('%name%', $user->getFullName())
+                ->addViolation();
+
+            return false;
+        }
+
         $ids = $this->getAssignmentsIds($wp);
         $count = count(array_intersect($ids, [$user->getId()]));
         if ($count <= 1) {
@@ -73,11 +95,10 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
 
         $this
             ->context
-            ->buildViolation($constraint->message)
+            ->buildViolation($constraint->alreadyUsedMessage)
             ->atPath('accountability')
             ->setParameter('%name%', $user->getFullName())
-            ->addViolation()
-        ;
+            ->addViolation();
 
         return false;
     }
@@ -98,6 +119,16 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         $ids = $this->getAssignmentsIds($wp);
         $valid = true;
         foreach ($users as $user) {
+            if (!$this->isRASCIUser($wp, $user)) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->rasciUserMessage)
+                    ->atPath('supportUsers')
+                    ->setParameter('%name%', $user->getFullName())
+                    ->addViolation();
+                $valid = false;
+            }
+
             $count = count(array_intersect($ids, [$user->getId()]));
             if ($count <= 1) {
                 continue;
@@ -105,11 +136,10 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
 
             $this
                 ->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($constraint->alreadyUsedMessage)
                 ->atPath('supportUsers')
                 ->setParameter('%name%', $user->getFullName())
-                ->addViolation()
-            ;
+                ->addViolation();
 
             $valid = false;
         }
@@ -133,6 +163,16 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         $ids = $this->getAssignmentsIds($wp);
         $valid = true;
         foreach ($users as $user) {
+            if (!$this->isRASCIUser($wp, $user)) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->rasciUserMessage)
+                    ->atPath('consultedUsers')
+                    ->setParameter('%name%', $user->getFullName())
+                    ->addViolation();
+                $valid = false;
+            }
+
             $count = count(array_intersect($ids, [$user->getId()]));
             if ($count <= 1) {
                 continue;
@@ -140,11 +180,10 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
 
             $this
                 ->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($constraint->alreadyUsedMessage)
                 ->atPath('consultedUsers')
                 ->setParameter('%name%', $user->getFullName())
-                ->addViolation()
-            ;
+                ->addViolation();
 
             $valid = false;
         }
@@ -168,6 +207,16 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         $ids = $this->getAssignmentsIds($wp);
         $valid = true;
         foreach ($users as $user) {
+            if (!$this->isRASCIUser($wp, $user)) {
+                $this
+                    ->context
+                    ->buildViolation($constraint->rasciUserMessage)
+                    ->atPath('informedUsers')
+                    ->setParameter('%name%', $user->getFullName())
+                    ->addViolation();
+                $valid = false;
+            }
+
             $count = count(array_intersect($ids, [$user->getId()]));
             if ($count <= 1) {
                 continue;
@@ -175,11 +224,10 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
 
             $this
                 ->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($constraint->alreadyUsedMessage)
                 ->atPath('informedUsers')
                 ->setParameter('%name%', $user->getFullName())
-                ->addViolation()
-            ;
+                ->addViolation();
 
             $valid = false;
         }
@@ -240,5 +288,22 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         );
 
         return $ids;
+    }
+
+    /**
+     * @param WorkPackage $wp
+     * @param User        $user
+     *
+     * @return bool
+     */
+    private function isRASCIUser(WorkPackage $wp, User $user): bool
+    {
+        $project = $wp->getProject();
+        Assert::notNull($project, 'Task project is not set');
+
+        $projectUser = $user->getProjectUser($project);
+        Assert::notNull($projectUser, 'Project user is not set');
+
+        return $projectUser->getShowInRasci();
     }
 }
