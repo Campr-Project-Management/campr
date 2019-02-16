@@ -39,3 +39,6 @@ ssr/node_modules
 .php_cs.cache
 
 backend/app/Resources/translations/*.yml~
+
+.docker-sync
+docker-sync.yml
