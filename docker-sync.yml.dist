@@ -1,0 +1,16 @@
+version: 2
+
+options:
+    compose-file-path: 'docker-compose.yml'
+    verbose: false
+    cli_mode: 'auto'
+    project_root: 'pwd'
+
+syncs:
+    campr-app-vendor-sync:
+        sync_strategy: 'native_osx'
+        src: './backend/vendor/'
+        host_disk_mount_mode: 'cached'
+        sync_excludes: ['.sass-cache', 'sass', 'sass-cache', 'bower.json', 'package.json', 'Gruntfile*', 'bower_components', 'node_modules', '.gitignore', '.git', '*.coffee', '*.scss', '*.sass']
+        notify_terminal: true
+        sync_userid: '1000'
