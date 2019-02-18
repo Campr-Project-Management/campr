@@ -14,6 +14,14 @@ const state = {
 
 const getters = {
     projectUsers: state => state.projectUsers,
+    rasciProjectUsers: (state, getters) => {
+        if (!getters.projectUsers || !getters.projectUsers.items) {
+            return [];
+        }
+
+        return getters.projectUsers.items.filter(
+            (projectUser) => projectUser.showInRasci);
+    },
     projectUserByUserId: (state, getters) => (id) => {
         return _.find(getters.projectUsers.items, (user) => {
             return user.user === id;
@@ -31,9 +39,8 @@ const getters = {
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
-        let usersSelect = [];
         if (!state.projectUsers || !state.projectUsers.items) {
-            return usersSelect;
+            return [];
         }
 
         return state.projectUsers.items.map(item => {
@@ -41,6 +48,19 @@ const getters = {
                 'key': item.user,
                 'label': item.userFullName,
                 'hidden': item.userDeleted,
+            };
+        });
+    },
+    rasciProjectUsersForSelect: (state, getters) => {
+        if (!getters.projectUsers || !getters.projectUsers.items) {
+            return [];
+        }
+
+        return getters.projectUsers.items.map(item => {
+            return {
+                'key': item.user,
+                'label': item.userFullName,
+                'hidden': item.userDeleted || !item.showInRasci,
             };
         });
     },
@@ -73,16 +93,15 @@ const actions = {
      * @param {Number} data
      */
     getProjectUsers({commit}, data) {
-        Vue.http
-           .get(Routing.generate('app_api_project_project_users', data))
-           .then((response) => {
-               if (response.status === 200) {
-                   let projectUsers = response.data;
-                   commit(types.SET_PROJECT_USERS, {projectUsers});
-                   commit(types.SET_MANAGERS, {projectUsers});
-               }
-           }, (response) => {
-           });
+        Vue.http.get(Routing.generate('app_api_project_project_users', data)).
+            then((response) => {
+                if (response.status === 200) {
+                    let projectUsers = response.data;
+                    commit(types.SET_PROJECT_USERS, {projectUsers});
+                    commit(types.SET_MANAGERS, {projectUsers});
+                }
+            }, (response) => {
+            });
     },
     /**
      * Gets the project user by id
@@ -90,13 +109,12 @@ const actions = {
      * @param {number} id
      */
     getProjectUser({commit}, id) {
-        Vue.http
-           .get(Routing.generate('app_api_project_users_get', {id: id}))
-           .then((response) => {
-               let currentMember = response.data;
-               commit(types.SET_CURRENT_MEMBER, {currentMember});
-           }, (response) => {
-           });
+        Vue.http.get(Routing.generate('app_api_project_users_get', {id: id})).
+            then((response) => {
+                let currentMember = response.data;
+                commit(types.SET_CURRENT_MEMBER, {currentMember});
+            }, (response) => {
+            });
     },
     /**
      * Update project user
@@ -104,16 +122,14 @@ const actions = {
      * @param {array} data
      */
     updateProjectUser({commit}, data) {
-        Vue.http
-           .patch(
-               Routing.generate('app_api_project_users_edit', {'id': data.id}),
-               JSON.stringify(data),
-           )
-           .then((response) => {
-               let currentMember = response.data;
-               commit(types.SET_CURRENT_MEMBER, {currentMember});
-           }, (response) => {
-           });
+        Vue.http.patch(
+            Routing.generate('app_api_project_users_edit', {'id': data.id}),
+            JSON.stringify(data),
+        ).then((response) => {
+            let currentMember = response.data;
+            commit(types.SET_CURRENT_MEMBER, {currentMember});
+        }, (response) => {
+        });
     },
     saveProjectUser({commit}, userData) {
         const arrayItems = [
@@ -136,25 +152,22 @@ const actions = {
                 }
             }
         });
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_team_member_create',
-                    {'id': userData.project}),
-                data,
-            )
-            .then(
-                (response) => {
-                    if (response.body && response.body.error) {
-                        const {messages} = response.body;
-                        commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    }
-                    return response.body;
-                },
-                (response) => {
-                    return response.body;
-                },
-            );
+        return Vue.http.post(
+            Routing.generate('app_api_project_team_member_create',
+                {'id': userData.project}),
+            data,
+        ).then(
+            (response) => {
+                if (response.body && response.body.error) {
+                    const {messages} = response.body;
+                    commit(types.SET_VALIDATION_MESSAGES, {messages});
+                }
+                return response.body;
+            },
+            (response) => {
+                return response.body;
+            },
+        );
     },
     /**
      * Get project sponsors
@@ -162,7 +175,8 @@ const actions = {
      * @param {array} data
      */
     async getProjectSponsors({commit}, data) {
-        let response = await Vue.http.get(Routing.generate('app_api_project_sponsor_users', data));
+        let response = await Vue.http.get(
+            Routing.generate('app_api_project_sponsor_users', data));
         let projectUsers = response.data;
         commit(types.SET_SPONSORS, {projectUsers});
     },
@@ -174,16 +188,14 @@ const actions = {
      * @return {object}
      */
     updateTeamMember({commit}, data) {
-        return Vue.http
-                  .patch(
-                      Routing.generate('app_api_project_team_member_update',
-                          {'id': data.id}),
-                      JSON.stringify(data),
-                  )
-                  .then((response) => {
-                      return response.body;
-                  }, (response) => {
-                  });
+        return Vue.http.patch(
+            Routing.generate('app_api_project_team_member_update',
+                {'id': data.id}),
+            JSON.stringify(data),
+        ).then((response) => {
+            return response.body;
+        }, (response) => {
+        });
     },
     /**
      * Edit a project sponspor
@@ -192,19 +204,17 @@ const actions = {
      * @return {object}
      */
     editProjectSponsor({commit}, data) {
-        return Vue.http
-                  .patch(
-                      Routing.generate('app_api_project_users_update_sponsor',
-                          data),
-                      JSON.stringify(data),
-                  )
-                  .then((response) => {
-                      if (response.status === 200) {
-                          let projectUsers = response.data;
-                          commit(types.SET_SPONSORS, {projectUsers});
-                      }
-                  }, (response) => {
-                  });
+        return Vue.http.patch(
+            Routing.generate('app_api_project_users_update_sponsor',
+                data),
+            JSON.stringify(data),
+        ).then((response) => {
+            if (response.status === 200) {
+                let projectUsers = response.data;
+                commit(types.SET_SPONSORS, {projectUsers});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Delete a new objective on project
@@ -213,32 +223,27 @@ const actions = {
      * @return {object}
      */
     deleteTeamMember({commit}, id) {
-        return Vue
-            .http
-            .delete(
-                Routing.generate('app_api_project_users_delete', {id: id}),
-            )
-            .then(
-                (response) => {
-                    commit(types.DELETE_TEAM_MEMBER, {id});
+        return Vue.http.delete(
+            Routing.generate('app_api_project_users_delete', {id: id}),
+        ).then(
+            (response) => {
+                commit(types.DELETE_TEAM_MEMBER, {id});
 
-                    return response;
-                },
-                (response) => {
-                    return response;
-                },
-            )
+                return response;
+            },
+            (response) => {
+                return response;
+            },
+        )
             ;
     },
 
     createProjectUser({commit}, {projectId, userId}) {
-        return Vue
-            .http
-            .post(
-                Routing.generate('app_api_project_project_user_create',
-                    {id: projectId}),
-                {user: userId},
-            )
+        return Vue.http.post(
+            Routing.generate('app_api_project_project_user_create',
+                {id: projectId}),
+            {user: userId},
+        )
             ;
     },
     deleteProjectUser({commit}, {projectId, userId}) {
@@ -247,9 +252,8 @@ const actions = {
             user: userId,
         };
 
-        return Vue
-            .http
-            .delete(Routing.generate('app_api_project_users_delete_user', data))
+        return Vue.http.delete(
+            Routing.generate('app_api_project_users_delete_user', data))
             ;
     },
     /**
@@ -264,17 +268,15 @@ const actions = {
             user: userId,
         };
 
-        Vue.http
-           .delete(
-               Routing.generate('app_api_project_users_delete_sponsor', data),
-           )
-           .then((response) => {
-               if (response.status === 200) {
-                   let projectUsers = response.data;
-                   commit(types.SET_SPONSORS, {projectUsers});
-               }
-           }, (response) => {
-           });
+        Vue.http.delete(
+            Routing.generate('app_api_project_users_delete_sponsor', data),
+        ).then((response) => {
+            if (response.status === 200) {
+                let projectUsers = response.data;
+                commit(types.SET_SPONSORS, {projectUsers});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Create a project sponsor
@@ -288,15 +290,13 @@ const actions = {
             user: user,
         };
 
-        Vue.http
-           .put(
-               Routing.generate('app_api_project_users_create_sponsor', data),
-           )
-           .then((response) => {
-               let projectUsers = response.data;
-               commit(types.SET_SPONSORS, {projectUsers});
-           }, (response) => {
-           });
+        Vue.http.put(
+            Routing.generate('app_api_project_users_create_sponsor', data),
+        ).then((response) => {
+            let projectUsers = response.data;
+            commit(types.SET_SPONSORS, {projectUsers});
+        }, (response) => {
+        });
     },
 };
 

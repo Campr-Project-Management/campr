@@ -900,7 +900,7 @@ message.project_create_step2: 'Step 2: Project Worthiness Analysis'
 message.project_create_step3: '3. Schritt: Projekterstellung'
 message.project_create_wizard: 'Project Creation Wizard'
 message.project_currency: Projektwährung
-message.project_dashboard: Projekt-Dashboard
+message.project_dashboard: Dashboard
 message.project_decisions: Projektentscheidungen
 message.project_deliverables: Projektanforderungen
 message.project_description: Projektbeschreibung
@@ -2160,6 +2160,13 @@ button.save_task: 'Task speichern'
 button.copy_project: 'Projekt kopieren'
 title.copy_project: 'Projekt kopieren'
 email.message.project.cloned: 'Sie können Ihr neues Projekt hier finden'
+email.register.thank_you: 'Vielen Dank für die Registrierung!'
+email.register.change_password: 'Um Ihr Passwort zu ändern, klicken Sie auf Ihr Profil oben rechts gehen zu "Account".'
+email.register.content: 'Besuchen Sie unseren %link_tag_open% Blog %link_tag_close% und folgen Sie unseren Social Media Accounts, um über die neuesten Entwicklungen von CAMPR informiert zu bleiben.'
+email.subject.workspace.ready: 'Ihr CAMPR Arbeitsbereich steht jetzt zur Verfügung!'
+email.workspace.message: 'Ihr Arbeitsbereich steht jetzt zur Verfügung:'
+email.workspace.content: "Sie finden dort drei Projekte unterschiedlicher Größen: Das Firmenjubiläum, die Maschienenverlagerung und das \"Welcome to CAMPR\"-Projekt. Letzteres ist ein Modellprojekt, welhes die Phasen des klassischen Projektmanagementansatzes darstellt. <br/>\nWenn Sie mehr darüber erfahren wollen inwiefern CAMPR sich nach bewährten Projektmanagement-Standards richtet, lesen Sie unseren %link_tag_open% Blogpost %link_tag_close% zu diesem Thema."
+warning.scan_qr_code: 'Nachdem Sie "speichern" geklickt haben wird der QR-Code für die 2-Faktor-Authentifikation erscheinen. Denken Sie daran, dass Sie den QR-Code einzuscannen bevor Sie sich ausloggen, da Sie sich ansonsten nicht wieder einloggen können.'
 message.theme_switcher.light: 'Schalten Sie auf Dunkelheit um'
 message.theme_switcher.dark: 'Auf Licht umschalten'
 message.daily: Täglich
@@ -2167,3 +2174,15 @@ message.weekly: Wöchentlich
 message.biweekly: Zweiwöchentlich
 message.monthly: Monatlich
 label.status_report_trend_chart_agg_type: 'Statusbericht Trenddiagramm'
+twitter.tags.site.default: '@campr'
+twitter.tags.creator.default: '@campr'
+twitter.tags.card.default: summary_large_image
+twitter.tags.title.default: 'C A M P R'
+twitter.tags.description.default: 'CAMPR ist das Werkzeug für fleißige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.'
+facebook.tags.title.default: 'C A M P R'
+facebook.tags.description.default: 'CAMPR ist das Werkzeug für fleißige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.'
+facebook.tags.type.default: website
+table_header_cell.has_marketing_consent: 'Marketing-Einwilligung?'
+portal.footer.imprint: Impressum
+portal.footer.status: Status
+portal.footer.copyright: '&copy; %year% Campr. Alle Rechte vorbehalten.'
