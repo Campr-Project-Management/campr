@@ -250,10 +250,12 @@ task('project:build:frontend_and_ssr', function () {
     run("echo '>cd {{release_path}}/frontend && yarn install --check-files && ../bin/build-themes>cd {{release_path}}/ssr && yarn install --check-files' | {{bin/rush}} -D '>' {} -e");
 });
 task('hivebot:deploy-whois', function () {
-    set('localUser', sprintf(
-        '%s',
-        runLocally('git config --get user.name')
-    ));
+    $localUser = sprintf('%s', runLocally('git config --get user.name'));
+    if (empty($localUser)) {
+        throw new \InvalidArgumentException('No git user name set');
+    }
+
+    set('localUser', $localUser);
 });
 task('hivebot:branch', function () {
     if (!empty(input()->getOption('revision'))) {
