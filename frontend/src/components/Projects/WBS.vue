@@ -317,6 +317,7 @@ export default {
 
             a {
                 padding: 0 5px;
+                position: inherit !important;
             }
         }
     }
