@@ -11,7 +11,7 @@
                             :value="value.responsibility"
                             :disabled="disabled"
                             @input="onResponsibilityChange"/>
-                    <error at-path="responsibility" />
+                    <error at-path="responsibility"/>
                 </div>
                 <div class="col-md-4">
                     <select-field
@@ -21,7 +21,7 @@
                             :value="value.accountability"
                             :disabled="disabled"
                             @input="onAccountabilityChange"/>
-                    <error at-path="accountability" />
+                    <error at-path="accountability"/>
                 </div>
             </div>
             <div class="form-group">
@@ -32,7 +32,7 @@
                             :value="value.supportUsers"
                             :disabled="disabled"
                             @input="onSupportUsersChange"/>
-                    <error at-path="supportUsers" />
+                    <error at-path="supportUsers"/>
                 </div>
                 <div class="col-md-4">
                     <multi-select-field
@@ -41,7 +41,7 @@
                             :value="value.consultedUsers"
                             :disabled="disabled"
                             @input="onConsultedUsersChange"/>
-                    <error at-path="consultedUsers" />
+                    <error at-path="consultedUsers"/>
                 </div>
                 <div class="col-md-4">
                     <multi-select-field
@@ -50,7 +50,7 @@
                             :value="value.informedUsers"
                             :disabled="disabled"
                             @input="onInformedUsersChange"/>
-                    <error at-path="informedUsers" />
+                    <error at-path="informedUsers"/>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
         },
         computed: {
             ...mapGetters([
-                'projectUsersForSelect',
+                'rasciProjectUsersForSelect',
                 'validationMessages',
             ]),
             assignments() {
@@ -127,50 +127,35 @@
 
                 return _.uniq(ids);
             },
-            responsibilityOptions() {
-                return this.projectUsersForSelect.filter((user) => {
-                    if (this.value.responsibility && user.key === this.value.responsibility.key) {
-                        return true;
-                    }
+            assignmentsOptions() {
+                return (existsCb) =>
+                    this.rasciProjectUsersForSelect.filter((user) => {
+                        if (existsCb(user)) {
+                            return true;
+                        }
 
-                    return this.assignments.indexOf(user.key) < 0;
-                });
+                        return this.assignments.indexOf(user.key) < 0;
+                    });
+            },
+            responsibilityOptions() {
+                return this.assignmentsOptions(
+                    (user) => this.value.responsibility && user.key === this.value.responsibility.key);
             },
             accountabilityOptions() {
-                return this.projectUsersForSelect.filter((user) => {
-                    if (this.value.accountability && user.key === this.value.accountability.key) {
-                        return true;
-                    }
-
-                    return this.assignments.indexOf(user.key) < 0;
-                });
+                return this.assignmentsOptions(
+                    (user) => this.value.accountability && user.key === this.value.accountability.key);
             },
             supportUsersOptions() {
-                return this.projectUsersForSelect.filter((user) => {
-                    if (_.find(this.value.supportUsers, ['key', user.key])) {
-                        return true;
-                    }
-
-                    return this.assignments.indexOf(user.key) < 0;
-                });
+                return this.assignmentsOptions(
+                    (user) => _.find(this.value.supportUsers, ['key', user.key]));
             },
             consultedUsersOptions() {
-                return this.projectUsersForSelect.filter((user) => {
-                    if (_.find(this.value.consultedUsers, ['key', user.key])) {
-                        return true;
-                    }
-
-                    return this.assignments.indexOf(user.key) < 0;
-                });
+                return this.assignmentsOptions(
+                    (user) => _.find(this.value.consultedUsers, ['key', user.key]));
             },
             informedUsersOptions() {
-                return this.projectUsersForSelect.filter((user) => {
-                    if (_.find(this.value.informedUsers, ['key', user.key])) {
-                        return true;
-                    }
-
-                    return this.assignments.indexOf(user.key) < 0;
-                });
+                return this.assignmentsOptions(
+                    (user) => _.find(this.value.informedUsers, ['key', user.key]));
             },
         },
         created() {

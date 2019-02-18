@@ -32,6 +32,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $projectUser1->addProjectDepartment($projectDepartment);
         $projectUser1->setProjectTeam($projectTeam);
         $projectUser1->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+        $projectUser1->setShowInRasci(true);
         $manager->persist($projectUser1);
 
         $user = $this->getReference('user4');
@@ -49,6 +50,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $projectUser2->addProjectDepartment($projectDepartment);
         $projectUser2->setProjectTeam($projectTeam);
         $projectUser2->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+        $projectUser2->setShowInRasci(true);
         $manager->persist($projectUser2);
 
         $user = $this->getReference('user5');
@@ -66,6 +68,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $projectUser3->addProjectDepartment($projectDepartment);
         $projectUser3->setProjectTeam($projectTeam);
         $projectUser3->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+        $projectUser3->setShowInRasci(true);
         $manager->persist($projectUser3);
 
         $user = $this->getReference('user6');
@@ -83,6 +86,7 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $projectUser4->addProjectDepartment($projectDepartment);
         $projectUser4->setProjectTeam($projectTeam);
         $projectUser4->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
+        $projectUser4->setShowInRasci(true);
         $manager->persist($projectUser4);
 
         $manager->flush();
