@@ -81,7 +81,7 @@ export const schedule = Object.freeze({
         let tl = getScheduleForecastTrafficLight(scheduled, forecast, actual);
 
         if (tl.isGreen()) {
-            return;
+            return trafficLight.green;
         }
 
         if (tl.isYellow()) {
@@ -95,7 +95,7 @@ export const schedule = Object.freeze({
             completed);
 
         if (tl.isGreen()) {
-            return;
+            return trafficLight.green;
         }
 
         if (tl.isYellow()) {
