@@ -259,13 +259,13 @@ const actions = {
     /**
      * Delete a sponsor
      * @param {function} commit
-     * @param {integer} projectId
-     * @param {integer} userId
+     * @param {integer} id
+     * @param {integer} projectUser
      */
-    deleteSponsor({commit}, {projectId, userId}) {
+    deleteSponsor({commit}, {id, projectUser}) {
         const data = {
-            id: projectId,
-            user: userId,
+            id: id,
+            projectUser: projectUser,
         };
 
         Vue.http.delete(
@@ -282,12 +282,12 @@ const actions = {
      * Create a project sponsor
      * @param {function} commit
      * @param {integer} id
-     * @param {integer} user
+     * @param {integer} projectUser
      */
-    createSponsor({commit}, {id, user}) {
+    createSponsor({commit}, {id, projectUser}) {
         const data = {
             id: id,
-            user: user,
+            projectUser: projectUser,
         };
 
         Vue.http.put(
