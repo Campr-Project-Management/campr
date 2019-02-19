@@ -641,11 +641,10 @@
             },
             deleteSelectedSponsor() {
                 this.showDeleteSponsorModal = false;
-                let projectSponsorData = {
+                this.deleteSponsor({
                     id: this.project.id,
                     projectUser: this.deleteSponsorId,
-                };
-                this.deleteSponsor(projectSponsorData);
+                });
             },
         },
         created() {
