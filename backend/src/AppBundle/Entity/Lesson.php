@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="lesson")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LessonRepository")
  */
-class Lesson
+class Lesson implements ResourceInterface, CloneableInterface
 {
     /**
      * @var int

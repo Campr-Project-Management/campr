@@ -3,11 +3,13 @@
 namespace AppBundle\Entity;
 
 use Component\Opportunity\Model\OpportunityPriorityTrait;
+use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\BlameableInterface;
 use Component\Resource\Model\BlameableTrait;
 use Component\Resource\Model\PriorityAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -24,7 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="opportunity")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityRepository")
  */
-class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface, TimestampableInterface, BlameableInterface, ResponsibilityAwareInterface
+class Opportunity implements TimeUnitAwareInterface, ProjectAwareInterface, PriorityAwareInterface, TimestampableInterface, BlameableInterface, ResponsibilityAwareInterface, ResourceInterface, CloneableInterface
 {
     use OpportunityPriorityTrait, TimestampableTrait, BlameableTrait;
 

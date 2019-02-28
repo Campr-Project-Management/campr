@@ -99,7 +99,7 @@ class TeamMemberController extends ApiController
 
                 $this
                     ->get('app.service.mailer')
-                    ->sentRegistrationEmail($user)
+                    ->sendRegistrationEmail($user)
                 ;
             }
 

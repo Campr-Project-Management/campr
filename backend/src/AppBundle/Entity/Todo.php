@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="todo")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TodoRepository")
  */
-class Todo implements TimestampableInterface, ResponsibilityAwareInterface
+class Todo implements TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -267,11 +271,11 @@ class Todo implements TimestampableInterface, ResponsibilityAwareInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Todo
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -355,7 +359,7 @@ class Todo implements TimestampableInterface, ResponsibilityAwareInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("distributionListName")
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDistributionListName()
     {

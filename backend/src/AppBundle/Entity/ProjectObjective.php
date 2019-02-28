@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="project_objective")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectObjectiveRepository")
  */
-class ProjectObjective
+class ProjectObjective implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -127,9 +131,11 @@ class ProjectObjective
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface|null $project
+     *
+     * @return $this
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

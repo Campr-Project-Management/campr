@@ -12,9 +12,7 @@ class ProjectModuleControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/create');
@@ -36,9 +34,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/create');
 
@@ -64,9 +60,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $projectModule = (new ProjectModule())
             ->setModule('plan')
@@ -75,10 +69,7 @@ class ProjectModuleControllerTest extends BaseController
         $this->em->persist($projectModule);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project-module/%d/edit', $projectModule->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/project-module/%d/delete', $projectModule->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
@@ -87,9 +78,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/1/edit');
@@ -112,9 +101,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/2/edit');
 
@@ -130,9 +117,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/list');
@@ -151,9 +136,7 @@ class ProjectModuleControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-module/1/show');
 

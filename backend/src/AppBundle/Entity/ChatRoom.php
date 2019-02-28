@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="chat_room")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ChatRoomRepository")
  */
-class ChatRoom
+class ChatRoom implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     const GENERAL_ROOM = '#general';
 
@@ -151,11 +155,11 @@ class ChatRoom
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
-     * @return Room
+     * @return ChatRoom
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

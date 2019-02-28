@@ -2,8 +2,11 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
+use Component\Media\MediasAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -15,7 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="measure_comment")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeasureCommentRepository")
  */
-class MeasureComment implements TimestampableInterface
+class MeasureComment implements TimestampableInterface, MediasAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -260,5 +263,17 @@ class MeasureComment implements TimestampableInterface
     public function getMeasureId()
     {
         return $this->measure ? $this->measure->getId() : null;
+    }
+
+    /**
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->addMeasureComment($this);
+        }
+
+        $this->medias = $medias;
     }
 }

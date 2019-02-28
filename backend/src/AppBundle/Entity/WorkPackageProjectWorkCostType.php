@@ -2,18 +2,21 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * WorkPackageProjectWorkCostType.
  *
  * @ORM\Table(name="work_package_project_work_cost_type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WorkPackageProjectWorkCostTypeRepository")
+ * @Cloner\Exclude()
  */
-class WorkPackageProjectWorkCostType
+class WorkPackageProjectWorkCostType implements ResourceInterface
 {
     /**
      * @var int

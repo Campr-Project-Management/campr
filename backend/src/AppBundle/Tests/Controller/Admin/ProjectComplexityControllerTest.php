@@ -12,9 +12,7 @@ class ProjectComplexityControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/create');
@@ -32,9 +30,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/create');
@@ -52,9 +48,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testNameIsUniqueOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/create');
@@ -71,9 +65,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testSequenceIsValidOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/create');
@@ -91,9 +83,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/create');
 
@@ -110,31 +100,29 @@ class ProjectComplexityControllerTest extends BaseController
         $projectComplexity = $this
             ->em
             ->getRepository(ProjectComplexity::class)
-            ->findOneBy([
-                'name' => 'project-complexity3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project-complexity3',
+                ]
+            );
         $this->em->remove($projectComplexity);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $projectComplexity = (new ProjectComplexity())
             ->setName('project-complexity4')
-            ->setSequence('1')
-        ;
+            ->setSequence('1');
         $this->em->persist($projectComplexity);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project-complexity/%d/edit', $projectComplexity->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/project-complexity/%d/delete', $projectComplexity->getId())
+        );
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
@@ -143,9 +131,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/1/edit');
@@ -164,9 +150,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/1/edit');
@@ -185,9 +169,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testNameIsUniqueOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/1/edit');
@@ -204,9 +186,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testSequenceIsValidOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/1/edit');
@@ -223,9 +203,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/2/edit');
 
@@ -241,9 +219,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/list');
@@ -263,9 +239,7 @@ class ProjectComplexityControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-complexity/1/show');
 

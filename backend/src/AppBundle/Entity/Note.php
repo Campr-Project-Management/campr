@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -15,7 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="note")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\NoteRepository")
  */
-class Note implements TimestampableInterface, ResponsibilityAwareInterface
+class Note implements TimestampableInterface, ResponsibilityAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 

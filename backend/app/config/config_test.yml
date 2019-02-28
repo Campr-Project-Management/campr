@@ -29,6 +29,7 @@ swiftmailer:
 monolog:
     channels:
         - "portal"
+        - "cloner"
     handlers:
         main:
             type: stream
@@ -43,6 +44,11 @@ monolog:
             path: "%kernel.logs_dir%/portal.log"
             level: info
             channels: ["portal"]
+        cloner:
+            type: stream
+            path: "%kernel.logs_dir%/cloner.log"
+            level: info
+            channels: ["cloner"]
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:

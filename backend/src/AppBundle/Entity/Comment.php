@@ -2,18 +2,21 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Comment entity.
  *
  * @ORM\Table(name="comment")
  * @ORM\Entity()
+ * @Cloner\Exclude()
  */
-class Comment
+class Comment implements ResourceInterface
 {
     /**
      * @var int
