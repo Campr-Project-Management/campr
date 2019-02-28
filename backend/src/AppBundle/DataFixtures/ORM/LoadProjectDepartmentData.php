@@ -19,13 +19,12 @@ class LoadProjectDepartmentData extends AbstractFixture implements OrderedFixtur
     {
         for ($i = 1; $i <= 2; ++$i) {
             $projectWorkCostType = $this->getReference('project-work-cost-type'.$i);
-            $projectDepartment = (new ProjectDepartment())
-                ->setName('project-department'.$i)
-                ->setAbbreviation('pd'.$i)
-                ->setSequence($i)
-                ->setProjectWorkCostType($projectWorkCostType)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectDepartment = new ProjectDepartment();
+            $projectDepartment->setName('project-department'.$i);
+            $projectDepartment->setAbbreviation('pd'.$i);
+            $projectDepartment->setSequence($i);
+            $projectDepartment->setProjectWorkCostType($projectWorkCostType);
+            $projectDepartment->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
             $this->setReference('project-department'.$i, $projectDepartment);
             $manager->persist($projectDepartment);
         }

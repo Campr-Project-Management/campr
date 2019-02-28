@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
@@ -11,7 +15,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="status_report_config")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StatusReportConfigRepository")
  */
-class StatusReportConfig
+class StatusReportConfig implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -70,9 +74,9 @@ class StatusReportConfig
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface $project
      */
-    public function setProject($project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

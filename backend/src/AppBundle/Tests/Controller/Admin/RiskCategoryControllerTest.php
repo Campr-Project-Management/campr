@@ -12,9 +12,7 @@ class RiskCategoryControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/create');
@@ -30,9 +28,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/create');
@@ -49,9 +45,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testNameIsUniqueOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/create');
@@ -69,9 +63,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testSequenceIsValidOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/create');
@@ -89,9 +81,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/create');
 
@@ -108,31 +98,29 @@ class RiskCategoryControllerTest extends BaseController
         $riskCategory = $this
             ->em
             ->getRepository(RiskCategory::class)
-            ->findOneBy([
-                'name' => 'risk-category3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'risk-category3',
+                ]
+            );
         $this->em->remove($riskCategory);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $riskCategory = (new RiskCategory())
             ->setName('risk-category4')
-            ->setSequence('1')
-        ;
+            ->setSequence('1');
         $this->em->persist($riskCategory);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/risk-category/%d/edit', $riskCategory->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/risk-category/%d/delete', $riskCategory->getId())
+        );
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
@@ -141,9 +129,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/1/edit');
@@ -160,9 +146,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/1/edit');
@@ -181,9 +165,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testNameIsUniqueOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/1/edit');
@@ -200,9 +182,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testSequenceIsValidOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/1/edit');
@@ -219,9 +199,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/2/edit');
 
@@ -237,9 +215,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/list');
@@ -256,9 +232,7 @@ class RiskCategoryControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-category/1/show');
 

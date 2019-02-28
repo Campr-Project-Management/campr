@@ -3,11 +3,16 @@
 namespace AppBundle\Tests\Services;
 
 use AppBundle\Services\MailerService;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 class MailerServiceTest extends \PHPUnit_Framework_TestCase
 {
     /** @var MailerService */
     private $mailer;
+
+    /** @var RouterInterface */
+    private $router;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $swiftMailer;
@@ -25,6 +30,11 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->swiftMailer = $this
             ->getMockBuilder(\Swift_Mailer::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $this->router = $this
+            ->getMockBuilder(Router::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -50,6 +60,7 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->mailer = new MailerService(
+            $this->router,
             $this->swiftMailer,
             $this->twig,
             [

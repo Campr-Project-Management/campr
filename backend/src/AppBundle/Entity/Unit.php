@@ -2,10 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Unit.
@@ -13,8 +17,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="unit")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UnitRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class Unit
+class Unit implements ProjectAwareInterface, ResourceInterface
 {
     /**
      * @var int
@@ -186,11 +191,11 @@ class Unit
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Unit
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

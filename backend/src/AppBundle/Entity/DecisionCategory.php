@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * DecisionCategory.
@@ -11,8 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="decision_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DecisionCategoryRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class DecisionCategory
+class DecisionCategory implements ResourceInterface
 {
     /**
      * @var int

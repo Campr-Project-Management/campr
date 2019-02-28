@@ -11,6 +11,7 @@ services:
     app.service.mailer:
         class: AppBundle\Services\MailerService
         arguments:
+            - "@router"
             - "@mailer"
             - "@twig"
             - "%emails%"

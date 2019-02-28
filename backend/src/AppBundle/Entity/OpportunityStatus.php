@@ -3,8 +3,10 @@
 namespace AppBundle\Entity;
 
 use Component\Resource\Model\CodeAwareInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * OpportunityStatus.
@@ -13,8 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
  * @UniqueEntity(fields="code", message="unique.code")
+ * @Cloner\Exclude()
  */
-class OpportunityStatus implements CodeAwareInterface
+class OpportunityStatus implements CodeAwareInterface, ResourceInterface
 {
     /**
      * @var int

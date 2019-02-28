@@ -2,6 +2,7 @@
 
 namespace AppBundle;
 
+use AppBundle\DependencyInjection\CompilerPass\RegisterClonersPass;
 use AppBundle\DependencyInjection\CompilerPass\RegisterRepositoryPass;
 use AppBundle\DependencyInjection\CompilerPass\RegisterSettingsSchemasPass;
 use AppBundle\DependencyInjection\ContainerBuilder\DynamicDatabaseConnectionPass;
@@ -21,5 +22,6 @@ class AppBundle extends Bundle
         $container->addCompilerPass(new DynamicDatabaseConnectionPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
         $container->addCompilerPass(new RegisterRepositoryPass());
         $container->addCompilerPass(new RegisterSettingsSchemasPass());
+        $container->addCompilerPass(new RegisterClonersPass());
     }
 }

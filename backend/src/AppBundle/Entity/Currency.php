@@ -10,11 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CurrencyRepository")
  * @ORM\Table(name="currency")
  * @UniqueEntity(fields="code", message="unique.currency.code")
+ * @Cloner\Exclude()
  */
 class Currency implements CurrencyInterface
 {

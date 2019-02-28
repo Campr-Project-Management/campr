@@ -2,9 +2,14 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
+use Component\Media\MediasAwareInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -17,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="decision")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DecisionRepository")
  */
-class Decision implements TimestampableInterface, ResponsibilityAwareInterface
+class Decision implements TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, MediasAwareInterface, ResourceInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -284,11 +289,11 @@ class Decision implements TimestampableInterface, ResponsibilityAwareInterface
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Decision
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -372,7 +377,7 @@ class Decision implements TimestampableInterface, ResponsibilityAwareInterface
      * @Serializer\VirtualProperty()
      * @Serializer\SerializedName("distributionListName")
      *
-     * @return null|string
+     * @return string|null
      */
     public function getDistributionListName()
     {
@@ -556,7 +561,7 @@ class Decision implements TimestampableInterface, ResponsibilityAwareInterface
     /**
      * @param \DateTime $doneAt
      */
-    public function setDoneAt(\DateTime $doneAt): void
+    public function setDoneAt(\DateTime $doneAt = null)
     {
         $this->doneAt = $doneAt;
     }
@@ -591,5 +596,17 @@ class Decision implements TimestampableInterface, ResponsibilityAwareInterface
     public function getMedias()
     {
         return $this->medias;
+    }
+
+    /**
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->addDecision($this);
+        }
+
+        $this->medias = $medias;
     }
 }

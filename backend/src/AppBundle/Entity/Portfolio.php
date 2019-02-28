@@ -2,10 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Portfolio.
@@ -13,8 +15,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="portfolio")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PortfolioRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class Portfolio
+class Portfolio implements ResourceInterface
 {
     /**
      * @var int

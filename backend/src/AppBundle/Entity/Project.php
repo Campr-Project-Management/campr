@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Component\Currency\Model\CurrencyInterface;
 use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Component\TrafficLight\TrafficLight;
@@ -26,7 +27,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @UniqueEntity(fields="number", message="unique.number")
  * @Vich\Uploadable
  */
-class Project implements ProjectInterface, TimestampableInterface
+class Project implements ProjectInterface, TimestampableInterface, CloneableInterface
 {
     use TimestampableTrait;
 
@@ -87,7 +88,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectComplexity")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectComplexity", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="project_complexity_id", onDelete="SET NULL")
      * })
@@ -99,7 +100,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectCategory", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="project_category_id", onDelete="SET NULL")
      * })
@@ -111,7 +112,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectScope")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectScope", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="project_scope_id", onDelete="SET NULL")
      * })
@@ -123,7 +124,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectStatus")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ProjectStatus", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="project_status_id", onDelete="SET NULL")
      * })
@@ -133,14 +134,14 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|ProjectUser[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="project", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectUser", mappedBy="project", orphanRemoval=true, cascade={"persist"})
      */
     private $projectUsers;
 
     /**
      * @var ArrayCollection|ProjectTeam[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectTeam", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectTeam", mappedBy="project", cascade={"persist"})
      */
     private $projectTeams;
 
@@ -161,7 +162,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="project", cascade={"persist"})
      */
     private $calendars;
 
@@ -170,7 +171,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Info", mappedBy="project", cascade={"persist"})
      */
     private $infos;
 
@@ -179,7 +180,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Todo", mappedBy="project", cascade={"persist"})
      */
     private $todos;
 
@@ -197,7 +198,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\ChatRoom", mappedBy="project")
+     ** @ORM\OneToMany(targetEntity="AppBundle\Entity\ChatRoom", mappedBy="project", cascade={"persist"})
      */
     private $chatRooms;
 
@@ -206,7 +207,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="project", cascade={"persist"})
      */
     private $messages;
 
@@ -215,7 +216,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="project", cascade={"persist"})
      */
     private $workPackages;
 
@@ -259,7 +260,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FileSystem", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\FileSystem", mappedBy="project", cascade={"persist"})
      */
     private $fileSystems;
 
@@ -268,7 +269,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Label", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Label", mappedBy="project", cascade={"persist"})
      */
     private $labels;
 
@@ -288,13 +289,13 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Meeting", mappedBy="project", cascade={"persist"})
      */
     private $meetings;
 
     /**
      * @var Cost[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Cost", mappedBy="project", cascade={"persist"})
      */
     private $costs;
 
@@ -320,7 +321,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|Contract[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contract", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Contract", mappedBy="project", cascade={"persist"})
      */
     private $contracts;
 
@@ -329,7 +330,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="favoriteProjects")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="favoriteProjects", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="project_user_favorites",
      *     joinColumns={
@@ -347,7 +348,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Programme", inversedBy="projects")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Programme", inversedBy="projects", cascade={"persist"})
      * @ORM\JoinColumn(name="programme_id", onDelete="SET NULL")
      */
     private $programme;
@@ -355,7 +356,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|ProjectObjective[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectObjective", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectObjective", mappedBy="project", cascade={"persist"})
      * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectObjectives;
@@ -363,7 +364,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|ProjectLimitation[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectLimitation", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectLimitation", mappedBy="project", cascade={"persist"})
      * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectLimitations;
@@ -371,7 +372,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|ProjectDeliverable[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDeliverable", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDeliverable", mappedBy="project", cascade={"persist"})
      * @ORM\OrderBy({"sequence" = "ASC"})
      */
     private $projectDeliverables;
@@ -397,7 +398,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackageStatus", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackageStatus", mappedBy="project", cascade={"persist"})
      */
     private $workPackageStatuses;
 
@@ -410,7 +411,7 @@ class Project implements ProjectInterface, TimestampableInterface
 
     /**
      * @var ArrayCollection|resource[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="project", cascade={"persist"})
      */
     private $resources;
 
@@ -428,7 +429,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Risk", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Risk", mappedBy="project", cascade={"persist"})
      */
     private $risks;
 
@@ -437,7 +438,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opportunity", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Opportunity", mappedBy="project", cascade={"persist"})
      */
     private $opportunities;
 
@@ -446,21 +447,21 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Decision", mappedBy="project", cascade={"persist"})
      */
     private $decisions;
 
     /**
      * @var ArrayCollection|OpportunityStrategy[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project", cascade={"persist"})
      */
     private $opportunityStrategies;
 
     /**
      * @var ArrayCollection|Status[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Status", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Status", mappedBy="project", cascade={"persist"})
      */
     private $riskStatuses;
 
@@ -474,7 +475,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @var ArrayCollection|RiskStrategy[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDepartment", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDepartment", mappedBy="project", cascade={"persist"})
      */
     private $projectDepartments;
 
@@ -483,14 +484,14 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReport", mappedBy="project", cascade={"persist"})
      */
     private $statusReports;
 
     /**
      * @var ArrayCollection|StatusReportConfig[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReportConfig", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\StatusReportConfig", mappedBy="project", cascade={"persist"})
      */
     private $statusReportConfigs;
 
@@ -499,7 +500,7 @@ class Project implements ProjectInterface, TimestampableInterface
      *
      * @Serializer\Exclude()
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectCloseDown", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectCloseDown", mappedBy="project", cascade={"persist"})
      */
     private $projectCloseDowns;
 
@@ -1424,6 +1425,8 @@ class Project implements ProjectInterface, TimestampableInterface
      * Remove todo.
      *
      * @param Todo $todo
+     *
+     * @return Project
      */
     public function removeTodo(Todo $todo)
     {
@@ -1451,7 +1454,9 @@ class Project implements ProjectInterface, TimestampableInterface
     }
 
     /**
-     * @param string $logo
+     * Set logo.
+     *
+     * @param $logo
      */
     public function setLogo($logo)
     {
@@ -1538,6 +1543,8 @@ class Project implements ProjectInterface, TimestampableInterface
      * Remove label.
      *
      * @param Label $label
+     *
+     * @return Project
      */
     public function removeLabel(Label $label)
     {
@@ -2181,7 +2188,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * Remove subteams.
      *
-     * @param WorkPackage $workPackage
+     * @param Subteam $subteam
      *
      * @return Project
      */
@@ -2328,6 +2335,8 @@ class Project implements ProjectInterface, TimestampableInterface
      * Remove decision.
      *
      * @param Decision $decision
+     *
+     * @return Project
      */
     public function removeDecision(Decision $decision)
     {
@@ -2357,7 +2366,7 @@ class Project implements ProjectInterface, TimestampableInterface
     /**
      * @param string $shortNote
      */
-    public function setShortNote($shortNote)
+    public function setShortNote(string $shortNote = null)
     {
         $this->shortNote = $shortNote;
     }
@@ -2740,6 +2749,8 @@ class Project implements ProjectInterface, TimestampableInterface
     }
 
     /**
+     * Set currency.
+     *
      * @param CurrencyInterface|null $currency
      */
     public function setCurrency(CurrencyInterface $currency = null)

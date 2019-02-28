@@ -5,8 +5,11 @@
               <span>{{ translateText('message.new_message') }}</span>
             </span>
             <div class="box-header">
-                <h2><router-link class="simple-link" :to="{name: 'project-dashboard', params: { id: project.id }}">{{ project.name }}</router-link></h2>                
+                <h2><router-link class="simple-link" :to="{name: 'project-dashboard', params: { id: project.id }}">{{ project.name }}</router-link></h2>
                 <div class="favourite">
+                    <duplicate-icon
+                            v-if="$can('roles.project_manager|roles.project_sponsor', project)"
+                            @click="openCopyProjectModal()"/>
                     <star-icon :item="project"></star-icon>
                 </div>
             </div>
@@ -81,6 +84,26 @@
                 </div>
             </div>
         </div>
+        <alert-modal v-if="showFailed" body="message.unable_to_save" @close="showFailed = false;" />
+        <alert-modal v-if="showCloned" body="message.project.clone.in_progress" @close="showCloned = false;" />
+        <modal v-if="showCopyProjectModal" @close="showCopyProjectModal = false" v-bind:hasSpecificClass="true">
+            <p class="modal-title">{{ translate('title.copy_project') }}</p>
+            <div class="form-group">
+                <input-field
+                        v-model="projectName"
+                        type="text"
+                        :label="translate('message.project_name')"/>
+                <error at-path="projectName" v-if="validationMessages"
+                       v-for="message in validationMessages"
+                       :message="message" />
+            </div>
+            <div class="flex flex-space-between">
+                <a href="javascript:void(0)" @click="showCopyProjectModal = false"
+                   class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
+                <a href="javascript:void(0)" @click="doCopyProjectModal()" v-if="projectName"
+                   class="btn-rounded btn-auto second-bg">{{ translate('button.copy_project') }} +</a>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -88,9 +111,14 @@
 import CircleChart from '../_common/_charts/CircleChart';
 import BarChart from '../_common/_charts/BarChart';
 import StarIcon from '../_common/_icons/StarIcon';
+import DuplicateIcon from '../_common/_icons/DuplicateIcon';
 import PencilIcon from '../_common/_icons/PencilIcon';
 import Editor from '../_common/Editor';
-import {mapActions} from 'vuex';
+import InputField from '../_common/_form-components/InputField.vue';
+import Modal from '../_common/Modal.vue';
+import AlertModal from '../_common/AlertModal.vue';
+import Error from '../_common/_messages/Error.vue';
+import {mapGetters, mapActions} from 'vuex';
 
 export default {
     components: {
@@ -99,13 +127,23 @@ export default {
         StarIcon,
         PencilIcon,
         Editor,
+        InputField,
+        Modal,
+        AlertModal,
+        Error,
+        DuplicateIcon,
     },
     props: ['project'],
     created() {
         this.shortNote = this.project.shortNote;
     },
+    computed: {
+        ...mapGetters([
+            'validationMessages',
+        ]),
+    },
     methods: {
-        ...mapActions(['editProject']),
+        ...mapActions(['editProject', 'cloneProject']),
         baseDate(project) {
             return project && project.contracts && project.contracts.length
                 ? project.contracts[0].proposedStartDate
@@ -122,6 +160,28 @@ export default {
             this.showNoteEditor = false;
             this.editProject({projectId: this.project.id, shortNote: this.shortNote});
         },
+        openCopyProjectModal() {
+            this.showCopyProjectModal = true;
+        },
+        doCopyProjectModal() {
+            let data = {id: this.project.id, name: this.projectName};
+            this
+                .cloneProject(data)
+                .then(
+                    (response) => {
+                        this.showCopyProjectModal = false;
+                        this.projectName = null;
+                        if(response.status === 200) {
+                            this.showFailed = false;
+                            this.showCloned = true;
+                        }else{
+                            this.showFailed = true;
+                            this.showCloned = false;
+                        }
+                    }
+                )
+            ;
+        },
     },
     data() {
         return {
@@ -131,6 +191,11 @@ export default {
                 ['bold', 'italic', 'underline'],
                 [{'list': 'ordered'}, {'list': 'bullet'}],
             ],
+            showCopyProjectModal: false,
+            projectName: '',
+            cloneErrorMessages: null,
+            showFailed: false,
+            showCloned: false,
         };
     },
 };

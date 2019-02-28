@@ -2,6 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
+use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
@@ -12,9 +13,7 @@ class ProjectRoleControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/create');
@@ -32,9 +31,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/create');
@@ -52,15 +49,13 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testNameIsUniqueOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[name]'] = 'team-member';
+        $form['create[name]'] = ProjectRole::ROLE_TEAM_MEMBER;
 
         $crawler = $this->client->submit($form);
 
@@ -71,9 +66,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testSequenceIsValidOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/create');
@@ -91,9 +84,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/create');
 
@@ -110,31 +101,26 @@ class ProjectRoleControllerTest extends BaseController
         $projectRole = $this
             ->em
             ->getRepository(ProjectRole::class)
-            ->findOneBy([
-                'name' => 'project-guest',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'project-guest',
+                ]
+            );
         $this->em->remove($projectRole);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $projectRole = (new ProjectRole())
             ->setName('new-project-role')
-            ->setSequence('1')
-        ;
+            ->setSequence('1');
         $this->em->persist($projectRole);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project-role/%d/edit', $projectRole->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/project-role/%d/delete', $projectRole->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
@@ -143,9 +129,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/1/edit');
@@ -164,9 +148,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/1/edit');
@@ -185,15 +167,21 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testNameIsUniqueOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/1/edit');
 
+        /** @var Project $project */
+        $project = $this->em->find(Project::class, 1);
+        $role = new ProjectRole();
+        $role->setProject($project);
+        $role->setName(uniqid());
+        $this->em->persist($role);
+        $this->em->flush();
+
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[name]'] = 'team-member';
+        $form['create[name]'] = $role->getName();
 
         $crawler = $this->client->submit($form);
 
@@ -204,9 +192,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testSequenceIsValidOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/1/edit');
@@ -223,11 +209,9 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/6/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/4/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'sponsor';
@@ -241,9 +225,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/list');
@@ -262,9 +244,7 @@ class ProjectRoleControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/1/show');
 

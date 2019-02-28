@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
@@ -12,7 +16,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
  */
-class Calendar
+class Calendar implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -252,11 +256,11 @@ class Calendar
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return Calendar
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

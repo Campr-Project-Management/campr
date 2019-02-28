@@ -7,6 +7,7 @@ use AppBundle\Entity\Currency;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Meeting;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Company;
@@ -433,7 +434,7 @@ class ProjectControllerTest extends BaseController
                             'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
-                            'projectRoleNames' => ['team-participant'],
+                            'projectRoleNames' => [ProjectRole::ROLE_TEAM_LEADER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 4,
@@ -1841,7 +1842,7 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $project = json_decode($response->getContent(), true);
+        $project = $this->getClientJsonResponse();
         $responseContent['updatedAt'] = $project['updatedAt'];
         $responseContent['scheduledStartAt'] = $project['scheduledStartAt'];
         $responseContent['scheduledFinishAt'] = $project['scheduledFinishAt'];
@@ -1868,6 +1869,9 @@ class ProjectControllerTest extends BaseController
             $responseContent['units'][$k]['id'] = $unit['id'];
         }
 
+        $project['projectManagers'] = [];
+        $project['projectSponsors'] = [];
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContent, $project);
@@ -1891,11 +1895,11 @@ class ProjectControllerTest extends BaseController
                     'company' => 1,
                     'companyName' => 'company1',
                     'trafficLight' => TrafficLight::GREEN,
-                    'projectManager' => null,
-                    'projectManagerName' => null,
+                    'projectManager' => 3,
+                    'projectManagerName' => 'FirstName3 LastName3',
                     'projectManagers' => [],
-                    'projectSponsor' => null,
-                    'projectSponsorName' => null,
+                    'projectSponsor' => 4,
+                    'projectSponsorName' => 'FirstName4 LastName4',
                     'projectSponsors' => [],
                     'projectComplexity' => 1,
                     'projectComplexityName' => 'project-complexity1',
@@ -1971,7 +1975,7 @@ class ProjectControllerTest extends BaseController
                             'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
-                            'projectRoleNames' => ['manager'],
+                            'projectRoleNames' => [ProjectRole::ROLE_MANAGER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 1,
@@ -2005,7 +2009,7 @@ class ProjectControllerTest extends BaseController
                             'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
-                            'projectRoleNames' => ['sponsor'],
+                            'projectRoleNames' => [ProjectRole::ROLE_SPONSOR],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 2,
@@ -2039,7 +2043,7 @@ class ProjectControllerTest extends BaseController
                             'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
-                            'projectRoleNames' => ['team-member'],
+                            'projectRoleNames' => [ProjectRole::ROLE_TEAM_MEMBER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 3,
@@ -2282,20 +2286,14 @@ class ProjectControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
 
-        $projectTeam = json_decode($response->getContent(), true);
+        $projectTeam = $this->getClientJsonResponse();
         $responseContent['createdAt'] = $projectTeam['createdAt'];
         $responseContent['updatedAt'] = $projectTeam['updatedAt'];
+        $responseContent['id'] = $projectTeam['id'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals($responseContent, json_decode($response->getContent(), true));
-
-        $projectTeam = $this
-            ->em
-            ->getRepository(ProjectTeam::class)
-            ->find($projectTeam['id']);
-        $this->em->remove($projectTeam);
-        $this->em->flush();
     }
 
     /**

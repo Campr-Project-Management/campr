@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubteamMemberRepository")
  * @ORM\Table(name="subteam_member")
  */
-class SubteamMember implements UserAwareInterface
+class SubteamMember implements UserAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
