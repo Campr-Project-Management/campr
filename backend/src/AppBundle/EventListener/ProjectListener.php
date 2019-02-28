@@ -46,7 +46,6 @@ class ProjectListener
             $projectUser->setProject($entity);
             $projectUser->setUser($user);
             $projectUser->setShowInResources(true);
-            $projectUser->setShowInOrg(true);
 
             $managerRole = $em
                 ->getRepository(ProjectRole::class)

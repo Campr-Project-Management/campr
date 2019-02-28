@@ -26,10 +26,10 @@
                                 <span v-for="(department, index) in participant.departments">{{ department }}<span v-if="index < participant.departments.length - 1">,</span></span>
                             </td>
                             <td class="text-center switchers">
-                                <switches :selected="value[index].isPresent" v-model="value[index].isPresent" />
+                                <switches v-model="value[index].isPresent"/>
                             </td>
                             <td class="text-center switchers">
-                                <switches :selected="value[index].inDistributionList" v-model="value[index].inDistributionList" />
+                                <switches v-model="value[index].inDistributionList" />
                             </td>
                         </tr>
                         </tbody>

@@ -1,104 +1,91 @@
 <template>
-    <label :class="classObject">
+    <label :class="cssClass">
         <span class="vue-switcher__label">
             <span v-if="label" v-text="label"></span>
             <span v-if="!label && enabled" v-text="textEnabled"></span>
             <span v-if="!label && !enabled" v-text="textDisabled"></span>
         </span>
 
-        <input type="checkbox" :disabled="disabled" v-model="enabled">
+        <input
+                type="checkbox"
+                :disabled="disabled"
+                v-model="internalValue"/>
 
         <div></div>
     </label>
 </template>
 
 <script>
+    export default {
+        name: 'switches',
 
-export default {
-    name: 'switches',
-
-    props: {
-        typeBold: {
-            default: false,
+        props: {
+            value: {
+                type: Boolean,
+                required: false,
+                default: false,
+            },
+            typeBold: {
+                default: false,
+            },
+            disabled: {
+                default: false,
+            },
+            label: {
+                default: '',
+            },
+            textEnabled: {
+                default: '',
+            },
+            textDisabled: {
+                default: '',
+            },
+            color: {
+                default: 'default',
+            },
+            theme: {
+                default: 'default',
+            },
         },
-
-        selected: {
-            default: false,
+        watch: {
+            value(val) {
+                this.lazyValue = val;
+            },
         },
+        computed: {
+            cssClass() {
+                const {color, lazyValue, theme, typeBold, disabled} = this;
 
-        disabled: {
-            default: false,
+                return {
+                    'vue-switcher': true,
+                    ['vue-switcher--unchecked']: !lazyValue,
+                    ['vue-switcher--disabled']: disabled,
+                    ['vue-switcher--bold']: typeBold,
+                    ['vue-switcher--bold--unchecked']: typeBold && !lazyValue,
+                    [`vue-switcher-theme--${theme}`]: color,
+                    [`vue-switcher-color--${color}`]: color,
+                };
+            },
+            internalValue: {
+                get() {
+                    return this.lazyValue;
+                },
+                set(val) {
+                    if (this.disabled) {
+                        return;
+                    }
+
+                    this.lazyValue = val;
+                    this.$emit('input', val);
+                },
+            },
         },
-
-        label: {
-            default: '',
-        },
-
-        textEnabled: {
-            default: '',
-        },
-
-        textDisabled: {
-            default: '',
-        },
-
-        color: {
-            default: 'default',
-        },
-
-        theme: {
-            default: 'default',
-        },
-
-        emitOnMount: {
-            default: true,
-        },
-        modelChanged: {
-            default: null,
-        },
-    },
-
-    data() {
-        return {
-            enabled: !!this.selected,
-        };
-    },
-
-    mounted() {
-        if (this.emitOnMount) {
-            this.$emit('input', this.enabled = !!this.selected);
-        }
-    },
-
-    watch: {
-        enabled(val) {
-            if (this.modelChanged) {
-                this.modelChanged(val);
-            }
-            this.$emit('input', val);
-        },
-
-        selected(val) {
-            this.enabled = !!val;
-        },
-    },
-
-    computed: {
-        classObject() {
-            const {color, enabled, theme, typeBold, disabled} = this;
-
+        data() {
             return {
-                'vue-switcher': true,
-                ['vue-switcher--unchecked']: !enabled,
-                ['vue-switcher--disabled']: disabled,
-                ['vue-switcher--bold']: typeBold,
-                ['vue-switcher--bold--unchecked']: typeBold && !enabled,
-                [`vue-switcher-theme--${theme}`]: color,
-                [`vue-switcher-color--${color}`]: color,
+                lazyValue: this.value,
             };
         },
-    },
-};
+    };
 </script>
 
 
@@ -114,12 +101,12 @@ export default {
     $color-default-yellow: #bab353;
 
     $theme-default-colors: (
-        default : $color-default-default,
-        blue    : $color-default-blue,
-        red     : $color-default-red,
-        yellow  : $color-default-yellow,
-        orange  : $color-default-orange,
-        green   : $color-default-green
+            default : $color-default-default,
+            blue : $color-default-blue,
+            red : $color-default-red,
+            yellow : $color-default-yellow,
+            orange : $color-default-orange,
+            green : $color-default-green
     );
 
     /**
@@ -133,12 +120,12 @@ export default {
     $color-bulma-green: #22c65b;
 
     $theme-bulma-colors: (
-        default : $color-bulma-default,
-        primary : $color-bulma-primary,
-        blue    : $color-bulma-blue,
-        red     : $color-bulma-red,
-        yellow  : $color-bulma-yellow,
-        green   : $color-bulma-green
+            default : $color-bulma-default,
+            primary : $color-bulma-primary,
+            blue : $color-bulma-blue,
+            red : $color-bulma-red,
+            yellow : $color-bulma-yellow,
+            green : $color-bulma-green
     );
 
     /**
@@ -152,12 +139,12 @@ export default {
     $color-bootstrap-danger: #c9302c;
 
     $theme-bootstrap-colors: (
-        default : $color-bootstrap-default,
-        primary : $color-bootstrap-primary,
-        success : $color-bootstrap-success,
-        info    : $color-bootstrap-info,
-        warning : $color-bootstrap-warning,
-        danger  : $color-bootstrap-danger
+            default : $color-bootstrap-default,
+            primary : $color-bootstrap-primary,
+            success : $color-bootstrap-success,
+            info : $color-bootstrap-info,
+            warning : $color-bootstrap-warning,
+            danger : $color-bootstrap-danger
     );
 
     .vue-switcher {
@@ -218,11 +205,14 @@ export default {
 
         &--disabled {
             div {
-                opacity: .3;
+                opacity: .3 !important;
+                cursor: not-allowed !important;
+                pointer-events: none !important;
             }
 
             input {
-                cursor: not-allowed;
+                cursor: not-allowed !important;
+                pointer-events: none !important;
             }
         }
 
@@ -374,7 +364,5 @@ export default {
                 }
             }
         }
-
     }
-
 </style>
