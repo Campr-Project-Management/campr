@@ -2,14 +2,17 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RiskStatusRepository")
  * @ORM\Table(name="risk_status")
+ * @Cloner\Exclude()
  */
-class RiskStatus
+class RiskStatus implements ResourceInterface
 {
     /**
      * @var int

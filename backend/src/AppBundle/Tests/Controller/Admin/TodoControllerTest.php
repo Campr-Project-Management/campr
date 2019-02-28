@@ -14,9 +14,7 @@ class TodoControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/create');
@@ -44,9 +42,7 @@ class TodoControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/create');
@@ -63,25 +59,9 @@ class TodoControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $company = (new Company())
-            ->setName('company4')
-        ;
-        $this->em->persist($company);
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-        $this->em->persist($project);
-        $this->em->flush();
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/create');
-
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[distributionList]'] = 1;
         $form['create[title]'] = 'todo3';
@@ -96,95 +76,46 @@ class TodoControllerTest extends BaseController
         $todo = $this
             ->em
             ->getRepository(Todo::class)
-            ->findOneBy([
-                'title' => 'todo3',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'title' => 'todo3',
+                ]
+            );
         $this->em->remove($todo);
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $company = (new Company())
-            ->setName('company4')
-        ;
+            ->setName('company4');
         $this->em->persist($company);
 
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
+            ->setCompany($company);
         $this->em->persist($project);
 
         $todo = (new Todo())
             ->setTitle('todo4')
             ->setDescription('description4')
-            ->setProject($project)
-        ;
+            ->setProject($project);
         $this->em->persist($todo);
-
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/todo/%d/edit', $todo->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/todo/%d/delete', $todo->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Todo successfully deleted!', $this->client->getResponse()->getContent());
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/1/edit');
@@ -213,9 +144,7 @@ class TodoControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/1/edit');
@@ -233,9 +162,7 @@ class TodoControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/1/edit');
 
@@ -251,9 +178,7 @@ class TodoControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/list');
@@ -273,9 +198,7 @@ class TodoControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/todo/1/show');
 

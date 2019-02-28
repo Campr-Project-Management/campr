@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="payment_method")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PaymentMethodRepository")
  */
-class PaymentMethod
+class PaymentMethod implements ResourceInterface
 {
     /**
      * @var int

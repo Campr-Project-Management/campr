@@ -26,7 +26,14 @@ class CalendarControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('GET', $url, [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -64,9 +71,9 @@ class CalendarControllerTest extends BaseController
      * @dataProvider getDataForEditAction
      *
      * @param array $content
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
      */
     public function testEditAction(
         array $content,
@@ -84,11 +91,20 @@ class CalendarControllerTest extends BaseController
         $this->em->persist($calendar);
         $this->em->flush();
 
-        $this->client->request('PATCH', '/api/calendars/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], json_encode($content));
+        $this->client->request(
+            'PATCH',
+            '/api/calendars/2',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            json_encode($content)
+        );
         $response = $this->client->getResponse();
+        $actual = $this->getClientJsonResponse();
+
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals(json_encode($responseContent), $response->getContent());
+        $this->assertEquals($responseContent, $actual);
     }
 
     /**
@@ -108,10 +124,10 @@ class CalendarControllerTest extends BaseController
                     'projectName' => 'project1',
                     'parent' => null,
                     'parentName' => null,
-                    'id' => 3,
+                    'id' => 2,
                     'name' => 'New Calendar 2017',
                     'isBased' => true,
-                    'isBaseline' => false,
+                    'isBaseline' => true,
                     'days' => [],
                     'workPackages' => [],
                     'workPackageProjectWorkCostTypes' => [],
@@ -133,7 +149,14 @@ class CalendarControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $this->client->request('DELETE', '/api/calendars/3', [], [], ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)], '');
+        $this->client->request(
+            'DELETE',
+            '/api/calendars/2',
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json', 'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token)],
+            ''
+        );
         $response = $this->client->getResponse();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());

@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * OpportunityStrategy.
@@ -12,8 +16,9 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="opportunity_strategy")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityStrategyRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class OpportunityStrategy
+class OpportunityStrategy implements ProjectAwareInterface, ResourceInterface
 {
     /**
      * @var int
@@ -84,9 +89,9 @@ class OpportunityStrategy
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface $project
      */
-    public function setProject(Project $project)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

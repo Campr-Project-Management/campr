@@ -2,16 +2,23 @@
 
 namespace AppBundle\Entity;
 
+use Component\Media\MediasAwareInterface;
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Filesystem.
  *
  * @ORM\Table(name="file_system")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FileSystemRepository")
+ * @Cloner\Exclude()
  */
-class FileSystem
+class FileSystem implements ProjectAwareInterface, MediasAwareInterface, ResourceInterface, CloneableInterface
 {
     const LOCAL_ADAPTER = 'local_adapter';
     const DROPBOX_ADAPTER = 'dropbox_adapter';
@@ -204,11 +211,11 @@ class FileSystem
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return FileSystem
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -281,5 +288,17 @@ class FileSystem
     public function getIsDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @param Media[]|ArrayCollection $medias
+     */
+    public function setMedias($medias)
+    {
+        foreach ($medias as $media) {
+            $media->setFileSystem($this);
+        }
+
+        $this->medias = $medias;
     }
 }

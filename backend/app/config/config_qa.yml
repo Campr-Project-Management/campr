@@ -37,6 +37,7 @@ doctrine:
 monolog:
     channels:
         - "portal"
+        - "cloner"
     handlers:
         main:
             type:         fingers_crossed
@@ -53,3 +54,8 @@ monolog:
             path: "%kernel.logs_dir%/portal.log"
             level: info
             channels: ["portal"]
+        cloner:
+            type: stream
+            path: "%kernel.logs_dir%/cloner.log"
+            level: info
+            channels: ["cloner"]

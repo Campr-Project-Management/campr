@@ -2,11 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * TeamMember.
@@ -14,8 +16,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="team_member")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamMemberRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Cloner\Exclude()
  */
-class TeamMember implements UserAwareInterface
+class TeamMember implements UserAwareInterface, ResourceInterface
 {
     /**
      * @var int

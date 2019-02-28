@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
  */
-class Label
+class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -90,9 +94,9 @@ class Label
     }
 
     /**
-     * @param Project $project
+     * @param ProjectInterface $project
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
     }

@@ -18,11 +18,10 @@ class LoadProjectWorkCostTypeData extends AbstractFixture implements OrderedFixt
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 2; ++$i) {
-            $projectWorkCostType = (new ProjectWorkCostType())
-                ->setName('project-work-cost-type'.$i)
-                ->setSequence($i)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectWorkCostType = new ProjectWorkCostType();
+            $projectWorkCostType->setName('project-work-cost-type'.$i);
+            $projectWorkCostType->setSequence($i);
+            $projectWorkCostType->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
             $this->setReference('project-work-cost-type'.$i, $projectWorkCostType);
             $manager->persist($projectWorkCostType);
         }

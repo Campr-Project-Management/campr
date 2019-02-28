@@ -26,7 +26,7 @@
         props: {
             tasks: {
                 type: Array,
-                default: [],
+                default: () => [],
                 required: true,
             },
         },

@@ -2,15 +2,18 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SubteamRoleRepository")
  * @ORM\Table(name="subteam_role")
+ * @Cloner\Exclude()
  */
-class SubteamRole
+class SubteamRole implements ResourceInterface
 {
     /**
      * @var int

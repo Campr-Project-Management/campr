@@ -13,9 +13,7 @@ class RiskControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/create');
@@ -51,9 +49,7 @@ class RiskControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/create');
@@ -71,15 +67,7 @@ class RiskControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $status = (new RiskStatus())
-            ->setName('status-test')
-        ;
-        $this->em->persist($status);
-        $this->em->flush();
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/create');
 
@@ -92,7 +80,7 @@ class RiskControllerTest extends BaseController
         $form['admin[delay]'] = 1;
         $form['admin[delayUnit]'] = 'choices.days';
         $form['admin[priority]'] = 1;
-        $form['admin[riskStatus]'] = $status->getId();
+        $form['admin[riskStatus]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -103,32 +91,21 @@ class RiskControllerTest extends BaseController
         $risk = $this
             ->em
             ->getRepository(Risk::class)
-            ->findOneBy([
-                'title' => 'risk3',
-            ])
-        ;
-        $status = $this
-            ->em
-            ->getRepository(RiskStatus::class)
-            ->findOneBy([
-                'name' => 'status-test',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'title' => 'risk3',
+                ]
+            );
         $this->em->remove($risk);
-        $this->em->remove($status);
         $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
-        $status = (new RiskStatus())
-            ->setName('status-test')
-        ;
-        $this->em->persist($status);
+        /** @var RiskStatus $status */
+        $status = $this->em->getRepository(RiskStatus::class)->find(1);
 
         $risk = new Risk();
         $risk->setTitle('risk-title3');
@@ -139,37 +116,21 @@ class RiskControllerTest extends BaseController
         $risk->setDelay(1);
         $risk->setDelayUnit('days');
         $risk->setRiskStatus($status);
-
         $risk->setPriority(1);
 
         $this->em->persist($risk);
         $this->em->flush();
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/risk/%d/edit', $risk->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, sprintf('/admin/risk/%d/delete', $risk->getId()));
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Risk successfully deleted!', $this->client->getResponse()->getContent());
-
-        $status = $this
-            ->em
-            ->getRepository(RiskStatus::class)
-            ->findOneBy([
-                'name' => 'status-test',
-            ])
-        ;
-        $this->em->remove($status);
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/1/edit');
@@ -206,9 +167,7 @@ class RiskControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/1/edit');
@@ -233,9 +192,7 @@ class RiskControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/2/edit');
 
@@ -252,9 +209,7 @@ class RiskControllerTest extends BaseController
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/list');
@@ -275,9 +230,7 @@ class RiskControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk/1/show');
 

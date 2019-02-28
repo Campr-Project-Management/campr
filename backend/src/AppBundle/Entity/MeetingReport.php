@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="meeting_report")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MeetingReportRepository")
  */
-class MeetingReport
+class MeetingReport implements ResourceInterface, CloneableInterface
 {
     /**
      * @var int

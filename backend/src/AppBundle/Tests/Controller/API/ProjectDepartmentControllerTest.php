@@ -3,6 +3,7 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\ProjectRole;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,8 @@ class ProjectDepartmentControllerTest extends BaseController
                 $responseContent['projectUsers'][$index]['updatedAt'] = $projectUser['updatedAt'];
             }
 
+            $actual['managers'] = [];
+
             $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
             $this->assertEquals($responseStatusCode, $response->getStatusCode());
             $this->assertEquals($responseContent, $actual);
@@ -96,12 +99,12 @@ class ProjectDepartmentControllerTest extends BaseController
                             'projectName' => 'project1',
                             'projectCategory' => 1,
                             'projectCategoryName' => 'project-category1',
-                            'projectRoles' => [5],
+                            'projectRoles' => [2],
                             'projectDepartments' => [1],
                             'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
-                            'projectRoleNames' => ['manager'],
+                            'projectRoleNames' => [ProjectRole::ROLE_MANAGER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 1,
@@ -130,12 +133,12 @@ class ProjectDepartmentControllerTest extends BaseController
                             'projectName' => 'project1',
                             'projectCategory' => 1,
                             'projectCategoryName' => 'project-category1',
-                            'projectRoles' => [7],
+                            'projectRoles' => [3],
                             'projectDepartments' => [1],
                             'projectDepartmentNames' => ['project-department1'],
                             'projectTeam' => 1,
                             'projectTeamName' => 'project-team1',
-                            'projectRoleNames' => ['team-member'],
+                            'projectRoleNames' => [ProjectRole::ROLE_TEAM_MEMBER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 3,
@@ -310,12 +313,14 @@ class ProjectDepartmentControllerTest extends BaseController
             ''
         );
         $response = $this->client->getResponse();
-        $actual = json_decode($response->getContent(), true);
+        $actual = $this->getClientJsonResponse();
 
         $responseContent['updatedAt'] = $actual['updatedAt'];
         foreach ($actual['projectUsers'] as $index => $projectUser) {
             $responseContent['projectUsers'][$index]['updatedAt'] = $projectUser['updatedAt'];
         }
+
+        $responseContent['managers'] = $actual['managers'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -351,12 +356,12 @@ class ProjectDepartmentControllerTest extends BaseController
                             'projectName' => 'project1',
                             'projectCategory' => 2,
                             'projectCategoryName' => 'project-category2',
-                            'projectRoles' => [6],
+                            'projectRoles' => [1],
                             'projectDepartments' => [2],
                             'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
-                            'projectRoleNames' => ['sponsor'],
+                            'projectRoleNames' => [ProjectRole::ROLE_SPONSOR],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 2,
@@ -385,12 +390,12 @@ class ProjectDepartmentControllerTest extends BaseController
                             'projectName' => 'project2',
                             'projectCategory' => 2,
                             'projectCategoryName' => 'project-category2',
-                            'projectRoles' => [8],
+                            'projectRoles' => [4],
                             'projectDepartments' => [2],
                             'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
-                            'projectRoleNames' => ['team-participant'],
+                            'projectRoleNames' => [ProjectRole::ROLE_TEAM_LEADER],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 4,

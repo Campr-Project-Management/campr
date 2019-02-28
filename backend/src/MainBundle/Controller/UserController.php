@@ -68,7 +68,7 @@ class UserController extends Controller
 
             $this
                 ->get('app.service.mailer')
-                ->sentRegistrationEmail($user)
+                ->sendRegistrationEmail($user)
             ;
 
             return $this->redirectToRoute('main_homepage');
@@ -186,7 +186,7 @@ class UserController extends Controller
 
             $this
                 ->get('app.service.mailer')
-                ->sentRegistrationEmail($user)
+                ->sendRegistrationEmail($user)
             ;
         } else {
             $message = $this->get('translator')->trans('activation.not_found', [], 'flashes');

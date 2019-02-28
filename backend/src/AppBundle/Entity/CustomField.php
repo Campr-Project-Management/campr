@@ -2,16 +2,19 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Class CustomField.
  *
  * @ORM\Table(name="custom_field")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CustomFieldRepository")
+ * @Cloner\Exclude()
  */
-class CustomField
+class CustomField implements ResourceInterface
 {
     /**
      * @var int
