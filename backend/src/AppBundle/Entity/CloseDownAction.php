@@ -2,20 +2,23 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * CloseDownAction.
  *
  * @ORM\Table(name="close_down_action")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CloseDownActionRepository")
+ * @Cloner\Exclude()
  */
-class CloseDownAction implements TimestampableInterface, ResponsibilityAwareInterface
+class CloseDownAction implements TimestampableInterface, ResponsibilityAwareInterface, ResourceInterface
 {
     use TimestampableTrait;
 

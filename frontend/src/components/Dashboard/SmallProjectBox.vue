@@ -8,7 +8,7 @@
                     </router-link>
                 </h2>
                 <div class="favourite" v-if="project">
-                    <star-icon :item="project"></star-icon>
+                    <star-icon :item="project"/>
                 </div>
             </div>
             <div class="content flex flex-space-between">
@@ -23,11 +23,13 @@
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.project_manager') }}</span>
-                        <span class="data" v-if="project.projectManager">{{ project.projectManagerName }}</span><span class="data" v-else>-</span>
+                        <span class="data" v-if="project.projectManager">{{ project.projectManagerName }}</span><span
+                            class="data" v-else>-</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.project_sponsor') }}</span>
-                        <span class="data" v-if="project.projectSponsor">{{ project.projectSponsorName }}</span><span class="data" v-else>-</span>
+                        <span class="data" v-if="project.projectSponsor">{{ project.projectSponsorName }}</span><span
+                            class="data" v-else>-</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.status') }}:</span>
@@ -43,67 +45,69 @@
 </template>
 
 <script>
-import BarChart from '../_common/_charts/BarChart';
-import StarIcon from '../_common/_icons/StarIcon';
+    import BarChart from '../_common/_charts/BarChart';
+    import StarIcon from '../_common/_icons/StarIcon';
+    import DuplicateIcon from '../_common/_icons/DuplicateIcon';
 
-export default {
-    components: {
-        BarChart,
-        StarIcon,
-    },
-    props: ['project'],
-    methods: {
-        baseDate(project) {
-            return project && project.contracts && project.contracts.length
-                ? project.contracts[0].proposedStartDate
-                : '-'
-            ;
+    export default {
+        components: {
+            BarChart,
+            StarIcon,
+            DuplicateIcon,
         },
-        translateText: function(text) {
-            return this.translate(text);
+        props: ['project'],
+        methods: {
+            baseDate(project) {
+                return project && project.contracts && project.contracts.length
+                    ? project.contracts[0].proposedStartDate
+                    : '-'
+                    ;
+            },
+            translateText: function(text) {
+                return this.translate(text);
+            },
         },
-    },
-};
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '~theme/variables';
-  @import '../../css/box';
-  @import '../../css/box-project';
+    @import '~theme/variables';
+    @import '../../css/box';
+    @import '../../css/box-project';
 
-  .info {
-    padding-top: 16px;
+    .info {
+        padding-top: 16px;
 
-    p {
-      margin: 0 0 6px 0;
+        p {
+            margin: 0 0 6px 0;
+        }
+
+        .title {
+            color: $middleColor;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .data {
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            margin-left: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .status-label {
+            padding: 0 19px;
+            margin-left: 5px;
+            font-size: 10px;
+            height: 23px;
+            line-height: 23px;
+            display: inline-block;
+
+            &.finished {
+                background: $secondColor;
+            }
+        }
     }
-
-    .title {
-      color: $middleColor;
-      text-transform: uppercase;
-      font-size: 12px;
-    }
-
-    .data {
-      font-size: 11px;
-      letter-spacing: 0.5px;
-      margin-left: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .status-label {
-      padding: 0 19px;
-      margin-left: 5px;
-      font-size: 10px;
-      height: 23px;
-      line-height: 23px;
-      display: inline-block;
-
-      &.finished {
-        background: $secondColor;
-      }
-    }
-  }
 </style>

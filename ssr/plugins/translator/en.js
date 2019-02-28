@@ -253,7 +253,7 @@ module.exports = function (Translator) {
     Translator.add("activation.resend", "Click here to resend the activation token", "messages", "en");
     Translator.add("add.assignment", "Add new assignment", "messages", "en");
     Translator.add("add.calendar", "Add new calendar", "messages", "en");
-    Translator.add("add.close_down_action", "Add new close down action", "messages", "en");
+    Translator.add("add.close_down_action", "Add new close out action", "messages", "en");
     Translator.add("add.color_status", "Add new color status", "messages", "en");
     Translator.add("add.communication", "Add new communication", "messages", "en");
     Translator.add("add.company", "Add new company", "messages", "en");
@@ -918,7 +918,7 @@ module.exports = function (Translator) {
     Translator.add("message.click", "Click", "messages", "en");
     Translator.add("message.close", "Close", "messages", "en");
     Translator.add("message.close_down_project", "Close Out", "messages", "en");
-    Translator.add("message.close_down_report", "Close Down Report", "messages", "en");
+    Translator.add("message.close_down_report", "Close Out Report", "messages", "en");
     Translator.add("message.close_task", "Close Task", "messages", "en");
     Translator.add("message.close_team", "Close Team", "messages", "en");
     Translator.add("message.comment", "Comment", "messages", "en");
@@ -1289,7 +1289,7 @@ module.exports = function (Translator) {
     Translator.add("message.yes", "Yes", "messages", "en");
     Translator.add("message.your_teams", "Your teams", "messages", "en");
     Translator.add("message.your_workspaces", "Your workspaces", "messages", "en");
-    Translator.add("modules.close_down_project.description", "The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.", "messages", "en");
+    Translator.add("modules.close_down_project.description", "The final project report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The final project report is the basis for the final project commissioning process.", "messages", "en");
     Translator.add("modules.close_down_project.title", "Close Out Project", "messages", "en");
     Translator.add("modules.contract.description", "The goal of the project contract is to make a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.", "messages", "en");
     Translator.add("modules.contract.title", "Contract", "messages", "en");
@@ -1448,7 +1448,7 @@ module.exports = function (Translator) {
     Translator.add("site.disabled", "Site disabled.", "messages", "en");
     Translator.add("subtitle.assignment", "List of assignments", "messages", "en");
     Translator.add("subtitle.calendar", "List of calendars", "messages", "en");
-    Translator.add("subtitle.close_down_action", "List of close down actions", "messages", "en");
+    Translator.add("subtitle.close_down_action", "List of close out actions", "messages", "en");
     Translator.add("subtitle.color_status", "List of color statuses", "messages", "en");
     Translator.add("subtitle.communication", "List of communications", "messages", "en");
     Translator.add("subtitle.company", "List of companies", "messages", "en");
@@ -1533,10 +1533,10 @@ module.exports = function (Translator) {
     Translator.add("success.calendar.delete.from_edit", "Calendar successfully deleted!", "messages", "en");
     Translator.add("success.calendar.edit", "Calendar successfully edited!", "messages", "en");
     Translator.add("success.chat_messages.delete", "Ank\u00fcndigungen erfolgreich gel\u00f6scht!", "messages", "en");
-    Translator.add("success.close_down_action.create", "Close Down Action successfully created!", "messages", "en");
-    Translator.add("success.close_down_action.delete.from_data_table", "Close Down Action config with ID", "messages", "en");
-    Translator.add("success.close_down_action.delete.from_edit", "Close Down Action successfully deleted!", "messages", "en");
-    Translator.add("success.close_down_action.edit", "Close Down Action successfully edited!", "messages", "en");
+    Translator.add("success.close_down_action.create", "Close Out Action successfully created!", "messages", "en");
+    Translator.add("success.close_down_action.delete.from_data_table", "Close Out Action config with ID", "messages", "en");
+    Translator.add("success.close_down_action.delete.from_edit", "Close Out Action successfully deleted!", "messages", "en");
+    Translator.add("success.close_down_action.edit", "Close Out Action successfully edited!", "messages", "en");
     Translator.add("success.color_status.create", "Color status successfully created!", "messages", "en");
     Translator.add("success.color_status.delete.from_data_table", "Color status with ID", "messages", "en");
     Translator.add("success.color_status.delete.from_edit", "Color status successfully deleted!", "messages", "en");
@@ -2047,9 +2047,9 @@ module.exports = function (Translator) {
     Translator.add("title.calendar.create", "Create new calendar", "messages", "en");
     Translator.add("title.calendar.edit", "Edit calendar", "messages", "en");
     Translator.add("title.calendar.list", "Calendar", "messages", "en");
-    Translator.add("title.close_down_action.create", "Create new close down action", "messages", "en");
-    Translator.add("title.close_down_action.edit", "Edit close down action", "messages", "en");
-    Translator.add("title.close_down_action.list", "Close Down Action", "messages", "en");
+    Translator.add("title.close_down_action.create", "Create new close out action", "messages", "en");
+    Translator.add("title.close_down_action.edit", "Edit close out action", "messages", "en");
+    Translator.add("title.close_down_action.list", "Close Out Action", "messages", "en");
     Translator.add("title.color_status.create", "Create new color status", "messages", "en");
     Translator.add("title.color_status.edit", "Edit color status", "messages", "en");
     Translator.add("title.color_status.list", "Color status", "messages", "en");
@@ -2418,7 +2418,7 @@ module.exports = function (Translator) {
     Translator.add("email.register.content", "Check out our %link_tag_open% blog %link_tag_close% and follow us on social media to stay updated with the latest developments around CAMPR.", "messages", "en");
     Translator.add("email.subject.workspace.ready", "Your CAMPR workspace is ready!", "messages", "en");
     Translator.add("email.workspace.message", "Your workspace is now ready:", "messages", "en");
-    Translator.add("email.workspace.content", "You will find three projects of different sizes: The company anniversary, the machine relocation and the \u201cWelcome to CAMPR\u201d-project. The last one is a project showing the different stages of the classic project management approach. <br\/>\nIf you want to learn more about how CAMPR adopts proven project management standards, check out this %link_tag_open% blog post %link_tag_close%  ", "messages", "en");
+    Translator.add("email.workspace.content", "You will find three projects of different sizes: The company anniversary, the machine relocation and the \u201cWelcome to CAMPR\u201d-project. The last one is a project showing the different stages of the classic project management approach. <br\/><br\/>\nIf you want to learn more about how CAMPR adopts proven project management standards, check out this %link_tag_open% blog post %link_tag_close%  ", "messages", "en");
     Translator.add("warning.scan_qr_code", "After you click save, the QR code needed for 2 factor authentication will appear! Remember to scan the QR code before logging out or you will not be able to login again.", "messages", "en");
     Translator.add("message.theme_switcher.light", "Switch to Dark", "messages", "en");
     Translator.add("message.theme_switcher.dark", "Switch to Light", "messages", "en");
@@ -2439,6 +2439,7 @@ module.exports = function (Translator) {
     Translator.add("portal.footer.imprint", "Imprint", "messages", "en");
     Translator.add("portal.footer.status", "Status", "messages", "en");
     Translator.add("portal.footer.copyright", "&copy; %year% Campr. All rights reserved.", "messages", "en");
+    Translator.add("message.duplicate", "Duplicate", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");

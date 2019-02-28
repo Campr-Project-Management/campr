@@ -2,18 +2,21 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Component\User\Model\UserAwareInterface;
 use Component\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * Log.
  *
  * @ORM\Table(name="log")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LogRepository")
+ * @Cloner\Exclude()
  */
-class Log implements UserAwareInterface
+class Log implements UserAwareInterface, ResourceInterface
 {
     /**
      * @var int

@@ -2,6 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -12,8 +18,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CostRepository")
  * @ORM\Table(name="cost")
  */
-class Cost
+class Cost implements ProjectAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     const TYPE_INTERNAL = 0; // resource
     const TYPE_EXTERNAL = 1; // cost
 
@@ -51,7 +59,7 @@ class Cost
 
     /**
      * @var resource
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Resource", inversedBy="costs")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Resource", inversedBy="costs", cascade={"persist"})
      * @ORM\JoinColumns({
      *     @ORM\JoinColumn(name="resource_id", onDelete="CASCADE")
      * })
@@ -113,7 +121,7 @@ class Cost
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
@@ -121,7 +129,7 @@ class Cost
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -309,61 +317,13 @@ class Cost
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Cost
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Cost
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * Set project.
      *
-     * @param \AppBundle\Entity\Project $project
+     * @param ProjectInterface $project
      *
      * @return Cost
      */
-    public function setProject(\AppBundle\Entity\Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 

@@ -3,10 +3,15 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Model\RemovalForbiddenInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * ProjectStatus.
@@ -14,9 +19,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="project_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
-class ProjectStatus implements RemovalForbiddenInterface
+class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     const NOT_STARTED = 1;
     const IN_PROGRESS = 2;
     const PENDING = 3;
@@ -63,7 +71,7 @@ class ProjectStatus implements RemovalForbiddenInterface
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -73,7 +81,7 @@ class ProjectStatus implements RemovalForbiddenInterface
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * ProjectStatus constructor.
@@ -144,54 +152,6 @@ class ProjectStatus implements RemovalForbiddenInterface
     public function getSequence()
     {
         return $this->sequence;
-    }
-
-    /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return ProjectStatus
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return ProjectStatus
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

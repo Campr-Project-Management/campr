@@ -18,11 +18,10 @@ class LoadProjectScopeData extends AbstractFixture implements OrderedFixtureInte
     public function load(ObjectManager $manager)
     {
         for ($i = 1; $i <= 2; ++$i) {
-            $projectScope = (new ProjectScope())
-                ->setName('project-scope'.$i)
-                ->setSequence($i)
-                ->setCreatedAt(new \DateTime('2017-01-01 12:00:00'))
-            ;
+            $projectScope = new ProjectScope();
+            $projectScope->setName('project-scope'.$i);
+            $projectScope->setSequence($i);
+            $projectScope->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));
             $this->setReference('project-scope'.$i, $projectScope);
             $manager->persist($projectScope);
         }

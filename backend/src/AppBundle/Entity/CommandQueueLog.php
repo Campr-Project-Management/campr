@@ -2,13 +2,16 @@
 
 namespace AppBundle\Entity;
 
+use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="command_queue_log")
+ * @Cloner\Exclude()
  */
-class CommandQueueLog
+class CommandQueueLog implements ResourceInterface
 {
     /**
      * @var int

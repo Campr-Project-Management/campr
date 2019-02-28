@@ -302,7 +302,7 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         Assert::notNull($project, 'Task project is not set');
 
         $projectUser = $user->getProjectUser($project);
-        Assert::notNull($projectUser, 'Project user is not set');
+        Assert::notEmpty($projectUser, 'Project user is not set');
 
         return $projectUser->getShowInRasci();
     }

@@ -2,9 +2,6 @@
 
 namespace AppBundle\Tests\Controller\Admin;
 
-use AppBundle\Entity\Project;
-use AppBundle\Entity\ProjectUser;
-use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +11,7 @@ class ProjectUserControllerTest extends BaseController
 {
     public function testFormIsDisplayedOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/create');
@@ -44,9 +39,7 @@ class ProjectUserControllerTest extends BaseController
 
     public function testFormValidationOnCreatePage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/create');
@@ -62,125 +55,35 @@ class ProjectUserControllerTest extends BaseController
 
     public function testCreateAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
-
-        $company = (new Company())
-            ->setName('company4')
-        ;
-        $this->em->persist($company);
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-        $this->em->persist($project);
-        $this->em->flush();
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['create[user]'] = $this->user->getId();
-        $form['create[project]'] = $project->getId();
+        $form['create[user]'] = 1;
+        $form['create[project]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Project user successfully created!', $this->client->getResponse()->getContent());
-
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy([
-                'user' => $this->user,
-            ])
-        ;
-        $this->em->remove($projectUser);
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $this->em->flush();
     }
 
     public function testDeleteAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
-        $company = (new Company())
-            ->setName('company4')
-        ;
-        $this->em->persist($company);
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-        $this->em->persist($project);
-
-        $projectUser = (new  ProjectUser())
-            ->setUser($this->user)
-            ->setProject($project)
-        ;
-        $this->em->persist($projectUser);
-        $this->em->flush();
-
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project-user/%d/edit', $projectUser->getId()));
-
-        $link = $crawler->selectLink('Delete')->link();
-        $this->client->click($link);
+        $this->client->request(Request::METHOD_GET, '/admin/project-user/1/delete');
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Project user successfully deleted!', $this->client->getResponse()->getContent());
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $this->em->flush();
     }
 
     public function testFormIsDisplayedOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/1/edit');
@@ -209,9 +112,7 @@ class ProjectUserControllerTest extends BaseController
 
     public function testFormValidationOnEditPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/1/edit');
@@ -230,75 +131,23 @@ class ProjectUserControllerTest extends BaseController
 
     public function testEditAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
-        $company = (new Company())
-            ->setName('company4')
-        ;
-        $this->em->persist($company);
-
-        $project = (new Project())
-            ->setName('project4')
-            ->setNumber('project-number-4')
-            ->setCompany($company)
-        ;
-        $this->em->persist($project);
-
-        $projectUser = (new  ProjectUser())
-            ->setUser($this->user)
-            ->setProject($project)
-        ;
-        $this->em->persist($projectUser);
-        $this->em->flush();
-
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/admin/project-user/%d/edit', $projectUser->getId()));
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[user]'] = $this->user->getId();
+        $form['create[user]'] = 1;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $this->client->followRedirect();
         $this->assertContains('Project user successfully edited!', $this->client->getResponse()->getContent());
-
-        $projectUser = $this
-            ->em
-            ->getRepository(ProjectUser::class)
-            ->findOneBy([
-                'user' => $this->user,
-            ])
-        ;
-        $this->em->remove($projectUser);
-
-        $project = $this
-            ->em
-            ->getRepository(Project::class)
-            ->findOneBy([
-                'number' => 'project-number-4',
-            ])
-        ;
-        $this->em->remove($project);
-
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => 'company4',
-            ])
-        ;
-        $this->em->remove($company);
-
-        $this->em->flush();
     }
 
     public function testDataTableOnListPage()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/list');
@@ -316,9 +165,7 @@ class ProjectUserControllerTest extends BaseController
 
     public function testTableStructureOnShowAction()
     {
-        $this->user = $this->createUser('testuser', 'testuser@trisoft.ro', 'Password1', ['ROLE_SUPER_ADMIN']);
-        $this->login($this->user);
-        $this->assertNotNull($this->user, 'User not found');
+        $this->login();
 
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-user/1/show');
 

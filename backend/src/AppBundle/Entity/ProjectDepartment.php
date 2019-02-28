@@ -2,6 +2,12 @@
 
 namespace AppBundle\Entity;
 
+use Component\Project\ProjectAwareInterface;
+use Component\Project\ProjectInterface;
+use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\TimestampableInterface;
+use Component\Resource\Model\TimestampableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,8 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="project_department")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectDepartmentRepository")
  */
-class ProjectDepartment
+class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -83,7 +91,7 @@ class ProjectDepartment
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime|null
@@ -93,7 +101,7 @@ class ProjectDepartment
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var ProjectUser[]|ArrayCollection
@@ -238,54 +246,6 @@ class ProjectDepartment
     }
 
     /**
-     * Set createdAt.
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return ProjectDepartment
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt.
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt.
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return ProjectDepartment
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * Set projectWorkCostType.
      *
      * @param ProjectWorkCostType $projectWorkCostType
@@ -411,11 +371,11 @@ class ProjectDepartment
     /**
      * Set project.
      *
-     * @param Project $project
+     * @param ProjectInterface $project
      *
      * @return ProjectDepartment
      */
-    public function setProject(Project $project = null)
+    public function setProject(ProjectInterface $project = null)
     {
         $this->project = $project;
 
@@ -472,5 +432,13 @@ class ProjectDepartment
     public function setSubteams($subteams)
     {
         $this->subteams = $subteams;
+    }
+
+    /**
+     * @param ProjectUser[]|ArrayCollection $projectUsers
+     */
+    public function setProjectUsers($projectUsers)
+    {
+        $this->projectUsers = $projectUsers;
     }
 }
