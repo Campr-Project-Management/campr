@@ -119,9 +119,6 @@ class ApiCreateType extends AbstractType
             ->add('showInRasci', CheckboxType::class, [
                 'mapped' => false,
             ])
-            ->add('showInOrg', CheckboxType::class, [
-                'mapped' => false,
-            ])
         ;
 
         $builder->addEventListener(
@@ -135,7 +132,6 @@ class ApiCreateType extends AbstractType
                     $form->remove('departments');
                     $form->remove('showInResources');
                     $form->remove('showInRasci');
-                    $form->remove('showInOrg');
                 }
             }
         );
