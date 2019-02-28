@@ -85,9 +85,10 @@ RUN npm install -g yarn nuxt@1.4.0
 # Server Side Rendering
 RUN curl -o /tmp/google-chrome-stable_current_amd64.deb \
         https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || true) \
-    && apt-get install -y -f \
-    && apt-get install -y xvfb
+    && (dpkg -i /tmp/google-chrome-stable_current_amd64.deb || true)
+
+RUN apt-get update --fix-missing && apt-get install -y -f
+RUN apt-get install -y xvfb
 
 ADD bootstrap.sh /bootstrap.sh
 RUN chmod 700 /bootstrap.sh
