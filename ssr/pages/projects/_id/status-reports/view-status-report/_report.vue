@@ -558,7 +558,7 @@
             },
             trendChartLabels() {
                 return this.statusReportTrendGraph.map(data => {
-                    return `${this.translate('message.week')} ${data.week}`;
+                    return data.label;
                 });
             },
             phases() {
