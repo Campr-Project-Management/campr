@@ -108,21 +108,21 @@
                         <div class="col-md-4">
                             <h3>{{ translateText('label.show_in_resources') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="resource" :selected="resource"></switches>
+                                <switches v-model="resource"/>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
                             <h3>{{ translateText('table_header_cell.rasci') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="rasci" :selected="rasci"></switches>
+                                <switches v-model="rasci"/>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
                         <div class="col-md-4">
                             <h3>{{ translateText('table_header_cell.org') }}</h3>
                             <div class="flex flex-v-center">
-                                <switches v-model="org" :selected="org"></switches>
+                                <switches v-model="org"/>
                             </div>
                             <hr class="nomarginbottom">
                         </div>
@@ -136,7 +136,7 @@
                             <h4 v-if="dl.sequence === -1">{{ translateText(dl.name) }}</h4>
                             <h4 v-else>{{ dl.name }}</h4>
                             <div class="flex flex-v-center">
-                                <switches v-model="distribution[dl.id]" :selected="distribution[dl.id]"></switches>
+                                <switches v-model="distribution[dl.id]"/>
                             </div>
                         </div>
                     </div>
@@ -257,7 +257,6 @@ export default {
                 'company': this.company,
                 'showInResources': this.resource,
                 'showInRasci': this.rasci,
-                'showInOrg': this.org,
                 'email': this.email,
                 'phone': this.phone,
                 'facebook': this.facebook,
@@ -301,7 +300,6 @@ export default {
                 'company': this.company,
                 'showInResources': this.resource,
                 'showInRasci': this.rasci,
-                'showInOrg': this.org,
                 'distributionLists': list,
                 'roles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
                 'departments': this.departments.filter((item) => item.key).map((item) => item.key),
@@ -371,7 +369,6 @@ export default {
             }
             this.resource = this.member.showInResource;
             this.rasci = this.member.showInRasci;
-            this.org = this.member.showInOrg;
         },
         distributionLists(value) {
             let distLength = 0;

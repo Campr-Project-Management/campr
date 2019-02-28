@@ -140,13 +140,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     private $showInRasci = true;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="show_in_org", type="boolean", nullable=true, options={"default"=1})
-     */
-    private $showInOrg = true;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="company", type="string", length=128, nullable=true)
@@ -254,30 +247,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     public function getShowInRasci()
     {
         return $this->showInRasci;
-    }
-
-    /**
-     * Set org.
-     *
-     * @param bool $showInOrg
-     *
-     * @return ProjectUser
-     */
-    public function setShowInOrg($showInOrg)
-    {
-        $this->showInOrg = $showInOrg;
-
-        return $this;
-    }
-
-    /**
-     * Get org.
-     *
-     * @return bool
-     */
-    public function getShowInOrg()
-    {
-        return $this->showInOrg;
     }
 
     /**
@@ -911,5 +880,35 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     public function isUserDeleted(): bool
     {
         return $this->getUser()->isDeleted();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isProjectManager(): bool
+    {
+        return $this->hasProjectRole(ProjectRole::ROLE_MANAGER);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isProjectSponsor(): bool
+    {
+        return $this->hasProjectRole(ProjectRole::ROLE_SPONSOR);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return bool
+     */
+    public function isRASCI(): bool
+    {
+        return $this->getShowInRasci() || $this->isProjectSponsor() || $this->isProjectManager();
     }
 }

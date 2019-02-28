@@ -592,7 +592,6 @@ class ProjectController extends ApiController
             // @TODO: refactor to use a form and model
             $projectUser = new ProjectUser();
             $projectUser->setProject($project);
-            $projectUser->setShowInOrg($form->get('showInOrg')->getData());
             $projectUser->setShowInRasci($form->get('showInRasci')->getData());
             $projectUser->setShowInResources($form->get('showInResources')->getData());
             $projectUser->setCompany($form->get('company')->getData());
@@ -682,7 +681,6 @@ class ProjectController extends ApiController
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
-            $projectUser->setShowInOrg($form->get('showInOrg')->getData());
             $projectUser->setShowInRasci($form->get('showInRasci')->getData());
             $projectUser->setShowInResources($form->get('showInResources')->getData());
             $projectUser->setCompany($form->get('company')->getData());

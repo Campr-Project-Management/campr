@@ -20,7 +20,7 @@ const getters = {
         }
 
         return getters.projectUsers.items.filter(
-            (projectUser) => projectUser.showInRasci);
+            (projectUser) => projectUser.isRASCI);
     },
     projectUserByUserId: (state, getters) => (id) => {
         return _.find(getters.projectUsers.items, (user) => {
@@ -60,7 +60,7 @@ const getters = {
             return {
                 'key': item.user,
                 'label': item.userFullName,
-                'hidden': item.userDeleted || !item.showInRasci,
+                'hidden': item.userDeleted || !item.isRASCI,
             };
         });
     },
