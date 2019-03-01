@@ -67,7 +67,6 @@
                                 <th>{{ translate('table_header_cell.department') }}</th>
                                 <th>{{ translate('table_header_cell.contact') }}</th>
                                 <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.rasci') }}</th>
-                                <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.org') }}</th>
                                 <th class="text-center switchers" v-if="canEditProject && project.distributionLists" v-for="dl in project.distributionLists">
                                     <span v-if="dl.sequence === -1">{{ translate(dl.name) }}</span>
                                     <span v-else>{{ dl.name }}</span>
@@ -84,8 +83,8 @@
                                 </td>
                                 <td class="text-center switchers" v-if="canEditProject">
                                     <switches
-                                        @click.native="updateUserOption(item, 'resource')"
-                                        :selected="item.showInResources" />
+                                            @input="updateUserOption(item, 'resource')"
+                                            :value="item.showInResources"/>
                                 </td>
                                 <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
                                 <td>{{ item.userFullName }}</td>
@@ -108,13 +107,15 @@
                                     <social-links align="left" size="20px" v-bind:facebook="item.userFacebook" v-bind:twitter="item.userTwitter" v-bind:linkedin="item.userLinkedIn" v-bind:gplus="item.userGplus" v-bind:email="item.userEmail" v-bind:phone="item.userPhone"></social-links>
                                 </td>
                                 <td class="text-center switchers" v-if="canEditProject">
-                                    <switches @click.native="updateUserOption(item, 'rasci')" :selected="item.showInRasci"></switches>
-                                </td>
-                                <td class="text-center switchers" v-if="canEditProject">
-                                    <switches @click.native="updateUserOption(item, 'org')" :selected="item.showInOrg"></switches>
+                                    <switches
+                                            @input="updateUserOption(item, 'rasci')"
+                                            :disabled="item.isProjectManager || item.isProjectSponsor"
+                                            :value="item.isRASCI"/>
                                 </td>
                                 <td class="text-center switchers" v-if="canEditProject" v-for="dl in project.distributionLists" :key="dl.id+'-'+item.user.id">
-                                    <switches @click.native="updateDistributionItem(item, dl)" v-model="inDistribution" :selected="inDistributionList(item.user, dl)"></switches>
+                                    <switches
+                                            @input="updateDistributionItem(item, dl)"
+                                            :value="inDistributionList(item.user, dl)"/>
                                 </td>
                                 <td v-if="canEditProject">
                                     <router-link :to="{name: 'project-organization-view-member', params: {id: projectId, userId: item.id} }" class="btn-icon">
@@ -215,7 +216,7 @@ export default {
         },
         inDistributionList: function(userId, distribution) {
             for (let i = 0; i < distribution.users.length; i++) {
-                if (distribution.users[i].id == userId) {
+                if (distribution.users[i].id === userId) {
                     return true;
                 }
             }
@@ -227,12 +228,6 @@ export default {
                 this.updateProjectUser({
                     id: item.id,
                     showInRasci: !item.showInRasci,
-                });
-                break;
-            case 'org':
-                this.updateProjectUser({
-                    id: item.id,
-                    showInOrg: !item.showInOrg,
                 });
                 break;
             case 'resource':
@@ -301,9 +296,7 @@ export default {
             distributionLists: [],
             gridList: [],
             showInRasci: '',
-            showInOrg: '',
             showInResources: '',
-            inDistribution: '',
             activePage: 1,
             showTeam: {},
             showModal: false,
