@@ -410,12 +410,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     private $units;
 
     /**
-     * @var ArrayCollection|resource[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="project", cascade={"persist"})
-     */
-    private $resources;
-
-    /**
      * @var Subteam[]|ArrayCollection
      *
      * @Serializer\Exclude()
@@ -560,7 +554,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
         $this->workPackageStatuses = new ArrayCollection();
         $this->costs = new ArrayCollection();
         $this->units = new ArrayCollection();
-        $this->resources = new ArrayCollection();
         $this->subteams = new ArrayCollection();
         $this->risks = new ArrayCollection();
         $this->opportunities = new ArrayCollection();
@@ -2135,40 +2128,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     public function getUnits()
     {
         return $this->units;
-    }
-
-    /**
-     * @param resource $resource
-     *
-     * @return Project
-     */
-    public function addResource(Resource $resource)
-    {
-        $this->resources[] = $resource;
-        $resource->setProject($this);
-
-        return $this;
-    }
-
-    /**
-     * @param resource $resource
-     *
-     * @return Project
-     */
-    public function removeResource(Resource $resource)
-    {
-        $this->resources->removeElement($resource);
-        $resource->setProject(null);
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection|resource[]
-     */
-    public function getResources()
-    {
-        return $this->resources;
     }
 
     /**

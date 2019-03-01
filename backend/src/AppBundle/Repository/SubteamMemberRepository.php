@@ -3,14 +3,14 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Project;
-use AppBundle\Entity\User;
 use AppBundle\Repository\Traits\UserSortingTrait;
+use Component\User\Model\UserInterface;
 
 class SubteamMemberRepository extends BaseRepository
 {
     use UserSortingTrait;
 
-    public function findByUserAndProject(User $user, Project $project)
+    public function findByUserAndProject(UserInterface $user, Project $project)
     {
         return $this
             ->createQueryBuilder('sm')

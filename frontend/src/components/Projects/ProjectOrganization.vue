@@ -59,7 +59,6 @@
                             </tr> -->
                             <tr>
                                 <th class="avatar"></th>
-                                <th class="text-center switchers" v-if="canEditProject">{{ translate('table_header_cell.resource') }}</th>
                                 <th>{{ translate('table_header_cell.company') }}</th>
                                 <th>{{ translate('table_header_cell.name') }}</th>
                                 <th>{{ translate('table_header_cell.role') }}</th>
@@ -80,11 +79,6 @@
                                     <user-avatar
                                             :url="item.userAvatarUrl"
                                             :name="item.userFullName"/>
-                                </td>
-                                <td class="text-center switchers" v-if="canEditProject">
-                                    <switches
-                                            @input="updateUserOption(item, 'resource')"
-                                            :value="item.showInResources"/>
                                 </td>
                                 <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
                                 <td>{{ item.userFullName }}</td>
@@ -108,7 +102,7 @@
                                 </td>
                                 <td class="text-center switchers" v-if="canEditProject">
                                     <switches
-                                            @input="updateUserOption(item, 'rasci')"
+                                            @input="updateUserRASCI(item)"
                                             :disabled="item.isProjectManager || item.isProjectSponsor"
                                             :value="item.isRASCI"/>
                                 </td>
@@ -222,21 +216,11 @@ export default {
             }
             return false;
         },
-        updateUserOption(item, value) {
-            switch(value) {
-            case 'rasci':
-                this.updateProjectUser({
-                    id: item.id,
-                    showInRasci: !item.showInRasci,
-                });
-                break;
-            case 'resource':
-                this.updateProjectUser({
-                    id: item.id,
-                    showInResources: !item.showInResources,
-                });
-                break;
-            }
+        updateUserRASCI(item) {
+            this.updateProjectUser({
+                id: item.id,
+                showInRasci: !item.showInRasci,
+            });
 
             this.getProjectUsers({id: this.$route.params.id, page: this.activePage});
         },
@@ -295,8 +279,6 @@ export default {
             selectedDistribution: [],
             distributionLists: [],
             gridList: [],
-            showInRasci: '',
-            showInResources: '',
             activePage: 1,
             showTeam: {},
             showModal: false,

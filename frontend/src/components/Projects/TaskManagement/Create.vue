@@ -309,7 +309,7 @@ export default {
         },
         onInternalCostAdded() {
             this.internalCosts.items.push({
-                resource: {label: this.translate('label.cost_item')},
+                name: '',
                 quantity: 1,
                 duration: 1,
                 rate: 0,
@@ -532,12 +532,7 @@ export default {
                             {},
                             cost,
                             {
-                                resource: cost.resource
-                                    ? {
-                                        label: cost.resourceName,
-                                        key: cost.resource,
-                                    }
-                                    : null,
+                                name: cost.name,
                                 project: this.$route.params.id ? this.$route.params.id : null,
                                 workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
                             }

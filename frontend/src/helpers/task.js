@@ -77,7 +77,7 @@ export const createFormData = (data) => {
             formData.append('costs[' + i + '][name]', item.name || '');
             formData.append('costs[' + i + '][quantity]', item.quantity);
             formData.append('costs[' + i + '][rate]', item.rate);
-            formData.append('costs[' + i + '][expenseType]', item.expenseType);
+            formData.append('costs[' + i + '][expenseType]', Number(item.expenseType));
             formData.append('costs[' + i + '][type]', 1);
             if (item.customUnit && item.customUnit.length) {
                 formData.append('costs[' + i + '][customUnit]', item.customUnit);
@@ -103,7 +103,7 @@ export const createFormData = (data) => {
     if (data.internalCosts) {
         data.internalCosts.items.forEach((item, i) => {
             let costIndex = i + data.externalCosts.items.length;
-            formData.append('costs[' + costIndex + '][resource]', item.resource.key);
+            formData.append('costs[' + costIndex + '][name]', item.name);
             formData.append('costs[' + costIndex + '][quantity]', item.quantity);
             formData.append('costs[' + costIndex + '][duration]', item.duration);
             formData.append('costs[' + costIndex + '][rate]', item.rate);
