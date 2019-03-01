@@ -47,7 +47,9 @@ class RasciMatrixService
             ->getProjectUsers()
             ->filter(
                 function (ProjectUser $projectUser) {
-                    return $projectUser->getShowInRasci();
+                    return $projectUser->getShowInRasci()
+                        || $projectUser->isProjectManager()
+                        || $projectUser->isProjectSponsor();
                 }
             )
             ->map(

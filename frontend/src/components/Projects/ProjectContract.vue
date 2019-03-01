@@ -181,10 +181,8 @@
                             <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
 
                             <switches
-                                :disabled="frozen"
-                                v-model="isApproved"
-                                :selected="isApproved"
-                                :emit-on-mount="true" />
+                                    :disabled="frozen"
+                                    v-model="isApproved"/>
 
                             <div v-if="isApproved" class="toggle-approved">{{ approvedAt }}</div>
                             <div v-else class="toggle-approved">{{ translateText('label.not_approved') }}</div>
