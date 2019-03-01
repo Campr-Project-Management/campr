@@ -158,8 +158,7 @@
                                                 <switches
                                                         v-if="!isSpecial(user)"
                                                         @input="toggleUserMembership(user, $event)"
-                                                        :emit-on-mount="false"
-                                                        :selected="isUserMember(user)"/>
+                                                        :value="isUserMember(user)"/>
                                             </td>
                                         </tr>
                                         </tbody>

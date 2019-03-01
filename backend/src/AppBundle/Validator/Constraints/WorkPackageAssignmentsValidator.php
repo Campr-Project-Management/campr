@@ -304,6 +304,6 @@ class WorkPackageAssignmentsValidator extends ConstraintValidator
         $projectUser = $user->getProjectUser($project);
         Assert::notEmpty($projectUser, 'Project user is not set');
 
-        return $projectUser->getShowInRasci();
+        return $projectUser->isRASCI();
     }
 }

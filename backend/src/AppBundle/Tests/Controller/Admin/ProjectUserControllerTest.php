@@ -30,8 +30,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[showInResources]"', $crawler->html());
         $this->assertContains('id="create_showInRasci"', $crawler->html());
         $this->assertContains('name="create[showInRasci]"', $crawler->html());
-        $this->assertContains('id="create_showInOrg"', $crawler->html());
-        $this->assertContains('name="create[showInOrg]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -102,8 +100,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[showInResources]"', $crawler->html());
         $this->assertContains('id="create_showInRasci"', $crawler->html());
         $this->assertContains('name="create[showInRasci]"', $crawler->html());
-        $this->assertContains('id="create_showInOrg"', $crawler->html());
-        $this->assertContains('name="create[showInOrg]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
