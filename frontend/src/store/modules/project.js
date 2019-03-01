@@ -11,13 +11,11 @@ const state = {
     projectFilters: [],
     labelsForChoice: [],
     label: {},
-    resources: [],
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
     internalCostsGraphData: {},
     externalCostsGraphData: {},
-    projectCostsAndResources: {},
     progresses: {},
     statusReportAvailability: {},
 };
@@ -72,7 +70,6 @@ const getters = {
     projectsPerPage: state => state.projects.pageSize,
     externalCostsGraphData: state => state.externalCostsGraphData,
     internalCostsGraphData: state => state.internalCostsGraphData,
-    projectCostsAndResources: state => state.projectCostsAndResources,
     progresses: state => state.progresses,
     statusReportAvailability: state => state.statusReportAvailability,
     projectMaxUploadFileSize: (

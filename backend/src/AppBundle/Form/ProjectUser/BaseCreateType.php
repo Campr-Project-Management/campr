@@ -36,7 +36,6 @@ class BaseCreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('showInResources', CheckboxType::class)
             ->add('showInRasci', CheckboxType::class)
             ->add('rate', NumberType::class, [
                 'required' => false,
