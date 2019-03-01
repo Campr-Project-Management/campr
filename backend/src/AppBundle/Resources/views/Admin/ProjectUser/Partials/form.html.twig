@@ -95,16 +95,6 @@
             'label': 'label.show_in_rasci'|trans,
         }
     ) }}
-    {{ form_widget(
-        form.showInOrg,
-        {
-            'attr': {
-                'class': 'form-control input-sm',
-                'toggle': true
-            },
-            'label': 'label.show_in_org'|trans,
-        }
-    ) }}
 
     {% include '@App/Admin/Layout/Partials/form_create_button.html.twig' %}
 
