@@ -26,8 +26,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[projectDepartments][]"', $crawler->html());
         $this->assertContains('id="create_projectTeam"', $crawler->html());
         $this->assertContains('name="create[projectTeam]"', $crawler->html());
-        $this->assertContains('id="create_showInResources"', $crawler->html());
-        $this->assertContains('name="create[showInResources]"', $crawler->html());
         $this->assertContains('id="create_showInRasci"', $crawler->html());
         $this->assertContains('name="create[showInRasci]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -96,8 +94,6 @@ class ProjectUserControllerTest extends BaseController
         $this->assertContains('name="create[projectDepartments][]"', $crawler->html());
         $this->assertContains('id="create_projectTeam"', $crawler->html());
         $this->assertContains('name="create[projectTeam]"', $crawler->html());
-        $this->assertContains('id="create_showInResources"', $crawler->html());
-        $this->assertContains('name="create[showInResources]"', $crawler->html());
         $this->assertContains('id="create_showInRasci"', $crawler->html());
         $this->assertContains('name="create[showInRasci]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());

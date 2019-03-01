@@ -44,20 +44,11 @@
 
                 <!-- /// Member Settings /// -->
                 <div class="row">
-                    <div class="col-md-4">
-                        <h3>{{ translate('label.show_in_resources') }}</h3>
-                        <div class="flex flex-v-center">
-                            <switches
-                                    @input="updateUserOption(member, 'resource')"
-                                    :value="member.showInResources"/>
-                        </div>
-                        <hr class="nomarginbottom">
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-12">
                         <h3>{{ translate('table_header_cell.rasci') }}</h3>
                         <div class="flex flex-v-center">
                             <switches
-                                    @input="updateUserOption(member, 'rasci')"
+                                    @input="updateUserRASCI(member)"
                                     :disabled="member.isProjectManager || member.isProjectSponsor"
                                     :value="member.isRASCI"/>
                         </div>
@@ -151,7 +142,6 @@ export default {
     data() {
         return {
             showInRasci: null,
-            showInResources: null,
         };
     },
     methods: {
@@ -170,21 +160,11 @@ export default {
             }
             return false;
         },
-        updateUserOption(item, value) {
-            switch(value) {
-            case 'rasci':
-                this.updateProjectUser({
-                    id: item.id,
-                    showInRasci: !this.member.showInRasci,
-                });
-                break;
-            case 'resource':
-                this.updateProjectUser({
-                    id: item.id,
-                    showInResources: !this.member.showInResources,
-                });
-                break;
-            }
+        updateUserRASCI(item) {
+            this.updateProjectUser({
+                id: item.id,
+                showInRasci: !this.member.showInRasci,
+            });
         },
         updateDistributionItem: function(item, distribution) {
             return (value) => {
@@ -203,7 +183,6 @@ export default {
     },
     watch: {
         member(value) {
-            this.showInResource = this.member.showInResource;
             this.showInRasci = this.member.showInRasci;
         },
     },
