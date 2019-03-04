@@ -278,7 +278,7 @@
                             <table class="table table-small">
                                 <thead>
                                     <tr>
-                                        <th>{{ translateText('table_header_cell.resource') }}</th>
+                                        <th>{{ translateText('table_header_cell.description') }}</th>
                                         <th>{{ translateText('label.daily_rate') }}</th>
                                         <th>{{ translateText('label.qty') }}</th>
                                         <th>{{ translateText('label.days') }}</th>
@@ -288,7 +288,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, index) in editableData.internalCosts" :key="index">
-                                        <td>{{ item.resourceName }}</td>
+                                        <td>{{ item.name }}</td>
                                         <td>{{ item.rate | money({symbol: projectCurrencySymbol}) }}</td>
                                         <td>{{ item.quantity | formatNumber }}</td>
                                         <td>{{ item.duration | formatNumber }}</td>
@@ -712,9 +712,8 @@ export default {
                 if (cost.isInternal) {
                     internal.push({
                         id: cost.id,
-                        resourceName: cost.resourceName,
-                        resource: cost.resource,
                         rate: cost.rate,
+                        name: cost.name,
                         quantity: cost.quantity,
                         duration: cost.duration,
                         total: itemTotal(cost),
@@ -983,7 +982,7 @@ export default {
         initAddInternalCostModal() {
             let emptyInternalCostObj = {
                 id: 0,
-                resource: null,
+                name: '',
                 daily_rate: 0,
                 quantity: '',
                 duration: '',
@@ -994,7 +993,7 @@ export default {
         initEditInternalCostModal(cost) {
             let internalCostObj = {
                 id: cost.id,
-                resource: {key: cost.resource, label: cost.resourceName, rate: cost.rate},
+                name: cost.name,
                 daily_rate: cost.rate,
                 quantity: cost.quantity,
                 duration: cost.duration,

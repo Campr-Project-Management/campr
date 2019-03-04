@@ -5,17 +5,13 @@
             <div class="row">
                 <div class="form-group">
                     <div class="col-md-6">
-                        <select-field
-                            :title="translate('label.cost_item')"
-                            :options="resourcesForSelect"
-                            :value="{key: item.resource}"
-                            :currentOption="item.resource"
-                            v-model="item.resource"
-                            @input="onItemUpdate('resource', index, $event)" />
-                        <error
-                            v-if="getValidationMessages(index, 'resource').length"
-                            v-for="message in getValidationMessages(index, 'resource')"
-                            :message="message" />
+                        <input-field
+                                type="text"
+                                :label="translate('label.description')"
+                                :value="item.name"
+                                :content="item.name"
+                                @input="onItemUpdate('name', index, $event)"/>
+                        <error at-path="name"/>
                     </div>
                     <div class="col-md-2">
                         <money-field
@@ -126,7 +122,6 @@ export default {
     methods: {
         ...mapActions([
             'getProjectDepartments',
-            'getProjectResources',
         ]),
         onAdd: function() {
             this.$emit('add');
@@ -147,11 +142,6 @@ export default {
             let data = Object.assign({}, this.value);
             data.items[index][property] = value;
 
-            if (property === 'resource') {
-                data.items[index]['rate'] = value.rate;
-                data.items[index].selectedResource = value;
-            }
-
             this.$emit('input', data);
         },
         onUpdate(property, value) {
@@ -169,13 +159,8 @@ export default {
     },
     created() {
         this.getProjectDepartments({project: this.$route.params.id});
-        this.getProjectResources(this.$route.params.id);
     },
     computed: {
-        ...mapGetters({
-            resources: 'projectDepartments',
-            resourcesForSelect: 'projectResourcesForSelect',
-        }),
         ...mapGetters([
             'projectCurrencySymbol',
         ]),
@@ -183,13 +168,6 @@ export default {
             return this.value.items.reduce((prev, next) => {
                 return prev + this.itemTotal(next);
             }, 0);
-        },
-        forecastContent() {
-            if (this.$route.params.taskId) {
-                return this.value.forecast;
-            }
-
-            return this.baseTotal;
         },
     },
 };

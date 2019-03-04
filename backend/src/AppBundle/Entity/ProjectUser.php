@@ -117,22 +117,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     private $projectTeam;
 
     /**
-     * @var ArrayCollection|resource[]
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Resource", mappedBy="projectUser", orphanRemoval=true)
-     */
-    private $resources;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="show_in_resources", type="boolean", nullable=false, options={"default"=1})
-     */
-    private $showInResources = true;
-
-    /**
      * @var bool
      *
      * @ORM\Column(name="show_in_rasci", type="boolean", nullable=true, options={"default"=1})
@@ -180,7 +164,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
         $this->createdAt = new \DateTime();
         $this->projectRoles = new ArrayCollection();
         $this->projectDepartments = new ArrayCollection();
-        $this->resources = new ArrayCollection();
     }
 
     /**
@@ -199,30 +182,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set showInResources.
-     *
-     * @param bool $showInResources
-     *
-     * @return ProjectUser
-     */
-    public function setShowInResources($showInResources)
-    {
-        $this->showInResources = $showInResources;
-
-        return $this;
-    }
-
-    /**
-     * Get showInResources.
-     *
-     * @return bool
-     */
-    public function getShowInResources()
-    {
-        return $this->showInResources;
     }
 
     /**
@@ -820,40 +779,6 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
         }
 
         return $subteamNames;
-    }
-
-    /**
-     * @param resource $resource
-     *
-     * @return ProjectUser
-     */
-    public function addResource(Resource $resource)
-    {
-        $this->resources[] = $resource;
-        $resource->setProjectUser($this);
-
-        return $this;
-    }
-
-    /**
-     * @param resource $resource
-     *
-     * @return ProjectUser
-     */
-    public function removeResource(Resource $resource)
-    {
-        $this->resources->removeElement($resource);
-        $resource->setProjectUser(null);
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection|resource[]
-     */
-    public function getResources()
-    {
-        return $this->resources;
     }
 
     public function hasRole($role)
