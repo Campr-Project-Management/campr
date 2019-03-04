@@ -4,7 +4,6 @@ namespace AppBundle\Form\Cost;
 
 use AppBundle\Entity\Cost;
 use AppBundle\Entity\Project;
-use AppBundle\Entity\Resource;
 use AppBundle\Entity\Unit;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Repository\UnitRepository;
@@ -54,15 +53,6 @@ class CreateType extends AbstractType
                 EntityType::class,
                 [
                     'class' => WorkPackage::class,
-                    'required' => false,
-                    'choice_label' => 'name',
-                ]
-            )
-            ->add(
-                'resource',
-                EntityType::class,
-                [
-                    'class' => Resource::class,
                     'required' => false,
                     'choice_label' => 'name',
                 ]

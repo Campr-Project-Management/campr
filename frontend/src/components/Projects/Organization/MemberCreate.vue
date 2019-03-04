@@ -255,7 +255,6 @@ export default {
                 'lastName': this.lastName,
                 'username': this.username,
                 'company': this.company,
-                'showInResources': this.resource,
                 'showInRasci': this.rasci,
                 'email': this.email,
                 'phone': this.phone,
@@ -298,7 +297,6 @@ export default {
             const data = {
                 'id': this.member.id,
                 'company': this.company,
-                'showInResources': this.resource,
                 'showInRasci': this.rasci,
                 'distributionLists': list,
                 'roles': this.selectedRoles.filter((item) => item.key).map((item) => item.key),
