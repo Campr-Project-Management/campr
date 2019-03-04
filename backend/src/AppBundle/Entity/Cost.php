@@ -22,8 +22,8 @@ class Cost implements ProjectAwareInterface, ResourceInterface, CloneableInterfa
 {
     use TimestampableTrait;
 
-    const TYPE_INTERNAL = 0; // resource
-    const TYPE_EXTERNAL = 1; // cost
+    const TYPE_INTERNAL = 0;
+    const TYPE_EXTERNAL = 1;
 
     const EXPENSE_TYPE_CAPEX = 0;
     const EXPENSE_TYPE_OPEX = 1;
@@ -56,16 +56,6 @@ class Cost implements ProjectAwareInterface, ResourceInterface, CloneableInterfa
      * @Serializer\Exclude()
      */
     private $workPackage;
-
-    /**
-     * @var resource
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Resource", inversedBy="costs", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="resource_id", onDelete="CASCADE")
-     * })
-     * @Serializer\Exclude()
-     */
-    private $resource;
 
     /**
      * @var string
@@ -365,30 +355,6 @@ class Cost implements ProjectAwareInterface, ResourceInterface, CloneableInterfa
     }
 
     /**
-     * Set resource.
-     *
-     * @param \AppBundle\Entity\Resource $resource
-     *
-     * @return Cost
-     */
-    public function setResource(\AppBundle\Entity\Resource $resource = null)
-    {
-        $this->resource = $resource;
-
-        return $this;
-    }
-
-    /**
-     * Get resource.
-     *
-     * @return \AppBundle\Entity\Resource
-     */
-    public function getResource()
-    {
-        return $this->resource;
-    }
-
-    /**
      * @Serializer\SerializedName("project")
      * @Serializer\VirtualProperty()
      *
@@ -408,28 +374,6 @@ class Cost implements ProjectAwareInterface, ResourceInterface, CloneableInterfa
     public function getProjectName()
     {
         return $this->getProject() ? $this->getProject()->getName() : null;
-    }
-
-    /**
-     * @Serializer\SerializedName("resource")
-     * @Serializer\VirtualProperty()
-     *
-     * @return int|null
-     */
-    public function getResourceId()
-    {
-        return $this->getResource() ? $this->getResource()->getId() : null;
-    }
-
-    /**
-     * @Serializer\SerializedName("resourceName")
-     * @Serializer\VirtualProperty()
-     *
-     * @return int|null
-     */
-    public function getResourceName()
-    {
-        return $this->getResource() ? $this->getResource()->getName() : null;
     }
 
     /**
