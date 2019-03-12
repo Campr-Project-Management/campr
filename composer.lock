@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a341e6c9e91373a621c3d6a5cbe67a81",
+    "content-hash": "e1ddfba84ad6f9fae945d7ff68c65b94",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -205,6 +205,71 @@
                 "stream_filter_register"
             ],
             "time": "2017-08-18T09:54:01+00:00"
+        },
+        {
+            "name": "cocur/slugify",
+            "version": "v3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cocur/slugify.git",
+                "reference": "d41701efe58ba2df9cae029c3d21e1518cc6780e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cocur/slugify/zipball/d41701efe58ba2df9cae029c3d21e1518cc6780e",
+                "reference": "d41701efe58ba2df9cae029c3d21e1518cc6780e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "laravel/framework": "~5.1",
+                "latte/latte": "~2.2",
+                "league/container": "^2.2.0",
+                "mikey179/vfsstream": "~1.6",
+                "mockery/mockery": "~0.9",
+                "nette/di": "~2.2",
+                "phpunit/phpunit": "~4.8.36|~5.2",
+                "pimple/pimple": "~1.1",
+                "plumphp/plum": "~0.1",
+                "silex/silex": "~1.3",
+                "symfony/config": "~2.4|~3.0|~4.0",
+                "symfony/dependency-injection": "~2.4|~3.0|~4.0",
+                "symfony/http-kernel": "~2.4|~3.0|~4.0",
+                "twig/twig": "~1.26|~2.0",
+                "zendframework/zend-modulemanager": "~2.2",
+                "zendframework/zend-servicemanager": "~2.2",
+                "zendframework/zend-view": "~2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cocur\\Slugify\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivo Bathke",
+                    "email": "ivo.bathke@gmail.com"
+                },
+                {
+                    "name": "Florian Eckerstorfer",
+                    "email": "florian@eckerstorfer.co",
+                    "homepage": "https://florian.ec"
+                }
+            ],
+            "description": "Converts a string into a slug.",
+            "keywords": [
+                "slug",
+                "slugify"
+            ],
+            "time": "2019-01-31T20:38:55+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1223,66 +1288,6 @@
                 "orm"
             ],
             "time": "2016-09-10T18:51:13+00:00"
-        },
-        {
-            "name": "dropbox-php/dropbox-php",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Dropbox-PHP/dropbox-php.git",
-                "reference": "81977a8b021dd5a32b34d84721712f1284029667"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Dropbox-PHP/dropbox-php/zipball/81977a8b021dd5a32b34d84721712f1284029667",
-                "reference": "81977a8b021dd5a32b34d84721712f1284029667",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "suggest": {
-                "http_oauth": ">=1.1.18",
-                "oauth": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Dropbox": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Evert Pot",
-                    "email": "evert@rooftopsolutions.nl",
-                    "homepage": "http://www.rooftopsolutions.nl/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Joe Constant",
-                    "email": "lazyguru@jofee.com",
-                    "homepage": "http://www.joeconstant.me/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Evan Kaufman",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Naoki Sawada",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Dropbox PHP library",
-            "homepage": "http://dropbox-php.com/",
-            "keywords": [
-                "dropbox"
-            ],
-            "time": "2012-09-10T06:07:54+00:00"
         },
         {
             "name": "eightpoints/guzzle-bundle",
@@ -3510,90 +3515,6 @@
             "time": "2016-01-13T19:51:10+00:00"
         },
         {
-            "name": "knplabs/gaufrette",
-            "version": "0.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "1696386ca66f2f046dea7892cf1f85fd82b5b68e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/1696386ca66f2f046dea7892cf1f85fd82b5b68e",
-                "reference": "1696386ca66f2f046dea7892cf1f85fd82b5b68e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "amazonwebservices/aws-sdk-for-php": "1.5.*",
-                "aws/aws-sdk-php": "~2",
-                "doctrine/dbal": ">=2.3",
-                "dropbox-php/dropbox-php": "*",
-                "google/apiclient": "~1.1.3",
-                "herzult/php-ssh": "*",
-                "microsoft/windowsazure": "dev-master",
-                "mikey179/vfsstream": "~1.2.0",
-                "phpseclib/phpseclib": "^2.0",
-                "phpspec/phpspec": "2.0.*",
-                "phpunit/phpunit": "3.7.*",
-                "rackspace/php-opencloud": "1.9.*"
-            },
-            "suggest": {
-                "amazonwebservices/aws-sdk-for-php": "to use the legacy Amazon S3 adapters",
-                "aws/aws-sdk-php": "to use the Amazon S3 adapter",
-                "doctrine/dbal": "to use the Doctrine DBAL adapter",
-                "dropbox-php/dropbox-php": "to use the Dropbox adapter",
-                "ext-apc": "to use the APC adapter",
-                "ext-curl": "*",
-                "ext-fileinfo": "This extension is used to automatically detect the content-type of a file in the AwsS3, OpenCloud, AzureBlogStorage and GoogleCloudStorage adapters",
-                "ext-mbstring": "*",
-                "ext-mongo": "*",
-                "ext-zip": "to use the Zip adapter",
-                "google/apiclient": "to use GoogleCloudStorage adapter",
-                "herzult/php-ssh": "to use SFtp adapter",
-                "knplabs/knp-gaufrette-bundle": "to use with Symfony2",
-                "microsoft/windowsazure": "to use Microsoft Azure Blob Storage adapter",
-                "phpseclib/phpseclib": "to use PhpseclibSftp adapter",
-                "rackspace/php-opencloud": "to use Opencloud adapter"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Gaufrette": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "The contributors",
-                    "homepage": "http://github.com/knplabs/Gaufrette/contributors"
-                },
-                {
-                    "name": "KnpLabs Team",
-                    "homepage": "http://knplabs.com"
-                }
-            ],
-            "description": "PHP5 library that provides a filesystem abstraction layer",
-            "homepage": "http://knplabs.com",
-            "keywords": [
-                "abstraction",
-                "file",
-                "filesystem",
-                "media"
-            ],
-            "time": "2016-03-03T09:36:22+00:00"
-        },
-        {
             "name": "knplabs/knp-components",
             "version": "1.3.3",
             "source": {
@@ -3663,64 +3584,6 @@
                 "paginator"
             ],
             "time": "2016-04-21T06:26:20+00:00"
-        },
-        {
-            "name": "knplabs/knp-gaufrette-bundle",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KnpLabs/KnpGaufretteBundle.git",
-                "reference": "44cf552e14031517516458b0e394f16dd36a131b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpGaufretteBundle/zipball/44cf552e14031517516458b0e394f16dd36a131b",
-                "reference": "44cf552e14031517516458b0e394f16dd36a131b",
-                "shasum": ""
-            },
-            "require": {
-                "knplabs/gaufrette": "~0.1.7|~0.2",
-                "symfony/framework-bundle": "~2.0|~3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.2",
-                "symfony/console": "~2.0|~3.0",
-                "symfony/yaml": "~2.0|~3.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Knp\\Bundle\\GaufretteBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "The contributors",
-                    "homepage": "https://github.com/knplabs/KnpGaufretteBundle/contributors"
-                },
-                {
-                    "name": "Antoine Hérault",
-                    "email": "antoine.herault@gmail.com"
-                }
-            ],
-            "description": "Allows to easily use the Gaufrette library in a Symfony project",
-            "homepage": "http://knplabs.com",
-            "keywords": [
-                "abstraction",
-                "file",
-                "filesystem",
-                "media"
-            ],
-            "time": "2016-01-16T00:12:11+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -4043,43 +3906,44 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.40",
+            "version": "1.0.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61"
+                "reference": "dab4e7624efa543a943be978008f439c333f2249"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3828f0b24e2c1918bb362d57a53205d6dc8fde61",
-                "reference": "3828f0b24e2c1918bb362d57a53205d6dc8fde61",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dab4e7624efa543a943be978008f439c333f2249",
+                "reference": "dab4e7624efa543a943be978008f439c333f2249",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "php": ">=5.5.9"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
             },
             "require-dev": {
-                "ext-fileinfo": "*",
-                "mockery/mockery": "~0.9",
-                "phpspec/phpspec": "^2.2",
-                "phpunit/phpunit": "~4.8"
+                "phpspec/phpspec": "^3.4",
+                "phpunit/phpunit": "^5.7.10"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
+                "ext-ftp": "Allows you to use FTP server storage",
+                "ext-openssl": "Allows you to use FTPS server storage",
                 "league/flysystem-aws-s3-v2": "Allows you to use S3 storage with AWS SDK v2",
                 "league/flysystem-aws-s3-v3": "Allows you to use S3 storage with AWS SDK v3",
                 "league/flysystem-azure": "Allows you to use Windows Azure Blob storage",
                 "league/flysystem-cached-adapter": "Flysystem adapter decorator for metadata caching",
-                "league/flysystem-copy": "Allows you to use Copy.com storage",
                 "league/flysystem-eventable-filesystem": "Allows you to use EventableFilesystem",
                 "league/flysystem-rackspace": "Allows you to use Rackspace Cloud Files",
                 "league/flysystem-sftp": "Allows you to use SFTP server storage via phpseclib",
                 "league/flysystem-webdav": "Allows you to use WebDAV storage",
                 "league/flysystem-ziparchive": "Allows you to use ZipArchive adapter",
-                "spatie/flysystem-dropbox": "Allows you to use Dropbox storage"
+                "spatie/flysystem-dropbox": "Allows you to use Dropbox storage",
+                "srmklive/flysystem-dropbox-v2": "Allows you to use Dropbox storage for PHP 5 applications"
             },
             "type": "library",
             "extra": {
@@ -4122,7 +3986,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-04-28T10:15:08+00:00"
+            "time": "2019-02-01T08:50:36+00:00"
         },
         {
             "name": "lexik/jwt-authentication-bundle",
@@ -6982,6 +6846,114 @@
             "time": "2014-03-31T09:18:53+00:00"
         },
         {
+            "name": "spatie/dropbox-api",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/dropbox-api.git",
+                "reference": "22f0d5b03781ef411d134b05aeb237c0eebde544"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/dropbox-api/zipball/22f0d5b03781ef411d134b05aeb237c0eebde544",
+                "reference": "22f0d5b03781ef411d134b05aeb237c0eebde544",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Dropbox\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alex Vanderbist",
+                    "email": "alex.vanderbist@gmail.com",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A minimal implementation of Dropbox API v2",
+            "homepage": "https://github.com/spatie/dropbox-api",
+            "keywords": [
+                "Dropbox-API",
+                "api",
+                "dropbox",
+                "spatie",
+                "v2"
+            ],
+            "time": "2019-02-15T11:05:52+00:00"
+        },
+        {
+            "name": "spatie/flysystem-dropbox",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/flysystem-dropbox.git",
+                "reference": "cff7dba925282736fff271fc41781a76fbe40799"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/flysystem-dropbox/zipball/cff7dba925282736fff271fc41781a76fbe40799",
+                "reference": "cff7dba925282736fff271fc41781a76fbe40799",
+                "shasum": ""
+            },
+            "require": {
+                "league/flysystem": "^1.0",
+                "php": "^7.0",
+                "spatie/dropbox-api": "^1.1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\FlysystemDropbox\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Vanderbist",
+                    "email": "alex.vanderbist@gmail.com",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flysystem Adapter for the Dropbox v2 API",
+            "homepage": "https://github.com/spatie/flysystem-dropbox",
+            "keywords": [
+                "Flysystem",
+                "api",
+                "dropbox",
+                "flysystem-dropbox",
+                "spatie",
+                "v2"
+            ],
+            "time": "2017-11-18T21:56:03+00:00"
+        },
+        {
             "name": "stof/doctrine-extensions-bundle",
             "version": "v1.2.2",
             "source": {
@@ -9011,6 +8983,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2015-10-02T06:51:40+00:00"
         },
         {

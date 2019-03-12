@@ -48,7 +48,7 @@ class FileSystemResolver
             ->repository
             ->findOneBy(
                 [
-                    'driver' => FileSystem::LOCAL_ADAPTER,
+                    'isDefault' => true,
                 ]
             )
         ;

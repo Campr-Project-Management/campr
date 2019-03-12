@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Cocur\Slugify\Slugify;
 use Component\Media\MediasAwareInterface;
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
@@ -55,7 +56,7 @@ class FileSystem implements ProjectAwareInterface, MediasAwareInterface, Resourc
     private $name;
 
     /**
-     * @var string
+     * @var array
      *
      * @ORM\Column(name="config", type="json_array", nullable=false)
      */
@@ -157,7 +158,9 @@ class FileSystem implements ProjectAwareInterface, MediasAwareInterface, Resourc
      */
     public function getSlug()
     {
-        return str_replace(' ', '_', $this->name);
+        $slugify = new Slugify();
+
+        return $slugify->slugify($this->getName());
     }
 
     /**
@@ -175,8 +178,6 @@ class FileSystem implements ProjectAwareInterface, MediasAwareInterface, Resourc
     }
 
     /**
-     * Get config.
-     *
      * @return array
      */
     public function getConfig()
