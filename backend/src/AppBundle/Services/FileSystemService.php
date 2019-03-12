@@ -3,80 +3,59 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Media;
-use Gaufrette\Adapter\Dropbox;
-use Gaufrette\Adapter\Local;
-use Gaufrette\Filesystem;
 use AppBundle\Entity\Filesystem as FileSystemEntity;
-use Gaufrette\FilesystemMap;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\MountManager;
+use Spatie\Dropbox\Client;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\HttpFoundation\File\File;
+use Webmozart\Assert\Assert;
 
 /**
- * Class FileSystemService
- * Service used to handle operations on Filesystems.
+ * Class FileSystemService.
  */
 class FileSystemService
 {
-    private $map;
+    /**
+     * @var MountManager
+     */
+    private $mountManager;
 
     /**
      * FileSystemService constructor.
      */
     public function __construct()
     {
-        $this->map = new FilesystemMap();
+        $this->mountManager = new MountManager();
     }
 
     /**
-     * Creates new FileSystem entity based on a selected adapter.
+     * @param FileSystemEntity $fs
      *
-     * @param FileSystemEntity $fileSystem
-     *
-     * @throws \Exception
-     *
-     * @return Filesystem
+     * @return FilesystemInterface
      */
-    public function createFileSystem(FileSystemEntity $fileSystem)
+    public function createFilesystem(FileSystemEntity $fs): FilesystemInterface
     {
-        $config = $fileSystem->getConfig();
-        $adapter = null;
-        switch ($fileSystem->getDriver()) {
-            case FileSystemEntity::LOCAL_ADAPTER:
-                if (isset($config['path'])) {
-                    $adapter = new Local($config['path']);
-                }
-                break;
-            case FileSystemEntity::DROPBOX_ADAPTER:
-                if (isset($config['key'])
-                    && isset($config['secret'])
-                    && isset($config['token'])
-                    && isset($config['tokenSecret'])
-                ) {
-                    $dropboxAuth = new \Dropbox_OAuth_Curl($config['key'], $config['secret']);
-                    $dropboxAuth->setToken($config['token'], $config['tokenSecret']);
-                    $adapter = new Dropbox(new \Dropbox_API($dropboxAuth, 'sandbox'));
-                }
-                break;
-            default:
-                throw new \Exception('Filesystem adapter does not exist!');
-                break;
+        $driver = $fs->getDriver();
+        $config = $fs->getConfig();
+
+        if (FileSystemEntity::LOCAL_ADAPTER === $driver) {
+            $filesystem = $this->createLocalFilesystem($config['path'] ?? '');
+            $this->mountManager->mountFilesystem($this->getMountPrefix($fs), $filesystem);
+
+            return $filesystem;
         }
 
-        if ($adapter) {
-            $fs = new Filesystem($adapter);
-            $this->map->set($fileSystem->getSlug(), $fs);
+        if (FileSystemEntity::DROPBOX_ADAPTER === $driver) {
+            $filesystem = $this->createDropboxFilesystem($config['accessToken']);
+            $this->mountManager->mountFilesystem($this->getMountPrefix($fs), $filesystem);
 
-            return $fs;
+            return $filesystem;
         }
-    }
 
-    /**
-     * Returns the map of filesystems.
-     *
-     * @return FilesystemMap
-     */
-    public function getFileSystemMap()
-    {
-        return $this->map;
+        throw new \InvalidArgumentException('Unknown file system driver');
     }
 
     /**
@@ -93,7 +72,6 @@ class FileSystemService
             $path = $this->generateUniquePath($media);
         }
 
-        $fs->createFile($path);
         $fs->write($path, file_get_contents($file->getPathName()));
 
         $media->setPath($path);
@@ -158,10 +136,49 @@ class FileSystemService
     /**
      * @param Media $media
      *
-     * @return Filesystem
+     * @return FilesystemInterface
      */
-    private function getFileSystem(Media $media): Filesystem
+    private function getFileSystem(Media $media): FilesystemInterface
     {
-        return $this->getFileSystemMap()->get($media->getFileSystem()->getName());
+        return $this->mountManager->getFilesystem($this->getMountPrefix($media->getFileSystem()));
+    }
+
+    /**
+     * @param FileSystemEntity $fs
+     *
+     * @return string
+     */
+    private function getMountPrefix(FileSystemEntity $fs): string
+    {
+        return sprintf('%s-%d', $fs->getSlug(), $fs->getId());
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return FilesystemInterface
+     */
+    private function createLocalFilesystem(string $path): FilesystemInterface
+    {
+        Assert::notEmpty($path, 'Local file system path is missing');
+
+        $adapter = new Local($path);
+
+        return new Filesystem($adapter);
+    }
+
+    /**
+     * @param string $accessToken
+     *
+     * @return FilesystemInterface
+     */
+    private function createDropboxFilesystem(string $accessToken): FilesystemInterface
+    {
+        Assert::notEmpty($accessToken, 'Dropbox access token is missing');
+
+        $client = new Client($accessToken);
+        $adapter = new DropboxAdapter($client);
+
+        return new Filesystem($adapter, ['case_sensitive' => false]);
     }
 }
