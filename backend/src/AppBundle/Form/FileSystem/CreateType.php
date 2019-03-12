@@ -16,9 +16,17 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class CreateType extends AbstractType
 {
+    /**
+     * @var array
+     */
     private $adapters;
 
-    public function __construct($adapters)
+    /**
+     * CreateType constructor.
+     *
+     * @param $adapters
+     */
+    public function __construct(array $adapters = [])
     {
         $this->adapters = $adapters;
     }
@@ -30,26 +38,37 @@ class CreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('driver', ChoiceType::class, [
-                'required' => true,
-                'choices' => $this->adapters,
-                'constraints' => [
-                    new NotNull([
-                        'message' => 'not_null.driver',
-                    ]),
-                ],
-                'placeholder' => 'placeholder.adapter',
-                'translation_domain' => 'messages',
-            ])
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.name',
-                    ]),
-                ],
-            ])
-        ;
+            ->add(
+                'driver',
+                ChoiceType::class,
+                [
+                    'required' => true,
+                    'choices' => $this->adapters,
+                    'constraints' => [
+                        new NotNull(
+                            [
+                                'message' => 'not_null.driver',
+                            ]
+                        ),
+                    ],
+                    'placeholder' => 'placeholder.adapter',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.name',
+                            ]
+                        ),
+                    ],
+                ]
+            );
 
         $formModifier = function (FormInterface $form, $driver = null) {
             $class = null;
@@ -63,9 +82,13 @@ class CreateType extends AbstractType
             }
 
             if ($class) {
-                $form->add('adapter', $class, [
-                    'mapped' => false,
-                ]);
+                $form->add(
+                    'adapter',
+                    $class,
+                    [
+                        'mapped' => false,
+                    ]
+                );
             }
         };
 
@@ -86,8 +109,7 @@ class CreateType extends AbstractType
                         $form->get('adapter')->setData($config);
                     }
                 }
-            )
-        ;
+            );
 
         $builder
             ->get('driver')
@@ -97,8 +119,7 @@ class CreateType extends AbstractType
                     $driver = $event->getForm()->getData();
                     $formModifier($event->getForm()->getParent(), $driver);
                 }
-            )
-        ;
+            );
     }
 
     /**
@@ -106,8 +127,10 @@ class CreateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => FileSystem::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => FileSystem::class,
+            ]
+        );
     }
 }
