@@ -16,40 +16,20 @@ class DropboxAdapterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('key', TextType::class, [
+        $builder->add(
+            'accessToken',
+            TextType::class,
+            [
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.key',
-                    ]),
+                    new NotBlank(
+                        [
+                            'message' => 'not_blank.token',
+                        ]
+                    ),
                 ],
-            ])
-            ->add('secret', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.secret',
-                    ]),
-                ],
-            ])
-            ->add('token', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.token',
-                    ]),
-                ],
-            ])
-            ->add('tokenSecret', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.token_secret',
-                    ]),
-                ],
-            ])
-        ;
+            ]
+        );
     }
 
     /**
