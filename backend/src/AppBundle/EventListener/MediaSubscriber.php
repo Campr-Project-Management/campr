@@ -6,7 +6,7 @@ use AppBundle\Services\FileSystemService;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use AppBundle\Entity\Media;
-use Gaufrette\Exception\FileNotFound;
+use League\Flysystem\FileNotFoundException;
 
 /**
  * Class MediaSubscriber
@@ -73,7 +73,7 @@ class MediaSubscriber implements EventSubscriber
         try {
             $this->fileSystemService->createFileSystem($entity->getFileSystem());
             $this->fileSystemService->removeMediaFile($entity);
-        } catch (FileNotFound $e) {
+        } catch (FileNotFoundException $e) {
         }
     }
 }

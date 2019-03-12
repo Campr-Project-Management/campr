@@ -1,38 +1,11 @@
 {% trans_default_domain 'messages' %}
 
 {{ form_widget(
-    form.key,
+    form.accessToken,
     {
         'attr': {
             'class': 'form-control input-sm',
         },
         'label': 'label.dropbox.key'|trans,
-    }
-) }}
-{{ form_widget(
-    form.secret,
-    {
-        'attr': {
-            'class': 'form-control input-sm',
-        },
-        'label': 'label.dropbox.secret'|trans,
-}
-) }}
-{{ form_widget(
-    form.token,
-    {
-        'attr': {
-            'class': 'form-control input-sm',
-        },
-        'label': 'label.dropbox.token'|trans,
-    }
-) }}
-{{ form_widget(
-    form.tokenSecret,
-    {
-        'attr': {
-            'class': 'form-control input-sm',
-        },
-        'label': 'label.dropbox.token_secret'|trans,
     }
 ) }}
