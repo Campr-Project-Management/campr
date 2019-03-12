@@ -54,8 +54,6 @@
         "jms/serializer-bundle": "^2.0",
         "ocramius/proxy-manager": "~2",
         "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "knplabs/knp-gaufrette-bundle": "^0.3.0",
-        "dropbox-php/dropbox-php": "1.*",
         "gos/web-socket-bundle": "^1.8",
         "jms/security-extra-bundle": "^1.6",
         "lcobucci/jwt": "^3.2",
@@ -80,7 +78,10 @@
       "ext-json": "*",
         "enqueue/enqueue-bundle": "^0.8.37",
         "enqueue/redis": "^0.8.37",
-        "oneup/uploader-bundle": "^2.0"
+        "oneup/uploader-bundle": "^2.0",
+        "league/flysystem": "^1.0",
+        "spatie/flysystem-dropbox": "^1.0",
+        "cocur/slugify": "^3.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
