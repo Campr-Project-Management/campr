@@ -445,8 +445,8 @@ module.exports = function (Translator) {
     Translator.add("color_status.in_progress", "Warning", "messages", "en");
     Translator.add("color_status.not_started", "Critical", "messages", "en");
     Translator.add("copyright", "Copyright &copy; %year% Campr", "messages", "en");
-    Translator.add("email.expiration.user.activation", "The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days", "messages", "en");
-    Translator.add("email.expiration.user.reset", "The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days", "messages", "en");
+    Translator.add("email.expiration.user.activation", "{0}The activation link will expire in 1 day|{1}The activation link will expire in 1 day|]1,Inf[ The activation link will expire in %expiration_time% days", "messages", "en");
+    Translator.add("email.expiration.user.reset", "{0}The reset token will expire in 1 day|{1}The reset token will expire in 1 day|]1,Inf[ The reset token will expire in %expiration_time% days", "messages", "en");
     Translator.add("email.from.contact", "There is a new contact message from:", "messages", "en");
     Translator.add("email.general.email", "Email", "messages", "en");
     Translator.add("email.general.hello", "Hello", "messages", "en");
@@ -2440,6 +2440,7 @@ module.exports = function (Translator) {
     Translator.add("portal.footer.status", "Status", "messages", "en");
     Translator.add("portal.footer.copyright", "&copy; %year% Campr. All rights reserved.", "messages", "en");
     Translator.add("message.duplicate", "Duplicate", "messages", "en");
+    Translator.add("authentication.account_needs_activation", "This account needs to be activated. Please check your email and activate it.", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");
