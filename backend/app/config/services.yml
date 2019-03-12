@@ -13,6 +13,7 @@ imports:
 parameters:
     adapters:
         placeholder.driver.local: "local_adapter"
+        placeholder.driver.dropbox: "dropbox_adapter"
 
 services:
     app.service.request_parser:
@@ -65,8 +66,6 @@ services:
 
     app.service.filesystem:
         class: AppBundle\Services\FileSystemService
-        arguments:
-            - "@knp_gaufrette.filesystem_map"
 
     app.service.chat_topic:
         class: AppBundle\Topic\ChatTopic

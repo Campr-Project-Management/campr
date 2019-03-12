@@ -278,7 +278,6 @@ class MediaControllerTest extends BaseController
 
         $container = self::$kernel->getContainer();
         $filename = 'file2.txt';
-        $file = new File(sprintf('/tmp/%s', $filename), false);
 
         try {
             $fs = new Filesystem();
@@ -299,6 +298,7 @@ class MediaControllerTest extends BaseController
             $fileSystem = $this->em->find(FileSystemEntity::class, 1);
 
             $media = new Media();
+            $media->setPath($file->getPath());
             $media->setFile($file);
             $media->setFileSystem($fileSystem);
             $media->setMimeType('plain/text');
