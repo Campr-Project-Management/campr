@@ -16,16 +16,20 @@ class LocalAdapterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('path', TextType::class, [
+        $builder->add(
+            'path',
+            TextType::class,
+            [
                 'required' => true,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.path',
-                    ]),
+                    new NotBlank(
+                        [
+                            'message' => 'not_blank.path',
+                        ]
+                    ),
                 ],
-            ])
-        ;
+            ]
+        );
     }
 
     /**
