@@ -199,8 +199,8 @@ color_status.finished: 'On track'
 color_status.in_progress: Warning
 color_status.not_started: Critical
 copyright: 'Copyright &copy; %year% Campr'
-email.expiration.user.activation: 'The activation link will expire in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
-email.expiration.user.reset: 'The reset token will expire in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% days'
+email.expiration.user.activation: '{0}The activation link will expire in 1 day|{1}The activation link will expire in 1 day|]1,Inf[ The activation link will expire in %expiration_time% days'
+email.expiration.user.reset: '{0}The reset token will expire in 1 day|{1}The reset token will expire in 1 day|]1,Inf[ The reset token will expire in %expiration_time% days'
 email.from.contact: 'There is a new contact message from:'
 email.general.email: Email
 email.general.hello: Hello
@@ -2194,3 +2194,4 @@ portal.footer.imprint: Imprint
 portal.footer.status: Status
 portal.footer.copyright: '&copy; %year% Campr. All rights reserved.'
 message.duplicate: Duplicate
+authentication.account_needs_activation: 'This account needs to be activated. Please check your email and activate it.'

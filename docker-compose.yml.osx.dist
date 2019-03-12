@@ -10,6 +10,7 @@ services:
             - mailcatcher
         volumes:
             - campr-app:/app:cached
+            - campr-app-vendor-sync:/app/backend/vendor:nocopy
             - ~/.ssh:/root/.ssh
             - /app/frontend/node_modules
             - /app/ssr/node_modules
