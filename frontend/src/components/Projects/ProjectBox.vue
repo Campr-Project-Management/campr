@@ -8,7 +8,7 @@
                 <h2><router-link class="simple-link" :to="{name: 'project-dashboard', params: { id: project.id }}">{{ project.name }}</router-link></h2>
                 <div class="favourite">
                     <duplicate-icon
-                            v-if="$can('roles.project_manager|roles.project_sponsor', project)"
+                            v-if="$can('ROLE_ADMIN|ROLE_SUPER_ADMIN', project)"
                             @click="openCopyProjectModal()"/>
                     <star-icon :item="project"></star-icon>
                 </div>
