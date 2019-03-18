@@ -21,7 +21,7 @@
 
     .duplicate-icon {
         font-size: 1.2em;
-        color: $fadeColor;
+        color: $middleColor;
         cursor: pointer;
 
         &:hover {
