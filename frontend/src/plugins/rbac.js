@@ -49,7 +49,6 @@ let canComponent = {
             return h('div', this.$slots.default);
         }
 
-        console.info(this.silent);
         if (this.silent) {
             return null;
         }

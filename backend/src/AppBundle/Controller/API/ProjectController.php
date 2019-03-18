@@ -1239,8 +1239,7 @@ class ProjectController extends ApiController
             $result = $subteamRepo
                 ->getQueryFiltered($project, $filters)
                 ->getQuery()
-                ->getResult()
-            ;
+                ->getResult();
             $responseArray['totalItems'] = $subteamRepo->countTotalByFilters($project, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
@@ -2030,7 +2029,7 @@ class ProjectController extends ApiController
      */
     public function cloneAction(Request $request, Project $project)
     {
-        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
         $name = $request->request->get('name');
 
         if (null === $name) {
@@ -2043,7 +2042,10 @@ class ProjectController extends ApiController
             return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->get('event_dispatcher')->dispatch(ProjectEvents::ON_CLONE, new ProjectEvent($project, $this->getUser(), $name));
+        $this->get('event_dispatcher')->dispatch(
+            ProjectEvents::ON_CLONE,
+            new ProjectEvent($project, $this->getUser(), $name)
+        );
 
         return $this->createApiResponse($project, Response::HTTP_CREATED);
     }
