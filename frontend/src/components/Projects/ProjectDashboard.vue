@@ -3,7 +3,10 @@
         <div class="page-section">
             <div class="header flex">
                 <h1>{{ translate('message.project_dashboard') }}</h1>
-                <button v-if="$can('roles.project_manager|roles.project_sponsor', project)" v-on:click="openCopyProjectModal()" class="btn-rounded btn-md btn-auto info-bg">{{ translate('message.duplicate') }}</button>
+                <button
+                        v-if="$can('ROLE_ADMIN|ROLE_SUPER_ADMIN', project)"
+                        v-on:click="openCopyProjectModal()"
+                        class="btn-rounded btn-md btn-auto info-bg">{{ translate('message.duplicate') }}</button>
             </div>
 
             <div class="content widget-grid">
