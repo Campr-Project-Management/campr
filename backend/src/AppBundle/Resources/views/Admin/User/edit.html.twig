@@ -33,10 +33,10 @@
                             'method': 'POST',
                             'action': path('app_admin_user_edit', {'id': id}),
                             'attr': {
-                                'id': 'edit-form',
-                                'class': 'form-horizontal',
-                                'novalidate': 'novalidate',
-                            },
+                            'id': 'edit-form',
+                            'class': 'form-horizontal',
+                            'novalidate': 'novalidate',
+                        },
                         }
                     ) }}
                     {% if form.vars.valid == false %}
@@ -52,10 +52,10 @@
                         </div>
                     {% endif %}
                     {{ form_widget(
-                            form.firstName,
+                        form.firstName,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
+                            'class': 'form-control input-sm',
                         },
                             'label': 'label.first_name'|trans
                         }
@@ -64,7 +64,7 @@
                         form.lastName,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
+                            'class': 'form-control input-sm',
                         },
                             'label': 'label.last_name'|trans
                         }
@@ -80,29 +80,25 @@
                         form.phone,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
+                            'class': 'form-control input-sm',
                         },
                             'label': 'label.phone'|trans
                         }
                     ) }}
-                    {% for roleChild in form.roles.children %}
-                        {{ form_widget(
-                            roleChild,
-                            {
-                                'attr': {
-                                    'class': 'form-control input-sm',
-                            },
-                                'label': roleChild.vars.label|trans
-                            }
-                        ) }}
-                    {% endfor %}
+                    {{ form_widget(
+                        form.roles,
+                        {
+                            'attr': {'class': 'selectpicker'},
+                            'label': 'label.roles'|trans,
+                        }
+                    ) }}
                     {{ form_widget(
                         form.isEnabled,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
-                                'toggle': true
-                            },
+                            'class': 'form-control input-sm',
+                            'toggle': true
+                        },
                             'label': 'label.enabled'|trans
                         }
                     ) }}
@@ -110,9 +106,9 @@
                         form.isSuspended,
                         {
                             'attr': {
-                                'class': 'form-control input-sm',
-                                'toggle': true
-                            },
+                            'class': 'form-control input-sm',
+                            'toggle': true
+                        },
                             'label': 'label.suspended'|trans
                         }
                     ) }}
