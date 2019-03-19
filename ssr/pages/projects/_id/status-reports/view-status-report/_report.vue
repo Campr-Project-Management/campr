@@ -320,7 +320,6 @@
                 // status report trend graph
                 console.info(report);
                 let url = `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`;
-                console.info('status report trend graph url:', url);
                 res = await Vue.doFetch(url, query.key);
                 if (res.status === 200) {
                     statusReportTrendGraph = await res.json();
