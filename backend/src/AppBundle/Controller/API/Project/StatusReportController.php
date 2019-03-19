@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 /**
  * @Route("/api/projects/{id}")
@@ -86,8 +87,9 @@ class StatusReportController extends ApiController
     public function trendGraphAction(Project $project, Request $request): JsonResponse
     {
         $before = $request->get('before');
-        if ($before) {
+        if (!empty($before)) {
             $before = \DateTime::createFromFormat('Y-m-d H:i:s', $before);
+            Assert::true(false !== $before, sprintf('Invalid date format: "%s"', $request->get('before')));
         }
 
         $reports = $this
