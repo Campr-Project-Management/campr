@@ -41,10 +41,18 @@
             <member-search ref="gridMemberSearch" v-model="gridList" v-bind:placeholder="translate('placeholder.search_members')"></member-search>
             <div class="flex">
                 <button @click="clearFilters" class="btn-rounded btn-auto second-bg">{{ translate('button.clear_filters') }}</button>
-                <a href="javascript:void(0)" class="btn-rounded btn-auto second-bg" @click="showWorkspaceMemberInviteModal = true">
+                <a
+                        v-if="canEditProject"
+                        href="javascript:void(0)"
+                        class="btn-rounded btn-auto second-bg"
+                        @click="showWorkspaceMemberInviteModal = true">
                     {{ translate('label.invite_workspace_member') }}
                 </a>
-                <a href="javascript:void(0)" class="btn-rounded btn-empty btn-auto" @click="showModal = true">{{ translate('button.create_distribution') }}</a>
+                <a
+                        v-if="canEditProject"
+                        href="javascript:void(0)"
+                        class="btn-rounded btn-empty btn-auto"
+                        @click="showModal = true">{{ translate('button.create_distribution') }}</a>
             </div>
         </div>
         <div class="team-list">
@@ -198,7 +206,6 @@ export default {
                         if (!data.error) {
                             this.showModal = false;
                             this.distributionTitle = '';
-                            this.distributionList = [];
                         } else {
                             this.$flashError('message.unable_to_save');
                         }
