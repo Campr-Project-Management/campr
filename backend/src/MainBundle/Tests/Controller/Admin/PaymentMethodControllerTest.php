@@ -67,11 +67,12 @@ class PaymentMethodControllerTest extends BaseController
         $paymentMethod = $this
             ->em
             ->getRepository(PaymentMethod::class)
-            ->findOneBy([
-                'name' => 'payment_method_test',
-                'token' => 'token_test',
-            ])
-        ;
+            ->findOneBy(
+                [
+                    'name' => 'payment_method_test',
+                    'token' => 'token_test',
+                ]
+            );
         $this->em->remove($paymentMethod);
         $this->em->flush();
     }
@@ -84,12 +85,14 @@ class PaymentMethodControllerTest extends BaseController
 
         $paymentMethod = (new PaymentMethod())
             ->setName('pmethod')
-            ->setToken('token')
-        ;
+            ->setToken('token');
         $this->em->persist($paymentMethod);
         $this->em->flush();
 
-        $this->client->request(Request::METHOD_GET, sprintf('/admin/payment-method/%d/delete', $paymentMethod->getId()));
+        $this->client->request(
+            Request::METHOD_GET,
+            sprintf('/admin/payment-method/%d/delete', $paymentMethod->getId())
+        );
         $this->assertTrue($this->client->getResponse()->isRedirect());
         $this->client->followRedirect();
 
