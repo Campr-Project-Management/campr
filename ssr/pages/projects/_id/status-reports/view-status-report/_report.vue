@@ -12,62 +12,50 @@
                 {{ translate('message.status_report') }}
             </div>
 
-            <table width="100%">
-                <tbody>
-                <tr>
-                    <td width="50%">
-                        <div class="widget">
-                            <h3>{{ translate('message.overall_status') }}</h3>
-                            <div class="flex flex-center" style="text-align: center">
-                                <traffic-light
-                                        :value="report.projectTrafficLight"
-                                        size="normal"
-                                        :editable="false"/>
-                            </div>
+            <h3>{{ translate('message.overall_status') }}</h3>
+            <div class="flex flex-center" style="text-align: center">
+                <traffic-light
+                        :value="report.projectTrafficLight"
+                        size="normal"
+                        :editable="false"/>
+            </div>
 
-                            <h4>{{ translate('message.tasks_status') }}</h4>
-                            <no-ssr>
-                                <progress-bar-chart :series="tasksStatusSeries"/>
-                            </no-ssr>
-                            <br/>
+            <h4>{{ translate('message.tasks_status') }}</h4>
+            <no-ssr>
+                <progress-bar-chart :series="tasksStatusSeries"/>
+            </no-ssr>
+            <br/>
 
-                            <h4>{{ translate('message.tasks_condition') }}</h4>
-                            <no-ssr>
-                                <progress-bar-chart
-                                        :series="tasksTrafficLightSeries"
-                                        :options="{labels: {enabled: false}}"/>
-                            </no-ssr>
+            <h4>{{ translate('message.tasks_condition') }}</h4>
+            <no-ssr>
+                <progress-bar-chart
+                        :series="tasksTrafficLightSeries"
+                        :options="{labels: {enabled: false}}"/>
+            </no-ssr>
 
-                            <div class="checkbox-input clearfix">
-                                <input
-                                        :value="report.projectActionNeeded"
-                                        type="checkbox"
-                                        :disabled="true"/>
-                                <label class="no-margin-bottom">{{ translate('message.action_needed') }}</label>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="widget">
-                            <h3>{{ translate('message.project_trend') }}</h3>
-                            <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
+            <div class="checkbox-input clearfix">
+                <input
+                        :value="report.projectActionNeeded"
+                        type="checkbox"
+                        :disabled="true"/>
+                <label class="no-margin-bottom">{{ translate('message.action_needed') }}</label>
+            </div>
 
-                            <no-ssr>
-                                <status-report-trend-chart
-                                        v-if="trendChartData.length > 0"
-                                        :data="trendChartData"
-                                        :labels="trendChartLabels"
-                                        :point-color="trendChartPointColor"
-                                        :options="{responsive: false}"
-                                        :width="420"/>
-                                <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}
-                                </div>
-                            </no-ssr>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <h3>{{ translate('message.project_trend') }}</h3>
+            <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
+
+            <no-ssr>
+                <div style="page-break-after: always">
+                    <status-report-trend-chart
+                            v-if="trendChartData.length > 0"
+                            :data="trendChartData"
+                            :labels="trendChartLabels"
+                            :point-color="trendChartPointColor"
+                            :options="{responsive: false}"
+                            :width="780"/>
+                    <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+                </div>
+            </no-ssr>
 
             <div class="row" v-if="report.comment">
                 <div class="col-md-12">
@@ -154,7 +142,7 @@
             <hr class="double">
 
             <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
-                <div class="row">
+                <div class="row" style="page-break-after: always">
                     <div class="col-md-12">
                         <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
                         <div class="flex flex-center" style="text-align: center">
@@ -333,8 +321,10 @@
                 res = await Vue.doFetch(
                     `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`,
                     query.key);
+                console.info('status report response status', res.status);
                 if (res.status === 200) {
                     statusReportTrendGraph = await res.json();
+                    console.info('status report trend graph', statusReportTrendGraph)
                 }
             }
             if (project.projectUsers && report.information) {
