@@ -739,17 +739,22 @@ class User implements UserInterface
      */
     public function setRoles(array $roles)
     {
-        $this->roles = array_unique($roles);
+        $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getRoles()
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        if (!is_array($roles)) {
+            $roles = [];
+        }
+
+        $roles[] = self::ROLE_USER;
+
+        return array_unique($roles);
     }
 
     /**
