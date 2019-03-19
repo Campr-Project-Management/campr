@@ -318,10 +318,10 @@
                 // res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
 
                 // status report trend graph
-                res = await Vue.doFetch(
-                    `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`,
-                    query.key);
-                console.info('status report response status', res.status);
+                let url = `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`;
+                console.info('status report trend graph url:', url);
+                res = await Vue.doFetch(url, query.key);
+                console.info('status report response status', res);
                 if (res.status === 200) {
                     statusReportTrendGraph = await res.json();
                     console.info('status report trend graph', statusReportTrendGraph)
