@@ -138,7 +138,7 @@ class DefaultController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function imprintAction(Request $request)
+    public function imprintAction()
     {
         return $this->render('MainBundle:Default:imprint.html.twig');
     }

@@ -318,7 +318,6 @@
                 // res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/project-users`, query.key);
 
                 // status report trend graph
-                console.info(report);
                 let url = `http://${query.host}/api/projects/${params.id}/status-reports/trend-graph?before=${report.createdAt}`;
                 res = await Vue.doFetch(url, query.key);
                 if (res.status === 200) {
