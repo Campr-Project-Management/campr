@@ -86,10 +86,10 @@ class StatusReportController extends ApiController
      */
     public function trendGraphAction(Project $project, Request $request): JsonResponse
     {
-        $before = $request->get('before');
+        $before = urldecode($request->get('before', ''));
         if (!empty($before)) {
             $before = \DateTime::createFromFormat('Y-m-d H:i:s', $before);
-            Assert::true(false !== $before, sprintf('Invalid date format: "%s"', $request->get('before')));
+            Assert::true(false !== $before, sprintf('Invalid date format: "%s"', urldecode($request->get('before'))));
         }
 
         $reports = $this
