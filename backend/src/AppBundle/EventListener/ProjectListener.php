@@ -48,10 +48,11 @@ class ProjectListener
 
             $managerRole = $em
                 ->getRepository(ProjectRole::class)
-                ->findOneBy([
-                    'name' => ProjectRole::ROLE_MANAGER,
-                ])
-            ;
+                ->findOneBy(
+                    [
+                        'name' => ProjectRole::ROLE_MANAGER,
+                    ]
+                );
             if ($managerRole) {
                 $projectUser->addProjectRole($managerRole);
             }
