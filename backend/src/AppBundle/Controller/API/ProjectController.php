@@ -371,6 +371,8 @@ class ProjectController extends ApiController
      */
     public function createDistributionListAction(Request $request, Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $form = $this->createForm(DistributionCreateType::class, new DistributionList(), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
@@ -1955,6 +1957,8 @@ class ProjectController extends ApiController
      */
     public function inviteAction(Request $request, Project $project)
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $form = $this->createForm(
             InviteUserType::class,
             null,
