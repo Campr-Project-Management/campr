@@ -12,9 +12,11 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Project\Admin\ProjectType;
 use AppBundle\Form\Project\ImportType;
 use AppBundle\Security\ProjectVoter;
+use Component\Project\ProjectEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Controller\API\ApiController;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,6 +91,7 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
+        $project->setCreatedBy($this->getUser());
         $settings = $this->get('app.settings.manager.project')->load($project);
 
         $project->setConfiguration($settings->all());
@@ -97,9 +100,9 @@ class ProjectController extends ApiController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $this->get('event_dispatcher')->dispatch(ProjectEvents::PRE_CREATE, new GenericEvent($project));
+            $this->get('app.repository.project')->add($project);
+            $this->get('event_dispatcher')->dispatch(ProjectEvents::POST_CREATE, new GenericEvent($project));
 
             $this
                 ->get('session')
