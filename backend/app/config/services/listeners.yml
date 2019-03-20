@@ -87,14 +87,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    app.listener.project:
-        class: AppBundle\EventListener\ProjectListener
-        tags :
-            - { name: doctrine.event_listener, event: prePersist }
-        arguments:
-            - '@security.token_storage'
-            - '@translator'
-
     app.subscriber.project_module:
         class: AppBundle\EventListener\ProjectModuleSubscriber
         arguments:
@@ -163,5 +155,8 @@ services:
             - '%kernel.environment%'
             - '@redis.client'
             - '@monolog.logger.cloner'
+            - '@app.repository.work_package_status'
+            - '@translator'
+            - '@app.repository.project_role'
         tags:
             - { name: kernel.event_subscriber }

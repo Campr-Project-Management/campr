@@ -67,6 +67,7 @@ use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,6 +136,7 @@ class ProjectController extends ApiController
     public function createAction(Request $request)
     {
         $project = new Project();
+        $project->setCreatedBy($this->getUser());
 
         $this->denyAccessUnlessGranted(ProjectVoter::CREATE, $project);
 
@@ -150,7 +152,9 @@ class ProjectController extends ApiController
                 $project->setStatus($projectStatus);
             }
 
+            $this->get('event_dispatcher')->dispatch(ProjectEvents::PRE_CREATE, new GenericEvent($project));
             $this->persistAndFlush($project);
+            $this->get('event_dispatcher')->dispatch(ProjectEvents::POST_CREATE, new GenericEvent($project));
 
             return $this->createApiResponse($project, Response::HTTP_CREATED);
         }
