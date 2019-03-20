@@ -31,9 +31,8 @@ class UserControllerTest extends BaseController
         $this->assertContains('name="create[lastName]"', $crawler->html());
         $this->assertContains('id="create_phone"', $crawler->html());
         $this->assertContains('name="create[phone]"', $crawler->html());
-        $this->assertContains('id="create_roles_0"', $crawler->html());
-        $this->assertContains('id="create_roles_1"', $crawler->html());
-        $this->assertContains('id="create_roles_2"', $crawler->html());
+        $this->assertContains('id="create_roles"', $crawler->html());
+        $this->assertContains('name="create[roles]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -200,9 +199,8 @@ class UserControllerTest extends BaseController
         $this->assertContains('name="edit[lastName]"', $crawler->html());
         $this->assertContains('id="edit_phone"', $crawler->html());
         $this->assertContains('name="edit[phone]"', $crawler->html());
-        $this->assertContains('id="edit_roles_0"', $crawler->html());
-        $this->assertContains('id="edit_roles_1"', $crawler->html());
-        $this->assertContains('id="edit_roles_2"', $crawler->html());
+        $this->assertContains('id="edit_roles"', $crawler->html());
+        $this->assertContains('name="edit[roles]"', $crawler->html());
         $this->assertContains('id="edit_isEnabled"', $crawler->html());
         $this->assertContains('name="edit[isEnabled]"', $crawler->html());
         $this->assertContains('id="edit_isSuspended"', $crawler->html());
