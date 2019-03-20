@@ -28,7 +28,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 
 RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get install -y --fix-missing \
     php7.1-bcmath \
     php7.1-bz2 \
     php7.1-cli \
