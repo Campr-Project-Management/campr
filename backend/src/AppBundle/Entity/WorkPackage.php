@@ -145,7 +145,7 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @Serializer\Exclude()
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages")
      * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
      */
     private $project;
