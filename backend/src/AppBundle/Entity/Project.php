@@ -528,6 +528,16 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     private $maxUploadFileSize;
 
     /**
+     * @var User
+     *
+     * @Serializer\Exclude()
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="created_by", nullable=true, onDelete="SET NULL")
+     */
+    private $createdBy;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -1089,7 +1099,9 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
      */
     public function addWorkPackage(WorkPackage $workPackage)
     {
-        $this->workPackages[] = $workPackage;
+        $workPackage->setProject($this);
+
+        $this->workPackages->add($workPackage);
 
         return $this;
     }
@@ -1329,7 +1341,8 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
      */
     public function addProjectUser(ProjectUser $projectUser)
     {
-        $this->projectUsers[] = $projectUser;
+        $projectUser->setProject($this);
+        $this->projectUsers->add($projectUser);
 
         return $this;
     }
@@ -2764,5 +2777,21 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     public function setMaxUploadFileSize(int $maxUploadFileSize = null)
     {
         $this->maxUploadFileSize = $maxUploadFileSize;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param User|null $createdBy
+     */
+    public function setCreatedBy(User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
     }
 }
