@@ -52,13 +52,6 @@ class EditType extends AbstractType
                 ]
             )
             ->add(
-                'phone',
-                TextType::class,
-                [
-                    'required' => false,
-                ]
-            )
-            ->add(
                 'company',
                 EntityType::class,
                 [
