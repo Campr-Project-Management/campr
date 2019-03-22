@@ -100,7 +100,8 @@
         <script src="{{ asset('static/js/de.js') }}"></script>
 
         <script type="text/javascript">
-            var currentUserId = "{{ app.user.id }}"
+            window.currentUserId = {{ app.user.id }};
+
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
