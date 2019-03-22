@@ -134,16 +134,6 @@
                     </div>
                     <small class="help-block c-red">{{ form_errors(form_register.lastName)}}</small>
                 </div>
-                <div class="input-group m-b-20 fg-float">
-                    <span class="input-group-addon"><i class="zmdi zmdi-phone"></i></span>
-                    <div class="fg-line {% if form_errors(form_register.phone) %}has-error{% endif %}">
-                        {{ form_widget(form_register.phone, {'attr': {'class': 'form-control'}}) }}
-                        <label class="fg-label" for="phone">
-                            {{ 'label.phone'|trans }}
-                        </label>
-                    </div>
-                    <small class="help-block c-red">{{ form_errors(form_register.phone)}}</small>
-                </div>
                 <button type="submit" class="btn btn-login btn-success btn-float"><i class="zmdi zmdi-check"></i></button>
                 {{ form_end(form_register) }}
             </div>

@@ -88,10 +88,10 @@
                                             :url="item.userAvatarUrl"
                                             :name="item.userFullName"/>
                                 </td>
-                                <td v-if="item.company">{{ item.company }}</td><td v-else>-</td>
+                                <td>{{ item.userCompanyName ? item.userCompanyName : '-' }}</td>
                                 <td>{{ item.userFullName }}</td>
                                 <td>
-                                    <span v-for="role in item.projectRoleNames">
+                                    <span v-for="(role, index) in item.projectRoleNames">
                                         {{ translate(role) }}<span v-if="index < item.projectRoleNames.length - 1">,</span>
                                     </span>
                                 </td>
