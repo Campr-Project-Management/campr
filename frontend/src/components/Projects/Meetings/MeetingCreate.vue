@@ -85,11 +85,7 @@
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translate('message.location') }}</h3>
                     <input-field type="text" :label="translate('placeholder.location')" v-model="location" :content="location" />
-                    <error
-                        v-if="validationMessages.location && validationMessages.location.length"
-                        v-for="(message, index) in validationMessages.location"
-                        :key="`location-${index}`"
-                        :message="message" />
+                    <error at-path="location"/>
                     <!-- /// End Meeting Location /// -->
 
                     <hr class="double">
@@ -97,13 +93,16 @@
                     <!-- /// Meeting Objectives /// -->
                     <h3>{{ translate('message.objectives') }}</h3>
                     <div class="form-group"
-                        v-for="(objective, index) in objectives"
-                        :key="index">
-                        <input-field type="text" :label="translate('placeholder.objective')" v-model="objective.description" :content="objective.description" />
+                         v-for="(objective, index) in objectives"
+                         :key="index">
+                        <input-field
+                                type="text"
+                                :label="translate('placeholder.objective')"
+                                v-model="objective.description"
+                                :content="objective.description"/>
                         <error
-                                v-if="validationMessages.meetingObjectives && validationMessages.meetingObjectives[index] && validationMessages.meetingObjectives[index].description"
-                                :key="`objective-description-${index}`"
-                                :message="validationMessages.meetingObjectives[index].description"/>
+                                at-path="meetingObjectives[$context.index].description"
+                                :context="{index: index}"/>
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
@@ -130,34 +129,23 @@
                         </div>
                         <div class="form-group">
                             <input-field type="text" :label="translate('placeholder.topic')" v-model="agenda.topic" :content="agenda.topic" />
-                            <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
-                                <error
-                                    v-if="validationMessages.meetingAgendas[index.toString()].topic && validationMessages.meetingAgendas[index.toString()].topic.length"
-                                    v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].topic"
-                                    :key="`agenda-topic-${index}`"
-                                    :message="message" />
-                            </div>
+                            <error
+                                    at-path="meetingAgendas[$context.index].topic"
+                                    :context="{index: index}"/>
                         </div>
                         <div class="row">
                             <div class="form-group form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="agenda.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
-                                    <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.meetingAgendas[index.toString()].responsibility && validationMessages.meetingAgendas[index.toString()].responsibility.length"
-                                            v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].responsibility"
-                                            :key="`agenda-responsible-${index}`"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="meetingAgendas[$context.index].responsibility"
+                                            :context="{index: index}"/>
                                 </div>
                                 <div class="col-md-6">
                                     <input-field type="number" v-bind:label="`${translate('placeholder.duration')} (${translate('placeholder.minutes')})`" v-model="agenda.duration" v-bind:content="agenda.duration" />
-                                    <div v-if="validationMessages.meetingAgendas && validationMessages.meetingAgendas[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.meetingAgendas[index.toString()].duration && validationMessages.meetingAgendas[index.toString()].duration.length"
-                                            v-for="(message, index) in validationMessages.meetingAgendas[index.toString()].duration"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="meetingAgendas[$context.index].duration"
+                                            :context="{index: index}"/>
                                 </div>
                             </div>
                         </div>
@@ -288,38 +276,27 @@
                             </div>
                         </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="todo.title" :content="todo.title" />
-                        <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
                             <error
-                                v-if="validationMessages.todos[index.toString()].title && validationMessages.todos[index.toString()].title.length"
-                                v-for="(message, index) in validationMessages.todos[index.toString()].title"
-                                :key="`todo-title-${index}`"
-                                :message="message" />
-                        </div>
+                                    v-if="validationMessages.todos && validationMessages.todos[index] && validationMessages.todos[index].title"
+                                    :key="`todo-title-${index}`"
+                                    :message="validationMessages.todos[index].title"/>
                         <div class="form-group">
                             <editor
                                 :id="`todo-description-${index}`"
                                 height="200px"
                                 label="placeholder.todo_description"
                                 v-model="todo.description" />
-                            <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
-                                <error
-                                    v-if="validationMessages.todos[index.toString()].description && validationMessages.todos[index.toString()].description.length"
-                                    v-for="(message, index) in validationMessages.todos[index.toString()].description"
-                                    :key="`todo-description-${index}`"
-                                    :message="message" />
-                            </div>
+                            <error
+                                    at-path="todos[$context.index].description"
+                                    :context="{index: index}"/>
                         </div>
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="todo.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
-                                    <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.todos[index.toString()].responsibility && validationMessages.todos[index.toString()].responsibility.length"
-                                            v-for="(message, index) in validationMessages.todos[index.toString()].responsibility"
-                                            :key="`todo-responsible-${index}`"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="todos[$context.index].responsibility"
+                                            :context="{index: index}"/>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
@@ -337,13 +314,9 @@
                                         :options="todoStatusesForSelect"
                                         v-model="todo.status"
                                         :currentOption="todo.status" />
-                                    <div v-if="validationMessages.todos && validationMessages.todos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.todos[index.toString()].status && validationMessages.todos[index.toString()].status.length"
-                                            v-for="(message, index) in validationMessages.todos[index.toString()].status"
-                                            :key="`todo-status-${index}`"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="todos[$context.index].status"
+                                            :context="{index: index}"/>
                                 </div>
                             </div>
                         </div>
@@ -396,13 +369,9 @@
                             </div>
                         </div>
                         <input-field type="text" :label="translate('placeholder.topic')" v-model="info.topic" :content="info.topic" />
-                        <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
-                            <error
-                                v-if="validationMessages.infos[index.toString()].topic && validationMessages.infos[index.toString()].topic.length"
-                                v-for="(message, index) in validationMessages.infos[index.toString()].topic"
-                                :key="`info-topic-${index}`"
-                                :message="message" />
-                        </div>
+                        <error
+                                at-path="infos[$context.index].topic"
+                                :context="{index: index}"/>
                         <div class="form-group">
                             <editor
                                 :id="`info-description-${index}`"
@@ -414,27 +383,18 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <member-search singleSelect="false" v-model="info.responsible" :placeholder="translate('placeholder.responsible')"></member-search>
-                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.infos[index.toString()].responsibility && validationMessages.infos[index.toString()].responsibility.length"
-                                            v-for="(message, index) in validationMessages.infos[index.toString()].responsibility"
-                                            :key="`info-responsible-${index}`"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="infos[$context.index].responsibility"
+                                            :context="{index: index}"/>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-holder right">
                                         <label class="active">{{ translate('label.expiry_date') }}</label>
                                         <date-field v-model="info.expiresAt"/>
                                     </div>
-                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.infos[index.toString()].expiresAt && validationMessages.infos[index.toString()].expiresAt.length"
-                                            v-for="(message, index) in validationMessages.infos[index.toString()].expiresAt"
-                                            :key="`info-expiresAt-${index}`"
-                                            :message="message"
-                                        />
-                                    </div>
+                                    <error
+                                            at-path="infos[$context.index].expiresAt"
+                                            :context="{index: index}"/>
                                 </div>
                             </div>
                         </div>
@@ -446,13 +406,9 @@
                                         :options="infoCategoriesForDropdown"
                                         v-model="info.infoCategory"
                                         v-bind:currentOption="info.infoCategory" />
-                                    <div v-if="validationMessages.infos && validationMessages.infos[index.toString()]">
-                                        <error
-                                            v-if="validationMessages.infos[index.toString()].infoCategory && validationMessages.infos[index.toString()].infoCategory.length"
-                                            v-for="(message, index) in validationMessages.infos[index.toString()].infoCategory"
-                                            :key="`info-infoCategory-${index}`"
-                                            :message="message" />
-                                    </div>
+                                    <error
+                                            at-path="infos[$context.index].infoCategory"
+                                            :context="{index: index}"/>
                                 </div>
                             </div>
                         </div>
