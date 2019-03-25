@@ -1,18 +1,21 @@
 <template>
     <div class="project-status-reports page-section">
         <div class="header flex flex-space-between">
-            <h1>{{ translateText('message.project_status_reports') }}</h1>
-            <div class="flex flex-v-center">
-                <router-link v-if="!statusReportAvailability" :to="{name: 'project-status-reports-create-status-report'}" class="btn-rounded btn-auto second-bg">{{ translateText('message.create_new_status_report') }}</router-link>
-                <span v-else>{{ translateText(statusReportAvailability) }}</span>
+            <h1>{{ translate('message.project_status_reports') }}</h1>
+            <div class="flex flex-v-center" v-if="canCreateNewStatusReport">
+                <router-link
+                        v-if="!this.statusReportAvailability"
+                        :to="{name: 'project-status-reports-create-status-report'}"
+                        class="btn-rounded btn-auto second-bg">{{ translate('message.create_new_status_report') }}</router-link>
+                <span v-else>{{ translate(statusReportAvailability) }}</span>
             </div>
         </div>
 
         <modal v-if="showEmailModal" @close="showEmailModal = false">
-            <p class="modal-title">{{ translateText('message.email_report') }}</p>
+            <p class="modal-title">{{ translate('message.email_report') }}</p>
             <div class="flex flex-space-between">
-                <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-auto">{{ translateText('message.no') }}</a>
-                <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded btn-auto second-bg">{{ translateText('message.yes') }}</a>
+                <a href="javascript:void(0)" @click="showEmailModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                <a href="javascript:void(0)" @click="emailReport()" class="btn-rounded btn-auto second-bg">{{ translate('message.yes') }}</a>
             </div>
         </modal>
 
@@ -23,9 +26,9 @@
                     <table class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>{{ translateText('table_header_cell.date') }}</th>  
-                                <th class="text-center">{{ translateText('table_header_cell.created_by') }}</th>                      
-                                <th>{{ translateText('table_header_cell.actions') }}</th>
+                                <th>{{ translate('table_header_cell.date') }}</th>
+                                <th class="text-center">{{ translate('table_header_cell.created_by') }}</th>
+                                <th>{{ translate('table_header_cell.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,10 +43,10 @@
                                 </td>
                                 <td>
                                     <div class="text-right">
-                                        <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translateText('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
-                                        <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translateText('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
-                                        <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translateText('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
-                                        <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translateText('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
+                                        <router-link :to="{name: 'project-status-reports-view-status-report', params:{reportId: report.id}}" class="btn-icon" v-tooltip.top-center="translate('label.view_status_report')"><view-icon fill="second-fill"></view-icon></router-link>
+                                        <!--<a href="javascript:void(0)" class="btn-icon" v-tooltip.top-center="translate('message.print_status_report')"><print-icon fill="second-fill"></print-icon></a>-->
+                                        <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translate('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
+                                        <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translate('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
                                     </div>
                                 </td>                                
                             </tr>
@@ -57,7 +60,7 @@
                     <span v-if="pages > 1" v-for="page in pages" v-bind:class="{'active': page == activePage}" @click="changePage(page)" >{{ page }}</span>
                 </div>
                 <div>
-                    <span class="pagination-info">{{ translateText('message.displaying') }} {{ statusReports.items.length }} {{ translateText('message.results_out_of') }} {{ statusReports.totalItems }}</span>
+                    <span class="pagination-info">{{ translate('message.displaying') }} {{ statusReports.items.length }} {{ translate('message.results_out_of') }} {{ statusReports.totalItems }}</span>
                 </div>
             </div>
         </div>
@@ -90,10 +93,13 @@ export default {
         AlertModal,
     },
     methods: {
-        ...mapActions(['getProjectStatusReports', 'setStatusReportFilters', 'emailStatusReport', 'checkReportAvailability']),
-        translateText: function(text) {
-            return this.translate(text);
-        },
+        ...mapActions([
+            'getProjectStatusReports',
+            'setStatusReportFilters',
+            'emailStatusReport',
+            'checkReportAvailability',
+            'getProjectById',
+        ]),
         getData: function() {
             this.getProjectStatusReports({
                 projectId: this.$route.params.id,
@@ -136,18 +142,23 @@ export default {
         },
     },
     created() {
+        this.getProjectById(this.$route.params.id);
         this.getData();
         this.checkReportAvailability(this.$route.params.id);
     },
     computed: {
-        ...mapGetters({
-            statusReports: 'statusReports',
-            statusReportAvailability: 'statusReportAvailability',
-        }),
-        pages: function() {
+        ...mapGetters([
+            'statusReports',
+            'statusReportAvailability',
+            'project',
+        ]),
+        canCreateNewStatusReport() {
+            return this.project && this.$can('roles.project_manager|roles.project_sponsor', this.project);
+        },
+        pages() {
             return Math.ceil(this.statusReports.totalItems / this.perPage);
         },
-        perPage: function() {
+        perPage() {
             return this.statusReports.pageSize;
         },
     },

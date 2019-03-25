@@ -6,6 +6,7 @@ use AppBundle\Entity\StatusReportConfig;
 use AppBundle\Form\StatusReport\CreateType;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\StatusReport;
+use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -126,6 +127,8 @@ class StatusReportController extends ApiController
      */
     public function createAction(Request $request, Project $project): JsonResponse
     {
+        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
+
         $form = $this->createForm(CreateType::class, $this->createStatusReport($project), ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
