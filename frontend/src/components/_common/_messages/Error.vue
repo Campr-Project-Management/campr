@@ -52,7 +52,7 @@
                     return [];
                 }
 
-                return function(path, context) {
+                return function(path, $context) {
                     try {
                         return eval(`this.${path}`);
                     } catch (e) {
