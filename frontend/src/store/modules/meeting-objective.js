@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 
-export const MEETING_OBJECTIVE_VALIDATION_ORIGIN = 'meeting-objective';
-
 const state = {};
 
 const getters = {};
@@ -21,9 +19,7 @@ const actions = {
             ).then((response) => {
                 if (response.body && response.body.error) {
                     const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    alert(MEETING_OBJECTIVE_VALIDATION_ORIGIN);
-                    commit(types.SET_VALIDATION_ORIGIN, {MEETING_OBJECTIVE_VALIDATION_ORIGIN});
+                    commit(types.SET_VALIDATION_MESSAGES, {messages, scope: 'meeting-objective'});
                 } else {
                     let meetingObjective = response.data;
                     commit(types.SET_VALIDATION_MESSAGES, {messages: []});
