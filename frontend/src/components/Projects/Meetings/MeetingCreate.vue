@@ -92,18 +92,30 @@
 
                     <!-- /// Meeting Objectives /// -->
                     <h3>{{ translate('message.objectives') }}</h3>
-                    <div class="form-group"
-                         v-for="(objective, index) in objectives"
-                         :key="index">
-                        <input-field
-                                type="text"
-                                :label="translate('placeholder.objective')"
-                                v-model="objective.description"
-                                :content="objective.description"/>
-                        <error
-                                at-path="meetingObjectives[$context.index].description"
-                                :context="{index: index}"/>
-                        <hr>
+                    <div v-for="(objective, index) in objectives" :key="`objective-${index}`">
+                        <div class="row" v-if="index > 0">
+                            <div class="col-xs-offset-10 col-md-2">
+                                <div class="flex flex-direction-reverse">
+                                    <button
+                                            @click="onDeleteObjective(index)"
+                                            type="button"
+                                            class="btn-icon">
+                                        <delete-icon fill="danger-fill"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input-field
+                                    type="text"
+                                    :label="translate('placeholder.objective')"
+                                    v-model="objective.description"
+                                    :content="objective.description"/>
+                            <error
+                                    at-path="meetingObjectives[$context.index].description"
+                                    :context="{index: index}"/>
+                            <hr>
+                        </div>
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translate('message.add_new_objective') }} +</a>
@@ -557,6 +569,9 @@ export default {
                 ...this.agendas.slice(0, index),
                 ...this.agendas.slice(index + 1),
             ];
+        },
+        onDeleteObjective(index) {
+            this.$delete(this.objectives, index);
         },
         addDecision() {
             this.decisions.push({

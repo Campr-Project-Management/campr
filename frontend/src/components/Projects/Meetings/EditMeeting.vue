@@ -88,27 +88,16 @@
                                     <label class="active">{{ translate('label.start_time') }}</label>
                                     <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
                                 </div>
-                                <error
-                                        v-if="validationMessages.start && validationMessages.start.length"
-                                        v-for="(message, index) in validationMessages.start"
-                                        :key="`schedule-schedule-${index}`"
-                                        :message="message"/>
+                                <error at-path="start"/>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
                                     <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
                                 </div>
-                                <error
-                                        v-if="validationMessages.end && validationMessages.end.length"
-                                        v-for="(message, index) in validationMessages.end"
-                                        :key="`schedule-schedule-${index}`"
-                                        :message="message"/>
+                                <error at-path="end"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex flex-direction-reverse">
-                        <a @click="saveSchedule()" class="btn-rounded btn-auto">{{ translate('message.save_schedule') }}</a>
                     </div>
                     <!-- /// End Meeting Schedule /// -->
 
@@ -139,10 +128,7 @@
                     </ul>
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translate('message.new_objective')" v-model="objectiveDescription" :content="objectiveDescription" />
-                        <error
-                            v-if="validationOrigin == MEETING_OBJECTIVE_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
-                            v-for="message in validationMessages.description"
-                            :message="message" />
+                        <error scope="meeting-objective" at-path="description"/>
                     </div>
                     <div class="flex flex-direction-reverse">
                         <a @click="addObjective()" class="btn-rounded btn-auto">{{ translate('message.add_new_objective') }}</a>
@@ -201,10 +187,7 @@
                     <hr>
                     <div class="form-group">
                         <input-field type="text" v-bind:label="translate('placeholder.topic')" v-model="agenda.topic" v-bind:content="agenda.topic" />
-                        <error
-                            v-if="validationMessages.topic && validationMessages.topic.length"
-                            v-for="message in validationMessages.topic"
-                            :message="message" />
+                        <error at-path="topic"/>
                     </div>
                     <div class="row">
                         <div class="form-group form-group">
@@ -213,10 +196,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input-field type="number" v-bind:label="`${translate('placeholder.duration')} (${translate('placeholder.minutes')})`" v-model="agenda.duration" v-bind:content="agenda.duration" v-bind:min="0" />
-                                <error
-                                        v-if="validationMessages.duration && validationMessages.duration.length"
-                                        v-for="message in validationMessages.duration"
-                                        :message="message" />
+                                <error at-path="duration"/>
                             </div>
                         </div>
                     </div>
@@ -330,21 +310,15 @@
                     </div>
 
                     <input-field type="text" v-bind:label="translate('placeholder.topic')" v-model="todo.title" v-bind:content="todo.title" />
-                    <error
-                        v-if="validationOrigin==TODO_VALIDATION_ORIGIN && validationMessages.title && validationMessages.title.length"
-                        v-for="message in validationMessages.title"
-                        :message="message" />
+                    <error at-path="title" scope="todo"/>
                     <div class="form-group">
                         <editor
                             id="todo-description"
                             height="200px"
                             label="placeholder.todo_description"
                             v-model="todo.description" />
+                        <error at-path="description" scope="todo"/>
                     </div>
-                    <error
-                        v-if="validationOrigin == TODO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
-                        v-for="message in validationMessages.description"
-                        :message="message" />
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
@@ -412,10 +386,7 @@
                         v-bind:label="translate('placeholder.topic')"
                         v-model="info.topic"
                         v-bind:content="info.topic" />
-                    <error
-                        v-if="validationOrigin == INFO_VALIDATION_ORIGIN && validationMessages.topic && validationMessages.topic.length"
-                        v-for="message in validationMessages.topic"
-                        :message="message" />
+                    <error at-path="topic" scope="info"/>
                     <div class="form-group">
                         <editor
                             id="info-description"
@@ -423,10 +394,7 @@
                             label="placeholder.info_description"
                             v-model="info.description" />
                     </div>
-                    <error
-                        v-if="validationOrigin == INFO_VALIDATION_ORIGIN && validationMessages.description && validationMessages.description.length"
-                        v-for="message in validationMessages.description"
-                        :message="message" />
+                    <error at-path="description" scope="info"/>
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-6">
@@ -448,10 +416,7 @@
                                     v-bind:options="infoCategoriesForDropdown"
                                     v-model="info.infoCategory"
                                     v-bind:currentOption="info.infoCategory" />
-                                <error
-                                    v-if="validationOrigin==INFO_VALIDATION_ORIGIN && validationMessages.infoCategory && validationMessages.infoCategory.length"
-                                    v-for="message in validationMessages.infoCategory"
-                                    :message="message" />
+                                <error at-path="infoCategory" scope="info"/>
                             </div>
                         </div>
                     </div>
@@ -636,14 +601,6 @@ export default {
                 apiParams: {
                     page: this.agendasActivePage,
                 },
-            });
-        },
-        saveSchedule: function() {
-            this.patchProjectMeeting({
-                id: this.$route.params.meetingId,
-                date: moment(this.schedule.meetingDate).format('DD-MM-YYYY'),
-                start: this.schedule.startTime.HH + ':' + this.schedule.startTime.mm,
-                end: this.schedule.endTime.HH + ':' + this.schedule.endTime.mm,
             });
         },
         addObjective: function() {
