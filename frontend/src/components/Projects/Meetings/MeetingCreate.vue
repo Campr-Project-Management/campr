@@ -100,13 +100,10 @@
                         v-for="(objective, index) in objectives"
                         :key="index">
                         <input-field type="text" :label="translate('placeholder.objective')" v-model="objective.description" :content="objective.description" />
-                        <div v-if="validationMessages.meetingObjectives && validationMessages.meetingObjectives[index.toString()]">
-                            <error
-                                v-if="validationMessages.meetingObjectives[index.toString()].description && validationMessages.meetingObjectives[index.toString()].description.length"
-                                v-for="(message, index) in validationMessages.meetingObjectives[index.toString()].description"
+                        <error
+                                v-if="validationMessages.meetingObjectives && validationMessages.meetingObjectives[index] && validationMessages.meetingObjectives[index].description"
                                 :key="`objective-description-${index}`"
-                                :message="message" />
-                        </div>
+                                :message="validationMessages.meetingObjectives[index].description"/>
                         <hr>
                     </div>
                     <div class="flex flex-direction-reverse">
