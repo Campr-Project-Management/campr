@@ -1,23 +1,25 @@
 <template>
-    <div class="project-status-report page-section" v-if="isReady">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-                <status-report
-                        :report="generatedStatusReport"
-                        v-model="editableData"/>
+    <can role="roles.project_manager|roles.project_sponsor" :subject="project">
+        <div class="project-status-report page-section" v-if="isReady">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <status-report
+                            :report="generatedStatusReport"
+                            v-model="editableData"/>
 
-                <hr class="double">
+                    <hr class="double">
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="flex flex-space-between">
-                            <a @click="onSave()" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save') }}</a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="flex flex-space-between">
+                                <a @click="onSave()" class="btn-rounded btn-auto btn-auto second-bg">{{ translate('button.save') }}</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </can>
 </template>
 
 <script>
@@ -31,12 +33,14 @@
             StatusReport,
         },
         created() {
+            this.getProjectById(this.$route.params.id);
             this.getGeneratedStatusReport(this.$route.params.id);
         },
         methods: {
             ...mapActions([
                 'getGeneratedStatusReport',
                 'createStatusReport',
+                'getProjectById',
             ]),
             onSave() {
                 if (!this.isSaving) {
@@ -64,6 +68,7 @@
         computed: {
             ...mapGetters([
                 'generatedStatusReport',
+                'project',
             ]),
             isStatusReportLoaded() {
                 return this.generatedStatusReport.project;
