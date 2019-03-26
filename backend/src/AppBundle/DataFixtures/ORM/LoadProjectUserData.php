@@ -75,7 +75,6 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $user = $this->getReference('user6');
         $project = $this->getReference('project2');
         $projectCategory = $this->getReference('project-category2');
-        $projectRole = $manager->getRepository(ProjectRole::class)->findOneBy(['name' => ProjectRole::ROLE_TEAM_LEADER]);
         $projectDepartment = $this->getReference('project-department2');
         $projectTeam = $this->getReference('project-team2');
 
@@ -83,7 +82,6 @@ class LoadProjectUserData extends AbstractFixture implements OrderedFixtureInter
         $projectUser4->setUser($user);
         $projectUser4->setProject($project);
         $projectUser4->setProjectCategory($projectCategory);
-        $projectUser4->addProjectRole($projectRole);
         $projectUser4->addProjectDepartment($projectDepartment);
         $projectUser4->setProjectTeam($projectTeam);
         $projectUser4->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));

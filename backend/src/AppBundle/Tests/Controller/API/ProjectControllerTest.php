@@ -434,7 +434,7 @@ class ProjectControllerTest extends BaseController
                             'projectDepartmentNames' => ['project-department2'],
                             'projectTeam' => 2,
                             'projectTeamName' => 'project-team2',
-                            'projectRoleNames' => [ProjectRole::ROLE_TEAM_LEADER],
+                            'projectRoleNames' => [],
                             'subteams' => [],
                             'subteamNames' => [],
                             'id' => 4,
