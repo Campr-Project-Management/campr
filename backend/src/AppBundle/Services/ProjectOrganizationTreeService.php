@@ -138,7 +138,7 @@ class ProjectOrganizationTreeService
                     $manager = $subteam->getSubteamMembers()
                                        ->filter(
                                            function (SubteamMember $subteamMember) {
-                                               return $subteamMember->getIsLead();
+                                               return $subteamMember->isLead();
                                            }
                                        )
                                        ->first();
