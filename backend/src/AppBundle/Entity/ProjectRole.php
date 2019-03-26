@@ -13,6 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
  * ProjectRole.
@@ -22,6 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * })
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRoleRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Cloner\Exclude()
  */
 class ProjectRole implements ProjectAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
 {
@@ -30,7 +32,6 @@ class ProjectRole implements ProjectAwareInterface, ResourceInterface, Cloneable
     const ROLE_SPONSOR = 'roles.project_sponsor';
     const ROLE_MANAGER = 'roles.project_manager';
     const ROLE_TEAM_MEMBER = 'roles.team_member';
-    const ROLE_TEAM_LEADER = 'roles.team_leader';
 
     /**
      * @var int
