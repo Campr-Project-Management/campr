@@ -105,6 +105,14 @@ class SubteamMember implements UserAwareInterface, ResourceInterface, CloneableI
     }
 
     /**
+     * @return bool
+     */
+    public function isLead()
+    {
+        return $this->getIsLead();
+    }
+
+    /**
      * Get id.
      *
      * @return int

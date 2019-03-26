@@ -90,15 +90,6 @@ class ProjectRoleControllerTest extends BaseController
                         'createdAt' => '2017-01-01 00:00:00',
                         'updatedAt' => null,
                     ],
-                    [
-                        'id' => 4,
-                        'name' => ProjectRole::ROLE_TEAM_LEADER,
-                        'sequence' => 4,
-                        'isLead' => false,
-                        'children' => [],
-                        'createdAt' => '2017-01-01 00:00:00',
-                        'updatedAt' => null,
-                    ],
                 ],
             ],
         ];

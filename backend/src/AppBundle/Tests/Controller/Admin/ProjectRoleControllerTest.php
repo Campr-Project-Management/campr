@@ -211,7 +211,7 @@ class ProjectRoleControllerTest extends BaseController
     {
         $this->login();
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/4/edit');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-role/3/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
         $form['create[name]'] = 'sponsor';
