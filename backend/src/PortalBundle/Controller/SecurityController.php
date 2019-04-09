@@ -129,7 +129,6 @@ class SecurityController extends Controller
         $user->setFirstName($userData['firstName']);
         $user->setLastName($userData['lastName']);
         $user->setPhone($userData['phone'] ?? null);
-        $user->setRoles($userData['roles'] ?? null);
         $user->setApiToken($userData['apiToken']);
         $user->setWidgetSettings($userData['widgetSettings'] ?? []);
         $user->setFacebook($userData['facebook'] ?? null);
