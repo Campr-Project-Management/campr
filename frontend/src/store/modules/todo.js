@@ -2,8 +2,6 @@ import Vue from 'vue';
 import * as types from '../mutation-types';
 import router from '../../router';
 
-const TODO_VALIDATION_ORIGIN = 'todo';
-
 const state = {
     currentTodo: {},
     todos: [],
@@ -25,22 +23,20 @@ const actions = {
      * @param {array} data
      */
     createMeetingTodo({commit}, data) {
-        Vue.http
-            .post(
-                Routing.generate('app_api_meeting_todos_create', {'id': data.id}),
-                data
-            ).then((response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                    commit(types.SET_VALIDATION_ORIGIN, TODO_VALIDATION_ORIGIN);
-                } else {
-                    let todo = response.data;
-                    commit(types.ADD_MEETING_TODO, {todo});
-                    commit(types.SET_VALIDATION_ORIGIN, '');
-                }
-            }, (response) => {
-            });
+        Vue.http.post(
+            Routing.generate('app_api_meeting_todos_create', {'id': data.id}),
+            data,
+        ).then((response) => {
+            if (response.body && response.body.error) {
+                const {messages} = response.body;
+                commit(types.SET_VALIDATION_MESSAGES,
+                    {messages, scope: 'todo'});
+            } else {
+                let todo = response.data;
+                commit(types.ADD_MEETING_TODO, {todo});
+            }
+        }, (response) => {
+        });
     },
     /**
      * Creates a new todo per project

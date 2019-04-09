@@ -60,7 +60,11 @@ const actions = {
 };
 
 const mutations = {
-    [types.SET_VALIDATION_MESSAGES](state, {messages}) {
+    [types.SET_VALIDATION_MESSAGES](state, {messages, scope}) {
+        if (scope) {
+            messages = {scoped: {[scope]: messages}};
+        }
+
         state.validationMessages = messages;
     },
     [types.SET_VALIDATION_ORIGIN](state, origin) {
