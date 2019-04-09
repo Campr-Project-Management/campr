@@ -33,6 +33,10 @@
                 required: false,
                 default: () => {},
             },
+            scope: {
+                type: String,
+                required: false,
+            },
         },
         computed: {
             ...mapGetters([
@@ -52,13 +56,18 @@
                     return [];
                 }
 
+                let messages = this.validationMessages;
+                if (this.scope) {
+                    messages = (messages.scoped && messages.scoped[this.scope]) || {};
+                }
+
                 return function(path, $context) {
                     try {
                         return eval(`this.${path}`);
                     } catch (e) {
                         return [];
                     }
-                }.call(this.validationMessages, this.atPath, this.context);
+                }.call(messages, this.atPath, this.context);
             },
         },
     };
