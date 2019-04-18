@@ -10,7 +10,7 @@
             <p>                
                 <span class="text-right">{{ translate('message.total_potential_delay') }}:</span>
                 <span class="text-left">
-                        <b>{{ potentialDelay | humanizeHours({ units: ['d', 'h']}) }}</b>
+                        <b>{{ potentialDelay | humanizeHours({ units: ['d', 'h'], language: locale }) }}</b>
                 </span>
             </p>
             <p>
@@ -55,6 +55,11 @@
             currency: {
                 type: String,
                 required: true,
+            },
+            locale: {
+                type: String,
+                required: false,
+                default: 'en',
             },
         },
     };

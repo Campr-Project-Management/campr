@@ -9,7 +9,7 @@
                 <div class="user-name">{{ item.responsibilityFullName }}</div>
             </div>
             <h2>
-                 item.name }}
+                {{ item.name }}
             </h2>
         </div>
         <div class="content">

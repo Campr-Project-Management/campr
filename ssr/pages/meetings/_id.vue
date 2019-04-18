@@ -283,10 +283,17 @@ export default {
             return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
         },
     },
+    created() {
+        if (this.locale) {
+            Translator.locale = this.locale;
+            moment.locale(this.locale);
+        }
+    },
     async asyncData({params, query}) {
         let meeting = {};
         let meetingAgendas = [];
         let distributionLists = [];
+        let locale = query.locale ? query.locale : '';
 
         if (query.host && query.key) {
             let res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}`, query.key);
@@ -330,6 +337,7 @@ export default {
             endTime: {},
             selectedParticipants: [],
             showNotificationModal: false,
+            locale,
         };
     }
 };

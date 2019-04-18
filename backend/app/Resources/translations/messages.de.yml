@@ -828,6 +828,7 @@ message.medium: Medium
 message.meetings: Meetings
 message.member: Mitglied
 message.members: Mitglieder
+message.milestones: 'Meilensteine'
 message.milestone_responsible: 'Meilensteinverantwortlicher:'
 message.milestone_schedule_note: 'Basis Frist wird neu berechnet auf Basis der Aufgaben zugehörig zu diesem Meilenstein.'
 message.min: Min
@@ -875,6 +876,7 @@ message.participants: Teilnehmer
 message.per_day_reports_exceeded: 'Sie haben das tägliche Berichtslimit erreicht. Bitte halten Sie Rücksprache mit Ihrem Manager.'
 message.performance_schedule: 'Performance Schedule'
 message.phase_responsible: 'Phasenverantwortlicher:'
+message.phases: 'Phasen'
 message.phases_and_milestones: 'Phasen & Meilensteine'
 message.phases_milestones: 'Phasen & Meilensteine'
 message.plan: Plan
