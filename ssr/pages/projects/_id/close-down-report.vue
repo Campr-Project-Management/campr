@@ -240,6 +240,11 @@ export default {
             return this.translate(str);
         }
     },
+    created() {
+        if (this.locale) {
+            Translator.locale = this.locale;
+        }
+    },
     async asyncData({params, query}) {
         let closeDownActions = {items: []};
         let contract = {};
@@ -247,6 +252,7 @@ export default {
         let project = {};
         let projectCloseDown = {};
         let sponsors = [];
+        let locale = query.locale ? query.locale : '';
 
         if (query.host && query.key) {
             let res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}`, query.key);
@@ -284,6 +290,7 @@ export default {
             project,
             projectCloseDown,
             sponsors,
+            locale,
         }
     }
 };

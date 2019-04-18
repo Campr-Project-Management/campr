@@ -16,7 +16,7 @@
                         </b>|
                     </template>
                     {{ translate('message.potential_cost') }}: {{ value.top.potentialCost | money({symbol: currency}) }} |
-                    {{ translate('message.potential_time_delay') }}: {{ value.top.potentialDelayHours | humanizeHours({ units: ['d', 'h'] }) }} |
+                    {{ translate('message.potential_time_delay') }}: {{ value.top.potentialDelayHours | humanizeHours({ units: ['d', 'h'], language: locale }) }} |
                     {{ translate('message.strategy') }}: {{ translate(value.top.strategyName) }} |
                     {{ translate('message.status') }}: {{ translate(value.top.statusName) | defaultValue('-') }}
                 </span>
@@ -38,6 +38,7 @@
                     :measures-cost="value.summary.measuresCost"
                     :measures-count="value.summary.measuresCount"
                     :currency="currency"
+                    :locale="locale"
                     v-if="value.summary"/>
         </div>
     </div>
@@ -73,6 +74,11 @@
             currency: {
                 type: String,
                 required: true,
+            },
+            locale: {
+                type: String,
+                required: false,
+                default: 'en',
             },
         },
         components: {
