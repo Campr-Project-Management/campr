@@ -1074,6 +1074,7 @@ module.exports = function (Translator) {
     Translator.add("message.meetings", "Meetings", "messages", "en");
     Translator.add("message.member", "member", "messages", "en");
     Translator.add("message.members", "members", "messages", "en");
+    Translator.add("message.milestones", "Milestones", "messages", "en");
     Translator.add("message.milestone_responsible", "Milestone Responsible", "messages", "en");
     Translator.add("message.milestone_schedule_note", "Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.", "messages", "en");
     Translator.add("message.min", "Min", "messages", "en");
@@ -1121,6 +1122,7 @@ module.exports = function (Translator) {
     Translator.add("message.per_day_reports_exceeded", "You exceeded the number of reports per day. Please check with your manager.", "messages", "en");
     Translator.add("message.performance_schedule", "Performance Schedule", "messages", "en");
     Translator.add("message.phase_responsible", "Phase Responsible", "messages", "en");
+    Translator.add("message.phases", "Phases", "messages", "en");
     Translator.add("message.phases_and_milestones", "Phases and Milestones", "messages", "en");
     Translator.add("message.phases_milestones", "Phases & Milestones", "messages", "en");
     Translator.add("message.plan", "Plan", "messages", "en");

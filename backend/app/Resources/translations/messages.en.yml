@@ -828,6 +828,7 @@ message.medium: Medium
 message.meetings: Meetings
 message.member: member
 message.members: members
+message.milestones: 'Milestones'
 message.milestone_responsible: 'Milestone Responsible'
 message.milestone_schedule_note: 'Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.'
 message.min: Min
@@ -875,6 +876,7 @@ message.participants: Participants
 message.per_day_reports_exceeded: 'You exceeded the number of reports per day. Please check with your manager.'
 message.performance_schedule: 'Performance Schedule'
 message.phase_responsible: 'Phase Responsible'
+message.phases: 'Phases'
 message.phases_and_milestones: 'Phases and Milestones'
 message.phases_milestones: 'Phases & Milestones'
 message.plan: Plan

@@ -11,7 +11,7 @@
                 <span class="text-right">{{ translate('message.total_potential_time_savings') }}:</span>
                 <span class="text-left">
                     <span v-if="potentialTime">
-                        <b>{{ potentialTime | humanizeHours({ units: ['d', 'h'] }) }}</b>
+                        <b>{{ potentialTime | humanizeHours({ units: ['d', 'h'], language: locale }) }}</b>
                     </span>
                     <span v-else>-</span>
                 </span>
@@ -64,6 +64,11 @@ export default {
         currency: {
             type: String,
             required: true,
+        },
+        locale: {
+            type: String,
+            required: false,
+            default: 'en',
         },
     },
 };
