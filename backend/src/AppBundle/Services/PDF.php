@@ -97,10 +97,12 @@ class PDF
     private function run(string $url, array $params)
     {
         $tmpFile = tempnam('/tmp', md5($url));
+        $user = $this->getUser();
 
         $query = [
             'host' => $this->requestStack->getMasterRequest()->getHttpHost(),
-            'key' => $this->getUser()->getApiToken(),
+            'key' => $user->getApiToken(),
+            'locale' => $user->getLocale(),
         ];
 
         $options = strtr($this->binaryOptions, [

@@ -155,7 +155,8 @@
                             <status-report-timeline
                                     style="width: 90%;"
                                     :phases="phases"
-                                    :milestones="milestones"/>
+                                    :milestones="milestones"
+                                    :locale="forcedLocale"/>
                         </no-ssr>
                     </div>
                 </div>
@@ -207,13 +208,13 @@
                 <div class="row ro-columns">
                     <div class="col-md-6 col-xs-6 dark-border-right">
                         <no-ssr>
-                            <opportunities-grid :value="opportunitiesGrid" :currency="currency"/>
+                            <opportunities-grid :value="opportunitiesGrid" :currency="currency" :locale="forcedLocale"/>
                         </no-ssr>
                     </div>
 
                     <div class="col-md-6 col-xs-6">
                         <no-ssr>
-                            <risks-grid :value="risksGrid" :currency="currency"/>
+                            <risks-grid :value="risksGrid" :currency="currency" :locale="forcedLocale"/>
                         </no-ssr>
                     </div>
                 </div>
@@ -301,10 +302,16 @@
         validate({params}) {
             return /^\d+$/.test(params.id);
         },
+        created() {
+            if (this.locale) {
+                Translator.locale = this.locale;
+            }
+        },
         async asyncData({params, query}) {
             let report = {};
             let project = {};
             let statusReportTrendGraph = [];
+            let locale = query.locale ? query.locale : '';
 
             if (query.host && query.key) {
                 let res = await Vue.doFetch(`http://${query.host}/api/status-reports/${params.report}`, query.key);
@@ -358,6 +365,7 @@
                 options: {
                     backgroundColor: '#191E37',
                 },
+                locale,
             };
         },
         methods: {
@@ -567,6 +575,9 @@
             },
             currency() {
                 return this.snapshot.currency.symbol;
+            },
+            forcedLocale() {
+                return this.locale ? this.locale : '';
             },
         },
     };

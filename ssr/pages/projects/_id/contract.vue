@@ -238,11 +238,17 @@ export default {
             return data;
         },
     },
+    created() {
+        Translator.locale = this.locale;
+    },
     async asyncData({params, query}) {
         let project = {};
         let contracts = [];
         let externalCostsGraphData = {};
         let internalCostsGraphData = {};
+        let projectSponsors = [];
+        let projectManagers = [];
+        let locale = query.locale ? query.locale : 'en';
 
         if (query.host && query.key) {
             // project
@@ -287,6 +293,7 @@ export default {
             frozen: false,
             proposedStartDate: contract.proposedStartDate,
             proposedEndDate: contract.proposedEndDate,
+            locale,
         };
     }
 };
