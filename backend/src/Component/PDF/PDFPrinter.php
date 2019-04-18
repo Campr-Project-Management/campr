@@ -88,6 +88,7 @@ class PDFPrinter implements PDFPrinterInterface
         $query = [
             'host' => $this->host,
             'key' => $this->user->getApiToken(),
+            'locale' => $this->user->getlocale(),
         ];
 
         $options = strtr(
