@@ -45,18 +45,29 @@
                     return moment(`2001-01-01 ${value}`).isValid();
                 },
             },
+            locale: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         components: {
             vis,
             Tooltip,
         },
+        created() {
+            if (this.locale) {
+                Translator.locale = this.locale;
+                moment.locale(this.locale);
+            }
+        },
         data: function() {
             let groups = [];
             if (this.withPhases) {
-                groups.push({id: 0, content: 'Phases', value: 1});
-                groups.push({id: 1, content: 'Milestones', value: 2});
+                groups.push({id: 0, content: Translator.trans('message.phases'), value: 1});
+                groups.push({id: 1, content: Translator.trans('message.milestones'), value: 2});
             } else {
-                groups.push({id: 0, content: 'Milestones', value: 1});
+                groups.push({id: 0, content: Translator.trans('message.milestones'), value: 1});
             }
 
             return {
@@ -143,6 +154,7 @@
                         let percentage = item.value + '%';
                         return `<span class="timeline-status"><span style="width:` + percentage + `"></span>`;
                     },
+                    moment: moment,
                 };
             },
             visItems() {

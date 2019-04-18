@@ -1,5 +1,5 @@
 <template>
-    <vis-timeline :items="items" :with-phases="true"/>
+    <vis-timeline :items="items" :with-phases="true" :locale="locale"/>
 </template>
 
 <script>
@@ -19,9 +19,19 @@
                 required: true,
                 default: () => [],
             },
+            locale: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         components: {
             VisTimeline,
+        },
+        created() {
+            if (this.locale) {
+                moment.locale(this.locale);
+            }
         },
         computed: {
             phaseItems() {

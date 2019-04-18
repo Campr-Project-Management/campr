@@ -603,6 +603,7 @@ export default {
         });
         this.getMeetingParticipants({id: this.$route.params.meetingId});
         this.getLastMeetingReport({meetingId: this.$route.params.meetingId});
+        moment.locale('de');
     },
     data() {
         return {
