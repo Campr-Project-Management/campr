@@ -40,7 +40,7 @@
                         <tbody>
                             <tr v-for="decision in decisions.items">
                                 <td>{{ decision.id }}</td>
-                                <td>{{ translate(decision.meetingName) }}</td>
+                                <td>{{ decision.distributionListName }}</td>
                                 <td>{{ decision.decisionCategoryName }}</td>
                                 <td>
                                     <span v-if="decision.isDone" class="success-color">{{ translate('choices.done') }}</span>
