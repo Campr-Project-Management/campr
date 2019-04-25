@@ -121,7 +121,8 @@ const actions = {
         return Vue.http
             .post(
                 Routing.generate('app_api_decisions_edit', {'id': data.id}),
-                data.data
+                data.data,
+                {headers: {'X-HTTP-Method-Override': 'PATCH'}}
             ).then((response) => {
                 let decision = response.data;
                 if (response.body && response.body.error) {
