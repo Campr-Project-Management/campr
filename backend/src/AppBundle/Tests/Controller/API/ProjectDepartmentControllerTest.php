@@ -119,6 +119,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'isProjectManager' => true,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                         [
                             'user' => 5,
@@ -154,6 +155,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                     ],
                     'membersCount' => 2,
@@ -166,6 +168,8 @@ class ProjectDepartmentControllerTest extends BaseController
                     'rate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'leader' => null,
+                    'members' => [],
                 ],
             ],
         ];
@@ -378,6 +382,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => true,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                         [
                             'user' => 6,
@@ -413,6 +418,7 @@ class ProjectDepartmentControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                     ],
                     'membersCount' => 2,
@@ -425,6 +431,8 @@ class ProjectDepartmentControllerTest extends BaseController
                     'rate' => null,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'leader' => null,
+                    'members' => [],
                 ],
             ],
         ];
