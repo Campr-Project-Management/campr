@@ -96,6 +96,7 @@ class ProjectUserControllerTest extends BaseController
                     'isProjectManager' => true,
                     'isProjectSponsor' => false,
                     'isRASCI' => true,
+                    'departmentMembers' => [],
                 ],
             ],
         ];
@@ -309,6 +310,7 @@ class ProjectUserControllerTest extends BaseController
                     'isProjectManager' => false,
                     'isProjectSponsor' => true,
                     'isRASCI' => true,
+                    'departmentMembers' => [],
                 ],
             ],
         ];
