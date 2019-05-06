@@ -4,11 +4,13 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectDepartment;
+use AppBundle\Entity\ProjectDepartmentMember;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\Subteam;
 use AppBundle\Entity\SubteamMember;
 use AppBundle\Entity\User;
 use Component\User\Model\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -36,6 +38,11 @@ class ProjectOrganizationTreeService
         $this->jsonNormalizer = $jsonNormalizer;
     }
 
+    /**
+     * @param Project $project
+     *
+     * @return array
+     */
     public function buildTree(Project $project)
     {
         return $this->getSponsorData($project);
@@ -94,29 +101,82 @@ class ProjectOrganizationTreeService
             [
                 'id' => 'sponsors',
                 'users' => $users,
-                'children' => $this->getDepartmentData($project),
+                'children' => $this->serializeDepartments($project->getProjectDepartments()),
             ],
         ];
     }
 
-    private function getDepartmentData(Project $project)
+    /**
+     * @param ProjectDepartment[]|ArrayCollection $departments
+     *
+     * @return array
+     */
+    private function serializeDepartments($departments)
     {
-        return $project
-            ->getProjectDepartments()
+        return $departments
             ->filter(
                 function (ProjectDepartment $projectDepartment) {
-                    return $projectDepartment->getProjectUsers()->count() > 0;
+                    return count($projectDepartment->getMembers()) > 0;
                 }
             )
             ->map(
-                function (ProjectDepartment $projectDepartment) {
+                function (ProjectDepartment $department) {
+                    return $this->serializeDepartment($department);
+                }
+            )
+            ->getValues();
+    }
+
+    /**
+     * @param ProjectDepartment $department
+     *
+     * @return array
+     */
+    private function serializeDepartment(ProjectDepartment $department)
+    {
+        /** @var ProjectDepartmentMember $member */
+        $member = $department->getMembers()->first();
+        $leader = $department->getLeader() ?? $member->getProjectUser();
+
+        $extraData = [
+            'titles' => [
+                $department->getName(),
+            ],
+            'children' => $this->serializeSubteams($department->getSubteams()),
+            'members' => $this->serializeDepartmentMembers($department->getMembers()),
+        ];
+
+        if ($department->hasLeader()) {
+            array_unshift(
+                $extraData['titles'],
+                $this->translator->trans('roles.team_leader', [], 'messages')
+            );
+        }
+
+        return $this->extractUserData($leader->getUser(), $extraData);
+    }
+
+    /**
+     * @param ProjectDepartmentMember[]|ArrayCollection $members
+     *
+     * @return array
+     */
+    private function serializeDepartmentMembers($members)
+    {
+        return $members
+            ->filter(
+                function (ProjectDepartmentMember $member) {
+                    return !$member->isLead();
+                }
+            )
+            ->map(
+                function (ProjectDepartmentMember $member) {
                     return $this->extractUserData(
-                        $projectDepartment->getProjectUsers()->first()->getUser(),
+                        $member->getProjectUser()->getUser(),
                         [
                             'titles' => [
-                                $projectDepartment->getName(),
+                                $this->translator->trans('message.department_member', [], 'messages'),
                             ],
-                            'children' => $this->getSubteamData($projectDepartment),
                         ]
                     );
                 }
@@ -124,10 +184,14 @@ class ProjectOrganizationTreeService
             ->getValues();
     }
 
-    private function getSubteamData(ProjectDepartment $projectDepartment)
+    /**
+     * @param Subteam[]|ArrayCollection $subteams
+     *
+     * @return array
+     */
+    private function serializeSubteams($subteams)
     {
-        return $projectDepartment
-            ->getSubteams()
+        return $subteams
             ->filter(
                 function (Subteam $subteam) {
                     return $subteam->getSubteamMembers()->count() > 0;
@@ -135,52 +199,7 @@ class ProjectOrganizationTreeService
             )
             ->map(
                 function (Subteam $subteam) {
-                    $manager = $subteam->getSubteamMembers()
-                                       ->filter(
-                                           function (SubteamMember $subteamMember) {
-                                               return $subteamMember->isLead();
-                                           }
-                                       )
-                                       ->first();
-
-                    if (!$manager) {
-                        $manager = $subteam->getSubteamMembers()->first();
-                    }
-
-                    if (!$manager) {
-                        return [];
-                    }
-
-                    return $this->extractUserData(
-                        $manager->getUser(),
-                        [
-                            'titles' => [
-                                $this->translator->trans('roles.team_leader', [], 'messages'),
-                                $subteam->getName(),
-                            ],
-                            'children' => $subteam
-                                ->getSubteamMembers()
-                                ->filter(
-                                    function (SubteamMember $subteamMember) use ($manager) {
-                                        return $subteamMember->getUser() && $subteamMember->getUser(
-                                            ) !== $manager->getUser();
-                                    }
-                                )
-                                ->map(
-                                    function (SubteamMember $subteamMember) {
-                                        return $this->extractUserData(
-                                            $subteamMember->getUser(),
-                                            [
-                                                'titles' => [
-                                                    $this->translator->trans('roles.team_member', [], 'messages'),
-                                                ],
-                                            ]
-                                        );
-                                    }
-                                )
-                                ->getValues(),
-                        ]
-                    );
+                    return $this->serializeSubteam($subteam);
                 }
             )
             ->filter(
@@ -189,6 +208,62 @@ class ProjectOrganizationTreeService
                 }
             )
             ->getValues();
+    }
+
+    /**
+     * @param Subteam $subteam
+     *
+     * @return array
+     */
+    private function serializeSubteam(Subteam $subteam)
+    {
+        /** @var SubteamMember $first */
+        $first = $subteam->getSubteamMembers()->first();
+        $leader = $subteam->getLeader() ?? $first->getUser();
+
+        $extraData = [
+            'titles' => [
+                $subteam->getName(),
+            ],
+            'members' => $this->serializeSubteamMembers($subteam->getSubteamMembers()),
+        ];
+
+        if ($subteam->hasLeader()) {
+            array_unshift($extraData['titles'], $this->translator->trans('roles.team_leader', [], 'messages'));
+        }
+
+        return $this->extractUserData($leader, $extraData);
+    }
+
+    /**
+     * @param SubteamMember[]|ArrayCollection $members
+     *
+     * @return array
+     */
+    private function serializeSubteamMembers($members)
+    {
+        return $members
+            ->filter(
+                function (SubteamMember $member) {
+                    return !$member->isLead();
+                }
+            )
+            ->map(
+                function (SubteamMember $member) {
+                    return $this->serializeSubteamMember($member);
+                }
+            )
+            ->getValues();
+    }
+
+    /**
+     * @param SubteamMember $member
+     *
+     * @return array
+     */
+    private function serializeSubteamMember(SubteamMember $member)
+    {
+        return $this->extractUserData($member->getUser());
     }
 
     /**

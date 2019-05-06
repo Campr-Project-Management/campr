@@ -60,9 +60,9 @@ class SubteamMember implements UserAwareInterface, ResourceInterface, CloneableI
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_lead", type="boolean", options={"default": false})
+     * @ORM\Column(name="lead", type="boolean", options={"default": false})
      */
-    private $isLead = false;
+    private $lead = false;
 
     /**
      * Constructor.
@@ -83,25 +83,15 @@ class SubteamMember implements UserAwareInterface, ResourceInterface, CloneableI
     /**
      * Set isLead.
      *
-     * @param bool $isLead
+     * @param bool $lead
      *
      * @return SubteamMember
      */
-    public function setIsLead($isLead)
+    public function setLead(bool $lead)
     {
-        $this->isLead = $isLead;
+        $this->lead = $lead;
 
         return $this;
-    }
-
-    /**
-     * Get isLead.
-     *
-     * @return bool
-     */
-    public function getIsLead()
-    {
-        return $this->isLead;
     }
 
     /**
@@ -109,7 +99,7 @@ class SubteamMember implements UserAwareInterface, ResourceInterface, CloneableI
      */
     public function isLead()
     {
-        return $this->getIsLead();
+        return $this->lead;
     }
 
     /**

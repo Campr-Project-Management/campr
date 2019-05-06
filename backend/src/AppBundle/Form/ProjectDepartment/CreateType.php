@@ -20,36 +20,55 @@ class CreateType extends BaseType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('abbreviation', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.abbreviation',
-                    ]),
-                ],
-            ])
-            ->add('sequence', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
-                    ]),
-                ],
-            ])
-            ->add('rate', TextType::class, [
-                'required' => false,
-                'constraints' => [
-                    new Regex([
-                        'pattern' => '/^(0(?:\.[0-9]{1,2})?)$|^([1-9][0-9]{0,9})$|^([1-9][0-9]{0,7}(?:\.[0-9]{1,2})?)$/',
-                        'message' => 'invalid.rate',
-                    ]),
-                ],
-            ])
-        ;
+            ->add(
+                'abbreviation',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.abbreviation',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'sequence',
+                TextType::class,
+                [
+                    'required' => true,
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.sequence',
+                            ]
+                        ),
+                        new Regex(
+                            [
+                                'pattern' => '/^([1-9]+\d*)$|^0$/',
+                                'message' => 'invalid.sequence',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'rate',
+                TextType::class,
+                [
+                    'required' => false,
+                    'constraints' => [
+                        new Regex(
+                            [
+                                'pattern' => '/^(0(?:\.[0-9]{1,2})?)$|^([1-9][0-9]{0,9})$|^([1-9][0-9]{0,7}(?:\.[0-9]{1,2})?)$/',
+                                'message' => 'invalid.rate',
+                            ]
+                        ),
+                    ],
+                ]
+            );
     }
 
     /**
@@ -57,9 +76,11 @@ class CreateType extends BaseType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ProjectDepartment::class,
-            'allow_extra_fields' => true,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => ProjectDepartment::class,
+                'allow_extra_fields' => true,
+            ]
+        );
     }
 }

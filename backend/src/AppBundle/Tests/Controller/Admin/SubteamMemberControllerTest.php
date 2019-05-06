@@ -22,8 +22,8 @@ class SubteamMemberControllerTest extends BaseController
         $this->assertContains('name="create[user]"', $crawler->html());
         $this->assertContains('id="create_subteam"', $crawler->html());
         $this->assertContains('name="create[subteam]"', $crawler->html());
-        $this->assertContains('id="create_isLead"', $crawler->html());
-        $this->assertContains('name="create[isLead]"', $crawler->html());
+        $this->assertContains('id="create_lead"', $crawler->html());
+        $this->assertContains('name="create[lead]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -115,8 +115,8 @@ class SubteamMemberControllerTest extends BaseController
         $this->assertContains('name="create[user]"', $crawler->html());
         $this->assertContains('id="create_subteam"', $crawler->html());
         $this->assertContains('name="create[subteam]"', $crawler->html());
-        $this->assertContains('id="create_isLead"', $crawler->html());
-        $this->assertContains('name="create[isLead]"', $crawler->html());
+        $this->assertContains('id="create_lead"', $crawler->html());
+        $this->assertContains('name="create[lead]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
