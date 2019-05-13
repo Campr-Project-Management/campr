@@ -29,7 +29,6 @@
                                 </g>
                                 </svg>
                             </span>
-                            <span class="notification-balloon" v-if="sidebarStats">{{ sidebarStats.total }}</span>
                         </router-link>
                     </li>
                     <li>
