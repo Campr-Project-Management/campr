@@ -36,7 +36,6 @@ class DashboardController extends ApiController
             [
                 'taskTotal' => $wpTotal,
                 'projectTotal' => $projectTotal,
-                'total' => $wpTotal + $projectTotal,
             ]
         );
     }
