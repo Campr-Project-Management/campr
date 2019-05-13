@@ -98,7 +98,8 @@ class WorkPackageRepository extends BaseRepository
         if (isset($criteria['pageSize']) && isset($criteria['page'])) {
             $qb
                 ->setFirstResult($criteria['pageSize'] * ($criteria['page'] - 1))
-                ->setMaxResults($criteria['pageSize']);
+                ->setMaxResults($criteria['pageSize'])
+                ->distinct();
         }
 
         return $qb;
