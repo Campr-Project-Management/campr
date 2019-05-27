@@ -31,16 +31,16 @@
                     :title="translate('message.currency')"
                     :options="currenciesForSelect"
                     v-model="selectedCurrency"
-            name="selected_currency"/>
+                    name="selected_currency"/>
             <error
                     v-if="errorsStep1 && errorsStep1.selected_currency && errorsStep1.selected_currency.length"
-                    :message="errorsStep1.selected_currency" atPath="selected_currency" />
+                    :message="errorsStep1.selected_currency" atPath="selected_currency"/>
 
             <div v-if="!projectLogo">
-                <upload-placeholder/>
+                <img :src="logoUrl" class="avatar" alt="Logo"/>
             </div>
             <div v-else>
-                <img :src="projectLogo" class="avatar"/>
+                <img :src="projectLogo" class="avatar" alt="Logo"/>
             </div>
             <div class="flex flex-center">
                 <a class="btn-rounded btn-empty btn-md" @click="openProjectLogoFileSelection">{{ translate('message.project_logo') }}</a>
@@ -118,9 +118,11 @@
     import UploadPlaceholder from '../_common/_form-components/UploadPlaceholder';
     import Error from '../_common/_messages/Error.vue';
     import {mapActions, mapGetters} from 'vuex';
+    import UserAvatar from '../_common/UserAvatar';
 
     export default {
         components: {
+            UserAvatar,
             InputField,
             SelectField,
             UploadPlaceholder,
@@ -253,6 +255,7 @@
                 'portfolioLoading',
                 'programmesForSelect',
                 'portfoliosForSelect',
+                'logoUrl',
             ]),
         },
         created() {
@@ -320,8 +323,6 @@
         margin: 28px auto;
         display: block;
         width: 122px;
-        height: 122px;
-        border-radius: 122px;
         object-fit: cover;
     }
 

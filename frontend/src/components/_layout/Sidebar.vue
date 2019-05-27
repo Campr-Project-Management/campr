@@ -1,6 +1,8 @@
 <template>
     <aside>
-        <a href="/" class="logo"></a>
+        <a href="/">
+            <img class="logo" :src="logoUrl" alt="Logo"/>
+        </a>
         <scrollbar class="sidebar customScrollbar">
             <nav>
                 <ul>
@@ -8,8 +10,9 @@
                         <router-link :to="{name: 'dashboard'}" title="Dashboard">
                             <span class="default">{{ translate('message.dashboard') }}</span>
                             <span class="tablet">
-                                <svg version="1.1" class="dashboard-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                   viewBox="0 0 23.6 23.6" xml:space="preserve">
+                                <svg version="1.1" class="dashboard-icon" xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     viewBox="0 0 23.6 23.6" xml:space="preserve">
                                 <g id="XMLID_826_">
                                     <g>
                                         <rect id="XMLID_105_" x="2.8" y="2.4" class="st0" width="18" height="18.8"/>
@@ -37,8 +40,9 @@
                                 :title="translate('message.projects')">
                             <span class="default">{{ translate('message.projects') }}</span>
                             <span class="tablet">
-                                <svg version="1.1" class="projects-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                   viewBox="0 0 20.9 20.4" xml:space="preserve">
+                                <svg version="1.1" class="projects-icon" xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     viewBox="0 0 20.9 20.4" xml:space="preserve">
                                 <g id="XMLID_823_">
                                     <path id="XMLID_825_" class="st0" d="M16.9,11.4h2.5V9h-2.5c-0.2-0.7-0.4-1.7-0.8-2.3l1.8-1.8l-2.2-2.2l-1.8,1.8
                                       c-0.6-0.4-1.6-0.6-2.3-0.8V1.2H9.3v2.5C8.6,3.9,7.6,4.2,7,4.5L5.2,2.7L3,4.9l1.8,1.8C4.4,7.3,4.1,8.3,4,9H1.4v2.3H4
@@ -58,8 +62,9 @@
                                 :title="translate('message.tasks')">
                             <span class="default">{{ translate('message.tasks') }}</span>
                             <span class="tablet">
-                                <svg version="1.1" class="tasks-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                   viewBox="0 0 20.2 19.8" xml:space="preserve">
+                                <svg version="1.1" class="tasks-icon" xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     viewBox="0 0 20.2 19.8" xml:space="preserve">
                                 <g id="XMLID_816_">
                                     <g id="XMLID_820_">
                                         <circle id="XMLID_822_" class="st0" cx="7.5" cy="12.6" r="2.4"/>
@@ -136,9 +141,9 @@
         computed: {
             ...mapGetters([
                 'modules',
-                'project',
                 'sidebarStats',
                 'isProjectModuleActive',
+                'logoUrl',
             ]),
         },
         methods: {
@@ -245,13 +250,10 @@
             margin: 14px 26px;
             display: block;
             width: 142px;
-            height: 36px;
-            background: url('../../assets/logo.png');
 
             @media screen and (max-width: 768px) {
                 width: 39px;
                 margin: 14px 0;
-                background: url('../../assets/logo-small.png');
             }
         }
 

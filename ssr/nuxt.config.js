@@ -56,7 +56,7 @@ module.exports = {
                     enforce: 'pre',
                     test: /\.(js|vue)$/,
                     loader: 'eslint-loader',
-                    exclude: /(node_modules)/
+                    exclude: /(node_modules)/,
                 });
             }
 
@@ -67,12 +67,19 @@ module.exports = {
             };
             config.resolve.alias['theme'] = path.resolve(__dirname,
                 '../frontend/src/css/themes/dark');
-            config.resolve.alias['components'] = path.resolve(__dirname, '../frontend/src/components');
+            config.resolve.alias['components'] = path.resolve(__dirname,
+                '../frontend/src/components');
         },
     },
     generate: {
         routes: () => {
             return [];
+        },
+    },
+    watchers: {
+        webpack: {
+            aggregateTimeout: 300,
+            poll: 1000,
         },
     },
 };

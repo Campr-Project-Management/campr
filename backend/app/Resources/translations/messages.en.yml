@@ -828,7 +828,6 @@ message.medium: Medium
 message.meetings: Meetings
 message.member: member
 message.members: members
-message.milestones: 'Milestones'
 message.milestone_responsible: 'Milestone Responsible'
 message.milestone_schedule_note: 'Base Due Date will be recalculated based on the Tasks dedicated to this Milestone.'
 message.min: Min
@@ -876,7 +875,6 @@ message.participants: Participants
 message.per_day_reports_exceeded: 'You exceeded the number of reports per day. Please check with your manager.'
 message.performance_schedule: 'Performance Schedule'
 message.phase_responsible: 'Phase Responsible'
-message.phases: 'Phases'
 message.phases_and_milestones: 'Phases and Milestones'
 message.phases_milestones: 'Phases & Milestones'
 message.plan: Plan
@@ -910,7 +908,7 @@ message.project_duration: 'Project Duration'
 message.project_infos: 'Project Infos'
 message.project_involved: 'Project Involved'
 message.project_limitations: 'Project Limitations'
-message.project_logo: 'Add Project Logo'
+message.project_logo: 'Change Project Logo'
 message.project_management: 'Project Management'
 message.project_manager: 'Project Manager'
 message.project_manager_signature: 'Project Manager Signature'
@@ -2161,8 +2159,8 @@ message.informed: Informed
 label.add_label: 'Add Label'
 label.executing: Executing
 label.choose.theme: 'Choose theme display'
-label.theme.dark: 'Dark theme'
-label.theme.light: 'Light theme'
+label.theme.dark: Dark
+label.theme.light: Bright
 button.save_task: 'Save Task'
 button.copy_project: 'Copy Project'
 title.copy_project: 'Copy Project'
@@ -2197,3 +2195,191 @@ portal.footer.status: Status
 portal.footer.copyright: '&copy; %year% Campr. All rights reserved.'
 message.duplicate: Duplicate
 authentication.account_needs_activation: 'This account needs to be activated. Please check your email and activate it.'
+portal.page.about.christoph_pohl.about: "                        <p>Hello, my name is Christoph Pohl. I’m based in Würzburg, Germany and together with Manuel founder and owner of CAMPR.</p>\n\n                        <p>I'm passionate about concepting, managing and successfully compleing large-scale projects. As some of you may know, my go-to regions are South-Eastern Europe, Latin America and Asia. But good old Germany isn't that bad either.</p>\n\n                        <p>I'm a certified Project Management Professional (PMP) by the Project Management Insitute (PMI), certified Project Manager by the German TÜV, and a certified Quality Manager in ISO9001 standards. In 2018 I received my Scrum Master Certificate since Agile Project Management methods are becoming more and more important.</p>\n\n                        <p>In addition, I am an active member of the PMI South Germany Chapter and have been leading the PMI regulars' table in Würzburg since 2019.</p>"
+portal.page.about.manuel_weiler.about: "                        <p>Hi, my name is Manuel and I’m a certified project manager with extensive experience in the automotive and technology sector.</p>\n\n                        <p>My educational background as a Mechanical Engineer provides the foundation for my daily work in international and interdisciplinary projects. I have worked for more than decade in large scale projects in Germany, China, Romania, and the United States.</p>\n\n                        <p>My passion is to encounter the challenges of the modern high-complexity, multicultural work environment with customized and creative tools and methods. My goal is to continuously improve communication and to effectively manage risk information during the life cycle of each project.</p>"
+portal.page.about.title1: 'A powerful<br>project management<br>tool'
+portal.page.about.content1: 'CAMPR is the tool of choice for you as a professional Project Manager. Designed and supported for consistent project planning and documentation. The modular presentation of all relevant project management methods supports the establishment of a uniform Project Management standard in your company. Small or large projects: choose the modules for your own personal tool. Just focus on your projects - CAMPR does the rest.'
+portal.ui.sign_up: 'Sign up'
+portal.page.about.partners.funfpunktnull.desc: 'Fünfpunktnull GmbH is a usability and innovation office based in Würzburg. Together with its customers, the company designs solutions for the digital challenges of today and tomorrow. The highest maxim is the inclusion of the user in all phases of development. The team of interdisciplinary trained experts of human-machine interaction is optimally supplemented by a partner network.'
+portal.page.about.partners.uniwurzburg.desc: 'Close contact with the Department of Psychological Ergonomics enables us to regularly exchange information about the latest scientific findings in the field of design and evaluation of intuitive usability.'
+portal.page.about.partners.zdimainfranken.desc: 'ZDI Mainfranken is a startup incubator with the goal of strengthening the potential for innovative digital products and business ideas in Würzburg. The focus is on the development phase of new startup companies through idea generation, prototype development, and market penetration strategies. ZDI cooperates with partners covering Bavaria.'
+portal.page.about.partners.trisoft.desc: 'TRISOFT is our development partner for the CAMPR tool. They are a Symfony oriented software development company based in Romania, offering friendly, fast, quality solutions.'
+portal.page.about.partners.amc.desc: 'AMC Project Management GmbH has the perfect specialist for each imaginable task and situation. With a pool of over 7.000 experts, AMC is the market leader and ideal partner for problem solving. CAMPR and AMC can equip your project with the best specialists.'
+portal.page.about.partners.heiko_zimmer.desc: 'Heiko is our partner for developing and implementing creative marketing strategies and conquering global markets.'
+portal.page.try_beta.title: 'Try CAMPR <b class="warning-color">Beta</b>'
+portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Use the signup form to register and start using CAMPR <b>for free</b>\n                                    in <b class=\"warning-color\">BETA</b> mode. We will provide you with an account, a\n                                    workspace connected to that account and some default projects and tasks so you can\n                                    start testing right away. Don't forget to send us feedback using the <b>User\n                                        Feedback button</b> in the main sidebar.\n                                </p>\n                                <p class=\"mt-30\">\n                                    Don't hesitate to <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you have any questions.\n                                </p>"
+portal.page.dashboard.content1: 'Looks like you are new here, why don''t you go ahead and '
+portal.page.dashboard.create_new_team: 'create new team'
+portal.page.home.content2: 'What is<br>CAMPR'
+portal.page.home.content3: 'CAMPR is a project management tool  designed for projects of all froms and sizes. Our web-based software is lean, intuitively designed and offers everything you need to successfully manage your projects following industry standards such as GPM or PMI. Join our BETA for an exclusive first look!'
+portal.page.home.content4: 'Create your<br>Workspace'
+portal.page.home.content5: "                                        <p>\n                                            CAMPR is organized by Workspaces. This central element allows you to\n                                            organize your multi-project environment by grouping certain projects into\n                                            workspaces. You can invite project members to join your workspaces and\n                                            collaborate with them on certain projects only. That way makes it simple for\n                                            you to structure your projects for clients, scope and participants.\n                                        </p>\n                                        <p>\n                                            You can also create workspaces for your own projects and be a member of\n                                            other workspaces using only one user account.\n                                        </p>\n                                        <p>\n                                            <b>Follow CAMPRs One-Stop-Concept: One user account, one login, one personal\n                                                workspace dashboard.</b>\n                                        </p>\n"
+portal.page.home.create_your_workspace: 'Create your workspace'
+portal.page.home.content6: Organize<br>your<br>team
+portal.page.home.content7: "                                        <p>\n                                            The Project Organization lists the project participants of the project in a\n                                            hierarchical order. This module visualizes the project organization chart,\n                                            defines the roles, and the relationships between the project teams. Also,\n                                            you can create individual distribution lists for reports and meeting\n                                            invites.\n                                        </p>\n"
+portal.page.home.start_organizing: 'Start organizing'
+portal.page.home.all_modules: 'All modules'
+portal.page.home.content8: Plan<br>your<br>project
+portal.page.home.content9: "                                        <p>\n                                            Work packages can be grouped in a phase according to project sequences.\n                                            Particularly important events in the project progress are defined and\n                                            terminated as milestones.\n                                        </p>\n"
+portal.page.home.content10: Manage<br>your<br>tasks
+portal.page.home.content11: "                                        <p>\n                                            The Task Management provides an overview of all work packages assigned to\n                                            the project. A work package is a group of associated tasks. Typical\n                                            categories for grouped tasks are geographical area, engineering discipline,\n                                            technology, or the time needed to accomplish them.\n                                        </p>\n"
+portal.page.home.content12: 'Find out more about the team and ideas behind <b>CAMPR</b>'
+portal.page.home.content13: "                            <p>What is the story of CAMPR? Christoph and Manuel are experienced Project Managers.\n                                Traveling around the world in projects. Always with intercultural teams. Different\n                                countries. Different industries.</p>\n\n                            <p>But always the same challenge: There was no tool for professionally managing complex,\n                                global projects that fits our needs.</p>\n\n                            <p>The solution is CAMPR. Designed in 2016 in a motorhome. Because the best ideas are\n                                created at the campfire in the evening. Web based. Platform independent. Installed on\n                                your own server or in a German cloud. Modular.</p>\n\n                            <p>CAMPR - precise Project Management - nothing else!</p>"
+portal.page.imprint.title: Imprint
+portal.page.imprint.address: "CAMPR GmbH\n<br><a href=\"https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g\">Friedrich-Bergius-Ring 15</a>\n<br><a href=\"https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g\">97076 Würzburg</a>\n<br>Tel.: <a href=\"tel:+49%20931%202705814\" value=\"+499312705814\" target=\"_blank\">+49 931 270 5814</a>\n<br>E-Mail: <a href=\"mailto:info@campr.biz\" target=\"_blank\">info@campr.biz</a>\n<br>CEO: Christoph Pohl, Manuel Weiler\n<br>Registered office: Würzburg\n<br>​HRB 13625, Amtsgericht Würzburg"
+portal.page.imprint.disclaimer: "<h4 class=\"mt-60\">Disclaimer for website content</h4>\n\n<p class=\"mt-30\">The author accepts no liability for the timeliness of the information provided, its correctness, completeness or the quality thereof. Liability claims against the author concerning either material or intellectual damage resulting from the use or non-use of the offered information resp. from the use of faulty or incomplete information are generally excluded as long as such faults are not the result of the respective author’s verifiably intentional or grossly negligent culpable acts. All offers are non-binding. The author explicitly reserves the right to change parts of the pages or the entire offer without prior announcement, to complete, delete or stop publication for good or for a certain amount of time.</p>\n\n<h4 class=\"mt-60\">References and links</h4>\n\n<p class=\"mt-30\">The Hamburg district court ruled on 12 May, 1998 that homepage owners are liable for the contents of sites to which they have provided links. According to the district court, this can only be prevented if the homepage owner expressly distances himself from these contents. We have placed links to other internet sites on our website. For all these links, we want to expressly point out that we have no influence whatsoever on either design or content of the linked pages. Furthermore, we herewith distance ourselves explicitly from all contents of pages which are linked on our homepage and declare this for all such links on our homepage.</p>\n\n<h4 class=\"mt-60\">Data protection</h4>\n\n<p class=\"mt-30\">As long as it is possible to pass on personal or business data (email addresses, names, and addresses) within the internet offer, the user passes on any such information expressly on a voluntary basis. As long as technically possible and reasonable, the offered services may be used and paid for even without the submission of such data resp. by anonymously entering data or by using an alias.</p>\n\n<h4 class=\"mt-60\">Legal validity of this disclaimer</h4>\n\n<p class=\"mt-30\">This liability disclaimer is to be regarded as part of the internet offer from which this page has been referred to. In case parts or some wording of this text do not, no longer or not entirely comply with current legislation, all other parts of this document shall remain unaffected thereof in their content and validity.</p>"
+portal.page.modules.title: '16 Bedrock Modules'
+portal.page.modules.subtitle: "The CAMPR Tool offers 16 free modules that can be manually activated or used based on our Project Creation Wizard algorithm.\n<span class=\"small-separator\"></span>\n<b class=\"block\">More premium modules coming soon</b>"
+portal.page.modules.project_contract.desc: " <p>The goal of the project contract is to create a written agreement between the project sponsor and the project manager. This agreement shall contain a brief description of the framework of the project as well as the usage of required resources for this endeavor.</p>\n"
+portal.page.modules.organization.title: Organization
+portal.page.modules.organization.desc: '<p>The Project Organization lists the project participants of the project in a hierarchical order. This module visualizes the project organization chart, defines the roles, and the relationships between the project teams. Also, you can create individual distribution lists for reports and meeting invites. </p>'
+portal.page.modules.phases_and_milestones.title: 'Phases &amp; Milestones'
+portal.page.modules.phases_and_milestones.desc: '<p>Work packages can be grouped in a phase according to project sequences. Particularly important events in the project progress are defined and terminated as milestones.</p>'
+portal.page.modules.task_management.title: 'Task Management'
+portal.page.modules.task_management.desc: '<p>The Task Management provides an overview of all work packages assigned to the project. A work package is a group of associated tasks. Typical categories for grouped tasks are geographical area, engineering discipline, technology, or the time needed to accomplish them.</p>'
+portal.page.modules.internal_costs.title: 'Internal Costs'
+portal.page.modules.internal_costs.desc: '<p>Keeping track of the project costs is crucial. Cost planning allows you to calculate the cost per work package, and then to calculate the total cost of the project. A distinction is made between internal costs and external costs as well as operative costs and invest. </p>'
+portal.page.modules.external_costs.title: 'External Costs'
+portal.page.modules.external_costs.desc: '<p>Resource planning allows you to calculate the necessary personnel usage per work package.</p>'
+portal.page.modules.risks_and_opportunities.title: 'Risks &amp; Opportunities'
+portal.page.modules.risks_and_opportunities.desc: '<p>Regular risk analysis, indicating potential hazards, as well as uncovering opportunities within your project helps you to act proactively in all situations. This module supports you in collecting, structuring, tracking and visualizing risks and opportunities.</p>'
+portal.page.modules.gantt.title: 'Gantt Chart'
+portal.page.modules.gantt.desc: '<p>The Gantt Chart is a standard visualization of all phases, work packages, tasks and milestones on a timeline according to the planned project execution. All items have dedicated start and finish date and are displayed in individual bars on the time axis. Correlations between those items, such as predecessor and successor tasks, can be defined and are displayed as well.</p>'
+portal.page.modules.rasci.title: 'RASCI Matrix'
+portal.page.modules.rasci.desc: "<p>A responsibility assignment matrix, describes the participation by various roles in completing tasks or deliverables for a project execution. It is especially useful in clarifying roles and responsibilities in cross-functional projects and processes.</p>\n<p>RASCI is an acronym and stands for the five different roles within the execution process of a work package or task: Responsible, Accountable, Supportive, Consulted, and Informed.</p>"
+portal.page.modules.wbs.title: WBS
+portal.page.modules.wbs.desc: '<p>The Work Breakdown Structure (WBS) is a deliverable-oriented breakdown of a project into smaller components. A work breakdown structure is a key project deliverable that organizes the team''s work into manageable sections. This module visualizes the breakdown in a “tree”- structure starting with the project phases and work packages, tasks, and milestones in the branches. The structure can be manipulated within the module for restructuring purposes.</p>'
+portal.page.modules.meetings.title: Meetings
+portal.page.modules.meetings.desc: '<p>CAMPR supports you in the coordination of meetings with project participants. You can create invitations for meetings, schedule your meetings, and can keep track on them. Also, meeting minutes can be entered in a structured form and send out to all relevant meeting participants according to predefined distribution lists.</p>'
+portal.page.modules.todos.title: Todos
+portal.page.modules.todos.desc: '<p>The central to-do list is used to document the agreed or necessary to-dos during your project.</p>'
+portal.page.modules.infos.title: Infos
+portal.page.modules.infos.desc: '<p>With the "Info"-module, you can document general information related to your project or your team. Information such as changes to the project scope, new team members joining, new events planned, etc.</p>'
+portal.page.modules.decisions.title: Decisions
+portal.page.modules.decisions.desc: '<p>In the "Decisions"-module, you can document the decisions made during project execution. </p>'
+portal.page.modules.status_report.title: 'Status Report'
+portal.page.modules.status_report.desc: '<p>The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions. </p>'
+portal.page.modules.close_down_report.title: 'Close Out Report'
+portal.page.modules.close_down_report.desc: '<p>The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.</p>'
+portal.page.modules.content1: 'Campr<br>is for<br>everyone'
+portal.page.modules.content2: '<p class="mt-60">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE</b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools</b>, <b>Universities</b> or <b>Charity Organizations</b> can also benefit from the <b>FREE</b> version. All you have to do is <a href="%link%" class="simple-link"><b>contact us</b></a></p>'
+portal.ui.sign_up_now: 'Sign Up Now'
+portal.ui.features: Features
+portal.page.services.desc: "<p>CAMPR is the tool of choice for you as a professional Project Manager. Designed and supported for consistent project planning and documentation.</p>\n\n<p>The modular presentation of all relevant project management methods supports the establishment of a uniform project management standard in your company.</p>\n\n<p>Small or large projects: choose the modules for your own personal tool. Just focus on your projects - CAMPR does the rest.</p>\n\n<p>CAMPR offers you a fair and transparent licensing model. Whether short project duration or complex projects with many resources - our innovative License Wizard determines the best option for you!</p>"
+portal.page.services.consulting.desc: "<p>The CAMPR core team consists of project managers with many years of experience in managing major global projects. Our core competence lies in the automotive and supplier industry, logistics and quality management.</p>\n\n<p>We are certified PMP and Scrum Master and we maintain close relations with the universities of Würzburg and Landshut as well as with the PMI.</p>\n\n<h4 class=\"mb-30\">Our competencies:</h4>\n\n<ul class=\"check-list\">\n    <li><b>Risk assessments</b> to ensure security of supply</li>\n    <li><b>Process optimization</b> and ensuring sustainability of performance-enhancing\n        and supply-securing measures.\n    </li>\n    <li><b>Task force management</b> for the implementation of parameters defined jointly\n        with the customer in order to avoid production downtimes, interruptions in the supply chain\n        or massive quality problems.\n    </li>\n    <li><b>Project Management Office (PMO)</b> Setting up, managing and carrying out all\n        organisational tasks in project management. To support your organization or as a task force\n        in critical project environments.\n    </li>\n    <li class=\"no-bottom-padding\"><b>Supplier evaluation</b> Risk assessment with regard\n        to the security of supply of all customer unloading points. Value stream analysis,\n        derivation of potentials, implementation\n    </li>\n    <li class=\"no-top-padding\"><b>Supplier analysis</b> Evaluation of a supplier. Project\n        management, production systems, logistic processes, etc. are examined.\n    </li>\n    <li><b>Value Stream Management</b> Data capture, analysis, planning and implementation\n        of effective change within the core cross-functional or cross-company processes required to\n        achieve a truly lean enterprise.\n    </li>\n    <li><b>Lean Management</b>\n        <italic> Creating value without waste.</italic>\n        The goal is to optimally coordinate all activities in your organization that are necessary\n        for value creation and to avoid unnecessary activities.\n    </li>\n</ul>"
+portal.page.services.customizing.desc: "<p>CAMPR does not force you to adapt your processes, documents or the special features of your industry that have grown over the years to a software that does not suit you.</p>\n\n<p>CAMPR adapts to your organization's standards. Whether you need a special reporting system, implementation of time proven documents or data storage - we will implement it for you!</p>"
+email.contact.body: "<p>Hello,</p>\n<p>The following message has been sent through the Contact form.</p>\n<p>Email: %email%</p>\n<p>Name: %fullname%</p>\n<p>Message:</p>\n<p>%message%</p>\n"
+portal.ui.project_duration: 'Project Duration'
+portal.ui.months: Months
+portal.ui.project_budget: 'Project Budget'
+portal.page.register.desc: "CAMPR is currently in <b class=\"warning-color\">BETA</b>. Please check out our <a href=\"#prices\" class=\"simple-link\"><b>price model</b></a> below and <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you want to start using our app. Don’t forget that <b>CAMPR is free for personal projects of up to 4 users</b>.\n<span class=\"small-separator\"></span>\n<span class=\"block\">If you represent a <b>School</b>, <b>University</b> or <b>Charity</b> and want to <b>use CAMPR for free</b>, please <a href=\"#contact-school\" class=\"simple-link\"><b>contact us</b></a>.</span>"
+portal.page.register.content1: 'We have created 2 types of Licenses: <b>User Based License</b> and <b>Project Based License</b>, each with its own features and advantages. If you’re not sure which one is best for you, please check out our <a href="#sign-up-wizard" class="simple-link"><b>Sign Up Wizard</b></a>.'
+portal.page.register.content18: "If you want to install CAMPR on your own server, please contact us and we will provide you the information you need.\nOtherwise, please fill in the form and we'll show you <b>the best license model for your project</b>."
+portal.page.register.content24: 'and a project duration of less than'
+portal.page.register.content25: "<p class=\"mt-30\">\n    One of our main goals is to educate people in the field of project management and to help students, young entrepreneurs and any kind of charity organizations improve their management skills. We are offering CAMPR for free to any <b>School</b>, <b>University</b> or <b>Charity</b> that needs it. <b>All you have to do is contact us.</b>\n</p>"
+portal.nav.home.label: Home
+portal.nav.modules.label: Modules
+portal.nav.services.label: Services
+portal.nav.about.label: About
+portal.nav.blog.label: Blog
+portal.nav.register.label: Register
+portal.nav.try_beta.label: 'Try Beta'
+portal.page.register.title: 'Start using CAMPR'
+portal.ui.project_type: 'Project Type'
+portal.page.register.content3: '(based on the number of users)'
+portal.ui.start_up: Start-Up
+portal.page.register.content4: 'Limited to 4 users'
+portal.ui.user_based: 'User Based'
+portal.page.register.content5: 'Monthly subscription.'
+portal.page.register.content6: 'Unlimited number of projects.'
+portal.page.register.content7: 'One time purchase.'
+portal.page.register.content8: 'Unlimited number of projects.'
+portal.ui.free: Free
+portal.ui.user: user
+portal.ui.month: month
+portal.ui.yes: 'Yes'
+portal.ui.technical_support: 'Technical support'
+portal.ui.new_modules: 'New modules'
+portal.page.register.content9: '(additional costs may apply)'
+portal.ui.additional_services: 'Additional services'
+portal.page.register.content10: '(additional costs may apply)'
+portal.ui.free_webinars: 'Free webinars'
+portal.page.register.content11: 'Collaborative work environment in Real-Time'
+portal.page.register.content12: 'Program update / Bug fixing'
+portal.page.register.content13: 'New program releases'
+portal.page.register.content14: 'Video tutorials'
+portal.page.register.content15: 'Data stored on CAMPR Cloud Servers'
+portal.page.register.content16: '(stored on CAMPR Cloud Servers in Germany )'
+portal.page.register.vat_excluded: '* all prices excl. VAT'
+portal.page.register.content17: 'Sign Up Wizard'
+portal.page.register.content19: 'I want cloud hosted CAMPR'
+portal.page.register.content20: 'I want CAMPR on premise'
+portal.ui.number_of_projects: 'Number of Projects'
+portal.page.register.content21: 'Maximum No. of Members / Project'
+portal.ui.average_project_duration: 'Average Project Duration'
+portal.page.register.content22: 'We recommend:'
+portal.ui.project_based: 'Project Based'
+portal.page.register.content23: 'For more than'
+portal.ui.members: members
+portal.ui.project: project
+portal.page.register.content26: 'Using CAMPR for FREE'
+portal.ui.title: Title
+portal.ui.name: Name
+portal.ui.email: Email
+portal.ui.send: Send
+portal.ui.mr: Mr.
+portal.ui.mrs: Mrs.
+portal.ui.miss: Miss
+portal.ui.ms: Ms.
+portal.ui.dr: Dr.
+portal.ui.prof: Prof.
+portal.form.contact_us.title: 'Contact us'
+portal.form.contact_us.desc: 'Send us a message if you want to start using CAMPR.'
+portal.form.contact_us.label.message: 'Message: '
+portal.form.contact_us.label.email: Email
+portal.form.contact_us.label.name: Name
+portal.form.contact_us.button.send: Send
+portal.ui.view_prices: 'View Prices'
+portal.ui.contact_us: 'Contact Us'
+portal.ui.read_more: 'Read More'
+portal.ui.try_beta: 'Try Beta'
+portal.page.home.start_planning: 'Start Planning'
+portal.page.home.start_managing: 'Start Managing'
+portal.ui.founder: Founder
+portal.ui.more: More
+portal.page.home.sign_up_for_campr: 'Sign Up for CAMPR'
+portal.page.home.content14: 'I''m a certified Project Management Professional by the Project Management Insitute, certified Project Manager by the German TÜV, and a certified Quality Manager in ISO9001...'
+portal.page.home.content15: 'As Project Manager (certified according to PMI) I gained extensive experience in over a decade working for the automotive and technology industries worldwide...'
+portal.page.modules.project_contract.title: 'Project Contract'
+portal.page.modules.content4: 'Monthly subscription.'
+portal.page.modules.content5: 'Unlimited number of projects.'
+portal.page.modules.content6: 'One time purchase.'
+portal.page.modules.content7: 'Unlimited project duration.'
+portal.page.modules.content3: 'Limited to 4 users'
+portal.ui.users: Users
+portal.page.services.title: 'CAMPR Services'
+portal.page.services.subtitle: 'CAMPR Project Management Portal'
+portal.page.services.consulting.title: 'CAMPR Consulting'
+portal.page.services.customizing.title: 'CAMPR Customizing'
+portal.page.home.tagline: 'the all-in-one project management tool for industrious people'
+portal.ui.years_old: 'Years Old'
+portal.ui.projects_managed: 'Project Managed'
+portal.ui.completed_tasks: 'Completed Tasks'
+portal.ui.happy_clients: 'Happy Clients'
+portal.page.about.title: 'We are CAMPR'
+portal.page.about.partners.title: Partners
+portal.ui.payment_plans: 'Licensing Model'
+porta.ui.click_here_to_go_back: 'Click here to go back.'
+portal.ui.click_here_to_login: 'Click here to go log in.'
+portal.message.are_you_sure: 'Are you sure?'
+portal.page.home.content1: 'CAMPR is currently in'
+portal.ui.beta: Beta
+port.ui.founder: Founder
+portal.page.register.content2: 'scroll table to see the rest'
+success.contact.message.not_sent: 'Message not sent'
+portal.page.try_beta.form.label.industry_branch: 'Industry Branch'
+portal.page.try_beta.form.label.marketing_consent: 'I agree to receive Marketing Notifications'
+portal.page.try_beta.form.label.i_agree_to: 'I agree to the'
+portal.page.try_beta.form.label.terms_and_conditions: 'Terms &amp; Conditions'
+portal.page.try_beta.form.button.send: Send
+message.department_member: 'Department Member'

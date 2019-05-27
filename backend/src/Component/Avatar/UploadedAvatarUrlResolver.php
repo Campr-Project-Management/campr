@@ -3,31 +3,23 @@
 namespace Component\Avatar;
 
 use Component\Avatar\Model\AvatarAwareInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Vich\UploaderBundle\Storage\StorageInterface;
+use Component\Uploader\Resolver\UrlResolverInterface;
 
 class UploadedAvatarUrlResolver implements AvatarUrlResolverInterface
 {
     /**
-     * @var StorageInterface
+     * @var UrlResolverInterface
      */
-    private $storage;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private $urlResolver;
 
     /**
      * UserUploadedAvatarUrlResolver constructor.
      *
-     * @param StorageInterface $storage
-     * @param RouterInterface  $router
+     * @param UrlResolverInterface $urlResolver
      */
-    public function __construct(StorageInterface $storage, RouterInterface $router)
+    public function __construct(UrlResolverInterface $urlResolver)
     {
-        $this->storage = $storage;
-        $this->router = $router;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -37,17 +29,6 @@ class UploadedAvatarUrlResolver implements AvatarUrlResolverInterface
      */
     public function resolve(AvatarAwareInterface $user): string
     {
-        $avatar = (string) $this->storage->resolveUri($user, 'avatarFile');
-
-        if (empty($avatar)) {
-            return $avatar;
-        }
-
-        return sprintf(
-            '%s://%s%s',
-            $this->router->getContext()->getScheme(),
-            $this->router->getContext()->getHost(),
-            $avatar
-        );
+        return $this->urlResolver->resolve($user);
     }
 }
