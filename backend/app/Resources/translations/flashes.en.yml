@@ -372,3 +372,4 @@ success.wppcwct.create: 'Work Package Project Work Cost Type successfully create
 success.wppcwct.delete.from_data_table: 'Work Package Project Work Cost Type with ID'
 success.wppcwct.delete.from_edit: 'Work Package Project Work Cost Type successfully deleted!'
 success.wppcwct.edit: 'Work Package Project Work Cost Type successfully edited!'
+success.contact.message.not_sent: 'Message not sent.'

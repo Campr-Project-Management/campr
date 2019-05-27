@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <page :team="team" :project="project">
         <div class="row">
             <div class="create-meeting page-section">
                 <!-- /// Header /// -->
@@ -8,8 +8,11 @@
                         <h1>{{ translate(meeting.name) }}</h1>
                         <h3 class="category"><b>{{ meeting.meetingCategoryName }}</b></h3>
                         <h4>
-                            {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
-                            {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{ meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translate('message.min') }}</b>
+                            {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{
+                            meeting.date | moment('DD.MM.YYYY') }}</b>
+                            {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{
+                            meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start,
+                            meeting.end) }} {{ translate('message.min') }}</b>
                         </h4>
                     </div>
                 </div>
@@ -18,7 +21,8 @@
 
             <hr class="double">
 
-            <div class="create-meeting page-section" v-if="meeting.meetingParticipants && meeting.meetingParticipants.length > 0">
+            <div class="create-meeting page-section"
+                 v-if="meeting.meetingParticipants && meeting.meetingParticipants.length > 0">
                 <div class="flex flex-v-center flex-space-between">
                     <div>
                         <h3>{{ translate('message.participants') }}</h3>
@@ -39,13 +43,15 @@
                         <td>
                             <div class="avatars flex flex-v-center">
                                 <div>
-                                    <div class="avatar" :style="{ backgroundImage: 'url('+participant.userAvatarUrl+')' }"></div>
+                                    <div class="avatar"
+                                         :style="{ backgroundImage: 'url('+participant.userAvatarUrl+')' }"></div>
                                 </div>
                                 <span>{{ participant.userFullName }}</span>
                             </div>
                         </td>
                         <td>
-                            <span v-for="(department, index) in participant.userDepartmentNames" :key="`participant-department-${index}`">
+                            <span v-for="(department, index) in participant.userDepartmentNames"
+                                  :key="`participant-department-${index}`">
                                 {{ department }}<span v-if="index < participant.userDepartmentNames.length - 1">,</span>
                             </span>
                         </td>
@@ -105,7 +111,8 @@
                             <td>
                                 <div class="avatars collapse in" id="tp-meeting-20032017-1">
                                     <div>
-                                        <div class="avatar" :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
+                                        <div class="avatar"
+                                             :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
                                     </div>
                                 </div>
                             </td>
@@ -119,7 +126,8 @@
                 <hr class="double">
             </template>
 
-            <template v-if="(meeting.decisions && meeting.decisions.length > 0) || (meeting.openDecisions && meeting.openDecisions.length > 0)">
+            <template
+                    v-if="(meeting.decisions && meeting.decisions.length > 0) || (meeting.openDecisions && meeting.openDecisions.length > 0)">
                 <!-- /// Decisions /// -->
                 <h3>{{ translate('message.decisions') }}</h3>
 
@@ -127,11 +135,13 @@
                     <div class="entry" v-for="decision in meeting.openDecisions" :key="`open-decision-${decision.id}`">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                <h4>{{ decision.title }}</h4> | {{ translate('message.due_date') }}: <b>{{
+                                decision.dueDate | moment('DD.MM.YYYY') }}</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -144,11 +154,13 @@
                     <div class="entry" v-for="decision in meeting.decisions" :key="`decision-${decision.id}`">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ decision.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ decision.dueDate | moment('DD.MM.YYYY') }}</b>
+                                <h4>{{ decision.title }}</h4> | {{ translate('message.due_date') }}: <b>{{
+                                decision.dueDate | moment('DD.MM.YYYY') }}</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + decision.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ decision.responsibilityFullName }}</b>
@@ -163,7 +175,8 @@
                 <hr class="double">
             </template>
 
-            <template v-if="(meeting.todos && meeting.todos.length > 0) || (meeting.openTodos && meeting.openTodos.length > 0)">
+            <template
+                    v-if="(meeting.todos && meeting.todos.length > 0) || (meeting.openTodos && meeting.openTodos.length > 0)">
                 <!-- /// ToDos /// -->
                 <h3>{{ translate('message.todos') }}</h3>
 
@@ -171,11 +184,14 @@
                     <div class="entry" v-for="todo in meeting.openTodos" :key="`open-todo-${todo.id}`">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
+                                <h4>{{ todo.title }}</h4> | {{ translate('message.due_date') }}: <b>{{ todo.dueDate |
+                                moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{
+                                translate(todo.statusName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -188,11 +204,14 @@
                     <div class="entry" v-for="todo in meeting.todos" :key="`todo-${todo.id}`">
                         <div class="entry-header flex flex-space-between flex-v-center">
                             <div class="entry-title">
-                                <h4>{{ todo.title }}</h4>  | {{ translate('message.due_date') }}: <b>{{ todo.dueDate | moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{ translate(todo.statusName) }}</b><b v-else>-</b>
+                                <h4>{{ todo.title }}</h4> | {{ translate('message.due_date') }}: <b>{{ todo.dueDate |
+                                moment('DD.MM.YYYY') }}</b> | {{ translate('message.status') }}: <b v-if="todo.status">{{
+                                translate(todo.statusName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + todo.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ todo.responsibilityFullName }}</b>
@@ -207,7 +226,8 @@
                 <hr class="double">
             </template>
 
-            <template v-if="(meeting.infos && meeting.infos.length > 0) || (meeting.openInfos && meeting.openInfos.length > 0)">
+            <template
+                    v-if="(meeting.infos && meeting.infos.length > 0) || (meeting.openInfos && meeting.openInfos.length > 0)">
                 <!-- /// Infos /// -->
                 <h3>{{ translate('message.infos') }}</h3>
 
@@ -217,17 +237,21 @@
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
                                 <template v-if="info.isExpired">
-                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt |
+                                    date }}</b>
                                 </template>
                                 <template v-else>
                                     {{ translate('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
-                                </template> |
+                                </template>
+                                |
 
-                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
+                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{
+                                translate(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -242,17 +266,21 @@
                             <div class="entry-title">
                                 <h4>{{ info.topic }}</h4> |
                                 <template v-if="info.isExpired">
-                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt | date }}</b>
+                                    {{ translate('message.expired_at') }} <b class="middle-color">{{ info.expiresAt |
+                                    date }}</b>
                                 </template>
                                 <template v-else>
                                     {{ translate('message.expiry_date') }} <b>{{ info.expiresAt | date }}</b>
-                                </template> |
+                                </template>
+                                |
 
-                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{ translate(info.infoCategoryName) }}</b><b v-else>-</b>
+                                {{ translate('message.category') }}: <b v-if="info.infoCategory">{{
+                                translate(info.infoCategoryName) }}</b><b v-else>-</b>
                             </div>
                         </div>
                         <div class="entry-responsible flex flex-v-center" v-if="info.responsibility">
-                            <div class="user-avatar" v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
+                            <div class="user-avatar"
+                                 v-bind:style="{ backgroundImage: 'url(' + info.responsibilityAvatarUrl + ')' }"></div>
                             <div>
                                 {{ translate('message.responsible') }}:
                                 <b>{{ info.responsibilityFullName }}</b>
@@ -264,83 +292,99 @@
                 </div>
             </template>
         </div>
-    </div>
+    </page>
 </template>
 
 <script>
-import Vue from 'vue';
-import moment from 'moment';
+    import Vue from 'vue';
+    import moment from 'moment';
+    import Page from '../../layouts/Page';
 
-export default {
-    validate({params}) {
-        return /^\d+$/.test(params.id);
-    },
-    methods: {
-        getDuration: function(startDate, endDate) {
-            let end = moment(endDate, 'HH:mm');
-            let start = moment(startDate, 'HH:mm');
-
-            return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+    export default {
+        components: {
+            Page,
         },
-    },
-    created() {
-        if (this.locale) {
-            Translator.locale = this.locale;
-            moment.locale(this.locale);
-        }
-    },
-    async asyncData({params, query}) {
-        let meeting = {};
-        let meetingAgendas = [];
-        let distributionLists = [];
-        let locale = query.locale ? query.locale : '';
+        validate({params}) {
+            return /^\d+$/.test(params.id);
+        },
+        methods: {
+            getDuration: function(startDate, endDate) {
+                let end = moment(endDate, 'HH:mm');
+                let start = moment(startDate, 'HH:mm');
 
-        if (query.host && query.key) {
-            let res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}`, query.key);
-            meeting = await res.json();
+                return !isNaN(end.diff(start, 'minutes')) ? end.diff(start, 'minutes') : '-';
+            },
+        },
+        created() {
+            if (this.locale) {
+                Translator.locale = this.locale;
+                moment.locale(this.locale);
+            }
+        },
+        async asyncData({params, query}) {
+            let meeting = {};
+            let project = {};
+            let team = {};
+            let meetingAgendas = [];
+            let distributionLists = [];
+            let locale = query.locale ? query.locale : '';
 
-            res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}/agendas`, query.key);
-            meetingAgendas = await res.json();
+            if (query.host && query.key) {
+                let res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}`, query.key);
+                meeting = await res.json();
 
-            res = await Vue.doFetch(`http://${query.host}/api/projects/${meeting.project}/distribution-lists`, query.key);
-            distributionLists = await res.json();
-        }
+                // project
+                res = await Vue.doFetch(`http://${query.host}/api/projects/${meeting.project}`, query.key);
+                project = await res.json();
 
-        return {
-            //
-            meeting,
-            meetingAgendas,
-            distributionLists,
-            //
-            meetingId: params.id,
-            agendasActivePage: 1,
-            showPresent: null,
-            showEditObjectiveModal: false,
-            showDeleteObjectiveModal: false,
-            editObjectiveObject: {},
-            showEditAgendaModal: false,
-            showDeleteAgendaModal: false,
-            editAgendaObject: {},
-            showEditDecisionModal: false,
-            showDeleteDecisionModal: false,
-            editDecisionObject: {},
-            showEditTodoModal: false,
-            showDeleteTodoModal: false,
-            editTodoObject: {},
-            showEditInfoModal: false,
-            showDeleteInfoModal: false,
-            editInfoObject: {},
-            deleteMeetingModal: false,
-            rescheduleModal: false,
-            date: new Date(),
-            startTime: {},
-            endTime: {},
-            selectedParticipants: [],
-            showNotificationModal: false,
-            locale,
-        };
-    }
-};
+                res = await Vue.doFetch(`http://${query.host}/api/team`, query.key);
+                team = await res.json();
+
+                res = await Vue.doFetch(`http://${query.host}/api/meetings/${params.id}/agendas`, query.key);
+                meetingAgendas = await res.json();
+
+                res = await Vue.doFetch(`http://${query.host}/api/projects/${meeting.project}/distribution-lists`,
+                    query.key);
+                distributionLists = await res.json();
+            }
+
+            return {
+                //
+                meeting,
+                team,
+                project,
+                meetingAgendas,
+                distributionLists,
+                //
+                meetingId: params.id,
+                agendasActivePage: 1,
+                showPresent: null,
+                showEditObjectiveModal: false,
+                showDeleteObjectiveModal: false,
+                editObjectiveObject: {},
+                showEditAgendaModal: false,
+                showDeleteAgendaModal: false,
+                editAgendaObject: {},
+                showEditDecisionModal: false,
+                showDeleteDecisionModal: false,
+                editDecisionObject: {},
+                showEditTodoModal: false,
+                showDeleteTodoModal: false,
+                editTodoObject: {},
+                showEditInfoModal: false,
+                showDeleteInfoModal: false,
+                editInfoObject: {},
+                deleteMeetingModal: false,
+                rescheduleModal: false,
+                date: new Date(),
+                startTime: {},
+                endTime: {},
+                selectedParticipants: [],
+                showNotificationModal: false,
+                locale,
+            };
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

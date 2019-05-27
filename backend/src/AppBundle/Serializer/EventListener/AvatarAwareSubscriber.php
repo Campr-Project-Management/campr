@@ -2,7 +2,6 @@
 
 namespace AppBundle\Serializer\EventListener;
 
-use AppBundle\Entity\User;
 use Component\Resource\Model\BlameableInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\User\Model\UserAwareInterface;
