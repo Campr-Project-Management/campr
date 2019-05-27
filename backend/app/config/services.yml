@@ -286,6 +286,20 @@ services:
         tags:
             - { name: 'app.settings.schema.registry' }
 
+    app.uploader.url_resolver.project_logo:
+        class: Component\Uploader\Resolver\UrlResolver
+        arguments:
+            - '@vich_uploader.storage'
+            - '@router'
+            - 'logoFile'
+
+    app.uploader.url_resolver.user_avatar:
+        class: Component\Uploader\Resolver\UrlResolver
+        arguments:
+            - '@vich_uploader.storage'
+            - '@router'
+            - 'avatarFile'
+
 #### FACTORIES ####
     app.factory.status_report:
         class: Component\StatusReport\Factory\StatusReportFactory

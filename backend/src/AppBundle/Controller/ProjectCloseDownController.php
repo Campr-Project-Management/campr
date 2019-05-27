@@ -26,7 +26,7 @@ class ProjectCloseDownController extends Controller
     {
         $pdf = $this
             ->get('app.service.pdf')
-            ->getProjectCloseDownPDF($projectCloseDown->getId())
+            ->getProjectCloseDownPDF($projectCloseDown->getProjectId())
         ;
 
         if (!$pdf) {
@@ -43,6 +43,8 @@ class ProjectCloseDownController extends Controller
      * @Route("/{id}", name="app_project_close_down_view", requirements={"id":"\d+"})
      *
      * @param ProjectCloseDown $projectCloseDown
+     *
+     * @return Response
      */
     public function viewAction(ProjectCloseDown $projectCloseDown)
     {

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import actions from './actions';
-import getters from './getters';
-import mutations from './mutations';
+import * as actions from './actions';
+import * as getters from './getters';
+import * as mutations from './mutations';
 import closeDownAction from './modules/close-down-action';
 import trafficLight from './modules/traffic-light';
 import cost from './modules/cost';
@@ -63,6 +63,7 @@ import workPackage from './modules/work-package';
 import workPackageStatus from './modules/work-package-status';
 import workspace from './modules/workspace';
 import currency from './modules/currency';
+import team from './modules/team';
 import projectCreateWizard from './modules/project-create-wizard';
 import VuexPersist from 'vuex-persist';
 import VueWait from 'vue-wait';
@@ -78,7 +79,12 @@ const localPersist = new VuexPersist({
     modules: ['projectCreateWizard'],
 });
 
+const state = {
+    defaultLogoUrl: require('../assets/logo.png'),
+};
+
 export default new Vuex.Store({
+    state,
     actions,
     getters,
     mutations,
@@ -144,6 +150,7 @@ export default new Vuex.Store({
         workspace,
         currency,
         projectCreateWizard,
+        team,
     },
     strict: debug,
     plugins: [localPersist.plugin],
