@@ -7,6 +7,7 @@ services:
              - '@app.calculator.project_actual_dates'
              - '@app.calculator.project_total_cost'
              - '@app.calculator.project_progress'
+             - '@app.uploader.url_resolver.project_logo'
         tags:
             - { name: jms_serializer.event_subscriber }
 
