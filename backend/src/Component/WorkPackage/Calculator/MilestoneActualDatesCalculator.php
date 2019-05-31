@@ -35,17 +35,16 @@ class MilestoneActualDatesCalculator implements DateRangeCalculatorInterface
     {
         Assert::true($workPackage->isMilestone(), 'WorkPackage is not a milestone');
 
-        $startAt = $this->workPackageRepository->getMilestoneActualStartDate($workPackage);
         $finishAt = $this->workPackageRepository->getMilestoneActualFinishDate($workPackage);
-
-        if ($startAt) {
-            $startAt = new \DateTime($startAt);
-        }
 
         if ($finishAt) {
             $finishAt = new \DateTime($finishAt);
         }
 
-        return new DateRange($startAt, $finishAt);
+        if (!$finishAt) {
+            $finishAt = $workPackage->getActualFinishAt();
+        }
+
+        return new DateRange(null, $finishAt);
     }
 }

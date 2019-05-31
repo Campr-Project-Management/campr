@@ -693,6 +693,10 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      */
     public function getScheduledDurationDays(): int
     {
+        if (WorkPackage::TYPE_MILESTONE === $this->getType()) {
+            return 0;
+        }
+
         $start = $this->getScheduledStartAt();
         $end = $this->getScheduledFinishAt();
         if (!$end) {
