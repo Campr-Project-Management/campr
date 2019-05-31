@@ -154,18 +154,7 @@ export default {
 
             task.duration = item[this.currentDate + 'DurationDays'] || 1;
             let start = null;
-
-            if (item[this.currentDate + 'StartAt']) {
-                start = moment(item[this.currentDate + 'StartAt']);
-            } else {
-                start = moment(item.createdAt);
-                task.duration = Math.floor(
-                    Math.abs(
-                        start.diff(new Date()) / DAY_IN_MILISECONDS
-                    )
-                );
-            }
-            task.start_date = start.format('DD-MM-YYYY');
+            let field = 'StartAt';
 
             switch (item.type) {
             case 0: // phase
@@ -173,6 +162,7 @@ export default {
                 break;
             case 1: // milestone
                 task.parent = item.parent || item.phase;
+                field = 'FinishAt';
                 break;
             case 2: // task
                 task.parent = item.parent || item.milestone || item.phase;
@@ -182,6 +172,16 @@ export default {
             if (task.hasOwnProperty('parent') && !task.parent) {
                 delete task.parent;
             }
+
+            if (item[this.currentDate + field]) {
+                start = moment(item[this.currentDate + field]);
+            } else if (item.type === 1 && item['scheduled' + field]) {
+                start = moment(item['scheduled' + field]);
+            } else {
+                start = moment(item.createdAt);
+                task.duration = item['daysSinceCreated'];
+            }
+            task.start_date = this.$formatDate(start);
 
             return task;
         },

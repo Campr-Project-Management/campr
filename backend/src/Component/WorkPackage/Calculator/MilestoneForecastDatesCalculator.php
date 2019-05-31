@@ -35,17 +35,12 @@ class MilestoneForecastDatesCalculator implements DateRangeCalculatorInterface
     {
         Assert::true($workPackage->isMilestone(), 'WorkPackage is not a milestone');
 
-        $startAt = $this->workPackageRepository->getMilestoneForecastStartDate($workPackage);
         $finishAt = $this->workPackageRepository->getMilestoneForecastFinishDate($workPackage);
-
-        if ($startAt) {
-            $startAt = new \DateTime($startAt);
-        }
 
         if ($finishAt) {
             $finishAt = new \DateTime($finishAt);
         }
 
-        return new DateRange($startAt, $finishAt);
+        return new DateRange(null, $finishAt);
     }
 }
