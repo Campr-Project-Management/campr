@@ -105,6 +105,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->addForecastDates($visitor, $workPackage);
         $this->addActualDates($visitor, $workPackage);
         $this->addWorkPackageStatus($visitor, $workPackage);
+        $this->addDaysSinceCreated($visitor, $workPackage);
     }
 
     /**
@@ -195,5 +196,16 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $visitor->setData('workPackageStatus', $status->getId());
         $visitor->setData('workPackageStatusName', $status->getName());
         $visitor->setData('workPackageStatusCode', $status->getCode());
+    }
+
+    /**
+     * @param GenericSerializationVisitor $visitor
+     * @param WorkPackage                 $workPackage
+     */
+    private function addDaysSinceCreated(GenericSerializationVisitor $visitor, WorkPackage $workPackage)
+    {
+        $daysSinceCreated = (new \DateTime())->diff($workPackage->getCreatedAt())->format('%a');
+
+        $visitor->setData('daysSinceCreated', (int) $daysSinceCreated);
     }
 }
