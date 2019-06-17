@@ -25,7 +25,6 @@ use Component\Resource\Cloner\Annotation as Cloner;
  *     @ORM\UniqueConstraint(name="slug_unique", columns={"slug"}),
  * }))
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TeamRepository")
- * @UniqueEntity(fields={"name"}, message="unique.workspace.name")
  * @UniqueEntity(fields={"slug"}, message="unique.workspace.slug")
  * @UniqueEntity(fields={"uuid"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
@@ -76,7 +75,7 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=false, separator="")
+     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="-")
      */
     private $slug;
 
