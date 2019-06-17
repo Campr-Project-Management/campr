@@ -72,6 +72,7 @@ class WorkspaceClient
      */
     public function isEnabled(string $slug, User $user): bool
     {
+        $slug = str_replace('_', '-', $slug);
         $url = strtr(self::CHECK_ENABLED_ENDPOINT, ['{slug}' => $slug]);
         $logContext = [
             'slug' => $slug,
