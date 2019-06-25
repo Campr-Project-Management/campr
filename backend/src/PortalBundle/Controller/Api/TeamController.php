@@ -69,6 +69,56 @@ class TeamController extends ApiController
     }
 
     /**
+     * @Route("/{uuid}", name="portal_api_team_update", methods={"POST"})
+     *
+     * @param Request $request
+     * @param string  $uuid
+     *
+     * @return JsonResponse
+     */
+    public function updateAction(Request $request, string $uuid): JsonResponse
+    {
+        $logger = $this->getLogger();
+        $logger->info('Update team request received', ['body' => json_encode($request->request->all())]);
+
+        // softdeleteable is incompatible with UniqueEntity validator
+        $em = $this->getDoctrine()->getManager();
+        $em->getFilters()->disable('softdeleteable');
+
+        $team = $this->findByUuidOr404($uuid);
+        $form = $this->createForm(TeamType::class, $team, ['csrf_protection' => false, 'allow_extra_fields' => true]);
+        $this->processForm($request, $form);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Team $team */
+            $team = $form->getData();
+
+            $this->get('event_dispatcher')->dispatch(TeamEvents::PRE_UPDATE, new GenericEvent($team));
+            $this->get('app.repository.team')->add($team);
+            $this->get('event_dispatcher')->dispatch(TeamEvents::POST_UPDATE, new GenericEvent($team));
+
+            $logger->info('Update team request success', ['team' => $team->getSlug()]);
+
+            return $this->createApiResponse($team);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        $logger->error(
+            'Update team request is invalid',
+            [
+                'body' => json_encode($request->request->all()),
+                'errors' => json_encode($errors),
+            ]
+        );
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * @Route("/{uuid}/restore", name="portal_api_team_restore", methods={"POST"})
      *
      * @param string $uuid
@@ -171,5 +221,20 @@ class TeamController extends ApiController
     private function getLogger(): LoggerInterface
     {
         return $this->get('monolog.logger.portal');
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return Team
+     */
+    private function findByUuidOr404(string $uuid): Team
+    {
+        $team = $this->get('app.repository.team')->findOneBy(['uuid' => $uuid]);
+        if ($team) {
+            return $team;
+        }
+
+        throw $this->createNotFoundException(sprintf('Team with UUID "%s" not found', $uuid));
     }
 }
