@@ -1,10 +1,10 @@
 ROLE_ADMIN: Admin
 ROLE_SUPER_ADMIN: 'Super Admin'
 ROLE_USER: Nutzer
-activation.activated: 'Ihr Account wurde aktiviert!'
+activation.activated: 'Dein Account wurde aktiviert!'
 activation.expired: 'Der Aktivierungstoken ist abgelaufen!'
 activation.not_found: 'Nutzerkontenaktivierung nicht gefunden!'
-activation.resend: 'Klicken Sie hier, um einen neuen Aktivierungstoken zu versenden.'
+activation.resend: 'Klicke hier, um einen neuen Aktivierungstoken zu versenden.'
 add.assignment: 'Neuen Auftrag hinzufügen'
 add.calendar: 'Neuen Kalender hinzufügen'
 add.close_down_action: 'Neue Abschlussmaßnahme hinzufügen'
@@ -98,7 +98,7 @@ button.add_subteam_member: 'Neues Teammitglied hinzufügen'
 button.add_subteam_role: 'Rolle hinzufügen'
 button.analyze: Analysieren
 button.back_to_list: 'Zurück zur Liste'
-button.back_to_workspace: 'Zurück zum Arbeitsbereich'
+button.back_to_workspace: 'Zurück zum Workspace'
 button.cancel: Abbrechen
 button.change: Ändern
 button.clear_filters: 'Filter zurücksetzen'
@@ -201,39 +201,39 @@ color_status.not_started: Kritisch
 copyright: 'Copyright &copy; %year% CAMPR'
 email.expiration.user.activation: 'Der Aktivierungslink läuft in{0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
 email.expiration.user.reset: 'Der Zurücksetzungstoken läuft in {0} 1 day|{1} 1 day|]1,Inf[ %expiration_time% Tag(en) ab.'
-email.from.contact: 'Sie haben eine neue Nachricht von:'
+email.from.contact: 'Du hast eine neue Nachricht von:'
 email.general.email: E-Mail
 email.general.hello: Hallo
 email.general.link: Link
 email.general.password: Passwort
-email.general.plain_password: 'Ihr Passwort lautet'
+email.general.plain_password: 'Dein Passwort lautet'
 email.message.contact: Nachricht
 email.message.ends_at: 'Endet um'
-email.message.invoice: 'Ihre Rechnung für die Zahlung %payment% finden Sie im Anhang dieser E-Mail.'
-email.message.meeting_notification: 'Sie wurden zu einem Meeting eingeladen. Hier sind die Meeting-Informationen:'
+email.message.invoice: 'Deine Rechnung für die Zahlung %payment% findest du im Anhang dieser E-Mail.'
+email.message.meeting_notification: 'Du wurdest zu einem Meeting eingeladen. Hier sind die Meeting-Informationen:'
 email.message.starts_at: 'Beginnt um'
 email.message.status_report: 'Neuer Status-Report'
-email.message.user.activation: 'Ihr Aktivierungscode wurde zurückgesetzt. Um Ihren Account zu aktivieren, klicken Sie auf folgenden'
-email.message.user.credential: 'Ihre Anmeldedaten sind'
-email.message.user.register: 'Um Ihren Account zu aktivieren, klicken sie den folgenden Link'
-email.message.user.reset: 'Um Ihr Passwort zurückzusetzen, klicken Sie auf den folgenden'
-email.message.workspace_member.invite.first: 'Sie wurden eingeladen Teil des Arbeitsbereiches %team_name% zu werden.'
+email.message.user.activation: 'Dein Aktivierungscode wurde zurückgesetzt. Um deinen Account zu aktivieren, klicke auf folgenden'
+email.message.user.credential: 'Deine Anmeldedaten sind'
+email.message.user.register: 'Um deinen Account zu aktivieren, klicke auf den folgenden'
+email.message.user.reset: 'Um dein Passwort zurückzusetzen, klicke auf den folgenden'
+email.message.workspace_member.invite.first: 'Du wurdest eingeladen Teil des Workspaces %team_name% zu werden.'
 email.message.workspace_member.invite.link: Einladung
-email.message.workspace_member.invite.second: 'Sollten Sie keinen Account mit dieser E-Mail-Adresse haben, erstellen Sie einen neues Nutzerkonto, um die Einladung anzunehmen.'
-email.message.workspace_member.invite.third: 'Bitte klicken Sie auf folgenden'
+email.message.workspace_member.invite.second: 'Solltest du keinen Account mit dieser E-Mail-Adresse haben, erstelle ein neues Nutzerkonto, um die Einladung anzunehmen.'
+email.message.workspace_member.invite.third: 'Bitte klicke auf folgenden'
 email.subject.contact: CAMPR-Vertrag
 email.subject.general: Thema
 email.subject.invoice: 'CAMPR - Zahlung auf Rechnung'
-email.subject.new_meeting_notification: 'Sie haben eine neue Meeting-Benachrichtigung.'
+email.subject.new_meeting_notification: 'Du hast eine neue Meeting-Benachrichtigung.'
 email.subject.status_report: 'CAMPR Status-Report'
 email.subject.user.activation: 'CAMPR - Account Aktivierungscode'
 email.subject.user.register: 'CAMPR - Account Registrierung'
 email.subject.user.reset: 'CAMPR - Passwort zurücksetzen'
-email.subject.workspace_member.invite: 'CAMPR - Teilnehmer in Arbeitsbereich einladen'
-exception.add.team: 'Bitte fügen Sie ein Team als Optionsparameter hinzu.'
-exception.add.user: 'Bitte fügen Sie einen Nutzer als Optionsparameter hinzu.'
-exception.cannot_invite_yourself: 'Sie können sich nicht selbst einladen.'
-exception.progress_change_for_tasks_only: 'Sie können nur den Fortschritt des Aktivität ändern.'
+email.subject.workspace_member.invite: 'CAMPR - Teilnehmer in Workspace einladen'
+exception.add.team: 'Bitte füge ein Team als Optionsparameter hinzu.'
+exception.add.user: 'Bitte füge einen Nutzer als Optionsparameter hinzu.'
+exception.cannot_invite_yourself: 'Du kannst dich nicht selbst einladen.'
+exception.progress_change_for_tasks_only: 'Du kannst nur den Fortschritt der Aktivität ändern.'
 exception.user.already_member_of_project: 'Der Nutzer ist bereits Teil dieses Projektes.'
 exception.user.already_member_of_workspace: 'Der Nutzer ist bereits Teil dieses Teams.'
 exception.user.unable_to_create: 'Neuer Nutzer konnte nicht angelegt werden.'
@@ -269,10 +269,10 @@ failed.risk_strategy.delete.dependency_constraint: 'Die Risikostrategie kann nic
 failed.risk_strategy.delete.generic: 'Beim Löschen der Risikostrategie ist ein Fehler aufgetreten.'
 failed.team_member.invitation.denied: 'Die Einladung wurde an den Nutzer mit der E-Mail %user_email% gesendet.'
 failed.team_member.remove.not_part_of_the_team: 'Nutzer %team_member_name% ist nicht Teil des Teams %team_name%.'
-failed.team_member.remove.yourself: 'Sie können sich nicht selbst aus %team_name% entfernen.'
-failed.user.delete.superadmin: 'Sie können andere SUPER ADMIN-Nutzer nicht löschen!'
-failed.user.delete.yourself: 'Sie können sich nicht selbst löschen!'
-failed.user.edit.superadmin: 'Sie können keine anderen SUPER ADMIN- Profile bearbeiten!'
+failed.team_member.remove.yourself: 'Du kannst dich nicht selbst aus %team_name% entfernen.'
+failed.user.delete.superadmin: 'Du kannst andere SUPER ADMIN-Nutzer nicht löschen!'
+failed.user.delete.yourself: 'Du kannst dich nicht selbst löschen!'
+failed.user.edit.superadmin: 'Du kannst keine anderen SUPER ADMIN- Profile bearbeiten!'
 failed.workpackage.delete.dependency_constraint: 'Das Arbeitspaket kann nicht gelöscht werden, da andere Instanzen von ihm abhängig sind.'
 failed.workpackage.delete.generic: 'Beim Löschen des Arbeitspaketes ist ein Fehler aufgetreten.'
 filter.clear: 'Filter leeren'
@@ -593,13 +593,13 @@ link.support: Support
 menu.account: Account
 menu.admin: Admin
 menu.contact: Kontakt
-menu.deleted_workspaces: 'Gelöschte Arbeitsbereiche'
+menu.deleted_workspaces: 'Gelöschte Workspaces'
 menu.payment_methods: Zahlungsmethoden
 menu.payments: Zahlungen
 menu.settings: Einstellungen
 menu.teams: Teams
 menu.users: Nutzer
-menu.workspaces: Arbeitsbereiche
+menu.workspaces: Workspaces
 message.access_denied: 'Zugriff verweigert'
 message.action_needed: 'Handlung nötig'
 message.actual_schedule: planmäßig
@@ -637,7 +637,7 @@ message.assignee: Beauftragter
 message.attachments: Anhänge
 message.automatic_phase_schedule_note: 'Auf Basis des Startdatums der ersten Aufgabe/des ersten Meilensteins und des Enddatums der letzten Aufgabe/des letzten Meilensteins kalkuliert.'
 message.automatic_schedule: 'Automatischer Terminplan'
-message.automatic_schedule_note: 'Definieren Sie einen Vorgänger und Nachfolger für diese Aufgabe und fügen Sie einen Zeitraum ein, um Basisstart- und -enddatum automatisch zu berechnen.'
+message.automatic_schedule_note: 'Definiere einen Vorgänger und Nachfolger für diese Aufgabe und füge einen Zeitraum ein, um Basisstart- und -enddatum automatisch zu berechnen.'
 message.average_impact: 'Der durchschnittliche Wert der Auswirkungen aller Chancen beträgt'
 message.average_impact_opportunity: 'Der durchschnittliche Wert der Auswirkungen aller Chancen beträgt'
 message.average_impact_risks: 'Der durchschnittliche Wert der Auswirkungen aller Risiken beträgt'
@@ -680,8 +680,8 @@ message.commented: kommentiert
 message.communication: Ankündigung
 message.company: Unternehmen
 message.condition: Stand
-message.confirm_close_task: 'Sind Sie sicher, dass Sie diese Aufgabe schließen wollen?'
-message.confirm_open_task: 'Sind Sie sicher, dass Sie diese Aufgabe eröffnen wollen?'
+message.confirm_close_task: 'Bist du dir sicher, dass du diese Aufgabe schließen willst?'
+message.confirm_open_task: 'Bist du dir sicher, dass du diese Aufgabe eröffnen willst?'
 message.context: Kontext
 message.contract: Vertrag
 message.contract_frozen: 'Der Projektvertrag ist eingefroren'
@@ -719,10 +719,10 @@ message.delay: Verzögerung
 message.delete: Löschen
 message.delete_agenda: 'Agenda löschen'
 message.delete_decision: 'Entscheidung löschen'
-message.delete_department: 'Sind Sie sicher, dass Sie die ausgewählte Abteilung löschen wollen?'
+message.delete_department: 'Bist du dir sicher, dass du die ausgewählte Abteilung löschen willst?'
 message.delete_external_cost: 'Diese externen Kosten löschen?'
 message.delete_file_failed: 'Beim Löschen ist ein Fehler aufgetreten'
-message.delete_info: 'Sind Sie sicher, dass Sie die ausgewählte Info löschen wollen?'
+message.delete_info: 'Bist du dir sicher, dass du die ausgewählte Info löschen willst?'
 message.delete_internal_cost: 'Diese internen Kosten löschen?'
 message.delete_meeting: 'Meeting löschen'
 message.delete_milestone: 'Meilenstein löschen'
@@ -777,7 +777,7 @@ message.edit_team_member: 'Teammitglied bearbeiten'
 message.edit_team_members: 'Teammitglieder bearbeiten'
 message.edit_todo: 'To-Do bearbeiten'
 message.edited: bearbeitet
-message.email_report: 'Sind Sie sicher, dass Sie diesen Statusreport per E-Mail versenden wollen?'
+message.email_report: 'Bist du dir sicher, dass du diesen Statusreport per E-Mail versenden willst?'
 message.error: Error!
 message.evaluation_objectives: Bewertungskriterium
 message.event: Event
@@ -802,7 +802,7 @@ message.homepage: Homepage
 message.hour_ago: 'Stunde zuvor'
 message.hours_ago: 'Stunden zuvor'
 message.impact: Auswirkung
-message.impersonate: 'Sie sind derzeit eingeloggt als'
+message.impersonate: 'Du bist derzeit eingeloggt als'
 message.import_project: 'Projekt importieren'
 message.import_task: 'Aufgabe importieren'
 message.import_tasks: 'Aufgaben importieren'
@@ -811,7 +811,7 @@ message.internal_costs: 'Interne Kosten'
 message.internal_resources: 'Interne Ressourcen'
 message.invoce: 'Rechnung für Zahlung:'
 message.label_none: Keine
-message.label_note: 'Notiz'':'' Die Farbe des Labeltexts ist weiß. Wählen Sie die Hintergrundfarbe Ihres Labels auch nach diesem Kriterium aus.'
+message.label_note: 'Notiz'':'' Die Farbe des Labeltexts ist weiß. Wähle die Hintergrundfarbe deines Labels auch nach diesem Kriterium aus.'
 message.last_task: 'Letzte Aufgabe'
 message.less: Weniger
 message.lessons_learned: 'Lessons Learned'
@@ -828,13 +828,12 @@ message.medium: Medium
 message.meetings: Meetings
 message.member: Mitglied
 message.members: Mitglieder
-message.milestones: 'Meilensteine'
 message.milestone_responsible: 'Meilensteinverantwortlicher:'
 message.milestone_schedule_note: 'Basis Frist wird neu berechnet auf Basis der Aufgaben zugehörig zu diesem Meilenstein.'
 message.min: Min
 message.minute_ago: 'Minute zuvor'
 message.minutes_ago: 'vor .. Minuten'
-message.minutes_under_interval: 'Sie können aufgrund der Intervallrestriktion im Moment keinen Bericht erstellen. Bitte halten Sie Rücksprache mit Ihrem Manager.'
+message.minutes_under_interval: 'Du kannst aufgrund der Intervallrestriktion im Moment keinen Bericht erstellen. Bitte halte Rücksprache mit deinem Manager.'
 message.months: Monate
 message.more: mehr
 message.my_projects: 'Meine Projekte'
@@ -855,10 +854,10 @@ message.new_risk: 'Neues Risiko'
 message.new_task: 'Neue Aufgabe'
 message.no: Nein
 message.no_chat_rooms: 'Die Chatliste ist leer in diesem Projekt.'
-message.no_managers: 'Für dieses Projekt wurden keinen Manager definiert. Bitte erstellen Sie Manager, um sie dieser Abteilung zuzuordnen.'
+message.no_managers: 'Für dieses Projekt wurde keinen Manager definiert. Bitte erstelle Manager, um sie dieser Abteilung zuzuordnen.'
 message.no_private_messages: 'Es gibt keine Privatnachrichten zu diesem Projekt.'
 message.no_results: 'Keine Ergebnisse'
-message.not_recommended_modules: 'Wir empfehlen Ihnen nicht die restlichen Module zu Nutzen, aber Sie können sie dennoch aktivieren.'
+message.not_recommended_modules: 'Unsere Empfehlung ist, die restlichen Module nicht zu Nutzen, sie können aber dennoch aktiviert werden.'
 message.note: 'Notiz:'
 message.notes: Notizen
 message.objectives: Objectives
@@ -873,10 +872,9 @@ message.overall_progress: Gesamtfortschritt
 message.overall_status: Gesamtstatus
 message.parent_phase: 'Übergeordnete Phase'
 message.participants: Teilnehmer
-message.per_day_reports_exceeded: 'Sie haben das tägliche Berichtslimit erreicht. Bitte halten Sie Rücksprache mit Ihrem Manager.'
+message.per_day_reports_exceeded: 'Du hast das tägliche Berichtslimit erreicht. Bitte halte Rücksprache mit deinem Manager.'
 message.performance_schedule: 'Performance Schedule'
 message.phase_responsible: 'Phasenverantwortlicher:'
-message.phases: 'Phasen'
 message.phases_and_milestones: 'Phasen & Meilensteine'
 message.phases_milestones: 'Phasen & Meilensteine'
 message.plan: Plan
@@ -943,21 +941,21 @@ message.projects: Projekte
 message.rasci_matrix: 'RASCI Matrix'
 message.recent_projects: 'Meine letzten Projekte'
 message.recent_tasks: 'Meine letzten Aufgaben'
-message.recommended_modules: 'basierend auf Ihren Einschätzungen empfehlen wir Ihnen die folgenden Module'
+message.recommended_modules: 'basierend auf deinen Einschätzungen empfehlen wir dir die folgenden Module'
 message.reflection: Reflexion
 message.remaining_action: 'Ausstehende Maßnahmen'
 message.reschedule_decision: 'Entscheidung umplanen'
 message.reschedule_meeting: 'Meeting umplanen'
 message.reschedule_remaining_action: 'Ausstehende Maßnahmen umplanen'
 message.reschedule_todo: 'To-Do umplanen'
-message.reset_password: 'Bitte geben Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Eine E-Mail mit weiteren Anweisungen wird Ihnen zugesendet.'
+message.reset_password: 'Bitte gib deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen. Du erhälst eine E-Mail mit weiteren Anweisungen von uns.'
 message.resource_chart: Ressourcendiagramm
 message.resources: Ressourcen
 message.resources_chart_by_department: 'Ressourcen pro Abteilung'
 message.resources_chart_by_phase: 'Ressourcen pro Phase'
 message.responsible: Verantwortlich
 message.results_out_of: 'Ergebnisse von'
-message.return: 'um zu Ihrem ursprünglichen Nutzer zurückzukehren.'
+message.return: 'um zu deinem ursprünglichen Nutzer zurückzukehren.'
 message.risks: Risiken
 message.risks_oportunities: 'Risiken & Chancen'
 message.role: Rolle
@@ -1001,7 +999,7 @@ message.tasks_condition: Aufgabenzustand
 message.tasks_status: Aufgabenstatus
 message.team_members: Teammitglieder
 message.team_members_involved: 'Beteiligte Teammitglieder'
-message.teams: 'Teams, in denen Sie Mitglied sind'
+message.teams: 'Teams, in denen du Mitglied bist'
 message.this_task_has_no_planning: 'Für diese Aufgabe wurden keine Planungsdaten konfiguriert'
 message.this_task_part_of: 'Diese Aufgabe gehört zu '
 message.time_calculation: 'Zeitersparnis ist das Produkt aus Wahrscheinlichkeit und potentieller Zeitersparnis'
@@ -1017,7 +1015,7 @@ message.total_number_of_measures: 'Gesamtanzahl der Maßnahmen'
 message.total_potential_cost: 'Gesamte potentielle Kosten'
 message.total_potential_delay: 'Gesamte potentielle Verzögerung'
 message.total_potential_savings: 'Gesamte potentielle Einsparungen'
-message.total_potential_time_savings: 'Gesamte potentielle Zeiterinsparungen'
+message.total_potential_time_savings: 'Gesamte potentielle Zeiteinsparungen'
 message.total_tasks: 'Gesamte Aufgaben'
 message.unable_to_save: 'Speichern nicht möglich.'
 message.uploading_file_failed: 'Beim Hochladen der Datei ist ein Fehler aufgetreten'
@@ -1039,26 +1037,26 @@ message.wbs: WBS
 message.week: Woche
 message.weeks: Wochen
 message.work_package_dependency_constraint: 'Der Eintrag kann nicht gelöscht werden, da Phasen/Meilensteine/Aufgaben von ihm abhängig sind.'
-message.workspaces: 'Arbeitsbereiche in denen Sie Mitglied sind'
+message.workspaces: 'Workspaces in denen du Mitglied bist'
 message.year: Jahr
 message.yes: Ja
-message.your_teams: 'Ihre Teams'
-message.your_workspaces: 'Ihre Arbeitsbereiche'
+message.your_teams: 'Deine Teams'
+message.your_workspaces: 'Deine Workspaces'
 modules.close_down_project.description: 'Der finale Projektbericht dient als ein endgültiges Dokument für die Evaluation des Projektes und für die Planung der verbleibenden Aufgaben und der Nachprojektphase. Der Projektabschlussbericht ist die Basis für den endgültigen Inbetriebnahmeprozess.'
 modules.close_down_project.title: Projektabschlussbericht
 modules.contract.description: 'Das Ziel des Projektvertrages ist, eine schriftliche Vereinbarung zwischen dem Projektsponsor und dem Projektmanager zu schaffen. Diese Vereinbarung sollte eine kurze Beschreibung der Rahmenbedingungen des Projektes, sowie der Nutzung der benötigten Resourcen für das Vorhaben.'
 modules.contract.title: Vertrag
-modules.decisions.description: 'Im "Entscheidungs"-Modul können Sie Ihre Entscheidungen, die Sie während der Projektdurchführung gefällt haben, dokumentieren.'
+modules.decisions.description: 'Im "Entscheidungs"-Modul kannst du deine Entscheidungen, die du während der Projektdurchführung getroffen hast, dokumentieren.'
 modules.decisions.title: Entscheidungen
 modules.external_costs.description: 'Ressourcenplanung erlaubt Ihnen die Personalkosten pro Arbeitspaket zu kalkulieren.'
 modules.external_costs.title: 'Externe Kosten'
 modules.gantt_chart.description: 'Das Gantt Diagramm ist eine Standartdarstellung aller Phasen, Arbeitspakete, Aufgaben und Meilensteine auf einer Zeitleiste gemäß der geplanten Projektausführung. Alle Objekte haben einen zugehöriges Start- und Enddatum und werden als eigenständige Balken auf der Zeitachse dargestellt. Korrelationen zwischen den Objekten - beispielsweise Vörgänger- und Nachfolgeaufgaben - können ebenfalls definiert und dargestellt werden.'
 modules.gantt_chart.title: 'Gantt Diagramm'
-modules.infos.description: 'Im Info-Modul können allgemeine Informationen zum Ihrem Projekt oder Ihren Teams dokumentiert werden. Informationen, wie beispielsweise Projektumfang, neue Projektmitglieder, neue Veranstaltungen, etc.'
+modules.infos.description: 'Im Info-Modul können allgemeine Informationen zum deinem Projekt oder deinen Teams dokumentiert werden. Informationen, wie beispielsweise Projektumfang, neue Projektmitglieder, neue Veranstaltungen, etc.'
 modules.infos.title: Infos
 modules.internal_costs.description: 'Projektkosten zu überblicken ist essentiell. Die Kostenplanung erlaubt Ihnen die Kosten pro Arbeitspaket und somit die Gesamtkosten des Projektes zu kalkulieren. Es wird zwischen externen und internen Kosten sowie operativen Kosten und Investments unterschieden.'
 modules.internal_costs.title: 'Interne Kosten'
-modules.meetings.description: 'CAMPR unterstützt Sie, Meetings mit den Projektbeteiligten zu koordinieren. Sie können Einladungen für Meetings erstellen, Meetings planen und sie verfolgen. Außerdem können Meetingprotokolle in strukturierter Form hinzugefügt und an alle relevanten Teilnehmer gemäß der vorgefertigten Verteilerlisten versendet werden. .'
+modules.meetings.description: 'CAMPR unterstützt dich, Meetings mit den Projektbeteiligten zu koordinieren. Du kannst Einladungen für Meetings erstellen, Meetings planen und sie verfolgen. Außerdem können Meetingprotokolle in strukturierter Form hinzugefügt und an alle relevanten Teilnehmer gemäß der vorgefertigten Verteilerlisten versendet werden. .'
 modules.meetings.title: Meetings
 modules.organization.description: 'Die Projektorganisation zeigt die Projektbeteiligten in hierarchischer Ordnung. Dieses Modul visualisiert das Projektorganisationschart, definiert die Rollen und die Beziehungen zwischen den Projektteams. Außerdem können Sie Distributionslisten für Reports und Meetingeinladungen erstellen.'
 modules.organization.title: Organisation
@@ -1072,7 +1070,7 @@ modules.status_report.description: 'Der Statusbericht liefert Ihnen einen Überb
 modules.status_report.title: Statusbericht
 modules.task_management.description: 'Die Aufgabenverwaltung liefert einen Überblick über alle Arbeitspakete, die zu Ihrem Projekt gehören. Ein Arbeitspaket ist eine Gruppe verbundener Aufgaben. Typische Kategorien für gruppierte Aufgaben sind beispielsweise geographische Gebiete, Gewerk, Technologie oder die Zeit, die zur Fertigstellung benötigt wird.'
 modules.task_management.title: Aufgabenverwaltung
-modules.todos.description: 'Die zentrale To-Do-Liste dient der Dokumentation der vereinbarten oder notwendigen To-Do''s Ihres Projektes.'
+modules.todos.description: 'Die zentrale To-Do-Liste dient der Dokumentation der vereinbarten oder notwendigen To-Do''s deines Projektes.'
 modules.todos.title: 'TODO''s'
 modules.wbs.description: 'Die Work Breakdown Structure (WBS, dt.: Projektstrukturplan (PSP)) ist eine ergebnisorientierte Aufschlüsselung eines Projektes in kleinere Bestandteile. Ein Projektstrukturplan ist eine Methode, welches die Arbeit der Teams in überschaubare Gruppen / Arbeitspakete aufschlüsselt. Dieses Modul visualisiert das Projekt in einem Strukturbaum, mit den Projektphasen, Arbeitspaketen, Aufgaben und Meilensteinen in den Zweigen. Die Struktur kann im Modul zu Zwecken der Restrukturierung bearbeitet werden.'
 modules.wbs.title: WBS
@@ -1278,7 +1276,7 @@ subtitle.workpackage: 'Liste der Arbeitspakete'
 subtitle.workpackage_category: 'Liste der Arbeitspaketkategorien'
 subtitle.workpackage_status: 'Liste der Arbeitspaketstatus'
 subtitle.wppcwct: 'Liste der Arbeitspaketprojektkostentypen'
-success.account.edit: 'Ihr Account wurde erfolgreich bearbeitet!'
+success.account.edit: 'Dein Account wurde erfolgreich bearbeitet!'
 success.assignment.create: 'Auftrag erfolgreich erstellt!'
 success.assignment.delete.from_data_table: 'Auftrag mit ID'
 success.assignment.delete.from_edit: 'Auftrag erfolgreich gelöscht!'
@@ -1542,7 +1540,7 @@ success.team.edit: 'Team erfolgreich bearbeitet!'
 success.team_member.create: 'Teammitglied erfolgreich erstellt!'
 success.team_member.delete: 'Teammitglied erfolgreich gelöscht!'
 success.team_member.edit: 'Teammitglied erfolgreich bearbeitet!'
-success.team_member.invitation.accepted: 'Herzlichen Glückwunsch! Sie sind jetzt Teil des Teams %team_name%.'
+success.team_member.invitation.accepted: 'Herzlichen Glückwunsch! Du bist jetzt Teil des Teams %team_name%.'
 success.team_member.invite: 'Neue Einladung an Nutzer mit der E-Mail %user_email% gesendet.'
 success.team_member.remove: 'Nutzer %team_member_name% wurde aus dem Team %team_name% entfernt.'
 success.timephase.create: 'Phase erfolgreich erstellt!'
@@ -1814,7 +1812,7 @@ title.communication.list: Mitteilung
 title.company.create: 'Neues Unternehmen erstellen'
 title.company.edit: 'Unternehmen bearbeiten'
 title.company.list: Unternehmen
-title.contact: 'Senden Sie uns eine Nachricht'
+title.contact: 'Schick uns eine Nachricht'
 title.contract.create: 'Vertrag erstellen'
 title.contract.edit: 'Vertrag bearbeiten'
 title.contract.list: Vertrag
@@ -1979,7 +1977,7 @@ title.project_work_cost_type.list: Arbeitskostenart
 title.rasci.create: 'Neue RASCI erstellen'
 title.rasci.edit: 'RASCI bearbeiten'
 title.rasci.list: RASCI
-title.reset: 'Bitte fügen Sie Ihre E-Mail-Adresse ein, um Ihr Passwort zurückzusetzen. Sie werden eine E-Mail mit weiteren Anweisungen erhalten.'
+title.reset: 'Bitte füge deine E-Mail-Adresse ein, um dein Passwort zurückzusetzen. Du wirst eine E-Mail mit weiteren Anweisungen von uns erhalten.'
 title.resource.create: 'Ressource erstellen'
 title.resource.edit: 'Ressource bearbeiten'
 title.resource.list: Ressource
@@ -2069,7 +2067,7 @@ todo_status.ongoing: Fortlaufend
 token.expired: 'Token abgelaufen.'
 token.invalid: 'Ungültiger Token.'
 token.used: 'Token wurde bereits genutzt.'
-unknown_route: 'Ich weiß nicht wo Sie hin wollen'
+unknown_route: 'Ich weiß nicht wohin du willst.'
 message.expired_at: 'Endete am'
 message.all_conditions: 'Alle Zustände'
 message.change_responsible: 'Verantwortlichen ändern'
@@ -2128,6 +2126,7 @@ message.project_strategical_meaning: 'Strategische Bedeutung'
 message.project_strategical_meaning_slider.label.low: gering
 message.project_strategical_meaning_slider.label.medium: Mittel
 message.project_strategical_meaning_slider.label.high: Hoch
+message.project_innovation_degree: Innovationsgrad
 message.project_innovation_degree_slider.label.incremental: inkrementell
 message.project_innovation_degree_slider.label.strategic_innovation: 'Strategische Innovation'
 message.project_innovation_degree_slider.label.radical_innovation: 'Radikale Innovation'
@@ -2147,9 +2146,9 @@ message.create_sponsor: 'Neues Sponsor'
 message.delete_sponsor: 'Sponsor löschen'
 message.edit_sponsor: 'Sponsor bearbeiten'
 title.sponsor: Sponsor
-email.subject.beta.workspace.ready: 'Ihr CAMPR Beta Arbeitsbereich ist nun bereit!'
-email.beta.workspace.message: 'Der folgende Arbeitsbereich für CAMPR Beta ist bereit'
-placeholder.minutes: minuten
+email.subject.beta.workspace.ready: 'Ihr CAMPR Beta-Workspace ist nun bereit!'
+email.beta.workspace.message: 'Der folgende Workspace für CAMPR Beta ist bereit'
+placeholder.minutes: Minuten
 message.toggle_minimap: 'Minikarte umschalten'
 message.accountable: Rechenschaftspflichtig
 message.consulted: Konsultierend
@@ -2157,20 +2156,24 @@ message.support: Unterstützend
 message.informed: Informierend
 label.add_label: 'Label Hinzufügen'
 label.executing: Ausführen
-label.choose.theme: 'Wählen Sie Ihre Darstellung'
+label.choose.theme: 'Wähle deine Darstellung'
+label.theme.dark: Dunkel
+label.theme.light: Hell
 button.save_task: 'Task speichern'
 button.copy_project: 'Projekt kopieren'
 title.copy_project: 'Projekt kopieren'
-email.message.project.cloned: 'Sie können Ihr neues Projekt hier finden'
+message.project.clone.in_progress: 'Wir duplizieren dein Projekt. Einen Moment, bitte.'
+email.subject.user.project.cloned: 'Projekt dupliziert'
+email.message.project.cloned: 'Du kannst dein neues Projekt hier finden'
 email.register.thank_you: 'Vielen Dank für die Registrierung!'
-email.register.change_password: 'Um Ihr Passwort zu ändern, klicken Sie auf Ihr Profil oben rechts gehen zu "Account".'
-email.register.content: 'Besuchen Sie unseren %link_tag_open% Blog %link_tag_close% und folgen Sie unseren Social Media Accounts, um über die neuesten Entwicklungen von CAMPR informiert zu bleiben.'
-email.subject.workspace.ready: 'Ihr CAMPR Arbeitsbereich steht jetzt zur Verfügung!'
-email.workspace.message: 'Ihr Arbeitsbereich steht jetzt zur Verfügung:'
-email.workspace.content: "Sie finden dort drei Projekte unterschiedlicher Größen: Das Firmenjubiläum, die Maschienenverlagerung und das \"Welcome to CAMPR\"-Projekt. Letzteres ist ein Modellprojekt, welhes die Phasen des klassischen Projektmanagementansatzes darstellt. <br/><br/>\nWenn Sie mehr darüber erfahren wollen inwiefern CAMPR sich nach bewährten Projektmanagement-Standards richtet, lesen Sie unseren %link_tag_open% Blogpost %link_tag_close% zu diesem Thema."
-warning.scan_qr_code: 'Nachdem Sie "speichern" geklickt haben wird der QR-Code für die 2-Faktor-Authentifikation erscheinen. Denken Sie daran, dass Sie den QR-Code einzuscannen bevor Sie sich ausloggen, da Sie sich ansonsten nicht wieder einloggen können.'
-message.theme_switcher.light: 'Schalten Sie auf Dunkelheit um'
-message.theme_switcher.dark: 'Auf Licht umschalten'
+email.register.change_password: 'Um dein Passwort zu ändern, klicke erst auf dein Profil oben rechts und dann auf "Account".'
+email.register.content: 'Besuche unseren %link_tag_open% Blog %link_tag_close% und folge unseren Social Media Accounts, um über die neuesten Entwicklungen von CAMPR informiert zu bleiben.'
+email.subject.workspace.ready: 'Dein CAMPR Workspace steht jetzt zur Verfügung!'
+email.workspace.message: 'Dein Workspace steht jetzt zur Verfügung:'
+email.workspace.content: "Du findest dort drei Projekte unterschiedlicher Größen: Das Firmenjubiläum, die Maschienenverlagerung und das \"Welcome to CAMPR\"-Projekt. Letzteres ist ein Modellprojekt, welches die Phasen des klassischen Projektmanagementansatzes darstellt. <br/><br/>\nWenn du mehr darüber erfahren willst inwiefern CAMPR sich nach bewährten Projektmanagement-Standards richtet, lies unseren %link_tag_open% Blogpost %link_tag_close% zu diesem Thema."
+warning.scan_qr_code: 'Nachdem du "speichern" geklickt hast, wird der QR-Code für die 2-Faktor-Authentifikation erscheinen. Denke daran, den QR-Code einzuscannen bevor du dich ausloggst, da du sich ansonsten nicht wieder einloggen kannst.'
+message.theme_switcher.light: 'Dunkles Theme'
+message.theme_switcher.dark: 'Helles Theme'
 message.daily: Täglich
 message.weekly: Wöchentlich
 message.biweekly: Zweiwöchentlich
@@ -2183,9 +2186,182 @@ twitter.tags.title.default: 'C A M P R'
 twitter.tags.description.default: 'CAMPR ist das Werkzeug für fleißige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.'
 facebook.tags.title.default: 'C A M P R'
 facebook.tags.description.default: 'CAMPR ist das Werkzeug für fleißige Leute. Projektmanagement, Teamorganisation, Risikomanagement, Projektmeetings, Gantt-Diagramme, RASCI-Matrix und vieles mehr.'
-facebook.tags.type.default: website
+facebook.tags.type.default: Website
 table_header_cell.has_marketing_consent: 'Marketing-Einwilligung?'
 portal.footer.imprint: Impressum
 portal.footer.status: Status
 portal.footer.copyright: '&copy; %year% Campr. Alle Rechte vorbehalten.'
-message.duplicate: Duplikat
+message.duplicate: Duplizieren
+authentication.account_needs_activation: 'Dieser Account muss noch aktiviert werden. Bitte überprüfen deine E-Mails und folge den Instruktionen zur Account-Aktivierung.'
+portal.page.about.manuel_weiler.about: "                        <p>Hallo, mein Name ist Manuel Weiler und ich arbeite als professioneller Projektmanager mit umfangreicher Erfahrung in Großprojekten im Automobil- und Technologiesektor.</p>\n\n                        <p>Mein Hintergrund als Maschinenbauingenieur bildet die Basis für meine tägliche Arbeit in internationalen und interdisziplinären Projekten. In den vergangenen mehr als zehn Jahren war ich für Kunden in Deutschland, China, Rumänien und den USA tätig.</p>\n\n                        <p>Meine Leidenschaft ist es den Herausforderungen von modernen, hoch-komplexen und multikulturellen Arbeitsumfeldern mit maßgeschneiderten und kreativen Methoden und Werkzeugen zu begegnen. Mein Ziel ist es kontinuierlich die Kommunikation in Projekten zur verbessern und effektiv Risiken im gesamten Projektverlauf zu managen.</p>"
+portal.page.about.title1: 'Ein kraftvolles<br>Projektmanagement<br>Tool'
+portal.page.about.content1: 'CAMPR ist das Tool der Wahl für einen professionellen Projektmanager. Konzipiert für einheitliche Projektplanung und Dokumentation. Der modulare Präsentation aller relevanter Projektmanagement-Methoden erleichtert Ihnen die Einführung eines einheitlichen Projektmanagementstandards in Ihrem Unternehmen. Ob kleine oder große Projekte: wählen Sie nur die Module aus, die zu Ihrem Projekt passen. Fokussieren Sie sich auf Ihr Projekt - den Rest übenrimmt CAMPR.'
+portal.ui.sign_up: Anmeldung
+portal.page.about.partners.funfpunktnull.desc: 'Fünfpunktnull GmbH ist ein Unternehmen spezialisiert auf Usability und Innovation-Studien mit Sitz in Würzburg. Zusammen mit Ihren Kunden erarbeiten Sie Lösungen für die digitalen Herausforderungen von heute und morgen. Ihr Grundsatz ist die Einbeziehung der Nutzer in allen Entwicklungsphasen. Das Team aus funktionsübergreifend ausgebildeten Experten für Mensch-Maschinen-Kommunikation wird optimal ergänzt durch ihr Partner-Netzwerk.'
+portal.page.about.partners.uniwurzburg.desc: 'Der enge Kontakt zum Lehrstuhl für psychologische Ergonomie erlaubt uns regelmäßigen Informationsaustausch über die neuesten wissenschaftlichen Erkenntnisse im Bereich Design und die Auswertung der intuitiven Bedienbarkeit.'
+portal.page.about.partners.zdimainfranken.desc: 'ZDI Mainfranken ist ein Startup-Inkubator mit dem Ziel das Potential für innovative digitale Produkte und Geschäftsideen am Standort Würzburg zu stärken. Ihr Fokus liegt auf der Entwicklungsphase neuer Startups durch Ideengeneration, Prototypenentwicklung und Marktdurchdringungsstrategien. Das ZDI hat ein weites Netz an Partnern in Bayern.'
+portal.page.about.partners.trisoft.desc: 'TRISOFT ist unser Entwicklungspartner für das CAMPR-Tool. Sie sind ein Symfony-orientiertes Softwareentwicklungsunternehmen mit Standort in Rumänien und bieten freundliche, schnelle und qualitativ hochwertige Lösungen.'
+portal.page.try_beta.title: 'Teste CAMPR <b class="warning-color">Beta</b>'
+portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Nutze dieses Registrierungsformular, um CAMPR <b>kostenlos</b>\n                                    in  der<b class=\"warning-color\">BETA-Version</b> zu nutzen. Wir statten dich mit einem Account\n                                    sowie einem Workspace und einigen Beispielprojekten aus, sodass Sie\n                                    CAMPR direkt testen können. Vergessen Sie nicht Ihr Feedback mit Hilfe des<b>User\n                                        Feedback-Buttons</b> in der Menüspalte links abzugeben.\n                                </p>\n                                <p class=\"mt-30\">\n                                    <a href=\"#contact_us\" class=\"simple-link\"><b>Kontaktiere uns</b></a> gern, wenn du Fragen hast.\n                                </p>"
+portal.page.dashboard.content1: 'Sieht so aus als seist du neu hier. Probiere doch'
+portal.page.dashboard.create_new_team: 'ein neues Team zu erstellen'
+portal.page.home.content2: 'Was ist<br>CAMPR'
+portal.page.home.content3: 'CAMPR ist ein Projektmanagement Tool konzipiert für Projekte jedweder Größe. Unsere webbasierte Software ist lean, intuitiv designt und bietet alle Tools für ein erfolgreiches Projektmanagement. Für einen exklusiven ersten Eindruck, registriere dich für unsere BETA!'
+portal.page.home.content4: 'Erstelle deinen<br>Workspace'
+portal.page.home.content5: "                                        <p>\n                                            CAMPR ist in Workspaces organisiert. Diese zentrale Element erlaubt es dir\n                                            deine Multiprojektumgebung zu organisieren, indem du bestimmte Projekte in\n                                            Arbeitsbereichen gruppierst. Du kannst Projektmitglieder in Workspaces einladen\n                                            und mit ihnen in ausgewählten Projekten zusammenarbeiten. So wird es einfach\n                                            deine Projekte nach Kunden, Umfang oder Teilnehmern zu strukturieren.\n                                        </p>\n                                        <p>\n                                            Du kannst außerdem deinen eigenen Workspace erstellen und zeitgleich\n                                            mit dem gleichen Account Mitglied in anderen Workspaces sein.\n                                        </p>\n                                        <p>\n                                            <b>CAMPRs One-Stop-Konzept: ein Account, ein Login, ein persönliches\n                                                Workspace-Dashboard.</b>\n                                        </p>\n"
+portal.page.home.create_your_workspace: 'Erstelle deinen Workspace'
+portal.page.home.content6: Organisiere<br>dein<br>Team
+portal.page.home.content7: "                                        <p>\n                                            Die Projektorganisation bildet die Projektteilnehmer hierarchisch ab.\n                                            Das Modul visualisiert das Projektorganisationsdiagramm\n                                            und definiert die Rollen sowie die Beziehungen zwischen den Projektteams.\n                                            Außerdem können individuelle Verteilerlisten für Projektberichte oder Meetingeinladungen\n                                            erstellt werden.\n                                        </p>\n"
+portal.page.home.all_modules: 'Alle Module'
+portal.page.home.content8: Plane<br>dein<br>Projekt
+portal.page.home.content9: "<p>\n                                            Arbeitspakete können in Phasen gemäß der Projektabschnitte gruppiert werden.\n                                            Besonders wichtige Eregnisse im Projekt werden definiert und\n                                            terminiert als Meilensteine.\n                                        </p>\n"
+portal.page.home.content10: Verwalte<br>deine<br>Aufgaben
+portal.page.home.content12: 'Erfahre mehr über die Idee und das Team hinter <b>CAMPR</b>'
+portal.page.home.content13: "                             <p>Wer steckt hinter CAMPR? Christoph and Manuel reisen als erfahrene Projektmanager \n                                in Ihren Projekten um die Welt. Stets interkulturelle Teams, verschiedene Länder und\n                                Branchen.</p>\n\n                            <p>Doch immer die selbe Herausforderung: kein Tool konnte unsere Anforderungen an das\n                                professionelle managen globaler Projekte erfüllen.</p>\n\n                            <p>Die Lösung ist CAMPR. Konzipiert im Wohnmobil, denn die besten Ideen entstehen\n                                abends am Langerfeuer. Webbasiert, plattformunabhängig, installiert auf\n                                firmeneigenen Servern oder einer deutschen Cloud. Modular.</p>\n\n                            <p>CAMPR - precise Project Management - nothing else!</p>"
+portal.page.imprint.title: Imprint
+portal.page.imprint.address: "CAMPR GmbH\n<br><a href=\"https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g\">Friedrich-Bergius-Ring 15</a>\n<br><a href=\"https://maps.google.com/?q=Friedrich-Bergius-Ring+15+97076+W%C3%BCrzburg&amp;entry=gmail&amp;source=g\">97076 Würzburg</a>\n<br>Tel.: <a href=\"tel:+49%20931%202705814\" value=\"+499312705814\" target=\"_blank\">+49 931 270 5814</a>\n<br>E-Mail: <a href=\"mailto:info@campr.biz\" target=\"_blank\">info@campr.biz</a>\n<br>CEO: Christoph Pohl, Manuel Weiler\n<br>Registered office: Würzburg\n<br>​HRB 13625, Amtsgericht Würzburg"
+portal.page.modules.title: '16 Grundlagenmodule'
+portal.page.modules.subtitle: "Das CAMPR Tool umfasst 16 kostenlose Module, die manuell aktiviert oder auf Basis unseres \"Project Creation Wizard\"-Algorithmus genutzt werden können.\n<span class=\"small-separator\"></span>\n<b class=\"block\">Weitere Premium-Module werden folgen</b>"
+portal.page.modules.project_contract.desc: ' <p>Ziel des Projektvertrages ist es, eine schriftliche Vereinbarung zwischen dem Projektsponsor und Projektmanager. Die Vereinbarung sollte eine kurze Beschreibung der Eckdaten des Projektes, sowie die Nutzung der benötigten Ressourcen für das Vorhaben beinhalten.</p>'
+portal.page.modules.organization.title: Organisation
+portal.page.modules.organization.desc: '<p>Die Projektorganisation listet alle Projektteilnehmer in hierarchischer Ordnung. Dieses Modul visualisiert das Projekt-Organigramm und definiert die Rollen und Beziehungen zwischen den einzelnen Projektteams. Des Weiteren können individuelle Verteilerlisten für Berichte und Meetingeinladungen angelegt werden.</p>'
+portal.page.modules.phases_and_milestones.title: 'Phasen &amp; Meilensteine'
+portal.page.modules.phases_and_milestones.desc: '<p>Arbeitspakete können gemäß der Projektabfolge in Phasen gruppiert werden. Besonders wichtige Ereignisse im Projektfortschritt werden als Meilensteine definiert und terminiert.</p>'
+portal.page.modules.task_management.title: Aufgabenverwaltung
+portal.page.modules.task_management.desc: '<p>Die Aufgabenverwaltung bietet einen Überblick aller Arbeitspakete, die in Verbindung mit dem Projekt stehen. Ein Arbeitspaket ist eine Gruppierung zusammenhängender Aufgaben. Typische Kategorien für gruppierte Aufgaben sind geographische Nähe, technische Disziplin, Technologie oder die Zeit, die für den Abschluss der Aufgabe benötigt wird.</p>'
+portal.page.modules.internal_costs.title: 'Interne Kosten'
+portal.page.modules.internal_costs.desc: '<p>Es ist essentiell, die Projektkosten nicht aus den Augen zu verlieren. Die Kostenplanung erlaubt dir die Kostenkalkulation pro Arbeitspaket und somit auch für das Projekt als Ganzes. Es wird unterschieden zwischen internen und externen Kosten sowie operationalen Kosten und Investment.</p>'
+portal.page.modules.external_costs.title: 'Externe Kosten'
+portal.page.modules.external_costs.desc: '<p>Die Ressourcenplanung erlaubt dir die Kalkulation des benötigten Personalaufkommens für deine Arbeitspakete.</p>'
+portal.page.modules.risks_and_opportunities.title: 'Risiken &amp; Chancen'
+portal.page.modules.risks_and_opportunities.desc: '<p>Eine regelmäßige Risikoanalyse ist essentiell, um potentielle Gefährdungen, sowie ungenutze Potentiale zu entdecken und somit den Projekterfolg zu maximieren. Dieses Modul unterstützt dich beim Sammeln, Strukturieren, Tracken und Visualisieren der Risiken und Chancen.</p>'
+portal.page.modules.gantt.title: 'Gantt Diagramm'
+portal.page.modules.gantt.desc: '<p>Das Gantt-Diagramm ist eine Standardvidualisierung aller Phasen, Arbeitspakete, Aufgaben und Meilensteine auf einer Zeitschiene bezüglich der geplanten Projektausführung. Alle Elemente haben einen zugehörigen Start- und Enddatum und werden als einzelne Balken auf der Zeitachse dargestellt. Korrelationen zwischen diesen Elementen, etwa Vorgänger- oder Nachfolgeraufgabe, können definiert und somit dargestellt werden.</p>'
+portal.page.modules.rasci.title: RASCI-Matrix
+portal.page.modules.rasci.desc: "<p>Die Verantwortlichkeitsmatrix stellt die Rollenverteilung bei der Erledigung der Aufgaben oder Leistungen zur Projektausführung dar. Es ist besonders nützlich zur Klarstellung der Rollen und Verantwortlichkeiten in funktionsübergreifenden Projekten und Prozessen.</p>\n<p>RASCI ist ein Akronym, welches die fünf Rollen der Prozessausführung eines Arbeitspaketes oder einer Aufgabe beinhaltet: Responsible, Accountable, Supportable, Consulted, und Informed.</p>"
+portal.page.modules.wbs.title: WBS
+portal.page.modules.wbs.desc: '<p>Die Work Breakdown Structure (WBS) ist ein ergebnisorientierte Aufschlüsselung in kleinere Komponenten. Eine WBS ist eine Schlüsselfunktion, um die Arbeit des Projektteams in überschaubare Sektionen zu teilen. Das Module visualisiert den Breakdown in einer Baumstruktur, beginnend mit den Projektphasen und Arbeitspaketen, Aufgaben und Meilensteinen in den Zweigen. Die Struktur kann innerhalb des Moduls zu Restrukturierungszwecken angepasst werden.</p>'
+portal.page.modules.meetings.title: Meetings
+portal.page.modules.meetings.desc: '<p>CAMPR erleichtert dir die Koordination von Meetings mit Projektteilnehmern. Du kannst Meetings planen, erstellen und Einladungen verschicken. Nutze individuelle Verteilerlisten, um das Meetingprotokoll an alle relevanten Meetingteilnehmer zu verschicken.</p>'
+portal.page.modules.todos.title: 'To-Do''s'
+portal.page.modules.todos.desc: '<p>Die zentrale To-Do-Liste führt die vereinbarten oder notwendigen To-Do''s deines Projektes auf.</p>'
+portal.page.modules.infos.title: Infos
+portal.page.modules.infos.desc: '<p>Im Info-Modul kannst du allgemeine Informationen, die dein Projekt oder Team betreffen, dokumentieren. Die Informationen können beispielsweise die Änderungen des Projektumfanges, neue Projektmitglieder oder andere neue Ereignisse sein.</p>'
+portal.page.modules.decisions.title: Entscheidungen
+portal.page.modules.decisions.desc: '<p>Im Entscheidungsmodul kannst du Entscheidungen, die während der Projektdurchführung getroffen wurden, dokumentieren. </p>'
+portal.page.modules.status_report.title: Statusreport
+portal.page.modules.status_report.desc: '<p>Der Statusbericht liefert einen Überblick des aktuellen Projektzustandes bezüglich Services, Deadlines, Ressourcen, Kosten, Organisation und Kontext sowie der geplanten Maßnahmen für notwendige Entscheidungen. </p>'
+portal.page.modules.close_down_report.title: Abschlussbericht
+portal.page.modules.content1: 'CAMPR<br>ist für<br>jedermann'
+portal.page.modules.content2: '<p class="mt-60">Wir haben ein Tool geschaffen, das von jedem Projektmanager genutzt werden kann - vom Novizen bis Experten. Die <b>KOSTENLOSE</b> Version ist vorgesehen für Nutzer, die CAMPR testen wollen oder in kleinen Teams arbeiten (bis zu 4 Nutzer). <b>Schulen</b>, <b>Universitäten</b> und <b>Wohltätigkeitsorganisationen</b> können sogar die Vollversion von CAMPR <b>KOSTENLOS</b> nutzen. Alles, was du dafür tun musst, ist, uns zu <a href="%link%" class="simple-link"><b>kontaktieren</b></a></p>.'
+portal.ui.sign_up_now: 'Jetzt Registrieren'
+portal.ui.features: Features
+email.contact.body: "<p>Hallo,</p>\n<p>Folgende Nachricht wurde durch das Kontaktformular gesendet.</p>\n<p>Email: %email%</p>\n<p>Name: %fullname%</p>\n<p>Nachricht:</p>\n<p>%message%</p>"
+portal.ui.project_duration: 'Project Duration'
+portal.ui.months: Months
+portal.ui.project_budget: 'Project Budget'
+portal.page.register.content18: "Wenn du CAMPR auf firmeneigenen Servern installieren willst, kontaktiere uns und wir werden dir die benötigten Informationen zur Verfügung stellen.\nAnsonsten kannst du das Formular ausfüllen und wir liefern dir <b>das ideale Lizenzmodell für dein Projekt</b>."
+portal.page.register.content24: 'und einer Projektlaufzeit unter'
+portal.page.register.content25: "<p class=\"mt-30\">\n    Eines unserer Hauptziele ist es, Menschen im Bereich Projekmanagement weiterzubilden und Studenten, jungen Existenzgründern und jeder Art von Wohltätigkeitsorganisation dabei zu helfen, Ihre Managementfähigkeiten zu verbessern. Wir bieten allen <b>Schulen</b>, <b>Universitäten</b> oder <b>Wohltätigkeitsorganisationen</b>, die CAMPR gebrauchen können, an, unsere Software kostenlos zu Nutzen. <b>Alles, was du dafür tun musst, ist, uns zu kontaktieren.</b>\n</p>"
+portal.nav.home.label: Home
+portal.nav.modules.label: Module
+portal.nav.services.label: Services
+portal.nav.about.label: 'Über uns'
+portal.nav.blog.label: Blog
+portal.nav.register.label: Preisinformationen
+portal.nav.try_beta.label: Beta
+portal.page.register.title: 'Jetzt CAMPR nutzen'
+portal.ui.project_type: Projektart
+portal.page.register.content3: '(based on the number of users)'
+portal.ui.start_up: Start-Up
+portal.page.register.content4: 'Auf 4 Nutzer limitiert'
+portal.ui.user_based: 'User Based'
+portal.page.register.content5: 'Monthly subscription.'
+portal.page.register.content6: 'Unlimited number of projects.'
+portal.page.register.content7: 'One time purchase.'
+portal.page.register.content8: 'Unlimited number of projects.'
+portal.ui.free: Free
+portal.ui.user: user
+portal.ui.month: month
+portal.ui.yes: 'Yes'
+portal.ui.technical_support: 'Technical support'
+portal.ui.new_modules: 'New modules'
+portal.page.register.content9: '(additional costs may apply)'
+portal.ui.additional_services: 'Additional services'
+portal.page.register.content10: '(additional costs may apply)'
+portal.ui.free_webinars: 'Free webinars'
+portal.page.register.content11: 'Collaborative work environment in Real-Time'
+portal.page.register.content12: 'Program update / Bug fixing'
+portal.page.register.content13: 'New program releases'
+portal.page.register.content14: 'Video tutorials'
+portal.page.register.content15: 'Data stored on CAMPR Cloud Servers'
+portal.page.register.content16: '(stored on CAMPR Cloud Servers in Germany )'
+portal.page.register.vat_excluded: '* all prices excl. VAT'
+portal.page.register.content17: 'Sign Up Wizard'
+portal.page.register.content19: 'I want cloud hosted CAMPR'
+portal.page.register.content20: 'I want CAMPR on premise'
+portal.ui.number_of_projects: 'Number of Projects'
+portal.page.register.content21: 'Maximum No. of Members / Project'
+portal.ui.average_project_duration: 'Average Project Duration'
+portal.page.register.content22: 'We recommend:'
+portal.ui.project_based: projektbasierend
+portal.page.register.content23: 'Für mehr als'
+portal.ui.members: Mitglieder
+portal.ui.project: Projekt
+portal.page.register.content26: 'CAMPR jetzt KOSTENLOS nutzen'
+portal.ui.title: Titel
+portal.ui.name: Name
+portal.ui.email: Email
+portal.ui.send: Senden
+portal.ui.mr: Mr.
+portal.ui.mrs: Mrs.
+portal.ui.miss: Miss
+portal.ui.ms: Ms.
+portal.ui.dr: Dr.
+portal.ui.prof: Prof.
+portal.form.contact_us.title: 'Kontaktiere uns'
+portal.form.contact_us.desc: 'Kontaktiere uns, wenn du CAMPR nutzen willst.'
+portal.form.contact_us.label.message: 'Nachricht: '
+portal.form.contact_us.label.email: Email
+portal.form.contact_us.label.name: Name
+portal.form.contact_us.button.send: Senden
+portal.ui.view_prices: 'Preise anzeigen'
+portal.ui.contact_us: 'Kontaktiere uns'
+portal.ui.read_more: 'Mehr Lesen'
+portal.page.home.start_managing: 'Hier Registrieren'
+portal.ui.founder: Gründer
+portal.ui.more: Mehr
+portal.page.home.sign_up_for_campr: 'Registriere dich für CAMPR'
+portal.page.home.content15: 'Als professioneller Projektmanager, zertifiziert nach PMI, verfüge ich über mehr als ein Jahrzehnt an Erfahrung in internationalen Großprojekten in Automobil- und Technologieunternehmen...'
+portal.page.modules.project_contract.title: Projektvertrag
+portal.page.modules.content4: 'Monthly subscription.'
+portal.page.modules.content5: 'Unlimited number of projects.'
+portal.page.modules.content6: 'One time purchase.'
+portal.page.modules.content7: 'Unbegrenzte Projektlaufzeit'
+portal.page.modules.content3: 'Limitiert auf 4 Nutzer'
+portal.ui.users: Nutzer
+portal.page.services.title: 'CAMPR Services'
+portal.page.services.subtitle: 'CAMPR Projektmanagement-Portal'
+portal.page.services.consulting.title: 'CAMPR Consulting'
+portal.page.services.customizing.title: 'CAMPR Customizing'
+portal.ui.years_old: 'Jahre alt'
+portal.ui.projects_managed: 'Projekte geleitet'
+portal.ui.completed_tasks: 'Abgeschlossene Aufgaben'
+portal.ui.happy_clients: 'Glückliche Kunden'
+portal.page.about.title: 'Wir sind CAMPR'
+portal.page.about.partners.title: Partner
+portal.ui.payment_plans: Lizenzmodell
+porta.ui.click_here_to_go_back: 'Klicke hier, um zurückzugehen.'
+portal.ui.click_here_to_login: 'Klicke hier, um dich einzuloggen.'
+portal.message.are_you_sure: 'Bist du dir sicher?'
+portal.page.home.content1: 'CAMPR befindet sich derzeit in'
+portal.ui.beta: Beta
+port.ui.founder: Gründer
+portal.page.register.content2: 'durch die Tabelle scrollen, um den Rest zu sehen'
+success.contact.message.not_sent: 'Nachricht nicht gesendet'
+portal.page.try_beta.form.label.industry_branch: Branche
+portal.page.try_beta.form.label.marketing_consent: 'Ich stimme zu Marketingbenachrichtigungen zu erhalten.'
+portal.page.try_beta.form.label.i_agree_to: 'Ich akzeptiere die'
+portal.page.try_beta.form.label.terms_and_conditions: AGB
+portal.page.try_beta.form.button.send: Senden
+message.department_member: 'Mitglied der Abteilung'

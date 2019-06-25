@@ -36,3 +36,8 @@ _bazinga_jstranslation:
 
 translation:
     resource: "@TranslationBundle/Resources/config/routing_symfony_profiler.yml"
+
+app_uploader_url:
+    path: '{path}'
+    requirements:
+        path: .+

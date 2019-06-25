@@ -13,6 +13,7 @@ services:
             - '%portal.api.host%'
             - '@monolog.logger.portal'
             - '%portal.webhook.secret%'
+            - '@app.repository.user'
 
     portal.client.http.workspace_invite:
         class: PortalBundle\Client\Http\WorkspaceInviteClient
@@ -54,6 +55,8 @@ services:
             - '@redis.client'
             - '@monolog.logger.portal'
             - '%beta.db.snapshot%'
+            - '@portal.client.http.workspace'
+            - '@app.user.context'
         tags:
             - { name: kernel.event_subscriber }
 

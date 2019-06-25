@@ -3,7 +3,7 @@
 namespace Component\Team\Context;
 
 use AppBundle\Entity\Team;
-use AppBundle\Repository\TeamRepository;
+use Component\Repository\RepositoryInterface;
 
 class TeamContext implements TeamContextInterface
 {
@@ -13,17 +13,17 @@ class TeamContext implements TeamContextInterface
     private $slug;
 
     /**
-     * @var TeamRepository
+     * @var RepositoryInterface
      */
     private $teamRepository;
 
     /**
      * TeamContext constructor.
      *
-     * @param string         $slug
-     * @param TeamRepository $teamRepository
+     * @param string              $slug
+     * @param RepositoryInterface $teamRepository
      */
-    public function __construct(string $slug, TeamRepository $teamRepository)
+    public function __construct(string $slug, RepositoryInterface $teamRepository)
     {
         $this->slug = $slug;
         $this->teamRepository = $teamRepository;
@@ -39,10 +39,7 @@ class TeamContext implements TeamContextInterface
             return null;
         }
 
-        /** @var Team $team */
-        $team = $this->teamRepository->findOneBy(['slug' => $slug]);
-
-        return $team;
+        return $this->getTeamBySlug($slug);
     }
 
     /**
@@ -51,5 +48,18 @@ class TeamContext implements TeamContextInterface
     public function getCurrentSlug(): string
     {
         return (string) $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return Team|null
+     */
+    private function getTeamBySlug(string $slug)
+    {
+        /** @var Team $team */
+        $team = $this->teamRepository->findOneBy(['slug' => $slug]);
+
+        return $team;
     }
 }
