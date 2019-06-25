@@ -19,6 +19,7 @@ class LoadProjectStatusData extends AbstractFixture implements OrderedFixtureInt
     {
         for ($i = 1; $i <= 2; ++$i) {
             $projectStatus = new ProjectStatus();
+            $projectStatus->setCode('project-status'.$i);
             $projectStatus->setName('project-status'.$i);
             $projectStatus->setSequence($i);
             $projectStatus->setCreatedAt(new \DateTime('2017-01-01 12:00:00'));

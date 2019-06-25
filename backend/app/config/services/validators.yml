@@ -24,3 +24,10 @@ services:
         class: AppBundle\Validator\Constraints\WorkPackageAssignmentsValidator
         tags:
             - { name: validator.constraint_validator }
+
+    app.validators.sequence:
+        class: AppBundle\Validator\Constraints\SequenceValidator
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator }
