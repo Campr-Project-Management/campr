@@ -164,7 +164,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
      * @var string
      *
      * @Serializer\Exclude()
-     *
      * @ORM\Column(name="encryption_key", type="string", length=128, nullable=true)
      */
     private $encryptionKey;

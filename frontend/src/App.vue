@@ -29,11 +29,13 @@
             ...mapActions([
                 'getUserInfo',
                 'syncUser',
+                'syncTeam',
             ]),
         },
         created() {
             this.getUserInfo();
             this.syncUser();
+            this.syncTeam();
         },
         computed: {
             ...mapGetters([

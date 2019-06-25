@@ -4,12 +4,15 @@ namespace PortalBundle\Client\Http;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
+use Component\Repository\RepositoryInterface;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 class WorkspaceClient
 {
+    const SHOW_ENDPOINT = '/api/workspaces/{slug}';
+
     const CHECK_ENABLED_ENDPOINT = '/api/workspaces/{slug}/check-enabled';
 
     const CREATED_WEBHOOK_ENDPOINT = '/webhook/workspaces/{uuid}/created';
@@ -33,21 +36,32 @@ class WorkspaceClient
      * @var string
      */
     private $webhookSecret;
+    /**
+     * @var RepositoryInterface
+     */
+    private $userRepository;
 
     /**
      * WorkspaceClient constructor.
      *
-     * @param Client          $client
-     * @param string          $host
-     * @param LoggerInterface $logger
-     * @param string          $webhookSecret
+     * @param Client              $client
+     * @param string              $host
+     * @param LoggerInterface     $logger
+     * @param string              $webhookSecret
+     * @param RepositoryInterface $userRepository
      */
-    public function __construct(Client $client, string $host, LoggerInterface $logger, string $webhookSecret)
-    {
+    public function __construct(
+        Client $client,
+        string $host,
+        LoggerInterface $logger,
+        string $webhookSecret,
+        RepositoryInterface $userRepository
+    ) {
         $this->host = $host;
         $this->client = $client;
         $this->logger = $logger;
         $this->webhookSecret = $webhookSecret;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -99,9 +113,9 @@ class WorkspaceClient
     /**
      * @param Team $team
      *
-     * @return bool
-     *
      * @throws \Exception
+     *
+     * @return bool
      */
     public function createdWebhook(Team $team): bool
     {
@@ -135,5 +149,64 @@ class WorkspaceClient
 
             throw $e;
         }
+    }
+
+    /**
+     * @param Team $team
+     * @param User $user
+     *
+     * @return Team
+     */
+    public function get(Team $team, User $user): Team
+    {
+        $url = strtr(self::SHOW_ENDPOINT, ['{slug}' => $team->getSlug()]);
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer '.$user->getApiToken(),
+                'Host' => $this->host,
+            ],
+        ];
+
+        $response = $this->client->get($url, $options);
+
+        $data = $response->getBody()->getContents();
+
+        $this->logger->info(
+            'Workspace::get',
+            [
+                'url' => $url,
+                'options' => $options,
+                'response' => $data,
+            ]
+        );
+
+        $data = json_decode($data, true);
+
+        $team->setUuid($data['uuid']);
+        $team->setName($data['name']);
+        $team->setSlug($data['slug']);
+        $team->setDescription($data['slug']);
+        $team->setEnabled($data['enabled']);
+        $team->setLogoUrl($data['logoUrl']);
+        $team->setCreatedAt(\DateTime::createFromFormat('Y-m-d H:i:s', $data['createdAt']));
+        $team->setUpdatedAt(\DateTime::createFromFormat('Y-m-d H:i:s', $data['updatedAt']));
+
+        $user = $this->getUserByUsername($data['userUsername']);
+        $team->setUser($user);
+
+        return $team;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return User
+     */
+    private function getUserByUsername(string $username): User
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy(['username' => $username]);
+
+        return $user;
     }
 }
