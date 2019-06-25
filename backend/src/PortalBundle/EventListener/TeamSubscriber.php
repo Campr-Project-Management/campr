@@ -6,6 +6,8 @@ use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Model\BetaTeam;
 use AppBundle\Entity\Team;
 use Component\Team\TeamEvents;
+use Component\User\Context\UserContext;
+use PortalBundle\Client\Http\WorkspaceClient;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,19 +36,39 @@ class TeamSubscriber implements EventSubscriberInterface
     private $betaDbPath;
 
     /**
+     * @var WorkspaceClient
+     */
+    private $workspaceClient;
+
+    /**
+     * @var UserContext
+     */
+    private $userContext;
+
+    /**
      * TeamSubscriber constructor.
      *
      * @param                 $env
      * @param Client          $redis
      * @param LoggerInterface $logger
      * @param string          $betaDbPath
+     * @param WorkspaceClient $workspaceClient
+     * @param UserContext     $userContext
      */
-    public function __construct($env, Client $redis, LoggerInterface $logger, $betaDbPath)
-    {
+    public function __construct(
+        $env,
+        Client $redis,
+        LoggerInterface $logger,
+        $betaDbPath,
+        WorkspaceClient $workspaceClient,
+        UserContext $userContext
+    ) {
         $this->env = $env;
         $this->redis = $redis;
         $this->logger = $logger;
         $this->betaDbPath = $betaDbPath;
+        $this->workspaceClient = $workspaceClient;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -55,6 +77,7 @@ class TeamSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
+            TeamEvents::SYNC => 'onSync',
             TeamEvents::POST_CREATE => 'onTeamPostCreate',
             TeamEvents::BETA_POST_CREATE => 'onBetaTeamPostCreate',
             TeamEvents::POST_RESTORE => 'onTeamPostRestore',
@@ -250,5 +273,19 @@ class TeamSubscriber implements EventSubscriberInterface
         );
 
         $this->logger->info('Commands to restore team successfully sent', ['slug' => $team->getSlug()]);
+    }
+
+    /**
+     * @param GenericEvent $event
+     */
+    public function onSync(GenericEvent $event)
+    {
+        /** @var Team $team */
+        $team = $event->getSubject();
+        if (!($team instanceof Team)) {
+            return;
+        }
+
+        $this->workspaceClient->get($team, $this->userContext->getUser());
     }
 }

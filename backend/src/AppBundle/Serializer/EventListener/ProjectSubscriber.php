@@ -2,6 +2,7 @@
 
 namespace AppBundle\Serializer\EventListener;
 
+use Component\Uploader\Resolver\UrlResolverInterface;
 use AppBundle\Entity\Project;
 use Component\Cost\Calculator\ProjectTotalCostCalculatorInterface;
 use Component\Project\Calculator\DateRangeCalculatorInterface;
@@ -39,6 +40,11 @@ class ProjectSubscriber implements EventSubscriberInterface
     private $progressCalculator;
 
     /**
+     * @var UrlResolverInterface
+     */
+    private $logoUrlResolver;
+
+    /**
      * ProjectSubscriber constructor.
      *
      * @param DateRangeCalculatorInterface        $scheduledDatesCalculator
@@ -46,19 +52,22 @@ class ProjectSubscriber implements EventSubscriberInterface
      * @param DateRangeCalculatorInterface        $actualDatesCalculator
      * @param ProjectTotalCostCalculatorInterface $projectTotalCostCalculator
      * @param ProjectProgressCalculatorInterface  $progressCalculator
+     * @param UrlResolverInterface                $logoUrlResolver
      */
     public function __construct(
         DateRangeCalculatorInterface $scheduledDatesCalculator,
         DateRangeCalculatorInterface $forecastDatesCalculator,
         DateRangeCalculatorInterface $actualDatesCalculator,
         ProjectTotalCostCalculatorInterface $projectTotalCostCalculator,
-        ProjectProgressCalculatorInterface $progressCalculator
+        ProjectProgressCalculatorInterface $progressCalculator,
+        UrlResolverInterface $logoUrlResolver
     ) {
         $this->scheduledDatesCalculator = $scheduledDatesCalculator;
         $this->forecastDatesCalculator = $forecastDatesCalculator;
         $this->actualDatesCalculator = $actualDatesCalculator;
         $this->projectTotalCostCalculator = $projectTotalCostCalculator;
         $this->progressCalculator = $progressCalculator;
+        $this->logoUrlResolver = $logoUrlResolver;
     }
 
     /**
@@ -89,6 +98,7 @@ class ProjectSubscriber implements EventSubscriberInterface
         $this->addDates($visitor, $project);
         $this->addCostProgress($visitor, $project);
         $this->addProgress($visitor, $project);
+        $this->addLogoUrl($visitor, $project);
     }
 
     /**
@@ -116,7 +126,7 @@ class ProjectSubscriber implements EventSubscriberInterface
     /**
      * @param \DateTime|null $date
      *
-     * @return null|string
+     * @return string|null
      */
     private function dateToString(\DateTime $date = null)
     {
@@ -145,5 +155,15 @@ class ProjectSubscriber implements EventSubscriberInterface
     private function addProgress(GenericSerializationVisitor $visitor, Project $project)
     {
         $visitor->setData('progress', $this->progressCalculator->calculate($project));
+    }
+
+    /**
+     * @param GenericSerializationVisitor $visitor
+     * @param Project                     $project
+     */
+    private function addLogoUrl(GenericSerializationVisitor $visitor, Project $project)
+    {
+        $logo = $this->logoUrlResolver->resolve($project);
+        $visitor->setData('logoUrl', $logo);
     }
 }

@@ -13,8 +13,9 @@
 
     @media print {
         @page {
-            margin: 0px;
+            margin: 0;
             padding: 0px;
+            size: A4;
         }
         body {
             margin: 0px;

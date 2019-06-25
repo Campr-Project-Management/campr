@@ -2,6 +2,7 @@
 
 namespace PortalBundle\Controller;
 
+use AppBundle\Entity\Team;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\TeamInvite;
@@ -10,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Webmozart\Assert\Assert;
 
 class SecurityController extends Controller
 {
@@ -93,84 +95,38 @@ class SecurityController extends Controller
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $user = $this->createOrUpdateUserFromToken($userData);
+        $this->get('app.repository.user')->add($user);
 
-        $user = $em->getRepository(User::class)->findOneBy(
-            [
-                'email' => $userData['email'],
-            ]
-        );
-
-        if (!$user) {
-            $em
-                ->getRepository(User::class)
-                ->setRandomApiTokenIfEmailDoesNotMatch($userData['email'], $userData['apiToken'])
-            ;
-            $em
-                ->getRepository(User::class)
-                ->setRandomUUIDIfEmailDoesNotMatch($userData['email'], $userData['uuid'])
-            ;
+        $teamData = (array) $token->getClaim('workspace');
+        if (!empty($teamData)) {
+            $team = $this->createOrUpdateTeamFromToken($teamData);
+            $this->get('app.repository.team')->add($team);
         }
 
-        if (!count($userData['roles'])) {
-            throw $this->createAccessDeniedException();
-        }
-
-        if (!$user) {
-            $user = new User();
-            $user->setEmail($userData['email']);
-            $user->setActivatedAt(new \DateTime());
-            $user->setEnabled(true);
-            $user->setSuspended(false);
-        }
-
-        $user->setUsername($userData['username']);
-        $user->setPlainPassword(microtime(true));
-        $user->setFirstName($userData['firstName']);
-        $user->setLastName($userData['lastName']);
-        $user->setPhone($userData['phone'] ?? null);
-        $user->setRoles($userData['roles'] ?? null);
-        $user->setApiToken($userData['apiToken']);
-        $user->setWidgetSettings($userData['widgetSettings'] ?? []);
-        $user->setFacebook($userData['facebook'] ?? null);
-        $user->setTwitter($userData['twitter'] ?? null);
-        $user->setInstagram($userData['instagram'] ?? null);
-        $user->setGplus($userData['gplus'] ?? null);
-        $user->setLinkedIn($userData['linkedIn'] ?? null);
-        $user->setMedium($userData['medium'] ?? null);
-        $user->setLocale($userData['locale']);
-        $user->setUuid($userData['uuid']);
-        $user->setAvatarUrl($userData['avatarUrl'] ?? null);
-        $user->setTheme($userData['theme']);
-
-        $em->persist($user);
-        $em->flush();
+        $teamInviteRepository = $this->get('app.repository.team_invite');
+        $projectUserRepository = $this->get('app.repository.project_user');
 
         /** @var TeamInvite[] $teamInvites */
-        $teamInvites = $em
-            ->getRepository(TeamInvite::class)
-            ->findPendingInvitesForUser($user);
+        $teamInvites = $teamInviteRepository->findPendingInvitesForUser($user);
 
         foreach ($teamInvites as $teamInvite) {
             $teamInvite->setUser($user);
             $teamInvite->setAcceptedAt(new \DateTime());
-            $em->persist($teamInvite);
+            $teamInviteRepository->add($teamInvite);
 
-            $projectUser = $em
-                ->getRepository(ProjectUser::class)
-                ->findOneBy(
-                    [
-                        'user' => $user,
-                        'project' => $teamInvite->getProject(),
-                    ]
-                );
+            $projectUser = $projectUserRepository->findOneBy(
+                [
+                    'user' => $user,
+                    'project' => $teamInvite->getProject(),
+                ]
+            );
             if (!$projectUser) {
                 $projectUser = new ProjectUser();
                 $projectUser->setUser($user);
                 $projectUser->setProject($teamInvite->getProject());
-                $em->persist($projectUser);
+                $projectUserRepository->add($projectUser);
             }
-            $em->flush();
         }
 
         $this->ensureTeamEnabled($user);
@@ -185,6 +141,86 @@ class SecurityController extends Controller
         $this->get('security.token_storage')->setToken($upt);
 
         return $this->redirectToRoute($routeToRedirectTo, ['subdomain' => $request->attributes->get('subdomain')]);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @throws \Exception
+     *
+     * @return User
+     */
+    private function createOrUpdateUserFromToken(array $data): User
+    {
+        $repository = $this->get('app.repository.user');
+        $user = $repository->findOneBy(['email' => $data['email']]);
+
+        if (!$user) {
+            $repository->setRandomApiTokenIfEmailDoesNotMatch($data['email'], $data['apiToken']);
+            $repository->setRandomUUIDIfEmailDoesNotMatch($data['email'], $data['uuid']);
+        }
+
+        if (!count($data['roles'])) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$user) {
+            $user = new User();
+            $user->setEmail($data['email']);
+            $user->setActivatedAt(new \DateTime());
+            $user->setEnabled(true);
+            $user->setSuspended(false);
+        }
+
+        $user->setUsername($data['username']);
+        $user->setPlainPassword(microtime(true));
+        $user->setFirstName($data['firstName']);
+        $user->setLastName($data['lastName']);
+        $user->setPhone($data['phone'] ?? null);
+        $user->setRoles($data['roles'] ?? null);
+        $user->setApiToken($data['apiToken']);
+        $user->setWidgetSettings($data['widgetSettings'] ?? []);
+        $user->setFacebook($data['facebook'] ?? null);
+        $user->setTwitter($data['twitter'] ?? null);
+        $user->setInstagram($data['instagram'] ?? null);
+        $user->setGplus($data['gplus'] ?? null);
+        $user->setLinkedIn($data['linkedIn'] ?? null);
+        $user->setMedium($data['medium'] ?? null);
+        $user->setLocale($data['locale']);
+        $user->setUuid($data['uuid']);
+        $user->setAvatarUrl($data['avatarUrl'] ?? null);
+        $user->setTheme($data['theme']);
+
+        return $user;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Team
+     */
+    private function createOrUpdateTeamFromToken(array $data): Team
+    {
+        Assert::notEmpty($data, 'No workspace data');
+
+        /** @var Team $team */
+        $team = $this->get('app.repository.team')->findOneBy(['slug' => $data['slug']]);
+        if (!$team) {
+            $team = new Team();
+            $team->setUuid($data['uuid']);
+        }
+
+        $team->setName($data['name']);
+        $team->setLogoUrl($data['logoUrl'] ?? null);
+        $team->setDescription($data['description'] ?? null);
+
+        /** @var User $user */
+        $user = $this->get('app.repository.user')->findOneBy(['email' => $data['userUsername']]);
+        if ($user) {
+            $team->setUser($user);
+        }
+
+        return $team;
     }
 
     /**
