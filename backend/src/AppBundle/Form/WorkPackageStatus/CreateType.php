@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -75,6 +77,16 @@ class CreateType extends AbstractType
                 ]
             )
             ->add('visible', CheckboxType::class)
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $data = $event->getData();
+                    if (isset($data['name']) && !isset($data['code'])) {
+                        $data['code'] = $data['name'];
+                    }
+                    $event->setData($data);
+                }
+            )
         ;
     }
 
