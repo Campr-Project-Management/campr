@@ -1,0 +1,8 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% block subject %}{{ 'email.subject.task.edit'|trans({'%project_name%': project_name, '%task_name%': task_name})|raw }}{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.message.task.edit'|trans({'%task_responsible%': task_responsible, '%former_task_responsibility%': former_task_responsibility})|raw }}</p>
+    <a class="button" href="{{ url('app_homepage') }}/#/projects/{{ project_id }}/task-management/view/{{ task_id }}">{{ 'email.button.task.profile'|trans|raw }}</a>
+{% endblock %}

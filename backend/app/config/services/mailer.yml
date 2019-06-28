@@ -18,6 +18,12 @@ services:
             -
                 activation_token_expiration_number: '%activation_token_expiration_number%'
 
+    app.service.workpackage_mailer:
+        class: AppBundle\Services\WorkPackageMailerService
+        arguments:
+            - "@app.service.mailer"
+            - '@app.user.context'
+
     app.service.automailer.plugin.redis:
         class: AppBundle\Services\AutomailerRedisPlugin
         public: false
