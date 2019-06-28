@@ -3,10 +3,12 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Command\RedisQueueManagerCommand;
+use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\WorkPackageEvent;
 use AppBundle\Repository\WorkPackageStatusRepository;
+use AppBundle\Services\WorkPackageMailerService;
 use AppBundle\Services\WorkPackageRasciSync;
 use Component\Repository\RepositoryInterface;
 use Component\WorkPackage\WorkPackageEvents;
@@ -53,12 +55,18 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     private $env;
 
     /**
+     * @var WorkPackageMailerService
+     */
+    private $mailer;
+
+    /**
      * WorkPackageSubscriber constructor.
      *
      * @param WorkPackageRasciSync        $workPackageRasciSync
      * @param RepositoryInterface         $workPackageRepository
      * @param WorkPackageStatusRepository $workPackageStatusRepository
      * @param EventDispatcherInterface    $eventDispatcher
+     * @param WorkPackageMailerService    $mailer
      * @param EntityManager               $em
      * @param Client                      $redis
      * @param string                      $env
@@ -68,6 +76,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         RepositoryInterface $workPackageRepository,
         WorkPackageStatusRepository $workPackageStatusRepository,
         EventDispatcherInterface $eventDispatcher,
+        WorkPackageMailerService $mailer,
         EntityManager $em,
         Client $redis,
         string $env
@@ -77,6 +86,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->workPackageStatusRepository = $workPackageStatusRepository;
         $this->redis = $redis;
+        $this->mailer = $mailer;
         $this->env = $env;
         $this->em = $em;
     }
@@ -107,6 +117,10 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $this->ensureWorkPackageHasStatus($wp);
         foreach ($wp->getChildren() as $child) {
             $this->ensureWorkPackageHasStatus($child);
+        }
+
+        if (!$wp->isSubtask()) {
+            $this->mailer->sendNewTaskEmail($wp);
         }
 
         $this->setWorkPackageChildrenSchedule($wp);
@@ -149,6 +163,31 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         foreach ($wp->getChildren() as $child) {
             $this->ensureWorkPackageHasStatus($child);
         }
+
+        $oldResponsibility = $this->getOldResponsibility($wp);
+        if (
+            $oldResponsibility
+            && $oldResponsibility !== $wp->getResponsibility()
+            && !$wp->isSubtask()
+        ) {
+            $this->mailer->sendTaskResponsibilityChangedEmail(
+                $wp,
+                $oldResponsibility
+            );
+        }
+    }
+
+    /**
+     * @param WorkPackage $wp
+     *
+     * @return User|null
+     */
+    private function getOldResponsibility(WorkPackage $wp)
+    {
+        $uok = $this->em->getUnitOfWork();
+        $data = $uok->getOriginalEntityData($wp);
+
+        return $data['responsibility'] ?? null;
     }
 
     /**
