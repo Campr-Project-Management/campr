@@ -2986,6 +2986,7 @@ class ProjectControllerTest extends BaseController
             $responseContent['id'] = $actual['id'];
             $responseContent['puid'] = $actual['puid'];
             $responseContent['createdAt'] = $actual['createdAt'];
+            $responseContent['createdBy'] = $actual['createdBy'];
 
             $this->assertEquals(
                 $isResponseSuccessful,
@@ -3110,6 +3111,9 @@ class ProjectControllerTest extends BaseController
                     'workPackageStatusName' => 'label.pending',
                     'workPackageStatusCode' => 'pending',
                     'daysSinceCreated' => 0,
+                    'createdBy' => [],
+                    'updatedBy' => null,
+                    'createdByAvatarUrl' => 'https://www.gravatar.com/avatar/c759b30d158daaa0820ded76627d0914?d=identicon',
                 ],
             ],
         ];
