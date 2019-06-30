@@ -7,6 +7,8 @@ use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
 use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\BaseScheduleDatesAwareInterface;
+use Component\Resource\Model\BlameableInterface;
+use Component\Resource\Model\BlameableTrait;
 use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\Resource\Model\TimestampableInterface;
@@ -28,9 +30,9 @@ use AppBundle\Validator\Constraints as AppAssert;
  * @AppAssert\WorkPackageScheduledDates(groups={"create"})
  * @AppAssert\WorkPackageForecastDates(groups={"edit"})
  */
-class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface, TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, MediasAwareInterface, CloneableInterface
+class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface, TimestampableInterface, ResponsibilityAwareInterface, ProjectAwareInterface, MediasAwareInterface, CloneableInterface, BlameableInterface
 {
-    use TimestampableTrait;
+    use TimestampableTrait, BlameableTrait;
 
     const TYPE_PHASE = 0;
     const TYPE_MILESTONE = 1;

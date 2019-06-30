@@ -144,6 +144,8 @@ class WorkPackageControllerTest extends BaseController
                             'isClosed' => false,
                             'isCompleted' => false,
                             'daysSinceCreated' => 0,
+                            'createdBy' => null,
+                            'updatedBy' => null,
                         ],
                         [
                             'puid' => 4,
@@ -229,6 +231,8 @@ class WorkPackageControllerTest extends BaseController
                             'isClosed' => false,
                             'isCompleted' => false,
                             'daysSinceCreated' => 0,
+                            'createdBy' => null,
+                            'updatedBy' => null,
                         ],
                     ],
                 ],
@@ -366,6 +370,8 @@ class WorkPackageControllerTest extends BaseController
                     'isCompleted' => false,
                     'isClosed' => false,
                     'daysSinceCreated' => 0,
+                    'createdBy' => null,
+                    'updatedBy' => null,
                 ],
             ],
         ];
@@ -515,6 +521,8 @@ class WorkPackageControllerTest extends BaseController
                     'isClosed' => false,
                     'isCompleted' => false,
                     'daysSinceCreated' => 0,
+                    'createdBy' => null,
+                    'updatedBy' => null,
                 ],
             ],
         ];

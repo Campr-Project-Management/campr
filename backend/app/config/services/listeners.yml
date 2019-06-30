@@ -97,6 +97,7 @@ services:
             - '@app.repository.work_package'
             - '@app.repository.work_package_status'
             - '@event_dispatcher'
+            - '@app.service.workpackage_mailer'
             - '@doctrine.orm.entity_manager'
             - '@redis.client'
             - '%kernel.environment%'
