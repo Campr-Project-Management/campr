@@ -163,7 +163,7 @@ const actions = {
      *
      * @return {object}
      */
-    getProjects({commit}, data) {
+    getProjects({commit, state}, data) {
         let paramObject = {params: {}};
         if (data && data.queryParams && data.queryParams.page !== undefined) {
             paramObject.params.page = data.queryParams.page;
@@ -190,8 +190,7 @@ const actions = {
                 }
             },
             (response) => {},
-        )
-            ;
+        );
     },
 
     /**
