@@ -86,11 +86,11 @@ class ProjectStatusControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project-status';
-        $form['create[sequence]'] = 'sequence';
+        $form['create[sequence]'] = -11;
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains(self::$translation->trans('invalid.sequence', [], 'validators'), $crawler->html());
+        $this->assertContains(self::$translation->trans('greater_than_or_equal.sequence', [], 'validators'), $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
@@ -103,6 +103,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['create[name]'] = 'project-status7';
+        $form['create[sequence]'] = 441;
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -116,6 +117,7 @@ class ProjectStatusControllerTest extends BaseController
 
         $projectStatus = (new ProjectStatus())
             ->setName('project-status4')
+            ->setCode('project-status4')
             ->setSequence('1')
         ;
         $this->em->persist($projectStatus);
@@ -191,11 +193,11 @@ class ProjectStatusControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/project-status/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['create[sequence]'] = 'sequence';
+        $form['create[sequence]'] = -11;
 
         $crawler = $this->client->submit($form);
 
-        $this->assertContains(self::$translation->trans('invalid.sequence', [], 'validators'), $crawler->html());
+        $this->assertContains(self::$translation->trans('greater_than_or_equal.sequence', [], 'validators'), $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }

@@ -6,11 +6,13 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectStatus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class CreateType extends AbstractType
 {
@@ -29,15 +31,11 @@ class CreateType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('sequence', TextType::class, [
+            ->add('sequence', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'not_blank.sequence',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^([1-9]+\d*)$|^0$/',
-                        'message' => 'invalid.sequence',
                     ]),
                 ],
             ])
@@ -48,6 +46,18 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.project',
                 'translation_domain' => 'messages',
             ])
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+                    $form->add('code', TextType::class);
+                    $data = $event->getData();
+                    if (isset($data['name'])) {
+                        $data['code'] = $data['name'];
+                    }
+                    $event->setData($data);
+                }
+            )
         ;
     }
 

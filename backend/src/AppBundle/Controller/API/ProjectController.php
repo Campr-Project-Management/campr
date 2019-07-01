@@ -148,7 +148,8 @@ class ProjectController extends ApiController
             $em = $this->getDoctrine()->getManager();
 
             if (!$project->getStatus()) {
-                $projectStatus = $em->getReference(ProjectStatus::class, ProjectStatus::NOT_STARTED);
+                /** @var ProjectStatus $projectStatus */
+                $projectStatus = $em->getRepository(ProjectStatus::class)->findOneBy(['code' => ProjectStatus::CODE_NOT_STARTED]);
                 $project->setStatus($projectStatus);
             }
 
