@@ -5,10 +5,9 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-    public function __construct($environment, $debug)
+    protected function getContainerClass()
     {
-        $environment = str_replace('-', '_', $environment);
-        parent::__construct($environment, $debug);
+        return str_replace('-', '_', parent::getContainerClass());
     }
 
     public function registerBundles()
@@ -49,7 +48,7 @@ class AppKernel extends Kernel
             new Translation\PlatformAdapter\Loco\Bridge\Symfony\TranslationAdapterLocoBundle(),
             new Translation\Bundle\TranslationBundle(),
             new EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle(),
-            new \Enqueue\Bundle\EnqueueBundle(),
+            new Enqueue\Bundle\EnqueueBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
 
             //internals
@@ -102,7 +101,7 @@ class AppKernel extends Kernel
 
         array_pop($env);
 
-        return implode('_', $env);
+        return implode('-', $env);
     }
 
     public function getRequestContext()

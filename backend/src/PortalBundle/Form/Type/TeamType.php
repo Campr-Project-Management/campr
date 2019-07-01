@@ -35,6 +35,19 @@ class TeamType extends AbstractType
                     ],
                 ]
             )
+            ->add(
+                'slug',
+                TextType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.workspace.name',
+                            ]
+                        ),
+                    ],
+                ]
+            )
             ->add('logoUrl', TextType::class)
             ->add('enabled', CheckboxType::class)
             ->add(

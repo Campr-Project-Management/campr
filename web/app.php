@@ -20,7 +20,6 @@ if ($debug) {
     Debug::enable();
 }
 
-$env = str_replace('-', '_', $env);
 $envParts = explode('_', $env);
 if ($env != end($envParts)) {
     $apcLoader = new ApcClassLoader($env.'.campr.biz', $loader);
