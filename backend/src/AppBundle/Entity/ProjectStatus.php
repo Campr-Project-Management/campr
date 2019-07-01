@@ -3,8 +3,13 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Model\RemovalForbiddenInterface;
+use AppBundle\Validator\Constraints\Sequence;
 use Component\Resource\Cloner\CloneableInterface;
+use Component\Resource\Model\CodeAwareInterface;
+use Component\Resource\Model\CodeableTrait;
 use Component\Resource\Model\ResourceInterface;
+use Component\Resource\Model\SequenceableInterface;
+use Component\Resource\Model\SequenceableTrait;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
 use JMS\Serializer\Annotation as Serializer;
@@ -19,17 +24,20 @@ use Component\Resource\Cloner\Annotation as Cloner;
  * @ORM\Table(name="project_status")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectStatusRepository")
  * @UniqueEntity(fields="name", message="unique.name")
+ * @Sequence()
  * @Cloner\Exclude()
  */
-class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, CloneableInterface, TimestampableInterface
+class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, CloneableInterface, TimestampableInterface, SequenceableInterface, CodeAwareInterface
 {
     use TimestampableTrait;
+    use SequenceableTrait;
+    use CodeableTrait;
 
-    const NOT_STARTED = 1;
-    const IN_PROGRESS = 2;
-    const PENDING = 3;
-    const OPEN = 4;
-    const CLOSED = 5;
+    const CODE_NOT_STARTED = 'label.not_started';
+    const CODE_IN_PROGRESS = 'label.in_progress';
+    const CODE_PENDING = 'label.pending';
+    const CODE_OPEN = 'label.open';
+    const CODE_CLOSED = 'label.closed';
 
     /**
      * @var int
@@ -58,13 +66,6 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
     private $name;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
-     */
-    private $sequence = 0;
-
-    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -82,6 +83,21 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     protected $updatedAt;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="sequence", type="integer", nullable=false)
+     */
+    protected $sequence;
+
+    /**
+     * @var string
+     * @Serializer\Exclude()
+     *
+     * @ORM\Column(name="code", type="string", nullable=false, unique=true)
+     */
+    protected $code;
 
     /**
      * ProjectStatus constructor.
@@ -128,30 +144,6 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set sequence.
-     *
-     * @param int $sequence
-     *
-     * @return ProjectStatus
-     */
-    public function setSequence($sequence)
-    {
-        $this->sequence = $sequence;
-
-        return $this;
-    }
-
-    /**
-     * Get sequence.
-     *
-     * @return int
-     */
-    public function getSequence()
-    {
-        return $this->sequence;
     }
 
     /**
