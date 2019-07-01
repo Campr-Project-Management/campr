@@ -59,7 +59,7 @@ const actions = {
      * @param {function} commit
      * @param {array} data
      */
-    getTasks({commit}, data) {
+    getTasks({commit, state}, data) {
         let paramObject = {
             params: {
                 type: 2,

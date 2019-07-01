@@ -62,18 +62,18 @@ class ProjectStatusControllerTest extends BaseController
                         'projectName' => null,
                         'id' => 1,
                         'name' => 'project-status1',
-                        'sequence' => 1,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'sequence' => 1,
                     ],
                     [
                         'project' => null,
                         'projectName' => null,
                         'id' => 2,
                         'name' => 'project-status2',
-                        'sequence' => 2,
                         'createdAt' => '2017-01-01 12:00:00',
                         'updatedAt' => null,
+                        'sequence' => 2,
                     ],
                 ],
             ],
@@ -128,7 +128,7 @@ class ProjectStatusControllerTest extends BaseController
             [
                 [
                     'name' => 'project-status3',
-                    'sequence' => 1,
+                    'sequence' => 98,
                 ],
                 true,
                 Response::HTTP_CREATED,
@@ -137,9 +137,9 @@ class ProjectStatusControllerTest extends BaseController
                     'projectName' => null,
                     'id' => 3,
                     'name' => 'project-status3',
-                    'sequence' => 1,
                     'createdAt' => '',
                     'updatedAt' => null,
+                    'sequence' => 98,
                 ],
             ],
         ];
@@ -161,7 +161,8 @@ class ProjectStatusControllerTest extends BaseController
     ) {
         $projectStatus = (new ProjectStatus())
             ->setName('project-status6')
-            ->setSequence(1)
+            ->setCode('project-status6')
+            ->setSequence(100)
         ;
         $this->em->persist($projectStatus);
         $this->em->flush();
@@ -196,13 +197,78 @@ class ProjectStatusControllerTest extends BaseController
             [
                 [
                     'name' => 'project-status6',
-                    'sequence' => 1,
+                    'sequence' => 101,
                 ],
                 true,
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
                         'name' => ['That name is taken'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForSequenceIsUniqueOnCreateAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testSequenceIsUniqueOnCreateAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $projectStatus = (new ProjectStatus())
+            ->setName('project-status-alfa')
+            ->setCode('project-status-alfa')
+            ->setSequence(99)
+        ;
+        $this->em->persist($projectStatus);
+        $this->em->flush();
+
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/project-statuses',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForSequenceIsUniqueOnCreateAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'project-status-beta',
+                    'sequence' => 99,
+                ],
+                true,
+                Response::HTTP_BAD_REQUEST,
+                [
+                    'messages' => [
+                        'sequence' => ['Sequence number already used.'],
                     ],
                 ],
             ],
@@ -238,7 +304,6 @@ class ProjectStatusControllerTest extends BaseController
             json_encode($content)
         );
         $response = $this->client->getResponse();
-
         $this->assertEquals($isResponseSuccessful, $response->isClientError());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
         $this->assertEquals(json_encode($responseContent), $response->getContent());
@@ -314,6 +379,63 @@ class ProjectStatusControllerTest extends BaseController
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
+                        'sequence' => ['This value is not valid.'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForSequenceIsPositiveNumberOnCreateAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testSequenceIsPositiveNumberOnCreateAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/project-statuses',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForSequenceIsPositiveNumberOnCreateAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'project-status5',
+                    'sequence' => -10,
+                ],
+                true,
+                Response::HTTP_BAD_REQUEST,
+                [
+                    'messages' => [
                         'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
                     ],
                 ],
@@ -376,9 +498,9 @@ class ProjectStatusControllerTest extends BaseController
                     'projectName' => null,
                     'id' => 1,
                     'name' => 'project-status1',
-                    'sequence' => 1,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'sequence' => 1,
                 ],
             ],
         ];
@@ -548,7 +670,129 @@ class ProjectStatusControllerTest extends BaseController
                 Response::HTTP_BAD_REQUEST,
                 [
                     'messages' => [
+                        'sequence' => ['This value is not valid.'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForSequenceIsPositiveNumberOnEditAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testSequenceIsPositiveNumberOnEditAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'PATCH',
+            '/api/project-statuses/1',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForSequenceIsPositiveNumberOnEditAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'project-status1',
+                    'sequence' => -67,
+                ],
+                true,
+                Response::HTTP_BAD_REQUEST,
+                [
+                    'messages' => [
                         'sequence' => ['The sequence field should contain numbers greater than or equal to 0'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForSequenceIsUniqueNumberOnEditAction
+     *
+     * @param array $content
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testSequenceIsUniqueNumberOnEditAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $projectStatus = (new ProjectStatus())
+            ->setName('project-status-teta')
+            ->setCode('project-status-teta')
+            ->setSequence(123)
+        ;
+        $this->em->persist($projectStatus);
+        $this->em->flush();
+
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'PATCH',
+            '/api/project-statuses/1',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $this->assertEquals($isResponseSuccessful, $response->isClientError());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals(json_encode($responseContent), $response->getContent());
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForSequenceIsUniqueNumberOnEditAction()
+    {
+        return [
+            [
+                [
+                    'name' => 'project-status1',
+                    'sequence' => 123,
+                ],
+                true,
+                Response::HTTP_BAD_REQUEST,
+                [
+                    'messages' => [
+                        'sequence' => ['Sequence number already used.'],
                     ],
                 ],
             ],
@@ -567,6 +811,7 @@ class ProjectStatusControllerTest extends BaseController
     ) {
         $projectStatus = (new ProjectStatus())
             ->setName('project-status5')
+            ->setCode('project-status5')
             ->setSequence(1)
         ;
         $this->em->persist($projectStatus);
@@ -658,9 +903,9 @@ class ProjectStatusControllerTest extends BaseController
                     'projectName' => null,
                     'id' => 2,
                     'name' => 'project-status2',
-                    'sequence' => 2,
                     'createdAt' => '2017-01-01 12:00:00',
                     'updatedAt' => null,
+                    'sequence' => 2,
                 ],
             ],
         ];
