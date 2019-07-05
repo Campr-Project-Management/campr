@@ -1,8 +1,6 @@
 <template>
     <div id="app">
-        <div class="page">
-            <nuxt/>
-        </div>
+        <nuxt/>
     </div>
 </template>
 
@@ -11,16 +9,28 @@
     @import '../../frontend/src/css/_variables.scss';
     @import '../../frontend/src/css/_mixins.scss';
 
+    @page {
+        size: A4;
+        margin: 3mm;
+    }
     @media print {
-        @page {
-            margin: 0;
-            padding: 0px;
-            size: A4;
+        html, body {
+            width: 210mm;
+            height: 297mm;
         }
-        body {
-            margin: 0px;
-            padding: 0px;
-        }
+        /* ... the rest of the rules ... */
+    }
+
+    @media print {
+        /*@page {*/
+        /*    margin: 0;*/
+        /*    padding: 0px;*/
+        /*    size: A4;*/
+        /*}*/
+        /*body {*/
+        /*    margin: 0px;*/
+        /*    padding: 0px;*/
+        /*}*/
         .row {
             margin-left: 0.5em !important;
             margin-right: 0.5em !important;
@@ -36,8 +46,10 @@
     }
 
     body {
-        font-size: 12px;
-        line-height: 1.5em;
+        font-size: 9px;
+        line-height: 12px;
+        /*font-size: 12px;*/
+        /*line-height: 1.5em;*/
     }
 
     .v-spinner {
