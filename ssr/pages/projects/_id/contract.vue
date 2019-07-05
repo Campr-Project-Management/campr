@@ -1,189 +1,349 @@
 <template>
-    <page :team="team" :project="project">
-        <div class="project-contract">
-            <div class="page-section">
-                <div class="row">
-                    <!-- /// Header /// -->
-                    <div class="col-md-12">
-                        <div class="header">
-                            <div class="text-center">
-                                <h1>{{ contract.projectName }}</h1>
-                            </div>
-                        </div>
+    <page :team="team" :project="project" :title="contract.projectName" :subtitle="translate('message.project_contract')">
+        <div class="col-xs-12">
+            <div class="col-xs-6">
+                <table class="gray-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('label.project_sponsors') }}</th>
+                            <td>
+                                <span v-for="(sponsor, index) in project.projectSponsors"
+                                    :key="'projectSponsors'+index">
+                                    <span v-if="index > 0">, </span>
+                                    {{ sponsor.userFullName }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('label.project_managers') }}</th>
+                            <td>
+                                <span v-for="(manager, index) in project.projectManagers"
+                                    :key="'projectManagers'+index">
+                                    <span v-if="index > 0">, </span>
+                                    {{ manager.userFullName }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.project_number') }}</th>
+                            <td>{{ project.number || '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-6">
+                <table class="gray-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('message.scope') }}</th>
+                            <td>{{ translate.projectScopeName || '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.category') }}</th>
+                            <td>{{ translate.projectCategoryName || '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.approved_on') }}</th>
+                            <td>{{ contract.approvedAt || '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                        <div class="hero-text">
-                            {{ translate('message.project_contract') }}
-                        </div>
+        <div class="row">
+            <h3>{{ translate('message.project_description') }}</h3>
+            <div class="col-xs-12" v-html="contract.description" />
+        </div>
 
-                        <div class="project-info">
-                            <span>{{ translate('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <span>{{ translate('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <span>{{ translate('message.approved_on') }}: {{ contract.approvedAt || '-' }}</span>
-                        </div>
-                    </div>
-                    <!-- /// End Header /// -->
+        <div class="row">
+            <h3>{{ translate('label.project_start_event') }}</h3>
+            <div class="col-xs-12">
+                <div class="col-xs-9" v-html="contract.projectStartEvent" />
+                <div class="col-xs-3">
+                    <table class="content-table">
+                        <tbody>
+                            <tr>
+                                <th>{{ translate('label.forecast_start_date') }}</th>
+                                <th>{{ translate('label.forecast_end_date') }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ contract.forecastStartDate || '-' }}</td>
+                                <td>{{ contract.forecastEndDate || '-' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+        </div>
 
-                <div class="row">
-                    <!-- /// Project Description /// -->
-                    <div class="col-md-6">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translate('message.project_description') }}</div>
-                            <div class="vueditor campr-editor">
-                                <div class="ve-toolbar">
-                                    <br>
-                                    <br>
-                                </div>
-                                <div class="ve-design" v-html="contract.description"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Project Description -->
-
-                    <!-- /// Project Start Event /// -->
-                    <div class="col-md-6">
-                        <div class="vueditor-holder">
-                            <div class="vueditor-header">{{ translate('label.project_start_event') }}</div>
-                            <div class="vueditor campr-editor">
-                                <div class="ve-toolbar">
-                                    <br>
-                                    <br>
-                                </div>
-                                <div class="ve-design" v-html="contract.projectStartEvent"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /// End Project Start Event /// -->
-                </div>
-
-                <div class="row margintop40">
-                    <!-- /// Project Schedule /// -->
-                    <div class="col-md-6 col-md-offset-3">
-                        <h3 class="text-center">{{ translate('message.schedule') }}</h3>
-                        <div class="flex flex-space-between dates">
-                            <div class="input-holder left">
-                                <label class="active">{{ translate('label.proposed_start_date') }}</label>
-                                <span>{{ proposedStartDate | date }}</span>
-                            </div>
-                            <div class="input-holder right">
-                                <label class="active">{{ translate('label.proposed_end_date') }}</label>
-                                <span>{{ proposedEndDate | date }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /// End Project Schedule /// -->
-                </div>
-
-                <div class="row">
-                    <!-- /// Project Sponsors & Managers /// -->
-                    <div class="col-md-12">
-                        <div class="header">
-                            <h3 class="clickable" @click="toggleSponsorsManagers()">{{ translate('message.sponsors_managers') }}
-                                <i class="fa fa-angle-down" v-if="!showSponsorsManagers"></i>
-                                <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
-                            </h3>
-                        </div>
-                        <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
-                            <member-badge v-for="(item, index) in project.projectSponsors"
-                                          v-bind:item="item" v-bind:key="'projectSponsors'+index" size="small"></member-badge>
-                            <member-badge v-for="(item, index) in project.projectManagers"
-                                          v-bind:index="index" v-bind:key="'projectManagers'+index" v-bind:item="item" size="small"></member-badge>
-                            <p v-if="project.projectSponsors.length === 0 && project.projectManagers.length === 0">{{ translate('label.no_data') }}</p>
-                        </div>
-                    </div>
-                    <!-- /// End Project Sponsors & Managers /// -->
-                </div>
-
-                <div class="row margintop40">
-                    <!-- /// Project Objectives /// -->
-                    <div class="col-md-4">
-                        <h3>{{ translate('message.project_objectives') }}</h3>
-
-                        <div class="box"
-                             v-if="project.projectObjectives && project.projectObjectives.length > 0"
-                             v-for="(projectObjective, index) in project.projectObjectives"
-                             :key="'projectObjective'+index"
+        <div class="row">
+            <h3>{{ translate('message.project_objectives') }}</h3>
+            <div class="col-xs-12">
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('label.description') }}</th>
+                        </tr>
+                        <tr
+                            v-if="project.projectObjectives && project.projectObjectives.length > 0"
+                            v-for="(projectObjective, index) in project.projectObjectives"
+                            :key="'projectObjective'+index"
                         >
-                            <header class="flex flex-space-between full">
-                                <span>{{index+1}}. <span>{{projectObjective.title}}</span></span>
-                            </header>
-                        </div>
-                        <p class="notice" v-else>{{ translate('label.no_data') }}</p>
-                        <div class="hr small"></div>
-                    </div>
-                    <!-- /// End Project Objectives /// -->
+                            <td>{{ index + 1 }}. {{ projectObjective.title }}</td>
+                        </tr>
+                        <tr v-else>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                    <!-- /// Project Limitations /// -->
-                    <div class="col-md-4">
-                        <h3>{{ translate('message.project_limitations') }}</h3>
-
-                        <div class="box"
-                             v-if="project.projectLimitations && project.projectLimitations.length > 0"
-                             v-for="(projectLimitation, index) in project.projectLimitations"
-                             :key="'projectLimitation'+index"
+        <div class="row">
+            <h3>{{ translate('message.project_limitations') }}</h3>
+            <div class="col-xs-12">
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('label.description') }}</th>
+                        </tr>
+                        <tr
+                            v-if="project.projectLimitations && project.projectLimitations.length > 0"
+                            v-for="(projectLimitation, index) in project.projectLimitations"
+                            :key="'projectLimitation'+index"
                         >
-                            <header class="flex flex-space-between full">
-                                <span>{{index+1}}. <span>{{projectLimitation.description}}</span></span>
-                            </header>
-                        </div>
-                        <p class="notice" v-else>{{ translate('label.no_data') }}</p>
-                        <div class="hr small"></div>
-                    </div>
-                    <!-- /// End Project Limitations /// -->
+                            <td>{{ index + 1 }}. {{ projectLimitation.description }}</td>
+                        </tr>
+                        <tr v-else>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                    <!-- /// Project Deliverables /// -->
-                    <div class="col-md-4">
-                        <h3>{{ translate('message.project_deliverables') }}</h3>
-
-                        <div class="box"
-                             v-if="project.projectDeliverables && project.projectDeliverables.length > 0"
-                             v-for="(projectLimitation, index) in project.projectDeliverables"
-                             :key="'projectLimitation'+index"
+        <div class="row">
+            <h3>{{ translate('message.project_deliverables') }}</h3>
+            <div class="col-xs-12">
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('label.description') }}</th>
+                        </tr>
+                        <tr
+                            v-if="project.projectDeliverables !== undefined && project.projectDeliverables.length > 0"
+                            v-for="(projectDeliverable, index) in project.projectDeliverables"
+                            :key="'projectDeliverable'+index"
                         >
-                            <header class="flex flex-space-between full">
-                                <span>{{index+1}}. <span>{{projectLimitation.description}}</span></span>
-                            </header>
-                        </div>
-                        <p class="notice" v-else>{{ translate('label.no_data') }}</p>
-                        <div class="hr small"></div>
-                    </div>
-                    <!-- /// End Project Deliverables /// -->
-                </div>
+                            <td>{{ index + 1 }}. {{ projectDeliverable.description }}</td>
+                        </tr>
+                        <tr v-else>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <div class="row margintop40 resources">
-                    <!-- /// Project Internal Costs /// -->
-                    <div class="col-md-6">
-                        <h3>{{ translate('message.internal_costs') }}</h3>
+        <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
+            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both">
+                <div class="col-xs-6" style="padding-left: 0;">
+                    <h3>{{ translate('message.internal_costs') }}</h3>
+                    <div class="resources-half">
                         <no-ssr>
                             <chart :data="internalCostsGraphData.byPhase | graphData" theme="print" />
                         </no-ssr>
                     </div>
-                    <!-- /// End Project Internal Costs /// -->
-
-                    <!-- /// Project External Costs /// -->
-                    <div class="col-md-6">
-                        <h3>{{ translate('message.external_costs') }}</h3>
+                </div>
+                <div class="col-xs-6" style="padding-left: 0;">
+                    <h3>{{ translate('message.external_costs') }}</h3>
+                    <div class="resources-half">
                         <no-ssr>
                             <chart :data="externalCostsGraphData.byPhase | graphData" theme="print" />
                         </no-ssr>
                     </div>
-                    <!-- /// End Project External Costs /// -->
+                </div>
+            </div>
+        </template>
+
+        <template v-else>
+            <div class="row" v-if="isInternalCostsModuleActive && internalCostsGraphData">
+                <h3>{{ translate('message.internal_costs') }}</h3>
+                <div class="resources">
+                    <no-ssr>
+                        <chart :data="internalCostsGraphData.byPhase | graphData" theme="print" />
+                    </no-ssr>
+                </div>
+            </div>
+
+            <div class="row"v-if="isExternalCostsModuleActive && externalCostsGraphData">
+                <h3>{{ translate('message.external_costs') }}</h3>
+                <div class="resources">
+                    <no-ssr>
+                        <chart :data="externalCostsGraphData.byPhase | graphData" theme="print" />
+                    </no-ssr>
+                </div>
+            </div>
+        </template>
+
+        <template v-if="isRiskAndOpportunitiesModuleActive">
+            <div class="row ro-columns">
+                <div class="col-md-6 col-xs-6 dark-border-right">
+                    <no-ssr>
+                        <opportunities-grid :value="opportunitiesGrid" :currency="currency"
+                            :locale="forcedLocale"/>
+                    </no-ssr>
                 </div>
 
-                <div class="hr small"></div>
-
-                <div class="row margintop40">
-                    <div class="half half-left">
-                        <h3>{{ translate('message.project_manager_signature') }}</h3>
-                    </div>
-                    <div class="half half-right">
-                        <h3>{{ translate('message.project_sponsor_signature') }}</h3>
-                    </div>
-
-                    <div class="clear-fix"></div>
+                <div class="col-md-6 col-xs-6">
+                    <no-ssr>
+                        <risks-grid :value="risksGrid" :currency="currency"
+                            :locale="forcedLocale"/>
+                    </no-ssr>
                 </div>
+            </div>
+        </template>
+
+        <div class="row">
+            <h3>{{ translate('message.team_members') }}</h3>
+            <table class="content-table">
+                <tbody>
+                    <tr>
+                        <th>{{ translate('label.name') }}</th>
+                        <th>{{ translate('label.project_role') }}</th>
+                        <th>{{ translate('label.project_department') }}</th>
+                    </tr>
+                    <tr
+                        v-for="(sponsor, index) in project.projectSponsors"
+                        :key="'clientProjectSponsors'+index"
+                    >
+                        <td>{{ sponsor.userFullName }}</td>
+                        <td>{{ translate('message.project_sponsor') }}</td>
+                        <td></td>
+                    </tr>
+                    <tr
+                        v-for="(manager, index) in project.projectManagers"
+                        :key="'clientProjectManagers'+index"
+                    >
+                        <td>{{ manager.userFullName }}</td>
+                        <td>{{ translate('message.project_manager') }}</td>
+                        <td></td>
+                    </tr>
+                    <tr
+                        v-if="project.projectUsers !== undefined && project.projectUsers.length > 0"
+                        v-for="(projectUser, index) in project.projectUsers"
+                        :key="'projectUser'+index"
+                    >
+                        <td>{{ projectUser.userFullName }}</td>
+                        <td>
+                            <span
+                                v-for="(projectRoleName, index) in projectUser.projectRoleNames"
+                                :v-key="'projectRoleName' + index"
+                            >
+                                <span v-if="index > 0">, </span>
+                                {{ translate(projectRoleName) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span
+                                v-for="(projectDepartmentName, index) in projectUser.projectDepartmentNames"
+                                :v-key="'projectDepartmentName' + index"
+                            >
+                                <span v-if="index > 0">, </span>
+                                {{ projectDepartmentName }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
+            <div class="row">
+                <h3>{{ translate('message.phases_and_milestones') }}</h3>
+                <div class="flex flex-center" style="text-align: center">
+                    <traffic-light :value="projectTrafficLight"/>
+                </div>
+
+                <br/>
+
+                <no-ssr>
+                    <status-report-timeline
+                        style="width: 777px"
+                        :phases="phases"
+                        :milestones="milestones"
+                        :locale="forcedLocale"/>
+                </no-ssr>
+            </div>
+
+            <hr class="double">
+        </template>
+
+        <div class="row col-xs-12" style="padding-left: 0; padding-right: 0;">
+            <div class="col-xs-6" style="padding-left: 0;">
+                <h3>{{ translate('label.project_proposal') }}</h3>
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>{{ translate('label.date') }}</th>
+                            <th>{{ translate('label.signature') }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.project_sponsor') }}</th>
+                            <th colspan="2" style="border-left: none;">&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.project_manager') }}</th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-6" style="padding-right: 0;">
+                <h3>{{ translate('label.project_order') }}</h3>
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th>{{ translate('label.date') }}</th>
+                            <th>{{ translate('label.signature') }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.project_sponsor') }}</th>
+                            <th colspan="2" style="border-left: none;">&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <th>{{ translate('message.project_manager') }}</th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td colspan="2" style="border-left: none;">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </page>
@@ -196,13 +356,19 @@ import DownloadbuttonIcon from '~/components/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '~/components/_icons/EyeIcon.vue';
 import InputField from '~/components/_form-components/InputField.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
+import TrafficLight from '~/components/_common/TrafficLight.vue';
+import StatusReportTimeline from '~/components/Projects/StatusReports/Create/Timeline';
+import RisksGrid from '~/components/Projects/StatusReports/Create/RisksGrid';
+import OpportunitiesGrid from '~/components/Projects/StatusReports/Create/OpportunitiesGrid';
 import Vue from 'vue';
 import Page from '../../../layouts/Page';
+import module from '../../../components/mixins/module';
 
 export default {
     validate({params}) {
         return /^\d+$/.test(params.id);
     },
+    mixins: [module],
     components: {
         Page,
         CalendarIcon,
@@ -211,6 +377,10 @@ export default {
         EyeIcon,
         InputField,
         MemberBadge,
+        TrafficLight,
+        StatusReportTimeline,
+        RisksGrid,
+        OpportunitiesGrid,
     },
     computed: {
         downloadPdf() {
@@ -221,7 +391,41 @@ export default {
                 return (this.contract.approvedAt !== '');
             },
         },
-
+        forcedLocale() {
+            return this.locale ? this.locale : '';
+        },
+        projectTrafficLight() {
+            return this.project ? this.project.trafficLight : 1;
+        },
+        opportunitiesGrid() {
+            return {
+                top: this.contract.opportunities.topItem,
+                items: this.contract.opportunities.items,
+                summary: {
+                    potentialCost: this.contract.opportunities.total.potentialCost,
+                    potentialTime: this.contract.opportunities.total.potentialTime,
+                    measuresCount: this.contract.opportunities.total.measuresCount,
+                    measuresCost: this.contract.opportunities.total.measuresCost,
+                },
+            };
+        },
+        risksGrid() {
+            return {
+                top: this.contract.risks.topItem,
+                items: this.contract.risks.items,
+                summary: {
+                    potentialCost: this.contract.risks.total.potentialCost,
+                    potentialDelay: this.contract.risks.total.potentialDelay,
+                    measuresCount: this.contract.risks.total.measuresCount,
+                    measuresCost: this.contract.risks.total.measuresCost,
+                },
+            };
+        },
+        currency() {
+            return this.project && this.project.currency
+                ? this.project.currency.symbol
+                : '';
+        },
     },
     filters: {
         graphData(value) {
@@ -249,6 +453,9 @@ export default {
         let projectSponsors = [];
         let projectManagers = [];
         let locale = query.locale ? query.locale : 'en';
+        let phases = [];
+        let milestones = [];
+        let risksAndOpportunities = [];
 
         if (query.host && query.key) {
             // project
@@ -269,11 +476,20 @@ export default {
             // internal cost data
             res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/internal-costs-graph-data`, query.key);
             internalCostsGraphData = await res.json();
+
+            // internal cost data
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/phases`, query.key);
+            phases = await res.json();
+
+            // internal cost data
+            res = await Vue.doFetch(`http://${query.host}/api/projects/${params.id}/milestones`, query.key);
+            milestones = await res.json();
         }
 
         const contract = contracts && contracts.length ? contracts[0] : {};
 
         return {
+            activeModules: project.projectModules,
             project,
             team,
             contract,
@@ -298,6 +514,8 @@ export default {
             proposedStartDate: contract.proposedStartDate,
             proposedEndDate: contract.proposedEndDate,
             locale,
+            phases: phases && phases.items ? phases.items : [],
+            milestones: milestones && milestones.items ? milestones.items : [],
         };
     }
 };
@@ -305,12 +523,77 @@ export default {
 
 <style lang="scss">
     // ../../css/_common
-    @import '../../../../frontend/src/css/_common.scss';
-    @import '../../../../frontend/src/css/vueditor.css';
+    /*@import '../../../../frontend/src/css/_common.scss';*/
+    /*@import '../../../../frontend/src/css/vueditor.css';*/
 </style>
 
 <style scoped lang="scss">
-    @import '../../../../frontend/src/css/page-section';
+    @import "../../../../frontend/src/css/variables";
+
+    .gray-table {
+        -webkit-print-color-adjust: exact !important;
+        margin: 5px 0;
+        width: 100%;
+        border-top: 1px solid #999;
+        border-left: 1px solid #999;
+        background: #efefef;
+
+        th, td {
+            border-bottom: 1px solid #999;
+            border-right: 1px solid #999;
+            font-size: 9px;
+            padding: 3px;
+            width: 50%;
+        }
+    }
+
+    .content-table {
+        border: none;
+        width: 100%;
+        table-layout: fixed;
+
+        th, td {
+            font-size: 9px;
+            padding: 3px;
+            word-break: break-word;
+        }
+
+        td {
+            border-left: 1px solid #999;
+            border-top: 1px solid #999;
+
+            &:nth-child(1) {
+                border-left: none;
+            }
+        }
+    }
+
+    .row {
+        break-inside: avoid;
+    }
+
+    @media print {
+        .resources {
+            width: 100% !important;
+            transform: translate(-255px) scale(0.5);
+        }
+        .resources-half {
+            display: block;
+            width: 320px !important;
+
+            /*/deep/ > div {*/
+            /*    width: 100%;*/
+            /*}*/
+            /*overflow: hidden;*/
+            /*display: block;*/
+            /*width: 750px;*/
+            /*width: 100% !important;*/
+            transform: translate(-118px, -90px) scale(0.5, 0.5);
+            /*border: 1px solid #123456;*/
+        }
+    }
+
+    /*@import '../../../../frontend/src/css/page-section';
 
     @media print {
         .resources {
@@ -473,5 +756,5 @@ export default {
     .disabledpicker {
         pointer-events: none;
         opacity: .5;
-    }
+    }*/
 </style>
