@@ -1,29 +1,44 @@
 <template>
-    <table class="page">
-        <thead>
-        <tr class="header">
-            <td class="text-left">
-                <img :src="leftLogoUrl" v-if="leftLogoUrl" class="left-logo" alt="logo"/>
-            </td>
-            <td class="text-right">
-                <img :src="rightLogoUrl" v-if="rightLogoUrl" class="right-logo" alt="logo"/>
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="body">
-            <td colspan="2">
-                <slot></slot>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="page">
+        <div class="header">
+            <div class="logo pull-left">
+                <img :src="leftLogoUrl" v-if="leftLogoUrl" alt="logo" />
+            </div>
+            <div class="logo pull-right">
+                <img :src="rightLogoUrl" v-if="rightLogoUrl" alt="logo" />
+            </div>
+            <div class="text-center" v-if="title && subtitle">
+                <h1>{{ title }}</h1>
+                <h2>{{ subtitle }}</h2>
+            </div>
+        </div>
+        <slot />
+    </div>
 </template>
 
 <script>
     export default {
         name: 'Page',
-        props: ['project', 'team'],
+        props: {
+            project: {
+                type: Object,
+            },
+            team: {
+                type: Object,
+            },
+            title: {
+                type: String,
+                default() {
+                    return '';
+                },
+            },
+            subtitle: {
+                type: String,
+                default() {
+                    return '';
+                },
+            },
+        },
         computed: {
             leftLogoUrl() {
                 let logoUrl = this.defaultLogoUrl;
@@ -50,26 +65,75 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../../frontend/src/css/variables';
+
     .page {
+        /deep/ h1, /deep/ .h1, /deep/ h2, /deep/ .h2, /deep/ h3, /deep/ .h3, /deep/ h4, /deep/ .h4 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
         width: 100%;
+        font-size: 9px;
+        line-height: 12px;
+
+        /deep/ ol, /deep/ ul {
+            margin-bottom: 3px;
+        }
 
         .header {
-            td {
-                padding: 5mm;
+            -webkit-print-color-adjust: exact !important;
+            background: $mainColor;
+            color: $lighterColor;
+            height: 60px;
 
-                .left-logo {
-                    width: 140px;
-                }
+            /deep/ h1, h2 {
+                margin: 0;
+                padding: 0;
+                line-height: 30px;
+            }
 
-                .right-logo {
-                    width: 140px;
+            /deep/ h1 {
+                font-size: 20px;
+            }
+
+            /deep/ h2 {
+                font-size: 15px;
+            }
+
+            .logo {
+                display: block;
+                height: 60px;
+                line-height: 60px;
+                width: 70px;
+                margin: 0;
+
+                img {
+                    width: 70px;
                 }
             }
         }
-        .body {
-           td {
-               padding: 5mm;
-           }
+
+        /deep/ h3 {
+            font-size: 9px;
+            -webkit-print-color-adjust: exact !important;
+            background: $mainColor;
+            color: $lighterColor;
+            padding: 3px;
+            clear: both;
+        }
+
+        /deep/ h4 {
+            font-size: 9px;
+            -webkit-print-color-adjust: exact !important;
+            background: $mainColor;
+            color: $lighterColor;
+            padding: 3px;
+            clear: both;
+        }
+
+        /deep/ .flex-v-center {
+            text-align: center;
         }
     }
 </style>

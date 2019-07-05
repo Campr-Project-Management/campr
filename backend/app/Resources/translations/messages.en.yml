@@ -2383,3 +2383,6 @@ portal.page.try_beta.form.label.i_agree_to: 'I agree to the'
 portal.page.try_beta.form.label.terms_and_conditions: 'Terms &amp; Conditions'
 portal.page.try_beta.form.button.send: Send
 message.department_member: 'Department Member'
+title.settings: Settings
+label.project_proposal: 'Project Proposal'
+label.project_order: 'Project Order'

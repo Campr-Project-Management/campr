@@ -98,7 +98,7 @@ class SecurityController extends Controller
         $user = $this->createOrUpdateUserFromToken($userData);
         $this->get('app.repository.user')->add($user);
 
-        $teamData = (array) $token->getClaim('workspace');
+        $teamData = (array) $token->getClaim('workspace', []);
         if (!empty($teamData)) {
             $team = $this->createOrUpdateTeamFromToken($teamData);
             $this->get('app.repository.team')->add($team);

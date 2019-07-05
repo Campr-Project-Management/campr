@@ -2097,7 +2097,7 @@ module.exports = function (Translator) {
     Translator.add("title.filesystem.create", "Neues Dateisystem erstellen", "messages", "de");
     Translator.add("title.filesystem.edit", "Dateisystem bearbeiten", "messages", "de");
     Translator.add("title.filesystem.list", "Dateisystem", "messages", "de");
-    Translator.add("title.PageHeader.vue", "Campr Administration", "messages", "de");
+    Translator.add("title.header", "Campr Administration", "messages", "de");
     Translator.add("title.homepage", "Campr Admin", "messages", "de");
     Translator.add("title.homepage_main", "Campr Main Site", "messages", "de");
     Translator.add("title.impact.create", "Neue Auswirkung erstellen", "messages", "de");
