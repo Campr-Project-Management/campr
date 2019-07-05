@@ -5,8 +5,8 @@
                 :name="item.userFullName"
                 :url="item.userAvatarUrl" />
         <div class="name">{{ item.userFullName }}</div>
-        <div class="title" v-for="role in item.projectRoleNames" :key="'project_role_name_' + role">{{ translateText(role) }}</div>
-        <div class="title" v-for="role in item.subteamRoleNames" :key="'subteam_role_name_' + role">{{ translateText(role) }}</div>
+        <div class="title" v-for="(role, idx) in item.projectRoleNames" :key="id + '_project_role_name_' + idx">{{ translateText(role) }}</div>
+        <div class="title" v-for="(role, idx) in item.subteamRoleNames" :key="id + '_subteam_role_name_' + idx">{{ translateText(role) }}</div>
         <social-links size="16px"
             v-bind:facebook="item.userFacebook"
             v-bind:twitter="item.userTwitter"
@@ -25,6 +25,11 @@ export default {
     components: {
         SocialLinks,
         UserAvatar,
+    },
+    computed: {
+        id() {
+            return this._uid;
+        }
     },
     methods: {
         translateText: function(text) {
