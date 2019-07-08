@@ -8,7 +8,12 @@ const state = {
 
 const getters = {
     distributionList: state => state.distributionList,
-    distributionLists: state => state.distributionLists,
+    distributionLists: state => {
+        let lists = [...state.distributionLists];
+        lists.sort((a, b) => a.id - b.id);
+
+        return lists;
+    },
     distributionListsForSelect: state => {
         let selectLsts = [];
         state.distributionLists.map(function(item) {
@@ -28,76 +33,60 @@ const actions = {
      * @return {mixed}
      */
     getDistributionList({commit}, id) {
-        return Vue
-            .http
-            .get(Routing.generate('app_api_distribution_list_get', {id}))
-            .then(
-                (response) => {
-                    commit(types.SET_DISTRIBUTION_LIST, response.data);
+        return Vue.http.get(
+            Routing.generate('app_api_distribution_list_get', {id})).then(
+            (response) => {
+                commit(types.SET_DISTRIBUTION_LIST, response.data);
 
-                    return response;
-                },
-                () => {}
-            )
-        ;
+                return response;
+            },
+            () => {},
+        )
+            ;
     },
     /**
      * Get all distribution lists.
      * @param {function} commit
      * @param {array} data
+     * @return {object}
      */
-    getDistributionLists({commit}, data) {
-        Vue.http
-            .get(Routing.generate('app_api_project_distribution_lists', {'id': data.projectId})).then((response) => {
-                if (response.status === 200) {
-                    let distributionLists = response.data;
-                    commit(types.SET_DISTRIBUTION_LISTS, {distributionLists});
-                }
-            }, (response) => {
-            });
+    async getDistributionLists({commit}, data) {
+        let res = await Vue.http.get(
+            Routing.generate('app_api_project_distribution_lists',
+                {'id': data.projectId}));
+        let distributionLists = res.data;
+        commit(types.SET_DISTRIBUTION_LISTS, {distributionLists});
+
+        return res;
     },
     /**
      * Add new project user to distribution list
      * @param {function} commit
      * @param {array}    data
-     * @return {mixed}
+     * @return {object}
      */
-    addToDistribution({commit}, data) {
-        return Vue
-            .http
-            .patch(Routing.generate('app_api_distribution_list_add_user', {'id': data.id}), JSON.stringify(data))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        commit(types.SET_DISTRIBUTION_LIST, response.data);
-                    }
+    async addToDistribution({commit}, data) {
+        let res = await Vue.http.patch(
+            Routing.generate('app_api_distribution_list_add_user',
+                {'id': data.id}), JSON.stringify(data));
 
-                    return response;
-                },
-                () => {}
-            );
+        commit(types.SET_DISTRIBUTION_LIST, res.data);
+
+        return res;
     },
     /**
      * remove project user from distribution list
      * @param {function} commit
      * @param {array}    data
-     * @return {mixed}
+     * @return {object}
      */
-    removeFromDistribution({commit}, data) {
-        return Vue
-            .http
-            .patch(Routing.generate('app_api_distribution_list_remove_user', {'id': data.id}), JSON.stringify(data))
-            .then(
-                (response) => {
-                    if (response.status === 200) {
-                        commit(types.SET_DISTRIBUTION_LIST, response.data);
-                    }
+    async removeFromDistribution({commit}, data) {
+        let res = await Vue.http.patch(
+            Routing.generate('app_api_distribution_list_remove_user',
+                {'id': data.id}), JSON.stringify(data));
+        commit(types.SET_DISTRIBUTION_LIST, res.data);
 
-                    return response;
-                },
-                (response) => {
-                }
-            );
+        return res;
     },
 };
 
@@ -111,11 +100,10 @@ const mutations = {
     [types.SET_DISTRIBUTION_LIST](state, distributionList) {
         state.distributionList = distributionList;
 
-        if (state.distributionLists.length && state.distributionLists[0].project === distributionList.project) {
-            state.distributionLists = state
-                .distributionLists
-                .filter(dl => dl.id !== distributionList.id)
-                .concat([distributionList]);
+        if (state.distributionLists.length &&
+            state.distributionLists[0].project === distributionList.project) {
+            state.distributionLists = state.distributionLists.filter(
+                dl => dl.id !== distributionList.id).concat([distributionList]);
         }
     },
     /**

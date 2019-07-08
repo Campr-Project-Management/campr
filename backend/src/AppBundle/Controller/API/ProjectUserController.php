@@ -102,7 +102,7 @@ class ProjectUserController extends ApiController
         $em->remove($projectUser);
         $em->flush();
 
-        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+        return $this->createApiResponse($projectUser);
     }
 
     /**
@@ -120,17 +120,22 @@ class ProjectUserController extends ApiController
     {
         $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
 
-        $em = $this->getDoctrine()->getManager();
-        $project->getProjectUsers()->map(
-            function (ProjectUser $projectUser) use ($user, $em) {
-                if ($projectUser->getUser() === $user) {
-                    $em->remove($projectUser);
-                    $em->flush();
+        $projectUser = $project
+            ->getProjectUsers()
+            ->filter(
+                function (ProjectUser $projectUser) use ($user) {
+                    return $projectUser->getUser() === $user;
                 }
-            }
-        );
+            )
+            ->first();
 
-        return $this->createApiResponse(null, Response::HTTP_NO_CONTENT);
+        if (!$projectUser) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->get('app.repository.project_user')->remove($projectUser);
+
+        return $this->createApiResponse($projectUser);
     }
 
     /**

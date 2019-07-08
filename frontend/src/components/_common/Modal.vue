@@ -1,11 +1,12 @@
 <template>
-    <div class="modal-mask modal" v-bind:class="{'specific-modal': hasSpecificClass}">
+    <div v-if="value" class="modal-mask modal" :class="{'specific-modal': hasSpecificClass}">
         <div class="modal-wrapper">
             <scrollbar class="modal-container customScrollbar">
                 <div class="modal-inner">
                     {{mclass}}
-                    <a href="javascript:void(0)" class="modal-close" @click="$emit('close')">
-                        <svg version="1.1" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28.8 28.8">
+                    <a href="javascript:void(0)" class="modal-close" @click="onClose">
+                        <svg version="1.1" width="32px" xmlns="http://www.w3.org/2000/svg"
+                             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 28.8 28.8">
                             <g>
                                 <line class="st0" x1="3.1" y1="2.9" x2="26.1" y2="25.9"/>
                                 <line class="st0" x1="26.1" y1="2.9" x2="3.1" y2="25.9"/>
@@ -20,23 +21,45 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-export default {
-    props: {
-        hasSpecificClass: {
-            type: Boolean,
-            required: false,
+    import {mapActions} from 'vuex';
+
+    export default {
+        props: {
+            value: {
+                type: Boolean,
+                required: false,
+                default: true,
+            },
+            hasSpecificClass: {
+                type: Boolean,
+                required: false,
+            },
         },
-    },
-    methods: {
-        ...mapActions([
-            'emptyValidationMessages',
-        ]),
-    },
-    beforeDestroy() {
-        this.emptyValidationMessages();
-    },
-};
+
+        created() {
+            document.addEventListener('keyup', this.onEsc);
+        },
+        methods: {
+            ...mapActions([
+                'emptyValidationMessages',
+            ]),
+            onEsc(event) {
+                if (event.key !== 'Escape') {
+                    return;
+                }
+
+                this.onClose();
+            },
+            onClose() {
+                this.$emit('close');
+                this.$emit('input', false);
+            },
+        },
+        beforeDestroy() {
+            this.emptyValidationMessages();
+            document.removeEventListener('keyup', this.onEsc);
+        },
+    };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -48,7 +71,7 @@ export default {
             overflow: initial !important;
         }
     }
-    
+
     .st0 {
         stroke: $whiteColor;
     }

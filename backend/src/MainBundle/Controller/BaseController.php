@@ -69,6 +69,20 @@ abstract class BaseController extends Controller
         return new JsonResponse($data, $statusCode);
     }
 
+    /**
+     * @param string|null $message
+     *
+     * @return JsonResponse
+     */
+    protected function createNotFoundApiResponse(string $message = null): JsonResponse
+    {
+        if (empty($message)) {
+            $message = $this->get('translator')->trans('not_found.general');
+        }
+
+        return new JsonResponse(['message' => $message], JsonResponse::HTTP_NOT_FOUND);
+    }
+
     protected function createdTranslatedAccessDeniedException(string $message)
     {
         throw $this->createAccessDeniedException(
