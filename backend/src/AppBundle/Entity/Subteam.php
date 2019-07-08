@@ -271,7 +271,7 @@ class Subteam implements ProjectAwareInterface, ResourceInterface, CloneableInte
     /**
      * Get subteamMembers.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return SubteamMember[]|ArrayCollection
      */
     public function getSubteamMembers()
     {
@@ -314,5 +314,27 @@ class Subteam implements ProjectAwareInterface, ResourceInterface, CloneableInte
     public function setDepartment(ProjectDepartment $department = null)
     {
         $this->department = $department;
+    }
+
+    /**
+     * @return SubteamMember|null
+     */
+    public function getLeader()
+    {
+        foreach ($this->getSubteamMembers() as $subteamMember) {
+            if ($subteamMember->isLead()) {
+                return $subteamMember->getUser();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLeader()
+    {
+        return (bool) $this->getLeader();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Serializer\EventListener;
 
+use AppBundle\Entity\User;
+use Component\ProjectUser\Model\ProjectUserAwareInterface;
 use Component\Resource\Model\BlameableInterface;
 use Component\Resource\Model\ResponsibilityAwareInterface;
 use Component\User\Model\UserAwareInterface;
@@ -59,6 +61,10 @@ class AvatarAwareSubscriber implements EventSubscriberInterface
 
         if ($object instanceof UserAwareInterface) {
             $this->addUserAvatar($visitor, $object);
+        }
+
+        if ($object instanceof ProjectUserAwareInterface) {
+            $this->addAvatar($visitor, $object->getProjectUser()->getUser());
         }
 
         if ($object instanceof ResponsibilityAwareInterface) {
