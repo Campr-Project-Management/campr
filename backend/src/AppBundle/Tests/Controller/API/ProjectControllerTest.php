@@ -449,6 +449,7 @@ class ProjectControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                     ],
                     'projectTeams' => [],
@@ -1991,6 +1992,7 @@ class ProjectControllerTest extends BaseController
                             'isProjectManager' => true,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                         [
                             'user' => 4,
@@ -2026,6 +2028,7 @@ class ProjectControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => true,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                         [
                             'user' => 5,
@@ -2061,6 +2064,7 @@ class ProjectControllerTest extends BaseController
                             'isProjectManager' => false,
                             'isProjectSponsor' => false,
                             'isRASCI' => true,
+                            'departmentMembers' => [],
                         ],
                     ],
                     'projectTeams' => [
@@ -2565,6 +2569,7 @@ class ProjectControllerTest extends BaseController
                     'isProjectManager' => false,
                     'isProjectSponsor' => false,
                     'isRASCI' => false,
+                    'departmentMembers' => null,
                 ],
             ],
         ];

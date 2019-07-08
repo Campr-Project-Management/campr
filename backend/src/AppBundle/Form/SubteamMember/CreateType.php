@@ -29,7 +29,7 @@ class CreateType extends AbstractType
                 'placeholder' => 'placeholder.subteam',
                 'translation_domain' => 'messages',
             ])
-            ->add('isLead', CheckboxType::class)
+            ->add('lead', CheckboxType::class)
         ;
     }
 

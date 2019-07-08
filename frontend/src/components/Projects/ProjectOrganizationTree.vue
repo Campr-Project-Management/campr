@@ -56,10 +56,11 @@ export default {
                 .scaleExtent([0.1, 4])
                 .on('zoom', () => {
                     const t = _.clone(d3.event.transform);
-                    this.gTranslateX = t.x; // allows the popup to follow the scroll :]
                     t.y = 16; // force horizontal scrolling :]
                     t.k = 1; // force scale of 1
-                    this.g.attr('transform', t);
+                    if (!this.activeTeamNode) {
+                        this.g.attr('transform', t);
+                    }
                 })
             ;
 
@@ -162,29 +163,27 @@ export default {
                         return this.userTpl(d);
                     }
                 })
-                // .html(d => this.userTpl(d))
                 .on('click', d => {
-                    if (d.depth < this.collapsedNodeLevel) {
-                        if (d.children) {
-                            d._children = d.children;
-                            d.children = null;
-                        } else {
-                            d.children = d._children;
-                            d._children = null;
-                        }
-
-                        if (this.activeTeamNode) {
-                            this.activeTeamNode.showTeam = false;
-                            this.updateTree(this.activeTeamNode);
-                            this.activeTeamNode = null;
-                            this.teamList = '';
-                        }
-
-                        this.updateTree(d);
-
-                        return;
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else {
+                        d.children = d._children;
+                        d._children = null;
                     }
 
+                    if (this.activeTeamNode) {
+                        this.activeTeamNode.showTeam = false;
+                        this.updateTree(this.activeTeamNode);
+                        this.activeTeamNode = null;
+                        this.teamList = '';
+                    }
+
+                    this.updateTree(d);
+                })
+                .select('.btn-view-team')
+                .on('click', (d) => {
+                    d3.event.stopPropagation();
                     if (this.activeTeamNode) {
                         let shouldReturn = this.activeTeamNode === d;
                         this.activeTeamNode.showTeam = false;
@@ -195,16 +194,15 @@ export default {
                             return;
                         }
                     }
-                    if (d.depth === this.collapsedNodeLevel) {
-                        this.activeTeamNode = d;
-                        d.showTeam = ! d.showTeam;
-                        if (d.showTeam) {
-                            this.teamList = this.teamListTpl(d);
-                        }
-                        this.updateTree(d);
+
+                    this.activeTeamNode = d;
+                    d.showTeam = !d.showTeam;
+                    if (d.showTeam) {
+                        this.teamList = this.teamListTpl(d);
                     }
-                })
-            ;
+
+                    this.updateTree(d);
+                });
 
             let canvasNodesUpdate = canvasNodesEnter.merge(canvasNodes);
 
@@ -271,16 +269,15 @@ export default {
             });
         },
         teamListTpl(d) {
-            const children = d.children || d._children;
-            if (!children) {
+            const children = d.data.members;
+            if (!children || !children.length) {
                 return '';
             }
 
             const attributes = this.dataAttributes.join(' ');
             let teamList = `<div class="arrow-up" ${attributes}></div><ul class="team-list" ${attributes}>`;
 
-            children.map(n => {
-                const u = n.data;
+            children.map(u => {
                 const avatar = userHelper.getUserAvatar(u);
                 const media = userHelper.getSocialMedia(u);
 
@@ -326,10 +323,8 @@ export default {
         userTpl(d) {
             const user = d.data;
             const attributes = this.dataAttributes.join(' ');
-
             const avatar = userHelper.getUserAvatar(user);
             const media = userHelper.getSocialMedia(user);
-
             const isBig = d.depth < this.bigCellLimit;
 
             let mediaData = '';
@@ -359,14 +354,14 @@ export default {
             });
 
             let teamButtom = '';
-            const children = d.children || d._children;
 
-            if (d.depth === this.collapsedNodeLevel && children) {
+            if (d.data.members && d.data.members.length > 0) {
                 let btnText = d.showTeam ? this.translate('message.close_team') : this.translate('message.view_team');
                 let icon = d.showTeam ? '&#xf077;' : '&#xf078;';
 
                 teamButtom = `
-                    <button class="btn-rounded btn-empty ${d.showTeam?'active':''}" ${attributes}>
+                    <button class="btn-view-team btn-rounded btn-empty ${d.showTeam?'btn-view-team-active':''}"
+                        ${attributes}>
                         ${btnText}
                         <text width="15" height="15" x="0" y="0" style="font-family: FontAwesome;">${icon}</text>
                     </button>
@@ -428,20 +423,31 @@ export default {
                 if (!this.activeTeamNode) {
                     return '-9999px'; // no active no
                 }
-                let out = (this.pageOffsetLeft + this.gTranslateX + this.activeTeamNode.x - 120);
-                if (out < 0) {
-                    out = '-9999'; // hide when it's about to go outside the page
-                }
-                return out + 'px';
+
+                const button = document.getElementsByClassName('btn-view-team-active')[0];
+                const g = button.parentElement.parentElement.parentElement;
+                const rect = g.getBoundingClientRect();
+                let left = Math.ceil(window.scrollX + rect.left - 120);
+
+                return `${left}px`;
             },
         },
         teamListOffsetTop: {
             get() {
-                let offset = this.height;
-                if (this.$el) {
-                    offset += $(this.$el).offset().top;
+                if (!this.activeTeamNode) {
+                    return '-9999px'; // no active no
                 }
-                return offset + 'px';
+
+                const button = document.getElementsByClassName('btn-view-team-active')[0];
+                const g = button.parentElement.parentElement.parentElement;
+                const rect = g.getBoundingClientRect();
+                let top = Math.ceil(
+                    rect.top
+                    + rect.height
+                    + window.scrollY - (rect.height === 250 ? 9 : 28)
+                );
+
+                return `${top}px`;
             },
         },
     },
@@ -467,7 +473,7 @@ export default {
                 1: 290,
                 3: 290,
             },
-            defaultCellHeight: 225,
+            defaultCellHeight: 250,
             collapsedNodeLevel: 3,
             bigCellLimit: 2,
             show: true,
@@ -480,7 +486,6 @@ export default {
             svg: null,
             g: null,
             pageOffsetLeft: 0,
-            gTranslateX: 0,
             teamList: '',
             activeTeamNode: null,
             tree: null,
@@ -513,7 +518,7 @@ export default {
             margin: 0;
             padding: 0;
             background: $darkColor;
-            box-shadow: 0px 5px 10px 10px $semiDarkColor;
+            @include box-shadow(0, 0, 20px, $darkerColor);
 
             li {
                 width: 450px;
@@ -581,7 +586,7 @@ export default {
             position: inherit;
         }
 
-        button.active {
+        .btn-view-team-active {
             background: $middleColor;
         }
 

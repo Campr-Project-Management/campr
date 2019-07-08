@@ -138,6 +138,13 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     private $rate;
 
     /**
+     * @var ProjectDepartmentMember[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProjectDepartmentMember", mappedBy="projectUser")
+     */
+    private $departmentMembers;
+
+    /**
      * @var \DateTime
      *
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
@@ -835,5 +842,21 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     public function isRASCI(): bool
     {
         return $this->getShowInRasci() || $this->isProjectSponsor() || $this->isProjectManager();
+    }
+
+    /**
+     * @return ProjectDepartmentMember[]|ArrayCollection
+     */
+    public function getDepartmentMembers()
+    {
+        return $this->departmentMembers;
+    }
+
+    /**
+     * @param ProjectDepartmentMember[]|ArrayCollection $departmentMembers
+     */
+    public function setDepartmentMembers($departmentMembers)
+    {
+        $this->departmentMembers = $departmentMembers;
     }
 }
