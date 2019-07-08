@@ -15,7 +15,14 @@
                         :title="translate('label.select_members')"
                         :options="departmentMembersOptions"
                         v-model="editDepartmentMembers"/>
-                <error at-path="projectUsers"/>
+                <error at-path="members"/>
+                <br/>
+
+                <select-field
+                        :title="translate('roles.team_leader')"
+                        :options="editDepartmentMembers"
+                        v-model="editDepartmentLeader"/>
+                <error at-path="leader"/>
                 <br/>
                 <div class="flex flex-space-between">
                     <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
@@ -184,6 +191,7 @@
                                 <tr>
                                     <th>{{ translate('table_header_cell.department_name') }}</th>
                                     <th>{{ translate('table_header_cell.managers') }}</th>
+                                    <th>{{ translate('table_header_cell.team_leader') }}</th>
                                     <th>{{ translate('table_header_cell.no_of_members') }}</th>
                                     <th>{{ translate('table_header_cell.created_at') }}</th>
                                     <th>{{ translate('table_header_cell.actions') }}</th>
@@ -203,7 +211,15 @@
                                                     :tooltip="manager.userFullName"/>
                                         </div>
                                     </td>
-                                    <td>{{ department.membersCount }}</td>
+                                    <td>
+                                        <user-avatar
+                                                v-if="department.leader"
+                                                size="small"
+                                                :url="department.leader.userAvatarUrl"
+                                                :name="department.leader.userFullName"
+                                                :tooltip="department.leader.userFullName"/>
+                                    </td>
+                                    <td>{{ department.members.length }}</td>
                                     <td>{{ department.createdAt | date }}</td>
                                     <td>
                                         <button @click="initEditDepartmentModal(department)"
@@ -233,18 +249,20 @@
                         <hr>
 
                         <div class="form">
-                            <!-- /// Add new Department /// -->
-                            <div class="form-group">
-                                <input-field
-                                        v-model="departmentName"
-                                        type="text"
-                                        :label="translate('placeholder.new_department')"/>
-                                <error at-path="departmentName"/>
-                            </div>
-                            <div class="flex flex-direction-reverse">
-                                <a @click="createNewDepartment()" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</a>
-                            </div>
-                            <!-- /// End Add new Department /// -->
+                            <form @submit.prevent="createNewDepartment()">
+                                <!-- /// Add new Department /// -->
+                                <div class="form-group">
+                                    <input-field
+                                            v-model="departmentName"
+                                            type="text"
+                                            :label="translate('placeholder.new_department')"/>
+                                    <error at-path="departmentName"/>
+                                </div>
+                                <div class="flex flex-direction-reverse">
+                                    <button type="submit" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</button>
+                                </div>
+                                <!-- /// End Add new Department /// -->
+                            </form>
                         </div>
                     </div>
 
@@ -269,7 +287,7 @@
                                     <td class="avatar">
                                         <div v-for="member in subteam.subteamMembers">
                                             <user-avatar
-                                                    v-if="member.isLead"
+                                                    v-if="member.lead"
                                                     size="small"
                                                     :url="member.userAvatarUrl"
                                                     :name="member.userFullName"
@@ -490,10 +508,20 @@
                 this.showEditDepartmentModal = true;
                 this.editDepartmentId = department.id;
                 this.editDepartmentName = department.name;
-                this.editDepartmentMembers = department.projectUsers.map(projectUser => ({
-                    key: projectUser.id,
-                    label: projectUser.userFullName,
+                this.editDepartmentMembers = department.members.map(member => ({
+                    key: member.projectUserId,
+                    label: member.fullName,
+                    hidden: member.deleted,
                 }));
+
+                this.editDepartmentLeader = null;
+                if (department.leader) {
+                    this.editDepartmentLeader = {
+                        key: department.leader.id,
+                        label: department.leader.fullName,
+                        hidden: department.leader.userDeleted,
+                    };
+                }
             },
             initDeleteDepartmentModal(department) {
                 this.showDeleteDepartmentModal = true;
@@ -503,7 +531,17 @@
                 let data = {
                     id: this.editDepartmentId,
                     name: this.editDepartmentName,
-                    projectUsers: this.editDepartmentMembers.map(manager => manager.key),
+                    members: this.editDepartmentMembers.map(member => {
+                        let lead = false;
+                        if (this.editDepartmentLeader && member.key === this.editDepartmentLeader.key) {
+                            lead = true;
+                        }
+
+                        return {
+                            projectUser: member.key,
+                            lead,
+                        };
+                    }),
                 };
 
                 this.editDepartment(data).then((response) => {
@@ -533,7 +571,7 @@
                     this.editSubteamMembers.push(
                         {key: member.user, label: member.userFullName, hidden: member.userDeleted});
 
-                    if (member.isLead) {
+                    if (member.lead) {
                         this.editSubteamLead = {
                             key: member.user,
                             label: member.userFullName,
@@ -571,7 +609,7 @@
                     subteamMembers: this.editSubteamMembers.map(member => {
                         return {
                             'user': member.key,
-                            'isLead': !!(this.editSubteamLead && this.editSubteamLead.key === member.key),
+                            'lead': !!(this.editSubteamLead && this.editSubteamLead.key === member.key),
                         };
                     }),
                 };
@@ -711,6 +749,7 @@
                 editDepartmentId: '',
                 editDepartmentName: '',
                 editDepartmentMembers: [],
+                editDepartmentLeader: null,
                 editSubteamMembers: [],
                 editSponsorMembers: [],
                 sponsorMembers: [],
