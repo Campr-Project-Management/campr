@@ -30,7 +30,7 @@ export default {
     props: {
         value: {
             type: Object,
-            required: true,
+            required: false,
             default: () => {},
         },
     },

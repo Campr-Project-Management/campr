@@ -81,7 +81,7 @@ function getUser(store, user) {
  * @return {boolean}
  */
 function isGranted(role, user, subject) {
-    if (!user || !subject) {
+    if (!user || !user.id || !subject) {
         return false;
     }
 
