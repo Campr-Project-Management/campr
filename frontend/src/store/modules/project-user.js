@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import * as types from '../mutation-types';
 import _ from 'lodash';
-// import router from '../../router';
 
 const ROLE_MANAGER = 'roles.project_manager';
 
 const state = {
-    projectUsers: [],
+    projectUsers: {
+        items: [],
+    },
     sponsors: [],
     managers: [],
-    currentMember: {},
 };
 
 const getters = {
@@ -23,8 +23,13 @@ const getters = {
             (projectUser) => projectUser.isRASCI);
     },
     projectUserByUserId: (state, getters) => (id) => {
-        return _.find(getters.projectUsers.items, (user) => {
-            return user.user === id;
+        return getters.projectUsers.items.find(pu => {
+            return pu.user === Number(id);
+        });
+    },
+    projectUserById: (state, getters) => (id) => {
+        return getters.projectUsers.items.find(pu => {
+            return pu.id === Number(id);
         });
     },
     projectUserAvatarByUserId: (state, getters) => (id) => {
@@ -35,7 +40,6 @@ const getters = {
 
         return projectUser.userAvatarUrl;
     },
-    currentMember: state => state.currentMember,
     projectSponsors: state => state.sponsors,
     projectManagers: state => state.managers,
     projectUsersForSelect: state => {
@@ -107,29 +111,34 @@ const actions = {
      * Gets the project user by id
      * @param {function} commit
      * @param {number} id
+     * @return {object}
      */
-    getProjectUser({commit}, id) {
-        Vue.http.get(Routing.generate('app_api_project_users_get', {id: id})).
-            then((response) => {
-                let currentMember = response.data;
-                commit(types.SET_CURRENT_MEMBER, {currentMember});
-            }, (response) => {
-            });
+    async getProjectUser({commit}, id) {
+        let res = await Vue.http.get(
+            Routing.generate('app_api_project_users_get', {id: id}));
+
+        commit(types.ADD_PROJECT_USER, res.data);
+
+        return res;
     },
     /**
      * Update project user
      * @param {function} commit
-     * @param {array} data
+     * @param {object} data
+     * @return {object}
      */
-    updateProjectUser({commit}, data) {
-        Vue.http.patch(
+    async updateProjectUser({commit}, data) {
+        let res = await Vue.http.patch(
             Routing.generate('app_api_project_users_edit', {'id': data.id}),
             JSON.stringify(data),
-        ).then((response) => {
-            let currentMember = response.data;
-            commit(types.SET_CURRENT_MEMBER, {currentMember});
-        }, (response) => {
-        });
+        );
+        if (res.data.error === true) {
+            throw res;
+        }
+
+        commit(types.ADD_PROJECT_USER, res.data);
+
+        return res;
     },
     saveProjectUser({commit}, userData) {
         const arrayItems = [
@@ -237,24 +246,33 @@ const actions = {
         )
             ;
     },
-
-    createProjectUser({commit}, {projectId, userId}) {
-        return Vue.http.post(
+    async createProjectUser({commit}, {projectId, userId}) {
+        let res = await Vue.http.post(
             Routing.generate('app_api_project_project_user_create',
                 {id: projectId}),
             {user: userId},
-        )
-            ;
+        );
+
+        let projectUser = res.data;
+        commit(types.ADD_PROJECT_USER, projectUser);
+        commit(types.ADD_MANAGER, projectUser);
+
+        return null;
     },
-    deleteProjectUser({commit}, {projectId, userId}) {
+    async deleteProjectUser({commit}, {projectId, userId}) {
         const data = {
             id: projectId,
             user: userId,
         };
 
-        return Vue.http.delete(
-            Routing.generate('app_api_project_users_delete_user', data))
-            ;
+        let res = await Vue.http.delete(
+            Routing.generate('app_api_project_users_delete_user', data));
+
+        const projectUser = res.data;
+        commit(types.DELETE_PROJECT_USER, projectUser);
+        commit(types.DELETE_MANAGER, projectUser);
+
+        return res;
     },
     /**
      * Delete a sponsor
@@ -307,7 +325,42 @@ const mutations = {
      * @param {array} projectUsers
      */
     [types.SET_PROJECT_USERS](state, {projectUsers}) {
-        state.projectUsers = projectUsers;
+        state.projectUsers = Object.assign({}, state.projectUsers,
+            projectUsers);
+    },
+    /**
+     * Add project user
+     * @param {Object} state
+     * @param {Object} projectUser
+     */
+    [types.ADD_PROJECT_USER](state, projectUser) {
+        const index = state.projectUsers.items.findIndex(
+            pu => pu.user === projectUser.user);
+        if (index >= 0) {
+            Vue.set(state.projectUsers.items, index, projectUser);
+            return;
+        }
+
+        state.projectUsers.items.push(projectUser);
+    },
+    /**
+     * Add manager
+     * @param {Object} state
+     * @param {Object} projectUser
+     */
+    [types.ADD_MANAGER](state, projectUser) {
+        if (!projectUser.projectRoleNames.indexOf(ROLE_MANAGER) !== -1) {
+            return;
+        }
+
+        const index = state.managers.findIndex(
+            pu => pu.user === projectUser.user);
+        if (index >= 0) {
+            Vue.set(state.managers, index, projectUser);
+            return;
+        }
+
+        state.managers.push(projectUser);
     },
     /**
      * Set project managers
@@ -339,23 +392,43 @@ const mutations = {
         state.sponsors = projectUsers.items;
     },
     /**
-     * Sets the current member on member page to state
-     * @param {Object} state
-     * @param {Object} currentMember
-     */
-    [types.SET_CURRENT_MEMBER](state, {currentMember}) {
-        state.currentMember = currentMember;
-    },
-    /**
      * Sets project to null on a project user
      * @param {Object} state
-     * @param {integer} id
+     * @param {Integer} id
      */
     [types.DELETE_TEAM_MEMBER](state, {id}) {
         state.projectUsers.items = state.projectUsers.items.filter((item) => {
             return item.id !== id ? true : false;
         });
         state.projectUsers.totalItems--;
+    },
+    /**
+     * Delete project user
+     * @param {Object} state
+     * @param {Integer} userId
+     */
+    [types.DELETE_PROJECT_USER](state, {user}) {
+        const index = state.projectUsers.items.findIndex(
+            item => item.user === user);
+        if (index < 0) {
+            return;
+        }
+
+        state.projectUsers.items.splice(index, 1);
+    },
+    /**
+     * Delete manager
+     * @param {Object} state
+     * @param {Integer} userId
+     */
+    [types.DELETE_MANAGER](state, {user}) {
+        const index = state.managers.findIndex(
+            item => item.user === user);
+        if (index < 0) {
+            return;
+        }
+
+        state.managers.splice(index, 1);
     },
 };
 

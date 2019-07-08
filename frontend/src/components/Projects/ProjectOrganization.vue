@@ -260,7 +260,6 @@ export default {
             projectUsers: 'projectUsers',
             validationMessages: 'validationMessages',
             distributionList: 'distributionList',
-            projectUser: 'currentMember',
         }),
         canEditProject() {
             return this.$can('roles.project_manager|roles.project_sponsor', this.project);

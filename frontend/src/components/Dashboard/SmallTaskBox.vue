@@ -28,13 +28,13 @@
                     <router-link :to="{name: 'project-dashboard', params: {id: task.project}}">
                         {{ task.projectName }}
                     </router-link>
-                    <span v-show="task.phaseName">
+                    <span v-if="task.phaseName">
                         >
                         <router-link :to="{name: 'project-phases-view-phase', params: {id: task.project, phaseId: task.phase}}">
                             {{ task.phaseName }}
                         </router-link>
                     </span>
-                    <span v-show="task.milestoneName">
+                    <span v-if="task.milestoneName">
                         >
                         <router-link :to="{name: 'project-phases-view-milestone', params: {id: task.project, milestoneId: task.milestone}}">
                             {{ task.milestoneName }}

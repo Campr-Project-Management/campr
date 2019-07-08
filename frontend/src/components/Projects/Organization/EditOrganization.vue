@@ -2,7 +2,8 @@
     <can role="roles.project_manager|roles.project_sponsor" :subject="project">
         <div class="create-task page-section">
             <!-- /// DEPARTMENT MODALS /// -->
-            <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false" v-bind:hasSpecificClass="true">
+            <modal v-if="showEditDepartmentModal" @close="showEditDepartmentModal = false"
+                   v-bind:hasSpecificClass="true">
                 <p class="modal-title">{{ translate('message.edit_department') }}</p>
                 <input-field
                         v-model="editDepartmentName"
@@ -25,16 +26,20 @@
                 <error at-path="leader"/>
                 <br/>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="editSelectedDepartment()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_department') }} +</a>
+                    <a href="javascript:void(0)" @click="showEditDepartmentModal = false" class="btn-rounded btn-auto">{{
+                        translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedDepartment()"
+                       class="btn-rounded btn-auto second-bg">{{ translate('button.edit_department') }} +</a>
                 </div>
             </modal>
             <modal v-if="showDeleteDepartmentModal" @close="showDeleteDepartmentModal = false">
                 <p class="modal-title">{{ translate('message.delete_department') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="showDeleteDepartmentModal = false"
+                       class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
                     <a href="javascript:void(0)" @click="deleteSelectedDepartment()"
-                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes')
+                        }}</a>
                 </div>
             </modal>
 
@@ -68,16 +73,20 @@
                             v-model="editSubteamDepartment"/>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_subteam') }} +</a>
+                    <a href="javascript:void(0)" @click="showEditSubteamModal = false" class="btn-rounded btn-auto">{{
+                        translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedSubteam()" class="btn-rounded btn-auto second-bg">{{
+                        translate('button.edit_subteam') }} +</a>
                 </div>
             </modal>
             <modal v-if="showDeleteSubteamModal" @close="showDeleteSubteamModal = false">
                 <p class="modal-title">{{ translate('message.delete_subteam') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="showDeleteSubteamModal = false" class="btn-rounded btn-auto">{{
+                        translate('message.no') }}</a>
                     <a href="javascript:void(0)" @click="deleteSelectedSubteam()"
-                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes')
+                        }}</a>
                 </div>
             </modal>
 
@@ -92,8 +101,10 @@
                             v-model="editSponsor"/>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.edit_sponsor') }} +</a>
+                    <a href="javascript:void(0)" @click="showEditSponsorModal = false" class="btn-rounded btn-auto">{{
+                        translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="editSelectedSponsor()" class="btn-rounded btn-auto second-bg">{{
+                        translate('button.edit_sponsor') }} +</a>
                 </div>
             </modal>
             <modal v-if="showCreateSponsorModal" @close="showCreateSponsorModal = false" v-bind:hasSpecificClass="true">
@@ -105,16 +116,20 @@
                             v-model="newSponsor"/>
                 </div>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
-                    <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{ translate('button.create_sponsor') }} +</a>
+                    <a href="javascript:void(0)" @click="showCreateSponsorModal = false" class="btn-rounded btn-auto">{{
+                        translate('button.cancel') }}</a>
+                    <a href="javascript:void(0)" @click="selectSponsor()" class="btn-rounded btn-auto second-bg">{{
+                        translate('button.create_sponsor') }} +</a>
                 </div>
             </modal>
             <modal v-if="showDeleteSponsorModal" @close="showDeleteSponsorModal = false">
                 <p class="modal-title">{{ translate('message.delete_sponsor') }}</p>
                 <div class="flex flex-space-between">
-                    <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{ translate('message.no') }}</a>
+                    <a href="javascript:void(0)" @click="showDeleteSponsorModal = false" class="btn-rounded btn-auto">{{
+                        translate('message.no') }}</a>
                     <a href="javascript:void(0)" @click="deleteSelectedSponsor()"
-                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes') }}</a>
+                       class="btn-rounded btn-empty btn-auto danger-color danger-border">{{ translate('message.yes')
+                        }}</a>
                 </div>
             </modal>
 
@@ -138,48 +153,7 @@
                     </ul>
 
                     <div v-if="currentTab === 'members'">
-                        <div class="team-list">
-                            <scrollbar class="customScrollbar">
-                                <div class="scroll-wrapper">
-                                    <table class="table table-striped table-responsive">
-                                        <thead>
-                                        <tr>
-                                            <th class="avatar"></th>
-                                            <th>{{ translate('table_header_cell.name') }}</th>
-                                            <th>{{ translate('table_header_cell.email') }}</th>
-                                            <th>{{ translate('table_header_cell.project_member') }}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="user in usersCurrentList" :key="user.id">
-                                            <td class="avatar text-center">
-                                                <user-avatar
-                                                        size="small"
-                                                        :url="user.avatarUrl"
-                                                        :name="user.fullName"
-                                                        :tooltip="user.fullName"/>
-                                            </td>
-                                            <td>{{ user.fullName }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>
-                                                <switches
-                                                        v-if="!isSpecial(user)"
-                                                        @input="toggleUserMembership(user, $event)"
-                                                        :value="isUserMember(user)"/>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </scrollbar>
-
-                            <div class="flex flex-direction-reverse flex-v-center">
-                                <pagination
-                                        :value="usersCurrentPage"
-                                        :number-of-pages="usersNumberOfPages"
-                                        @input="changeUsersCurrentPage"/>
-                            </div>
-                        </div>
+                        <members-tab :project="project" :users="users"/>
                     </div>
 
                     <div v-if="currentTab === 'departments'">
@@ -259,7 +233,9 @@
                                     <error at-path="departmentName"/>
                                 </div>
                                 <div class="flex flex-direction-reverse">
-                                    <button type="submit" class="btn-rounded btn-auto">{{ translate('button.add_new_department') }} +</button>
+                                    <button type="submit" class="btn-rounded btn-auto">{{
+                                        translate('button.add_new_department') }} +
+                                    </button>
                                 </div>
                                 <!-- /// End Add new Department /// -->
                             </form>
@@ -297,7 +273,8 @@
                                     <td v-if="subteam.subteamMembers">{{ subteam.subteamMembers.length }}</td>
                                     <td>{{ subteamProjectDepartmentName(subteam.department) }}</td>
                                     <td>
-                                        <button @click="initEditSubteamModal(subteam)" data-target="#logistics-edit-modal"
+                                        <button @click="initEditSubteamModal(subteam)"
+                                                data-target="#logistics-edit-modal"
                                                 data-toggle="modal" type="button" class="btn-icon">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </button>
@@ -331,7 +308,8 @@
                                         :message="message"/>
                             </div>
                             <div class="flex flex-direction-reverse">
-                                <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{ translate('button.add_new_subteam') }} +</a>
+                                <a @click="createNewSubteam()" class="btn-rounded btn-auto">{{
+                                    translate('button.add_new_subteam') }} +</a>
                             </div>
                             <!-- /// End Add new Subteam /// -->
                         </div>
@@ -361,7 +339,8 @@
                                     <td>{{ projectUser.userFullName }}</td>
                                     <td>{{ projectUser.userEmail }}</td>
                                     <td>
-                                        <button @click="initEditSponsorModal(projectUser)" data-target="#logistics-edit-modal"
+                                        <button @click="initEditSponsorModal(projectUser)"
+                                                data-target="#logistics-edit-modal"
                                                 data-toggle="modal" type="button" class="btn-icon">
                                             <edit-icon fill="second-fill"></edit-icon>
                                         </button>
@@ -388,7 +367,8 @@
                             <div class="form">
                                 <!-- /// Add new Sponsor /// -->
                                 <div class="flex flex-direction-reverse">
-                                    <a v-if="!projectSponsors || !projectSponsors.length" @click="initCreateSponsorModal"
+                                    <a v-if="!projectSponsors || !projectSponsors.length"
+                                       @click="initCreateSponsorModal"
                                        class="btn-rounded btn-auto">{{ translate('button.add_new_sponsor') }} +</a>
                                 </div>
                                 <!-- /// End Add new Sponsor /// -->
@@ -416,9 +396,11 @@
     import Switches from '../../3rdparty/vue-switches';
     import Pagination from '../../_common/Pagination';
     import UserAvatar from '../../_common/UserAvatar';
+    import MembersTab from './EditOrganization/MembersTab';
 
     export default {
         components: {
+            MembersTab,
             UserAvatar,
             InputField,
             ViewIcon,
@@ -441,37 +423,6 @@
                 'createProjectUser', 'deleteProjectUser', 'getProjectById',
                 'createSponsor', 'editProjectSponsor', 'getProjectSponsors', 'deleteSponsor',
             ]),
-            isSpecial(user) {
-                return (this.project.projectSponsor === user.id) ||
-                    (this.project.projectManager === user.id);
-            },
-            toggleUserMembership(user, value) {
-                const projectMemberData = {
-                    projectId: this.project.id,
-                    userId: user.id,
-                };
-
-                this.userMembershipCached[user.id] = value;
-                if (value) {
-                    this.createProjectUser(projectMemberData);
-                } else {
-                    this.deleteProjectUser(projectMemberData);
-                }
-            },
-            isUserMember(user) {
-                if (this.userMembershipCached[user.id] !== undefined) {
-                    return this.userMembershipCached[user.id];
-                }
-
-                if (!this.project || !this.project.projectUsers) {
-                    return false;
-                }
-
-                return this.project.projectUsers.filter((pu) => {
-                    return pu.user === user.id;
-                }).length !== 0
-                    ;
-            },
             changeDepartmentPage: function(page) {
                 this.activeDepartmentPage = page;
                 this.getProjectDepartments({project: this.$route.params.id, page: this.activeDepartmentPage});
@@ -625,9 +576,6 @@
                 this.showDeleteSubteamModal = false;
                 this.deleteSubteam(this.deleteSubteamId);
             },
-            changeUsersCurrentPage(value) {
-                this.usersCurrentPage = value;
-            },
             subteamProjectDepartmentName(department) {
                 if (department) {
                     department = this.projectDepartmentById(department.id);
@@ -716,25 +664,6 @@
                         hidden: projectUser.userDeleted,
                     }));
             },
-            usersCurrentList: {
-                get() {
-                    return this.users && this.users.length
-                        ? this.users.slice(
-                            (this.usersCurrentPage - 1) * 10,
-                            this.usersCurrentPage * 10,
-                        )
-                        : []
-                        ;
-                },
-            },
-            usersNumberOfPages: {
-                get() {
-                    return this.users && this.users.length
-                        ? Math.ceil(this.users.length / 10)
-                        : 1
-                        ;
-                },
-            },
         },
         data() {
             return {
@@ -767,8 +696,6 @@
                 showDeleteSponsorModal: false,
                 subteamPages: 0,
                 subteamName: '',
-                usersCurrentPage: 1,
-                userMembershipCached: {},
             };
         },
         watch: {
