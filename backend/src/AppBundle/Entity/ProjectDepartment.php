@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Component\Project\ProjectAwareInterface;
 use Component\Project\ProjectInterface;
-use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -20,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="project_department")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectDepartmentRepository")
  */
-class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, CloneableInterface, TimestampableInterface
+class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, TimestampableInterface
 {
     use TimestampableTrait;
 
@@ -122,6 +121,15 @@ class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, Clo
     private $subteams;
 
     /**
+     * @var ProjectDepartmentMember[]|ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="AppBundle\Entity\ProjectDepartmentMember", mappedBy="projectDepartment", cascade={"persist"}
+     *)
+     */
+    private $members;
+
+    /**
      * ProjectDepartment constructor.
      */
     public function __construct()
@@ -129,6 +137,7 @@ class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, Clo
         $this->createdAt = new \DateTime();
         $this->projectUsers = new ArrayCollection();
         $this->subteams = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     /**
@@ -343,10 +352,15 @@ class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, Clo
      *
      * @return ProjectUser[]
      */
-    public function getProjectDepartmentManagers()
+    public function getManagers()
     {
         $managers = [];
-        foreach ($this->projectUsers as $projectUser) {
+        foreach ($this->members as $member) {
+            $projectUser = $member->getProjectUser();
+            if (!$projectUser) {
+                continue;
+            }
+
             if ($projectUser->hasProjectRole(ProjectRole::ROLE_MANAGER)) {
                 $managers[] = $projectUser;
             }
@@ -440,5 +454,75 @@ class ProjectDepartment implements ProjectAwareInterface, ResourceInterface, Clo
     public function setProjectUsers($projectUsers)
     {
         $this->projectUsers = $projectUsers;
+    }
+
+    /**
+     * @return ProjectDepartmentMember[]|ArrayCollection
+     */
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    /**
+     * @param ProjectDepartmentMember[]|ArrayCollection $members
+     */
+    public function setMembers($members)
+    {
+        foreach ($members as $member) {
+            $member->setProjectDepartment($this);
+        }
+
+        $this->members = $members;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return ProjectUser|null
+     */
+    public function getLeader()
+    {
+        foreach ($this->getMembers() as $member) {
+            if ($member->isLead()) {
+                return $member->getProjectUser();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLeader()
+    {
+        return (bool) $this->getLeader();
+    }
+
+    /**
+     * @param ProjectDepartmentMember $member
+     *
+     * @return bool
+     */
+    public function addMember(ProjectDepartmentMember $member)
+    {
+        if ($this->members->contains($member)) {
+            return false;
+        }
+
+        $member->setProjectDepartment($this);
+
+        return $this->members->add($member);
+    }
+
+    /**
+     * @param ProjectDepartmentMember $projectDepartmentMember
+     *
+     * @return bool
+     */
+    public function removeMember(ProjectDepartmentMember $projectDepartmentMember)
+    {
+        return $this->members->removeElement($projectDepartmentMember);
     }
 }
