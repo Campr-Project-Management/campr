@@ -64,6 +64,63 @@
     };
 </script>
 
+<style lang="scss">
+    .gray-table {
+        -webkit-print-color-adjust: exact !important;
+        margin: 5px 0;
+        width: 100%;
+        table-layout: fixed;
+        border-top: 1px solid #999;
+        border-left: 1px solid #999;
+        background: #efefef;
+
+        th, td {
+            border-bottom: 1px solid #999;
+            border-right: 1px solid #999;
+            font-size: 9px;
+            padding: 3px;
+            width: 50%;
+        }
+    }
+
+    .content-table {
+        border: none;
+        width: 100%;
+        table-layout: fixed;
+
+        th, td {
+            font-size: 9px;
+            padding: 3px;
+            word-break: break-word;
+        }
+
+        td {
+            border-left: 1px solid #999;
+            border-top: 1px solid #999;
+
+            &:nth-child(1) {
+                border-left: none;
+            }
+        }
+    }
+
+    .row {
+        break-inside: avoid;
+    }
+
+    @media print {
+        .resources {
+            width: 100% !important;
+            transform: translate(-255px) scale(0.5);
+        }
+        .resources-half {
+            display: block;
+            width: 320px !important;
+            transform: translate(-118px, -90px) scale(0.5, 0.5);
+        }
+    }
+</style>
+
 <style lang="scss" scoped>
     @import '../../frontend/src/css/variables';
 
