@@ -2632,6 +2632,9 @@ module.exports = function (Translator) {
     Translator.add("title.settings", "Settings", "messages", "en");
     Translator.add("label.project_proposal", "Project Proposal", "messages", "en");
     Translator.add("label.project_order", "Project Order", "messages", "en");
+    Translator.add("label.signature", "Signature", "messages", "en");
+    Translator.add("ui.n_a", "N\/A", "messages", "en");
+    Translator.add("ui.edit_member", "Edit Member", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");

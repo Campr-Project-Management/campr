@@ -2611,6 +2611,8 @@ module.exports = function (Translator) {
     Translator.add("portal.page.try_beta.form.label.terms_and_conditions", "AGB", "messages", "de");
     Translator.add("portal.page.try_beta.form.button.send", "Senden", "messages", "de");
     Translator.add("message.department_member", "Mitglied der Abteilung", "messages", "de");
+    Translator.add("ui.n_a", "N\/A", "messages", "de");
+    Translator.add("ui.edit_member", "Mitglied bearbeiten", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Keine Accountaktivierung gefunden!", "flashes", "de");
