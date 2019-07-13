@@ -14,12 +14,7 @@ export default {
             activeModules: []
         };
     },
-    methods: {
-        isModuleActive(module) {
-            return this.activeModules
-                && typeof this.activeModules.indexOf === 'function'
-                && this.activeModules.indexOf(module) >= 0;
-        },
+    computed: {
         isPhasesAndMilestoneModuleActive() {
             return this.isModuleActive(MODULE_PHASES_AND_MILESTONES);
         },
@@ -40,6 +35,13 @@ export default {
         },
         isDecisionsModuleActive() {
             return this.isModuleActive(MODULE_DECISIONS);
+        }
+    },
+    methods: {
+        isModuleActive(module) {
+            return this.activeModules
+                && typeof this.activeModules.indexOf === 'function'
+                && this.activeModules.indexOf(module) >= 0;
         }
     }
 };
