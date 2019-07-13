@@ -177,7 +177,7 @@
                 </div>
             </div>
 
-            <div class="row"v-if="isExternalCostsModuleActive && externalCostsGraphData">
+            <div class="row" v-if="isExternalCostsModuleActive && externalCostsGraphData">
                 <h3>{{ translate('message.external_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
@@ -280,72 +280,7 @@
             <hr class="double">
         </template>
 
-        <div class="row col-xs-12" style="padding-left: 0; padding-right: 0;">
-            <div class="col-xs-6" style="padding-left: 0;">
-                <h3>{{ translate('label.project_proposal') }}</h3>
-                <table class="content-table">
-                    <tbody>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>{{ translate('label.date') }}</th>
-                            <th>{{ translate('label.signature') }}</th>
-                        </tr>
-                        <tr>
-                            <th>{{ translate('message.project_sponsor') }}</th>
-                            <th colspan="2" style="border-left: none;">&nbsp;</th>
-                        </tr>
-                        <tr>
-                            <th>{{ translate('message.project_manager') }}</th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-xs-6" style="padding-right: 0;">
-                <h3>{{ translate('label.project_order') }}</h3>
-                <table class="content-table">
-                    <tbody>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>{{ translate('label.date') }}</th>
-                            <th>{{ translate('label.signature') }}</th>
-                        </tr>
-                        <tr>
-                            <th>{{ translate('message.project_sponsor') }}</th>
-                            <th colspan="2" style="border-left: none;">&nbsp;</th>
-                        </tr>
-                        <tr>
-                            <th>{{ translate('message.project_manager') }}</th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td colspan="2" style="border-left: none;">&nbsp;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <signature />
     </page>
 </template>
 
@@ -355,6 +290,7 @@ import Chart from '~/components/Charts/CostsChart.vue';
 import DownloadbuttonIcon from '~/components/_icons/DownloadbuttonIcon.vue';
 import EyeIcon from '~/components/_icons/EyeIcon.vue';
 import InputField from '~/components/_form-components/InputField.vue';
+import Signature from '~/components/_common/Signature.vue';
 import MemberBadge from '~/components/MemberBadge.vue';
 import TrafficLight from '~/components/_common/TrafficLight.vue';
 import StatusReportTimeline from '~/components/Projects/StatusReports/Create/Timeline';
@@ -381,6 +317,7 @@ export default {
         StatusReportTimeline,
         RisksGrid,
         OpportunitiesGrid,
+        Signature,
     },
     computed: {
         downloadPdf() {
@@ -520,241 +457,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss">
-    // ../../css/_common
-    /*@import '../../../../frontend/src/css/_common.scss';*/
-    /*@import '../../../../frontend/src/css/vueditor.css';*/
-</style>
-
-<style scoped lang="scss">
-    @import "../../../../frontend/src/css/variables";
-
-    .gray-table {
-        -webkit-print-color-adjust: exact !important;
-        margin: 5px 0;
-        width: 100%;
-        border-top: 1px solid #999;
-        border-left: 1px solid #999;
-        background: #efefef;
-
-        th, td {
-            border-bottom: 1px solid #999;
-            border-right: 1px solid #999;
-            font-size: 9px;
-            padding: 3px;
-            width: 50%;
-        }
-    }
-
-    .content-table {
-        border: none;
-        width: 100%;
-        table-layout: fixed;
-
-        th, td {
-            font-size: 9px;
-            padding: 3px;
-            word-break: break-word;
-        }
-
-        td {
-            border-left: 1px solid #999;
-            border-top: 1px solid #999;
-
-            &:nth-child(1) {
-                border-left: none;
-            }
-        }
-    }
-
-    .row {
-        break-inside: avoid;
-    }
-
-    @media print {
-        .resources {
-            width: 100% !important;
-            transform: translate(-255px) scale(0.5);
-        }
-        .resources-half {
-            display: block;
-            width: 320px !important;
-
-            /*/deep/ > div {*/
-            /*    width: 100%;*/
-            /*}*/
-            /*overflow: hidden;*/
-            /*display: block;*/
-            /*width: 750px;*/
-            /*width: 100% !important;*/
-            transform: translate(-118px, -90px) scale(0.5, 0.5);
-            /*border: 1px solid #123456;*/
-        }
-    }
-
-    /*@import '../../../../frontend/src/css/page-section';
-
-    @media print {
-        .resources {
-            > div {
-                > div {
-                    width: 100% !important;
-                    transform: translate(-60px);
-                }
-            }
-        }
-    }
-
-    .half-left {
-        float: left;
-    }
-    .half-right {
-        float: right;
-    }
-    .half {
-        width: 45%;
-        text-align: center;
-        height: 160px;
-        line-height: 40px;
-        border-bottom: 1px solid #191E37;
-
-        h3 {
-            height: 40px;
-            line-height: 40px;
-            margin-top: 0;
-            margin-bottom: 0;
-            border-bottom: 1px solid #191E37;
-        }
-    }
-
-    .page-section {
-        .header {
-            justify-content: center;
-            text-align: center;
-
-            h1 {
-                padding-bottom: 1.25em;
-
-                span {
-                    font-size: 0.75em;
-                    display: block;
-                    margin-top: 0.6em;
-                }
-            }
-        }
-    }
-
-    .project-info {
-        text-align: center;
-        margin-bottom: 2em;
-
-        span {
-            display: inline-block;
-            font-size: 1.5em;
-        }
-    }
-
-    .hero-text {
-        font-size: 3em;
-        font-weight: 700;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 1.9em;
-    }
-
-    .header .btn-md {
-        margin-top: 1.5em;
-    }
-
-    .members-big {
-        margin: 1.9em 0 0;
-    }
-
-    .member-badge {
-        &:before {
-            display: none;
-        }
-    }
-
-    .dates {
-        .input-holder {
-            width: 50%;
-
-            &.left {
-                margin-right: 15px;
-            }
-
-            &.right {
-                margin-left: 15px;
-            }
-        }
-    }
-
-    .page-side {
-        width: 50%;
-
-        &.left {
-            padding-right: 15px;
-        }
-
-        &.right {
-            padding-top: 20px;
-            padding-left: 15px;
-        }
-    }
-
-    .btn-rounded {
-        width: 220px;
-
-        &.btn-empty {
-            width: auto;
-            font-size: 9px;
-            padding: 0 26px;
-        }
-    }
-
-    .st0 {
-        fill:none;
-        stroke:#65BEA3;
-        stroke-linecap:round;
-        stroke-linejoin:round;
-        stroke-miterlimit:10;
-    }
-
-    .pdf {
-        margin: 1.9em 13px;
-    }
-
-    .download-pdf {
-        padding-top: 2px;
-    }
-
-    .hr {
-        margin: 1.9em 0;
-
-        &.small {
-            margin: 20px 0;
-        }
-    }
-
-    .buttons {
-        a {
-            margin: 0 20px 10px 0;
-
-            &:last-child {
-                margin: 0 0 10px 0;
-            }
-        }
-    }
-
-    .input-holder {
-        margin-bottom: 20px;
-    }
-
-    .disabledpicker {
-        pointer-events: none;
-        opacity: .5;
-    }*/
-</style>

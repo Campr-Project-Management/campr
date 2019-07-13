@@ -1,133 +1,124 @@
 <template>
-    <page :team="team" :project="project">
-        <div class="row">
-            <div class="create-meeting page-section">
-                <!-- /// Header /// -->
-                <div class="header flex-v-center">
-                    <div>
-                        <h1>{{ translate(meeting.name) }}</h1>
-                        <h3 class="category"><b>{{ meeting.meetingCategoryName }}</b></h3>
-                        <h4>
-                            {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>, <b>{{
-                            meeting.date | moment('DD.MM.YYYY') }}</b>
-                            {{ translate('message.from') }} <b>{{ meeting.start }}</b> {{ translate('message.to') }} <b>{{
-                            meeting.end }}</b> | {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start,
-                            meeting.end) }} {{ translate('message.min') }}</b>
-                        </h4>
-                    </div>
-                </div>
-                <!-- /// End Header /// -->
-            </div>
+    <page :team="team" :project="project" :title="translate(meeting.name)" :subtitle="meeting.meetingCategoryName">
+        <div class="row flex-v-center">
+            <h4>
+                {{ translate('message.starting_on') }} <b>{{ meeting.date | moment('dddd') }}</b>,
+                <b>{{ meeting.date | moment('DD.MM.YYYY') }}</b>
+                {{ translate('message.from') }} <b>{{ meeting.start }}</b>
+                {{ translate('message.to') }} <b>{{ meeting.end }}</b> |
+                {{ translate('message.duration') }}: <b>{{ getDuration(meeting.start, meeting.end) }} {{ translate('message.min') }}</b>
+            </h4>
+        </div>
 
-            <hr class="double">
+        <template v-if="meeting.meetingParticipants && meeting.meetingParticipants.length > 0">
+            <div class="row create-meeting page-section">
+                <h3>{{ translate('message.participants') }}</h3>
 
-            <div class="create-meeting page-section"
-                 v-if="meeting.meetingParticipants && meeting.meetingParticipants.length > 0">
-                <div class="flex flex-v-center flex-space-between">
-                    <div>
-                        <h3>{{ translate('message.participants') }}</h3>
-                    </div>
-                </div>
-
-                <table class="table table-striped table-responsive">
+                <table class="content-table">
                     <thead>
-                    <tr>
-                        <th>{{ translate('table_header_cell.team_member') }}</th>
-                        <th>{{ translate('table_header_cell.department') }}</th>
-                        <th>{{ translate('table_header_cell.present') }}</th>
-                        <th>{{ translate('table_header_cell.distribution_list') }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ translate('table_header_cell.team_member') }}</th>
+                            <th>{{ translate('table_header_cell.department') }}</th>
+                            <th>{{ translate('table_header_cell.present') }}</th>
+                            <th>{{ translate('table_header_cell.distribution_list') }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr v-for='participant in meeting.meetingParticipants' :key="`participant-${participant.user}`">
-                        <td>
-                            <div class="avatars flex flex-v-center">
-                                <div>
-                                    <div class="avatar"
-                                         :style="{ backgroundImage: 'url('+participant.userAvatarUrl+')' }"></div>
+                        <tr v-for='participant in meeting.meetingParticipants' :key="`participant-${participant.user}`">
+                            <td>
+                                <div class="avatars flex flex-v-center">
+                                    <div>
+                                        <div class="avatar"
+                                             :style="{ backgroundImage: 'url('+participant.userAvatarUrl+')' }"></div>
+                                    </div>
+                                    <span>{{ participant.userFullName }}</span>
                                 </div>
-                                <span>{{ participant.userFullName }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span v-for="(department, index) in participant.userDepartmentNames"
-                                  :key="`participant-department-${index}`">
-                                {{ department }}<span v-if="index < participant.userDepartmentNames.length - 1">,</span>
-                            </span>
-                        </td>
-                        <td>
-                            <span v-if="participant.isPresent">yes</span>
-                            <span v-else>no</span>
-                        </td>
-                        <td>
-                            <span v-if="participant.inDistributionList">yes</span>
-                            <span v-else>no</span>
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                                <span v-for="(department, index) in participant.userDepartmentNames"
+                                      :key="`participant-department-${index}`">
+                                    {{ department }}<span v-if="index < participant.userDepartmentNames.length - 1">,</span>
+                                </span>
+                            </td>
+                            <td>
+                                <span v-if="participant.isPresent">yes</span>
+                                <span v-else>no</span>
+                            </td>
+                            <td>
+                                <span v-if="participant.inDistributionList">yes</span>
+                                <span v-else>no</span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
+        </template>
 
-            <hr class="double">
-
+        <div class="row">
             <!-- /// Meeting Location /// -->
             <h3>{{ translate('message.location') }}</h3>
             <p>{{ meeting.location }}</p>
             <!-- /// End Meeting Location /// -->
+        </div>
 
-            <hr class="double">
-
-            <template v-if="meeting.meetingObjectives && meeting.meetingObjectives.length > 0">
+        <template v-if="meeting.meetingObjectives && meeting.meetingObjectives.length > 0">
+            <div class="row">
                 <!-- /// Meeting Objectives /// -->
                 <h3>{{ translate('message.objectives') }}</h3>
-                <ul class="action-list">
-                    <li v-for="objective in meeting.meetingObjectives" :key="`objective-${objective.id}`">
-                        <div class="list-item-description">
-                            {{ objective.description }}
-                        </div>
-                    </li>
-                </ul>
+                <table class="content-table">
+                    <tbody>
+                        <tr>
+                            <th>{{ translate('label.description') }}</th>
+                        </tr>
+                        <tr
+                            v-for="(objective, index) in meeting.meetingObjectives"
+                            :key="`objective-${objective.id}`"
+                        >
+                            <td>{{ index + 1 }}. {{ objective.description }}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <!-- /// End Meeting Objectives /// -->
+            </div>
+        </template>
 
-                <hr class="double">
-            </template>
-
-            <template v-if="meetingAgendas && meetingAgendas.items.length > 0">
+        <template v-if="meetingAgendas && meetingAgendas.items.length > 0">
+            <div class="row">
                 <!-- /// Meeting Agenda /// -->
                 <h3>{{ translate('message.agenda') }}</h3>
                 <div class="overflow-hidden">
-                    <table class="table table-striped table-responsive">
+                    <table class="content-table">
                         <thead>
-                        <tr>
-                            <th>{{ translate('table_header_cell.topic') }}</th>
-                            <th>{{ translate('table_header_cell.responsible') }}</th>
-                            <th>{{ translate('table_header_cell.start') }}</th>
-                            <th>{{ translate('table_header_cell.duration') }}</th>
-                        </tr>
+                            <tr>
+                                <th>{{ translate('table_header_cell.topic') }}</th>
+                                <th>{{ translate('table_header_cell.responsible') }}</th>
+                                <th>{{ translate('table_header_cell.start') }}</th>
+                                <th>{{ translate('table_header_cell.duration') }}</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="agenda in meetingAgendas.items" :key="`agenda-${agenda.id}`">
-                            <td class="topic">{{ agenda.topic }}</td>
-                            <td>
-                                <div class="avatars collapse in" id="tp-meeting-20032017-1">
-                                    <div>
-                                        <div class="avatar"
-                                             :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
+                            <tr v-for="agenda in meetingAgendas.items" :key="`agenda-${agenda.id}`">
+                                <td class="topic">{{ agenda.topic }}</td>
+                                <td>
+                                    <div class="avatars flex flex-v-center">
+                                        <div>
+                                            <div class="avatar"
+                                                 :style="{ backgroundImage: 'url('+agenda.responsibilityAvatarUrl+')' }"></div>
+                                        </div>
+                                        <span>{{ agenda.responsibilityFullName }}</span>
                                     </div>
-                                </div>
-                            </td>
-                            <td>{{ agenda.start }}</td>
-                            <td>{{ agenda.duration }} {{ translate('message.min') }}</td>
-                        </tr>
+                                </td>
+                                <td>{{ agenda.start }}</td>
+                                <td>{{ agenda.duration }} {{ translate('message.min') }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </template>
 
-                <hr class="double">
-            </template>
-
-            <template
-                    v-if="(meeting.decisions && meeting.decisions.length > 0) || (meeting.openDecisions && meeting.openDecisions.length > 0)">
+        <template v-if="(meeting.decisions && meeting.decisions.length > 0) || (meeting.openDecisions && meeting.openDecisions.length > 0)">
+            <div class="row">
                 <!-- /// Decisions /// -->
                 <h3>{{ translate('message.decisions') }}</h3>
 
@@ -172,11 +163,11 @@
                 </div>
                 <!-- /// End Decisions /// -->
 
-                <hr class="double">
-            </template>
+            </div>
+        </template>
 
-            <template
-                    v-if="(meeting.todos && meeting.todos.length > 0) || (meeting.openTodos && meeting.openTodos.length > 0)">
+        <template v-if="(meeting.todos && meeting.todos.length > 0) || (meeting.openTodos && meeting.openTodos.length > 0)">
+            <div class="row">
                 <!-- /// ToDos /// -->
                 <h3>{{ translate('message.todos') }}</h3>
 
@@ -223,11 +214,11 @@
                 </div>
                 <!-- /// End ToDos /// -->
 
-                <hr class="double">
-            </template>
+            </div>
+        </template>
 
-            <template
-                    v-if="(meeting.infos && meeting.infos.length > 0) || (meeting.openInfos && meeting.openInfos.length > 0)">
+        <template v-if="(meeting.infos && meeting.infos.length > 0) || (meeting.openInfos && meeting.openInfos.length > 0)">
+            <div class="row">
                 <!-- /// Infos /// -->
                 <h3>{{ translate('message.infos') }}</h3>
 
@@ -290,8 +281,8 @@
                     </div>
                     <!-- /// End Info /// -->
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
     </page>
 </template>
 
@@ -410,7 +401,7 @@
         font-weight: 700;
     }
 
-    .action-list {
+    /**.action-list {
         margin-bottom: 15px;
 
         li {
@@ -459,7 +450,7 @@
 
     .actions {
         margin: 30px 0;
-    }
+    }*/
 
     .table-wrapper {
         width: 100%;
@@ -523,7 +514,7 @@
             .entry-title {
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                font-size: 10px;
+                font-size: 9px;
                 margin-bottom: 10px;
 
                 h4 {
@@ -555,17 +546,17 @@
         .entry-responsible {
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            font-size: 10px;
-            line-height: 1.5em;
+            font-size: 9px;
+            line-height: 12px;
 
             b {
-                display: block;
-                font-size: 12px;
+                display: inline-block;
+                font-size: 9px;
             }
         }
 
         .entry-body {
-            padding: 10px 0 0 0;
+            padding: 3px 0 0 0;
 
             ul {
                 list-style-type: disc;

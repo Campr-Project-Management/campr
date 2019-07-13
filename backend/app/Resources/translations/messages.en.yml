@@ -2386,3 +2386,6 @@ message.department_member: 'Department Member'
 title.settings: Settings
 label.project_proposal: 'Project Proposal'
 label.project_order: 'Project Order'
+label.signature: Signature
+ui.n_a: N/A
+ui.edit_member: 'Edit Member'
