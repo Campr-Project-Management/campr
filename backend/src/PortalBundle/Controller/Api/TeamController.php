@@ -69,7 +69,7 @@ class TeamController extends ApiController
     }
 
     /**
-     * @Route("/{uuid}", name="portal_api_team_update", methods={"POST"})
+     * @Route("/{uuid}", name="portal_api_team_update", methods={"POST"}, requirements={"uuid":"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"})
      *
      * @param Request $request
      * @param string  $uuid
@@ -119,7 +119,7 @@ class TeamController extends ApiController
     }
 
     /**
-     * @Route("/{uuid}/restore", name="portal_api_team_restore", methods={"POST"})
+     * @Route("/{uuid}/restore", name="portal_api_team_restore", methods={"POST"}, requirements={"uuid":"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"})
      *
      * @param string $uuid
      *
@@ -196,7 +196,7 @@ class TeamController extends ApiController
     }
 
     /**
-     * @Route("/{uuid}", name="portal_api_team_delete", methods={"POST"})
+     * @Route("/{uuid}", name="portal_api_team_delete", methods={"POST"}, requirements={"uuid":"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"})
      *
      * @param Team $team
      *
