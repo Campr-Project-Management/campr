@@ -1,10 +1,10 @@
 <template>
     <div class="page">
         <div class="header">
-            <div class="logo pull-left">
+            <div class="logo pull-left" style="text-align: left;">
                 <img :src="leftLogoUrl" v-if="leftLogoUrl" alt="logo" />
             </div>
-            <div class="logo pull-right">
+            <div class="logo pull-right" style="text-align: right;">
                 <img :src="rightLogoUrl" v-if="rightLogoUrl" alt="logo" />
             </div>
             <div class="text-center" v-if="title && subtitle">
@@ -162,11 +162,12 @@
                 display: block;
                 height: 60px;
                 line-height: 60px;
-                width: 70px;
+                width: 60px;
                 margin: 0;
+                padding: 0;
 
                 img {
-                    width: 70px;
+                    max-height: 57px;
                 }
             }
         }
