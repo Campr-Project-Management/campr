@@ -42,6 +42,9 @@ class ContractControllerTest extends BaseController
         $contract = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $contract['updatedAt'];
         $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
+        $responseContent['createdByFullName'] = $contract['createdByFullName'];
+        $responseContent['risks'] = $contract['risks'];
+        $responseContent['opportunities'] = $contract['opportunities'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -65,7 +68,7 @@ class ContractControllerTest extends BaseController
                     'projectName' => 'project1',
                     'createdBy' => 1,
                     'updatedBy' => null,
-                    'createdByFullName' => 'FirstName1 LastName1',
+                    'createdByFullName' => 'FirstNametestEditAction 1 LastName1',
                     'id' => 1,
                     'name' => 'contract1',
                     'description' => 'contract-description1',
@@ -293,6 +296,8 @@ class ContractControllerTest extends BaseController
         $contract = json_decode($response->getContent(), true);
         $responseContent['updatedAt'] = $contract['updatedAt'];
         $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
+        $responseContent['risks'] = $contract['risks'];
+        $responseContent['opportunities'] = $contract['opportunities'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
