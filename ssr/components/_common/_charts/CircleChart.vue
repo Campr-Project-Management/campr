@@ -221,7 +221,7 @@
                 color: $middleColor;
                 font-size: 12px;
                 line-height: 22px;
-                margin-left: -5px;
+                // margin-left: -5px;
             }
         }
 

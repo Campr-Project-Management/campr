@@ -32,12 +32,21 @@ class MeetingController extends Controller
             throw new ServiceUnavailableHttpException();
         }
 
+        $date = $meeting->getDate() ?: $meeting->getCreatedAt();
+        $translator = $this->get('translator');
+
         return new Response(
             $pdf,
             Response::HTTP_OK,
             [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="meeting-%010d.pdf"', $meeting->getId()),
+                'Content-Disposition' => sprintf(
+                    'attachment; filename="%s - %s - %s - %s.pdf"',
+                    $date->format('ymd'),
+                    $translator->trans($meeting->getName(), [], 'messages'),
+                    $translator->trans('label.meeting', [], 'messages'),
+                    $meeting->getProject()->getName()
+                ),
             ]
         );
     }
