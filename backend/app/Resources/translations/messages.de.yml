@@ -2365,3 +2365,5 @@ portal.page.try_beta.form.label.i_agree_to: 'Ich akzeptiere die'
 portal.page.try_beta.form.label.terms_and_conditions: AGB
 portal.page.try_beta.form.button.send: Senden
 message.department_member: 'Mitglied der Abteilung'
+ui.n_a: N/A
+ui.edit_member: 'Mitglied bearbeiten'

@@ -28,9 +28,17 @@ class ContractController extends Controller
             throw new ServiceUnavailableHttpException();
         }
 
+        $date = $contract->getApprovedAt() ?: $contract->getCreatedAt();
+        $translator = $this->get('translator');
+
         return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => sprintf('attachment; filename="contract-%010d.pdf"', $contract->getId()),
+            'Content-Disposition' => sprintf(
+                'attachment; filename="%s - %s - %s"',
+                $date->format('ymd'),
+                $translator->trans('message.project_contract', [], 'messages'),
+                $contract->getProject()->getName()
+            ),
         ]);
     }
 

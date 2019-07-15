@@ -2097,7 +2097,7 @@ module.exports = function (Translator) {
     Translator.add("title.filesystem.create", "Neues Dateisystem erstellen", "messages", "de");
     Translator.add("title.filesystem.edit", "Dateisystem bearbeiten", "messages", "de");
     Translator.add("title.filesystem.list", "Dateisystem", "messages", "de");
-    Translator.add("title.PageHeader.vue", "Campr Administration", "messages", "de");
+    Translator.add("title.header", "Campr Administration", "messages", "de");
     Translator.add("title.homepage", "Campr Admin", "messages", "de");
     Translator.add("title.homepage_main", "Campr Main Site", "messages", "de");
     Translator.add("title.impact.create", "Neue Auswirkung erstellen", "messages", "de");
@@ -2611,6 +2611,8 @@ module.exports = function (Translator) {
     Translator.add("portal.page.try_beta.form.label.terms_and_conditions", "AGB", "messages", "de");
     Translator.add("portal.page.try_beta.form.button.send", "Senden", "messages", "de");
     Translator.add("message.department_member", "Mitglied der Abteilung", "messages", "de");
+    Translator.add("ui.n_a", "N\/A", "messages", "de");
+    Translator.add("ui.edit_member", "Mitglied bearbeiten", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Keine Accountaktivierung gefunden!", "flashes", "de");

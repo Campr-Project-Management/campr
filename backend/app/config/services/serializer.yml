@@ -47,6 +47,14 @@ services:
         tags:
             - { name: jms_serializer.event_subscriber }
 
+    app.serializer.listener.contract:
+      class: AppBundle\Serializer\EventListener\ContractSubscriber
+      arguments:
+        - '@app.snapshot.transformer.risks'
+        - '@app.snapshot.transformer.opportunities'
+      tags:
+        - { name: jms_serializer.event_subscriber }
+
     app.serializer.normalizer.json:
         class: AppBundle\Serializer\Normalizer\JsonSerializableNormalizer
         arguments:
