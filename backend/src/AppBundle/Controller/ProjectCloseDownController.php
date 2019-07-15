@@ -33,9 +33,17 @@ class ProjectCloseDownController extends Controller
             throw new ServiceUnavailableHttpException();
         }
 
+        $date = $projectCloseDown->getCreatedAt();
+        $translator = $this->get('translator');
+
         return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => sprintf('attachment; filename="project-close-down-%010d.pdf"', $projectCloseDown->getId()),
+            'Content-Disposition' => sprintf(
+                'attachment; filename="%s - %s - %s.pdf"',
+                $date->format('ymd'),
+                $translator->trans('message.close_down_report', [], 'messages'),
+                $projectCloseDown->getProject()->getName()
+            ),
         ]);
     }
 
