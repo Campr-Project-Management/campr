@@ -27,9 +27,17 @@ class StatusReportController extends Controller
             throw new ServiceUnavailableHttpException();
         }
 
+        $date = $statusReport->getCreatedAt();
+        $translator = $this->get('translator');
+
         return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => sprintf('attachment; filename="status-report-%s.pdf"', $statusReport->getCreatedAt()->format('Y-m-d')),
+            'Content-Disposition' => sprintf(
+                'attachment; filename="CW%s - %s - %s.pdf"',
+                $date->format('W'),
+                $translator->trans('label.status_report', [], ''),
+                $statusReport->getProject()->getName()
+            ),
         ]);
     }
 
