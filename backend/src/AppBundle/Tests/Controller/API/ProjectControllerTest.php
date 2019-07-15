@@ -684,8 +684,12 @@ class ProjectControllerTest extends BaseController
         $responseArray = json_decode($response->getContent(), true);
         $responseContent[0]['updatedAt'] = $responseArray[0]['updatedAt'];
         $responseContent[0]['createdByAvatarUrl'] = $responseArray[0]['createdByAvatarUrl'];
+        $responseContent[0]['risks'] = $responseArray[0]['risks'];
+        $responseContent[0]['opportunities'] = $responseArray[0]['opportunities'];
         $responseContent[1]['updatedAt'] = $responseArray[1]['updatedAt'];
         $responseContent[1]['createdByAvatarUrl'] = $responseArray[1]['createdByAvatarUrl'];
+        $responseContent[1]['risks'] = $responseArray[1]['risks'];
+        $responseContent[1]['opportunities'] = $responseArray[1]['opportunities'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -789,6 +793,8 @@ class ProjectControllerTest extends BaseController
         $responseContent['updatedAt'] = $contract['updatedAt'];
         $responseContent['id'] = $contract['id'];
         $responseContent['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
+        $responseContent['risks'] = $contract['risks'];
+        $responseContent['opportunities'] = $contract['opportunities'];
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -1865,6 +1871,8 @@ class ProjectControllerTest extends BaseController
         foreach ($project['contracts'] as $k => $contract) {
             $responseContent['contracts'][$k]['createdByAvatarUrl'] = $contract['createdByAvatarUrl'];
             $responseContent['contracts'][$k]['updatedAt'] = $contract['updatedAt'];
+            $responseContent['contracts'][$k]['risks'] = $contract['risks'];
+            $responseContent['contracts'][$k]['opportunities'] = $contract['opportunities'];
         }
 
         foreach ($project['units'] as $k => $unit) {
