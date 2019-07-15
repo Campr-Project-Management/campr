@@ -1,263 +1,227 @@
 <template>
-    <page :project="project" :team="team">
-        <div class="project-status-report page-section row text-center">
-            <div class="col-lg-8 col-lg-offset-2" id="statusReportPrint">
-                <div class="header">
-                    <h1>
-                        {{ report.projectName }}
-                        <span>{{ translate('message.week') }} {{ report.weekNumber }}</span>
-                    </h1>
-                </div>
-
-                <div class="hero-text">
-                    {{ translate('message.status_report') }}
-                </div>
-
-                <h3>{{ translate('message.overall_status') }}</h3>
-                <div class="flex flex-center" style="text-align: center">
-                    <traffic-light
-                            :value="report.projectTrafficLight"
-                            size="normal"
-                            :editable="false"/>
-                </div>
-
-                <h4>{{ translate('message.tasks_status') }}</h4>
-                <no-ssr>
-                    <progress-bar-chart :series="tasksStatusSeries"/>
-                </no-ssr>
-                <br/>
-
-                <h4>{{ translate('message.tasks_condition') }}</h4>
-                <no-ssr>
-                    <progress-bar-chart
-                            :series="tasksTrafficLightSeries"
-                            :options="{labels: {enabled: false}}"/>
-                </no-ssr>
-
-                <div class="checkbox-input clearfix">
-                    <input
-                            :value="report.projectActionNeeded"
-                            type="checkbox"
-                            :disabled="true"/>
-                    <label class="no-margin-bottom">{{ translate('message.action_needed') }}</label>
-                </div>
-
-                <h3>{{ translate('message.project_trend') }}</h3>
-                <h4>{{ translate('message.current_date') }}: {{ report.createdAt | date }}</h4>
-
-                <no-ssr>
-                    <div style="page-break-after: always">
-                        <status-report-trend-chart
-                                v-if="trendChartData.length > 0"
-                                :data="trendChartData"
-                                :labels="trendChartLabels"
-                                :point-color="trendChartPointColor"
-                                :options="{responsive: false}"
-                                :width="780"/>
-                        <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
-                    </div>
-                </no-ssr>
-
-                <div class="row" v-if="report.comment">
-                    <div class="col-md-12">
-                        <div class="form">
-                            <div class="form-group last-form-group">
-                                <br/>
-                                <h4>{{ translate('message.comment') }}</h4>
-                                <div class="vueditor-holder">
-                                    <div class="vueditor campr-editor">
-                                        <br>
-                                        <div class="ve-design" v-html="report.comment"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="double">
-
-                <template v-if="schedule">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.schedule') }}</h3>
-                            <br/>
-                            <status-report-schedule
-                                    :base-start-at="schedule.base.startAt"
-                                    :base-finish-at="schedule.base.finishAt"
-                                    :base-duration-days="schedule.base.durationDays"
-                                    :forecast-start-at="schedule.forecast.startAt"
-                                    :forecast-finish-at="schedule.forecast.finishAt"
-                                    :forecast-duration-days="schedule.forecast.durationDays"
-                                    :actual-start-at="schedule.actual.startAt"
-                                    :actual-finish-at="schedule.actual.finishAt"
-                                    :actual-duration-days="schedule.actual.durationDays"/>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <div class="row statuses min-status" v-if="progress">
-                    <div class="col-md-4" style="width: 33%; display: inline-block;">
-                        <div class="status">
-                            <no-ssr>
-                                <circle-chart
-                                        :bgStrokeColor="options.backgroundColor"
-                                        :stroke-width="8"
-                                        :percentage="projectPlannedProgress"
-                                        :animation-duration="0"
-                                        :title="translate('message.planned_progress')"
-                                        class="left center-content"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="width: 33%; display: inline-block;">
-                        <div class="status">
-                            <no-ssr>
-                                <circle-chart
-                                        :bgStrokeColor="options.backgroundColor"
-                                        :stroke-width="8"
-                                        :animation-duration="0"
-                                        :percentage="progress.tasks"
-                                        :title="translate('message.task_status')"
-                                        class="left center-content"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="width: 33%; display: inline-block;">
-                        <div class="status">
-                            <no-ssr>
-                                <circle-chart
-                                        :bgStrokeColor="options.backgroundColor"
-                                        :stroke-width="8"
-                                        :animation-duration="0"
-                                        :percentage="progress.costs"
-                                        :title="translate('message.cost_status')"
-                                        class="left center-content"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="double">
-
-                <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
-                    <div class="row" style="page-break-after: always">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.phases_and_milestones') }}</h3>
-                            <div class="flex flex-center" style="text-align: center">
-                                <traffic-light :value="projectTrafficLight"/>
-                            </div>
-
-                            <br/>
-
-                            <no-ssr>
-                                <status-report-timeline
-                                        style="width: 90%;"
-                                        :phases="phases"
-                                        :milestones="milestones"
-                                        :locale="forcedLocale"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isInternalCostsModuleActive && internalCostsGraphData">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.internal_costs') }}</h3>
-                            <div class="marginbottom20" style="text-align: center">
-                                <traffic-light :value="internalCostsTrafficLight"/>
-                            </div>
-
-                            <no-ssr>
-                                <chart
-                                        theme="print"
-                                        :data="internalCostsGraphData"
-                                        style="width: 90%;"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isExternalCostsModuleActive && externalCostsGraphData">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.external_costs') }}</h3>
-                            <div class="marginbottom20" style="text-align: center">
-                                <traffic-light :value="externalCostsTrafficLight"/>
-                            </div>
-
-                            <no-ssr>
-                                <chart
-                                        theme="print"
-                                        :data="externalCostsGraphData"
-                                        style="width: 90%;"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isRiskAndOpportunitiesModuleActive">
-                    <div class="row ro-columns">
-                        <div class="col-md-6 col-xs-6 dark-border-right">
-                            <no-ssr>
-                                <opportunities-grid :value="opportunitiesGrid" :currency="currency"
-                                                    :locale="forcedLocale"/>
-                            </no-ssr>
-                        </div>
-
-                        <div class="col-md-6 col-xs-6">
-                            <no-ssr>
-                                <risks-grid :value="risksGrid" :currency="currency" :locale="forcedLocale"/>
-                            </no-ssr>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isTodosModuleActive">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.todos') }}</h3>
-                            <status-report-todos :items="todosItems"/>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isDecisionsModuleActive">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.decisions') }}</h3>
-                            <status-report-decisions :items="decisionsItems"/>
-                        </div>
-                    </div>
-
-                    <hr class="double">
-                </template>
-
-                <template v-if="isInfosModuleActive">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="margintop0">{{ translate('message.infos') }}</h3>
-                            <status-report-infos :items="infosItems"/>
-                        </div>
-                    </div>
-                </template>
-                <br>
-                <br>
+    <page :project="project" :team="team" :title="report.projectName" :subtitle="translate('message.week') + ' ' + report.weekNumber">
+        <div class="row">
+            <div class="hero-text">
+                {{ translate('message.status_report') }}
             </div>
         </div>
+
+        <div class="row">
+            <h3>{{ translate('message.overall_status') }}</h3>
+            <div class="flex flex-center" style="text-align: center">
+                <traffic-light
+                        :value="report.projectTrafficLight"
+                        size="normal"
+                        :editable="false"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <h4>{{ translate('message.tasks_status') }}</h4>
+            <no-ssr>
+                <progress-bar-chart :series="tasksStatusSeries"/>
+            </no-ssr>
+            <br/>
+        </div>
+
+        <div class="row">
+            <h4>{{ translate('message.tasks_condition') }}</h4>
+            <no-ssr>
+                <progress-bar-chart
+                        :series="tasksTrafficLightSeries"
+                        :options="{labels: {enabled: false}}"/>
+            </no-ssr>
+        </div>
+
+        <div class="row">
+            <h3>
+                {{ translate('message.project_trend') }}
+                <span class="pull-right">{{ translate('message.current_date') }}: {{ report.createdAt | date }}</span>
+            </h3>
+
+            <no-ssr>
+                <status-report-trend-chart
+                        v-if="trendChartData.length > 0"
+                        :data="trendChartData"
+                        :labels="trendChartLabels"
+                        :point-color="trendChartPointColor"
+                        :options="{responsive: false}"
+                        :width="780"/>
+                <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+            </no-ssr>
+        </div>
+
+
+        <div class="row" v-if="report.comment">
+            <h4>{{ translate('message.comment') }}</h4>
+            <div class="ve-design" v-html="report.comment"></div>
+        </div>
+
+        <hr class="double">
+
+        <template v-if="schedule">
+            <div class="row">
+                <h3>{{ translate('message.schedule') }}</h3>
+                <status-report-schedule
+                        :base-start-at="schedule.base.startAt"
+                        :base-finish-at="schedule.base.finishAt"
+                        :base-duration-days="schedule.base.durationDays"
+                        :forecast-start-at="schedule.forecast.startAt"
+                        :forecast-finish-at="schedule.forecast.finishAt"
+                        :forecast-duration-days="schedule.forecast.durationDays"
+                        :actual-start-at="schedule.actual.startAt"
+                        :actual-finish-at="schedule.actual.finishAt"
+                        :actual-duration-days="schedule.actual.durationDays"/>
+            </div>
+        </template>
+
+        <div class="row statuses min-status" v-if="progress">
+            <div class="col-xs-4">
+                <div class="status">
+                    <no-ssr>
+                        <circle-chart
+                                :bgStrokeColor="options.backgroundColor"
+                                :stroke-width="8"
+                                :percentage="projectPlannedProgress"
+                                :animation-duration="0"
+                                :title="translate('message.planned_progress')"
+                                class="left center-content"/>
+                    </no-ssr>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="status">
+                    <no-ssr>
+                        <circle-chart
+                                :bgStrokeColor="options.backgroundColor"
+                                :stroke-width="8"
+                                :animation-duration="0"
+                                :percentage="progress.tasks"
+                                :title="translate('message.task_status')"
+                                class="left center-content"/>
+                    </no-ssr>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="status">
+                    <no-ssr>
+                        <circle-chart
+                                :bgStrokeColor="options.backgroundColor"
+                                :stroke-width="8"
+                                :animation-duration="0"
+                                :percentage="progress.costs"
+                                :title="translate('message.cost_status')"
+                                class="left center-content"/>
+                    </no-ssr>
+                </div>
+            </div>
+        </div>
+
+        <hr class="double">
+
+        <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
+            <div class="row">
+                <h3>{{ translate('message.phases_and_milestones') }}</h3>
+                <div class="flex flex-center" style="text-align: center">
+                    <traffic-light :value="projectTrafficLight"/>
+                </div>
+
+                    <br/>
+
+                <no-ssr>
+                    <status-report-timeline
+                        style="width: 777px"
+                        :phases="phases"
+                        :milestones="milestones"
+                        :locale="forcedLocale"/>
+                </no-ssr>
+            </div>
+        </template>
+
+        <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
+            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both">
+                <div class="col-xs-6" style="padding-left: 0;">
+                    <h3>{{ translate('message.internal_costs') }}</h3>
+                    <div class="resources-half">
+                        <no-ssr>
+                            <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                        </no-ssr>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="padding-left: 0;">
+                    <h3>{{ translate('message.external_costs') }}</h3>
+                    <div class="resources-half">
+                        <no-ssr>
+                            <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                        </no-ssr>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template v-else>
+            <div class="row" v-if="isInternalCostsModuleActive && internalCostsGraphData">
+                <h3>{{ translate('message.internal_costs') }}</h3>
+                <div class="resources">
+                    <no-ssr>
+                        <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                    </no-ssr>
+                </div>
+            </div>
+
+            <div class="row" v-if="isExternalCostsModuleActive && externalCostsGraphData">
+                <h3>{{ translate('message.external_costs') }}</h3>
+                <div class="resources">
+                    <no-ssr>
+                        <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                    </no-ssr>
+                </div>
+            </div>
+        </template>
+
+        <template v-if="isRiskAndOpportunitiesModuleActive">
+            <div class="row ro-columns">
+                <div class="col-md-6 col-xs-6 dark-border-right">
+                    <no-ssr>
+                        <opportunities-grid :value="opportunitiesGrid" :currency="currency"
+                                            :locale="forcedLocale"/>
+                    </no-ssr>
+                </div>
+
+                <div class="col-md-6 col-xs-6">
+                    <no-ssr>
+                        <risks-grid :value="risksGrid" :currency="currency" :locale="forcedLocale"/>
+                    </no-ssr>
+                </div>
+            </div>
+
+            <hr class="double">
+        </template>
+
+        <template v-if="isTodosModuleActive">
+            <div class="row">
+                <h3>{{ translate('message.todos') }}</h3>
+                <status-report-todos :items="todosItems"/>
+            </div>
+
+            <hr class="double">
+        </template>
+
+        <template v-if="isDecisionsModuleActive">
+            <div class="row">
+                <h3>{{ translate('message.decisions') }}</h3>
+                <status-report-decisions :items="decisionsItems"/>
+            </div>
+
+            <hr class="double">
+        </template>
+
+        <template v-if="isInfosModuleActive">
+            <div class="row">
+                <h3>{{ translate('message.infos') }}</h3>
+                <status-report-infos :items="infosItems"/>
+            </div>
+        </template>
     </page>
 </template>
 
@@ -619,6 +583,7 @@
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.1em;
+        margin-top: 30px;
         margin-bottom: 30px;
     }
 
