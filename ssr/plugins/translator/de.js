@@ -766,6 +766,7 @@ module.exports = function (Translator) {
     Translator.add("label.select_managers", "Manager ausw\u00e4hlen", "messages", "de");
     Translator.add("label.select_members", "Mitglieder ausw\u00e4hlen", "messages", "de");
     Translator.add("label.select_phase", "Phase ausw\u00e4hlen", "messages", "de");
+    Translator.add("label.select_status", "Status ausw\u00e4hlen", "messages", "de");
     Translator.add("label.select_predecessors", "Vorg\u00e4nger ausw\u00e4hlen", "messages", "de");
     Translator.add("label.select_sci_users", "Unterst\u00fctzenden, beratenden & zu informierenden Nutzer ausw\u00e4hlen", "messages", "de");
     Translator.add("label.select_status", "Status ausw\u00e4hlen", "messages", "de");
@@ -1125,6 +1126,7 @@ module.exports = function (Translator) {
     Translator.add("message.phases_milestones", "Phasen & Meilensteine", "messages", "de");
     Translator.add("message.plan", "Plan", "messages", "de");
     Translator.add("message.planning", "Planung", "messages", "de");
+    Translator.add("message.status", "Status", "messages", "de");
     Translator.add("message.potential_cost", "Potentielle Kosten", "messages", "de");
     Translator.add("message.potential_savings", "Potentielle Einsparungen", "messages", "de");
     Translator.add("message.potential_time_delay", "Potentielle Verz\u00f6gerung", "messages", "de");
