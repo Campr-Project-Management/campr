@@ -491,6 +491,11 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     private $trafficLight;
 
     /**
+     * @var bool
+     */
+    private $isStatusGenerated = false;
+
+    /**
      * WorkPackage constructor.
      */
     public function __construct()
@@ -2585,5 +2590,21 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     public function setInformedUsers($informedUsers)
     {
         $this->informedUsers = $informedUsers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStatusGenerated()
+    {
+        return $this->isStatusGenerated;
+    }
+
+    /**
+     * @param bool $statusGenerated
+     */
+    public function setStatusGenerated(bool $statusGenerated)
+    {
+        $this->isStatusGenerated = $statusGenerated;
     }
 }

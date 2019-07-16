@@ -146,6 +146,7 @@ class WorkPackageControllerTest extends BaseController
                             'daysSinceCreated' => 0,
                             'createdBy' => null,
                             'updatedBy' => null,
+                            'isStatusGenerated' => false,
                         ],
                         [
                             'puid' => 4,
@@ -233,6 +234,7 @@ class WorkPackageControllerTest extends BaseController
                             'daysSinceCreated' => 0,
                             'createdBy' => null,
                             'updatedBy' => null,
+                            'isStatusGenerated' => false,
                         ],
                     ],
                 ],
@@ -372,6 +374,7 @@ class WorkPackageControllerTest extends BaseController
                     'daysSinceCreated' => 0,
                     'createdBy' => null,
                     'updatedBy' => null,
+                    'isStatusGenerated' => false,
                 ],
             ],
         ];
@@ -523,6 +526,7 @@ class WorkPackageControllerTest extends BaseController
                     'daysSinceCreated' => 0,
                     'createdBy' => null,
                     'updatedBy' => null,
+                    'isStatusGenerated' => false,
                 ],
             ],
         ];

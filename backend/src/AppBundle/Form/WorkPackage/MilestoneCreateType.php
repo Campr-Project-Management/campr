@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Entity\User;
 
-class MilestoneType extends BaseType
+class MilestoneCreateType extends BaseType
 {
     /**
      * @param FormBuilderInterface $builder
