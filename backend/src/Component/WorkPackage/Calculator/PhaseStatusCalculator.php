@@ -121,7 +121,7 @@ class PhaseStatusCalculator implements StatusCalculatorInterface
      *
      * @return WorkPackageStatus|null
      */
-    private function calculateStatus(WorkPackage $workPackage)
+    protected function calculateStatus(WorkPackage $workPackage)
     {
         $codes = $this->getStatusesCodes($workPackage);
         if (empty($codes)) {

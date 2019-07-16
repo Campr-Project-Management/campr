@@ -146,34 +146,47 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     public function onPreUpdate(WorkPackageEvent $event)
     {
         $wp = $event->getWorkPackage();
-        if (!$wp->isTask()) {
-            return;
-        }
 
-        $this->setWorkPackageChildrenSchedule($wp);
+        if ($wp->isTask()) {
+            $this->setWorkPackageChildrenSchedule($wp);
 
-        $isProgressChanged = $this->isProgressChanged($wp);
-        $isStatusChanged = $this->isStatusChanged($wp);
-        if ($isProgressChanged) {
-            $this->onProgressChanged($wp);
-        } elseif ($isStatusChanged) {
-            $this->onStatusChanged($wp);
-        }
+            $isProgressChanged = $this->isProgressChanged($wp);
+            $isStatusChanged = $this->isStatusChanged($wp);
+            if ($isProgressChanged) {
+                $this->onProgressChanged($wp);
+            } elseif ($isStatusChanged) {
+                $this->onStatusChanged($wp);
+            }
 
-        foreach ($wp->getChildren() as $child) {
-            $this->ensureWorkPackageHasStatus($child);
-        }
+            foreach ($wp->getChildren() as $child) {
+                $this->ensureWorkPackageHasStatus($child);
+            }
 
-        $oldResponsibility = $this->getOldResponsibility($wp);
-        if (
-            $oldResponsibility
-            && $oldResponsibility !== $wp->getResponsibility()
-            && !$wp->isSubtask()
-        ) {
-            $this->mailer->sendTaskResponsibilityChangedEmail(
-                $wp,
+            $oldResponsibility = $this->getOldResponsibility($wp);
+            if (
                 $oldResponsibility
-            );
+                && $oldResponsibility !== $wp->getResponsibility()
+                && !$wp->isSubtask()
+            ) {
+                $this->mailer->sendTaskResponsibilityChangedEmail(
+                    $wp,
+                    $oldResponsibility
+                );
+            }
+        } elseif ($wp->isMilestone() && $this->isStatusChanged($wp)) {
+            $this->setWorkPackageActualFinishAtByStatus($wp);
+        }
+    }
+
+    /**
+     * @param WorkPackage $wp
+     */
+    private function setWorkPackageActualFinishAtByStatus(WorkPackage $wp)
+    {
+        if ($wp->getWorkPackageStatus()->isCompleted()) {
+            $wp->setActualFinishAt((new \DateTime()));
+        } elseif ($wp->getWorkPackageStatus()->isOpen()) {
+            $wp->setActualFinishAt(null);
         }
     }
 
@@ -240,7 +253,7 @@ class WorkPackageSubscriber implements EventSubscriberInterface
     {
         $uok = $this->em->getUnitOfWork();
         $data = $uok->getOriginalEntityData($wp);
-        $status = $data['workPackageStatus'] ?? $wp->getWorkPackageStatus();
+        $status = $data['workPackageStatus'] ?? null;
 
         return $status !== $wp->getWorkPackageStatus();
     }

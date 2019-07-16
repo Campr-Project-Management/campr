@@ -4,8 +4,11 @@ namespace AppBundle\Controller\API\Project;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackage;
-use AppBundle\Form\WorkPackage\MilestoneType;
+use AppBundle\Event\WorkPackageEvent;
+use AppBundle\Form\WorkPackage\MilestoneCreateType;
+use AppBundle\Form\WorkPackage\MilestoneEditType;
 use AppBundle\Repository\WorkPackageRepository;
+use Component\WorkPackage\WorkPackageEvents;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -70,7 +73,7 @@ class MilestoneController extends ApiController
         $wp = new WorkPackage();
         $wp->setProject($project);
 
-        $form = $this->createForm(MilestoneType::class, $wp, ['csrf_protection' => false]);
+        $form = $this->createForm(MilestoneCreateType::class, $wp, ['csrf_protection' => false]);
         $this->processForm($request, $form);
 
         if ($form->isValid()) {
@@ -100,11 +103,13 @@ class MilestoneController extends ApiController
      */
     public function editMilestoneAction(Request $request, WorkPackage $milestone)
     {
-        $form = $this->createForm(MilestoneType::class, $milestone, ['csrf_protection' => false]);
+        $form = $this->createForm(MilestoneEditType::class, $milestone, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
+            $this->dispatchEvent(WorkPackageEvents::PRE_UPDATE, new WorkPackageEvent($milestone));
             $this->persistAndFlush($milestone);
+            $this->dispatchEvent(WorkPackageEvents::POST_UPDATE, new WorkPackageEvent($milestone));
 
             return $this->createApiResponse($milestone, Response::HTTP_ACCEPTED);
         }

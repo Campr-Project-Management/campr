@@ -3123,6 +3123,7 @@ class ProjectControllerTest extends BaseController
                     'workPackageStatus' => 2,
                     'workPackageStatusName' => 'label.pending',
                     'workPackageStatusCode' => 'pending',
+                    'isStatusGenerated' => false,
                     'daysSinceCreated' => 0,
                     'createdBy' => [],
                     'updatedBy' => null,
