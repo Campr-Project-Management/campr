@@ -183,6 +183,13 @@ class UserController extends BaseController
                 )
             ;
 
+            $this->get('portal.client.http.user')->update($user, [
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+                'isEnabled' => $user->getIsEnabled(),
+                'isSuspended' => $user->getIsSuspended(),
+            ]);
+
             return $this->redirectToRoute('app_admin_user_list');
         }
 
