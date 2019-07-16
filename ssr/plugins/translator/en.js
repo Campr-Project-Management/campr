@@ -766,6 +766,7 @@ module.exports = function (Translator) {
     Translator.add("label.select_managers", "Select Managers", "messages", "en");
     Translator.add("label.select_members", "Select Members", "messages", "en");
     Translator.add("label.select_phase", "Select Phase", "messages", "en");
+    Translator.add("label.select_status", "Select Status", "messages", "en");
     Translator.add("label.select_predecessors", "Select Predecessors", "messages", "en");
     Translator.add("label.select_sci_users", "Select support, consulted & informed users", "messages", "en");
     Translator.add("label.select_status", "Select Status", "messages", "en");
@@ -1125,6 +1126,7 @@ module.exports = function (Translator) {
     Translator.add("message.phases_milestones", "Phases & Milestones", "messages", "en");
     Translator.add("message.plan", "Plan", "messages", "en");
     Translator.add("message.planning", "Planing", "messages", "en");
+    Translator.add("message.status", "Status", "messages", "en");
     Translator.add("message.potential_cost", "Potential Cost", "messages", "en");
     Translator.add("message.potential_savings", "Potential Savings", "messages", "en");
     Translator.add("message.potential_time_delay", "Potential Time Delay", "messages", "en");
