@@ -93,6 +93,26 @@
 
                     <hr class="double">
 
+                    <div  v-if="isEdit && !isStatusGenerated">
+                        <!-- /// Milestone Status /// -->
+                        <h3>{{ translateText('message.status') }}</h3>
+                        <div class="row">
+                            <div class="form-group last-form-group">
+                                <div class="col-md-12">
+                                    <select-field
+                                            v-bind:title="translateText('label.select_status')"
+                                            v-bind:options="workPackageStatusesForMilestone"
+                                            v-model="details.status"
+                                            v-bind:currentOption="details.status" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /// End Milestone Status /// -->
+
+                        <hr class="double">
+
+                    </div>
+
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
                         <router-link :to="{name: 'project-phases-and-milestones'}" class="btn-rounded btn-auto disable-bg">{{ translateText('button.cancel') }}</router-link>
@@ -200,6 +220,7 @@ export default {
     watch: {
         milestone(value) {
             this.name = this.milestone.name;
+            this.isStatusGenerated = this.milestone.isStatusGenerated;
             this.schedule.scheduledFinishAt = new Date(this.milestone.scheduledFinishAt);
             this.details.status = this.milestone.workPackageStatus
                 ? {key: this.milestone.workPackageStatus, label: this.translateText(this.milestone.workPackageStatusName)}
@@ -237,6 +258,7 @@ export default {
                 responsibility: null,
                 phase: null,
             },
+            isStatusGenerated: false,
             isKeyMilestone: false,
             isEdit: this.$route.params.milestoneId,
             isSaving: false,

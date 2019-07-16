@@ -3,6 +3,8 @@
 namespace Component\WorkPackage\Calculator;
 
 use AppBundle\Entity\WorkPackage;
+use AppBundle\Entity\WorkPackageStatus;
+use Webmozart\Assert\Assert;
 
 class MilestoneStatusCalculator extends PhaseStatusCalculator
 {
@@ -34,5 +36,28 @@ class MilestoneStatusCalculator extends PhaseStatusCalculator
     protected function isSupported(WorkPackage $workPackage)
     {
         return $workPackage->isMilestone();
+    }
+
+    /**
+     * @param WorkPackage $workPackage
+     *
+     * @return WorkPackageStatus
+     */
+    public function calculate(WorkPackage $workPackage): WorkPackageStatus
+    {
+        Assert::true($this->isSupported($workPackage), 'WorkPackage is not a milestone');
+
+        $status = $this->calculateStatus($workPackage);
+
+        switch (true) {
+            case $status instanceof WorkPackageStatus:
+                $workPackage->setStatusGenerated(true);
+
+                return $status;
+            default:
+                return $workPackage->getWorkPackageStatus()
+                    ? $workPackage->getWorkPackageStatus()
+                    : $this->workPackageStatusRepository->getDefault();
+        }
     }
 }
