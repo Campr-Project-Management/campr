@@ -196,6 +196,10 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         $visitor->setData('workPackageStatus', $status->getId());
         $visitor->setData('workPackageStatusName', $status->getName());
         $visitor->setData('workPackageStatusCode', $status->getCode());
+
+        if ($workPackage->isMilestone()) {
+            $visitor->setData('isStatusGenerated', $workPackage->isStatusGenerated());
+        }
     }
 
     /**
