@@ -75,7 +75,7 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     * @Gedmo\Slug(fields={"name"}, updatable=true, separator="-")
+     * @Gedmo\Slug(fields={"name"}, updatable=false, separator="-")
      */
     private $slug;
 
@@ -146,13 +146,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     private $teamMembers;
 
     /**
-     * @var ArrayCollection|TeamSlug[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamSlug", mappedBy="team")
-     */
-    private $teamSlugs;
-
-    /**
      * @var ArrayCollection|TeamInvite[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TeamInvite", mappedBy="team")
@@ -185,7 +178,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     {
         $this->createdAt = new \DateTime();
         $this->teamMembers = new ArrayCollection();
-        $this->teamSlugs = new ArrayCollection();
         $this->teamInvites = new ArrayCollection();
         $this->encryptionKey = hash('sha512', random_bytes(64));
         $this->uuid = Uuid::uuid4()->toString();
@@ -435,44 +427,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
                 }
             )
             ->contains($user);
-    }
-
-    /**
-     * Add teamSlug.
-     *
-     * @param TeamSlug $teamSlug
-     *
-     * @return Team
-     */
-    public function addTeamSlug(TeamSlug $teamSlug)
-    {
-        $this->teamSlugs[] = $teamSlug;
-
-        return $this;
-    }
-
-    /**
-     * Remove teamSlug.
-     *
-     * @param TeamSlug $teamSlug
-     *
-     * @return Team
-     */
-    public function removeTeamSlug(TeamSlug $teamSlug)
-    {
-        $this->teamSlugs->removeElement($teamSlug);
-
-        return $this;
-    }
-
-    /**
-     * Get teamSlugs.
-     *
-     * @return ArrayCollection|TeamSlug[]
-     */
-    public function getTeamSlugs()
-    {
-        return $this->teamSlugs;
     }
 
     /**
