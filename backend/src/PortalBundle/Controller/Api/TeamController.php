@@ -92,6 +92,7 @@ class TeamController extends ApiController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Team $team */
             $team = $form->getData();
+//            $logger->info('Team', ['team' => $team->getSlug()]);
 
             $this->get('event_dispatcher')->dispatch(TeamEvents::PRE_UPDATE, new GenericEvent($team));
             $this->get('app.repository.team')->add($team);
