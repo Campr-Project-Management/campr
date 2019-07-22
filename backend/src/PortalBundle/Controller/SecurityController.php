@@ -206,8 +206,13 @@ class SecurityController extends Controller
         /** @var Team $team */
         $team = $this->get('app.repository.team')->findOneBy(['slug' => $data['slug']]);
         if (!$team) {
+            $team = $this->get('app.repository.team')->findOneBy(['uuid' => $data['uuid']]);
+        }
+
+        if (!$team) {
             $team = new Team();
             $team->setUuid($data['uuid']);
+            $team->setSlug($data['slug']);
         }
 
         $team->setName($data['name']);
