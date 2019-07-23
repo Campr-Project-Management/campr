@@ -11,21 +11,21 @@
                     </div>
 
                     <div class="hero-text">
-                        {{ translateText('message.project_contract') }}
+                        {{ translate('message.project_contract') }}
                     </div>
 
                     <div class="project-info">
-                        <span>{{ translateText('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
+                        <span>{{ translate('message.scope') }}: {{ project.projectScopeName || '-' }}</span>
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        <span>{{ translateText('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
+                        <span>{{ translate('message.category') }}: {{ project.projectCategoryName || '-' }}</span>
                     </div>
 
                     <div class="flex buttons flex-center" v-if="contract && contract.id">
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
-                            {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
+                            {{ translate('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
                         </a>
-                        <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
-                        <h4 v-else>{{ translateText('message.contract_frozen') }}</h4>
+                        <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translate('button.freeze_contract') }}</button>
+                        <h4 v-else>{{ translate('message.contract_frozen') }}</h4>
                     </div>
                 </div>
                 <!-- /// End Header /// -->
@@ -54,16 +54,16 @@
             <div class="row margintop40">
                 <!-- /// Project Schedule /// -->
                 <div class="col-md-6 col-md-offset-3">
-                    <h3 class="text-center">{{ translateText('message.schedule') }}</h3>
+                    <h3 class="text-center">{{ translate('message.schedule') }}</h3>
                     <br>
                     <div class="flex flex-space-between dates">
                         <div class="input-holder left" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.proposed_start_date') }}</label>
+                            <label class="active">{{ translate('label.proposed_start_date') }}</label>
                             <date-field v-model="proposedStartDate"/>
                             <error at-path="proposedStartDate"/>
                         </div>
                         <div class="input-holder right" :class="{disabledpicker: frozen }">
-                            <label class="active">{{ translateText('label.proposed_end_date') }}</label>
+                            <label class="active">{{ translate('label.proposed_end_date') }}</label>
                             <date-field v-model="proposedEndDate"/>
                             <error at-path="proposedEndDate"/>
                         </div>
@@ -76,20 +76,20 @@
                 <!-- /// Project Sponsors & Managers /// -->
                 <div class="col-md-12">
                     <div class="header">
-                        <h3 class="clickable" @click="toggleSponsorsManagers()">{{ translateText('message.sponsors_managers') }}
+                        <h3 class="clickable" @click="toggleSponsorsManagers()">{{ translate('message.sponsors_managers') }}
                             <i class="fa fa-angle-down" v-if="!showSponsorsManagers"></i>
                             <i class="fa fa-angle-up" v-if="showSponsorsManagers"></i>
                         </h3>
                     </div>
                     <div class="text-center">
                         <router-link class="btn-rounded btn-md btn-empty" :to="{name: 'project-organization'}">
-                            {{ translateText('message.view_team') }}
+                            {{ translate('message.view_team') }}
                         </router-link>
                     </div>
                     <div class="flex flex-row flex-center members-big" v-if="showSponsorsManagers">
                         <member-badge v-for="item in project.projectSponsors" v-bind:item="item" size="small" />
                         <member-badge v-for="item in project.projectManagers" v-bind:item="item" size="small" />
-                        <p v-if="project.projectSponsors.length === 0 && project.projectManagers.length === 0">{{ translateText('label.no_data') }}</p>
+                        <p v-if="project.projectSponsors.length === 0 && project.projectManagers.length === 0">{{ translate('label.no_data') }}</p>
                     </div>
                 </div>
                 <!-- /// End Project Sponsors & Managers /// -->
@@ -98,75 +98,76 @@
             <div class="row margintop40">
                 <!-- /// Project Objectives /// -->
                 <div class="col-md-4">
-                    <h3>{{ translateText('message.project_objectives') }}</h3>
+                    <h3>{{ translate('message.project_objectives') }}</h3>
 
                     <div v-dragula="colOne" drake="objectives" v-if="project.projectObjectives && project.projectObjectives.length > 0">
                         <drag-box :disabled="frozen" v-for="(item, index) in project.projectObjectives" v-bind:item="item" v-bind:index="index" type="objective" />
                     </div>
-                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translate('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translateText('message.new_objective_title')" />
+                    <input-field v-if="!frozen" v-model="objectiveTitle" :content="objectiveTitle" type="text" v-bind:label="translate('message.new_objective_title')" />
                     <error
                         v-if="validationMessages.createProjectObjectiveForm && validationMessages.title && validationMessages.title.length"
                         v-for="message in validationMessages.title"
                         :message="message" />
                     <div v-if="!frozen" class="flex flex-direction-reverse">
-                        <a v-on:click="createProjectObjective()" class="btn-rounded btn-auto">{{ translateText('message.add_objective') }} +</a>
+                        <a v-on:click="createProjectObjective()" class="btn-rounded btn-auto">{{ translate('message.add_objective') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Project Objectives /// -->
 
                 <!-- /// Project Limitations /// -->
                 <div class="col-md-4">
-                    <h3>{{ translateText('message.project_limitations') }}</h3>
+                    <h3>{{ translate('message.project_limitations') }}</h3>
 
                     <div v-dragula="colOne" drake="limitations" v-if="project.projectLimitations && project.projectLimitations.length > 0">
                         <drag-box :disabled="frozen" v-for="(item, index) in project.projectLimitations" v-bind:item="item" v-bind:index="index" type="limitation" />
                     </div>
-                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translate('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translateText('message.new_project_limitation')" />
+                    <input-field v-if="!frozen" v-model="limitationDescription" :content="limitationDescription" type="text" v-bind:label="translate('message.new_project_limitation')" />
                     <error
                         v-if="validationMessages.createProjectLimitationForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div v-if="!frozen" class="flex flex-direction-reverse">
-                        <a v-on:click="createProjectLimitation()" class="btn-rounded btn-auto">{{ translateText('message.add_limitation') }} +</a>
+                        <a v-on:click="createProjectLimitation()" class="btn-rounded btn-auto">{{ translate('message.add_limitation') }} +</a>
                     </div>
                 </div>
                 <!-- /// End Project Limitations /// -->
 
                 <!-- /// Project Deliverables /// -->
                 <div class="col-md-4">
-                    <h3>{{ translateText('message.project_deliverables') }}</h3>
+                    <h3>{{ translate('message.project_deliverables') }}</h3>
                     <div v-dragula="colOne" drake="deliverables" v-if="project.projectDeliverables && project.projectDeliverables.length > 0">
                         <drag-box :disabled="frozen" v-for="(item, index) in project.projectDeliverables" v-bind:item="item" v-bind:index="index" type="deliverable" />
                     </div>
-                    <p class="notice" v-else>{{ translateText('label.no_data') }}</p>
+                    <p class="notice" v-else>{{ translate('label.no_data') }}</p>
                     <div class="hr small"></div>
-                    <input-field v-if="!frozen" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translateText('message.new_project_deliverable')" />
+                    <input-field v-if="!frozen" v-model="deliverableDescription" :content="deliverableDescription" type="text" v-bind:label="translate('message.new_project_deliverable')" />
                     <error
                         v-if="validationMessages.createProjectDeliverableForm && validationMessages.description && validationMessages.description.length"
                         v-for="message in validationMessages.description"
                         :message="message" />
                     <div v-if="!frozen" class="flex flex-direction-reverse">
-                        <button v-on:click="createProjectDeliverable()" class="btn-rounded btn-auto">{{ translateText('message.add_deliverable') }} +</button>
+                        <button v-on:click="createProjectDeliverable()" class="btn-rounded btn-auto">{{ translate('message.add_deliverable') }} +</button>
                     </div>
                 </div>
                 <!-- /// End Project Deliverables /// -->
             </div>
 
-            <div class="row margintop40">
+            <div v-if="isInternalCostsModuleActive || isExternalCostsModuleActive"
+                 class="row margintop40">
                 <!-- /// Project Internal Costs /// -->
-                <div class="col-md-6">
-                    <h3>{{ translateText('message.internal_costs') }}</h3>
+                <div v-if="isInternalCostsModuleActive" class="col-md-6">
+                    <h3>{{ translate('message.internal_costs') }}</h3>
                     <chart :data="internalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project Internal Costs /// -->
 
                 <!-- /// Project External Costs /// -->
-                <div class="col-md-6">
-                    <h3>{{ translateText('message.external_costs') }}</h3>
+                <div v-if="isExternalCostsModuleActive" class="col-md-6">
+                    <h3>{{ translate('message.external_costs') }}</h3>
                     <chart :data="externalCostsGraphData.byPhase | graphData"/>
                 </div>
                 <!-- /// End Project External Costs /// -->
@@ -178,21 +179,21 @@
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
                         <div class="flex">
-                            <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                            <a v-if="!frozen" v-on:click="updateProjectContract()" class="btn-rounded second-bg">{{ translate('button.save') }}</a>
 
                             <switches
                                     :disabled="frozen"
                                     v-model="isApproved"/>
 
                             <div v-if="isApproved" class="toggle-approved">{{ approvedAt }}</div>
-                            <div v-else class="toggle-approved">{{ translateText('label.not_approved') }}</div>
+                            <div v-else class="toggle-approved">{{ translate('label.not_approved') }}</div>
                         </div>
 
                         <div class="flex">
                             <a v-if="contract && contract.id" class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
-                                {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
+                                {{ translate('button.download_pdf') }}<downloadbutton-icon fill="white-fill" />
                             </a>
-                            <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translateText('button.freeze_contract') }}</button>
+                            <button v-if="!frozen" @click="freezeContract()" class="btn-rounded second-bg">{{ translate('button.freeze_contract') }}</button>
                         </div>
                     </div>
                 </div>
@@ -223,6 +224,10 @@ import Editor from '../_common/Editor.vue';
 import moment from 'moment';
 import Switches from '../3rdparty/vue-switches';
 import DateField from '../_common/_form-components/DateField';
+import {
+    MODULE_INTERNAL_COSTS,
+    MODULE_EXTERNAL_COSTS,
+} from '../../helpers/project-module';
 
 export default {
     components: {
@@ -272,9 +277,6 @@ export default {
             'reorderLimitations', 'reorderDeliverables', 'getProjectExternalCostsGraphData',
             'getProjectUsers', 'getProjectInternalCostsGraphData', 'emptyValidationMessages',
         ]),
-        translateText: function(text) {
-            return this.translate(text);
-        },
         toggleSponsorsManagers: function() {
             this.showSponsorsManagers = !this.showSponsorsManagers;
         },
@@ -421,6 +423,9 @@ export default {
             }
             return data;
         },
+        isModuleActive(module) {
+            return this.modules.indexOf(module) >= 0;
+        },
     },
     created() {
         this.getProjectById(this.$route.params.id);
@@ -506,6 +511,19 @@ export default {
             get() {
                 return (this.approvedAt !== '');
             },
+        },
+        modules() {
+            if (!this.project) {
+                return [];
+            }
+
+            return this.project.projectModules || [];
+        },
+        isInternalCostsModuleActive() {
+            return this.isModuleActive(MODULE_INTERNAL_COSTS);
+        },
+        isExternalCostsModuleActive() {
+            return this.isModuleActive(MODULE_EXTERNAL_COSTS);
         },
     },
     filters: {
