@@ -53,13 +53,13 @@
 
         <div class="row">
             <h3>{{ translate('message.project_description') }}</h3>
-            <div class="col-xs-12" v-html="contract.description" />
+            <div class="col-xs-12" v-html="contract.description"></div>
         </div>
 
         <div class="row">
             <h3>{{ translate('label.project_start_event') }}</h3>
             <div class="col-xs-12">
-                <div class="col-xs-9" v-html="contract.projectStartEvent" />
+                <div class="col-xs-9" v-html="contract.projectStartEvent"></div>
                 <div class="col-xs-3">
                     <table class="content-table">
                         <tbody>
