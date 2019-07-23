@@ -39,9 +39,11 @@ class TeamController extends ApiController
      */
     public function syncAction(): JsonResponse
     {
+        $repository = $this->get('app.repository.team');
         $context = $this->get('app.team.context');
         $slug = $context->getCurrentSlug();
         $team = $context->getCurrent();
+        $found = (bool) $team;
         if (!$team) {
             $team = new Team();
             $team->setSlug($slug);
@@ -52,7 +54,20 @@ class TeamController extends ApiController
                 ->get('event_dispatcher')
                 ->dispatch(TeamEvents::SYNC, new GenericEvent($team));
 
-            $this->get('app.repository.team')->add($team);
+            if (!$found) {
+                /** @var Team $existingTeam */
+                $existingTeam = $repository->findOneBy(['uuid' => $team->getUuid()]);
+                if ($existingTeam) {
+                    $existingTeam->setSlug($team->getSlug());
+                    $existingTeam->setName($team->getName());
+                    $existingTeam->setLogoUrl($team->getLogoUrl());
+                    $existingTeam->setLogo($team->getLogo());
+                    $existingTeam->setDescription($team->getDescription());
+                    $team = $existingTeam;
+                }
+            }
+
+            $repository->add($team);
         } catch (\Exception $e) {
             $this
                 ->get('logger')
