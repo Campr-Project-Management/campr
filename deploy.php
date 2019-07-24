@@ -227,6 +227,9 @@ task('project:apache:enable-config', function () {
 task('project:supervisor:enable-config', function () {
     run('if [ -L /etc/supervisor/conf.d/{{domain}}.conf ]; then sudo rm -rf /etc/supervisor/conf.d/{{domain}}.conf; fi && sudo ln -s {{release_path}}/config/supervisor/{{env}}.conf /etc/supervisor/conf.d/{{domain}}.conf');
 });
+task('minio:perms', function() {
+    run('cd {{release_path}} && chmod 0777 -R config/minio');
+});
 task('database:cleanup', function () {
     if (input()->getOption('reset-db')) {
         run('{{symfony_console}} doctrine:database:drop --force {{symfony_console_options}}');
@@ -301,6 +304,7 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'project:backup',
+    'minio:perms',
     'project:copy-parameters',
     'deploy:create_cache_dir',
     'deploy:shared',
