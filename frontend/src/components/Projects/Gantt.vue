@@ -101,7 +101,7 @@ export default {
             ];
             gantt.config.drag_links = false;
             gantt.config.show_unscheduled = true;
-            gantt.config.drag_resize = this.currentDate === 'forecast';
+            gantt.config.drag_resize = this.canDragResize();
             gantt.config.drag_move = false;
             gantt.config.scale_unit = 'day';
             gantt.config.date_scale = '%j %M %y';
@@ -581,8 +581,10 @@ export default {
                             const wp = this.wp2task(response.data);
                             const t = gantt.getTask(response.data.id);
 
-                            t.progress = wp.progress;
-                            gantt.updateTask(t.id);
+                            if (t) {
+                                t.progress = wp.progress;
+                                gantt.updateTask(t.id);
+                            }
                         },
                         () => {}
                     )
@@ -611,7 +613,7 @@ export default {
             this.updateGanttDataFormatted();
             this.updateGanttDates();
 
-            gantt.config.drag_resize = this.currentDate === 'forecast';
+            gantt.config.drag_resize = this.canDragResize();
 
             gantt.parse({
                 data: this.ganttDataFormatted,
@@ -625,6 +627,21 @@ export default {
             this.currentDate = value;
 
             this.updateEverything();
+        },
+        canDragResize() {
+            if (this.currentDate === 'forecast') {
+                return true;
+            }
+
+            if (
+                this.currentDate === 'scheduled' && this.project
+                && _.isArray(this.project.contracts) && this.project.contracts.length
+                && this.project.contracts[this.project.contracts.length - 1].frozen === false
+            ) {
+                return true;
+            }
+
+            return false;
         },
     },
     computed: {
