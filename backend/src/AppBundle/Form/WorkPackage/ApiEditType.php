@@ -17,8 +17,6 @@ class ApiEditType extends ApiCreateType
         parent::buildForm($builder, $options);
 
         $builder
-            ->remove('scheduledStartAt')
-            ->remove('scheduledFinishAt')
             ->remove('actualStartAt')
             ->remove('actualFinishAt')
         ;
