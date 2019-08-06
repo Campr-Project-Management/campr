@@ -232,10 +232,11 @@ const actions = {
                     let project = response.data;
                     commit(types.SET_PROJECT, {project});
                 }
+
+                return response;
             },
             (response) => {},
-        )
-            ;
+        );
     },
 
     /**
