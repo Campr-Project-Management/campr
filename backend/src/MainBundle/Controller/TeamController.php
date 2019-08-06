@@ -340,7 +340,7 @@ class TeamController extends Controller
             $mailerService = $this->get('app.service.mailer');
             $mailerService->sendEmail(
                 'MainBundle:Email:invite_user.html.twig',
-                'info',
+                'default',
                 $email,
                 [
                     'token' => $token,

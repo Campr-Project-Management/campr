@@ -117,6 +117,10 @@ class MailerService
             $message->setBody($textBody, 'text/plain');
         }
 
+        if (isset($this->parameters['reply_email'][$fromEmail])) {
+            $message->addReplyTo($this->parameters['reply_email'][$fromEmail]);
+        }
+
         return $this->mailer->send($message);
     }
 
@@ -135,7 +139,7 @@ class MailerService
         return $this
             ->sendEmail(
                 'MainBundle:Email:user_register.html.twig',
-                'info',
+                'default',
                 $user->getEmail(),
                 $params
             )
@@ -160,7 +164,7 @@ class MailerService
         return $this
             ->sendEmail(
                 'MainBundle:Email:project_cloned.html.twig',
-                'info',
+                'default',
                 $user->getEmail(),
                 $params
             )
