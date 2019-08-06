@@ -677,9 +677,7 @@ export default {
         },
     },
     created() {
-        if (!this.project) {
-            this.getProjectById(this.$route.params.id);
-        }
+        this.getProjectById(this.$route.params.id);
         this.getWorkPackageStatuses();
         this.getGanttData(this.$route.params.id);
     },
