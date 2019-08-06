@@ -37,7 +37,7 @@ class WorkPackageMailerService
     {
         $this->mailer->sendEmail(
             ':task\emails:new_task_email.html.twig',
-            'info',
+            'default',
             $wp->getResponsibilityEmail(),
             [
                 'project_id' => $wp->getProject()->getId(),
@@ -71,7 +71,7 @@ class WorkPackageMailerService
 
         $this->mailer->sendEmail(
             ':task\emails:responsibility_changed_email.html.twig',
-            'info',
+            'default',
             $wp->getResponsibilityEmail(),
             [
                 'project_id' => $wp->getProject()->getId(),
