@@ -72,7 +72,7 @@ class WorkspaceController extends ApiController
             $mailerService = $this->get('app.service.mailer');
             $mailerService->sendEmail(
                 'MainBundle:Email:invite_user.html.twig',
-                'info',
+                'default',
                 $email,
                 [
                     'token' => $teamInvite->getToken(),
