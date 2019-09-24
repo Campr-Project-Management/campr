@@ -1,36 +1,34 @@
 <template>
     <page :project="project" :team="team" :title="report.projectName" :subtitle="translate('message.week') + ' ' + report.weekNumber">
         <div class="row">
-            <div class="hero-text">
+            <div class="col-xs-6 hero-text" style="text-align: left;">
                 {{ translate('message.status_report') }}
             </div>
-        </div>
-
-        <div class="row">
-            <h3>{{ translate('message.overall_status') }}</h3>
-            <div class="flex flex-center" style="text-align: center">
+            <div class="col-xs-6 hero-text">
                 <traffic-light
-                        :value="report.projectTrafficLight"
-                        size="normal"
-                        :editable="false"/>
+                    style="text-align: right;"
+                    :value="report.projectTrafficLight"
+                    size="normal"
+                    :editable="false"/>
             </div>
         </div>
 
         <div class="row">
-            <h4>{{ translate('message.tasks_status') }}</h4>
-            <no-ssr>
-                <progress-bar-chart :series="tasksStatusSeries"/>
-            </no-ssr>
-            <br/>
-        </div>
-
-        <div class="row">
-            <h4>{{ translate('message.tasks_condition') }}</h4>
-            <no-ssr>
-                <progress-bar-chart
+            <div class="col-xs-6">
+                <h4>{{ translate('message.tasks_status') }}</h4>
+                <no-ssr>
+                    <progress-bar-chart :series="tasksStatusSeries"/>
+                </no-ssr>
+            </div>
+            <div class="col-xs-6">
+                <h4>{{ translate('message.tasks_condition') }}</h4>
+                <no-ssr>
+                    <progress-bar-chart
                         :series="tasksTrafficLightSeries"
                         :options="{labels: {enabled: false}}"/>
-            </no-ssr>
+                </no-ssr>
+            </div>
+            <br/>
         </div>
 
         <div class="row">
@@ -38,17 +36,63 @@
                 {{ translate('message.project_trend') }}
                 <span class="pull-right">{{ translate('message.current_date') }}: {{ report.createdAt | date }}</span>
             </h3>
+            <div class="col-xs-4">
+                <no-ssr>
+                    <status-report-trend-chart
+                            v-if="trendChartData.length > 0"
+                            :data="trendChartData"
+                            :labels="trendChartLabels"
+                            :point-color="trendChartPointColor"
+                            :options="{responsive: false}"
+                            :width="780"/>
+                    <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+                </no-ssr>
+            </div>
+            <div class="col-xs-8">
+                <div class="statuses min-status" v-if="progress">
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :percentage="projectPlannedProgress"
+                                    :animation-duration="0"
+                                    :title="translate('message.planned_progress')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :animation-duration="0"
+                                    :percentage="progress.tasks"
+                                    :title="translate('message.task_status')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :animation-duration="0"
+                                    :percentage="progress.costs"
+                                    :title="translate('message.cost_status')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                </div>
 
-            <no-ssr>
-                <status-report-trend-chart
-                        v-if="trendChartData.length > 0"
-                        :data="trendChartData"
-                        :labels="trendChartLabels"
-                        :point-color="trendChartPointColor"
-                        :options="{responsive: false}"
-                        :width="780"/>
-                <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
-            </no-ssr>
+                <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+            </div>
         </div>
 
 
@@ -75,58 +119,11 @@
             </div>
         </template>
 
-        <div class="row statuses min-status" v-if="progress">
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :percentage="projectPlannedProgress"
-                                :animation-duration="0"
-                                :title="translate('message.planned_progress')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :animation-duration="0"
-                                :percentage="progress.tasks"
-                                :title="translate('message.task_status')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :animation-duration="0"
-                                :percentage="progress.costs"
-                                :title="translate('message.cost_status')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-        </div>
-
         <hr class="double">
 
         <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
             <div class="row">
                 <h3>{{ translate('message.phases_and_milestones') }}</h3>
-                <div class="flex flex-center" style="text-align: center">
-                    <traffic-light :value="projectTrafficLight"/>
-                </div>
-
-                    <br/>
 
                 <no-ssr>
                     <status-report-timeline
@@ -139,7 +136,7 @@
         </template>
 
         <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
-            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both">
+            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both; overflow: hidden;">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
                     <div class="resources-half">
@@ -725,7 +722,7 @@
         min-width: 716px;
     }
 
-    .trend-no-results {
+    .no-results {
         text-align: center;
         color: $middleColor;
         min-height: 80%;
