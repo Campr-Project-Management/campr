@@ -65,6 +65,10 @@
 </script>
 
 <style lang="scss">
+    @page {
+        size: A4 !important;
+    }
+
     .gray-table {
         -webkit-print-color-adjust: exact !important;
         margin: 5px 0;
@@ -108,15 +112,38 @@
         break-inside: avoid;
     }
 
+    .resources-half {
+        display: block;
+        width: 800px !important;
+        height: 400px !important;
+        overflow: visible;
+
+        > div {
+            transform: translate(-200px, -90px) scale(0.5, 0.5);
+        }
+    }
+
+    .chart {
+        .text {
+            color: black !important;
+        }
+    }
+
+    .vis-panel {
+        .vis-labelset {
+            .vis-label {
+                .vis-inner {
+                    color: black !important;
+                }
+            }
+        }
+
+    }
+
     @media print {
         .resources {
             width: 100% !important;
             transform: translate(-255px) scale(0.5);
-        }
-        .resources-half {
-            display: block;
-            width: 320px !important;
-            transform: translate(-118px, -90px) scale(0.5, 0.5);
         }
     }
 </style>
