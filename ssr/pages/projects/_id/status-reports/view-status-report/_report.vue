@@ -36,15 +36,17 @@
                 {{ translate('message.project_trend') }}
                 <span class="pull-right">{{ translate('message.current_date') }}: {{ report.createdAt | date }}</span>
             </h3>
-            <div class="col-xs-4">
+            <div class="col-xs-4" style="height: 200px">
                 <no-ssr>
                     <status-report-trend-chart
+                            class="status-report-trend-chart"
                             v-if="trendChartData.length > 0"
                             :data="trendChartData"
                             :labels="trendChartLabels"
                             :point-color="trendChartPointColor"
                             :options="{responsive: false}"
-                            :width="780"/>
+                            :height="400"
+                            :width="600"/>
                     <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
                 </no-ssr>
             </div>
