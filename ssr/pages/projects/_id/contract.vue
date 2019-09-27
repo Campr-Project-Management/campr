@@ -64,8 +64,8 @@
                     <table class="content-table">
                         <tbody>
                             <tr>
-                                <th>{{ translate('label.forecast_start_date') }}</th>
-                                <th>{{ translate('label.forecast_end_date') }}</th>
+                                <th>{{ translate('label.proposed_start_date') }}</th>
+                                <th>{{ translate('label.proposed_end_date') }}</th>
                             </tr>
                             <tr>
                                 <td>{{ contract.proposedStartDate || '-' }}</td>

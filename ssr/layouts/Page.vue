@@ -123,6 +123,10 @@
         }
     }
 
+    .status-report-trend-chart {
+        transform: translate(-65px, -100px) scale(0.5, 0.5);
+    }
+
     .chart {
         .text {
             color: black !important;
@@ -137,7 +141,6 @@
                 }
             }
         }
-
     }
 
     @media print {
