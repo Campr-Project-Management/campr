@@ -137,7 +137,7 @@
             </div>
         </template>
 
-        <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
+        <template v-if="isInternalCostsModuleActive && hasInternalCostsGraphData && isExternalCostsModuleActive && hasExternalCostsGraphData">
             <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both; overflow: hidden;">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
@@ -159,7 +159,7 @@
         </template>
 
         <template v-else>
-            <div class="row" v-if="isInternalCostsModuleActive && internalCostsGraphData">
+            <div class="row" v-if="isInternalCostsModuleActive && hasInternalCostsGraphData">
                 <h3>{{ translate('message.internal_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <div class="row" v-if="isExternalCostsModuleActive && externalCostsGraphData">
+            <div class="row" v-if="isExternalCostsModuleActive && hasExternalCostsGraphData">
                 <h3>{{ translate('message.external_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
@@ -345,6 +345,25 @@
             isModuleActive(module) {
                 return this.report && this.report.modules && this.report.modules.indexOf(module) >= 0;
             },
+            sumCostGraphData(data) {
+                if (typeof data !== 'object') {
+                    return 0;
+                }
+
+                let sum = 0;
+                let keys = Object.keys(data);
+
+                for (let c = 0; c < keys.length; c++) {
+                    let key = keys[c];
+                    if (typeof data[key] === 'object') {
+                        sum += this.sumCostGraphData(data[key]);
+                    } else {
+                        sum += data[key];
+                    }
+                }
+
+                return sum;
+            },
         },
         computed: {
             isPhasesAndMilestoneModuleActive() {
@@ -463,18 +482,36 @@
             internalCostsGraphData() {
                 let data = {};
                 this.snapshot.costs.internal.graphs.byPhase.forEach((row) => {
-                    data[row.name] = row.values;
+                    let values = {};
+                    let keys = Object.keys(row.values);
+                    for (let c = 0; c < keys.length; c++) {
+                        let key = keys[c];
+                        values[key] = row.values[key] === undefined || row.values[key] === null ? 0 : row.values[key];
+                    }
+                    data[row.name] = values;
                 });
 
                 return data;
             },
+            hasInternalCostsGraphData() {
+                return this.sumCostGraphData(this.internalCostsGraphData) > 0;
+            },
             externalCostsGraphData() {
                 let data = {};
                 this.snapshot.costs.external.graphs.byPhase.forEach((row) => {
-                    data[row.name] = row.values;
+                    let values = {};
+                    let keys = Object.keys(row.values);
+                    for (let c = 0; c < keys.length; c++) {
+                        let key = keys[c];
+                        values[key] = row.values[key] === undefined || row.values[key] === null ? 0 : row.values[key];
+                    }
+                    data[row.name] = values;
                 });
 
                 return data;
+            },
+            hasExternalCostsGraphData() {
+                return this.sumCostGraphData(this.externalCostsGraphData) > 0;
             },
             opportunitiesGrid() {
                 return {
