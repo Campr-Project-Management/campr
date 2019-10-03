@@ -635,8 +635,15 @@ export default {
 
             if (
                 this.currentDate === 'scheduled' && this.project
-                && _.isArray(this.project.contracts) && this.project.contracts.length
-                && this.project.contracts[this.project.contracts.length - 1].frozen === false
+                && (
+                    _.isEmpty(this.project.contracts)
+                    ||
+                    (
+                        _.isArray(this.project.contracts)
+                        && this.project.contracts.length
+                        && _.last(this.project.contracts).frozen === false
+                    )
+                )
             ) {
                 return true;
             }
