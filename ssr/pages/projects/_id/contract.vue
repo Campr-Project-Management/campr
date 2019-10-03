@@ -147,7 +147,7 @@
         </div>
 
         <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
-            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both; overflow: hidden;">
+            <div class="row">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
                     <div class="resources-half">
