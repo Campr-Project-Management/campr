@@ -123,7 +123,7 @@
 
         <hr class="double">
 
-        <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
+        <template v-if="isPhasesAndMilestoneModuleActive && ((phases && phases.length) || (milestones && milestones.length))">
             <div class="row">
                 <h3>{{ translate('message.phases_and_milestones') }}</h3>
 
@@ -138,12 +138,12 @@
         </template>
 
         <template v-if="isInternalCostsModuleActive && hasInternalCostsGraphData && isExternalCostsModuleActive && hasExternalCostsGraphData">
-            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both; overflow: hidden;">
+            <div class="row">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
                     <div class="resources-half">
                         <no-ssr>
-                            <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                            <chart :data="internalCostsGraphData" theme="print" />
                         </no-ssr>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                     <h3>{{ translate('message.external_costs') }}</h3>
                     <div class="resources-half">
                         <no-ssr>
-                            <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                            <chart :data="externalCostsGraphData" theme="print" />
                         </no-ssr>
                     </div>
                 </div>
@@ -163,7 +163,7 @@
                 <h3>{{ translate('message.internal_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
-                        <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                        <chart :data="internalCostsGraphData" theme="print" />
                     </no-ssr>
                 </div>
             </div>
@@ -172,7 +172,7 @@
                 <h3>{{ translate('message.external_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
-                        <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                        <chart :data="externalCostsGraphData" theme="print" />
                     </no-ssr>
                 </div>
             </div>
@@ -403,15 +403,15 @@
                 return [
                     {
                         name: 'label.open',
-                        value: this.snapshot.tasks.total.status.opened,
+                        value: this.snapshot.tasks.total.status.opened || 0,
                         color: '#646EA0',
                     }, {
                         name: 'label.executing',
-                        value: this.snapshot.tasks.total.status.executing,
+                        value: this.snapshot.tasks.total.status.executing || 0,
                         color: '#465079',
                     }, {
                         name: 'label.closed',
-                        value: this.snapshot.tasks.total.status.closed,
+                        value: this.snapshot.tasks.total.status.closed || 0,
                         color: '#232D4B',
                     },
                 ];

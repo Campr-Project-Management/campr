@@ -114,11 +114,12 @@
 
     .resources-half {
         display: block;
-        width: 800px !important;
-        height: 400px !important;
-        overflow: visible;
+        width: 400px !important;
+        height: 200px !important;
 
         > div {
+            width: 800px !important;
+            height: 400px !important;
             transform: translate(-200px, -90px) scale(0.5, 0.5);
         }
     }
