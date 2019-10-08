@@ -69,7 +69,7 @@ class TeamInviteController extends Controller
             try {
                 $mailerService->sendEmail(
                     'MainBundle:Email:invite_user.html.twig',
-                    'info',
+                    'default',
                     $email,
                     [
                         'token' => $teamInvite->getToken(),

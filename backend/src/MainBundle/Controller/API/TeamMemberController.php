@@ -66,7 +66,7 @@ class TeamMemberController extends ApiController
                     $mailerService = $this->get('app.service.mailer');
                     $mailerService->sendEmail(
                         'MainBundle:Email:create_team_member.html.twig',
-                        'info',
+                        'default',
                         $user->getEmail(),
                         [
                             'token' => $user->getActivationToken(),

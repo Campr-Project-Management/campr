@@ -63,7 +63,7 @@ class StatusReportController extends ApiController
             foreach ($users as $user) {
                 $mailerService->sendEmail(
                     ':status_report:email_report.html.twig',
-                    'info',
+                    'default',
                     $user->getEmail(),
                     ['statusReport' => $statusReport],
                     [
