@@ -37,7 +37,7 @@ path: src/AppBundle/Services/MailerService.php
 Service used to send all types of emails.
  
 * ```sendEmail``` function is used to send an email. This function takes multiple parameters such as template name, from email, to email, attachments or cc emails.
-Usage: `$mailerService->sendEmail('AppBundle:Email:user_register.html.twig', 'info', 'email@email.com, $parameters);`
+Usage: `$mailerService->sendEmail('AppBundle:Email:user_register.html.twig', 'default', 'email@email.com, $parameters);`
 
 ## Request Parser Service
 >
