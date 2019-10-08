@@ -238,7 +238,7 @@ class UserController extends Controller
                 $mailerService = $this->get('app.service.mailer');
                 $mailerService->sendEmail(
                     'MainBundle:Email:user_reset_password.html.twig',
-                    'default',
+                    'notification',
                     $user->getEmail(),
                     [
                         'token' => $resetToken,

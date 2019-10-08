@@ -82,13 +82,18 @@ class DefaultController extends Controller
                 $mailerService
                     ->sendEmail(
                         'MainBundle:Email:contact.html.twig',
-                        'contact_from',
+                        'notification',
                         $this->getParameter('email.contact_info'),
                         [
                             'email' => $data['email'],
                             'subject' => 'Campr contact',
                             'fullName' => $data['full_name'],
                             'message' => $data['message'],
+                        ],
+                        [],
+                        [],
+                        [
+                            $data['email'] => $data['full_name'],
                         ]
                     )
                 ;
@@ -157,13 +162,18 @@ class DefaultController extends Controller
                 $mailerService
                     ->sendEmail(
                         'MainBundle:Email:contact.html.twig',
-                        'contact_from',
+                        'notification',
                         $this->getParameter('email.contact_info'),
                         [
                             'email' => $data['email'],
                             'subject' => 'Campr contact',
                             'fullName' => $data['full_name'],
                             'message' => $data['message'],
+                        ],
+                        [],
+                        [],
+                        [
+                            $data['email'] => $data['full_name'],
                         ]
                     )
                 ;
