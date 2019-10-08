@@ -65,10 +65,10 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
             $this->twig,
             [
                 'from_email' => [
-                    'info' => 'info@campr.biz',
+                    'default' => 'info@campr.biz',
                 ],
                 'from_name' => [
-                    'info' => 'Info Campr',
+                    'default' => 'Info Campr',
                 ],
             ],
             [
@@ -113,7 +113,7 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
             })
         ;
 
-        $this->mailer->sendEmail($templateName, 'info', $toEmail);
+        $this->mailer->sendEmail($templateName, 'default', $toEmail);
     }
 
     /**
