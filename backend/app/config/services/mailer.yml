@@ -1,11 +1,9 @@
 parameters:
     emails:
         from_email:
-            default: "notification@campr.biz"
-            no-reply: "no-reply@campr.biz"
+            notification: "notification@campr.biz"
         from_name:
-            default: "Info Campr"
-            no-reply: "No Reply"
+            notification: "Notification Campr"
         reply_email:
             default: "info@campr.biz"
 

@@ -156,7 +156,7 @@ class MailerService
         return $this
             ->sendEmail(
                 'MainBundle:Email:user_register.html.twig',
-                'default',
+                'notification',
                 $user->getEmail(),
                 $params
             )
@@ -184,7 +184,7 @@ class MailerService
         return $this
             ->sendEmail(
                 'MainBundle:Email:project_cloned.html.twig',
-                'default',
+                'notification',
                 $user->getEmail(),
                 $params
             )

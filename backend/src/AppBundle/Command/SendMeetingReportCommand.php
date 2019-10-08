@@ -92,10 +92,14 @@ class SendMeetingReportCommand extends ContainerAwareCommand
 
             $mailer->sendEmail(
                 ':meeting:report.html.twig',
-                $user->getEmail(),
+                'notification',
                 $to,
                 ['meeting' => $meeting, 'report' => $report],
-                [$attachment]
+                [$attachment],
+                [],
+                [
+                    $user->getEmail() => $user->getFullName(),
+                ]
             );
         }
 
