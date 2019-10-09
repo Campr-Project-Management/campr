@@ -13,4 +13,6 @@ final class ProjectEvents
     public const POST_UPDATE = 'app.project.post_update';
 
     public const ON_CLONE = 'app.project.clone';
+
+    public const ON_CLOSE = 'app.project.close';
 }
