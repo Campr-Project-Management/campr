@@ -6,7 +6,9 @@ use AppBundle\Entity\CloseDownAction;
 use AppBundle\Entity\EvaluationObjective;
 use AppBundle\Entity\Lesson;
 use AppBundle\Entity\ProjectCloseDown;
+use AppBundle\Event\ProjectEvent;
 use AppBundle\Form\ProjectCloseDown\CreateType;
+use Component\Project\ProjectEvents;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,7 +41,16 @@ class ProjectCloseDownController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
-            $this->persistAndFlush($projectCloseDown);
+            $persist = [
+                $projectCloseDown,
+            ];
+
+            if (true === $form->get('close')->getData()) {
+                $this->dispatchEvent(ProjectEvents::ON_CLOSE, new ProjectEvent($projectCloseDown->getProject()));
+                $persist[] = $projectCloseDown->getProject();
+            }
+
+            call_user_func_array([$this, 'persistAndFlush'], $persist);
 
             return $this->createApiResponse($projectCloseDown, Response::HTTP_ACCEPTED);
         }

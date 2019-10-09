@@ -6,10 +6,12 @@ use AppBundle\Command\RedisQueueManagerCommand;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
+use AppBundle\Entity\ProjectStatus;
 use AppBundle\Entity\ProjectUser;
 use AppBundle\Entity\WorkPackage;
 use AppBundle\Event\ProjectEvent;
 use AppBundle\Repository\ProjectRoleRepository;
+use AppBundle\Repository\ProjectStatusRepository;
 use AppBundle\Repository\WorkPackageStatusRepository;
 use Component\Project\ProjectEvents;
 use Psr\Log\LoggerInterface;
@@ -52,6 +54,11 @@ class ProjectSubscriber implements EventSubscriberInterface
     private $projectRoleRepository;
 
     /**
+     * @var ProjectStatusRepository
+     */
+    private $projectStatusRepository;
+
+    /**
      * ProjectSubscriber constructor.
      *
      * @param string                      $env
@@ -67,7 +74,8 @@ class ProjectSubscriber implements EventSubscriberInterface
         LoggerInterface $logger,
         WorkPackageStatusRepository $workPackageStatusRepository,
         TranslatorInterface $translator,
-        ProjectRoleRepository $projectRoleRepository
+        ProjectRoleRepository $projectRoleRepository,
+        ProjectStatusRepository $projectStatusRepository
     ) {
         $this->env = $env;
         $this->redis = $redis;
@@ -75,6 +83,7 @@ class ProjectSubscriber implements EventSubscriberInterface
         $this->workPackageStatusRepository = $workPackageStatusRepository;
         $this->translator = $translator;
         $this->projectRoleRepository = $projectRoleRepository;
+        $this->projectStatusRepository = $projectStatusRepository;
     }
 
     /**
@@ -85,7 +94,17 @@ class ProjectSubscriber implements EventSubscriberInterface
         return [
             ProjectEvents::ON_CLONE => 'onClone',
             ProjectEvents::PRE_CREATE => 'onPreCreate',
+            ProjectEvents::ON_CLOSE => 'onClose',
         ];
+    }
+
+    public function onClose(ProjectEvent $event)
+    {
+        $project = $event->getProject();
+        $closeStatus = $this->projectStatusRepository->findOneBy([
+            'code' => ProjectStatus::CODE_CLOSED,
+        ]);
+        $project->setStatus($closeStatus);
     }
 
     /**
