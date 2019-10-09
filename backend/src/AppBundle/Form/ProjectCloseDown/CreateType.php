@@ -31,6 +31,10 @@ class CreateType extends AbstractType
                 'required' => false,
             ])
             ->add('frozen', CheckboxType::class)
+            ->add('close', CheckboxType::class, [
+                'required' => true,
+                'mapped' => false,
+            ])
         ;
     }
 

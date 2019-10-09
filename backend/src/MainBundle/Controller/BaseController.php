@@ -8,22 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 abstract class BaseController extends Controller
 {
-    protected function persistAndFlush($obj)
+    protected function persistAndFlush(...$objects)
     {
-        if (!is_object($obj)) {
-            throw new HttpException(
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                'Only objects can be persisted and flushed.'
-            );
-        }
+        Assert::allObject($objects);
 
         /** @var \Doctrine\ORM\EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $em->persist($obj);
+        call_user_func_array([$em, 'persist'], $objects);
         $em->flush();
     }
 
