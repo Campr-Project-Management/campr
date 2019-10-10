@@ -36,6 +36,11 @@ services:
         tags :
             - { name: doctrine.event_listener, event: onFlush }
 
+    app.listener.contract:
+        class: AppBundle\EventListener\ContractListener
+        tags :
+            - { name: doctrine.event_listener, event: onFlush }
+
     app.listener.media:
         class: AppBundle\EventListener\MediaSubscriber
         arguments:
