@@ -185,8 +185,8 @@
                                     :disabled="frozen"
                                     v-model="isApproved"/>
 
-                            <div v-if="isApproved" class="toggle-approved">{{ approvedAt }}</div>
-                            <div v-else class="toggle-approved">{{ translate('label.not_approved') }}</div>
+                            <div v-if="isApproved" class="toggle-approved">{{ translate('label.approved_and_started') }}</div>
+                            <div v-else class="toggle-approved">{{ translate('label.approve_and_start') }}</div>
                         </div>
 
                         <div class="flex">
