@@ -290,7 +290,7 @@
                 <div class="col-md-12">
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
-                        <a v-if="!projectCloseDown.frozen" @click="saveCloseDown" class="btn-rounded second-bg">
+                        <a v-if="!projectCloseDown.frozen" @click="saveCloseDown" class="btn-rounded second-bg" style="width: auto;">
                             {{ translateText('button.save_and_close_project') }}
                         </a>
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
