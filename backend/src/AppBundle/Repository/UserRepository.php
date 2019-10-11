@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\User;
+use Webmozart\Assert\Assert;
 
 class UserRepository extends BaseRepository
 {
@@ -45,5 +46,24 @@ class UserRepository extends BaseRepository
                 [$email, $uuid]
             )
         ;
+    }
+
+    public function countAdminsExcept(User $user): int
+    {
+        Assert::notNull($user->getId());
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('COUNT(u.id)');
+        $qb->where(
+            $qb->expr()->andX(
+                $qb->expr()->neq('u.id', $user->getId()),
+                $qb->expr()->orX(
+                    $qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_ADMIN%')),
+                    $qb->expr()->like('u.roles', $qb->expr()->literal('%ROLE_SUPER_ADMIN%'))
+                )
+            )
+        );
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
