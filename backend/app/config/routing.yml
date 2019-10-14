@@ -40,4 +40,4 @@ translation:
 app_uploader_url:
     path: '{path}'
     requirements:
-        path: ((?!_profiler).)+
+        path: ((?!_wdt|_profiler).)+
