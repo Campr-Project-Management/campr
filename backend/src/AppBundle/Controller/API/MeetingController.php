@@ -11,7 +11,6 @@ use AppBundle\Entity\MeetingAgenda;
 use AppBundle\Entity\MeetingObjective;
 use AppBundle\Entity\MeetingParticipant;
 use AppBundle\Entity\MeetingReport;
-use AppBundle\Entity\Note;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\User;
@@ -31,7 +30,6 @@ use AppBundle\Form\MeetingObjective\BaseType as MeetingObjectiveType;
 use AppBundle\Form\MeetingAgenda\CreateType as MeetingAgendaType;
 use AppBundle\Form\Decision\ApiCreateType as DecisionType;
 use AppBundle\Form\Todo\CreateType as TodoType;
-use AppBundle\Form\Note\CreateType as NoteType;
 
 /**
  * @Route("/api/meetings")
@@ -313,38 +311,6 @@ class MeetingController extends ApiController
             $this->persistAndFlush($todo);
 
             return $this->createApiResponse($todo, Response::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * Create a new Note(Info).
-     *
-     * @Route("/{id}/notes", name="app_api_meeting_notes_create", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Meeting $meeting
-     *
-     * @return JsonResponse
-     */
-    public function createNoteAction(Request $request, Meeting $meeting)
-    {
-        $form = $this->createForm(NoteType::class, new Note(), ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $note = $form->getData();
-            $note->setMeeting($meeting);
-            $this->persistAndFlush($note);
-
-            return $this->createApiResponse($note, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);

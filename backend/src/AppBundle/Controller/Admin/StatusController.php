@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Form\Status\CreateType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use MainBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,7 +11,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Status;
-use AppBundle\Form\Status\AdminType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -97,7 +97,7 @@ class StatusController extends BaseController
     public function createAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(AdminType::class);
+        $form = $this->createForm(CreateType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -140,7 +140,7 @@ class StatusController extends BaseController
     public function editAction(Request $request, Status $status)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(AdminType::class, $status);
+        $form = $this->createForm(CreateType::class, $status);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

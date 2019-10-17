@@ -123,7 +123,6 @@ class ProjectControllerTest extends BaseController
                     'number' => 'project-number-3',
                     'projectUsers' => [],
                     'projectTeams' => [],
-                    'notes' => [],
                     'todos' => [],
                     'distributionLists' => [],
                     'statusUpdatedAt' => null,
