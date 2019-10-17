@@ -488,23 +488,6 @@ class MenuBuilder
             ->getParent()
         ;
 
-        // @TODO: Remove this when Notes are completely removed
-//        $menu
-//            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [])
-//            ->setAttributes([
-//                'class' => 'sub-menu main-category',
-//                'dropdown' => true,
-//            ])
-//            ->setLinkAttribute('icon', 'zmdi zmdi-comment-edit')
-//            ->addChild($this->translator->trans('title.note.list', [], 'messages'), [
-//                'route' => 'app_admin_note_list',
-//            ])->getParent()
-//            ->addChild($this->translator->trans('title.note_status.list', [], 'messages'), [
-//                'route' => 'app_admin_note_status_list',
-//            ])->getParent()
-//        ;
-
-
         $this->filterMenu($menu);
 
         return $menu;*/
