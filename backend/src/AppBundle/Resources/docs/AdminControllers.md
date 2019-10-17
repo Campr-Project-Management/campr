@@ -33,8 +33,6 @@ MeetingController.php
 >
 MeetingParticipantController.php
 >
-NoteController.php
->
 PortfolioController.php
 >
 ProjectCategoryController.php

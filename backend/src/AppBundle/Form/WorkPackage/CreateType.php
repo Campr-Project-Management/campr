@@ -50,11 +50,6 @@ class CreateType extends BaseType
                     'required' => false,
                     'choice_label' => 'name',
                     'placeholder' => 'placeholder.status',
-                    'query_builder' => function (EntityRepository $er) {
-                        $qb = $er->createQueryBuilder('q');
-
-                        return $qb->where($qb->expr()->isNull('q.project'));
-                    },
                     'translation_domain' => 'messages',
                     'choice_translation_domain' => 'messages',
                 ]
