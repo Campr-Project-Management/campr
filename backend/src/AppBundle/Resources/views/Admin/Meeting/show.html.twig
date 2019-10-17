@@ -114,13 +114,11 @@
                             <tr>
                                 <th>{{ 'table_header_cell.infos'|trans }}</th>
                                 <td>
-                                    {% if meeting.infos|length %}
-                                        {% for note in meeting.infos %}
-                                            <p>{{ participant.topic|default('-') }}</p>
-                                        {% endfor %}
+                                    {% for info in meeting.infos %}
+                                        <p>{{ info.topic|default('-') }}</p>
                                     {% else %}
                                         -
-                                    {% endif %}
+                                    {% endfor %}
                                 </td>
                             </tr>
                             <tr>
