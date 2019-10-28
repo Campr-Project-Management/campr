@@ -1,0 +1,13 @@
+backend/vendor
+config/minio
+config/ssl
+frontend/node_modules
+frontend/static/js
+ssr/.nuxt
+ssr/node_modules
+var/cache/*
+var/logs/*
+var/profiler/*
+web/static/js/*
+web/uploads/
+*.log
