@@ -283,14 +283,6 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.internal_cost.list', [], 'messages'), [
-                'route' => 'app_admin_resource_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-badge-check')
-        ;
-
-        $menu
             ->addChild($this->translator->trans('title.assignment.list', [], 'messages'), [
                 'route' => 'app_admin_assignment_list',
             ])
