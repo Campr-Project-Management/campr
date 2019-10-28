@@ -1,0 +1,43 @@
+imports:
+    - { resource: config.yml }
+    - { resource: bundles/nelmio_cors.yml }
+
+parameters:
+    database_name: campr
+    database_password: portal
+    router.request_context.scheme: http
+    show_tracking_code: false
+    uploads.root_folder: '/app/web/uploads'
+    portal.api.host: '%domain%'
+
+doctrine:
+    orm:
+        metadata_cache_driver: apc
+        result_cache_driver: apc
+        query_cache_driver: apc
+
+monolog:
+    channels:
+        - "portal"
+        - "cloner"
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: warning
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+        portal:
+            type: stream
+            path: "%kernel.logs_dir%/portal.log"
+            level: info
+            channels: ["portal"]
+        cloner:
+            type: stream
+            path: "%kernel.logs_dir%/cloner.log"
+            level: info
+            channels: ["cloner"]
