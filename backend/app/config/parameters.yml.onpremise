@@ -1,0 +1,53 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: mysql
+    database_port: null
+    database_user: root
+    mailer_transport: smtp
+    mailer_host: mailcatcher
+    mailer_port: 1025
+    mailer_user: postmaster@mg1.campr.biz
+    mailer_password: null
+    default.delivery_address: campr-dev@trisoft.ro
+    secret: ThisTokenIsNotSoSecretChangeIt
+    domain: campr.local
+    redis_host: redis
+    jwt_private_key_path: '%kernel.root_dir%/var/jwt/private.pem'
+    jwt_public_key_path: '%kernel.root_dir%/var/jwt/public.pem'
+    jwt_key_pass_phrase: campr
+    jwt_token_ttl: 86400
+    jwt_token_refresh_ttl: 2592000
+    jwt_token_refresh_ttl_update: true
+    admin.per_page: 10
+    front.per_page: 12
+    front.users_per_page: 20
+    history.per_page: 24
+    router.request_context.scheme: http
+    activation_token_expiration: P1D
+    activation_token_expiration_number: 1
+    reset_token_expiration: P1D
+    reset_token_expiration_number: 1
+    uploads.root_folder: '%kernel.root_dir%/../../web/uploads'
+    uploads.tmp_folder: /tmp
+    media_upload_folder: '%uploads.root_folder%/media'
+    main.team.images_path: '%uploads.root_folder%/teams'
+    main.team.uri_prefix: /uploads/teams
+    main.project.images_path: '%uploads.root_folder%/projects'
+    main.project.uri_prefix: /uploads/projects
+    tests_import_folder: '%kernel.root_dir%/../../web/tests/import'
+    media_upload_folder_test: '%kernel.root_dir%/../../web/uploads/tests'
+    jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+    app.pdf.google_chrome: '/usr/bin/node %kernel.root_dir%/../../ssr/print2pdf.js'
+    app.pdf.google_chrome_arguments: '"%%url%%" "%%file%%"'
+    app.pdf.service_url: 'http://localhost:3000/'
+    app.token_duration: 5
+    app.team.retention_period: P1M
+    gravatar.base_url: 'https://www.gravatar.com/avatar'
+    email.contact_info: info@campr.biz
+    portal.api.base_url: 'http://portal'
+    portal.api.host: campr.local
+    portal.api.secret: 4D65A2AC47476D33BAB2CBF62BCE8
+    portal.webhook.secret: 6F73A8EA3FBDB812922E2AB71E2F6
+    enqueue.redis.dsn: 'redis://%redis_host%:6379/4?database=4'
+    beta.db.snapshot: '%kernel.root_dir%/data/beta.db.snapshot.sql'
+    portal.api.timeout: 60
