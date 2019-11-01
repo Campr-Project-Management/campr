@@ -116,9 +116,10 @@ const actions = {
      * Edit project phase
      * @param {function} commit
      * @param {array}    data
+     * @return {Object}
      */
     editProjectPhase({commit}, data) {
-        Vue.http.patch(
+        return Vue.http.patch(
             Routing.generate('app_api_workpackage_phase_edit',
                 {id: data.project, phase: data.id}),
             JSON.stringify(data),

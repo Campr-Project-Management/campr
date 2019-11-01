@@ -69,7 +69,7 @@
                     <!-- /// End Milestone Details /// -->
 
                     <hr class="double">
-                    
+
                     <!-- /// Milestone Planning /// -->
                     <h3>{{ translateText('message.planning') }}</h3>
                     <div class="row">
@@ -135,6 +135,7 @@ import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import MemberSearch from '../../_common/MemberSearch';
 import DateField from '../../_common/_form-components/DateField';
+import {projectHasValidContract} from '../../../helpers/project';
 
 export default {
     components: {
@@ -180,10 +181,18 @@ export default {
                         } else {
                             this.$flashSuccess('message.saved');
                         }
+
+                        if (!projectHasValidContract(this.project)) {
+                            this.$flashError('project.valid_contract');
+                        }
                     },
                     () => {
                         this.isSaving = false;
                         this.$flashError('message.unable_to_save');
+
+                        if (!projectHasValidContract(this.project)) {
+                            this.$flashError('project.valid_contract');
+                        }
                     },
                 );
             }
@@ -196,11 +205,18 @@ export default {
                 type: 1,
                 content: this.content,
                 responsibility: this.details.responsibility ? this.details.responsibility.key : null,
-                workPackageStatus: this.details.status ? this.details.status.key: null,
+                workPackageStatus: this.details.status ? this.details.status.key : null,
                 phase: this.details.phase ? this.details.phase.key : null,
                 isKeyMilestone: this.isKeyMilestone,
             };
-            this.editProjectMilestone(data);
+
+            const cb = () => {
+                if (!projectHasValidContract(this.project)) {
+                    this.$flashError('project.valid_contract');
+                }
+            };
+
+            this.editProjectMilestone(data).then(cb, cb);
         },
     },
     computed: {
@@ -209,6 +225,7 @@ export default {
             'workPackageStatusesForMilestone',
             'projectPhasesForSelect',
             'projectPhases',
+            'project',
         ]),
         ...mapGetters({
             milestone: 'currentMilestone',
@@ -241,6 +258,10 @@ export default {
         this.getProjectPhases({projectId: this.$route.params.id});
         if (this.$route.params.milestoneId) {
             this.getProjectMilestone(this.$route.params.milestoneId);
+        }
+
+        if (!projectHasValidContract(this.project)) {
+            this.$flashError('project.valid_contract');
         }
     },
     beforeDestroy() {
