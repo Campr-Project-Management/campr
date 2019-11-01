@@ -132,6 +132,7 @@
     import Editor from '../../_common/Editor';
     import MemberSearch from '../../_common/MemberSearch';
     import DateField from '../../_common/_form-components/DateField';
+    import {projectHasValidContract} from '../../../helpers/project';
 
     export default {
         name: 'project-phase-create',
@@ -171,10 +172,18 @@
                             } else {
                                 this.$flashSuccess('message.saved');
                             }
+
+                            if (!projectHasValidContract(this.project)) {
+                                this.$flashError('project.valid_contract');
+                            }
                         },
                         () => {
                             this.isSaving = false;
                             this.$flashError('message.unable_to_save');
+
+                            if (!projectHasValidContract(this.project)) {
+                                this.$flashError('project.valid_contract');
+                            }
                         },
                     );
                 }
@@ -190,7 +199,14 @@
                     workPackageStatus: this.details.status ? this.details.status.key : null,
                     parent: !this.visibleSubphase ? this.details.parent ? this.details.parent.key : null : null,
                 };
-                this.editProjectPhase(data);
+
+                const cb = () => {
+                    if (!projectHasValidContract(this.project)) {
+                        this.$flashError('project.valid_contract');
+                    }
+                };
+
+                this.editProjectPhase(data).then(cb, cb);
             },
         },
         computed: {
@@ -199,6 +215,7 @@
                 'workPackageStatusesForSelect',
                 'projectPhases',
                 'projectPhasesForSelect',
+                'project',
             ]),
             ...mapGetters({
                 phase: 'currentPhase',
@@ -232,6 +249,10 @@
             this.getProjectPhases({projectId: this.$route.params.id});
             if (this.$route.params.phaseId) {
                 this.getProjectPhase(this.$route.params.phaseId);
+            }
+
+            if (!projectHasValidContract(this.project)) {
+                this.$flashError('project.valid_contract');
             }
         },
         beforeDestroy() {
