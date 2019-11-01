@@ -24,8 +24,6 @@ import meetingObjective from './modules/meeting-objective';
 import meetingParticipant from './modules/meeting-participant';
 import meetingReport from './modules/meeting-report';
 import module from './modules/module';
-import note from './modules/note';
-import noteStatus from './modules/note-status';
 import opportunity from './modules/opportunity';
 import opportunityStatus from './modules/opportunity-status';
 import opportunityStrategy from './modules/opportunity-strategy';
@@ -110,8 +108,6 @@ export default new Vuex.Store({
         meetingParticipant,
         meetingReport,
         module,
-        note,
-        noteStatus,
         opportunity,
         opportunityStatus,
         opportunityStrategy,
