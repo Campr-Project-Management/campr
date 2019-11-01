@@ -149,8 +149,6 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackages", cascade={"persist"})
      * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
-     *
-     * @AppAssert\ProjectWithValidContract(message="project.valid_contract")
      */
     private $project;
 
