@@ -54,13 +54,13 @@
                         height="200px"
                         id="task_description"
                         v-model="description"
-                        :label="translate('label.task_description')"/>
+                        :label="translate('label.task_description')" />
                     <!-- /// End Task Description /// -->
 
                     <hr class="double">
 
                     <!-- /// Task Planning /// -->
-                    <planning v-model="planning"/>
+                    <planning v-model="planning" />
                     <!-- /// End Task Planning /// -->
 
                     <hr>
@@ -69,7 +69,7 @@
                         v-model="schedule"
                         :editable-base="!isEditBase"
                         :editable-forecast="isEdit"
-                        v-on:input="updateSchedule"/>
+                        v-on:input="updateSchedule" />
                     <!-- /// End Task Schedule /// -->
 
                     <hr class="double">
@@ -77,8 +77,7 @@
                     <!-- /// Task Internal Costs /// -->
                     <internal-costs
                         v-model="internalCosts"
-                        :validationMessages="internalValidationMessages"
-                        @add="onInternalCostAdded"/>
+                        :validationMessages="internalValidationMessages" />
                     <!-- /// End Task Internal Costs /// -->
 
                     <hr class="double">
@@ -87,16 +86,15 @@
                     <external-costs
                         v-model="externalCosts"
                         :validationMessages="externalValidationMessages"
-                        @input="onExternalCostChanged"
-                        @add="onExternalCostAdded"/>
+                        @add="onExternalCostAdded" />
                     <!--&lt;!&ndash; /// End Task External Costs /// &ndash;&gt;-->
 
                     <hr class="double">
 
                     <!-- /// Task Details /// -->
                     <task-assignments
-                            :value="assignments"
-                            @input="onAssignmentsUpdate"/>
+                        :value="assignments"
+                        @input="onAssignmentsUpdate" />
                     <!-- /// End Task Details /// -->
 
                     <hr class="double">
@@ -109,9 +107,9 @@
 
                     <!-- /// SubTasks /// -->
                     <subtasks
-                            v-model="subtasks"
-                            :editSubtasks="subtasks"
-                            :validationMessages="validationMessages.children"/>
+                        v-model="subtasks"
+                        :editSubtasks="subtasks"
+                        :validationMessages="validationMessages.children" />
                     <!-- /// End SubTasks /// -->
 
                     <hr class="double">
@@ -119,9 +117,9 @@
                     <!-- /// Task Attachments /// -->
                     <h3>{{ translate('message.attachments') }}</h3>
                     <attachments
-                            v-model="medias"
-                            :max-file-size="projectMaxUploadFileSize"
-                            @uploading="onUploading"/>
+                        v-model="medias"
+                        :max-file-size="projectMaxUploadFileSize"
+                        @uploading="onUploading" />
                     <!-- /// End Task Attachments /// -->
 
                     <hr class="double">
@@ -129,19 +127,23 @@
                     <!-- /// Task Condition /// -->
                     <h3>{{ 'message.task_condition'|trans }}</h3>
                     <traffic-light
-                            size="small"
-                            v-model="trafficLight"
-                            :editable="true"/>
-                    <error at-path="trafficLight"/>
+                        size="small"
+                        v-model="trafficLight"
+                        :editable="true" />
+                    <error at-path="trafficLight" />
 
                     <hr class="double">
 
                     <!-- /// Actions /// -->
                     <div class="flex flex-space-between">
-                        <router-link :to="{name: 'project-task-management-list'}" class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}</router-link>
+                        <router-link :to="{name: 'project-task-management-list'}"
+                                     class="btn-rounded btn-auto disable-bg">{{ translate('button.cancel') }}
+                        </router-link>
                         <template v-if="!isUploading">
-                            <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{ translate('button.create_task') }}</a>
-                            <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{ translate('button.save_task') }}</a>
+                            <a v-if="!isEdit" @click="createTask" class="btn-rounded btn-auto second-bg">{{
+                                translate('button.create_task') }}</a>
+                            <a v-if="isEdit" @click="updateTask" class="btn-rounded btn-auto second-bg">{{
+                                translate('button.save_task') }}</a>
                         </template>
                     </div>
                     <!-- /// End Actions /// -->
@@ -173,6 +175,7 @@ import router from '../../../router';
 import _ from 'lodash';
 import moment from 'moment';
 import TrafficLight from '../../_common/TrafficLight';
+import {projectHasValidContract} from '../../../helpers/project';
 
 export default {
     components: {
@@ -202,7 +205,7 @@ export default {
                 'emptyValidationMessages',
                 'getProjectUnits',
                 'importXMLTask',
-            ]
+            ],
         ),
         createTask: function() {
             if (this.isSaving) {
@@ -211,31 +214,33 @@ export default {
 
             this.isSaving = true;
 
-            this
-                .createNewTask({
-                    data: createFormData(this.formData),
-                    projectId: this.$route.params.id,
-                })
-                .then(
-                    (response) => {
-                        this.isSaving = false;
-                        if (response.body && response.body.error && response.body.messages) {
-                            if (response.body.messages.project) {
-                                this.$flashError(response.body.messages.project.join(' '));
-                            } else {
-                                this.$flashError('message.unable_to_save');
-                            }
-                            return;
-                        }
-
-                        this.showSaved = true;
-                        this.$flashSuccess('message.saved');
-                    },
-                    () => {
-                        this.isSaving = false;
+            this.createNewTask({
+                data: createFormData(this.formData),
+                projectId: this.$route.params.id,
+            }).then(
+                (response) => {
+                    this.isSaving = false;
+                    if (response.body && response.body.error && response.body.messages) {
                         this.$flashError('message.unable_to_save');
+                        return;
                     }
-                )
+
+                    this.showSaved = true;
+                    this.$flashSuccess('message.saved');
+
+                    if (!projectHasValidContract(this.project)) {
+                        this.$flashError('project.valid_contract');
+                    }
+                },
+                () => {
+                    this.isSaving = false;
+                    this.$flashError('message.unable_to_save');
+
+                    if (!projectHasValidContract(this.project)) {
+                        this.$flashError('project.valid_contract');
+                    }
+                },
+            )
             ;
         },
         updateTask: function() {
@@ -252,35 +257,37 @@ export default {
                 formData.append('scheduledFinishAt', moment(this.task.scheduledFinishAt).format('DD-MM-YYYY'));
             }
 
-            this
-                .editTask({
-                    data: formData,
-                    taskId: this.$route.params.taskId,
-                })
-                .then(
-                    (response) => {
-                        this.isSaving = false;
-                        if (response.body && response.body.error && response.body.messages) {
-                            if (response.body.messages.project) {
-                                this.$flashError(response.body.messages.project.join(' '));
-                            } else {
-                                this.$flashError('message.unable_to_save');
-                            }
-                            return;
-                        }
-
-                        if (customUnitAdded) {
-                            this.getProjectUnits(this.$route.params.id);
-                        }
-
-                        this.showSaved = true;
-                        this.$flashSuccess('message.saved');
-                    },
-                    () => {
-                        this.isSaving = false;
+            this.editTask({
+                data: formData,
+                taskId: this.$route.params.taskId,
+            }).then(
+                (response) => {
+                    this.isSaving = false;
+                    if (response.body && response.body.error && response.body.messages) {
                         this.$flashError('message.unable_to_save');
+                        return;
                     }
-                )
+
+                    if (customUnitAdded) {
+                        this.getProjectUnits(this.$route.params.id);
+                    }
+
+                    this.showSaved = true;
+                    this.$flashSuccess('message.saved');
+
+                    if (!projectHasValidContract(this.project)) {
+                        this.$flashError('project.valid_contract');
+                    }
+                },
+                () => {
+                    this.isSaving = false;
+                    this.$flashError('message.unable_to_save');
+
+                    if (!projectHasValidContract(this.project)) {
+                        this.$flashError('project.valid_contract');
+                    }
+                },
+            )
             ;
         },
         openFileSelection: function() {
@@ -315,14 +322,6 @@ export default {
         setMedias(value) {
             this.medias = value;
         },
-        onInternalCostAdded() {
-            this.internalCosts.items.push({
-                name: '',
-                quantity: 1,
-                duration: 1,
-                rate: 0,
-            });
-        },
         onExternalCostAdded() {
             this.externalCosts.items.push({
                 description: '',
@@ -354,6 +353,10 @@ export default {
         this.trafficLight = this.defaultTrafficLightValue;
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
+        }
+
+        if (!projectHasValidContract(this.project)) {
+            this.$flashError('project.valid_contract');
         }
     },
     beforeDestroy() {
@@ -392,14 +395,10 @@ export default {
                 ;
                 return out;
             } else if (_.isArray(this.validationMessages.costs)) {
-                return this
-                    .validationMessages
-                    .costs
-                    .slice(
-                        this.externalCosts.items.length,
-                        this.validationMessages.costs.length
-                    )
-                ;
+                return this.validationMessages.costs.slice(
+                    this.externalCosts.items.length,
+                    this.validationMessages.costs.length,
+                );
             }
             return {};
         },
@@ -417,11 +416,7 @@ export default {
                     ;
                     return out;
                 } else if (_.isArray(this.validationMessages.costs)) {
-                    return this
-                        .validationMessages
-                        .costs
-                        .slice(0, this.externalCosts.items.length)
-                    ;
+                    return this.validationMessages.costs.slice(0, this.externalCosts.items.length);
                 }
             }
             return {};
@@ -543,7 +538,7 @@ export default {
                                 name: cost.name,
                                 project: this.$route.params.id ? this.$route.params.id : null,
                                 workPackage: this.$route.params.taskId ? this.$route.params.taskId : null,
-                            }
+                            },
                         );
 
                         internal.push(cost);
