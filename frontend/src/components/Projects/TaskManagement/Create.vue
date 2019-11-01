@@ -175,7 +175,7 @@
     import _ from 'lodash';
     import moment from 'moment';
     import TrafficLight from '../../_common/TrafficLight';
-    import {projectHasValidContract} from '../../../helpers/project'
+    import {projectHasValidContract} from '../../../helpers/project';
 
     export default {
         components: {
