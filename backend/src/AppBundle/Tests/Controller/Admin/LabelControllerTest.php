@@ -3,7 +3,6 @@
 namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Label;
-use AppBundle\Entity\Project;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +19,6 @@ class LabelControllerTest extends BaseController
 
         $this->assertContains('id="label_title"', $crawler->html());
         $this->assertContains('name="label[title]"', $crawler->html());
-        $this->assertContains('id="label_project"', $crawler->html());
-        $this->assertContains('name="label[project]"', $crawler->html());
         $this->assertContains('id="label_description"', $crawler->html());
         $this->assertContains('name="label[description]"', $crawler->html());
         $this->assertContains('id="label_color"', $crawler->html());
@@ -75,7 +72,6 @@ class LabelControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $form['label[title]'] = 'label-priority';
-        $form['label[project]'] = 1;
         $form['label[color]'] = '123456';
 
         $this->client->submit($form);
@@ -97,10 +93,8 @@ class LabelControllerTest extends BaseController
     {
         $this->login();
 
-        $project = $this->em->getRepository(Project::class)->find(1);
         $label = new Label();
         $label->setTitle('proj-label');
-        $label->setProject($project);
         $label->setColor('1');
         $this->em->persist($label);
         $this->em->flush();
@@ -121,8 +115,6 @@ class LabelControllerTest extends BaseController
 
         $this->assertContains('id="label_title"', $crawler->html());
         $this->assertContains('name="label[title]"', $crawler->html());
-        $this->assertContains('id="label_project"', $crawler->html());
-        $this->assertContains('name="label[project]"', $crawler->html());
         $this->assertContains('id="label_description"', $crawler->html());
         $this->assertContains('name="label[description]"', $crawler->html());
         $this->assertContains('id="label_color"', $crawler->html());
@@ -175,7 +167,6 @@ class LabelControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="title"', $crawler->html());
-        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="color"', $crawler->html());
         $this->assertContains('data-column-id="description"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());

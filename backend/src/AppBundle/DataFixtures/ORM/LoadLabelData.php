@@ -17,11 +17,9 @@ class LoadLabelData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $project = $this->getReference('project1');
         for ($i = 1; $i <= 2; ++$i) {
             $label = new Label();
             $label->setTitle('label-title'.$i);
-            $label->setProject($project);
             $label->setColor('color'.$i);
 
             $manager->persist($label);

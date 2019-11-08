@@ -58,8 +58,6 @@ class ProjectStatusControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 1,
                         'name' => 'project-status1',
                         'createdAt' => '2017-01-01 12:00:00',
@@ -67,8 +65,6 @@ class ProjectStatusControllerTest extends BaseController
                         'sequence' => 1,
                     ],
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 2,
                         'name' => 'project-status2',
                         'createdAt' => '2017-01-01 12:00:00',
@@ -133,8 +129,6 @@ class ProjectStatusControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 3,
                     'name' => 'project-status3',
                     'createdAt' => '',
@@ -494,8 +488,6 @@ class ProjectStatusControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'project-status1',
                     'createdAt' => '2017-01-01 12:00:00',
@@ -899,8 +891,6 @@ class ProjectStatusControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 2,
                     'name' => 'project-status2',
                     'createdAt' => '2017-01-01 12:00:00',

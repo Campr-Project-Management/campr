@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as Serializer;
 use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
