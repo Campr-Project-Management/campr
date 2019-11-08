@@ -49,16 +49,6 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
     private $id;
 
     /**
-     * @var Project|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
-     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
-     */
-    private $project;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
@@ -144,55 +134,5 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set project.
-     *
-     * @param Project $project
-     *
-     * @return ProjectStatus
-     */
-    public function setProject(Project $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Get project.
-     *
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * Returns project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectId()
-    {
-        return $this->project ? $this->project->getId() : null;
-    }
-
-    /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : null;
     }
 }

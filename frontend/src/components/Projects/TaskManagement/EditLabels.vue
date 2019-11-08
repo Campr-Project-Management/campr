@@ -26,7 +26,7 @@
                     </div>
                     <div class="actions">
                         <router-link
-                                :to="{name: 'project-task-management-edit-label', params: { id: label.project, labelId: label.id }}">
+                                :to="{name: 'project-task-management-edit-label', params: { id: $route.params.id, labelId: label.id }}">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1677_">
@@ -41,7 +41,7 @@
                             </g>
                         </svg>
                         </router-link>
-                        <a @click="deleteLabel(label.id)">
+                        <a @click="doDeleteLabel(label.id)">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                            viewBox="0 0 28.5 29.8" style="enable-background:new 0 0 28.5 29.8;" xml:space="preserve">
                             <g id="XMLID_1682_">
@@ -65,14 +65,17 @@ import {mapActions, mapGetters} from 'vuex';
 
 export default {
     methods: {
-        ...mapActions(['getProjectLabels', 'deleteProjectLabel']),
-        deleteLabel: function(id) {
-            this.deleteProjectLabel(id);
-            this.getProjectLabels(this.$route.params.id);
+        ...mapActions(['getLabels', 'deleteLabel']),
+        doDeleteLabel: function(id) {
+            const getLabels = this.getLabels;
+            this
+                .deleteLabel(id)
+                .then(getLabels, getLabels)
+            ;
         },
     },
     created() {
-        this.getProjectLabels(this.$route.params.id);
+        this.getLabels();
     },
     computed: mapGetters([
         'labels',
@@ -98,7 +101,7 @@ export default {
 <style scoped lang="scss">
     @import '../../../css/page-section';
     @import '~theme/variables';
-    
+
     svg {
         width: 30px;
         height: 30px;

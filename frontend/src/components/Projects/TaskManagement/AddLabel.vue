@@ -41,8 +41,8 @@
                     <router-link :to="{name: 'project-task-management-edit-labels'}"
                                  class="btn-rounded btn-auto disable-bg">{{ button.cancel }}
                     </router-link>
-                    <a v-if="!isEdit" @click="createLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
-                    <a v-if="isEdit" @click="editLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
+                    <a v-if="!isEdit" @click="doCreateLabel" class="btn-rounded btn-auto">{{ button.create_label }}</a>
+                    <a v-if="isEdit" @click="doEditLabel" class="btn-rounded btn-auto">{{ button.edit_label }}</a>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@ export default {
         Error,
     },
     created() {
-        if (this.$route.params.labelId) this.getProjectLabel(this.$route.params.labelId);
+        if (this.$route.params.labelId) this.getLabel(this.$route.params.labelId);
     },
     computed: {
         ...mapGetters([
@@ -98,18 +98,17 @@ export default {
         },
     },
     methods: {
-        ...mapActions(['createProjectLabel', 'getProjectLabel', 'editProjectLabel', 'emptyValidationMessages']),
-        createLabel: function() {
+        ...mapActions(['createLabel', 'getLabel', 'editLabel', 'emptyValidationMessages']),
+        doCreateLabel: function() {
             if (!this.isSaving) {
                 let data = {
-                    projectId: this.$route.params.id,
                     title: this.title,
                     description: this.description,
                     color: this.color,
                 };
                 this.isSaving = true;
                 this
-                    .createProjectLabel(data)
+                    .createLabel(data)
                     .then(
                         (response) => {
                             this.isSaving = false;
@@ -129,7 +128,7 @@ export default {
                 ;
             }
         },
-        editLabel: function() {
+        doEditLabel: function() {
             let data = {
                 labelId: this.$route.params.labelId,
                 title: this.title,
@@ -137,7 +136,7 @@ export default {
                 color: this.color,
             };
             this
-                .editProjectLabel(data)
+                .editLabel(data)
                 .then(
                     (response) => {
                         if (response.body && response.body.error) {
