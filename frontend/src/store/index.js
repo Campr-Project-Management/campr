@@ -15,6 +15,7 @@ import evaluationObjective from './modules/evaluation-objective';
 import gantt from './modules/gantt';
 import infoCategory from './modules/info-category';
 import info from './modules/info';
+import label from './modules/label';
 import lesson from './modules/lesson';
 import measure from './modules/measure';
 import meetingAgenda from './modules/meeting-agenda';
@@ -99,6 +100,7 @@ export default new Vuex.Store({
         gantt,
         info,
         infoCategory,
+        label,
         lesson,
         measure,
         meeting,

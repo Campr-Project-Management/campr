@@ -3,13 +3,15 @@
 namespace AppBundle\Form\Label;
 
 use AppBundle\Entity\Label;
-use AppBundle\Entity\Project;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class LabelType extends BaseLabelType
+class LabelType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,20 +19,29 @@ class LabelType extends BaseLabelType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         $builder
-            ->add('project', EntityType::class, [
+            ->add('title', TextType::class, [
                 'required' => true,
-                'class' => Project::class,
-                'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'not_blank.project',
+                        'message' => 'not_blank.title',
                     ]),
                 ],
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('color', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'not_blank.color',
+                    ]),
+                    new Length([
+                        'max' => 7,
+                        'maxMessage' => 'length.color',
+                    ]),
+                ],
             ])
         ;
     }

@@ -58,8 +58,6 @@ class ProjectScopeControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 1,
                         'name' => 'project-scope1',
                         'sequence' => 1,
@@ -67,8 +65,6 @@ class ProjectScopeControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 2,
                         'name' => 'project-scope2',
                         'sequence' => 2,
@@ -141,8 +137,6 @@ class ProjectScopeControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 3,
                     'name' => 'project-scope3',
                     'sequence' => 1,
@@ -383,8 +377,6 @@ class ProjectScopeControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'project-scope1',
                     'sequence' => 1,
@@ -664,8 +656,6 @@ class ProjectScopeControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 2,
                     'name' => 'project-scope2',
                     'sequence' => 2,

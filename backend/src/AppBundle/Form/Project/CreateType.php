@@ -12,8 +12,6 @@ use AppBundle\Entity\ProjectScope;
 use AppBundle\Entity\ProjectStatus;
 use AppBundle\Form\Currency\CurrencyChoiceType;
 use AppBundle\Form\TrafficLight\TrafficLightType;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -127,9 +125,6 @@ class CreateType extends AbstractType
                     'required' => false,
                     'class' => ProjectComplexity::class,
                     'choice_label' => 'name',
-                    'query_builder' => function (EntityRepository $er) use ($self, $entity) {
-                        return $self->findRelatedEntities($er, $entity);
-                    },
                     'placeholder' => 'placeholder.project_complexity',
                     'translation_domain' => 'messages',
                 ]
@@ -162,9 +157,6 @@ class CreateType extends AbstractType
                 [
                     'required' => false,
                     'class' => ProjectStatus::class,
-                    'query_builder' => function (EntityRepository $er) use ($self, $entity) {
-                        return $self->findRelatedEntities($er, $entity);
-                    },
                     'placeholder' => 'placeholder.project_status',
                     'translation_domain' => 'messages',
                     'choice_translation_domain' => 'messages',
@@ -212,23 +204,5 @@ class CreateType extends AbstractType
                 'allow_extra_fields' => true,
             ]
         );
-    }
-
-    /**
-     * @param EntityRepository $er
-     * @param Project          $entity
-     *
-     * @return QueryBuilder
-     */
-    private function findRelatedEntities(EntityRepository $er, Project $entity)
-    {
-        $qb = $er->createQueryBuilder('q');
-        $qb->where($qb->expr()->isNull('q.project'));
-
-        if ($entity->getId()) {
-            $qb->orWhere($qb->expr()->eq('q.project', $entity->getId()));
-        }
-
-        return $qb;
     }
 }

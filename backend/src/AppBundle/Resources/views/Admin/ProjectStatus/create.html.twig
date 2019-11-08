@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-8 col-md-offset-2">
             <div class="card">
-                <div class="card-header bgm-teal">>
+                <div class="card-header bgm-teal">
                     <h2>{{ 'title.project_status.create'|trans }}</h2>
                     <ul class="actions">
                         <li class="dropdown">
@@ -50,13 +50,6 @@
                                     'class': 'form-control input-sm',
                                 },
                                 'label': 'label.name'|trans,
-                            }
-                        ) }}
-                        {{ form_widget(
-                            form.project,
-                            {
-                                'attr': {'class': 'selectpicker'},
-                                'label': 'label.project'|trans,
                             }
                         ) }}
                         {{ form_widget(

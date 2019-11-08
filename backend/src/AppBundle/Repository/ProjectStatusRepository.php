@@ -14,13 +14,6 @@ class ProjectStatusRepository extends BaseRepository
         $qb->where(
             $qb
                 ->expr()
-                ->isNull(
-                    'ps.project'
-                )
-        );
-        $qb->andWhere(
-            $qb
-                ->expr()
                 ->gte(
                     'ps.sequence',
                     0

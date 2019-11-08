@@ -4,7 +4,6 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\ProjectScope;
 use AppBundle\Form\ProjectScope\CreateType;
-use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -79,8 +78,6 @@ class ProjectScopeController extends ApiController
      */
     public function getAction(ProjectScope $projectScope)
     {
-        $this->denyAccessUnlessGranted(ProjectVoter::VIEW, $projectScope->getProject());
-
         return $this->createApiResponse($projectScope);
     }
 
@@ -97,8 +94,6 @@ class ProjectScopeController extends ApiController
      */
     public function editAction(Request $request, ProjectScope $projectScope)
     {
-        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $projectScope->getProject());
-
         $form = $this->createForm(CreateType::class, $projectScope, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
@@ -130,8 +125,6 @@ class ProjectScopeController extends ApiController
      */
     public function deleteAction(ProjectScope $projectScope)
     {
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $projectScope->getProject());
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($projectScope);
         $em->flush();
