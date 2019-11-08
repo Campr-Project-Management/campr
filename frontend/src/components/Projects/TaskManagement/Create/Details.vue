@@ -39,7 +39,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'getProjectLabels',
+            'getLabels',
             'getWorkPackageStatuses',
             'getWorkPackageStatusesForSelect',
         ]),
@@ -57,7 +57,7 @@ export default {
         ]),
     },
     created() {
-        this.getProjectLabels(this.$route.params.id);
+        this.getLabels();
         this.getWorkPackageStatuses();
     },
 };

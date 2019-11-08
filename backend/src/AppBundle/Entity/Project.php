@@ -265,15 +265,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     private $fileSystems;
 
     /**
-     * @var ArrayCollection|Label[]
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Label", mappedBy="project", cascade={"persist"})
-     */
-    private $labels;
-
-    /**
      * @var Label|null
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Label")
@@ -394,15 +385,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     private $projectModules;
 
     /**
-     * @var ArrayCollection|WorkPackageStatus[]
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackageStatus", mappedBy="project", cascade={"persist"})
-     */
-    private $workPackageStatuses;
-
-    /**
      * @var ArrayCollection|Unit[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Unit", mappedBy="project")
@@ -451,20 +433,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\OpportunityStrategy", mappedBy="project", cascade={"persist"})
      */
     private $opportunityStrategies;
-
-    /**
-     * @var ArrayCollection|Status[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Status", mappedBy="project", cascade={"persist"})
-     */
-    private $riskStatuses;
-
-    /**
-     * @var ArrayCollection|RiskStrategy[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RiskStrategy", mappedBy="project")
-     */
-    private $riskStrategies;
 
     /**
      * @var ArrayCollection|RiskStrategy[]
@@ -551,7 +519,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
         $this->infos = new ArrayCollection();
         $this->todos = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
-        $this->labels = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->meetings = new ArrayCollection();
         $this->userFavorites = new ArrayCollection();
@@ -561,7 +528,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
         $this->projectDeliverables = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->projectModules = new ArrayCollection();
-        $this->workPackageStatuses = new ArrayCollection();
         $this->costs = new ArrayCollection();
         $this->units = new ArrayCollection();
         $this->subteams = new ArrayCollection();
@@ -569,8 +535,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
         $this->opportunities = new ArrayCollection();
         $this->decisions = new ArrayCollection();
         $this->opportunityStrategies = new ArrayCollection();
-        $this->riskStrategies = new ArrayCollection();
-        $this->riskStatuses = new ArrayCollection();
         $this->projectDepartments = new ArrayCollection();
         $this->statusReports = new ArrayCollection();
         $this->statusReportConfigs = new ArrayCollection();
@@ -1532,44 +1496,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     }
 
     /**
-     * Add label.
-     *
-     * @param Label $label
-     *
-     * @return Project
-     */
-    public function addLabel(Label $label)
-    {
-        $this->labels[] = $label;
-
-        return $this;
-    }
-
-    /**
-     * Remove label.
-     *
-     * @param Label $label
-     *
-     * @return Project
-     */
-    public function removeLabel(Label $label)
-    {
-        $this->labels->removeElement($label);
-
-        return $this;
-    }
-
-    /**
-     * Get labels.
-     *
-     * @return ArrayCollection|Label[]
-     */
-    public function getLabels()
-    {
-        return $this->labels;
-    }
-
-    /**
      * @param Label|null $label
      *
      * @return Project
@@ -2046,40 +1972,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     }
 
     /**
-     * Add workPackageStatus.
-     *
-     * @param WorkPackageStatus $workPackageStatus
-     *
-     * @return Project
-     */
-    public function addWorkPackageStatus(WorkPackageStatus $workPackageStatus)
-    {
-        $this->workPackageStatuses[] = $workPackageStatus;
-
-        return $this;
-    }
-
-    /**
-     * Remove workPackageStatus.
-     *
-     * @param WorkPackageStatus $workPackageStatus
-     */
-    public function removeWorkPackageStatus(WorkPackageStatus $workPackageStatus)
-    {
-        $this->workPackageStatuses->removeElement($workPackageStatus);
-    }
-
-    /**
-     * Get workPackageStatuses.
-     *
-     * @return ArrayCollection|WorkPackageStatus[]
-     */
-    public function getWorkPackageStatuses()
-    {
-        return $this->workPackageStatuses;
-    }
-
-    /**
      * @param Cost $cost
      *
      * @return Project
@@ -2380,42 +2272,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     }
 
     /**
-     * Get riskStrategies.
-     *
-     * @return ArrayCollection|RiskStrategy[]
-     */
-    public function getRiskStrategies()
-    {
-        return $this->riskStrategies;
-    }
-
-    /**
-     * Add riskStrategy.
-     *
-     * @param RiskStrategy $riskStrategy
-     *
-     * @return Project
-     */
-    public function addRiskStrategy(RiskStrategy $riskStrategy)
-    {
-        $this->riskStrategies[] = $riskStrategy;
-
-        return $this;
-    }
-
-    /**
-     * Remove riskStrategy.
-     *
-     * @param RiskStrategy $riskStrategy
-     */
-    public function removeRiskStrategy(RiskStrategy $riskStrategy)
-    {
-        $this->riskStrategies->removeElement($riskStrategy);
-
-        return $this;
-    }
-
-    /**
      * Add StatusReport.
      *
      * @param StatusReport $statusReport
@@ -2485,42 +2341,6 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     public function getStatusReportConfigs()
     {
         return $this->statusReportConfigs;
-    }
-
-    /**
-     * Get riskStatuses.
-     *
-     * @return ArrayCollection|Status[]
-     */
-    public function getRiskStatuses()
-    {
-        return $this->riskStatuses;
-    }
-
-    /**
-     * Add riskStatus.
-     *
-     * @param Status $riskStatus
-     *
-     * @return Project
-     */
-    public function addRiskStatus(Status $riskStatus)
-    {
-        $this->riskStatuses[] = $riskStatus;
-
-        return $this;
-    }
-
-    /**
-     * @param Status $riskStatus
-     *
-     * @return $this
-     */
-    public function removeRiskStatus(Status $riskStatus)
-    {
-        $this->riskStatuses->removeElement($riskStatus);
-
-        return $this;
     }
 
     /**

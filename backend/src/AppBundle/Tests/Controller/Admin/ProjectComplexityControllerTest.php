@@ -19,8 +19,6 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_project"', $crawler->html());
-        $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_sequence"', $crawler->html());
         $this->assertContains('name="create[sequence]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -138,8 +136,6 @@ class ProjectComplexityControllerTest extends BaseController
 
         $this->assertContains('id="create_name"', $crawler->html());
         $this->assertContains('name="create[name]"', $crawler->html());
-        $this->assertContains('id="create_project"', $crawler->html());
-        $this->assertContains('name="create[project]"', $crawler->html());
         $this->assertContains('id="create_sequence"', $crawler->html());
         $this->assertContains('name="create[sequence]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
@@ -227,7 +223,6 @@ class ProjectComplexityControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
-        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="sequence"', $crawler->html());
         $this->assertContains('data-column-id="createdAt"', $crawler->html());
         $this->assertContains('data-column-id="updatedAt"', $crawler->html());

@@ -66,8 +66,6 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 3,
                     'name' => 'status3',
                 ],
@@ -242,8 +240,6 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'status1',
                 ],
@@ -456,8 +452,6 @@ class StatusControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'status1',
                 ],

@@ -2,8 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Component\Project\ProjectAwareInterface;
-use Component\Project\ProjectInterface;
 use Component\Resource\Model\ResourceInterface;
 use Component\Resource\Model\TimestampableInterface;
 use Component\Resource\Model\TimestampableTrait;
@@ -21,7 +19,7 @@ use Component\Resource\Cloner\Annotation as Cloner;
  * @UniqueEntity(fields="name", message="unique.name")
  * @Cloner\Exclude()
  */
-class ProjectCategory implements ResourceInterface, TimestampableInterface, ProjectAwareInterface
+class ProjectCategory implements ResourceInterface, TimestampableInterface
 {
     use TimestampableTrait;
 
@@ -33,16 +31,6 @@ class ProjectCategory implements ResourceInterface, TimestampableInterface, Proj
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var Project|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project")
-     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
-     */
-    private $project;
 
     /**
      * @var string
@@ -146,55 +134,5 @@ class ProjectCategory implements ResourceInterface, TimestampableInterface, Proj
     public function getSequence()
     {
         return $this->sequence;
-    }
-
-    /**
-     * Set project.
-     *
-     * @param ProjectInterface $project
-     *
-     * @return ProjectCategory
-     */
-    public function setProject(ProjectInterface $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Get project.
-     *
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * Returns project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectId()
-    {
-        return $this->project ? $this->project->getId() : null;
-    }
-
-    /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : null;
     }
 }

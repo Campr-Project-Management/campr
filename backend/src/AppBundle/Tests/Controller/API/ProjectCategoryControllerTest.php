@@ -58,8 +58,6 @@ class ProjectCategoryControllerTest extends BaseController
                 Response::HTTP_OK,
                 [
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 1,
                         'name' => 'project-category1',
                         'sequence' => 1,
@@ -67,8 +65,6 @@ class ProjectCategoryControllerTest extends BaseController
                         'updatedAt' => null,
                     ],
                     [
-                        'project' => null,
-                        'projectName' => null,
                         'id' => 2,
                         'name' => 'project-category2',
                         'sequence' => 2,
@@ -141,8 +137,6 @@ class ProjectCategoryControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 3,
                     'name' => 'project-category3',
                     'sequence' => 1,
@@ -382,8 +376,6 @@ class ProjectCategoryControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'project-category1',
                     'sequence' => 1,
@@ -663,8 +655,6 @@ class ProjectCategoryControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 2,
                     'name' => 'project-category2',
                     'sequence' => 2,
