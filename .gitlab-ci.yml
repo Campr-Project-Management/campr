@@ -1,6 +1,5 @@
 stages:
   - test
-  - deploy
 
 phpunit:
   stage: test
@@ -29,17 +28,3 @@ cs-fixer:
   script:
     - echo "Checking PHP files with php-cs-fixer"
     - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
-    - bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false deploy.php
-
-deploy_qa:
-  stage: deploy
-  script:
-    - sudo bin/dep deploy qa-local -vvv
-  environment:
-    name: qa/develop
-    url: https://qa.campr.biz
-  when: manual
-  #only:
-  #  - branches
-  #except:
-  #  - master
