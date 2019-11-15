@@ -373,6 +373,15 @@ services:
         tags:
             - { name: routing.loader }
 
+    app.routing.loader.if_exists.portal:
+        class: AppBundle\Routing\IfExistsYamlLoader
+        public: false
+        arguments:
+            - '@file_locator'
+            - 'routing_portal.yml'
+        tags:
+            - { name: routing.loader }
+
 ### SNAPSHOT ###
     app.snapshot.transformer.date:
         class: Component\Snapshot\Transformer\DateTransformer
