@@ -51,12 +51,6 @@
                     <label class="label">{{ 'label.last_name'|trans }}</label>
                 </div>
             </div>
-            <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
-                <div class="input-holder">
-                    {{ form_widget(form.phone, {'attr': {'class': 'input-field'}}) }}
-                    <label class="label">{{ 'label.phone'|trans }}</label>
-                </div>
-            </div>
             <div class="control-group form-group control-group-inline">
                 {% set i = 0 %}
                 {% for roleChild in form.roles.children %}             
@@ -75,6 +69,18 @@
                 <div class="checkbox-input clearfix">
                     {{ form_widget(form.isSuspended) }}
                     <label class="label" for="edit_isSuspended">{{ 'label.suspended'|trans }}</label>
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.company) %}has-error{% endif %}">
+                <div class="input-holder input-filled">
+                    {{ form_widget(form.company, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.company'|trans }}</label>
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.roles) %}has-error{% endif %}">
+                <div class="input-holder input-filled">
+                    {{ form_widget(form.roles, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.roles'|trans }}</label>
                 </div>
             </div>
             <div class="form-group">

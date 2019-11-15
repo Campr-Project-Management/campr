@@ -155,14 +155,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     /**
      * @var string
      *
-     * @Serializer\Exclude()
-     * @ORM\Column(name="encryption_key", type="string", length=128, nullable=true)
-     */
-    private $encryptionKey;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="logo_url", type="string", nullable=true)
      */
     private $logoUrl;
@@ -179,7 +171,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
         $this->createdAt = new \DateTime();
         $this->teamMembers = new ArrayCollection();
         $this->teamInvites = new ArrayCollection();
-        $this->encryptionKey = hash('sha512', random_bytes(64));
         $this->uuid = Uuid::uuid4()->toString();
     }
 
@@ -491,16 +482,6 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     public function getUserFullName()
     {
         return $this->user ? $this->user->getFullName() : null;
-    }
-
-    /**
-     * Get encryptionKey.
-     *
-     * @return string
-     */
-    public function getEncryptionKey(): string
-    {
-        return $this->encryptionKey;
     }
 
     /**

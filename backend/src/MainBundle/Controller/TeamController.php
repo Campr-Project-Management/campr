@@ -6,6 +6,7 @@ use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamInvite;
 use AppBundle\Entity\TeamMember;
 use AppBundle\Entity\User;
+use Component\Team\TeamEvents;
 use MainBundle\Form\Team\CreateType;
 use MainBundle\Form\Team\EditType;
 use MainBundle\Form\TeamMember\EditRolesType;
@@ -14,6 +15,7 @@ use MainBundle\Form\InviteUserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,6 +78,10 @@ class TeamController extends Controller
         if ($request->isMethod(Request::METHOD_POST) && $form->isValid()) {
             $team = $form->getData();
             $team->setUser($this->getUser());
+
+            $eventDispatcher = $this->get('event_dispatcher');
+            $eventDispatcher->dispatch(TeamEvents::PRE_CREATE, new GenericEvent($team));
+
             $teamMember = new TeamMember();
             $teamMember->setTeam($team);
             $teamMember->setUser($this->getUser());
@@ -84,6 +90,8 @@ class TeamController extends Controller
             $em->persist($team);
             $em->persist($teamMember);
             $em->flush();
+
+            $eventDispatcher->dispatch(TeamEvents::POST_CREATE, new GenericEvent($team));
 
             $this
                 ->get('session')
@@ -212,20 +220,22 @@ class TeamController extends Controller
         $userData = [
             'email' => $user->getEmail(),
             'username' => $user->getUsername(),
-            'first_name' => $user->getFirstName(),
-            'last_name' => $user->getLastName(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
             'phone' => $user->getPhone(),
             'roles' => $roles,
-            'api_token' => $user->getApiToken(),
-            'widget_settings' => $user->getWidgetSettings(),
-            'avatar' => $user->getAvatar(),
+            'apiToken' => $user->getApiToken(),
+            'widgetSettings' => $user->getWidgetSettings(),
+            'avatarUrl' => $user->getAvatarUrl(),
             'facebook' => $user->getFacebook(),
             'twitter' => $user->getTwitter(),
             'instagram' => $user->getInstagram(),
             'gplus' => $user->getGplus(),
-            'linked_in' => $user->getLinkedIn(),
+            'linkedIn' => $user->getLinkedIn(),
             'medium' => $user->getMedium(),
             'locale' => $user->getLocale(),
+            'uuid' => $user->getUuid(),
+            'theme' => $user->getTheme(),
         ];
 
         $redirectTo = $request->query->get('redirect_to');
@@ -244,7 +254,11 @@ class TeamController extends Controller
             ->getToken()
         ;
 
-        return $this->redirect($subdomain.'/login?'.http_build_query(['jwt' => (string) $token]));
+        $path = $this->get('router')->generate('portal_login', [
+            'jwt' => (string) $token,
+        ]);
+
+        return $this->redirect($subdomain.$path);
     }
 
     /**

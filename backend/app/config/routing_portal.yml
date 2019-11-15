@@ -1,9 +1,0 @@
-main_user_account:
-    path: /account/profile
-    host: "{domain}"
-    defaults:
-        domain: "%domain%"
-    requirements:
-        domain: .+
-    options:
-        expose: true
