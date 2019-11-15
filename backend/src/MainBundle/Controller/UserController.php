@@ -178,7 +178,7 @@ class UserController extends Controller
         ;
 
         if ($user) {
-            $activationToken = $this->get('app.service.user')->generateActivationResetToken();
+            $activationToken = substr(md5(microtime()), rand(0, 26), 6);
             $user->setActivationToken($activationToken);
             $user->setActivationTokenCreatedAt(new \DateTime());
             $em->persist($user);
@@ -229,7 +229,7 @@ class UserController extends Controller
                 ->findOneByEmail($email)
             ;
             if ($user) {
-                $resetToken = $this->get('app.service.user')->generateActivationResetToken();
+                $resetToken = substr(md5(microtime()), rand(0, 26), 6);
                 $user->setResetPasswordToken($resetToken);
                 $user->setResetPasswordTokenCreatedAt(new \DateTime());
                 $em->persist($user);
