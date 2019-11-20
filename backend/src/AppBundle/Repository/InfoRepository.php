@@ -80,15 +80,9 @@ class InfoRepository extends BaseRepository
     {
         $qb = $this->createQueryBuilder('o');
 
-        $meetingDate = $meeting->getDate();
-        $meetingTime = $meeting->getEnd() ?: $meeting->getStart();
-        if ($meetingTime) {
-            $meetingDate->setTime(
-                (int) $meetingTime->format('G'),
-                (int) ltrim($meetingTime->format('i'), 0),
-                (int) ltrim($meetingTime->format('s'), 0)
-            );
-        }
+        $createdAtLimit = clone $meeting->getDate();
+        $createdAtLimit->add(new \DateInterval('P3D'));
+        $createdAtLimit->setTime(23, 59, 59);
 
         $date = new \DateTime('-6 days');
 
@@ -96,7 +90,7 @@ class InfoRepository extends BaseRepository
             ->andWhere('o.project = :project AND o.createdAt <= :createdAt')
             ->andWhere('o.expiresAt >= :date')
             ->setParameter('date', $date)
-            ->setParameter('createdAt', $meetingDate)
+            ->setParameter('createdAt', $createdAtLimit)
             ->setParameter('project', $meeting->getProject())
         ;
 
