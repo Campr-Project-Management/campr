@@ -74,12 +74,6 @@
                     {{ form_widget(form.lastName, {'attr': {'class': 'input-field'}}) }}
                 </div>
             </div>
-            <div class="control-group form-group {% if form_errors(form.phone) %}has-error{% endif %}">
-                <div class="input-holder">
-                    <label class="label">{{ 'label.phone'|trans }}</label>
-                    {{ form_widget(form.phone, {'attr': {'class': 'input-field'}}) }}
-                </div>
-            </div>
             <div class="control-group form-group control-group-inline">
                 {% set i = 0 %}
                 {% for roleChild in form.roles.children %}                
@@ -89,6 +83,18 @@
                     </div>
                 {% set i = i + 1 %}
                 {% endfor %}                
+            </div>
+            <div class="control-group form-group {% if form_errors(form.company) %}has-error{% endif %}">
+                <div class="input-holder input-filled">
+                    {{ form_widget(form.company, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.company'|trans }}</label>
+                </div>
+            </div>
+            <div class="control-group form-group {% if form_errors(form.roles) %}has-error{% endif %}">
+                <div class="input-holder input-filled">
+                    {{ form_widget(form.roles, {'attr': {'class': 'input-field'}}) }}
+                    <label class="label">{{ 'label.roles'|trans }}</label>
+                </div>
             </div>
             <div class="form-group">
                 <button class="button" type="submit">{{ 'button.create'|trans }}</button>
