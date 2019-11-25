@@ -128,9 +128,7 @@ RUN go-replace --mode=line --regex \
 
 RUN cd /app && composer install --no-scripts \
     && cd /app/ssr && yarn \
-    && cd /app/frontend && yarn \
-    && npm install -g bower \
-    && cd /app && bower install --allow-root
+    && cd /app/frontend && yarn && yarn build
 
 COPY config/docker/app/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
