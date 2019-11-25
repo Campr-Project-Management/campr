@@ -4,7 +4,7 @@ imports:
 
 parameters:
     database_name: campr
-    database_password: portal
+    database_password: campr
     router.request_context.scheme: http
     show_tracking_code: false
     uploads.root_folder: '/app/web/uploads'
