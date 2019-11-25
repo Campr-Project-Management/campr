@@ -8,7 +8,6 @@ use AppBundle\Form\User\LoginType;
 use AppBundle\Form\User\RegisterType;
 use AppBundle\Form\User\ResetPasswordType;
 use MainBundle\Form\ContactType;
-use MainBundle\Form\User\HomepageRegisterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,108 +26,20 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $contactForm = $this->createForm(ContactType::class);
-
-        if ($this->getUser() instanceof User) {
-            $teams = $this
-                ->getDoctrine()
-                ->getManager()
-                ->getRepository(Team::class)
-                ->findBy(['user' => $this->getUser()])
-            ;
-        } else {
-            $teams = [];
+        if (!($this->getUser() instanceof User)) {
+            return $this->redirectToRoute('main_login');
         }
+
+        $teams = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Team::class)
+            ->findBy(['user' => $this->getUser()])
+        ;
 
         return $this->render('MainBundle:Default:index.html.twig', [
             'teams' => $teams,
-            'contactForm' => $contactForm->createView(),
         ]);
-    }
-
-    /**
-     * @Route("/register", name="main_register", options={"expose"=true})
-     * @Method({"GET","POST"})
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     */
-    public function registerAction(Request $request)
-    {
-        $user = new User();
-        $contactForm = $this->createForm(ContactType::class);
-        $signUpForm = $this->createForm(HomepageRegisterType::class, $user, [
-            'method' => Request::METHOD_POST,
-            'action' => $this->generateUrl('main_register'),
-        ]);
-
-        $signUpForm->handleRequest($request);
-        if ($request->isMethod(Request::METHOD_POST) && $signUpForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $user->setPlainPassword(substr(md5(microtime()), rand(0, 26), 6));
-
-            $em->persist($user);
-            $em->flush();
-
-            $this
-                ->get('app.service.mailer')
-                ->sendRegistrationEmail($user)
-            ;
-
-            $this->addFlash('registration_success', 'success.registration_success');
-
-            return $this->redirectToRoute('main_homepage');
-        }
-
-        return $this->render('MainBundle:Default:register.html.twig', [
-            'signUpForm' => $signUpForm->createView(),
-            'contactForm' => $contactForm->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/register-form", name="main_register_form", options={"expose"=true})
-     */
-    public function registerFormAction()
-    {
-        $signUpForm = $this->createForm(HomepageRegisterType::class, new User(), [
-            'method' => Request::METHOD_POST,
-            'action' => $this->generateUrl('main_register'),
-        ]);
-
-        return $this->render('MainBundle:Default:_registration_form.html.twig', [
-            'signUpForm' => $signUpForm->createView(),
-        ]);
-    }
-
-    /**
-     * Modules page.
-     *
-     * @Route("/modules", name="main_modules")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function modulesAction(Request $request)
-    {
-        $contactForm = $this->createForm(ContactType::class);
-
-        return $this->render('MainBundle:Default:modules.html.twig', [
-            'contactForm' => $contactForm->createView(),
-        ]);
-    }
-
-    /**
-     * About page.
-     *
-     * @Route("/about", name="main_about")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function aboutAction(Request $request)
-    {
-        return $this->render('MainBundle:Default:about.html.twig');
     }
 
     /**
