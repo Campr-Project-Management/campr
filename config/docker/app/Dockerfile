@@ -119,5 +119,9 @@ RUN go-replace --mode=line --regex \
     --path=/etc/php/7.1/fpm/pool.d/ \
     --path-pattern='*.conf'
 
+RUN cd /app && composer install --no-scripts \
+    && cd /app/ssr && yarn \
+    && cd /app/frontend && yarn && yarn build
+
 RUN /bootstrap.sh
 CMD ["supervisord", "-c", "/etc/supervisor.conf", "--user", "root"]
