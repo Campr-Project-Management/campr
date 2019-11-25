@@ -48,15 +48,6 @@
                     <li class="nav-item">
                         <a class="nav-link{% if app.request.get('_route') == 'main_homepage' %} active{% endif %}" href="{{ path('main_homepage') }}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if app.request.get('_route') == 'main_modules' %} active{% endif %}" href="{{ path('main_modules') }}">Modules</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if app.request.get('_route') == 'main_about' %} active{% endif %}" href="{{ path('main_about') }}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if app.request.get('_route') == 'main_register' %} active{% endif %}" href="{{ path('main_register') }}">Signup</a>
-                    </li>
                     <li>
                         <a class="nav-link" href="{{ path('main_login') }}">{{ 'button.sign_in'|trans }}</a>
                     </li>

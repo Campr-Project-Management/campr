@@ -11,5 +11,8 @@ docker build \
   -t lab.trisoft.ro:4567/campr/on-premise/workspaces:$DT \
   .
 
-docker push lab.trisoft.ro:4567/campr/on-premise/workspaces:$DT
-docker push lab.trisoft.ro:4567/campr/on-premise/workspaces:latest
+if [ $? -eq 0 ];
+then
+  docker push lab.trisoft.ro:4567/campr/on-premise/workspaces:$DT
+  docker push lab.trisoft.ro:4567/campr/on-premise/workspaces:latest
+fi;
