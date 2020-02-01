@@ -220,6 +220,7 @@ module.exports = function (Translator) {
     Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
     Translator.add("not_blank.meeting_category", "Please select a category", "validators", "en");
     Translator.add("work_package.assignment.rasci_user", "%name% is not a RASCI user", "validators", "en");
+    Translator.add("project.valid_contract", "Please fill in the Project Contract, approve the project and freeze the base!", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
     Translator.add("Authentication request could not be processed due to a system problem.", "Authentication request could not be processed due to a system problem.", "security", "en");
@@ -766,7 +767,6 @@ module.exports = function (Translator) {
     Translator.add("label.select_managers", "Select Managers", "messages", "en");
     Translator.add("label.select_members", "Select Members", "messages", "en");
     Translator.add("label.select_phase", "Select Phase", "messages", "en");
-    Translator.add("label.select_status", "Select Status", "messages", "en");
     Translator.add("label.select_predecessors", "Select Predecessors", "messages", "en");
     Translator.add("label.select_sci_users", "Select support, consulted & informed users", "messages", "en");
     Translator.add("label.select_status", "Select Status", "messages", "en");
@@ -830,7 +830,7 @@ module.exports = function (Translator) {
     Translator.add("label.wppwct", "Work Package Project Work Cost Type", "messages", "en");
     Translator.add("link.account", "Account", "messages", "en");
     Translator.add("link.admin_dashboard", "Admin Tool", "messages", "en");
-    Translator.add("link.back_to_campr", "Back to Campr.biz", "messages", "en");
+    Translator.add("link.back_to_campr", "Back to Campr.cloud", "messages", "en");
     Translator.add("link.contact", "Contact", "messages", "en");
     Translator.add("link.dashboad", "Dashboard", "messages", "en");
     Translator.add("link.home", "Home", "messages", "en");
@@ -1126,7 +1126,6 @@ module.exports = function (Translator) {
     Translator.add("message.phases_milestones", "Phases & Milestones", "messages", "en");
     Translator.add("message.plan", "Plan", "messages", "en");
     Translator.add("message.planning", "Planing", "messages", "en");
-    Translator.add("message.status", "Status", "messages", "en");
     Translator.add("message.potential_cost", "Potential Cost", "messages", "en");
     Translator.add("message.potential_savings", "Potential Savings", "messages", "en");
     Translator.add("message.potential_time_delay", "Potential Time Delay", "messages", "en");
@@ -2396,8 +2395,8 @@ module.exports = function (Translator) {
     Translator.add("message.delete_sponsor", "Delete Sponsor", "messages", "en");
     Translator.add("message.edit_sponsor", "Edit Sponsor", "messages", "en");
     Translator.add("title.sponsor", "Sponsor", "messages", "en");
-    Translator.add("email.subject.beta.workspace.ready", "Your CAMPR Beta workspace is ready!", "messages", "en");
-    Translator.add("email.beta.workspace.message", "The following workspace for CAMPR Beta is ready", "messages", "en");
+    Translator.add("email.subject.beta.workspace.ready", "Your CAMPR workspace is ready!", "messages", "en");
+    Translator.add("email.beta.workspace.message", "The following CAMPR workspace is ready", "messages", "en");
     Translator.add("placeholder.minutes", "minutes", "messages", "en");
     Translator.add("message.toggle_minimap", "Toggle minimap", "messages", "en");
     Translator.add("message.accountable", "Accountable", "messages", "en");
@@ -2454,12 +2453,12 @@ module.exports = function (Translator) {
     Translator.add("portal.page.about.partners.trisoft.desc", "TRISOFT is our development partner for the CAMPR tool. They are a Symfony oriented software development company based in Romania, offering friendly, fast, quality solutions.", "messages", "en");
     Translator.add("portal.page.about.partners.amc.desc", "AMC Project Management GmbH has the perfect specialist for each imaginable task and situation. With a pool of over 7.000 experts, AMC is the market leader and ideal partner for problem solving. CAMPR and AMC can equip your project with the best specialists.", "messages", "en");
     Translator.add("portal.page.about.partners.heiko_zimmer.desc", "Heiko is our partner for developing and implementing creative marketing strategies and conquering global markets.", "messages", "en");
-    Translator.add("portal.page.try_beta.title", "Try CAMPR <b class=\"warning-color\">Beta<\/b>", "messages", "en");
-    Translator.add("portal.page.try_beta.desc", "                                <p class=\"mt-30\">\n                                    Use the signup form to register and start using CAMPR <b>for free<\/b>\n                                    in <b class=\"warning-color\">BETA<\/b> mode. We will provide you with an account, a\n                                    workspace connected to that account and some default projects and tasks so you can\n                                    start testing right away. Don't forget to send us feedback using the <b>User\n                                        Feedback button<\/b> in the main sidebar.\n                                <\/p>\n                                <p class=\"mt-30\">\n                                    Don't hesitate to <a href=\"#contact_us\" class=\"simple-link\"><b>contact us<\/b><\/a> if you have any questions.\n                                <\/p>", "messages", "en");
+    Translator.add("portal.page.try_beta.title", "Try CAMPR <b class=\"warning-color\">for free<\/b>", "messages", "en");
+    Translator.add("portal.page.try_beta.desc", "                                <p class=\"mt-30\">\n                                    Use the signup form to register and start using CAMPR <b>for free<\/b>\n                                    for the near future. We will provide you with an account, a\n                                    workspace connected to that account and some default projects and tasks so you can\n                                    start testing right away. Don't forget to send us feedback using the <b>User\n                                        Feedback button<\/b> in the main sidebar.\n                                <\/p>\n                                <p class=\"mt-30\">\n                                    Don't hesitate to <a href=\"#contact_us\" class=\"simple-link\"><b>contact us<\/b><\/a> if you have any questions.\n                                <\/p>", "messages", "en");
     Translator.add("portal.page.dashboard.content1", "Looks like you are new here, why don't you go ahead and ", "messages", "en");
     Translator.add("portal.page.dashboard.create_new_team", "create new team", "messages", "en");
     Translator.add("portal.page.home.content2", "What is<br>CAMPR", "messages", "en");
-    Translator.add("portal.page.home.content3", "CAMPR is a project management tool  designed for projects of all froms and sizes. Our web-based software is lean, intuitively designed and offers everything you need to successfully manage your projects following industry standards such as GPM or PMI. Join our BETA for an exclusive first look!", "messages", "en");
+    Translator.add("portal.page.home.content3", "CAMPR is a project management tool  designed for projects of all froms and sizes. Our web-based software is lean, intuitively designed and offers everything you need to successfully manage your projects following industry standards such as GPM or PMI.", "messages", "en");
     Translator.add("portal.page.home.content4", "Create your<br>Workspace", "messages", "en");
     Translator.add("portal.page.home.content5", "                                        <p>\n                                            CAMPR is organized by Workspaces. This central element allows you to\n                                            organize your multi-project environment by grouping certain projects into\n                                            workspaces. You can invite project members to join your workspaces and\n                                            collaborate with them on certain projects only. That way makes it simple for\n                                            you to structure your projects for clients, scope and participants.\n                                        <\/p>\n                                        <p>\n                                            You can also create workspaces for your own projects and be a member of\n                                            other workspaces using only one user account.\n                                        <\/p>\n                                        <p>\n                                            <b>Follow CAMPRs One-Stop-Concept: One user account, one login, one personal\n                                                workspace dashboard.<\/b>\n                                        <\/p>\n", "messages", "en");
     Translator.add("portal.page.home.create_your_workspace", "Create your workspace", "messages", "en");
@@ -2510,7 +2509,7 @@ module.exports = function (Translator) {
     Translator.add("portal.page.modules.close_down_report.title", "Close Out Report", "messages", "en");
     Translator.add("portal.page.modules.close_down_report.desc", "<p>The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.<\/p>", "messages", "en");
     Translator.add("portal.page.modules.content1", "Campr<br>is for<br>everyone", "messages", "en");
-    Translator.add("portal.page.modules.content2", "<p class=\"mt-60\">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE<\/b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools<\/b>, <b>Universities<\/b> or <b>Charity Organizations<\/b> can also benefit from the <b>FREE<\/b> version. All you have to do is <a href=\"%link%\" class=\"simple-link\"><b>contact us<\/b><\/a><\/p>", "messages", "en");
+    Translator.add("portal.page.modules.content2", "<p class=\"mt-60\">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE<\/b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools<\/b>, <b>Universities<\/b> or <b>Charity Organizations<\/b> have the opportunity to receive a <b>special offer<\/b>. All you have to do is <a href=\"%link%\" class=\"simple-link\"><b>contact us<\/b><\/a><\/p>", "messages", "en");
     Translator.add("portal.ui.sign_up_now", "Sign Up Now", "messages", "en");
     Translator.add("portal.ui.features", "Features", "messages", "en");
     Translator.add("portal.page.services.desc", "<p>CAMPR is the tool of choice for you as a professional Project Manager. Designed and supported for consistent project planning and documentation.<\/p>\n\n<p>The modular presentation of all relevant project management methods supports the establishment of a uniform project management standard in your company.<\/p>\n\n<p>Small or large projects: choose the modules for your own personal tool. Just focus on your projects - CAMPR does the rest.<\/p>\n\n<p>CAMPR offers you a fair and transparent licensing model. Whether short project duration or complex projects with many resources - our innovative License Wizard determines the best option for you!<\/p>", "messages", "en");
@@ -2520,7 +2519,7 @@ module.exports = function (Translator) {
     Translator.add("portal.ui.project_duration", "Project Duration", "messages", "en");
     Translator.add("portal.ui.months", "Months", "messages", "en");
     Translator.add("portal.ui.project_budget", "Project Budget", "messages", "en");
-    Translator.add("portal.page.register.desc", "CAMPR is currently in <b class=\"warning-color\">BETA<\/b>. Please check out our <a href=\"#prices\" class=\"simple-link\"><b>price model<\/b><\/a> below and <a href=\"#contact_us\" class=\"simple-link\"><b>contact us<\/b><\/a> if you want to start using our app. Don\u2019t forget that <b>CAMPR is free for personal projects of up to 4 users<\/b>.\n<span class=\"small-separator\"><\/span>\n<span class=\"block\">If you represent a <b>School<\/b>, <b>University<\/b> or <b>Charity<\/b> and want to <b>use CAMPR for free<\/b>, please <a href=\"#contact-school\" class=\"simple-link\"><b>contact us<\/b><\/a>.<\/span>", "messages", "en");
+    Translator.add("portal.page.register.desc", "Please check out our <a href=\"#prices\" class=\"simple-link\"><b>price model<\/b><\/a> below and <a href=\"#contact_us\" class=\"simple-link\"><b>contact us<\/b><\/a> if you want to start using our app. Don\u2019t forget that <b>CAMPR is free for personal projects of up to 4 users<\/b>.\n<span class=\"small-separator\"><\/span>\n<span class=\"block\">If you represent a <b>School<\/b>, <b>University<\/b> or <b>Charity<\/b> we offer you <b>a special deal!<\/b> Please <a href=\"#contact-school\" class=\"simple-link\"><b>contact us<\/b><\/a>.<\/span>", "messages", "en");
     Translator.add("portal.page.register.content1", "We have created 2 types of Licenses: <b>User Based License<\/b> and <b>Project Based License<\/b>, each with its own features and advantages. If you\u2019re not sure which one is best for you, please check out our <a href=\"#sign-up-wizard\" class=\"simple-link\"><b>Sign Up Wizard<\/b><\/a>.", "messages", "en");
     Translator.add("portal.page.register.content18", "If you want to install CAMPR on your own server, please contact us and we will provide you the information you need.\nOtherwise, please fill in the form and we'll show you <b>the best license model for your project<\/b>.", "messages", "en");
     Translator.add("portal.page.register.content24", "and a project duration of less than", "messages", "en");
@@ -2531,7 +2530,7 @@ module.exports = function (Translator) {
     Translator.add("portal.nav.about.label", "About", "messages", "en");
     Translator.add("portal.nav.blog.label", "Blog", "messages", "en");
     Translator.add("portal.nav.register.label", "Register", "messages", "en");
-    Translator.add("portal.nav.try_beta.label", "Try Beta", "messages", "en");
+    Translator.add("portal.nav.try_beta.label", "Try CAMPR", "messages", "en");
     Translator.add("portal.page.register.title", "Start using CAMPR", "messages", "en");
     Translator.add("portal.ui.project_type", "Project Type", "messages", "en");
     Translator.add("portal.page.register.content3", "(based on the number of users)", "messages", "en");
@@ -2590,7 +2589,7 @@ module.exports = function (Translator) {
     Translator.add("portal.ui.view_prices", "View Prices", "messages", "en");
     Translator.add("portal.ui.contact_us", "Contact Us", "messages", "en");
     Translator.add("portal.ui.read_more", "Read More", "messages", "en");
-    Translator.add("portal.ui.try_beta", "Try Beta", "messages", "en");
+    Translator.add("portal.ui.try_beta", "Try CAMPR", "messages", "en");
     Translator.add("portal.page.home.start_planning", "Start Planning", "messages", "en");
     Translator.add("portal.page.home.start_managing", "Start Managing", "messages", "en");
     Translator.add("portal.ui.founder", "Founder", "messages", "en");
@@ -2621,7 +2620,6 @@ module.exports = function (Translator) {
     Translator.add("portal.ui.click_here_to_login", "Click here to go log in.", "messages", "en");
     Translator.add("portal.message.are_you_sure", "Are you sure?", "messages", "en");
     Translator.add("portal.page.home.content1", "CAMPR is currently in", "messages", "en");
-    Translator.add("portal.ui.beta", "Beta", "messages", "en");
     Translator.add("port.ui.founder", "Founder", "messages", "en");
     Translator.add("portal.page.register.content2", "scroll table to see the rest", "messages", "en");
     Translator.add("success.contact.message.not_sent", "Message not sent", "messages", "en");
@@ -2637,12 +2635,16 @@ module.exports = function (Translator) {
     Translator.add("label.signature", "Signature", "messages", "en");
     Translator.add("ui.n_a", "N\/A", "messages", "en");
     Translator.add("ui.edit_member", "Edit Member", "messages", "en");
+    Translator.add("email.subject.use_for_free", "Campr: Use for free request", "messages", "en");
+    Translator.add("button.save_and_close_project", "Save and close project", "messages", "en");
+    Translator.add("label.approve_and_start", "Approve and start", "messages", "en");
+    Translator.add("label.approved_and_started", "Approved and started", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("activation.activated", "Your account has been activated!", "flashes", "en");
     Translator.add("activation.expired", "Activation token has expired!", "flashes", "en");
-    Translator.add("activation.not_found", "No account activation found!", "flashes", "en");
+    Translator.add("activation.not_found", "The activation token cannot be found or user is already active.", "flashes", "en");
     Translator.add("activation.resend", "Click here to resend the activation token", "flashes", "en");
     Translator.add("failed.calendar.delete.dependency_constraint", "Calendar cannot be deleted because there are other entities that are depending on it!", "flashes", "en");
     Translator.add("failed.calendar.delete.generic", "There was an error  when deleting this calendar.", "flashes", "en");

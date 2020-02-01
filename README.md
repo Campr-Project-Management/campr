@@ -2,7 +2,7 @@
 
 [![build status](https://lab.trisoft.ro/campr/campr/badges/master/build.svg)](https://lab.trisoft.ro/campr/campr/commits/master)
 
-## Docker DEV (http://dev.campr.biz)
+## Docker DEV (http://dev.campr.cloud)
 Linux:
 ```
 cp docker-compose.yml.linux.dist docker-compose.yml
@@ -16,9 +16,9 @@ then
 cp config/docker/.env.dist config/docker/.env
 docker-compose up
 ```
-update `/etc/hosts` with `127.0.0.1 dev.campr.biz www.dev.campr.biz qaname.dev.campr.biz`
+update `/etc/hosts` with `127.0.0.1 dev.campr.cloud www.dev.campr.cloud qaname.dev.campr.cloud`
 
-`qaname.dev.campr.biz` is just a test workspace, you'll need it's db from the team
+`qaname.dev.campr.cloud` is just a test workspace, you'll need it's db from the team
 
 update `parameters.yml`:
 ```
@@ -60,7 +60,7 @@ delete from user where email = "radu.gribincea@trisoft.ro";
 update user set email = "radu.gribincea@trisoft.ro", username = "radu.gribincea@trisoft.ro" where id = 1;
 ```
 
-you can then login with `radu.gribincea@trisoft.ro` / `raduG1`, and in `http://qaname.dev.campr.biz` you can see test data
+you can then login with `radu.gribincea@trisoft.ro` / `raduG1`, and in `http://qaname.dev.campr.cloud` you can see test data
 
 ## Frontend
 
@@ -87,7 +87,7 @@ To make the pdf printing work, you will have to add the current workspace hostna
 e.g.:
 ```
 extra_hosts:
-    - "trisoft.dev.campr.biz:127.0.0.1"
+    - "trisoft.dev.campr.cloud:127.0.0.1"
 ```
 
 
