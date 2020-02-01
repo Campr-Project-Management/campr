@@ -1,6 +1,6 @@
 activation.activated: 'Your account has been activated!'
 activation.expired: 'Activation token has expired!'
-activation.not_found: 'No account activation found!'
+activation.not_found: 'The activation token cannot be found or user is already active.'
 activation.resend: 'Click here to resend the activation token'
 failed.calendar.delete.dependency_constraint: 'Calendar cannot be deleted because there are other entities that are depending on it!'
 failed.calendar.delete.generic: 'There was an error  when deleting this calendar.'
