@@ -221,9 +221,6 @@ email.message.workspace_member.invite.first: 'You are invited to be part of the 
 email.message.workspace_member.invite.link: invitation
 email.message.workspace_member.invite.second: 'If you don''t have an account with this email please make one in order to accept invitation.'
 email.message.workspace_member.invite.third: 'Please click on the following'
-email.message.task.new: 'Hello %task_responsible%, %task_creator% created the new task "%task_name%" with due date %base_finished_date% for you.'
-email.message.task.edit: 'Hello %task_responsible%, the task responsibility has changed fom %former_task_responsibility% to you.'
-email.button.task.profile: 'Task Profile'
 email.subject.contact: 'Campr contact'
 email.subject.general: Subject
 email.subject.invoice: 'CAMPR - Payment Invoice'
@@ -233,8 +230,6 @@ email.subject.user.activation: 'Campr - Account activation code'
 email.subject.user.register: 'Campr - Account registration'
 email.subject.user.reset: 'Campr - Reset account password'
 email.subject.workspace_member.invite: 'CAMPR - Workspace member invitation'
-email.subject.task.new: 'Your new task: "%project_name%" - "%task_name%"'
-email.subject.task.edit: 'Your task responsibility has changed "%project_name%" - "%task_name%"'
 exception.add.team: 'Please add one team as option parameter'
 exception.add.user: 'Please add one user as option parameter'
 exception.cannot_invite_yourself: 'You cannot invite yourself.'
@@ -588,7 +583,7 @@ label.workpackage_status: 'Work Package Status'
 label.wppwct: 'Work Package Project Work Cost Type'
 link.account: Account
 link.admin_dashboard: 'Admin Tool'
-link.back_to_campr: 'Back to Campr.biz'
+link.back_to_campr: 'Back to Campr.cloud'
 link.contact: Contact
 link.dashboad: Dashboard
 link.home: Home
@@ -2153,8 +2148,8 @@ message.create_sponsor: 'Create Sponsor'
 message.delete_sponsor: 'Delete Sponsor'
 message.edit_sponsor: 'Edit Sponsor'
 title.sponsor: Sponsor
-email.subject.beta.workspace.ready: 'Your CAMPR Beta workspace is ready!'
-email.beta.workspace.message: 'The following workspace for CAMPR Beta is ready'
+email.subject.beta.workspace.ready: 'Your CAMPR workspace is ready!'
+email.beta.workspace.message: 'The following CAMPR workspace is ready'
 placeholder.minutes: minutes
 message.toggle_minimap: 'Toggle minimap'
 message.accountable: Accountable
@@ -2211,12 +2206,12 @@ portal.page.about.partners.zdimainfranken.desc: 'ZDI Mainfranken is a startup in
 portal.page.about.partners.trisoft.desc: 'TRISOFT is our development partner for the CAMPR tool. They are a Symfony oriented software development company based in Romania, offering friendly, fast, quality solutions.'
 portal.page.about.partners.amc.desc: 'AMC Project Management GmbH has the perfect specialist for each imaginable task and situation. With a pool of over 7.000 experts, AMC is the market leader and ideal partner for problem solving. CAMPR and AMC can equip your project with the best specialists.'
 portal.page.about.partners.heiko_zimmer.desc: 'Heiko is our partner for developing and implementing creative marketing strategies and conquering global markets.'
-portal.page.try_beta.title: 'Try CAMPR <b class="warning-color">Beta</b>'
-portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Use the signup form to register and start using CAMPR <b>for free</b>\n                                    in <b class=\"warning-color\">BETA</b> mode. We will provide you with an account, a\n                                    workspace connected to that account and some default projects and tasks so you can\n                                    start testing right away. Don't forget to send us feedback using the <b>User\n                                        Feedback button</b> in the main sidebar.\n                                </p>\n                                <p class=\"mt-30\">\n                                    Don't hesitate to <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you have any questions.\n                                </p>"
+portal.page.try_beta.title: 'Try CAMPR <b class="warning-color">for free</b>'
+portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Use the signup form to register and start using CAMPR <b>for free</b>\n                                    for the near future. We will provide you with an account, a\n                                    workspace connected to that account and some default projects and tasks so you can\n                                    start testing right away. Don't forget to send us feedback using the <b>User\n                                        Feedback button</b> in the main sidebar.\n                                </p>\n                                <p class=\"mt-30\">\n                                    Don't hesitate to <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you have any questions.\n                                </p>"
 portal.page.dashboard.content1: 'Looks like you are new here, why don''t you go ahead and '
 portal.page.dashboard.create_new_team: 'create new team'
 portal.page.home.content2: 'What is<br>CAMPR'
-portal.page.home.content3: 'CAMPR is a project management tool  designed for projects of all froms and sizes. Our web-based software is lean, intuitively designed and offers everything you need to successfully manage your projects following industry standards such as GPM or PMI. Join our BETA for an exclusive first look!'
+portal.page.home.content3: 'CAMPR is a project management tool  designed for projects of all froms and sizes. Our web-based software is lean, intuitively designed and offers everything you need to successfully manage your projects following industry standards such as GPM or PMI.'
 portal.page.home.content4: 'Create your<br>Workspace'
 portal.page.home.content5: "                                        <p>\n                                            CAMPR is organized by Workspaces. This central element allows you to\n                                            organize your multi-project environment by grouping certain projects into\n                                            workspaces. You can invite project members to join your workspaces and\n                                            collaborate with them on certain projects only. That way makes it simple for\n                                            you to structure your projects for clients, scope and participants.\n                                        </p>\n                                        <p>\n                                            You can also create workspaces for your own projects and be a member of\n                                            other workspaces using only one user account.\n                                        </p>\n                                        <p>\n                                            <b>Follow CAMPRs One-Stop-Concept: One user account, one login, one personal\n                                                workspace dashboard.</b>\n                                        </p>\n"
 portal.page.home.create_your_workspace: 'Create your workspace'
@@ -2267,7 +2262,7 @@ portal.page.modules.status_report.desc: '<p>The project status report provides a
 portal.page.modules.close_down_report.title: 'Close Out Report'
 portal.page.modules.close_down_report.desc: '<p>The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.</p>'
 portal.page.modules.content1: 'Campr<br>is for<br>everyone'
-portal.page.modules.content2: '<p class="mt-60">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE</b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools</b>, <b>Universities</b> or <b>Charity Organizations</b> can also benefit from the <b>FREE</b> version. All you have to do is <a href="%link%" class="simple-link"><b>contact us</b></a></p>'
+portal.page.modules.content2: '<p class="mt-60">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE</b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools</b>, <b>Universities</b> or <b>Charity Organizations</b> have the opportunity to receive a <b>special offer</b>. All you have to do is <a href="%link%" class="simple-link"><b>contact us</b></a></p>'
 portal.ui.sign_up_now: 'Sign Up Now'
 portal.ui.features: Features
 portal.page.services.desc: "<p>CAMPR is the tool of choice for you as a professional Project Manager. Designed and supported for consistent project planning and documentation.</p>\n\n<p>The modular presentation of all relevant project management methods supports the establishment of a uniform project management standard in your company.</p>\n\n<p>Small or large projects: choose the modules for your own personal tool. Just focus on your projects - CAMPR does the rest.</p>\n\n<p>CAMPR offers you a fair and transparent licensing model. Whether short project duration or complex projects with many resources - our innovative License Wizard determines the best option for you!</p>"
@@ -2277,7 +2272,7 @@ email.contact.body: "<p>Hello,</p>\n<p>The following message has been sent throu
 portal.ui.project_duration: 'Project Duration'
 portal.ui.months: Months
 portal.ui.project_budget: 'Project Budget'
-portal.page.register.desc: "CAMPR is currently in <b class=\"warning-color\">BETA</b>. Please check out our <a href=\"#prices\" class=\"simple-link\"><b>price model</b></a> below and <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you want to start using our app. Don’t forget that <b>CAMPR is free for personal projects of up to 4 users</b>.\n<span class=\"small-separator\"></span>\n<span class=\"block\">If you represent a <b>School</b>, <b>University</b> or <b>Charity</b> and want to <b>use CAMPR for free</b>, please <a href=\"#contact-school\" class=\"simple-link\"><b>contact us</b></a>.</span>"
+portal.page.register.desc: "Please check out our <a href=\"#prices\" class=\"simple-link\"><b>price model</b></a> below and <a href=\"#contact_us\" class=\"simple-link\"><b>contact us</b></a> if you want to start using our app. Don’t forget that <b>CAMPR is free for personal projects of up to 4 users</b>.\n<span class=\"small-separator\"></span>\n<span class=\"block\">If you represent a <b>School</b>, <b>University</b> or <b>Charity</b> we offer you <b>a special deal!</b> Please <a href=\"#contact-school\" class=\"simple-link\"><b>contact us</b></a>.</span>"
 portal.page.register.content1: 'We have created 2 types of Licenses: <b>User Based License</b> and <b>Project Based License</b>, each with its own features and advantages. If you’re not sure which one is best for you, please check out our <a href="#sign-up-wizard" class="simple-link"><b>Sign Up Wizard</b></a>.'
 portal.page.register.content18: "If you want to install CAMPR on your own server, please contact us and we will provide you the information you need.\nOtherwise, please fill in the form and we'll show you <b>the best license model for your project</b>."
 portal.page.register.content24: 'and a project duration of less than'
@@ -2288,7 +2283,7 @@ portal.nav.services.label: Services
 portal.nav.about.label: About
 portal.nav.blog.label: Blog
 portal.nav.register.label: Register
-portal.nav.try_beta.label: 'Try Beta'
+portal.nav.try_beta.label: 'Try CAMPR'
 portal.page.register.title: 'Start using CAMPR'
 portal.ui.project_type: 'Project Type'
 portal.page.register.content3: '(based on the number of users)'
@@ -2347,7 +2342,7 @@ portal.form.contact_us.button.send: Send
 portal.ui.view_prices: 'View Prices'
 portal.ui.contact_us: 'Contact Us'
 portal.ui.read_more: 'Read More'
-portal.ui.try_beta: 'Try Beta'
+portal.ui.try_beta: 'Try CAMPR'
 portal.page.home.start_planning: 'Start Planning'
 portal.page.home.start_managing: 'Start Managing'
 portal.ui.founder: Founder
@@ -2378,7 +2373,6 @@ porta.ui.click_here_to_go_back: 'Click here to go back.'
 portal.ui.click_here_to_login: 'Click here to go log in.'
 portal.message.are_you_sure: 'Are you sure?'
 portal.page.home.content1: 'CAMPR is currently in'
-portal.ui.beta: Beta
 port.ui.founder: Founder
 portal.page.register.content2: 'scroll table to see the rest'
 success.contact.message.not_sent: 'Message not sent'
@@ -2394,3 +2388,7 @@ label.project_order: 'Project Order'
 label.signature: Signature
 ui.n_a: N/A
 ui.edit_member: 'Edit Member'
+email.subject.use_for_free: 'Campr: Use for free request'
+button.save_and_close_project: 'Save and close project'
+label.approve_and_start: 'Approve and start'
+label.approved_and_started: 'Approved and started'

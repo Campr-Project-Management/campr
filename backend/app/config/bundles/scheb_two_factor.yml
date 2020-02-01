@@ -12,7 +12,7 @@ scheb_two_factor:
         enabled: false
     google:
         enabled: true
-        server_name: Campr.biz
+        server_name: Campr.cloud
         issuer: Campr
         template: MainBundle:Default:login_google.html.twig
     persister: scheb_two_factor.persister.doctrine

@@ -17,7 +17,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
 
-    domain: dev.campr.biz
+    domain: dev.campr.cloud
 
     redis_host: localhost
 
@@ -68,7 +68,7 @@ parameters:
     email.contact_info: info@campr.biz
 
     portal.api.base_url: 'http://portal'
-    portal.api.host: 'dev.campr.biz'
+    portal.api.host: 'dev.campr.cloud'
     portal.api.secret: '4D65A2AC47476D33BAB2CBF62BCE8'
     portal.webhook.secret: '6F73A8EA3FBDB812922E2AB71E2F6'
     enqueue.redis.dsn: 'redis://%redis_host%:6379/4'
