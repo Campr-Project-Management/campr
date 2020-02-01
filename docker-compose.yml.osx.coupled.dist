@@ -24,12 +24,12 @@ services:
             - "campr_portal_app:portal"
         env_file: config/docker/.env
         extra_hosts:
-            - "trisoft.dev.campr.biz:127.0.0.1"
+            - "trisoft.dev.campr.cloud:127.0.0.1"
         networks:
             - default
             - campr
         environment:
-            - VIRTUAL_HOST=*.dev.campr.biz,team.dev.campr.biz
+            - VIRTUAL_HOST=*.dev.campr.cloud,team.dev.campr.cloud
 
     mailcatcher:
         container_name: campr_mailcatcher
