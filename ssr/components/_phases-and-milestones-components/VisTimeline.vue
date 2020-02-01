@@ -34,7 +34,7 @@ export default {
                     title: `<div class="task-box box">
                                 <div class="box-header">
                                     <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
+                                        <img class="user-avatar" src="http://dev.campr.cloud/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
                                         <p class="caps">Sandy Fanning-Choi</p>
                                     </div>
                                     <h2 class="simple-link">Phase 1</h2>
@@ -87,7 +87,7 @@ export default {
                     title: `<div class="task-box box">
                                 <div class="box-header">
                                     <div class="user-info flex flex-v-center">
-                                        <img class="user-avatar" src="http://dev.campr.biz/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
+                                        <img class="user-avatar" src="http://dev.campr.cloud/uploads/avatars/60.jpg" alt="Phase responsable: Sandy Fanning-Choi"/>
                                         <p class="caps">Sandy Fanning-Choi</p>
                                     </div>
                                     <h2 class="simple-link">Phase 1</h2>

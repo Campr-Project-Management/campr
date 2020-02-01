@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    domain: test.campr.biz
+    domain: test.campr.cloud
 
 framework:
     router:

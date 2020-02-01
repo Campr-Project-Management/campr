@@ -583,7 +583,7 @@ label.workpackage_status: 'Status Arbeitspaket'
 label.wppwct: Arbeitspaketkostentyp
 link.account: Account
 link.admin_dashboard: Admin-Werkzeug
-link.back_to_campr: 'Zurück zu CAMPR.biz'
+link.back_to_campr: 'Zurück zu CAMPR.cloud'
 link.contact: Kontakt
 link.dashboad: Dashboard
 link.home: Home
@@ -2146,8 +2146,8 @@ message.create_sponsor: 'Neues Sponsor'
 message.delete_sponsor: 'Sponsor löschen'
 message.edit_sponsor: 'Sponsor bearbeiten'
 title.sponsor: Sponsor
-email.subject.beta.workspace.ready: 'Ihr CAMPR Beta-Workspace ist nun bereit!'
-email.beta.workspace.message: 'Der folgende Workspace für CAMPR Beta ist bereit'
+email.subject.beta.workspace.ready: 'Ihr CAMPR-Workspace steht jetzt zur Verfügung!'
+email.beta.workspace.message: 'Der folgende CAMPR-Workspace ist bereit'
 placeholder.minutes: Minuten
 message.toggle_minimap: 'Minikarte umschalten'
 message.accountable: Rechenschaftspflichtig
@@ -2201,12 +2201,12 @@ portal.page.about.partners.funfpunktnull.desc: 'Fünfpunktnull GmbH ist ein Unte
 portal.page.about.partners.uniwurzburg.desc: 'Der enge Kontakt zum Lehrstuhl für psychologische Ergonomie erlaubt uns regelmäßigen Informationsaustausch über die neuesten wissenschaftlichen Erkenntnisse im Bereich Design und die Auswertung der intuitiven Bedienbarkeit.'
 portal.page.about.partners.zdimainfranken.desc: 'ZDI Mainfranken ist ein Startup-Inkubator mit dem Ziel das Potential für innovative digitale Produkte und Geschäftsideen am Standort Würzburg zu stärken. Ihr Fokus liegt auf der Entwicklungsphase neuer Startups durch Ideengeneration, Prototypenentwicklung und Marktdurchdringungsstrategien. Das ZDI hat ein weites Netz an Partnern in Bayern.'
 portal.page.about.partners.trisoft.desc: 'TRISOFT ist unser Entwicklungspartner für das CAMPR-Tool. Sie sind ein Symfony-orientiertes Softwareentwicklungsunternehmen mit Standort in Rumänien und bieten freundliche, schnelle und qualitativ hochwertige Lösungen.'
-portal.page.try_beta.title: 'Teste CAMPR <b class="warning-color">Beta</b>'
-portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Nutze dieses Registrierungsformular, um CAMPR <b>kostenlos</b>\n                                    in  der<b class=\"warning-color\">BETA-Version</b> zu nutzen. Wir statten dich mit einem Account\n                                    sowie einem Workspace und einigen Beispielprojekten aus, sodass Sie\n                                    CAMPR direkt testen können. Vergessen Sie nicht Ihr Feedback mit Hilfe des<b>User\n                                        Feedback-Buttons</b> in der Menüspalte links abzugeben.\n                                </p>\n                                <p class=\"mt-30\">\n                                    <a href=\"#contact_us\" class=\"simple-link\"><b>Kontaktiere uns</b></a> gern, wenn du Fragen hast.\n                                </p>"
+portal.page.try_beta.title: 'Teste CAMPR <b class="warning-color">kostenlos</b>'
+portal.page.try_beta.desc: "                                <p class=\"mt-30\">\n                                    Nutze dieses Registrierungsformular, um CAMPR <b>kostenlos</b>\n                                    zu testen. Wir statten dich mit einem Account\n                                    sowie einem Workspace und einigen Beispielprojekten aus, sodass Sie\n                                    CAMPR direkt testen können. Vergessen Sie nicht Ihr Feedback mit Hilfe des<b>User\n                                        Feedback-Buttons</b> in der Menüspalte links abzugeben.\n                                </p>\n                                <p class=\"mt-30\">\n                                    <a href=\"#contact_us\" class=\"simple-link\"><b>Kontaktiere uns</b></a> gern, wenn du Fragen hast.\n                                </p>"
 portal.page.dashboard.content1: 'Sieht so aus als seist du neu hier. Probiere doch'
 portal.page.dashboard.create_new_team: 'ein neues Team zu erstellen'
 portal.page.home.content2: 'Was ist<br>CAMPR'
-portal.page.home.content3: 'CAMPR ist ein Projektmanagement Tool konzipiert für Projekte jedweder Größe. Unsere webbasierte Software ist lean, intuitiv designt und bietet alle Tools für ein erfolgreiches Projektmanagement. Für einen exklusiven ersten Eindruck, registriere dich für unsere BETA!'
+portal.page.home.content3: 'CAMPR ist ein Projektmanagement Tool konzipiert für Projekte jedweder Größe. Unsere webbasierte Software ist lean, intuitiv designt und bietet alle Tools für ein erfolgreiches Projektmanagement.'
 portal.page.home.content4: 'Erstelle deinen<br>Workspace'
 portal.page.home.content5: "                                        <p>\n                                            CAMPR ist in Workspaces organisiert. Diese zentrale Element erlaubt es dir\n                                            deine Multiprojektumgebung zu organisieren, indem du bestimmte Projekte in\n                                            Arbeitsbereichen gruppierst. Du kannst Projektmitglieder in Workspaces einladen\n                                            und mit ihnen in ausgewählten Projekten zusammenarbeiten. So wird es einfach\n                                            deine Projekte nach Kunden, Umfang oder Teilnehmern zu strukturieren.\n                                        </p>\n                                        <p>\n                                            Du kannst außerdem deinen eigenen Workspace erstellen und zeitgleich\n                                            mit dem gleichen Account Mitglied in anderen Workspaces sein.\n                                        </p>\n                                        <p>\n                                            <b>CAMPRs One-Stop-Konzept: ein Account, ein Login, ein persönliches\n                                                Workspace-Dashboard.</b>\n                                        </p>\n"
 portal.page.home.create_your_workspace: 'Erstelle deinen Workspace'
@@ -2253,7 +2253,7 @@ portal.page.modules.status_report.title: Statusreport
 portal.page.modules.status_report.desc: '<p>Der Statusbericht liefert einen Überblick des aktuellen Projektzustandes bezüglich Services, Deadlines, Ressourcen, Kosten, Organisation und Kontext sowie der geplanten Maßnahmen für notwendige Entscheidungen. </p>'
 portal.page.modules.close_down_report.title: Abschlussbericht
 portal.page.modules.content1: 'CAMPR<br>ist für<br>jedermann'
-portal.page.modules.content2: '<p class="mt-60">Wir haben ein Tool geschaffen, das von jedem Projektmanager genutzt werden kann - vom Novizen bis Experten. Die <b>KOSTENLOSE</b> Version ist vorgesehen für Nutzer, die CAMPR testen wollen oder in kleinen Teams arbeiten (bis zu 4 Nutzer). <b>Schulen</b>, <b>Universitäten</b> und <b>Wohltätigkeitsorganisationen</b> können sogar die Vollversion von CAMPR <b>KOSTENLOS</b> nutzen. Alles, was du dafür tun musst, ist, uns zu <a href="%link%" class="simple-link"><b>kontaktieren</b></a></p>.'
+portal.page.modules.content2: '<p class="mt-60">Wir haben ein Tool geschaffen, das von jedem Projektmanager genutzt werden kann - vom Novizen bis Experten. Die <b>KOSTENLOSE</b> Version ist vorgesehen für Nutzer, die CAMPR testen wollen oder in kleinen Teams arbeiten (bis zu 4 Nutzer). <b>Schulen</b>, <b>Universitäten</b> und <b>Wohltätigkeitsorganisationen</b> können sich bei uns ein <b>spezielles Angebot</b> einholen. Alles, was du dafür tun musst, ist, uns zu <a href="%link%" class="simple-link"><b>kontaktieren</b></a></p>.'
 portal.ui.sign_up_now: 'Jetzt Registrieren'
 portal.ui.features: Features
 email.contact.body: "<p>Hallo,</p>\n<p>Folgende Nachricht wurde durch das Kontaktformular gesendet.</p>\n<p>Email: %email%</p>\n<p>Name: %fullname%</p>\n<p>Nachricht:</p>\n<p>%message%</p>"
@@ -2269,7 +2269,7 @@ portal.nav.services.label: Services
 portal.nav.about.label: 'Über uns'
 portal.nav.blog.label: Blog
 portal.nav.register.label: Preisinformationen
-portal.nav.try_beta.label: Beta
+portal.nav.try_beta.label: CAMPR
 portal.page.register.title: 'Jetzt CAMPR nutzen'
 portal.ui.project_type: Projektart
 portal.page.register.content3: '(based on the number of users)'
@@ -2355,7 +2355,6 @@ porta.ui.click_here_to_go_back: 'Klicke hier, um zurückzugehen.'
 portal.ui.click_here_to_login: 'Klicke hier, um dich einzuloggen.'
 portal.message.are_you_sure: 'Bist du dir sicher?'
 portal.page.home.content1: 'CAMPR befindet sich derzeit in'
-portal.ui.beta: Beta
 port.ui.founder: Gründer
 portal.page.register.content2: 'durch die Tabelle scrollen, um den Rest zu sehen'
 success.contact.message.not_sent: 'Nachricht nicht gesendet'
@@ -2365,5 +2364,8 @@ portal.page.try_beta.form.label.i_agree_to: 'Ich akzeptiere die'
 portal.page.try_beta.form.label.terms_and_conditions: AGB
 portal.page.try_beta.form.button.send: Senden
 message.department_member: 'Mitglied der Abteilung'
+title.settings: Einstellungen
+label.signature: Unterschrift
 ui.n_a: N/A
 ui.edit_member: 'Mitglied bearbeiten'
+email.subject.use_for_free: 'Campr: Für kostenlose Anfrage verwenden'
