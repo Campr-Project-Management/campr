@@ -1,6 +1,6 @@
 activation.activated: 'Dein Account wurde aktiviert!'
 activation.expired: 'Der Aktivierungs-Token ist abgelaufen!'
-activation.not_found: 'Keine Accountaktivierung gefunden!'
+activation.not_found: 'Das Aktivierungs-Token wurde nicht gefunden oder der Benutzer ist bereits aktiv.'
 activation.resend: 'Klicke hier, um den Aktivierungs-Token erneut zu senden'
 failed.calendar.delete.dependency_constraint: 'Der Kalender kann nicht gelöscht werden, da andere Einrichtungen davon abhängig sind!'
 failed.calendar.delete.generic: 'Es ist ein Fehler beim Löschen des Kalenders aufgetreten.'

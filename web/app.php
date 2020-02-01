@@ -22,7 +22,7 @@ if ($debug) {
 
 $envParts = explode('_', $env);
 if ($env != end($envParts)) {
-    $apcLoader = new ApcClassLoader($env.'.campr.biz', $loader);
+    $apcLoader = new ApcClassLoader($env.'.campr.cloud', $loader);
     $loader->unregister();
     $apcLoader->register(true);
 }
