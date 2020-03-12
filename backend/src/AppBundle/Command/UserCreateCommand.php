@@ -50,16 +50,15 @@ class UserCreateCommand extends ContainerAwareCommand
         }
 
         $user = new User();
-        $user
-            ->setUsername($username)
-            ->setEmail($email)
-            ->setPlainPassword($password)
-            ->setFirstName($firstName)
-            ->setLastName($lastName)
-            ->setRoles($roles)
-            ->setIsEnabled(true)
-            ->setIsSuspended(false)
-        ;
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setPlainPassword($password);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setRoles($roles);
+        $user->setIsEnabled(true);
+        $user->setIsSuspended(false);
+        $user->setActivatedAt(new \DateTime());
 
         $em->persist($user);
         $em->flush();
