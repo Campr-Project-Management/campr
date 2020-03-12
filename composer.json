@@ -96,7 +96,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "bower --allow-root install",
+            "yarn --ignore-engines --ignore-scripts && yarn postinstall",
             "if [ -d .git/hooks ]; then bash bin/install/git-hooks; fi"
         ],
         "post-update-cmd": [
@@ -106,7 +106,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "bower --allow-root install",
+            "yarn --ignore-engines --ignore-scripts && yarn postinstall",
             "if [ -d .git/hooks ]; then bash bin/install/git-hooks; fi"
         ]
     },

@@ -14,8 +14,8 @@ bin/console app:dump-routes
 #bin/console fos:js-routing:dump --target=web/js/fos_js_routes.js
 bin/console bazinga:js-translation:dump --format=js --merge-domains web/js
 
-rm -rf frontend/static/js
-mkdir -p frontend/static/js
+#rm -rf frontend/static/js
+#mkdir -p frontend/static/js
 
 for file in web/static/js/fos_js_routes*.js;
 do
