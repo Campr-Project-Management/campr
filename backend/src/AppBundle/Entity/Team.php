@@ -122,7 +122,8 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     /**
      * @var \DateTime
      *
-     * @Serializer\Exclude()
+     * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
+     *
      * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -219,6 +220,19 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
         $this->user = $user;
 
         return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     *
+     * @return string
+     */
+    public function getUserUsername(): string
+    {
+        return $this->user
+            ? $this->user->getEmail()
+            : ''
+        ;
     }
 
     /**
@@ -532,6 +546,8 @@ class Team implements UserAwareInterface, TimestampableInterface, ResourceInterf
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     *
      * @return string
      */
     public function getUuid(): string
