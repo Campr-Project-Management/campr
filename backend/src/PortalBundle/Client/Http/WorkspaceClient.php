@@ -188,7 +188,7 @@ class WorkspaceClient
         $team->setSlug($data['slug']);
         $team->setDescription($data['slug']);
         $team->setEnabled($data['enabled']);
-        $team->setLogoUrl($data['logoUrl']);
+        $team->setLogoUrl($data['logoUrl'] ?? null);
         $team->setCreatedAt(\DateTime::createFromFormat('Y-m-d H:i:s', $data['createdAt']));
         $team->setUpdatedAt(\DateTime::createFromFormat('Y-m-d H:i:s', $data['updatedAt']));
 

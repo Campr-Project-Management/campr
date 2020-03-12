@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -120,5 +121,25 @@ abstract class ApiController extends BaseController
     protected function dispatchEvent(string $name, Event $event): Event
     {
         return $this->getEventDispatcher()->dispatch($name, $event);
+    }
+
+    /**
+     * Override default json() method, to use the jms_serializer.
+     *
+     * @param $data
+     * @param int   $status
+     * @param array $headers
+     * @param array $context
+     *
+     * @return JsonResponse
+     */
+    protected function json($data, $status = 200, $headers = [], $context = []): JsonResponse
+    {
+        return new JsonResponse(
+            $this->container->get('jms_serializer')->serialize($data, 'json'),
+            $status,
+            $headers,
+            true
+        );
     }
 }

@@ -15,8 +15,9 @@
 /web/static/
 .idea
 .vagrant
-/web/assets/admin/vendors/bower_components/
+/web/assets/admin/vendors/bower_components
 .DS_Store
+node_modules
 /frontend/node_modules
 /backend/app/config/parameters_test.yml
 /backend/src/AppBundle/Resources/views/Default/index.html.twig
