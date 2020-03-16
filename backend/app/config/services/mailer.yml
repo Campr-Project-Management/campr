@@ -16,6 +16,7 @@ services:
             - "@router"
             - "@mailer"
             - "@twig"
+            - "@scheb_two_factor.security.google"
             - "%emails%"
             -
                 activation_token_expiration_number: '%activation_token_expiration_number%'
