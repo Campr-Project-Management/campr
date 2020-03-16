@@ -4,6 +4,7 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\User;
 use Component\Project\ProjectInterface;
+use Google\Authenticator\GoogleAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -28,6 +29,9 @@ class MailerService
      */
     private $twig;
 
+    /** @var GoogleAuthenticator */
+    private $googleAuthenticator;
+
     /**
      * @var array
      */
@@ -51,26 +55,31 @@ class MailerService
         RouterInterface $router,
         \Swift_Mailer $mailer,
         \Twig_Environment $twig,
+        GoogleAuthenticator $googleAuthenticator,
         array $fromParameters,
         array $options
     ) {
         $this->router = $router;
         $this->mailer = $mailer;
         $this->twig = $twig;
+        $this->googleAuthenticator = $googleAuthenticator;
         $this->parameters = $fromParameters;
         $this->options = $options;
     }
 
     /**
-     * @param string       $templateName
-     * @param string       $fromEmail
-     * @param string|array $toEmail
-     * @param array        $context
-     * @param array        $attachments
-     * @param bool         $ccEmails
-     * @param bool         $bccEmails
+     * @param $templateName
+     * @param $fromEmail
+     * @param $toEmail
+     * @param array $context
+     * @param array $attachments
+     * @param bool  $ccEmails
+     * @param bool  $bccEmails
      *
      * @return int
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Syntax
      */
     public function sendEmail(
         $templateName,
@@ -124,6 +133,14 @@ class MailerService
         return $this->mailer->send($message);
     }
 
+    /**
+     * @param User $user
+     *
+     * @return int
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Syntax
+     */
     public function sendRegistrationEmail(User $user)
     {
         $params = [
@@ -151,6 +168,9 @@ class MailerService
      * @param ProjectInterface $project
      *
      * @return int
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Syntax
      */
     public function sendProjectClonedEmail(User $user, ProjectInterface $project)
     {
@@ -171,9 +191,43 @@ class MailerService
         ;
     }
 
+    /**
+     * @param $name
+     * @param $data
+     */
     public function addFromParameter($name, $data)
     {
         $this->parameters['from_email'][$name] = isset($data['email']) ? $data['email'] : '';
         $this->parameters['from_name'][$name] = isset($data['name']) ? $data['name'] : '';
+    }
+
+    public function sendCodeViaEmail(User $user)
+    {
+        $code = $this->googleAuthenticator->getCode(
+            $user->getGoogleAuthenticatorSecret()
+        );
+
+        $this->sendEmail(
+            'MainBundle:Email:code.html.twig',
+            'default',
+            $user->getEmail(),
+            [
+                'user' => $user,
+                'code' => $code,
+            ]
+        );
+    }
+
+    public function sendGoogleAuthenticatorRemoveEmail(User $user)
+    {
+        $this->sendEmail(
+            'MainBundle:Email:remove_google_authenticator.html.twig',
+            'default',
+            $user->getEmail(),
+            [
+                'user' => $user,
+                'code' => sha1($user->getGoogleAuthenticatorSecret()),
+            ]
+        );
     }
 }
