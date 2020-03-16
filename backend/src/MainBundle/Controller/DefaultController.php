@@ -268,4 +268,79 @@ class DefaultController extends Controller
 
         return $errors;
     }
+
+    /**
+     * @Route("/send-code-via-email", name="main_send_code_via_mail")
+     */
+    public function sendCodeViaEmailAction(Request $request)
+    {
+        $this->mustBeIn2FA($request);
+
+        $this->container->get('app.service.mailer')->sendCodeViaEmail($this->getUser());
+
+        $this->addFlash('two_factor', 'two_factor.send_code_via_email.email_success');
+
+        return $this->redirectToRoute('main_homepage');
+    }
+
+    /**
+     * @Route("/remove-two-factor-auth", name="main_remove_two_factor")
+     */
+    public function removeTwoFactorAction(Request $request)
+    {
+        $this->mustBeIn2FA($request);
+
+        $this->container->get('app.service.mailer')->sendGoogleAuthenticatorRemoveEmail($this->getUser());
+
+        $this->addFlash('two_factor', 'two_factor.remove.email_success');
+
+        return $this->redirectToRoute('main_homepage');
+    }
+
+    /**
+     * @Route("/remove-two-factor-auth/{code}", name="main_remove_two_factor_code")
+     */
+    public function removeTwoFactorCodeAction(Request $request, string $code)
+    {
+        $this->mustBeIn2FA($request);
+
+        if (!empty($this->getUser()->getGoogleAuthenticatorSecret())) {
+            $verify = sha1($this->getUser()->getGoogleAuthenticatorSecret());
+        } else {
+            $verify = null;
+        }
+
+        if ($verify !== $code) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $this->getUser()->setGoogleAuthenticatorSecret(null);
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($this->getUser());
+        $manager->flush();
+
+        $this->addFlash('two_factor', 'two_factor.remove.success');
+
+        return $this->redirectToRoute('main_logout');
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function mustBeIn2FA(Request $request)
+    {
+        if (!($this->getUser() instanceof User) || empty($this->getUser()->getGoogleAuthenticatorSecret())) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $keys = array_keys($request->getSession()->all());
+
+        foreach ($keys as $key) {
+            if (0 === strpos($key, 'two_factor_')) {
+                return;
+            }
+        }
+
+        throw $this->createAccessDeniedException();
+    }
 }

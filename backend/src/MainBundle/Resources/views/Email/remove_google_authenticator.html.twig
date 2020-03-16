@@ -1,0 +1,14 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+
+{% trans_default_domain 'messages' %}
+
+{% block subject %}
+    {{ 'email.subject.two_factor.remove'|trans }}
+{% endblock %}
+
+{% block message %}
+    <p>{{ 'email.general.hello'|trans }} {{ user.fullName }},</p>
+    <p>
+        {{ 'email.two_factor.body.remove'|trans({'%url%': url('main_remove_two_factor_code', {code: code})})|raw }}
+    </p>
+{% endblock %}

@@ -36,6 +36,10 @@
                     {# The logout link gives the user a way out if they can't complete the second step #}
                     <p class="cancel">
                         <a href="{{ path("main_logout") }}">{{ "scheb_two_factor.cancel"|trans }}</a>
+                        |
+                        <a href="{{ path("main_send_code_via_mail") }}">{{ 'two_factor.send_code_via_email.label'|trans }}</a>
+                        |
+                        <a href="{{ path("main_remove_two_factor") }}">{{ 'two_factor.remove.label'|trans }}</a>
                     </p>
                 </form>
             </div>
