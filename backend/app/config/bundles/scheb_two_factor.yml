@@ -4,7 +4,7 @@ scheb_two_factor:
         cookie_name: trusted_computer
         cookie_lifetime: 5184000
         cookie_secure: false
-    exclude_pattern: ~
+    exclude_pattern: send\-code\-via\-email|remove\-two\-factor\-auth|_profiler|_wdt
     parameter_names:
         auth_code: _auth_code
         trusted: _trusted
