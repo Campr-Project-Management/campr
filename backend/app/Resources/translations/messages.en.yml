@@ -198,7 +198,7 @@ choices.yellow: Yellow
 color_status.finished: 'On track'
 color_status.in_progress: Warning
 color_status.not_started: Critical
-copyright: 'Copyright &copy; %year% Campr'
+copyright: 'Copyright &copy; %year% CAMPR'
 email.expiration.user.activation: '{0}The activation link will expire in 1 day|{1}The activation link will expire in 1 day|]1,Inf[ The activation link will expire in %expiration_time% days'
 email.expiration.user.reset: '{0}The reset token will expire in 1 day|{1}The reset token will expire in 1 day|]1,Inf[ The reset token will expire in %expiration_time% days'
 email.from.contact: 'There is a new contact message from:'
@@ -221,14 +221,14 @@ email.message.workspace_member.invite.first: 'You are invited to be part of the 
 email.message.workspace_member.invite.link: invitation
 email.message.workspace_member.invite.second: 'If you don''t have an account with this email please make one in order to accept invitation.'
 email.message.workspace_member.invite.third: 'Please click on the following'
-email.subject.contact: 'Campr contact'
+email.subject.contact: 'CAMPR contact'
 email.subject.general: Subject
 email.subject.invoice: 'CAMPR - Payment Invoice'
 email.subject.new_meeting_notification: 'You have a new meeting notification'
-email.subject.status_report: 'Campr Status Report'
-email.subject.user.activation: 'Campr - Account activation code'
-email.subject.user.register: 'Campr - Account registration'
-email.subject.user.reset: 'Campr - Reset account password'
+email.subject.status_report: 'CAMPR Status Report'
+email.subject.user.activation: 'CAMPR - Account activation code'
+email.subject.user.register: 'CAMPR - Account registration'
+email.subject.user.reset: 'CAMPR - Reset account password'
 email.subject.workspace_member.invite: 'CAMPR - Workspace member invitation'
 exception.add.team: 'Please add one team as option parameter'
 exception.add.user: 'Please add one user as option parameter'
@@ -583,7 +583,7 @@ label.workpackage_status: 'Work Package Status'
 label.wppwct: 'Work Package Project Work Cost Type'
 link.account: Account
 link.admin_dashboard: 'Admin Tool'
-link.back_to_campr: 'Back to Campr.cloud'
+link.back_to_campr: 'Back to CAMPR.cloud'
 link.contact: Contact
 link.dashboad: Dashboard
 link.home: Home
@@ -663,7 +663,7 @@ message.budget_saved: 'Budget Saved'
 message.by: by
 message.by_department: 'By Department'
 message.by_phase: 'By Phase'
-message.campr_moto: 'Campr - The tool for industrious people'
+message.campr_moto: 'CAMPR - The tool for industrious people'
 message.capex: Capex
 message.capex_subtotal: 'Capex Subtotal'
 message.category: Category
@@ -1853,8 +1853,8 @@ title.filesystem.create: 'Create new file system'
 title.filesystem.edit: 'Edit file system'
 title.filesystem.list: 'File system'
 title.header: Administration
-title.homepage: 'Campr Admin'
-title.homepage_main: 'Campr Main Site'
+title.homepage: 'CAMPR Admin'
+title.homepage_main: 'CAMPR Main Site'
 title.impact.create: 'Create new impact'
 title.impact.edit: 'Edit impact'
 title.impact.list: Impact
@@ -1899,7 +1899,7 @@ title.meeting_participant.edit: 'Edit meeting participant'
 title.meeting_participant.list: 'Meeting participant'
 title.members: Members
 title.messages: Messages
-title.meta_description: 'Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
+title.meta_description: 'CAMPR is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
 title.my_account: 'My Account'
 title.note.create: 'Create new note'
 title.note.edit: 'Edit note'
@@ -2185,14 +2185,14 @@ twitter.tags.site.default: '@campr'
 twitter.tags.creator.default: '@campr'
 twitter.tags.card.default: summary_large_image
 twitter.tags.title.default: 'C A M P R'
-twitter.tags.description.default: 'Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
+twitter.tags.description.default: 'CAMPR is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
 facebook.tags.title.default: 'C A M P R'
-facebook.tags.description.default: 'Campr is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
+facebook.tags.description.default: 'CAMPR is the tool for industrious people. Project management, team organization, risk management, project meetings, GANTT Charts, RASCI Matrix and much more.'
 facebook.tags.type.default: website
 table_header_cell.has_marketing_consent: 'Marketing Consent?'
 portal.footer.imprint: Imprint
 portal.footer.status: Status
-portal.footer.copyright: '&copy; %year% Campr. All rights reserved.'
+portal.footer.copyright: '&copy; %year% CAMPR. All rights reserved.'
 message.duplicate: Duplicate
 authentication.account_needs_activation: 'This account needs to be activated. Please check your email and activate it.'
 portal.page.about.christoph_pohl.about: "                        <p>Hello, my name is Christoph Pohl. I’m based in Würzburg, Germany and together with Manuel founder and owner of CAMPR.</p>\n\n                        <p>I'm passionate about concepting, managing and successfully compleing large-scale projects. As some of you may know, my go-to regions are South-Eastern Europe, Latin America and Asia. But good old Germany isn't that bad either.</p>\n\n                        <p>I'm a certified Project Management Professional (PMP) by the Project Management Insitute (PMI), certified Project Manager by the German TÜV, and a certified Quality Manager in ISO9001 standards. In 2018 I received my Scrum Master Certificate since Agile Project Management methods are becoming more and more important.</p>\n\n                        <p>In addition, I am an active member of the PMI South Germany Chapter and have been leading the PMI regulars' table in Würzburg since 2019.</p>"
@@ -2261,7 +2261,7 @@ portal.page.modules.status_report.title: 'Status Report'
 portal.page.modules.status_report.desc: '<p>The project status report provides an overview of the overall project condition regarding services, deadlines, resources, costs, organization and context and shows planned measures and necessary decisions. </p>'
 portal.page.modules.close_down_report.title: 'Close Out Report'
 portal.page.modules.close_down_report.desc: '<p>The project final report serves as a final document for the evaluation of the project and for the planning of residual tasks and the post-project phase. The project final report is the basis for the final project commissioning process.</p>'
-portal.page.modules.content1: 'Campr<br>is for<br>everyone'
+portal.page.modules.content1: 'CAMPR <br>is for<br> everyone'
 portal.page.modules.content2: '<p class="mt-60">We have created a tool that can be used by any Project Manager, from novice to expert. The <b>FREE</b> version is dedicated to those who either want to test our app or have a very small enterprise (up to 4 users). <b>Schools</b>, <b>Universities</b> or <b>Charity Organizations</b> have the opportunity to receive a <b>special offer</b>. All you have to do is <a href="%link%" class="simple-link"><b>contact us</b></a></p>'
 portal.ui.sign_up_now: 'Sign Up Now'
 portal.ui.features: Features
@@ -2388,15 +2388,20 @@ label.project_order: 'Project Order'
 label.signature: Signature
 ui.n_a: N/A
 ui.edit_member: 'Edit Member'
-email.subject.use_for_free: 'Campr: Use for free request'
+email.subject.use_for_free: 'CAMPR: Use for free request'
 button.save_and_close_project: 'Save and close project'
 label.approve_and_start: 'Approve and start'
 label.approved_and_started: 'Approved and started'
 two_factor.send_code_via_email.email_success: 'The code has been sent via email. Please check your email and use the provided coded as fast as possible.'
 two_factor.send_code_via_email.label: 'Send code via Email'
 two_factor.remove.label: 'Remove authenticator'
-email.subject.two_factor.code: 'Campr Two Factor Code: %code%'
-email.two_factor.body.code: 'Campr Two Factor Code: %code%'
+email.subject.two_factor.code: 'CAMPR Two Factor Code: %code%'
+email.two_factor.body.code: 'CAMPR Two Factor Code: %code%'
 two_factor.remove.email_success: 'A link has been sent to your email to remove the two factor authentication.'
-email.subject.two_factor.remove: 'Campr - Two Factor authentication removal'
+email.subject.two_factor.remove: 'CAMPR - Two Factor authentication removal'
 email.two_factor.body.remove: 'Click <a href="%url%">here</a> to remove two factor authentication from your account.'
+email.message.task.new: 'Hello %task_responsible%, %task_creator% created a new task "%task_name%" with due date %base_finished_date% for you.'
+email.button.task.profile: 'Task Profile'
+email.subject.task.new: 'Your new task: "%project_name%" - "%task_name%"'
+email.subject.task.edit: 'Your task responsibility has changed "%project_name%" - "%task_name%"'
+email.message.task.edit: 'Hello %task_responsible%, the task responsibility has changed fom %former_task_responsibility% to you.'

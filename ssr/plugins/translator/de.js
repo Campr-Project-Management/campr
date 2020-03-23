@@ -220,6 +220,7 @@ module.exports = function (Translator) {
     Translator.add("not_blank.industry_branch", "Bitte gib deine Branche an.", "validators", "de");
     Translator.add("not_blank.meeting_category", "Bitte w\u00e4hle eine Kategorie", "validators", "de");
     Translator.add("work_package.assignment.rasci_user", "%name% ist kein RASCI-Benutzer", "validators", "de");
+    Translator.add("project.valid_contract", "Bitte f\u00fcllt den Projektvertrag aus, genehmigt das Projekt und friert den Vertrag ein!", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
     Translator.add("Authentication request could not be processed due to a system problem.", "Die Authentifikation konnte wegen eines Systemproblems nicht bearbeitet werden.", "security", "de");
@@ -2615,6 +2616,17 @@ module.exports = function (Translator) {
     Translator.add("ui.n_a", "N\/A", "messages", "de");
     Translator.add("ui.edit_member", "Mitglied bearbeiten", "messages", "de");
     Translator.add("email.subject.use_for_free", "Campr: F\u00fcr kostenlose Anfrage verwenden", "messages", "de");
+    Translator.add("button.save_and_close_project", "Projekt speichern und abschlie\u00dfen", "messages", "de");
+    Translator.add("label.approve_and_start", "Genehmigen und starten", "messages", "de");
+    Translator.add("label.approved_and_started", "Genehmigt und gestartet", "messages", "de");
+    Translator.add("two_factor.send_code_via_email.email_success", "Der Code wurde per E-Mail verschickt. Schau in deinem Postfach nach und nutze den verschickten Code so schnell wie m\u00f6glich.\n", "messages", "de");
+    Translator.add("two_factor.send_code_via_email.label", "Code per E-Mail senden", "messages", "de");
+    Translator.add("two_factor.remove.label", "Authentifizierer entfernen", "messages", "de");
+    Translator.add("email.subject.two_factor.code", "CAMPR Zwei-Faktor-Code: %code%", "messages", "de");
+    Translator.add("email.two_factor.body.code", "CAMPR Zwei-Faktor-Code: %code%", "messages", "de");
+    Translator.add("two_factor.remove.email_success", "Ein Link zur Entfernung der Zwei-Faktor-Authentifizierung wurde dir per E-Mail gesendet.", "messages", "de");
+    Translator.add("email.subject.two_factor.remove", "CAMPR - Zwei-Faktor-Authentifizierung enfernen", "messages", "de");
+    Translator.add("email.two_factor.body.remove", "Klick <a href=\"%url%\">hier<\/a>, um die Zwei-Faktor-Authentifizierung deines Accounts zu entfernen.", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Das Aktivierungs-Token wurde nicht gefunden oder der Benutzer ist bereits aktiv.", "flashes", "de");
