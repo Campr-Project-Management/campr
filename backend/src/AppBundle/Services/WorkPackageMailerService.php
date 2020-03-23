@@ -36,7 +36,7 @@ class WorkPackageMailerService
     public function sendNewTaskEmail(WorkPackage $wp)
     {
         $this->mailer->sendEmail(
-            ':task\emails:new_task_email.html.twig',
+            ':task/emails:new_task_email.html.twig',
             'default',
             $wp->getResponsibilityEmail(),
             [
@@ -70,7 +70,7 @@ class WorkPackageMailerService
         }
 
         $this->mailer->sendEmail(
-            ':task\emails:responsibility_changed_email.html.twig',
+            ':task/emails:responsibility_changed_email.html.twig',
             'default',
             $wp->getResponsibilityEmail(),
             [
