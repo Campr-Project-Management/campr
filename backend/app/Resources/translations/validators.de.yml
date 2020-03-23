@@ -136,3 +136,4 @@ required.terms_and_conditions: 'Du musst den allgemeinen Geschäftsbedingungen z
 not_blank.industry_branch: 'Bitte gib deine Branche an.'
 not_blank.meeting_category: 'Bitte wähle eine Kategorie'
 work_package.assignment.rasci_user: '%name% ist kein RASCI-Benutzer'
+project.valid_contract: 'Bitte füllt den Projektvertrag aus, genehmigt das Projekt und friert den Vertrag ein!'

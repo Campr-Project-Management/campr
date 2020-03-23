@@ -2369,3 +2369,14 @@ label.signature: Unterschrift
 ui.n_a: N/A
 ui.edit_member: 'Mitglied bearbeiten'
 email.subject.use_for_free: 'Campr: Für kostenlose Anfrage verwenden'
+button.save_and_close_project: 'Projekt speichern und abschließen'
+label.approve_and_start: 'Genehmigen und starten'
+label.approved_and_started: 'Genehmigt und gestartet'
+two_factor.send_code_via_email.email_success: "Der Code wurde per E-Mail verschickt. Schau in deinem Postfach nach und nutze den verschickten Code so schnell wie möglich.\n"
+two_factor.send_code_via_email.label: 'Code per E-Mail senden'
+two_factor.remove.label: 'Authentifizierer entfernen'
+email.subject.two_factor.code: 'CAMPR Zwei-Faktor-Code: %code%'
+email.two_factor.body.code: 'CAMPR Zwei-Faktor-Code: %code%'
+two_factor.remove.email_success: 'Ein Link zur Entfernung der Zwei-Faktor-Authentifizierung wurde dir per E-Mail gesendet.'
+email.subject.two_factor.remove: 'CAMPR - Zwei-Faktor-Authentifizierung enfernen'
+email.two_factor.body.remove: 'Klick <a href="%url%">hier</a>, um die Zwei-Faktor-Authentifizierung deines Accounts zu entfernen.'
