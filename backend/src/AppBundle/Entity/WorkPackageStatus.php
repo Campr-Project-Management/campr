@@ -3,8 +3,6 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Model\RemovalForbiddenInterface;
-use Component\Project\ProjectAwareInterface;
-use Component\Project\ProjectInterface;
 use Component\Resource\Model\CodeAwareInterface;
 use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,7 +20,7 @@ use Component\Resource\Cloner\Annotation as Cloner;
  * @UniqueEntity(fields="code", message="unique.code")
  * @Cloner\Exclude()
  */
-class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface, ProjectAwareInterface, ResourceInterface
+class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface, ResourceInterface
 {
     const OPEN = 1;
     const PENDING = 2;
@@ -76,16 +74,6 @@ class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\WorkPackage", mappedBy="workPackageStatus")
      */
     private $workPackages;
-
-    /**
-     * @var Project
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="workPackageStatuses")
-     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
-     */
-    private $project;
 
     /**
      * @var int
@@ -242,30 +230,6 @@ class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
     }
 
     /**
-     * Set project.
-     *
-     * @param ProjectInterface $project
-     *
-     * @return WorkPackageStatus
-     */
-    public function setProject(ProjectInterface $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Get project.
-     *
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
      * Set createdAt.
      *
      * @param \DateTime $createdAt
@@ -311,32 +275,6 @@ class WorkPackageStatus implements CodeAwareInterface, RemovalForbiddenInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * Returns Project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectId()
-    {
-        return $this->project ? $this->project->getId() : null;
-    }
-
-    /**
-     * Returns Project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : null;
     }
 
     /**

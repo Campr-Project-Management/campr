@@ -70,8 +70,6 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_CREATED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 7,
                     'name' => 'foobar',
                     'sequence' => 1,
@@ -324,8 +322,6 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 5,
                     'name' => 'foobar2',
                     'sequence' => 1,
@@ -607,8 +603,6 @@ class RiskStrategyControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => null,
-                    'projectName' => null,
                     'id' => 1,
                     'name' => 'label.avoid',
                     'sequence' => 0,

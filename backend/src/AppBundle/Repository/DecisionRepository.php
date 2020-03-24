@@ -126,15 +126,9 @@ class DecisionRepository extends BaseRepository
     {
         $qb = $this->createQueryBuilder('o');
 
-        $meetingDate = $meeting->getDate();
-        $meetingTime = $meeting->getEnd() ?: $meeting->getStart();
-        if ($meetingTime) {
-            $meetingDate->setTime(
-                (int) $meetingTime->format('G'),
-                (int) ltrim($meetingTime->format('i'), 0),
-                (int) ltrim($meetingTime->format('s'), 0)
-            );
-        }
+        $createdAtLimit = clone $meeting->getDate();
+        $createdAtLimit->add(new \DateInterval('P3D'));
+        $createdAtLimit->setTime(23, 59, 59);
 
         $date = new \DateTime('-6 days');
         $date->setTime(0, 0, 0);
@@ -143,7 +137,7 @@ class DecisionRepository extends BaseRepository
             ->andWhere('o.project = :project AND o.createdAt <= :createdAt')
             ->andWhere('(o.done <> 1 or (o.done = 1 and o.doneAt >= :date))')
             ->setParameter('date', $date)
-            ->setParameter('createdAt', $meetingDate)
+            ->setParameter('createdAt', $createdAtLimit)
             ->setParameter('project', $meeting->getProject())
         ;
 

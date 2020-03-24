@@ -155,6 +155,12 @@ services:
         tags:
             - { name: app.repository, class: AppBundle\Entity\ProjectRole }
 
+    app.repository.project_status:
+        class: AppBundle\Repository\ProjectStatusRepository
+        arguments: ~
+        tags:
+            - { name: app.repository, class: AppBundle\Entity\ProjectStatus }
+
     app.repository.project_department_member:
         class: AppBundle\Repository\ProjectDepartmentMember
         arguments: ~

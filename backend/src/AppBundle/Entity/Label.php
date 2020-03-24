@@ -2,8 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Component\Project\ProjectAwareInterface;
-use Component\Project\ProjectInterface;
 use Component\Resource\Cloner\CloneableInterface;
 use Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="label")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LabelRepository")
  */
-class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterface
+class Label implements ResourceInterface, CloneableInterface
 {
     /**
      * @var int
@@ -26,16 +24,6 @@ class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterf
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var Project
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="labels")
-     * @ORM\JoinColumn(name="project_id", nullable=false, onDelete="CASCADE")
-     */
-    private $project;
 
     /**
      * @var string
@@ -83,22 +71,6 @@ class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterf
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param ProjectInterface $project
-     */
-    public function setProject(ProjectInterface $project = null)
-    {
-        $this->project = $project;
     }
 
     /**
@@ -154,7 +126,7 @@ class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterf
      *
      * @param WorkPackage $workPackage
      *
-     * @return User
+     * @return Label
      */
     public function addWorkPackage(WorkPackage $workPackage)
     {
@@ -181,32 +153,6 @@ class Label implements ProjectAwareInterface, ResourceInterface, CloneableInterf
     public function getWorkPackages()
     {
         return $this->workPackages;
-    }
-
-    /**
-     * Returns project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectId()
-    {
-        return $this->project ? $this->project->getId() : null;
-    }
-
-    /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : null;
     }
 
     /**

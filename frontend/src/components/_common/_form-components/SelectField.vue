@@ -13,7 +13,7 @@
             <span class="select-field-placeholder">{{ translate(placeholder) }}</span>
 
             <i
-                v-if="allowClear && value"
+                v-if="allowClear && lazyValue"
                 class="fa fa-times select-field-clear"
                 :title="translate('message.clear_selection')"
                 @click="onClear"></i>
@@ -70,6 +70,16 @@
                 required: false,
             },
         },
+        mounted() {
+            let $ul = $(this.$refs.ul);
+
+            this.itemHeight = $(this.$el).height();
+            this.marginTop = parseInt($ul.css('margin-top'), 10);
+            this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
+            this.paddingTop = parseInt($ul.css('padding-top'), 10);
+            this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
+            this.scrollbarTop = this.itemHeight;
+        },
         computed: {
             visibleOptions() {
                 return this.availableOptions.filter(option => !option.hidden);
@@ -79,9 +89,9 @@
             },
             placeholder() {
                 let option = null;
-                if (this.value) {
+                if (this.lazyValue) {
                     option = _.find(this.availableOptions, (o) => {
-                        return o.key === this.value.key;
+                        return o.key === this.lazyValue.key;
                     });
                 }
 
@@ -102,12 +112,21 @@
                     + (this.paddingBottom + this.paddingTop);
             },
         },
+        watch: {
+            value: {
+                handler(value) {
+                    this.lazyValue = value;
+                },
+                immediate: true,
+            },
+        },
         methods: {
             onChange(value) {
                 if (this.disabled) {
                     return;
                 }
 
+                this.lazyValue = value;
                 this.$emit('input', value);
             },
             onClear(event) {
@@ -136,16 +155,6 @@
                 }
             },
         },
-        mounted() {
-            let $ul = $(this.$refs.ul);
-
-            this.itemHeight = $(this.$el).height();
-            this.marginTop = parseInt($ul.css('margin-top'), 10);
-            this.marginBottom = parseInt($ul.css('margin-bottom'), 10);
-            this.paddingTop = parseInt($ul.css('padding-top'), 10);
-            this.paddingBottom = parseInt($ul.css('padding-bottom'), 10);
-            this.scrollbarTop = this.itemHeight;
-        },
         data() {
             return {
                 itemHeight: 0,
@@ -154,6 +163,7 @@
                 marginTop: 0,
                 marginBottom: 0,
                 scrollbarTop: 0,
+                lazyValue: this.value,
             };
         },
     };

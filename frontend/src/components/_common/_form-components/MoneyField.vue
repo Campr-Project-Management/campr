@@ -1,18 +1,18 @@
 <template>
     <div class="input-holder money-input-holder">
-        <span class="currency" v-if="currency">{{ currency }}</span>
+        <span v-if="currency" class="currency">{{ currency }}</span>
         <input
-                @input="onInput($event.target.value)"
+                @input="onInput"
                 type="number"
                 step="1"
                 class="float-label"
-                :id="'money-input' + _uid"
-                :value="value"
+                :id="id"
+                v-model="lazyValue"
                 :disabled="disabled"
                 :style="css"
                 @focusin="onFocus"
                 @focusout="onBlur"/>
-        <label v-bind:class="{ 'active': value }">{{ label }}</label>
+        <label :for="id" :class="{ active: isActive }">{{ label }}</label>
     </div>
 </template>
 
@@ -21,7 +21,9 @@
         name: 'money-field',
         props: {
             value: {
+                type: Number,
                 required: false,
+                default: 0,
             },
             currency: {
                 required: true,
@@ -68,16 +70,45 @@
                 $this.next().addClass('active');
             }
         },
+        computed: {
+            id() {
+                return `money-input-${this._uid}`;
+            },
+            isActive() {
+                return this.lazyValue != null || this.active;
+            },
+        },
+        watch: {
+            value: {
+                handler(value) {
+                    this.lazyValue = value;
+                },
+                immediate: true,
+            },
+        },
         methods: {
-            onInput(value) {
+            onInput(event) {
+                const value = parseInt(event.target.value);
+                if (isNaN(value)) {
+                    return;
+                }
+
                 this.$emit('input', value);
             },
             onFocus() {
+                this.active = true;
                 this.$emit('focus');
             },
             onBlur() {
+                this.active = false;
                 this.$emit('blur');
             },
+        },
+        data() {
+            return {
+                lazyValue: this.value,
+                active: false,
+            };
         },
     };
 </script>

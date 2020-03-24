@@ -36,8 +36,6 @@ MeetingAgenda.php
 >
 MeetingParticipant.php
 >
-Note.php
->
 Portfolio.php
 >
 Project.php

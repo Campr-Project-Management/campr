@@ -9,7 +9,7 @@
 // Released under MIT licence:
 // http://ionden.com/a/plugins/licence-en.html
 // =====================================================================================================================
-module.exports = function($, document, window, navigator, undefined) {
+export default function($, document, window, navigator, undefined) {
     "use strict";
 
     // =================================================================================================================

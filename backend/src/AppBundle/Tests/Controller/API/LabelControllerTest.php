@@ -3,12 +3,137 @@
 namespace AppBundle\Tests\Controller\API;
 
 use AppBundle\Entity\Label;
-use AppBundle\Entity\Project;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
 class LabelControllerTest extends BaseController
 {
+    /**
+     * @dataProvider getDataForLabelsAction()
+     *
+     * @param $url
+     * @param $isResponseSuccessful
+     * @param $responseStatusCode
+     * @param $responseContent
+     */
+    public function testLabelsAction(
+        $url,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'GET',
+            $url,
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            ''
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForLabelsAction()
+    {
+        return [
+            [
+                '/api/labels',
+                true,
+                Response::HTTP_OK,
+                [
+                    [
+                        'openWorkPackagesNumber' => 0,
+                        'id' => 1,
+                        'title' => 'label-title1',
+                        'description' => null,
+                        'color' => 'color1',
+                    ],
+                    [
+                        'openWorkPackagesNumber' => 0,
+                        'id' => 2,
+                        'title' => 'label-title2',
+                        'description' => null,
+                        'color' => 'color2',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForCreateLabelAction()
+     *
+     * @param array $content
+     * @param       $isResponseSuccessful
+     * @param       $responseStatusCode
+     * @param       $responseContent
+     */
+    public function testCreateLabelAction(
+        array $content,
+        $isResponseSuccessful,
+        $responseStatusCode,
+        $responseContent
+    ) {
+        $user = $this->getUserByUsername('superadmin');
+        $token = $user->getApiToken();
+
+        $this->client->request(
+            'POST',
+            '/api/labels',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
+            ],
+            json_encode($content)
+        );
+        $response = $this->client->getResponse();
+
+        $responseArray = json_decode($response->getContent(), true);
+        $responseContent['id'] = $responseArray['id'];
+
+        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
+        $this->assertEquals($responseStatusCode, $response->getStatusCode());
+        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataForCreateLabelAction()
+    {
+        return [
+            [
+                [
+                    'title' => 'label-title',
+                    'color' => '123',
+                ],
+                true,
+                Response::HTTP_CREATED,
+                [
+                    'openWorkPackagesNumber' => 0,
+                    'id' => null,
+                    'title' => 'label-title',
+                    'description' => null,
+                    'color' => '123',
+                ],
+            ],
+        ];
+    }
+
     /**
      * @dataProvider getDataForEditAction
      *
@@ -26,18 +151,16 @@ class LabelControllerTest extends BaseController
         $user = $this->getUserByUsername('superadmin');
         $token = $user->getApiToken();
 
-        $project = $this->em->getRepository(Project::class)->find(2);
         $label = new Label();
         $label->setTitle('title');
         $label->setColor('123');
-        $label->setProject($project);
         $label->setDescription('desc');
         $this->em->persist($label);
         $this->em->flush();
 
         $this->client->request(
             'PATCH',
-            '/api/labels/1',
+            '/api/labels/'.$label->getId(),
             [],
             [],
             [
@@ -48,6 +171,7 @@ class LabelControllerTest extends BaseController
         );
         $response = $this->client->getResponse();
         $actual = $this->getClientJsonResponse();
+        $responseContent['id'] = $label->getId();
 
         $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
         $this->assertEquals($responseStatusCode, $response->getStatusCode());
@@ -64,14 +188,13 @@ class LabelControllerTest extends BaseController
                 [
                     'title' => 'new-label',
                     'description' => 'descript',
+                    'color' => 'color1',
                 ],
                 true,
                 Response::HTTP_ACCEPTED,
                 [
-                    'project' => 1,
-                    'projectName' => 'project1',
                     'openWorkPackagesNumber' => 0,
-                    'id' => 1,
+                    'id' => 3,
                     'title' => 'new-label',
                     'description' => 'descript',
                     'color' => 'color1',
@@ -168,8 +291,6 @@ class LabelControllerTest extends BaseController
                 true,
                 Response::HTTP_OK,
                 [
-                    'project' => 1,
-                    'projectName' => 'project1',
                     'openWorkPackagesNumber' => 0,
                     'id' => 1,
                     'title' => 'label-title1',

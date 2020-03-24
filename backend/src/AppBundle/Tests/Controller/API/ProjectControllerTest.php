@@ -123,7 +123,6 @@ class ProjectControllerTest extends BaseController
                     'number' => 'project-number-3',
                     'projectUsers' => [],
                     'projectTeams' => [],
-                    'notes' => [],
                     'todos' => [],
                     'distributionLists' => [],
                     'statusUpdatedAt' => null,
@@ -465,8 +464,6 @@ class ProjectControllerTest extends BaseController
                     'configuration' => [],
                     'units' => [],
                     'opportunityStrategies' => [],
-                    'riskStatuses' => [],
-                    'riskStrategies' => [],
                     'projectDepartments' => [],
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
@@ -1096,138 +1093,6 @@ class ProjectControllerTest extends BaseController
                     'createdAt' => null,
                     'updatedAt' => null,
                     'createdByAvatarUrl' => '',
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForLabelsAction()
-     *
-     * @param $url
-     * @param $isResponseSuccessful
-     * @param $responseStatusCode
-     * @param $responseContent
-     */
-    public function testLabelsAction(
-        $url,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'GET',
-            $url,
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            ''
-        );
-        $response = $this->client->getResponse();
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForLabelsAction()
-    {
-        return [
-            [
-                '/api/projects/1/labels',
-                true,
-                Response::HTTP_OK,
-                [
-                    [
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'openWorkPackagesNumber' => 0,
-                        'id' => 1,
-                        'title' => 'label-title1',
-                        'description' => null,
-                        'color' => 'color1',
-                    ],
-                    [
-                        'project' => 1,
-                        'projectName' => 'project1',
-                        'openWorkPackagesNumber' => 0,
-                        'id' => 2,
-                        'title' => 'label-title2',
-                        'description' => null,
-                        'color' => 'color2',
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getDataForCreateLabelAction()
-     *
-     * @param array $content
-     * @param       $isResponseSuccessful
-     * @param       $responseStatusCode
-     * @param       $responseContent
-     */
-    public function testCreateLabelAction(
-        array $content,
-        $isResponseSuccessful,
-        $responseStatusCode,
-        $responseContent
-    ) {
-        $user = $this->getUserByUsername('superadmin');
-        $token = $user->getApiToken();
-
-        $this->client->request(
-            'POST',
-            '/api/projects/2/labels',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-                'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $token),
-            ],
-            json_encode($content)
-        );
-        $response = $this->client->getResponse();
-
-        $responseArray = json_decode($response->getContent(), true);
-        $responseContent['id'] = $responseArray['id'];
-
-        $this->assertEquals($isResponseSuccessful, $response->isSuccessful());
-        $this->assertEquals($responseStatusCode, $response->getStatusCode());
-        $this->assertEquals($responseContent, json_decode($response->getContent(), true));
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataForCreateLabelAction()
-    {
-        return [
-            [
-                [
-                    'title' => 'label-title',
-                    'color' => '123',
-                ],
-                true,
-                Response::HTTP_CREATED,
-                [
-                    'project' => 2,
-                    'projectName' => 'project2',
-                    'openWorkPackagesNumber' => 0,
-                    'id' => null,
-                    'title' => 'label-title',
-                    'description' => null,
-                    'color' => '123',
                 ],
             ],
         ];
@@ -2177,8 +2042,6 @@ class ProjectControllerTest extends BaseController
                         ],
                     ],
                     'opportunityStrategies' => [],
-                    'riskStatuses' => [],
-                    'riskStrategies' => [],
                     'projectDepartments' => [],
                     'statusReportConfigs' => [],
                     'projectRoles' => [],
