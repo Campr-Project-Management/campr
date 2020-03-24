@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints as AppAssert;
 use Component\Resource\Model\TimestampableTrait;
 use Component\Resource\Model\ToggleableTrait;
 use Component\User\Model\UserInterface;
@@ -38,6 +39,7 @@ use Component\Resource\Cloner\Annotation as Cloner;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")\
  * @Vich\Uploadable
  * @Cloner\Exclude()
+ * @AppAssert\AtLeastOneAdmin()
  */
 class User implements UserInterface
 {

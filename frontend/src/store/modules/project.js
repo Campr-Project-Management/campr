@@ -9,8 +9,6 @@ const state = {
     projectsForFilter: [],
     filteredProjects: {},
     projectFilters: [],
-    labelsForChoice: [],
-    label: {},
     tasksForSchedule: {},
     projectTasksStatus: {},
     risksOpportunitiesStats: [],
@@ -29,12 +27,9 @@ const getters = {
     projectCurrencyCode: (state, getters) => getters.projectCurrency &&
         getters.projectCurrency.code,
     projects: state => state.filteredProjects.items,
-    labels: state => state.projects,
     currentProjectName: (state) => state.currentProject &&
         state.currentProject.name,
     projectsForFilter: state => state.projectsForFilter,
-    labelsForChoice: state => state.labelsForChoice,
-    label: state => state.label,
     tasksForSchedule: state => state.tasksForSchedule,
     projectTasksStatus: state => state.projectTasksStatus,
     risksOpportunitiesStats: state => state.risksOpportunitiesStats,
@@ -232,115 +227,11 @@ const actions = {
                     let project = response.data;
                     commit(types.SET_PROJECT, {project});
                 }
-            },
-            (response) => {},
-        )
-            ;
-    },
-
-    /**
-     * Gets all project labels from the API and commits SET_LABELS mutation
-     * @param {function} commit
-     * @param {number} id
-     * @return {object}
-     */
-    getProjectLabels({commit}, id) {
-        return Vue.http.get(
-            Routing.generate('app_api_project_labels', {'id': id})).then(
-            (response) => {
-                if (response.status === 200) {
-                    let labels = response.data;
-                    commit(types.SET_LABELS, {labels});
-                }
-            },
-            (response) => {},
-        )
-            ;
-    },
-
-    /**
-     * Gets a specific project label
-     * @param {function} commit
-     * @param {number} id
-     * @return {object}
-     */
-    getProjectLabel({commit}, id) {
-        return Vue.http.get(Routing.generate('app_api_label_get', {'id': id})).
-                   then(
-                       (response) => {
-                           if (response.status === 200) {
-                               let label = response.data;
-                               commit(types.SET_LABEL, {label});
-                           }
-                       },
-                       (response) => {},
-                   )
-            ;
-    },
-
-    /**
-     * Creates a new label on project
-     * @param {function} commit
-     * @param {array} data
-     * @return {object}
-     */
-    createProjectLabel({commit}, data) {
-        return Vue.http.post(
-            Routing.generate('app_api_project_create_label',
-                {'id': data.projectId}),
-            JSON.stringify(data),
-        ).then(
-            (response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                }
 
                 return response;
             },
-            () => {},
-        )
-            ;
-    },
-
-    /**
-     * Edit a project label
-     * @param {function} commit
-     * @param {array} data
-     * @return {object}
-     */
-    editProjectLabel({commit}, data) {
-        return Vue.http.patch(
-            Routing.generate('app_api_label_edit', {'id': data.labelId}),
-            JSON.stringify(data),
-        ).then(
-            (response) => {
-                if (response.body && response.body.error) {
-                    const {messages} = response.body;
-                    commit(types.SET_VALIDATION_MESSAGES, {messages});
-                } else {
-                    commit(types.SET_VALIDATION_MESSAGES, {messages: []});
-                }
-
-                return response;
-            },
-            () => {},
-        )
-            ;
-    },
-
-    /**
-     * Delete a label
-     * @param {function} commit
-     * @param {int} id
-     * @return {object}
-     */
-    deleteProjectLabel({commit}, id) {
-        return Vue.http.delete(
-            Routing.generate('app_api_label_delete', {'id': id}))
-            ;
+            (response) => {},
+        );
     },
 
     /**
@@ -835,20 +726,6 @@ const mutations = {
             });
         }
     },
-    /**
-     * Sets labels
-     * @param {Object} state
-     * @param {array} labels
-     */
-    [types.SET_LABELS](state, {labels}) {
-        state.projects = labels;
-        let choiceLabel = [];
-        state.projects.map(function(label) {
-            choiceLabel.push(
-                {'key': label.id, 'label': label.title, 'color': label.color});
-        });
-        state.labelsForChoice = choiceLabel;
-    },
 
     /**
      * Add project objective
@@ -875,15 +752,6 @@ const mutations = {
      */
     [types.ADD_PROJECT_DELIVERABLE](state, {deliverable}) {
         state.currentProject.projectDeliverables.push(deliverable);
-    },
-
-    /**
-     * set project label
-     * @param {Object} state
-     * @param {Object} label
-     */
-    [types.SET_LABEL](state, {label}) {
-        state.label = label;
     },
 
     /**

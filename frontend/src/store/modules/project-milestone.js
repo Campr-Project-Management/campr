@@ -106,9 +106,10 @@ const actions = {
      * Edit project milestone
      * @param {function} commit
      * @param {array}    data
+     * @return {Object}
      */
     editProjectMilestone({commit}, data) {
-        Vue.http.patch(
+        return Vue.http.patch(
             Routing.generate('app_api_workpackage_milestone_edit',
                 {id: data.project, milestone: data.id}),
             JSON.stringify(data),

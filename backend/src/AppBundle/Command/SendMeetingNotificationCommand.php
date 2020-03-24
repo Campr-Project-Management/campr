@@ -89,12 +89,13 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
             $mailer->sendEmail(
                 ':meeting:notification.html.twig',
-                'no-reply',
+                'notification',
                 $to,
                 ['meeting' => $meeting, 'url' => $url],
                 [$icsAttachment]
             );
         }
+        clone
 
         $trans->setLocale($currentLocale);
 

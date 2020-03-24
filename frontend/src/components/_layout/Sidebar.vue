@@ -87,7 +87,7 @@
                 </ul>
                 <ul v-show="this.$route.name && this.$route.name.indexOf('project-') != -1">
                     <li class="separator"></li>
-                    <li>
+                    <li v-if="projectId">
                         <router-link :to="{name:'project-dashboard', params: {id: projectId}}"
                                      v-bind:title="translate('message.project_dashboard')">
                             <span class="default">{{ translate('message.project_dashboard') }}</span>
@@ -96,6 +96,7 @@
                     </li>
                     <li v-for="(module, key) in modules" v-if="isProjectModuleActive(module)">
                         <router-link
+                                v-if="projectId"
                                 :to="{name: moduleToRoute[module], params: {id: projectId}}"
                                 :title="translate(`modules.${module}.title`)">
                             <span class="default">{{ translate(`modules.${module}.title`) }}</span>

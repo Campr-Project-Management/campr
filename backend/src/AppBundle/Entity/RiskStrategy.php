@@ -2,12 +2,9 @@
 
 namespace AppBundle\Entity;
 
-use Component\Project\ProjectAwareInterface;
-use Component\Project\ProjectInterface;
 use Component\Resource\Model\ResourceInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use JMS\Serializer\Annotation as Serializer;
 use Component\Resource\Cloner\Annotation as Cloner;
 
 /**
@@ -18,7 +15,7 @@ use Component\Resource\Cloner\Annotation as Cloner;
  * @UniqueEntity(fields="name", message="unique.name")
  * @Cloner\Exclude()
  */
-class RiskStrategy implements ProjectAwareInterface, ResourceInterface
+class RiskStrategy implements ResourceInterface
 {
     /**
      * @var int
@@ -42,16 +39,6 @@ class RiskStrategy implements ProjectAwareInterface, ResourceInterface
      * @ORM\Column(name="sequence", type="integer", nullable=false, options={"default"=0})
      */
     private $sequence = 0;
-
-    /**
-     * @var Project
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Project", inversedBy="riskStrategies")
-     * @ORM\JoinColumn(name="project_id", onDelete="CASCADE")
-     */
-    private $project;
 
     /**
      * Get id.
@@ -109,49 +96,5 @@ class RiskStrategy implements ProjectAwareInterface, ResourceInterface
     public function getSequence()
     {
         return $this->sequence;
-    }
-
-    /**
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
-    }
-
-    /**
-     * @param ProjectInterface $project
-     */
-    public function setProject(ProjectInterface $project = null)
-    {
-        $this->project = $project;
-
-        return $this;
-    }
-
-    /**
-     * Returns project id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("project")
-     *
-     * @return string
-     */
-    public function getProjectId()
-    {
-        return $this->project ? $this->project->getId() : null;
-    }
-
-    /**
-     * Returns project name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("projectName")
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->project ? $this->project->getName() : null;
     }
 }
