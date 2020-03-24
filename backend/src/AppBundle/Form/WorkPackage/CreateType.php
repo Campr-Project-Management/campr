@@ -50,11 +50,6 @@ class CreateType extends BaseType
                     'required' => false,
                     'choice_label' => 'name',
                     'placeholder' => 'placeholder.status',
-                    'query_builder' => function (EntityRepository $er) {
-                        $qb = $er->createQueryBuilder('q');
-
-                        return $qb->where($qb->expr()->isNull('q.project'));
-                    },
                     'translation_domain' => 'messages',
                     'choice_translation_domain' => 'messages',
                 ]
@@ -314,10 +309,8 @@ class CreateType extends BaseType
             ->add('externalActualCost', NumberType::class)
             ->add('externalForecastCost', NumberType::class)
             ->add('internalActualCost', NumberType::class)
-            ->add('internalForecastCost', NumberType::class);
-
-        $formModifier = function (FormInterface $form, $project = null, $wpId = null) {
-            $form->add(
+            ->add('internalForecastCost', NumberType::class)
+            ->add(
                 'labels',
                 EntityType::class,
                 [
@@ -325,20 +318,11 @@ class CreateType extends BaseType
                     'required' => false,
                     'choice_label' => 'title',
                     'multiple' => true,
-                    'query_builder' => function (EntityRepository $er) use ($project) {
-                        $qb = $er->createQueryBuilder('l');
-
-                        return $qb
-                            ->where(
-                                $qb->expr()->orX(
-                                    $qb->expr()->eq('l.project', ':project'),
-                                    $qb->expr()->isNull('l.project')
-                                )
-                            )
-                            ->setParameter('project', $project);
-                    },
                 ]
-            );
+            )
+        ;
+
+        $formModifier = function (FormInterface $form, $project = null, $wpId = null) {
             $dependencyFieldOptions = [
                 'class' => WorkPackage::class,
                 'required' => false,

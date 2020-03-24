@@ -290,7 +290,9 @@
                 <div class="col-md-12">
                     <div class="hr"></div>
                     <div class="flex flex-space-between buttons">
-                        <a v-if="!projectCloseDown.frozen" @click="saveCloseDown" class="btn-rounded second-bg">{{ translateText('button.save') }}</a>
+                        <a v-if="!projectCloseDown.frozen" @click="saveCloseDown" class="btn-rounded second-bg" style="width: auto;">
+                            {{ translateText('button.save_and_close_project') }}
+                        </a>
                         <a class="btn-rounded flex flex-center download-pdf" :href="downloadPdf">
                             {{ translateText('button.download_pdf') }}<downloadbutton-icon fill="white-fill"></downloadbutton-icon>
                         </a>
@@ -383,22 +385,25 @@ export default {
                 organizationContext: this.organizationContext,
                 projectManagement: this.projectManagement,
                 frozen: true,
+                close: true,
             };
-            this.editProjectCloseDown(data)
-            .then(
-                (response) => {
-                    if (response.body && response.body.error && response.body.messages) {
-                        this.$flashError('message.unable_to_save');
-                        return;
-                    }
+            this
+                .editProjectCloseDown(data)
+                .then(
+                    (response) => {
+                        if (response.body && response.body.error && response.body.messages) {
+                            this.$flashError('message.unable_to_save');
+                            return;
+                        }
 
-                    this.$flashSuccess('message.saved');
-                    window.scrollTo(0, 0);
-                },
-                () => {
-                    this.$flashError('message.unable_to_save');
-                }
-            );
+                        this.$flashSuccess('message.saved');
+                        window.scrollTo(0, 0);
+                    },
+                    () => {
+                        this.$flashError('message.unable_to_save');
+                    }
+                )
+            ;
         },
         createObjective: function() {
             this.createEvaluationObjective({

@@ -2,9 +2,7 @@
 
 namespace AppBundle\Form\ProjectStatus;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectStatus;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,13 +36,6 @@ class CreateType extends AbstractType
                         'message' => 'not_blank.sequence',
                     ]),
                 ],
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
             ])
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,

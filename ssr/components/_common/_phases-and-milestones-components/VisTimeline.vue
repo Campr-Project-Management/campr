@@ -64,10 +64,10 @@
         data: function() {
             let groups = [];
             if (this.withPhases) {
-                groups.push({id: 0, content: Translator.trans('message.phases'), value: 1});
-                groups.push({id: 1, content: Translator.trans('message.milestones'), value: 2});
+                groups.push({id: 0, content: this.translate('label.phase'), value: 1});
+                groups.push({id: 1, content: this.translate('label.milestone'), value: 2});
             } else {
-                groups.push({id: 0, content: Translator.trans('message.milestones'), value: 1});
+                groups.push({id: 0, content: this.translate('label.milestone'), value: 1});
             }
 
             return {

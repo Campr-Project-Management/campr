@@ -1,36 +1,34 @@
 <template>
     <page :project="project" :team="team" :title="report.projectName" :subtitle="translate('message.week') + ' ' + report.weekNumber">
         <div class="row">
-            <div class="hero-text">
+            <div class="col-xs-6 hero-text" style="text-align: left;">
                 {{ translate('message.status_report') }}
             </div>
-        </div>
-
-        <div class="row">
-            <h3>{{ translate('message.overall_status') }}</h3>
-            <div class="flex flex-center" style="text-align: center">
+            <div class="col-xs-6 hero-text">
                 <traffic-light
-                        :value="report.projectTrafficLight"
-                        size="normal"
-                        :editable="false"/>
+                    style="text-align: right;"
+                    :value="report.projectTrafficLight"
+                    size="normal"
+                    :editable="false"/>
             </div>
         </div>
 
         <div class="row">
-            <h4>{{ translate('message.tasks_status') }}</h4>
-            <no-ssr>
-                <progress-bar-chart :series="tasksStatusSeries"/>
-            </no-ssr>
-            <br/>
-        </div>
-
-        <div class="row">
-            <h4>{{ translate('message.tasks_condition') }}</h4>
-            <no-ssr>
-                <progress-bar-chart
+            <div class="col-xs-6">
+                <h4>{{ translate('message.tasks_status') }}</h4>
+                <no-ssr>
+                    <progress-bar-chart :series="tasksStatusSeries"/>
+                </no-ssr>
+            </div>
+            <div class="col-xs-6">
+                <h4>{{ translate('message.tasks_condition') }}</h4>
+                <no-ssr>
+                    <progress-bar-chart
                         :series="tasksTrafficLightSeries"
                         :options="{labels: {enabled: false}}"/>
-            </no-ssr>
+                </no-ssr>
+            </div>
+            <br/>
         </div>
 
         <div class="row">
@@ -38,17 +36,65 @@
                 {{ translate('message.project_trend') }}
                 <span class="pull-right">{{ translate('message.current_date') }}: {{ report.createdAt | date }}</span>
             </h3>
+            <div class="col-xs-4" style="height: 200px">
+                <no-ssr>
+                    <status-report-trend-chart
+                            class="status-report-trend-chart"
+                            v-if="trendChartData.length > 0"
+                            :data="trendChartData"
+                            :labels="trendChartLabels"
+                            :point-color="trendChartPointColor"
+                            :options="{responsive: false}"
+                            :height="400"
+                            :width="600"/>
+                    <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+                </no-ssr>
+            </div>
+            <div class="col-xs-8">
+                <div class="statuses min-status" v-if="progress">
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :percentage="projectPlannedProgress"
+                                    :animation-duration="0"
+                                    :title="translate('message.planned_progress')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :animation-duration="0"
+                                    :percentage="progress.tasks"
+                                    :title="translate('message.task_status')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="status">
+                            <no-ssr>
+                                <circle-chart
+                                    :bgStrokeColor="options.backgroundColor"
+                                    :stroke-width="8"
+                                    :animation-duration="0"
+                                    :percentage="progress.costs"
+                                    :title="translate('message.cost_status')"
+                                    class="left center-content"/>
+                            </no-ssr>
+                        </div>
+                    </div>
+                </div>
 
-            <no-ssr>
-                <status-report-trend-chart
-                        v-if="trendChartData.length > 0"
-                        :data="trendChartData"
-                        :labels="trendChartLabels"
-                        :point-color="trendChartPointColor"
-                        :options="{responsive: false}"
-                        :width="780"/>
-                <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
-            </no-ssr>
+                <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
+            </div>
         </div>
 
 
@@ -75,58 +121,11 @@
             </div>
         </template>
 
-        <div class="row statuses min-status" v-if="progress">
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :percentage="projectPlannedProgress"
-                                :animation-duration="0"
-                                :title="translate('message.planned_progress')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :animation-duration="0"
-                                :percentage="progress.tasks"
-                                :title="translate('message.task_status')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="status">
-                    <no-ssr>
-                        <circle-chart
-                                :bgStrokeColor="options.backgroundColor"
-                                :stroke-width="8"
-                                :animation-duration="0"
-                                :percentage="progress.costs"
-                                :title="translate('message.cost_status')"
-                                class="left center-content"/>
-                    </no-ssr>
-                </div>
-            </div>
-        </div>
-
         <hr class="double">
 
-        <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
+        <template v-if="isPhasesAndMilestoneModuleActive && ((phases && phases.length) || (milestones && milestones.length))">
             <div class="row">
                 <h3>{{ translate('message.phases_and_milestones') }}</h3>
-                <div class="flex flex-center" style="text-align: center">
-                    <traffic-light :value="projectTrafficLight"/>
-                </div>
-
-                    <br/>
 
                 <no-ssr>
                     <status-report-timeline
@@ -138,13 +137,13 @@
             </div>
         </template>
 
-        <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
-            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both">
+        <template v-if="isInternalCostsModuleActive && hasInternalCostsGraphData && isExternalCostsModuleActive && hasExternalCostsGraphData">
+            <div class="row">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
                     <div class="resources-half">
                         <no-ssr>
-                            <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                            <chart :data="internalCostsGraphData" theme="print" />
                         </no-ssr>
                     </div>
                 </div>
@@ -152,7 +151,7 @@
                     <h3>{{ translate('message.external_costs') }}</h3>
                     <div class="resources-half">
                         <no-ssr>
-                            <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                            <chart :data="externalCostsGraphData" theme="print" />
                         </no-ssr>
                     </div>
                 </div>
@@ -160,20 +159,20 @@
         </template>
 
         <template v-else>
-            <div class="row" v-if="isInternalCostsModuleActive && internalCostsGraphData">
+            <div class="row" v-if="isInternalCostsModuleActive && hasInternalCostsGraphData">
                 <h3>{{ translate('message.internal_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
-                        <chart :data="internalCostsGraphData.byPhase" theme="print" />
+                        <chart :data="internalCostsGraphData" theme="print" />
                     </no-ssr>
                 </div>
             </div>
 
-            <div class="row" v-if="isExternalCostsModuleActive && externalCostsGraphData">
+            <div class="row" v-if="isExternalCostsModuleActive && hasExternalCostsGraphData">
                 <h3>{{ translate('message.external_costs') }}</h3>
                 <div class="resources">
                     <no-ssr>
-                        <chart :data="externalCostsGraphData.byPhase" theme="print" />
+                        <chart :data="externalCostsGraphData" theme="print" />
                     </no-ssr>
                 </div>
             </div>
@@ -346,6 +345,25 @@
             isModuleActive(module) {
                 return this.report && this.report.modules && this.report.modules.indexOf(module) >= 0;
             },
+            sumCostGraphData(data) {
+                if (typeof data !== 'object') {
+                    return 0;
+                }
+
+                let sum = 0;
+                let keys = Object.keys(data);
+
+                for (let c = 0; c < keys.length; c++) {
+                    let key = keys[c];
+                    if (typeof data[key] === 'object') {
+                        sum += this.sumCostGraphData(data[key]);
+                    } else {
+                        sum += data[key];
+                    }
+                }
+
+                return sum;
+            },
         },
         computed: {
             isPhasesAndMilestoneModuleActive() {
@@ -385,15 +403,15 @@
                 return [
                     {
                         name: 'label.open',
-                        value: this.snapshot.tasks.total.status.opened,
+                        value: this.snapshot.tasks.total.status.opened || 0,
                         color: '#646EA0',
                     }, {
                         name: 'label.executing',
-                        value: this.snapshot.tasks.total.status.executing,
+                        value: this.snapshot.tasks.total.status.executing || 0,
                         color: '#465079',
                     }, {
                         name: 'label.closed',
-                        value: this.snapshot.tasks.total.status.closed,
+                        value: this.snapshot.tasks.total.status.closed || 0,
                         color: '#232D4B',
                     },
                 ];
@@ -464,18 +482,36 @@
             internalCostsGraphData() {
                 let data = {};
                 this.snapshot.costs.internal.graphs.byPhase.forEach((row) => {
-                    data[row.name] = row.values;
+                    let values = {};
+                    let keys = Object.keys(row.values);
+                    for (let c = 0; c < keys.length; c++) {
+                        let key = keys[c];
+                        values[key] = row.values[key] === undefined || row.values[key] === null ? 0 : row.values[key];
+                    }
+                    data[row.name] = values;
                 });
 
                 return data;
             },
+            hasInternalCostsGraphData() {
+                return this.sumCostGraphData(this.internalCostsGraphData) > 0;
+            },
             externalCostsGraphData() {
                 let data = {};
                 this.snapshot.costs.external.graphs.byPhase.forEach((row) => {
-                    data[row.name] = row.values;
+                    let values = {};
+                    let keys = Object.keys(row.values);
+                    for (let c = 0; c < keys.length; c++) {
+                        let key = keys[c];
+                        values[key] = row.values[key] === undefined || row.values[key] === null ? 0 : row.values[key];
+                    }
+                    data[row.name] = values;
                 });
 
                 return data;
+            },
+            hasExternalCostsGraphData() {
+                return this.sumCostGraphData(this.externalCostsGraphData) > 0;
             },
             opportunitiesGrid() {
                 return {
@@ -725,7 +761,7 @@
         min-width: 716px;
     }
 
-    .trend-no-results {
+    .no-results {
         text-align: center;
         color: $middleColor;
         min-height: 80%;

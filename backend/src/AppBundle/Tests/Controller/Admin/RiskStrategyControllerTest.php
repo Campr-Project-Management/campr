@@ -17,12 +17,10 @@ class RiskStrategyControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/create');
 
-        $this->assertContains('id="admin_name"', $crawler->html());
-        $this->assertContains('name="admin[name]"', $crawler->html());
-        $this->assertContains('id="admin_sequence"', $crawler->html());
-        $this->assertContains('name="admin[sequence]"', $crawler->html());
-        $this->assertContains('id="admin_project"', $crawler->html());
-        $this->assertContains('name="admin[project]"', $crawler->html());
+        $this->assertContains('id="create_name"', $crawler->html());
+        $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_sequence"', $crawler->html());
+        $this->assertContains('name="create[sequence]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
@@ -36,7 +34,7 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['admin[sequence]'] = '';
+        $form['create[sequence]'] = '';
         $crawler = $this->client->submit($form);
 
         $this->assertContains('The name field should not be blank', $crawler->html());
@@ -53,8 +51,8 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['admin[name]'] = 'risk-strategy1';
-        $form['admin[sequence]'] = '1';
+        $form['create[name]'] = 'risk-strategy1';
+        $form['create[sequence]'] = '1';
 
         $crawler = $this->client->submit($form);
 
@@ -71,8 +69,8 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/create');
 
         $form = $crawler->filter('#create-form')->first()->form();
-        $form['admin[name]'] = 'risk-strategy';
-        $form['admin[sequence]'] = 'sequence';
+        $form['create[name]'] = 'risk-strategy';
+        $form['create[sequence]'] = 'sequence';
 
         $crawler = $this->client->submit($form);
 
@@ -89,8 +87,8 @@ class RiskStrategyControllerTest extends BaseController
 
         $form = $crawler->filter('#create-form')->first()->form();
         $name = sprintf('risk-strategy%d', time());
-        $form['admin[name]'] = $name;
-        $form['admin[sequence]'] = '3';
+        $form['create[name]'] = $name;
+        $form['create[sequence]'] = '3';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -137,12 +135,10 @@ class RiskStrategyControllerTest extends BaseController
         /** @var Crawler $crawler */
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/1/edit');
 
-        $this->assertContains('id="admin_name"', $crawler->html());
-        $this->assertContains('name="admin[name]"', $crawler->html());
-        $this->assertContains('id="admin_sequence"', $crawler->html());
-        $this->assertContains('name="admin[sequence]"', $crawler->html());
-        $this->assertContains('id="admin_project"', $crawler->html());
-        $this->assertContains('name="admin[project]"', $crawler->html());
+        $this->assertContains('id="create_name"', $crawler->html());
+        $this->assertContains('name="create[name]"', $crawler->html());
+        $this->assertContains('id="create_sequence"', $crawler->html());
+        $this->assertContains('name="create[sequence]"', $crawler->html());
         $this->assertContains('type="submit"', $crawler->html());
         $this->assertContains('class="zmdi zmdi-delete"', $crawler->html());
 
@@ -157,8 +153,8 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['admin[name]'] = '';
-        $form['admin[sequence]'] = '';
+        $form['create[name]'] = '';
+        $form['create[sequence]'] = '';
 
         $crawler = $this->client->submit($form);
 
@@ -176,7 +172,7 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['admin[name]'] = 'risk-strategy2';
+        $form['create[name]'] = 'risk-strategy2';
 
         $crawler = $this->client->submit($form);
 
@@ -193,7 +189,7 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/1/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['admin[sequence]'] = 'sequence';
+        $form['create[sequence]'] = 'sequence';
 
         $crawler = $this->client->submit($form);
 
@@ -210,7 +206,7 @@ class RiskStrategyControllerTest extends BaseController
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/risk-strategy/6/edit');
 
         $form = $crawler->filter('#edit-form')->first()->form();
-        $form['admin[name]'] = 'risk-strategy2';
+        $form['create[name]'] = 'risk-strategy2';
 
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect());
@@ -229,7 +225,6 @@ class RiskStrategyControllerTest extends BaseController
         $this->assertEquals(1, $crawler->filter('#data-table-command')->count());
         $this->assertContains('data-column-id="id"', $crawler->html());
         $this->assertContains('data-column-id="name"', $crawler->html());
-        $this->assertContains('data-column-id="projectName"', $crawler->html());
         $this->assertContains('data-column-id="sequence"', $crawler->html());
         $this->assertContains('data-column-id="commands"', $crawler->html());
         $this->assertEquals(1, $crawler->filter('.zmdi-plus')->count());

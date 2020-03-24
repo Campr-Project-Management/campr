@@ -4,7 +4,6 @@ namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Label;
 use AppBundle\Form\Label\LabelType;
-use AppBundle\Security\ProjectVoter;
 use MainBundle\Controller\API\ApiController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,6 +16,56 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class LabelController extends ApiController
 {
+    const ENTITY_CLASS = Label::class;
+
+    /**
+     * All labels.
+     *
+     * @Route("", name="app_api_labels_get", options={"expose"=true})
+     * @Method({"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function labelsAction()
+    {
+        return $this->createApiResponse(
+            $this
+                ->getRepository()
+                ->findAll()
+        );
+    }
+
+    /**
+     * Create a new Label.
+     *
+     * @Route("", name="app_api_label_create", options={"expose"=true})
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createLabelAction(Request $request)
+    {
+        $label = new Label();
+
+        $form = $this->createForm(LabelType::class, $label, ['csrf_protection' => false]);
+        $this->processForm($request, $form);
+
+        if ($form->isValid()) {
+            $this->persistAndFlush($label);
+
+            return $this->createApiResponse($label, Response::HTTP_CREATED);
+        }
+
+        $errors = $this->getFormErrors($form);
+        $errors = [
+            'messages' => $errors,
+        ];
+
+        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
+    }
+
     /**
      * Get Label by id.
      *
@@ -45,12 +94,6 @@ class LabelController extends ApiController
      */
     public function editAction(Request $request, Label $label)
     {
-        $project = $label->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::EDIT, $project);
-
         $form = $this->createForm(LabelType::class, $label, ['csrf_protection' => false]);
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
@@ -82,12 +125,6 @@ class LabelController extends ApiController
      */
     public function deleteAction(Label $label)
     {
-        $project = $label->getProject();
-        if (!$project) {
-            throw new \LogicException('Project does not exist!');
-        }
-        $this->denyAccessUnlessGranted(ProjectVoter::DELETE, $project);
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($label);
         $em->flush();

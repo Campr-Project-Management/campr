@@ -2,11 +2,9 @@
 
 namespace AppBundle\Form\WorkPackageStatus;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\WorkPackageStatus;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -63,17 +61,6 @@ class CreateType extends AbstractType
                             ]
                         ),
                     ],
-                ]
-            )
-            ->add(
-                'project',
-                EntityType::class,
-                [
-                    'class' => Project::class,
-                    'required' => false,
-                    'choice_label' => 'name',
-                    'placeholder' => 'placeholder.project',
-                    'translation_domain' => 'messages',
                 ]
             )
             ->add('visible', CheckboxType::class)

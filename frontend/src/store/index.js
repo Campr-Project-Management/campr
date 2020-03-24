@@ -15,6 +15,7 @@ import evaluationObjective from './modules/evaluation-objective';
 import gantt from './modules/gantt';
 import infoCategory from './modules/info-category';
 import info from './modules/info';
+import label from './modules/label';
 import lesson from './modules/lesson';
 import measure from './modules/measure';
 import meetingAgenda from './modules/meeting-agenda';
@@ -24,8 +25,6 @@ import meetingObjective from './modules/meeting-objective';
 import meetingParticipant from './modules/meeting-participant';
 import meetingReport from './modules/meeting-report';
 import module from './modules/module';
-import note from './modules/note';
-import noteStatus from './modules/note-status';
 import opportunity from './modules/opportunity';
 import opportunityStatus from './modules/opportunity-status';
 import opportunityStrategy from './modules/opportunity-strategy';
@@ -101,6 +100,7 @@ export default new Vuex.Store({
         gantt,
         info,
         infoCategory,
+        label,
         lesson,
         measure,
         meeting,
@@ -110,8 +110,6 @@ export default new Vuex.Store({
         meetingParticipant,
         meetingReport,
         module,
-        note,
-        noteStatus,
         opportunity,
         opportunityStatus,
         opportunityStrategy,

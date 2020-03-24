@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const convertImageToBlog = (dataURI) => {
     let byteString;
     let mimestring;
@@ -16,4 +18,22 @@ export const convertImageToBlog = (dataURI) => {
     }
 
     return new Blob([new Uint8Array(content)], {type: mimestring});
+};
+
+export const projectHasValidContract = (project) => {
+    if (typeof project !== 'object') {
+        return false;
+    }
+
+    if (-1 === Object.keys(project).indexOf('contracts')) {
+        return false;
+    }
+
+    if (!_.isArray(project.contracts)) {
+        return false;
+    }
+
+    const contract = _.last(project.contracts);
+
+    return contract.frozen && null !== contract.approvedAt;
 };
