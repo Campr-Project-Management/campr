@@ -107,13 +107,13 @@ class MailerServiceTest extends \PHPUnit_Framework_TestCase
                     $message->getTo()
                 );
                 $that->assertSame(
-                    ['info@campr.biz' => 'Info Campr'],
+                    ['notification@campr.biz' => 'Notification Campr'],
                     $message->getFrom()
                 );
             })
         ;
 
-        $this->mailer->sendEmail($templateName, 'default', $toEmail);
+        $this->mailer->sendEmail($templateName, 'notification', $toEmail);
     }
 
     /**

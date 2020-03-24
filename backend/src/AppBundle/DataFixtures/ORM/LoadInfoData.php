@@ -10,7 +10,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Insert database entries for Note entity.
+ * Insert database entries for Info entity.
  */
 class LoadInfoData extends AbstractFixture implements OrderedFixtureInterface
 {

@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BaseCreateType extends AbstractType
@@ -25,50 +26,75 @@ class BaseCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'username',
-                'placeholder' => 'placeholder.user',
-                'translation_domain' => 'messages',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'not_blank.user',
-                    ]),
-                ],
-            ])
+            ->add(
+                'user',
+                EntityType::class,
+                [
+                    'class' => User::class,
+                    'choice_label' => 'username',
+                    'placeholder' => 'placeholder.user',
+                    'translation_domain' => 'messages',
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'not_blank.user',
+                            ]
+                        ),
+                    ],
+                ]
+            )
             ->add('showInRasci', CheckboxType::class)
-            ->add('rate', NumberType::class, [
-                'required' => false,
-            ])
-            ->add('projectRoles', EntityType::class, [
-                'class' => ProjectRole::class,
-                'required' => false,
-                'multiple' => true,
-                'placeholder' => 'placeholder.project_role',
-                'translation_domain' => 'messages',
-                'choice_translation_domain' => 'messages',
-            ])
-            ->add('projectCategory', EntityType::class, [
-                'class' => ProjectCategory::class,
-                'required' => false,
-                'placeholder' => 'placeholder.project_category',
-                'translation_domain' => 'messages',
-            ])
-            ->add('projectDepartments', EntityType::class, [
-                'class' => ProjectDepartment::class,
-                'required' => false,
-                'multiple' => true,
-                'placeholder' => 'placeholder.project_department',
-                'translation_domain' => 'messages',
-            ])
-            ->add('projectTeam', EntityType::class, [
-                'class' => ProjectTeam::class,
-                'required' => false,
-                'placeholder' => 'placeholder.project_team',
-                'translation_domain' => 'messages',
-            ])
-
-        ;
+            ->add(
+                'rate',
+                NumberType::class,
+                [
+                    'required' => false,
+                    'constraints' => [new GreaterThanOrEqual(0)],
+                ]
+            )
+            ->add(
+                'projectRoles',
+                EntityType::class,
+                [
+                    'class' => ProjectRole::class,
+                    'required' => false,
+                    'multiple' => true,
+                    'placeholder' => 'placeholder.project_role',
+                    'translation_domain' => 'messages',
+                    'choice_translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'projectCategory',
+                EntityType::class,
+                [
+                    'class' => ProjectCategory::class,
+                    'required' => false,
+                    'placeholder' => 'placeholder.project_category',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'projectDepartments',
+                EntityType::class,
+                [
+                    'class' => ProjectDepartment::class,
+                    'required' => false,
+                    'multiple' => true,
+                    'placeholder' => 'placeholder.project_department',
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add(
+                'projectTeam',
+                EntityType::class,
+                [
+                    'class' => ProjectTeam::class,
+                    'required' => false,
+                    'placeholder' => 'placeholder.project_team',
+                    'translation_domain' => 'messages',
+                ]
+            );
     }
 
     /**
@@ -76,9 +102,11 @@ class BaseCreateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => ProjectUser::class,
-            'allow_extra_fields' => true,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => ProjectUser::class,
+                'allow_extra_fields' => true,
+            ]
+        );
     }
 }

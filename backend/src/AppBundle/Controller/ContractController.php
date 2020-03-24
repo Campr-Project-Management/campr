@@ -34,7 +34,7 @@ class ContractController extends Controller
         return new Response(file_get_contents($pdf), Response::HTTP_OK, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => sprintf(
-                'attachment; filename="%s - %s - %s"',
+                'attachment; filename="%s - %s - %s.pdf"',
                 $date->format('ymd'),
                 $translator->trans('message.project_contract', [], 'messages'),
                 $contract->getProject()->getName()

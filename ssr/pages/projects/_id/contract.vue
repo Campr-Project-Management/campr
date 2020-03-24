@@ -64,12 +64,12 @@
                     <table class="content-table">
                         <tbody>
                             <tr>
-                                <th>{{ translate('label.forecast_start_date') }}</th>
-                                <th>{{ translate('label.forecast_end_date') }}</th>
+                                <th>{{ translate('label.proposed_start_date') }}</th>
+                                <th>{{ translate('label.proposed_end_date') }}</th>
                             </tr>
                             <tr>
-                                <td>{{ contract.forecastStartDate || '-' }}</td>
-                                <td>{{ contract.forecastEndDate || '-' }}</td>
+                                <td>{{ contract.proposedStartDate || '-' }}</td>
+                                <td>{{ contract.proposedEndDate || '-' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -147,7 +147,7 @@
         </div>
 
         <template v-if="isInternalCostsModuleActive && internalCostsGraphData && isExternalCostsModuleActive && externalCostsGraphData">
-            <div class="row" style="padding-left: 0; padding-right: 0; height: 200px; clear: both">
+            <div class="row">
                 <div class="col-xs-6" style="padding-left: 0;">
                     <h3>{{ translate('message.internal_costs') }}</h3>
                     <div class="resources-half">
@@ -209,49 +209,18 @@
             <h3>{{ translate('message.team_members') }}</h3>
             <table class="content-table">
                 <tbody>
-                    <tr>
-                        <th>{{ translate('label.name') }}</th>
-                        <th>{{ translate('label.project_role') }}</th>
-                        <th>{{ translate('label.project_department') }}</th>
-                    </tr>
-                    <tr
-                        v-for="(sponsor, index) in project.projectSponsors"
-                        :key="'clientProjectSponsors'+index"
-                    >
-                        <td>{{ sponsor.userFullName }}</td>
-                        <td>{{ translate('message.project_sponsor') }}</td>
-                        <td></td>
-                    </tr>
-                    <tr
-                        v-for="(manager, index) in project.projectManagers"
-                        :key="'clientProjectManagers'+index"
-                    >
-                        <td>{{ manager.userFullName }}</td>
-                        <td>{{ translate('message.project_manager') }}</td>
-                        <td></td>
-                    </tr>
-                    <tr
-                        v-if="project.projectUsers !== undefined && project.projectUsers.length > 0"
-                        v-for="(projectUser, index) in project.projectUsers"
-                        :key="'projectUser'+index"
-                    >
-                        <td>{{ projectUser.userFullName }}</td>
+                    <tr v-for="(teamMember, index) in teamMembers" :key="`team-member-${index}`">
+                        <td>{{ teamMember[0] }}</td>
                         <td>
-                            <span
-                                v-for="(projectRoleName, index) in projectUser.projectRoleNames"
-                                :v-key="'projectRoleName' + index"
-                            >
-                                <span v-if="index > 0">, </span>
-                                {{ translate(projectRoleName) }}
+                            <span v-for="(role, roleIndex) in teamMember[1]" :key="`team-member-role-${index}-${roleIndex}`">
+                                <span v-if="roleIndex > 0">, </span>
+                                {{ translate(role) }}
                             </span>
                         </td>
                         <td>
-                            <span
-                                v-for="(projectDepartmentName, index) in projectUser.projectDepartmentNames"
-                                :v-key="'projectDepartmentName' + index"
-                            >
-                                <span v-if="index > 0">, </span>
-                                {{ projectDepartmentName }}
+                            <span v-for="(department, departmentIndex) in teamMember[2]" :key="`team-member-department-${index}-${departmentIndex}`">
+                                <span v-if="departmentIndex > 0">, </span>
+                                {{ translate(department) }}
                             </span>
                         </td>
                     </tr>
@@ -262,18 +231,15 @@
         <template v-if="isPhasesAndMilestoneModuleActive && (phases || milestones)">
             <div class="row">
                 <h3>{{ translate('message.phases_and_milestones') }}</h3>
-                <div class="flex flex-center" style="text-align: center">
-                    <traffic-light :value="projectTrafficLight"/>
-                </div>
-
-                <br/>
 
                 <no-ssr>
                     <status-report-timeline
+                        v-if="phases.length > 0 || milestones.length > 0"
                         style="width: 777px"
                         :phases="phases"
                         :milestones="milestones"
                         :locale="forcedLocale"/>
+                    <div class="no-results" v-else>{{ translate('message.not_enough_data') }}</div>
                 </no-ssr>
             </div>
 
@@ -363,6 +329,65 @@ export default {
                 ? this.project.currency.symbol
                 : '';
         },
+        teamMembers() {
+            return []
+                .concat(
+                    (this.project && this.project.projectSponsors && this.project.projectSponsors.map && this.project.projectSponsors.map(ps => [
+                        ps.userFullName,
+                        ['roles.project_sponsor'],
+                        [],
+                        ps.userEmail
+                    ])) || [],
+                    (this.project && this.project.projectManagers && this.project.projectManagers.map && this.project.projectManagers.map(pm => [
+                        pm.userFullName,
+                        ['roles.project_manager'],
+                        [],
+                        pm.userEmail
+                    ])) || [],
+                    (this.project && this.project.projectUsers && this.project.projectUsers.map && this.project.projectUsers.map(pu => [
+                        pu.userFullName,
+                        pu.projectRoleNames,
+                        pu.projectDepartmentNames,
+                        pu.userEmail
+                    ])) || []
+                )
+                .reduce((accumulator, currentValue) => {
+                    if (currentValue[0].replace(' ', '') === currentValue[3]) {
+                        return accumulator;
+                    }
+
+                    const emails = accumulator.map(i => i[3]);
+                    const previousIndex = emails.indexOf(currentValue[3]);
+
+                    if (previousIndex === -1) {
+                        return accumulator.concat([currentValue]);
+                    }
+
+                    accumulator[previousIndex][1] = accumulator[previousIndex][1]
+                        .concat(currentValue[1])
+                        .reduce((ac, cv) => {
+                            if (ac.indexOf(cv) === -1) {
+                                return ac.concat([cv]);
+                            }
+
+                            return ac;
+                        }, [])
+                    ;
+                    accumulator[previousIndex][2] = accumulator[previousIndex][2]
+                        .concat(currentValue[2])
+                        .reduce((ac, cv) => {
+                            if (ac.indexOf(cv) === -1) {
+                                return ac.concat([cv]);
+                            }
+
+                            return ac;
+                        }, [])
+                    ;
+
+                    return accumulator;
+                }, [])
+            ;
+        }
     },
     filters: {
         graphData(value) {
@@ -452,8 +477,19 @@ export default {
             proposedEndDate: contract.proposedEndDate,
             locale,
             phases: phases && phases.items ? phases.items : [],
-            milestones: milestones && milestones.items ? milestones.items : [],
+            milestones: milestones && milestones.items ? milestones.items.filter(i => i.isKeyMilestone) : [],
         };
     }
 };
 </script>
+
+<style lang="scss" scoped>
+@import '/../../../../frontend/src/css/_variables';
+
+.no-results {
+    text-align: center;
+    color: $middleColor;
+    min-height: 80%;
+    line-height: 20em;
+}
+</style>

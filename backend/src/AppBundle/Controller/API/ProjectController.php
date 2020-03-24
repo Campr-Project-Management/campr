@@ -8,7 +8,6 @@ use AppBundle\Entity\Cost;
 use AppBundle\Entity\Decision;
 use AppBundle\Entity\DistributionList;
 use AppBundle\Entity\FileSystem;
-use AppBundle\Entity\Label;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\OpportunityStrategy;
 use AppBundle\Entity\Project;
@@ -34,7 +33,6 @@ use AppBundle\Entity\WorkPackageProjectWorkCostType;
 use AppBundle\Entity\WorkPackageStatus;
 use AppBundle\Event\ProjectEvent;
 use AppBundle\Event\RasciEvent;
-use AppBundle\Form\Label\BaseLabelType;
 use AppBundle\Form\Project\ApiType;
 use AppBundle\Form\Calendar\BaseCreateType as CalendarCreateType;
 use AppBundle\Form\Decision\ApiCreateType as DecisionApiCreateType;
@@ -76,7 +74,6 @@ use AppBundle\Form\ProjectDepartment\CreateType as ProjectDepartmentType;
 use AppBundle\Form\ProjectCloseDown\CreateType as ProjectCloseDownCreateType;
 use AppBundle\Utils\ImportConstants;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Gaufrette\Exception\FileAlreadyExists;
 
 /**
  * @Route("/api/projects")
@@ -384,52 +381,6 @@ class ProjectController extends ApiController
             $this->persistAndFlush($distributionList);
 
             return $this->createApiResponse($distributionList, JsonResponse::HTTP_CREATED);
-        }
-
-        $errors = $this->getFormErrors($form);
-        $errors = [
-            'messages' => $errors,
-        ];
-
-        return $this->createApiResponse($errors, Response::HTTP_BAD_REQUEST);
-    }
-
-    /**
-     * All labels for a specific Project.
-     *
-     * @Route("/{id}/labels", name="app_api_project_labels", options={"expose"=true})
-     * @Method({"GET"})
-     *
-     * @return JsonResponse
-     */
-    public function labelsAction(Project $project)
-    {
-        return $this->createApiResponse($project->getLabels());
-    }
-
-    /**
-     * Create a new Label.
-     *
-     * @Route("/{id}/labels", name="app_api_project_create_label", options={"expose"=true})
-     * @Method({"POST"})
-     *
-     * @param Request $request
-     * @param Project $project
-     *
-     * @return JsonResponse
-     */
-    public function createLabelAction(Request $request, Project $project)
-    {
-        $label = new Label();
-        $label->setProject($project);
-
-        $form = $this->createForm(BaseLabelType::class, $label, ['csrf_protection' => false]);
-        $this->processForm($request, $form);
-
-        if ($form->isValid()) {
-            $this->persistAndFlush($label);
-
-            return $this->createApiResponse($label, Response::HTTP_CREATED);
         }
 
         $errors = $this->getFormErrors($form);
@@ -1604,7 +1555,7 @@ class ProjectController extends ApiController
                 $this->persistAndFlush($decision);
 
                 return $this->createApiResponse($decision, Response::HTTP_CREATED);
-            } catch (FileAlreadyExists $exception) {
+            } catch (\Exception $exception) {
                 $entitySaveErrors['medias'][] = $exception->getMessage();
             }
         }

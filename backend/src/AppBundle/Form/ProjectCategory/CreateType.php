@@ -2,9 +2,7 @@
 
 namespace AppBundle\Form\ProjectCategory;
 
-use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectCategory;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,13 +38,6 @@ class CreateType extends AbstractType
                         'message' => 'invalid.sequence',
                     ]),
                 ],
-            ])
-            ->add('project', EntityType::class, [
-                'class' => Project::class,
-                'required' => false,
-                'choice_label' => 'name',
-                'placeholder' => 'placeholder.project',
-                'translation_domain' => 'messages',
             ])
         ;
     }

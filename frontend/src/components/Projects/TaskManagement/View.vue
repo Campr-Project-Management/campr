@@ -601,7 +601,7 @@ export default {
         }
         this.getProjectUsers({id: this.$route.params.id});
         this.getWorkPackageStatuses();
-        this.getProjectLabels(this.$route.params.id);
+        this.getLabels();
         this.loadTaskHistory();
     },
     computed: {
@@ -772,7 +772,7 @@ export default {
             'getProjectUsers',
             'getWorkPackageStatuses',
             'getWorkPackageStatusesForSelect',
-            'getProjectLabels',
+            'getLabels',
             'patchTask',
             'patchSubtask',
             'editTaskCost',

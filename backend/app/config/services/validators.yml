@@ -31,3 +31,10 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator }
+
+    app.validators.at_least_one_admin:
+        class: AppBundle\Validator\Constraints\AtLeastOneAdminValidator
+        arguments:
+            - '@app.repository.user'
+        tags:
+            - { name: validator.constraint_validator }
