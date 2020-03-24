@@ -61,7 +61,7 @@ class ExportService
         return $xmlNode;
     }
 
-    private function addCDataChild(\SimpleXMLElement $xmlNode, string $name, string $content)
+    private function addCDataChild(\SimpleXMLElement $xmlNode, string $name, ?string $content)
     {
         $newNode = $xmlNode->addChild($name);
         $element = dom_import_simplexml($newNode);
