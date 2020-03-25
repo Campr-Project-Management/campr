@@ -119,10 +119,6 @@ class WorkPackageSubscriber implements EventSubscriberInterface
             $this->ensureWorkPackageHasStatus($child);
         }
 
-        if (!$wp->isSubtask()) {
-            $this->mailer->sendNewTaskEmail($wp);
-        }
-
         $this->setWorkPackageChildrenSchedule($wp);
     }
 
@@ -135,6 +131,8 @@ class WorkPackageSubscriber implements EventSubscriberInterface
         if (!$wp->isTask()) {
             return;
         }
+
+        $this->mailer->sendNewTaskEmail($wp);
 
         $this->workPackageRasciSync->sync($wp);
         $this->workPackageRepository->add($wp);
