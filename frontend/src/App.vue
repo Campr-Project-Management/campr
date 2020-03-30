@@ -5,8 +5,8 @@
                 :color="color"
                 :size="size"
                 v-if="$wait.any"/>
-        <sidebar :user="localUser" />
-        <div class="page">
+        <sidebar :user="localUser" v-if="localUserAvailable" />
+        <div class="page" v-if="localUserAvailable">
             <navigation :user="localUser"/>
             <router-view />
         </div>
@@ -33,7 +33,21 @@
             ]),
         },
         created() {
-            this.getUserInfo();
+            this
+                .getUserInfo()
+                .then(
+                    () => {
+                        setTimeout(() => {
+                            this.localUserAvailable = true;
+                        }, 256);
+                    },
+                    () => {
+                        setTimeout(() => {
+                            this.localUserAvailable = true;
+                        }, 256);
+                    }
+                )
+            ;
             this.syncUser();
             this.syncTeam();
         },
@@ -50,6 +64,7 @@
         },
         data() {
             return {
+                localUserAvailable: false,
                 bgRoutes: ['projects-create-1', 'projects-create-2', 'projects-create-3'],
             };
         },
