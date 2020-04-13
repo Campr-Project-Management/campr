@@ -80,7 +80,7 @@ RUN GOREPLACE_VERSION=1.1.2 \
     && wget -O /usr/local/bin/go-replace https://github.com/webdevops/go-replace/releases/download/$GOREPLACE_VERSION/gr-64-linux \
     && chmod +x /usr/local/bin/go-replace
 
-RUN npm install -g yarn nuxt@1.4.0
+RUN npm install -g yarn nuxt@2.1.0
 
 # Server Side Rendering
 RUN curl -o /tmp/google-chrome-stable_current_amd64.deb \

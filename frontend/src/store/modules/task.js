@@ -27,6 +27,36 @@ const getters = {
 };
 
 const actions = {
+    async getRecentTasksByProjectAndUser({commit, dispatch}, {projectId, userId}) {
+        try {
+            commit(types.SET_TASKS, {tasks: []});
+            dispatch('wait/start', loading.GET_RECENT_TASKS_BY_PROJECT, {root: true});
+
+            let params = {
+                id: projectId,
+                page: 1,
+                sorting: {updatedAt: 'desc'},
+                pageSize: 6,
+                criteria: {
+                    userInvolved: userId,
+                },
+            };
+            let response = await Vue.http.get(
+                Routing.generate('app_api_projects_workpackages', params));
+            if (response.status === 200) {
+                let tasks = response.data;
+                commit(types.SET_TASKS, {tasks});
+            } else {
+                commit(types.SET_TASKS, {tasks: []});
+            }
+
+            return response;
+        } catch(e) {
+            commit(types.SET_TASKS, {tasks: []});
+        } finally {
+            dispatch('wait/end', loading.GET_RECENT_TASKS_BY_PROJECT, {root: true});
+        }
+    },
     async getRecentTasksByProject({commit, dispatch}, projectId) {
         try {
             commit(types.SET_TASKS, {tasks: []});
