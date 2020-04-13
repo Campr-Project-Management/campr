@@ -1,4 +1,5 @@
 var path = require('path');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     /*
@@ -69,6 +70,7 @@ module.exports = {
                 '../frontend/src/css/themes/dark');
             config.resolve.alias['components'] = path.resolve(__dirname,
                 '../frontend/src/components');
+            config.plugins.push(new VueLoaderPlugin());
         },
     },
     generate: {
@@ -82,4 +84,7 @@ module.exports = {
             poll: 1000,
         },
     },
+    babelrc: false,
+    cacheDirectory: undefined,
+    presets: ['@nuxt/babel-preset-app']
 };
