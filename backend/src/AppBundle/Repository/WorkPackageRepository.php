@@ -1514,6 +1514,22 @@ class WorkPackageRepository extends BaseRepository
                 ->andWhere('o.scheduledFinishAt = :dueDate')
                 ->setParameter('dueDate', $criteria['dueDate']);
         }
+
+        if (!empty($criteria['userInvolved'])) {
+            $qb
+                ->leftJoin('o.supportUsers', 'su')
+                ->leftJoin('o.consultedUsers', 'cu')
+                ->leftJoin('o.informedUsers', 'iu')
+                ->andWhere('(
+                    o.responsibility = :userInvolved
+                    OR o.accountability = :userInvolved
+                    OR su.id = :userInvolved
+                    OR cu.id = :userInvolved
+                    OR iu.id = :userInvolved
+                )')
+                ->setParameter('userInvolved', $criteria['userInvolved'])
+            ;
+        }
     }
 
     /**
