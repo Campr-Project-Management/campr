@@ -256,7 +256,7 @@ export default {
         ...mapActions([
             'getProjectById',
             'getContractByProjectId',
-            'getRecentTasksByProject',
+            'getRecentTasksByProjectAndUser',
             'getProjectUsers',
             'getTasksForSchedule',
             'getTasksStatus',
@@ -317,7 +317,6 @@ export default {
         this.getTasksForSchedule(this.$route.params.id);
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
-        this.getRecentTasksByProject(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
     },
     computed: {
@@ -354,6 +353,14 @@ export default {
     watch: {
         project(value) {
             this.projectTrafficLight = value && value.trafficLight;
+        },
+        localUser(value, oldValue) {
+            if (value.id !== oldValue.id) {
+                this.getRecentTasksByProjectAndUser({
+                    projectId: this.$route.params.id,
+                    userId: value.id,
+                });
+            }
         },
     },
     data() {
