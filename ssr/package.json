@@ -16,7 +16,7 @@
   "dependencies": {
     "@nuxt/babel-preset-app": "^2.12.2",
     "accounting": "^0.4.1",
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "css-loader": "^0.28.10",
     "d3": "^4.10.0",
     "es6-promise": "^4.2.4",
