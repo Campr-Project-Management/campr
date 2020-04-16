@@ -40,7 +40,7 @@
     "jquery-match-height": "0.7.2",
     "jquery.nicescroll": "^3.7.6",
     "less-loader": "^4.1.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.13",
     "moment": "^2.21.0",
     "normalise.scss": "1.0.1",
     "numeral": "^2.0.6",
