@@ -7,12 +7,13 @@ cd $DIR
 
 docker build \
   -f config/docker/app/Dockerfile.onpremise \
-  -t lab.campr.cloud:4567/campr/on-premise/workspaces:latest \
-  -t lab.campr.cloud:4567/campr/on-premise/workspaces:$DT \
+  -t camprgmbh/campr:latest \
+  -t camprgmbh/campr:$DT \
   .
 
 if [ $? -eq 0 ];
 then
-  docker push lab.campr.cloud:4567/campr/on-premise/workspaces:$DT
-  docker push lab.campr.cloud:4567/campr/on-premise/workspaces:latest
+  echo "Build success!"
+  docker push camprgmbh/campr:$DT
+  docker push camprgmbh/campr:latest
 fi;
