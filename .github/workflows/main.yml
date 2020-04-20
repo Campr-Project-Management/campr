@@ -56,6 +56,19 @@ jobs:
       uses: zhulik/redis-action@1.1.0
       with:
         redis version: '5'
+        
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        # Use composer.json for key, if composer.lock is not committed.
+        # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
 
     # Run phpunit tests
     - name: Running phpunit tests
@@ -75,5 +88,3 @@ jobs:
         bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
         bin/console cache:clear --env=test
         backend/vendor/bin/phpunit -c . backend/src
-        rm -rf backend/src/AppBundle/Tests/Resources/files/
-        bin/console doctrine:database:drop --if-exists --force --env=test
