@@ -23,7 +23,6 @@ jobs:
     
     - name: Checking PHP files with php-cs-fixer
       run: |
-        php -v
         bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
  
   phpunit:
@@ -51,6 +50,11 @@ jobs:
         php-version: 7.1
         extensions: mbstring, intl, dom, gmp, xml
         ini-values: memory_limit=-1
+        
+    - name: Setup Redis
+      uses: zhulik/redis-action@1.1.0
+      with:
+        redis version: '5'
 
     # Run phpunit tests
     - name: Running phpunit tests
