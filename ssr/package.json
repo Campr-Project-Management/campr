@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@nuxt/babel-preset-app": "^2.12.2",
+    "@vue/component-compiler-utils": "^1.0.0",
     "accounting": "^0.4.1",
     "bootstrap": "3.4.1",
     "css-loader": "^0.28.10",
@@ -39,13 +40,14 @@
     "tether-tooltip": "^1.2.0",
     "v-tooltip": "^2.0.0-rc.33",
     "vis": "^4.19.1",
-    "vue": "2.6.10",
+    "vue": "^2.5.13",
     "vue-charts": "0.2.1",
     "vue-loader": "^15.9.1",
     "vue-moment": "^2.0.2",
     "vue-resize-directive": "^1.0.0",
+    "vue-server-renderer": "^2.5.13",
     "vue-style-loader": "^4.0.2",
-    "vue-template-compiler": "2.6.10",
+    "vue-template-compiler": "^2.5.13",
     "vue2-dragula": "2.4.4"
   },
   "devDependencies": {
