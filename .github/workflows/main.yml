@@ -48,7 +48,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 7.1
-        extensions: mbstring, intl, dom, gmp, xml, mysql, curl, opcache, mcrypt, gd, apcu, redis, pear
+        extensions: mbstring, intl, dom, gmp, xml, mysql, curl, opcache, mcrypt, gd, apcu, redis, apcu_bc
         tools: pecl
         ini-values: memory_limit=-1
         
@@ -60,7 +60,6 @@ jobs:
     # Run phpunit tests
     - name: Running phpunit tests
       run: |
-        pecl install apcu_bc-beta
         export SYMFONY_ENV=test
         export SYMFONY__DATABASE_NAME=campr
         export SYMFONY__DATABASE_PASSWORD=campr
