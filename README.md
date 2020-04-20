@@ -32,7 +32,7 @@ example of importing a db `docker exec -i campr_mysql_1 mysql -uroot -pcampr cam
 
 enter in the docker mysql container with `docker exec -it campr_mysql_1 bash` and run mysql cmds
 
-frontend build:
+## Frontend
 ```
 bin/front-static
 cd frontend
@@ -44,42 +44,12 @@ yarn install
 yarn run build
 ```
 
-### DEV test DBs
-
-import https://www.dropbox.com/s/p6tvyxs9dqr7wr4/campr.sql?dl=1 into `campr` main db
-
-import https://www.dropbox.com/s/894stinj70u17ci/campr_qaname.sql?dl=1 into `campr_qaname` test workspace db
-
-run these in `docker exec -it campr_mysql_1 mysql -uroot -pcampr`:
-```
-use campr;
-update campr.team set user_id = 8 where slug = 'qaname';
-create database campr_qaname DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-use campr_qaname;
-delete from user where email = "radu.gribincea@trisoft.ro";
-update user set email = "radu.gribincea@trisoft.ro", username = "radu.gribincea@trisoft.ro" where id = 1;
-```
-
-you can then login with `radu.gribincea@trisoft.ro` / `raduG1`, and in `http://qaname.dev.campr.cloud` you can see test data
-
-## Frontend
-
-`cd frontend`
-
-`yarn install` (install dependencies)
-
-### Prod
-
-`yarn run build` (build for production with minification)
-
-### Dev
-
 set local dev env to connect to the api
 `cp config/dev.local.js.dist config/dev.local.js` and edit the file accordingly with adding a token and a subdomain
 
 `yarn run dev` (serve with hot reload at localhost:8080)
 
-##### PDF Printing
+## PDF Printing
 
 To make the pdf printing work, you will have to add the current workspace hostname as an extra host inside your local
 `docker-compose.yml` file:
@@ -91,7 +61,7 @@ extra_hosts:
 ```
 
 
-### Tests
+## Tests
 `yarn run unit` (run unit tests)
 
 `yarn run e2e` (run e2e tests)
