@@ -93,7 +93,7 @@ export default {
             }
         }
 
-        &:before {
+        /*&:before {
             content: '';
             width: 1px;
             height: 30px;
@@ -101,6 +101,6 @@ export default {
             position: absolute;
             top: -40px;
             left: 50%;
-        }
+        }*/
     }
 </style>
