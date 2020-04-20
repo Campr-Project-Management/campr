@@ -1,6 +1,5 @@
 # Campr - Project Management Tool
-
-[![build status](https://lab.trisoft.ro/campr/campr/badges/master/build.svg)](https://lab.trisoft.ro/campr/campr/commits/master)
+[![Github Actions](https://github.com/CamprGmbH/campr/workflows/CI/badge.svg)](https://github.com/CamprGmbH/campr/actions)
 
 ## Docker DEV (http://dev.campr.cloud)
 Linux:
