@@ -60,7 +60,6 @@ jobs:
     # Run phpunit tests
     - name: Running phpunit tests
       run: |
-        pecl install apc
         export SYMFONY_ENV=test
         export SYMFONY__DATABASE_NAME=campr
         export SYMFONY__DATABASE_PASSWORD=campr
