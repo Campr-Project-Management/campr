@@ -69,9 +69,8 @@ jobs:
         # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
-
-    # Run phpunit tests
-    - name: Running phpunit tests
+        
+    - name: Setup test env
       run: |
         export SYMFONY_ENV=test
         export SYMFONY__DATABASE_NAME=campr
@@ -87,4 +86,7 @@ jobs:
         bin/console doctrine:schema:validate --env=test
         bin/console doctrine:fixtures:load --append --fixtures=backend/src/AppBundle/DataFixtures/ORM/ --no-interaction --env=test
         bin/console cache:clear --env=test
+
+    - name: Running phpunit tests
+      run: |
         backend/vendor/bin/phpunit -c . backend/src
