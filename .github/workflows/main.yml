@@ -13,6 +13,13 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.1
+        extensions: mbstring, intl, dom, gmp, xml
+        ini-values: memory_limit=-1
     
     - name: Checking PHP files with php-cs-fixer
       run: |
@@ -37,6 +44,13 @@ jobs:
         mysql version: '5.7'
         mysql database: 'campr'
         mysql root password: 'campr'
+        
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.1
+        extensions: mbstring, intl, dom, gmp, xml
+        ini-values: memory_limit=-1
 
     # Run phpunit tests
     - name: Running phpunit tests
