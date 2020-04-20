@@ -15,7 +15,9 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Checking PHP files with php-cs-fixer
-      run: bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
+      run: |
+        php -v
+        bin/php-cs-fixer fix --rules=@Symfony -v --dry-run --stop-on-violation --using-cache=false backend/src
  
   phpunit:
     runs-on: ubuntu-latest
@@ -39,6 +41,7 @@ jobs:
     # Run phpunit tests
     - name: Running phpunit tests
       run: |
+        php -v
         export SYMFONY_ENV=test
         export SYMFONY__DATABASE_NAME=campr
         export SYMFONY__DATABASE_PASSWORD=campr
