@@ -89,4 +89,7 @@ jobs:
 
     - name: Running phpunit tests
       run: |
+        export SYMFONY_ENV=test
+        export SYMFONY__DATABASE_NAME=campr
+        export SYMFONY__DATABASE_PASSWORD=campr
         backend/vendor/bin/phpunit -c . backend/src
