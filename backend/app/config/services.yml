@@ -286,6 +286,13 @@ services:
         tags:
             - { name: 'app.settings.schema.registry' }
 
+    app.uploader.url_resolver.team_logo:
+        class: Component\Uploader\Resolver\UrlResolver
+        arguments:
+            - '@vich_uploader.storage'
+            - '@router'
+            - 'logoFile'
+
     app.uploader.url_resolver.project_logo:
         class: Component\Uploader\Resolver\UrlResolver
         arguments:
