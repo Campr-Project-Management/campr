@@ -1,4 +1,10 @@
 services:
+    app.serializer.listener.team:
+        class: AppBundle\Serializer\EventListener\TeamSubscriber
+        arguments:
+            - '@app.uploader.url_resolver.team_logo'
+        tags:
+          - { name: jms_serializer.event_subscriber }
     app.serializer.listener.project:
         class: AppBundle\Serializer\EventListener\ProjectSubscriber
         arguments:
