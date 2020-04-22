@@ -400,18 +400,34 @@
                 return this.report.information;
             },
             tasksStatusSeries() {
+                const status = {};
+
+                if (typeof this.snapshot !== 'undefined'
+                    && typeof this.snapshot.tasks !== 'undefined'
+                    && typeof this.snapshot.tasks.total !== 'undefined'
+                    && typeof this.snapshot.tasks.total.status !== 'undefined'
+                ) {
+                    status.opened = this.snapshot.tasks.total.status.opened || 0;
+                    status.executing = this.snapshot.tasks.total.status.executing || 0;
+                    status.closed = this.snapshot.tasks.total.status.closed || 0;
+                } else {
+                    status.opened = 0;
+                    status.executing = 0;
+                    status.closed = 0;
+                }
+
                 return [
                     {
                         name: 'label.open',
-                        value: this.snapshot.tasks.total.status.opened || 0,
+                        value: status.opened || 0,
                         color: '#646EA0',
                     }, {
                         name: 'label.executing',
-                        value: this.snapshot.tasks.total.status.executing || 0,
+                        value: status.executing || 0,
                         color: '#465079',
                     }, {
                         name: 'label.closed',
-                        value: this.snapshot.tasks.total.status.closed || 0,
+                        value: status.closed || 0,
                         color: '#232D4B',
                     },
                 ];
