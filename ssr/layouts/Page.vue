@@ -193,7 +193,7 @@
                 display: block;
                 height: 60px;
                 line-height: 60px;
-                width: 60px;
+                // width: 60px;
                 margin: 0;
                 padding: 0;
 
