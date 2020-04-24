@@ -8,19 +8,6 @@ config(Translator);
 de(Translator);
 en(Translator);
 
-// let Translator = require('./translator/index');
-//
-// let translatorConfig = [
-//     'config',
-//     'en',
-//     'de'
-// ];
-//
-// translatorConfig.map(item => {
-//     const tc = require('./translator/' + item);
-//     tc(Translator);
-// });
-
 Translator.install = (Vue, options) => {
     Vue.translate = str => Translator.trans(str);
 

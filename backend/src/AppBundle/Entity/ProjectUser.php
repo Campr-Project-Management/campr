@@ -758,7 +758,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     {
         $subteamIds = [];
 
-        if ($this->user->getSubteams()) {
+        if ($this->user && $this->user->getSubteams()) {
             foreach ($this->user->getSubteams() as $subteam) {
                 $subteamIds[] = $subteam->getId();
             }
@@ -779,7 +779,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
     {
         $subteamNames = [];
 
-        if ($this->user->getSubteams()) {
+        if ($this->user && $this->user->getSubteams()) {
             foreach ($this->user->getSubteams() as $subteam) {
                 $subteamNames[] = $subteam->getName();
             }
@@ -811,7 +811,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
      */
     public function isUserDeleted(): bool
     {
-        return $this->getUser()->isDeleted();
+        return !$this->getUser() || $this->getUser()->isDeleted();
     }
 
     /**
