@@ -63,7 +63,7 @@ class AvatarAwareSubscriber implements EventSubscriberInterface
             $this->addUserAvatar($visitor, $object);
         }
 
-        if ($object instanceof ProjectUserAwareInterface) {
+        if ($object instanceof ProjectUserAwareInterface && $object->getProjectUser()->getUser()) {
             $this->addAvatar($visitor, $object->getProjectUser()->getUser());
         }
 
