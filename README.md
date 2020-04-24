@@ -35,18 +35,18 @@ enter in the docker mysql container with `docker exec -it campr_mysql_1 bash` an
 ```
 bin/front-static
 cd frontend
-yarn install
-yarn run build
+npm install
+npm run build
 cd ..
 cd ssr
-yarn install
-yarn run build
+npm install
+npm run build
 ```
 
 set local dev env to connect to the api
 `cp config/dev.local.js.dist config/dev.local.js` and edit the file accordingly with adding a token and a subdomain
 
-`yarn run dev` (serve with hot reload at localhost:8080)
+`npm run dev` (serve with hot reload at localhost:8080)
 
 ## PDF Printing
 
@@ -61,11 +61,11 @@ extra_hosts:
 
 
 ## Tests
-`yarn run unit` (run unit tests)
+`npm run unit` (run unit tests)
 
-`yarn run e2e` (run e2e tests)
+`npm run e2e` (run e2e tests)
 
-`yarn test` (run all tests)
+`npm test` (run all tests)
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
