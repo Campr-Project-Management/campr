@@ -1,17 +1,12 @@
 import Vue from 'vue';
+import Translator from './translator/index';
+import config from './translator/config'
+import de from './translator/de'
+import en from './translator/en'
 
-let Translator = require('./translator/index');
-
-let translatorConfig = [
-    'config',
-    'en',
-    'de'
-];
-
-translatorConfig.map(item => {
-    const tc = require('./translator/' + item);
-    tc(Translator);
-});
+config(Translator);
+de(Translator);
+en(Translator);
 
 Translator.install = (Vue, options) => {
     Vue.translate = str => Translator.trans(str);
