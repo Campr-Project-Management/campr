@@ -2,8 +2,8 @@
 
 if [ ! -d '/app/backend/vendor' ] || [ ! -f "/app/backend/vendor/autoload.php" ]; then
   runuser -l $APPLICATION_USER -c 'cd /app && composer install --no-scripts'
-  runuser -l $APPLICATION_USER -c 'cd /app/ssr && yarn'
-  runuser -l $APPLICATION_USER -c 'cd /app/frontend && yarn && yarn build'
+  runuser -l $APPLICATION_USER -c 'cd /app/ssr && npm'
+  runuser -l $APPLICATION_USER -c 'cd /app/frontend && npm install && npm run build'
 fi
 
 if [ "$1" = 'supervisord' ] || [ "$1" = 'bin/console' ]; then
@@ -32,13 +32,13 @@ if [ "$1" = 'supervisord' ] || [ "$1" = 'bin/console' ]; then
     runuser -l $APPLICATION_USER -c 'cd /app && bin/console app:migrate:all-databases'
   fi
 
-#  runuser -l $APPLICATION_USER -c 'cd /app/frontend && yarn && yarn build'
+#  runuser -l $APPLICATION_USER -c 'cd /app/frontend && npm install && npm run build'
 
   chown -R "$APPLICATION_USER:$APPLICATION_GROUP" /app
 
   runuser -l $APPLICATION_USER -c 'cd /app && bin/console cache:clear'
   runuser -l $APPLICATION_USER -c 'cd /app && bin/front-static'
-  runuser -l $APPLICATION_USER -c 'cd /app/frontend && yarn build'
+  runuser -l $APPLICATION_USER -c 'cd /app/frontend && npm run build'
 fi
 
 exec "$@"
