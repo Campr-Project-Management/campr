@@ -25,7 +25,7 @@ module.exports = {
     plugins: [
         '~/plugins/bootstrap',
         '~/plugins/fetch',
-        '~/plugins/translator',
+        '~/plugins/translator.js',
         '~/plugins/vue-charts',
         '~/plugins/vueditor',
         '~/plugins/vue-moment',
