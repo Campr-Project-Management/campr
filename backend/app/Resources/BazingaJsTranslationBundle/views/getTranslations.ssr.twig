@@ -1,4 +1,4 @@
-module.exports = function (Translator) {
+export default function (Translator) {
 {% for locale, domains in translations %}
     // {{ locale }}
 {% for domain, messages in domains %}

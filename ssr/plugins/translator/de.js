@@ -1,4 +1,4 @@
-module.exports = function (Translator) {
+export default function (Translator) {
     // de
     Translator.add("This value should be false.", "Dieser Wert sollte false sein.", "validators", "de");
     Translator.add("This value should be true.", "Dieser Wert sollte true sein.", "validators", "de");
