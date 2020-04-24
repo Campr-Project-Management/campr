@@ -6,7 +6,7 @@
 
 ``` bash
 # install dependencies
-$ npm install # Or yarn install
+$ npm install # DO NOT USE YARN!
 
 # serve with hot reload at localhost:3000
 $ npm run dev
