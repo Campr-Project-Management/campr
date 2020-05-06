@@ -27,6 +27,16 @@ CAMPR is available in a cloud version and a self-hosted version.
 * For the cloudversion register here: https://campr.biz
 * The On-Premise version is documented in the repo https://github.com/CamprGmbH/on-premise
 
+# structure
+Use the following pages to find more about the structure of this project:
+
+* [Admin Controllers](backend/src/AppBundle/Resources/docs/AdminControllers.md)
+* [API Controllers](backend/src/AppBundle/Resources/docs/ApiControllers.md)
+* [Entities](backend/src/AppBundle/Resources/docs/Entities.md)
+* [Forms](backend/src/AppBundle/Resources/docs/Forms.md)
+* [Services](backend/src/AppBundle/Resources/docs/Services.md)
+* [Javascripts](backend/src/AppBundle/Resources/docs/Javascripts.md)
+
 # Support
 The easiest, fastest and most direct way to contact us is via our customer support software Livezilla (LiveChat, Email) on https://campr.biz
 
