@@ -1,94 +1,39 @@
-# Campr - Project Management Tool
-[![Github Actions](https://github.com/CamprGmbH/campr/workflows/CI/badge.svg)](https://github.com/CamprGmbH/campr/actions)
+# CAMPR - precise project management
+CAMPR is an enterprise Project Management solution scalable for projects of any size to cover your individual needs.
 
-## Docker DEV (http://dev.campr.cloud)
-Linux:
-```
-cp docker-compose.yml.linux.dist docker-compose.yml
-```
-OSX:
-```
-cp docker-compose.yml.mac.dist docker-compose.yml
-```
-then
-```
-cp config/docker/.env.dist config/docker/.env
-docker-compose up
-```
-update `/etc/hosts` with `127.0.0.1 dev.campr.cloud www.dev.campr.cloud qaname.dev.campr.cloud`
+CAMPR is lean, intuitively designed and offers everything from project initiation trough close out and allows you collaborate successfully with other project members following industry standards.
 
-`qaname.dev.campr.cloud` is just a test workspace, you'll need it's db from the team
+CAMPR comes with 16 fundamental modules to plan and successfully execute projects of any size while providing information in real time. Since all projects are unique by definition, the project creation wizard activates a lean bundle of certain modules only to ensure absolute efficiency.
 
-update `parameters.yml`:
-```
-database_host: mysql
-redis_host: redis
-```
+Modules available:
+* Project Contract
+* Organisation
+* Phases & Milestones
+* Task Management
+* Internal & External Costs
+* Gantt Chart
+* WBS
+* Risks & Opportunities
+* RASCI Matrix
+* Meeting Reports
+* Status Reports
+* Decisions
+* Todos
+* Infos
+* Close Out Report
 
-enter in the docker app container with `docker exec -it campr_app bash`, then run `composer install`
+# Usage
+CAMPR is available in a cloud version and a self-hosted version.
+* For the cloudversion register here: https://campr.biz
+* The On-Premise version is documented in the repo https://github.com/CamprGmbH/on-premise
 
-example of importing a db `docker exec -i campr_mysql_1 mysql -uroot -pcampr campr_dev < my.sql`
+# Support
+The easiest, fastest and most direct way to contact us is via our customer support software Livezilla (LiveChat, Email) on https://campr.biz
 
-enter in the docker mysql container with `docker exec -it campr_mysql_1 bash` and run mysql cmds
+In addition, we use a Telegram channel for discussion and exchange.https://t.me/officialCAMPR
 
-## Frontend
-```
-bin/front-static
-cd frontend
-npm install
-npm run build
-cd ..
-cd ssr
-npm install
-npm run build
-```
-
-set local dev env to connect to the api
-`cp config/dev.local.js.dist config/dev.local.js` and edit the file accordingly with adding a token and a subdomain
-
-`npm run dev` (serve with hot reload at localhost:8080)
-
-## PDF Printing
-
-To make the pdf printing work, you will have to add the current workspace hostname as an extra host inside your local
-`docker-compose.yml` file:
-
-e.g.:
-```
-extra_hosts:
-    - "trisoft.dev.campr.cloud:127.0.0.1"
-```
+Within the tool you can give us feedback via the feedback button.
 
 
-## Tests
-`npm run unit` (run unit tests)
-
-`npm run e2e` (run e2e tests)
-
-`npm test` (run all tests)
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-## Generate Sami documentation
-
-To generate Sami documentation for the code just write the correct annotations and descriptions for classes and run the following command:
-
-`php bin/sami/sami.phar update bin/sami/config.php` OR
-
-`php bin/sami/sami.phar update bin/sami/config.php -v`  to display any existing errors.
-
-The command will generate/update the html files for all php classes inside the /src folder.
-
-**Use the following pages to find more about the structure of this project:**
-
-* [Admin Controllers](backend/src/AppBundle/Resources/docs/AdminControllers.md)
-* [API Controllers](backend/src/AppBundle/Resources/docs/ApiControllers.md)
-* [Entities](backend/src/AppBundle/Resources/docs/Entities.md)
-* [Forms](backend/src/AppBundle/Resources/docs/Forms.md)
-* [Services](backend/src/AppBundle/Resources/docs/Services.md)
-* [Javascripts](backend/src/AppBundle/Resources/docs/Javascripts.md)
-
-
-**Misc information:**
-* [Microsoft Project - Task Element](https://msdn.microsoft.com/en-us/library/office/aa220054(v=office.11).aspx)
-  * contains information about child elements
+# License
+CAMPR is licensed under the GNU Affero General Public License v3.0
