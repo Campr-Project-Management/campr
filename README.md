@@ -27,7 +27,7 @@ CAMPR is available in a cloud version and a self-hosted version.
 * For the cloudversion register here: https://campr.biz
 * The On-Premise version is documented in the repo https://github.com/CamprGmbH/on-premise
 
-# structure
+# Structure
 Use the following pages to find more about the structure of this project:
 
 * [Admin Controllers](backend/src/AppBundle/Resources/docs/AdminControllers.md)
@@ -46,4 +46,4 @@ Within the tool you can give us feedback via the feedback button.
 
 
 # License
-CAMPR is licensed under the GNU Affero General Public License v3.0
+CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html) Affero General Public License v3.0
