@@ -22,9 +22,10 @@ Modules available:
 * Infos
 * Close Out Report
 
-# Usage
-CAMPR is available in a cloud version and a self-hosted version.
-* For the cloudversion register here: https://campr.biz
+# Getting started
+* For the cloudversion just register here: https://campr.biz
+
+# On-Premise Installation
 * The On-Premise version is documented in the repo https://github.com/CamprGmbH/on-premise
 
 # Structure
@@ -37,13 +38,21 @@ Use the following pages to find more about the structure of this project:
 * [Services](backend/src/AppBundle/Resources/docs/Services.md)
 * [Javascripts](backend/src/AppBundle/Resources/docs/Javascripts.md)
 
-# Support
+# Need help?
 The easiest, fastest and most direct way to contact us is via our customer support software Livezilla (LiveChat, Email) on https://campr.biz
 
 In addition, we use a Telegram channel for discussion and exchange.https://t.me/officialCAMPR
 
 Within the tool you can give us feedback via the feedback button.
 
+# Want to contribute?
+If you want to contribute through code or documentation, please check out our [Contributing guide](https://github.com/CamprGmbH/campr/blob/develop/CONTRIBUTING.md).
+
 
 # License
 CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html) Affero General Public License v3.0
+
+# Acknowledgements
+Thanks to [Christoph Pohl](https://github.com/orgs/CamprGmbH/people/cristobalcampr) and [Manuel Weiler](https://github.com/orgs/CamprGmbH/people/CAMPR-Manuel) for creating and sharing this project with the open source community.
+
+Thanks to all the people that ever contributed through code or other means such as bug reports, feature suggestions, discussions and so on.
