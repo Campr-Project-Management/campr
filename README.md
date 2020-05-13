@@ -1,4 +1,5 @@
-# CAMPR - precise project management
+![](https://user-images.githubusercontent.com/63307779/81802868-240f7280-9517-11ea-92a6-546ac97988fe.png)
+
 CAMPR is an enterprise Project Management solution scalable for projects of any size to cover your individual needs.
 
 CAMPR is lean, intuitively designed and offers everything from project initiation trough close out and allows you collaborate successfully with other project members following industry standards.
