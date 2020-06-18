@@ -4,6 +4,7 @@ namespace AppBundle\Services;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
+use Component\Team\Context\TeamContext;
 use Component\User\Context\UserContext;
 
 /**
@@ -22,12 +23,19 @@ class WorkPackageMailerService
      */
     protected $userContext;
 
+    /**
+     * @var TeamContext
+     */
+    protected $teamContext;
+
     public function __construct(
         MailerService $mailer,
-        UserContext $userContext
+        UserContext $userContext,
+        TeamContext $teamContext
     ) {
         $this->mailer = $mailer;
         $this->userContext = $userContext;
+        $this->teamContext = $teamContext;
     }
 
     /**
@@ -35,6 +43,9 @@ class WorkPackageMailerService
      */
     public function sendNewTaskEmail(WorkPackage $wp)
     {
+        $workspace = $this->teamContext->getCurrent();
+        $workspaceName = $workspace ? (string) $workspace : $this->teamContext->getCurrentSlug();
+
         $this->mailer->sendEmail(
             ':task/emails:new_task_email.html.twig',
             'notification',
@@ -47,6 +58,7 @@ class WorkPackageMailerService
                 'task_responsible' => $wp->getResponsibilityFullName(),
                 'task_creator' => $wp->getCreatedBy()->getFullName(),
                 'base_finished_date' => $wp->getForecastFinishAt()->format('Y-m-d'),
+                'workspace_name' => $workspaceName,
             ],
             [],
             [$wp->getCreatedBy()->getEmail()]
@@ -69,6 +81,9 @@ class WorkPackageMailerService
             $ccEmails[] = $this->userContext->getUser()->getEmail();
         }
 
+        $workspace = $this->teamContext->getCurrent();
+        $workspaceName = $workspace ? (string) $workspace : $this->teamContext->getCurrentSlug();
+
         $this->mailer->sendEmail(
             ':task/emails:responsibility_changed_email.html.twig',
             'notification',
@@ -80,6 +95,7 @@ class WorkPackageMailerService
                 'task_name' => $wp->getName(),
                 'task_responsible' => $wp->getResponsibilityFullName(),
                 'former_task_responsibility' => $formerTaskResponsible->getFullName(),
+                'workspace_name' => $workspaceName,
             ],
             [],
             $ccEmails

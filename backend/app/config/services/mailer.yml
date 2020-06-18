@@ -24,6 +24,7 @@ services:
         arguments:
             - "@app.service.mailer"
             - '@app.user.context'
+            - '@app.team.context'
 
     app.service.automailer.plugin.redis:
         class: AppBundle\Services\AutomailerRedisPlugin
