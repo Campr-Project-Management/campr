@@ -2649,8 +2649,8 @@ export default function (Translator) {
     Translator.add("email.two_factor.body.remove", "Click <a href=\"%url%\">here<\/a> to remove two factor authentication from your account.", "messages", "en");
     Translator.add("email.message.task.new", "Hello %task_responsible%, %task_creator% created a new task \"%task_name%\" with due date %base_finished_date% for you.", "messages", "en");
     Translator.add("email.button.task.profile", "Task Profile", "messages", "en");
-    Translator.add("email.subject.task.new", "Your new task: \"%project_name%\" - \"%task_name%\"", "messages", "en");
-    Translator.add("email.subject.task.edit", "Your task responsibility has changed \"%project_name%\" - \"%task_name%\"", "messages", "en");
+    Translator.add("email.subject.task.new", "Your new task: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");
+    Translator.add("email.subject.task.edit", "Your task responsibility has changed \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");
     Translator.add("email.message.task.edit", "Hello %task_responsible%, the task responsibility has changed fom %former_task_responsibility% to you.", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");

@@ -318,6 +318,13 @@ export default {
         this.getProjectUsers({id: this.$route.params.id});
         this.getTasksStatus(this.$route.params.id);
         this.getContractByProjectId(this.$route.params.id);
+
+        if (this.localUser && this.localUser.id) {
+            this.getRecentTasksByProjectAndUser({
+                projectId: this.$route.params.id,
+                userId: this.localUser.id,
+            });
+        }
     },
     computed: {
         ...mapGetters({

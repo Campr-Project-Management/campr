@@ -58,7 +58,7 @@ class TeamSubscriber implements EventSubscriberInterface
 
     /**
      * @param GenericSerializationVisitor $visitor
-     * @param Team $team
+     * @param Team                        $team
      */
     private function addLogoUrl(GenericSerializationVisitor $visitor, Team $team)
     {

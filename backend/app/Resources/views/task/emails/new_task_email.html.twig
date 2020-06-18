@@ -1,6 +1,6 @@
 {% extends 'MainBundle:Email:base.html.twig' %}
 
-{% block subject %}{{ 'email.subject.task.new'|trans({'%project_name%': project_name, '%task_name%': task_name})|raw }}{% endblock %}
+{% block subject %}{{ 'email.subject.task.new'|trans({'%workspace_name%': workspace_name, '%project_name%': project_name, '%task_name%': task_name})|raw }}{% endblock %}
 
 {% block message %}
     <p>{{ 'email.message.task.new'|trans({'%task_responsible%': task_responsible, '%task_creator%': task_creator, '%task_name%': task_name, '%base_finished_date%': base_finished_date})|raw }}</p>
