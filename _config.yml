@@ -1,0 +1,10 @@
+---
+title: Campr
+timezone: Europe/Berlin
+collections:
+  posts:
+    title: Posts
+    output: true
+  uploads:
+    title: Uploads
+    output: true
