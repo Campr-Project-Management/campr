@@ -4,6 +4,5 @@
 
 {% block message %}
     <p>{{ 'email.message.task.new'|trans({'%task_responsible%': task_responsible, '%task_creator%': task_creator, '%task_name%': task_name, '%base_finished_date%': base_finished_date, '%workspace_name%': workspace_name, '%project_name%': project_name, '%task_name%': task_name})|raw }}</p>
-    <a class="button"
-       href="{{ url('app_homepage') }}/#/projects/{{ project_id }}/task-management/view/{{ task_id }}">{{ 'email.button.task.profile'|trans|raw }}</a>
+    <a class="button" href="{{ url('app_homepage') }}/#/projects/{{ project_id }}/task-management/view/{{ task_id }}">{{ 'email.button.task.profile'|trans|raw }}</a>
 {% endblock %}
