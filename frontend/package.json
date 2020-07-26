@@ -41,7 +41,7 @@
     "jquery.nicescroll": "3.7.6",
     "less": "3.0.1",
     "less-loader": "4.1.0",
-    "lodash": "4.17.13",
+    "lodash": "4.17.19",
     "moment": "2.21.0",
     "normalise.scss": "1.0.1",
     "numeral": "2.0.6",
