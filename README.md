@@ -57,3 +57,27 @@ CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html)
 Thanks to [Christoph Pohl](https://github.com/orgs/CamprGmbH/people/cristobalcampr) and [Manuel Weiler](https://github.com/orgs/CamprGmbH/people/CAMPR-Manuel) for creating and sharing this project with the open source community.
 
 Thanks to all the people that ever contributed through code or other means such as bug reports, feature suggestions, discussions and so on.
+
+1 Install Docker
+2 Install Docker-Compose
+3 Create .env file copy from env.dist in directory config/docker/
+4 Adding in configuration file etc/hosts domens 
+    127.0.0.1   campr.local and
+    127.0.0.1   workspace1.campr.local
+    use comand sudo nano etc/hosts
+5 In directory backend/app/config create file parametes.yml from parameters.yml.dist.dev or
+ copy it from 
+ https://github.com/CamprGmbH/on-premise/blob/master/config/workspaces/backend/app/config/parameters.yml 
+6 Add in docker-compose.yml in extrahost
+   - "campr.local:127.0.0.1"
+   - "workspace1.campr.local:127.0.0.1"
+   (Workspace means Time name subdomain with you have to write in etc/hosts )   
+7 Run container using docker-compose up-d
+
+8 Create new user bu comand 
+sudo docker exec -it campr_app bash    .
+Affter enter in container
+Use Simfoy comand 
+bin/console tss:app:user-create yourname@youremail.xxx admin admin --role=ROLE_ADMIN
+   
+   
