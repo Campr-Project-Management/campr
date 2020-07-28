@@ -75,9 +75,11 @@ Thanks to all the people that ever contributed through code or other means such 
 7 Run container using docker-compose up-d
 
 8 Create new user bu comand 
-sudo docker exec -it campr_app bash    .
+sudo docker exec -it campr_app bash .
 Affter enter in container
 Use Simfoy comand 
 bin/console tss:app:user-create yourname@youremail.xxx admin admin --role=ROLE_ADMIN
+
+9 Mail client aplication http://campr.local:1080/
    
    
