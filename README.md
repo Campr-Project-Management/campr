@@ -81,26 +81,22 @@ Thanks to all the people that ever contributed through code or other means such 
 - "campr.local:127.0.0.1"
 - "workspace1.campr.local:127.0.0.1"
 ```
- (Workspace means Time name subdomain with you have to write in etc/hosts )
+ (Workspace means Team-name subdomain which you have to write in /etc/hosts)
 
-7 Run container using
+7 Run containers:
 ```
 docker-compose up -d
 ```
 
-8 Create new user by command 
+8 Go to container campr_app and create new user:
 ```
 docker exec -it campr_app bash
-```
-After entering in container Use command
-
-```
 bin/console tss:app:user-create yourname@youremail.xxx admin admin --role=ROLE_ADMIN
 ```
 
 9 Mail client application: http://campr.local:1080/
 
-After add new sub-domain workspace rebuild app in fronted folder by command
+After add new sub-domain workspace rebuild app in fronted folder by command:
 ``` 
 cd /app/frontend && npm install && npm run build
 ```
