@@ -3,6 +3,11 @@
 {% block subject %}{{ 'email.subject.task.new'|trans({'%workspace_name%': workspace_name, '%project_name%': project_name, '%task_name%': task_name})|raw }}{% endblock %}
 
 {% block message %}
-    <p>{{ 'email.message.task.new'|trans({'%task_responsible%': task_responsible, '%task_creator%': task_creator, '%task_name%': task_name, '%base_finished_date%': base_finished_date})|raw }}</p>
+    <p>{{ 'email.message.task.new'|trans({'%task_responsible%': task_responsible, '%task_creator%': task_creator, '%task_name%': task_name, '%base_finished_date%': base_finished_date, '%workspace_name%': workspace_name, '%project_name%': project_name, '%task_name%': task_name})|raw }}</p>
+    <ul>
+        <li>{{ 'email.message.task.new.workspace'|trans({'%workspace_name%': workspace_name})|raw  }}</li>
+        <li>{{ 'email.message.task.new.project'|trans({'%project_name%': project_name})|raw  }}</li>
+        <li>{{ 'email.message.task.new.taskcreator'|trans({'%task_creator%': task_creator})|raw  }}</li>
+    </ul>
     <a class="button" href="{{ url('app_homepage') }}/#/projects/{{ project_id }}/task-management/view/{{ task_id }}">{{ 'email.button.task.profile'|trans|raw }}</a>
 {% endblock %}
