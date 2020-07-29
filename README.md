@@ -58,7 +58,7 @@ Thanks to [Christoph Pohl](https://github.com/orgs/CamprGmbH/people/cristobalcam
 
 Thanks to all the people that ever contributed through code or other means such as bug reports, feature suggestions, discussions and so on.
 
-# Install on dev enironment
+
 
 # Install on dev enironment
 
