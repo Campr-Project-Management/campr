@@ -127,4 +127,13 @@
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/homepage-script.js') }}"></script>
     <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
+    <script type="text/javascript">
+        // Adding current url to cookie. Needs for redirects after login1 and login2
+        $currentLink = window.location.href.split('//')[1];
+        $domain = '{{ domain }}';
+        $defUrlDomain = $domain + '/';
+        if ($currentLink != $defUrlDomain) {
+            document.cookie = "linkBeforeLogin=" + $currentLink + ";domain=" + $domain;
+        }
+    </script>
 {% endblock %}

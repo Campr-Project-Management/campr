@@ -187,4 +187,15 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        // Adding current url to cookie. Needs for redirects after login1 and login2 ()
+        $currentLink = window.location.href.split('//')[1];
+        $domain = '{{ domain }}';
+        $defUrlDomain = $domain + '/login';
+        if ($currentLink != $defUrlDomain) {
+            $currentLink = $currentLink.replace($defUrlDomain, $domain + '/');
+            document.cookie = "linkBeforeLogin=" + $currentLink + ";domain=" + $domain;
+        }
+    </script>
 {% endblock %}
