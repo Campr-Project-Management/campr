@@ -64,7 +64,7 @@ Thanks to all the people that ever contributed through code or other means such 
 
 1 Install Docker
 
-2 Install Docker-Compose
+2 Install docker-compose
 
 3 Create .env file copy from config/docker/env.dist
 
