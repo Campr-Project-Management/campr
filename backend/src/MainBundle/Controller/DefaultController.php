@@ -39,6 +39,7 @@ class DefaultController extends Controller
 
         return $this->render('MainBundle:Default:index.html.twig', [
             'teams' => $teams,
+            'domain' => $this->getParameter('domain')
         ]);
     }
 
@@ -222,6 +223,7 @@ class DefaultController extends Controller
                 'form_register' => $formRegister->createView(),
                 'form_reset' => $formReset->createView(),
                 'route' => 'main_login',
+                'domain' => $this->getParameter('domain'),
             ]
         );
     }

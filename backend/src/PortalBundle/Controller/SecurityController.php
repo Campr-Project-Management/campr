@@ -140,7 +140,16 @@ class SecurityController extends Controller
 
         $this->get('security.token_storage')->setToken($upt);
 
-        return $this->redirectToRoute($routeToRedirectTo, ['subdomain' => $request->attributes->get('subdomain')]);
+        // Redirect after login1 and login2 to #... page (task or something etc)
+        if (!empty($request->cookies->get('redirectAfterLogin'))) {
+            $domain = $this->getParameter('domain');
+            $redirectAfterLogin = $request->cookies->get('redirectAfterLogin');
+            $redirectAfterLogin = $request->getScheme() . '://' . str_replace($domain, $request->getHost(), $redirectAfterLogin);
+            $request->cookies->remove('redirectAfterLogin');
+            return $this->redirect($redirectAfterLogin);
+        } else {
+            return $this->redirectToRoute($routeToRedirectTo, ['subdomain' => $request->attributes->get('subdomain')]);
+        }
     }
 
     /**
