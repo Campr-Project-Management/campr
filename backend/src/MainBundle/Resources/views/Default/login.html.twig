@@ -195,7 +195,7 @@
         $defUrlDomain = $domain + '/login';
         if ($currentLink != $defUrlDomain) {
             $currentLink = $currentLink.replace($defUrlDomain, $domain + '/');
-            document.cookie = "linkBeforeLogin=" + $currentLink + ";domain=" + $domain;
+            document.cookie = "redirectAfterLogin=" + $currentLink + ";domain=" + $domain;
         }
     </script>
 {% endblock %}
