@@ -49,6 +49,10 @@ Within the tool you can give us feedback via the feedback button.
 # Want to contribute?
 If you want to contribute through code or documentation, please check out our [Contributing guide](https://github.com/CamprGmbH/campr/blob/develop/CONTRIBUTING.md).
 
+# Contributors
+<a href="https://github.com/CamprGmbH/campr/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=CamprGmbH/campr" />
+</a>
 
 # License
 CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html) Affero General Public License v3.0
