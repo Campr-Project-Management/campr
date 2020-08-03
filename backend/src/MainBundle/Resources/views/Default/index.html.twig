@@ -134,7 +134,6 @@
         $defUrlDomain = $domain + '/';
         if ($currentLink != $defUrlDomain) {
             document.cookie = "redirectAfterLogin=" + $currentLink + ";domain=" + $domain;
-            $('.team-list-wrapper ul li:first a:first')[0].click();
         }
 
         // Click on workspace button
