@@ -33,6 +33,25 @@ class WorkPackageCloner implements ResourceClonerInterface
     {
         /** @var WorkPackage $clone */
         $clone = $this->resourceCloner->clone($object);
+
+        $oldStartAt = $object->getScheduledStartAt();
+        if (!empty($oldStartAt)) {
+            // get new startDate
+            $newStartAt = new \DateTime();
+
+            // get new finishDate
+            $newFinishAt = new \DateTime();
+            $oldFinishAt = $object->getScheduledFinishAt();
+            $days = $oldFinishAt->diff($oldStartAt)->format('%a');
+            $newFinishAt = $newFinishAt->add(new \DateInterval("P{$days}D"));
+
+            $clone
+                ->setScheduledStartAt($newStartAt)
+                ->setScheduledFinishAt($newFinishAt)
+                ->setForecastStartAt($newStartAt)
+                ->setForecastFinishAt($newFinishAt);
+        }
+
         if ($clone !== $object) {
             $clone->setExternalId(null);
         }
