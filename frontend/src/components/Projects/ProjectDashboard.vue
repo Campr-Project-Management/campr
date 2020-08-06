@@ -211,6 +211,12 @@
                        v-for="message in validationMessages"
                        :message="message" />
             </div>
+            <div class="form-group">
+                <div class="input-holder right">
+                    <label class="active">{{ translate('label.started_at') }}</label>
+                    <date-field v-model="startDate"/>
+                </div>
+            </div>
             <div class="flex flex-space-between">
                 <a href="javascript:void(0)" @click="showCopyProjectModal = false"
                    class="btn-rounded btn-auto">{{ translate('button.cancel') }}</a>
@@ -234,6 +240,7 @@ import * as projectStatus from '../../store/modules/project-status';
 import TrafficLight from '../_common/TrafficLight';
 import tl from '../../util/traffic-light';
 import ProjectDashboardRecentTasks from './Dashboard/RecentTasks';
+import DateField from '../_common/_form-components/DateField';
 
 export default {
     props: {
@@ -251,6 +258,7 @@ export default {
         SmallTaskBox,
         moment,
         AlertModal,
+        DateField,
     },
     methods: {
         ...mapActions([
@@ -293,7 +301,11 @@ export default {
             this.showCopyProjectModal = true;
         },
         doCopyProjectModal() {
-            let data = {id: this.project.id, name: this.projectName};
+            let data = {
+                id: this.project.id,
+                name: this.projectName,
+                startDate: moment(this.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+            };
             this
             .cloneProject(data)
              .then(
@@ -381,6 +393,7 @@ export default {
             showCopyProjectModal: false,
             projectName: '',
             cloneErrorMessages: null,
+            startDate: new Date(),
         };
     },
 };

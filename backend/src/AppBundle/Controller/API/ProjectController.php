@@ -1991,6 +1991,7 @@ class ProjectController extends ApiController
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
         $name = $request->request->get('name');
+        $startDate = $request->request->get('startDate');
 
         if (null === $name) {
             $errors = [
@@ -2004,7 +2005,7 @@ class ProjectController extends ApiController
 
         $this->get('event_dispatcher')->dispatch(
             ProjectEvents::ON_CLONE,
-            new ProjectEvent($project, $this->getUser(), $name)
+            new ProjectEvent($project, $this->getUser(), $name, $startDate)
         );
 
         return $this->createApiResponse($project, Response::HTTP_CREATED);

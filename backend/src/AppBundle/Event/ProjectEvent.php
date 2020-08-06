@@ -19,6 +19,11 @@ class ProjectEvent extends Event
     private $name;
 
     /**
+     * @var string
+     */
+    private $startDate;
+
+    /**
      * @var User
      */
     private $user;
@@ -29,12 +34,14 @@ class ProjectEvent extends Event
      * @param Project     $project
      * @param User|null   $user
      * @param string|null $name
+     * @param string|null $startDate
      */
-    public function __construct(Project $project, User $user = null, string $name = null)
+    public function __construct(Project $project, User $user = null, string $name = null, string $startDate = null)
     {
         $this->project = $project;
         $this->user = $user;
         $this->name = $name;
+        $this->startDate = $startDate;
     }
 
     /**
@@ -59,5 +66,13 @@ class ProjectEvent extends Event
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
     }
 }
