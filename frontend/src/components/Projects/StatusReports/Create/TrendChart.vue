@@ -1,6 +1,6 @@
 <script>
     import {Line} from 'vue-chartjs';
-
+    import EventBus from '../../../../eventBus';
     export default {
         name: 'status-report-trend-chart',
         extends: Line,
@@ -9,6 +9,9 @@
                 type: Array,
                 required: true,
                 default: () => [],
+            },
+            light: {
+                default: 0,
             },
             labels: {
                 type: Array,
@@ -64,6 +67,9 @@
             chartOptions() {
                 return Object.assign({}, this.defaultOptions, this.options);
             },
+        },
+        created() {
+            EventBus.$on('updateChart', this.doRenderChart);
         },
         methods: {
             doRenderChart() {
