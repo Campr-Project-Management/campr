@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
 /**
  * Clone project.
  *
- * Command usage: app:clone-project projectId userId name
+ * Command usage: app:clone-project projectId userId name startDate
  */
 class CloneProjectCommand extends ContainerAwareCommand
 {
@@ -27,7 +27,8 @@ class CloneProjectCommand extends ContainerAwareCommand
             ->setName('app:clone-project')
             ->addArgument('projectId', InputArgument::REQUIRED, 'The original projectId is required.')
             ->addArgument('userId', InputArgument::REQUIRED, 'The userId is required.')
-            ->addArgument('name', InputArgument::REQUIRED, 'The name is required.');
+            ->addArgument('name', InputArgument::REQUIRED, 'The name is required.')
+            ->addArgument('startDate', InputArgument::REQUIRED, 'The startDate is required.');
     }
 
     /**
@@ -37,6 +38,7 @@ class CloneProjectCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
+        $startDate = $input->getArgument('startDate');
         $projectId = $input->getArgument('projectId');
         $userId = $input->getArgument('userId');
 
@@ -48,7 +50,7 @@ class CloneProjectCommand extends ContainerAwareCommand
 
             $io->section(sprintf('Cloning project "%s" to "%s"...', $project->getName(), $name));
 
-            $newProject = $this->cloneProject($project, $name);
+            $newProject = $this->cloneProject($project, $name, $startDate);
             $this->sendNotification($user, $newProject);
 
             $io->success(sprintf('Project "%s" successfully cloned as "%s"', $project->getName(), $name));
@@ -109,11 +111,17 @@ class CloneProjectCommand extends ContainerAwareCommand
     /**
      * @param Project $project
      * @param string  $name
+     * @param string  $startDate
      *
      * @return Project
      */
-    private function cloneProject(Project $project, string $name): Project
+    private function cloneProject(Project $project, string $name, string $startDate): Project
     {
+        $_SESSION['projectDates'] = [
+            'minStartDate' => $this->getContainer()->get('app.repository.work_package')->getProjectStartAt($project),
+            'startDate' => $startDate
+        ];
+
         /** @var Project $clone */
         $clone = $this->getCloner($project)->clone($project, new ProjectCloneScope($project));
         $clone->setName($name);

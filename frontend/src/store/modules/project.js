@@ -606,7 +606,7 @@ const actions = {
     cloneProject({commit}, data) {
         return Vue
             .http
-            .post(Routing.generate('app_api_project_clone', {id: data.id}), {name: data.name})
+            .post(Routing.generate('app_api_project_clone', {id: data.id}), {name: data.name, startDate: data.startDate})
             .then(
                 (response) => {
                     if (response.status === 200 && !response.data.error) {
