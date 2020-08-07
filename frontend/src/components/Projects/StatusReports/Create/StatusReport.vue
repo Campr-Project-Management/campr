@@ -60,6 +60,7 @@
                     <status-report-trend-chart
                             v-if="trendChartData.length > 0 && !fetchingTrendChart"
                             :data="trendChartData"
+                            :light="projectTrafficLight"
                             :labels="trendChartLabels"
                             :point-color="trendChartPointColor"/>
                     <div class="trend-no-results" v-else>{{ translate('message.not_enough_data') }}</div>
@@ -269,6 +270,8 @@
         MODULE_DECISIONS,
         MODULE_INFOS,
     } from '../../../../helpers/project-module';
+    import EventBus from '../../../../eventBus';
+    import {themes} from '../../../../util/theme';
 
     export default {
         name: 'status-report',
@@ -347,7 +350,6 @@
                 if (!this.editable) {
                     return;
                 }
-
                 this.$emit('input', Object.assign({}, this.value, {projectActionNeeded: event.target.checked}));
             },
             onCommentUpdate(value) {
@@ -361,7 +363,10 @@
                 if (!this.editable) {
                     return;
                 }
-
+                let colors = [themes.light.lightRed, themes.light.lightYellow, themes.light.lightGreen];
+                this.trendChartData[3] =value;
+                this.trendChartPointColor[3] = colors[value];
+                EventBus.$emit('updateChart');
                 this.$emit('input', Object.assign({}, this.value, {projectTrafficLight: value}));
             },
             isModuleActive(module) {
