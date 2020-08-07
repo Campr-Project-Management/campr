@@ -350,6 +350,7 @@
                 if (!this.editable) {
                     return;
                 }
+
                 this.$emit('input', Object.assign({}, this.value, {projectActionNeeded: event.target.checked}));
             },
             onCommentUpdate(value) {
@@ -363,8 +364,9 @@
                 if (!this.editable) {
                     return;
                 }
+
                 let colors = [themes.light.lightRed, themes.light.lightYellow, themes.light.lightGreen];
-                this.trendChartData[3] =value;
+                this.trendChartData[3] = value;
                 this.trendChartPointColor[3] = colors[value];
                 EventBus.$emit('updateChart');
                 this.$emit('input', Object.assign({}, this.value, {projectTrafficLight: value}));
