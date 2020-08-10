@@ -187,6 +187,10 @@
                     formData.append('projectScope', secondStepData.selectedScope.key);
                 }
 
+                if (secondStepData) {
+                    formData.append('secondStepData', JSON.stringify(secondStepData));
+                }
+
                 this.modules.forEach((module, i) => {
                     formData.append(`projectModules[${i}][module]`, module);
                     formData.append(`projectModules[${i}][isEnabled]`, this.isModuleSelected(module) ? 1: 0);
