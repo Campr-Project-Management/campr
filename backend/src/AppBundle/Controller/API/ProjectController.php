@@ -154,6 +154,12 @@ class ProjectController extends ApiController
             $this->persistAndFlush($project);
             $this->get('event_dispatcher')->dispatch(ProjectEvents::POST_CREATE, new GenericEvent($project));
 
+            // Create contract by project with startDate and endDate by project duration
+            $secondStepData = json_decode($request->request->get('secondStepData'));
+            if ($project->hasProjectModule('contract')) {
+                $em->getRepository(Contract::class)->createByProject($project, $secondStepData->projectDuration);
+            }
+
             return $this->createApiResponse($project, Response::HTTP_CREATED);
         }
 
