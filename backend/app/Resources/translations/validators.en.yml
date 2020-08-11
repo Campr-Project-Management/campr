@@ -8,6 +8,9 @@ greater_than_or_equal.minutes_interval: 'Minutes interval field should contain n
 greater_than_or_equal.per_day: 'Per day field should contain numbers greater than or equal to 0'
 greater_than_or_equal.probability: 'The probability field should contain numbers greater than or equal to 0'
 greater_than_or_equal.scheduled_finish_at: 'The Base Start Date should be before the Base Finish Date'
+greater_than_or_phase.scheduled_start_at: 'This date cannot be before the base start date of the assigned phase.'
+greater_than_or_phase.scheduled_finish_at: 'This date cannot exceed the finish date of the assigned phase.'
+
 greater_than_or_equal.type: 'The type field should contain numbers greater than or equal to 0'
 greater_than_or_equal.unit: 'The unit field should contain numbers greater than or equal to 0'
 greater_than_or_equal.work_percent: 'The work percent field should contain numbers greater than or equal to 0'
