@@ -22,13 +22,6 @@ app:
     defaults:
         subdomain: "%kernel.team_slug%"
 
-app_homepage:
-    resource: "@AppBundle/Controller/"
-    type: annotation
-    prefix: /
-    defaults:
-        subdomain: "%kernel.team_slug%"
-
 portal_routes:
     resource: .
     type: routing_portal.yml
