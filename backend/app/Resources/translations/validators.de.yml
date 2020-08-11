@@ -13,6 +13,7 @@ greater_than_or_phase.scheduled_finish_at: 'Das Basisenddatum sollte nach dem Ph
 greater_than_or_equal.type: 'Das Feld "Typ" muss Zahlen größer oder gleich 0 enthalten.'
 greater_than_or_equal.unit: 'Das Feld "Einheit" muss Zahlen größer oder gleich 0 enthalten.'
 greater_than_or_equal.work_percent: 'Das Feld "Arbeit in Prozent" muss Zahlen größer oder gleich 0 enthalten.'
+greater_than_or_milestone.scheduled_finish_at: 'Dieses Datum darf das Enddatum des zugewiesenen Meilensteins nicht überschreiten.'
 invalid.cost.value_exceeds_parent_costs: 'Durch die Extrakosten von %cost_actual_value% werden die Gesamtkosten der übergeordneten Aufgabe übrschritten.'
 invalid.duration: 'Das Feld "Dauer" muss Zahlen größer oder gleich 0 enthalten'
 invalid.email: 'Ungültige E-Mail!'

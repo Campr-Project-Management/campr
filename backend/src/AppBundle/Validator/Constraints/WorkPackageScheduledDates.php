@@ -35,6 +35,11 @@ class WorkPackageScheduledDates extends Constraint
     public $greaterFinishedAtWitPhaseMessage = 'greater_than_or_phase.scheduled_finish_at';
 
     /**
+     * @var string
+     */
+    public $greaterFinishedAtWitMilestoneMessage = 'greater_than_or_milestone.scheduled_finish_at';
+
+    /**
      * @return string
      */
     public function getTargets(): string

@@ -56,6 +56,26 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
             ;
         }
 
+
+        $milestone = $wp->getMilestone();
+
+        if (isset($milestone) && ($milestone->getScheduledFinishAt() < $wp->getScheduledFinishAt())) {
+            $this->context
+                ->buildViolation(
+                    $constraint->greaterFinishedAtWitMilestoneMessage,
+                    [
+                        '%date%' => $wp->getScheduledFinishAt()->format('d.m.Y'),
+                        '%phase%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
+                    ]
+                )
+                ->atPath('scheduledFinishAt')
+                ->addViolation()
+            ;
+        }
+
+
+
+
         $parent = $wp->getParent();
         if (!$parent) {
             return;
