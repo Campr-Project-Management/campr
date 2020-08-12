@@ -201,6 +201,17 @@ class ProjectController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
+            if (!empty($project->getStatus())) {
+                $project->setStatusUpdatedAt(new \DateTime());
+                $approvedAt = null;
+
+                if ($project->getStatus()->getName() == ProjectStatus::CODE_IN_PROGRESS) {
+                    $approvedAt = new \DateTime();
+                }
+
+                $project->setApprovedAt($approvedAt);
+            }
+
             $this->persistAndFlush($project);
 
             return $this->createApiResponse($project, Response::HTTP_ACCEPTED);

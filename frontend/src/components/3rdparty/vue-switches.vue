@@ -9,7 +9,8 @@
         <input
                 type="checkbox"
                 :disabled="disabled"
-                v-model="internalValue"/>
+                v-model="internalValue"
+                @click="swichApproveContract" />
 
         <div></div>
     </label>
@@ -50,6 +51,11 @@
         watch: {
             value(val) {
                 this.lazyValue = val;
+            },
+        },
+        methods: {
+            swichApproveContract() {
+                this.$emit('updateProjectContract');
             },
         },
         computed: {

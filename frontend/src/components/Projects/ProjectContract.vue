@@ -183,9 +183,10 @@
 
                             <switches
                                     :disabled="frozen"
-                                    v-model="isApproved"/>
+                                    v-model="isApproved"
+                            v-on:updateProjectContract="approveContract"/>
 
-                            <div v-if="isApproved" class="toggle-approved">{{ translate('label.approved_and_started') }}</div>
+                            <div v-if="isApproved" class="toggle-approved" >{{ translate('label.approved_and_started') }}</div>
                             <div v-else class="toggle-approved">{{ translate('label.approve_and_start') }}</div>
                         </div>
 
@@ -276,6 +277,7 @@ export default {
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
             'reorderLimitations', 'reorderDeliverables', 'getProjectExternalCostsGraphData',
             'getProjectUsers', 'getProjectInternalCostsGraphData', 'emptyValidationMessages',
+            'editProject',
         ]),
         toggleSponsorsManagers: function() {
             this.showSponsorsManagers = !this.showSponsorsManagers;
@@ -300,16 +302,43 @@ export default {
                 ;
             }
         },
+        approveContract() {
+            let setApprovedAt = null;
+            let projectStatusId = 1; // set project as "not started"
+            if ($('label.vue-switcher input').is(':checked')) {
+                setApprovedAt = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+                projectStatusId = 2; // set project as "in progress"
+            }
+
+            let data = {
+                approvedAt: setApprovedAt,
+            };
+
+            if (this.contract.id) {
+                data.id = this.contract.id;
+                this.updateContract(data);
+            } else {
+                this.createContract(data);
+            }
+
+            // update project status
+            this.editProject({
+                projectId: this.$route.params.id,
+                status: projectStatusId,
+            });
+        },
         updateProjectContract() {
             let data = {
                 projectId: this.$route.params.id,
-                name: this.project.name + '-contract',
+                name: this.project.name + ' - contract',
                 description: this.description,
                 projectStartEvent: this.projectStartEvent,
                 proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
                 proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
                 approvedAt: this.approvedAt,
             };
+
+            localStorage.removeItem('contractDescription');
 
             if (this.contract.id) {
                 data.id = this.contract.id;
@@ -482,6 +511,20 @@ export default {
             vm.getProjectById(vm.$route.params.id);
         });
     },
+    mounted() {
+        document.getElementById('description').onkeyup = function() {
+            localStorage.setItem(
+                'contractDescription',
+                document.getElementById('description').children[0].innerHTML
+            );
+        };
+
+        if (localStorage.getItem('contractDescription')) {
+            setTimeout(function() {
+                document.getElementById('description').children[0].innerHTML = localStorage.getItem('contractDescription');
+            }, 1000);
+        }
+    },
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -560,6 +603,7 @@ export default {
         };
     },
 };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
