@@ -205,7 +205,7 @@ class ProjectController extends ApiController
                 $project->setStatusUpdatedAt(new \DateTime());
                 $approvedAt = null;
 
-                if ($project->getStatus()->getName() == ProjectStatus::CODE_IN_PROGRESS) {
+                if ($project->getStatus()->getCode() == ProjectStatus::CODE_IN_PROGRESS) {
                     $approvedAt = new \DateTime();
                 }
 
