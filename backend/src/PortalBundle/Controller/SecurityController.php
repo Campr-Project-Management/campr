@@ -129,7 +129,7 @@ class SecurityController extends Controller
             }
         }
 
-         $this->ensureTeamEnabled($user);
+        $this->ensureTeamEnabled($user);
 
         $upt = new UsernamePasswordToken(
             $user,
@@ -144,9 +144,8 @@ class SecurityController extends Controller
         if (!empty($request->cookies->get('redirectAfterLogin'))) {
             $domain = $this->getParameter('domain');
             $redirectAfterLogin = $request->cookies->get('redirectAfterLogin');
-            $redirectAfterLogin = $request->getScheme().'://'.str_replace($domain, $request->getHost(), $redirectAfterLogin);
+            $redirectAfterLogin = $request->getScheme() . '://' . str_replace($domain, $request->getHost(), $redirectAfterLogin);
             $request->cookies->remove('redirectAfterLogin');
-
             return $this->redirect($redirectAfterLogin);
         } else {
             return $this->redirectToRoute($routeToRedirectTo, ['subdomain' => $request->attributes->get('subdomain')]);
