@@ -20,7 +20,7 @@ app:
     type: app
     host: "{subdomain}.%domain%"
     defaults:
-        subdomain: "%kernel.team_slug%"x
+        subdomain: "%kernel.team_slug%"
 
 portal_routes:
     resource: .
