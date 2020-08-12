@@ -186,7 +186,7 @@
                                     v-model="isApproved"
                             v-on:updateProjectContract="approveContract"/>
 
-                            <div v-if="isApproved" class="toggle-approved" >{{ translate('label.approved_and_started') }}</div>
+                            <div v-if="isApproved" class="toggle-approved">{{ translate('label.approved_and_started') }}</div>
                             <div v-else class="toggle-approved">{{ translate('label.approve_and_start') }}</div>
                         </div>
 
