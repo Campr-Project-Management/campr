@@ -29,7 +29,6 @@
                     <error at-path="parent"/>
                     <error at-path="milestone"/>
                     <error at-path="phase"/>
-                    <error at-path="invalidStartedAtWitPhaseMessage"/>
                 </div>
             </div>
         </div>

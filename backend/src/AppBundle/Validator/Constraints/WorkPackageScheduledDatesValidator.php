@@ -14,6 +14,7 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
      */
     public function validate($wp, Constraint $constraint)
     {
+
         if (!$wp->getScheduledStartAt() || !$wp->getScheduledFinishAt()) {
             return;
         }
@@ -56,7 +57,6 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
             ;
         }
 
-
         $milestone = $wp->getMilestone();
 
         if (isset($milestone) && ($milestone->getScheduledFinishAt() < $wp->getScheduledFinishAt())) {
@@ -72,9 +72,6 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
                 ->addViolation()
             ;
         }
-
-
-
 
         $parent = $wp->getParent();
         if (!$parent) {
