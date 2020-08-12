@@ -180,6 +180,7 @@ button.view_all_tasks: 'Alle Aufgaben anzeigen'
 button.view_info: 'Info anzeigen'
 button.view_remaining_action: 'Verbleibende Maßnahmen ansehen'
 button.view_tasks_board: 'Task Board anzeigen'
+button.view_tasks_grid: 'Task Board gitter'
 checkbox.checked: Ja
 checkbox.unchecked: Nein
 choices.days: Tage
@@ -2380,3 +2381,11 @@ email.two_factor.body.code: 'CAMPR Zwei-Faktor-Code: %code%'
 two_factor.remove.email_success: 'Ein Link zur Entfernung der Zwei-Faktor-Authentifizierung wurde dir per E-Mail gesendet.'
 email.subject.two_factor.remove: 'CAMPR - Zwei-Faktor-Authentifizierung enfernen'
 email.two_factor.body.remove: 'Klick <a href="%url%">hier</a>, um die Zwei-Faktor-Authentifizierung deines Accounts zu entfernen.'
+email.subject.task.edit: __email.subject.task.edit
+email.message.task.edit: __email.message.task.edit
+email.button.task.profile: __email.button.task.profile
+email.subject.task.new: __email.subject.task.new
+email.message.task.new: __email.message.task.new
+email.message.task.new.workspace: __email.message.task.new.workspace
+email.message.task.new.project: __email.message.task.new.project
+email.message.task.new.taskcreator: __email.message.task.new.taskcreator

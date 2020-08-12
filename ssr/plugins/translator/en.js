@@ -427,6 +427,7 @@ export default function (Translator) {
     Translator.add("button.view_info", "View Info", "messages", "en");
     Translator.add("button.view_remaining_action", "View Remaining Action", "messages", "en");
     Translator.add("button.view_tasks_board", "View tasks board", "messages", "en");
+    Translator.add("button.view_tasks_grid", "View tasks grid", "messages", "en");
     Translator.add("checkbox.checked", "Yes", "messages", "en");
     Translator.add("checkbox.unchecked", "No", "messages", "en");
     Translator.add("choices.days", "Days", "messages", "en");
