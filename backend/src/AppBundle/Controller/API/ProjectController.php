@@ -1745,13 +1745,11 @@ class ProjectController extends ApiController
         }
 
         $oldRasci = $rasci->getData();
-
         $form = $this->createForm(
             RasciDataType::class,
             $rasci,
             ['method' => Request::METHOD_PUT, 'csrf_protection' => false]
         );
-
 
         $this->processForm($request, $form, false);
 
@@ -1770,7 +1768,6 @@ class ProjectController extends ApiController
                 $rasciRepo->add($rasci);
                 $this->dispatchEvent($postEventName, $event);
 
-
                 if ($request->request->get('data') != $oldRasci) {
                     $mailerService = $this->get('app.service.mailer');
                     $mailerService->sendEmail(
@@ -1786,10 +1783,7 @@ class ProjectController extends ApiController
                     );
                 }
 
-
-
                 return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
-
             }
 
         }
