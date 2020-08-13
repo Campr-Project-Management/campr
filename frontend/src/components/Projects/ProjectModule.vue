@@ -320,7 +320,6 @@ export default {
         return {
             modules: modules,
             contentVisible: false,
-            disabled: true,
         };
     },
 };
