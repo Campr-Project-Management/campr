@@ -1781,11 +1781,7 @@ class ProjectController extends ApiController
 
             $this->dispatchEvent($preEventName, $event);
 
-<<<<<<< HEAD
             if ($oldRasci != Rasci::DATA_RESPONSIBLE) {
-=======
-            if ($oldRasci !== Rasci::DATA_RESPONSIBLE) {
->>>>>>> f7c234c17617f0eeeee22658e3a1817dda1d9b81
                 $rasciRepo->add($rasci);
                 $this->dispatchEvent($postEventName, $event);
 
