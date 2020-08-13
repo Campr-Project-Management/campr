@@ -1,0 +1,9 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+{% trans_default_domain 'messages' %}
+
+{% block message %}
+    <p>{{ 'Hello'}} {{ username }},
+
+    <p> Your responsibility for {{ task }} is {{ responsibility }}</p>
+
+{% endblock %}

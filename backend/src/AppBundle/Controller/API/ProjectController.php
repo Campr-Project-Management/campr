@@ -1736,6 +1736,7 @@ class ProjectController extends ApiController
         $rasciRepo = $this->get('app.repository.rasci');
         $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
         $isNew = false;
+
         if (!$rasci) {
             $isNew = true;
             $rasci = new Rasci();
@@ -1743,11 +1744,16 @@ class ProjectController extends ApiController
             $rasci->setUser($user);
         }
 
+        $oldRasci = $rasci->getData();
+
         $form = $this->createForm(
             RasciDataType::class,
             $rasci,
             ['method' => Request::METHOD_PUT, 'csrf_protection' => false]
         );
+
+//        dump($request->request->all());
+//        die;
 
         $this->processForm($request, $form, false);
 
@@ -1761,10 +1767,33 @@ class ProjectController extends ApiController
             }
 
             $this->dispatchEvent($preEventName, $event);
-            $rasciRepo->add($rasci);
-            $this->dispatchEvent($postEventName, $event);
 
-            return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+            if ($oldRasci !== Rasci::DATA_RESPONSIBLE) {
+                $rasciRepo->add($rasci);
+                $this->dispatchEvent($postEventName, $event);
+
+
+                if ($request->request->get('data') != $oldRasci) {
+                    $mailerService = $this->get('app.service.mailer');
+                    $mailerService->sendEmail(
+                        'MainBundle:Email:change_responsibility.html.twig',
+                        'notification',
+                        $user->getEmail(),
+                        [
+                            'username' => $user->getUsername(),
+                            'email' => $user->getEmail(),
+                            'responsibility' => $rasci->getData(),
+                            'task' => $rasci->getWorkPackageName()
+                        ]
+                    );
+                }
+
+
+
+                return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+
+            }
+
         }
 
         return $this->createApiResponse(
@@ -1807,7 +1836,11 @@ class ProjectController extends ApiController
             $em = $this->getDoctrine()->getManager();
             $postEventName = RasciEvents::POST_REMOVE;
             $event = new RasciEvent($rasci);
-            $rasciRepo->remove($rasci);
+
+            if ($rasci->getData() != Rasci::DATA_RESPONSIBLE) {
+                $rasciRepo->remove($rasci);
+            }
+
             $this->dispatchEvent($postEventName, $event);
             $em->flush();
         }
