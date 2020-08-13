@@ -1752,8 +1752,6 @@ class ProjectController extends ApiController
             ['method' => Request::METHOD_PUT, 'csrf_protection' => false]
         );
 
-//        dump($request->request->all());
-//        die;
 
         $this->processForm($request, $form, false);
 
