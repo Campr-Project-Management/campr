@@ -107,7 +107,13 @@
                         <a :href="adminRoute">Admin</a>
                     </li>
                     <li class="admin-link">
-                        <a href="#" onclick="_urq.push(['Feedback_Open']);">User Feedback</a>
+                        <a href="https://github.com/CamprGmbH" target="_blank">GitHub</a>
+                    </li>
+                    <li class="admin-link">
+                        <a href="https://www.youtube.com/channel/UCgP6VLB0CJdRznCFBiRh5BQ/playlists?view_as=subscriber"
+                           target="_blank">
+                            YouTube
+                        </a>
                     </li>
                 </ul>
             </nav>
