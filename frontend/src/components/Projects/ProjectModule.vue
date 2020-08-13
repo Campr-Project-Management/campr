@@ -264,7 +264,7 @@
             </div>
             <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
                 <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue"
-                       v-if="disabled === true" disabled/>
+                       v-if="disabled === true" disabled class="bg-lightcolor" />
                 <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue" v-else/>
                 <label :for="id"></label>
             </div>
@@ -388,5 +388,11 @@ export default {
     .toggle-content {
         cursor: pointer;
         margin-left: 13px;
+    }
+
+    .checkbox-input {
+        input.bg-lightcolor[type=checkbox]:checked + label:before {
+            background: $lightColor;
+        }
     }
 </style>
