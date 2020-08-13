@@ -1762,7 +1762,6 @@ class ProjectController extends ApiController
         }
 
         $oldRasci = $rasci->getData();
-
         $form = $this->createForm(
             RasciDataType::class,
             $rasci,
@@ -1785,9 +1784,25 @@ class ProjectController extends ApiController
             if ($oldRasci != Rasci::DATA_RESPONSIBLE) {
                 $rasciRepo->add($rasci);
                 $this->dispatchEvent($postEventName, $event);
+
+                if ($request->request->get('data') != $oldRasci) {
+                    $mailerService = $this->get('app.service.mailer');
+                    $mailerService->sendEmail(
+                        'MainBundle:Email:change_responsibility.html.twig',
+                        'notification',
+                        $user->getEmail(),
+                        [
+                            'username' => $user->getUsername(),
+                            'email' => $user->getEmail(),
+                            'responsibility' => $rasci->getData(),
+                            'task' => $rasci->getWorkPackageName()
+                        ]
+                    );
+                }
+
+                return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
             }
 
-            return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
         }
 
         return $this->createApiResponse(
