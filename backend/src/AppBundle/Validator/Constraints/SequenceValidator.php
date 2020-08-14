@@ -31,6 +31,7 @@ class SequenceValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
+
         if (!$constraint instanceof Sequence) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Sequence');
         }

@@ -14,6 +14,7 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
      */
     public function validate($wp, Constraint $constraint)
     {
+
         if (!$wp->getScheduledStartAt() || !$wp->getScheduledFinishAt()) {
             return;
         }

@@ -734,6 +734,8 @@ class ProjectController extends ApiController
      */
     public function createTodoAction(Request $request, Project $project)
     {
+//        dump($request);
+//        die('todo request');
         $todo = new Todo();
         $todo->setProject($project);
 
