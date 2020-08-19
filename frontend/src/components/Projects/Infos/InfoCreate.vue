@@ -118,7 +118,7 @@ export default {
             'getDistributionLists',
         ]),
         checkData: function(value) {
-            let message = this.translate('before.now');
+            const message = this.translate('before.now');
             this.calendarCorrect = calendarNotPast(message, value);
         },
         doSave() {
