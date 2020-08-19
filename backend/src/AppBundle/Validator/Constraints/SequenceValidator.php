@@ -14,6 +14,7 @@ class SequenceValidator extends ConstraintValidator
      * @var EntityManager
      */
     private $em;
+
     /**
      * SequenceValidator constructor.
      *
