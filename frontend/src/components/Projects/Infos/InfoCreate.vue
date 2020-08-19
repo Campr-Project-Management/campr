@@ -63,9 +63,9 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.expiry_date') }}</label>
-                                    <date-field v-model="expiresAt"/>
+                                    <date-field v-model="expiresAt" v-on:input="checkData"/>
                                 </div>
-                                <error at-path="expiresAt"/>
+                                <error at-path="expiresAt" v-bind:message="calendarCorrect"/>
                             </div>
                         </div>
                     </div>
@@ -96,6 +96,7 @@ import router from '../../../router';
 import {mapActions, mapGetters} from 'vuex';
 import moment from 'moment';
 import DateField from '../../_common/_form-components/DateField';
+import {calendarNotPast} from '../../../util/validator_helper';
 
 export default {
     components: {
@@ -116,6 +117,10 @@ export default {
             'emptyValidationMessages',
             'getDistributionLists',
         ]),
+        checkData: function(value) {
+            let message = this.translate('before.now');
+            this.calendarCorrect = calendarNotPast(message, value);
+        },
         doSave() {
             if (!this.isSaving) {
                 const data = {
@@ -231,6 +236,7 @@ export default {
             responsibility: [],
             isSaving: false,
             distributionList: null,
+            calendarCorrect: null,
         };
     },
 };

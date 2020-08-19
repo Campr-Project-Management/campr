@@ -895,6 +895,7 @@ export default function (Translator) {
     Translator.add("message.back_to", "Zur\u00fcck zu", "messages", "de");
     Translator.add("message.back_to_decisions", "Zur\u00fcck zu Entscheidungen", "messages", "de");
     Translator.add("message.back_to_infos", "Zur\u00fcck zu Infos", "messages", "de");
+    Translator.add("message.before_now", "Diese Daten sollten nicht vorher sein", "messages", "de");
     Translator.add("message.back_to_meetings", "Zur\u00fcck zu Meetings", "messages", "de");
     Translator.add("message.back_to_organization", "Zur\u00fcck zur Projektorganisation", "messages", "de");
     Translator.add("message.back_to_phases_and_milestones", "Zur\u00fcck zu Phasen & Meilensteine", "messages", "de");
