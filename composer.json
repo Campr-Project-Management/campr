@@ -81,7 +81,8 @@
         "oneup/uploader-bundle": "^2.0",
         "league/flysystem": "^1.0",
         "spatie/flysystem-dropbox": "^1.0",
-        "cocur/slugify": "^3.2"
+        "cocur/slugify": "^3.2",
+        "google/apiclient": "^2.7"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
