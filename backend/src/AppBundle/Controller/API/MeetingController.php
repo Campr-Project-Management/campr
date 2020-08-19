@@ -50,6 +50,8 @@ class MeetingController extends ApiController
     {
         $this->denyAccessUnlessGranted(MeetingVoter::VIEW, $meeting);
 
+        $meeting->setJitsiLink();
+
         return $this->createApiResponse($meeting);
     }
 
