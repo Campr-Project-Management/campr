@@ -61,7 +61,7 @@
                                 <member-search
                                     :selectedUser="responsibilityFullName"
                                     v-model="responsibility"
-                                    :placeholder="resposible"
+                                    :placeholder="translate('placeholder.responsible')"
                                     :singleSelect="true" />
                                 <error at-path="responsiblity"/>
                             </div>
