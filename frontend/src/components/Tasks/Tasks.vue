@@ -20,7 +20,7 @@
                 @input="changePage"/>
     </div>
 </template>
-NC
+
 <script>
     import TaskFilters from '../_common/TaskFilters';
     import TaskBox from './TaskBox';
