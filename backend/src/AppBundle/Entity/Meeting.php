@@ -206,6 +206,11 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
     protected $updatedAt;
 
     /**
+     * @var String
+     */
+    public $jitsiLink;
+
+    /**
      * Meeting constructor.
      */
     public function __construct()
@@ -832,5 +837,19 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
     public function getMeetingReports()
     {
         return $this->meetingReports;
+    }
+
+    /**
+     * Set link to Jitsi-meeting
+     *
+     * @return string
+     */
+    public function setJitsiLink()
+    {
+        $workspaceId = $this->getProject()->getProjectUsers()->current()->getUser()->getTeams()->current()->getId();
+        $projectId = $this->getPojectId();
+        $distributionListId = $this->getDistributionLists()->current()->getId();
+
+        $this->jitsiLink = "https://jitsi.campr.biz/{$workspaceId}{$projectId}{$distributionListId}";
     }
 }

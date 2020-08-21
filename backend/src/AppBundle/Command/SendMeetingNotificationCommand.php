@@ -79,6 +79,8 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             )
         );
 
+        $meeting->setJitsiLink();
+
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
         $scheme = $this->getContainer()->getParameter('router.request_context.scheme');
@@ -234,6 +236,9 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $event->setStart($meetingStart);
         $event->setEnd($meetingEnd);
         $event->addLocation($location);
+
+        $meeting->setJitsiLink();
+        $event->setDescription("Jitsi link: " . $meeting->jitsiLink);
 
         $recipients = $this
             ->getMeetingParticipants($meeting)

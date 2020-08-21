@@ -103,6 +103,12 @@
                     <!-- /// End Header /// -->
                 </div>
 
+                <!-- /// Meeting Link /// -->
+                <h3>Jitsi Meet</h3>
+                <p><a :href="meeting.jitsiLink" target="_blank">{{ meeting.jitsiLink }}</a></p>
+                <!-- /// End Meeting Location /// -->
+
+                <hr class="double">
 
                 <!-- /// Meeting Location /// -->
                 <h3>{{ translate('message.location') }}</h3>
