@@ -89,6 +89,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         foreach ($recipients as $locale => $to) {
             $trans->setLocale($locale);
 
+
             $mailer->sendEmail(
                 ':meeting:notification.html.twig',
                 'notification',
@@ -236,6 +237,9 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $event->setStart($meetingStart);
         $event->setEnd($meetingEnd);
         $event->addLocation($location);
+
+        $meeting->setJitsiLink();
+        $event->setDescription("Jitsi link: " . $meeting->jitsiLink);
 
         $recipients = $this
             ->getMeetingParticipants($meeting)

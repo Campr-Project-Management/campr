@@ -13,9 +13,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Ratchet\App;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as AppAssert;
 
@@ -216,7 +213,7 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
     /**
      * Meeting constructor.
      */
-    public function __construct(Container $container)
+    public function __construct()
     {
         $this->meetingParticipants = new ArrayCollection();
         $this->meetingReports = new ArrayCollection();
@@ -228,8 +225,6 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
         $this->infos = new ArrayCollection();
         $this->distributionLists = new ArrayCollection();
         $this->createdAt = new \DateTime();
-
-        $this->setJitsiLink();
     }
 
     public function __toString()
