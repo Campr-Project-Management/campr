@@ -59,20 +59,28 @@
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
-                                    <timepicker
-                                            v-model="schedule.startTime"
-                                            hide-clear-button
-                                            :minute-interval="15"/>
+                                    <DataPicker v-model="schedule.startTime"
+                                                format="hh:mm"
+                                                type="time"
+                                                placeholder="hh:mm a"
+                                                :minute-step="15"
+                                                lang="en"
+                                                mask="mask"
+                                                />
                                     <error at-path="start"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <timepicker
-                                            v-model="schedule.endTime"
-                                            hide-clear-button
-                                            :minute-interval="15" />
+<!--                                    <timepicker-->
+<!--                                            v-model="schedule.endTime"-->
+<!--                                            hide-clear-button-->
+<!--                                            :minute-interval="15" />-->
+                                      <DataPicker v-model="schedule.endTime"
+                                                   format="hh:mm"
+                                                   type="time"
+                                                   placeholder="hh:mm"/>
                                     <error at-path="end"/>
                                 </div>
                             </div>
@@ -80,7 +88,7 @@
                     </div>
                     <!-- /// End Meeting Schedule /// -->
 
-                    <hr class="double">
+                    <hr class="double"/>
 
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translate('message.location') }}</h3>
@@ -480,7 +488,6 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import Error from '../../_common/_messages/Error.vue';
@@ -493,6 +500,10 @@ import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
 import UserAvatar from '../../_common/UserAvatar';
 import ViewIcon from '../../_common/_icons/ViewIcon';
+import DataPicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import '../../../css/vue-dat-time-picker-custom.css';
+import moment from 'moment';
 
 export default {
     components: {
@@ -503,7 +514,6 @@ export default {
         InputField,
         SelectField,
         MemberSearch,
-        Timepicker,
         MultiSelectField,
         Error,
         Editor,
@@ -511,6 +521,7 @@ export default {
         EditDistributionListModal,
         UserAvatar,
         ViewIcon,
+        DataPicker,
     },
     methods: {
         getMediaFile(media) {
@@ -627,8 +638,14 @@ export default {
                         : null,
                     meetingCategory: this.details.category,
                     date: this.schedule.meetingDate,
-                    start: this.schedule.startTime,
-                    end: this.schedule.endTime,
+                    start: {
+                        HH: moment(this.schedule.startTime).format('HH'),
+                        mm: moment(this.schedule.startTime).format('mm'),
+                    },
+                    end: {
+                        HH: moment(this.schedule.endTime).format('HH'),
+                        mm: moment(this.schedule.endTime).format('mm'),
+                    },
                     location: this.location,
                     objectives: this.objectives,
                     agendas: this.agendas,
@@ -843,6 +860,7 @@ export default {
     mounted() {
         this.addObjective();
     },
+
     beforeDestroy() {
         this.emptyValidationMessages();
     },
@@ -879,6 +897,7 @@ export default {
             isSaving: false,
             isUploading: false,
             isDecisionUploading: false,
+            mask: '^(2[0-3]|[01]?[0-9]):([1-5]{1}[0-9])$',
             // openTodos: [],
             // openInfos: [],
             // openDecisions: [],
