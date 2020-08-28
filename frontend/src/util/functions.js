@@ -1,3 +1,8 @@
+/**
+ * Regular fro mask.
+ * @param {any} val input argument
+ * @return{int} like regular
+ */
 export function replaceBadInputs(val) {
     // Replace impossible inputs as they appear
     val = val.replace(/[^\dh:]/, '');

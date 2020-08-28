@@ -86,7 +86,7 @@
                     </div>
                     <!-- /// End Meeting Schedule /// -->
 
-                    <hr class="double"/>
+                    <hr class="double">
 
                     <!-- /// Meeting Location /// -->
                     <h3>{{ translate('message.location') }}</h3>
@@ -500,7 +500,6 @@ import UserAvatar from '../../_common/UserAvatar';
 import ViewIcon from '../../_common/_icons/ViewIcon';
 import DataPicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/zh-cn';
 import '../../../css/vue-dat-time-picker-custom.css';
 import moment from 'moment';
 import {replaceBadInputs} from '../../../util/functions';
@@ -861,7 +860,7 @@ export default {
         this.addObjective();
         $(document).ready(
             function() {
-// Apply input rules as the user types or pastes input
+                 // Apply input rules as the user types or pastes input
                 $('.mx-input').keyup(function() {
                     let val = this.value;
                     let lastLength;
@@ -876,7 +875,7 @@ export default {
                     };
                 });
 
-// Check the final result when the input has lost focus
+                // Check the final result when the input has lost focus
                 $('.mx-input').blur(function() {
                     let val = this.value;
                     val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
