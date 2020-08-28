@@ -59,20 +59,26 @@
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
-                                    <timepicker
-                                            v-model="schedule.startTime"
-                                            hide-clear-button
-                                            :minute-interval="15"/>
+                                    <DataPicker v-model="schedule.startTime"
+                                                format="HH:mm"
+                                                type="time"
+                                                placeholder="HH:mm"
+                                                :minute-step="15"
+                                                lang="en"
+                                    />
                                     <error at-path="start"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <timepicker
-                                            v-model="schedule.endTime"
-                                            hide-clear-button
-                                            :minute-interval="15" />
+                                    <DataPicker v-model="schedule.endTime"
+                                                  type="time"
+                                                  format="HH:mm"
+                                                  :minute-step="15"
+                                                  placeholder="HH:mm"
+                                                  lang="en"
+                                      />
                                     <error at-path="end"/>
                                 </div>
                             </div>
@@ -480,7 +486,6 @@ import InputField from '../../_common/_form-components/InputField';
 import SelectField from '../../_common/_form-components/SelectField';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import MemberSearch from '../../_common/MemberSearch';
-import Timepicker from '../../_common/_form-components/Timepicker';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
 import Error from '../../_common/_messages/Error.vue';
@@ -493,6 +498,11 @@ import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
 import UserAvatar from '../../_common/UserAvatar';
 import ViewIcon from '../../_common/_icons/ViewIcon';
+import DataPicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import '../../../css/vue-dat-time-picker-custom.css';
+import moment from 'moment';
+import {replaceBadInputs} from '../../../util/functions';
 
 export default {
     components: {
@@ -503,7 +513,6 @@ export default {
         InputField,
         SelectField,
         MemberSearch,
-        Timepicker,
         MultiSelectField,
         Error,
         Editor,
@@ -511,6 +520,7 @@ export default {
         EditDistributionListModal,
         UserAvatar,
         ViewIcon,
+        DataPicker,
     },
     methods: {
         getMediaFile(media) {
@@ -627,8 +637,14 @@ export default {
                         : null,
                     meetingCategory: this.details.category,
                     date: this.schedule.meetingDate,
-                    start: this.schedule.startTime,
-                    end: this.schedule.endTime,
+                    start: {
+                        HH: moment(this.schedule.startTime).format('HH'),
+                        mm: moment(this.schedule.startTime).format('mm'),
+                    },
+                    end: {
+                        HH: moment(this.schedule.endTime).format('HH'),
+                        mm: moment(this.schedule.endTime).format('mm'),
+                    },
                     location: this.location,
                     objectives: this.objectives,
                     agendas: this.agendas,
@@ -842,7 +858,33 @@ export default {
     },
     mounted() {
         this.addObjective();
+        $(document).ready(
+            function() {
+                 // Apply input rules as the user types or pastes input
+                $('.mx-input').keyup(function() {
+                    let val = this.value;
+                    let lastLength;
+                    do {
+                        // Loop over the input to apply rules repeately to pasted inputs
+                        lastLength = val.length;
+                        val = replaceBadInputs(val);
+                    } while(val.length > 0 && lastLength !== val.length);
+                    this.value = val;
+                    if(this.value.length == 2) {
+                        this.value += ':';
+                    };
+                });
+
+                // Check the final result when the input has lost focus
+                $('.mx-input').blur(function() {
+                    let val = this.value;
+                    val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
+                    this.value = val;
+                });
+            }
+        );
     },
+
     beforeDestroy() {
         this.emptyValidationMessages();
     },
