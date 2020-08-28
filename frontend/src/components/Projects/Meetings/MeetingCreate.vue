@@ -60,27 +60,25 @@
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
                                     <DataPicker v-model="schedule.startTime"
-                                                format="hh:mm"
+                                                format="HH:mm"
                                                 type="time"
-                                                placeholder="hh:mm a"
+                                                placeholder="HH:mm"
                                                 :minute-step="15"
                                                 lang="en"
-                                                mask="mask"
-                                                />
+                                    />
                                     <error at-path="start"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-<!--                                    <timepicker-->
-<!--                                            v-model="schedule.endTime"-->
-<!--                                            hide-clear-button-->
-<!--                                            :minute-interval="15" />-->
-                                      <DataPicker v-model="schedule.endTime"
-                                                   format="hh:mm"
-                                                   type="time"
-                                                   placeholder="hh:mm"/>
+                                    <DataPicker v-model="schedule.endTime"
+                                                  type="time"
+                                                  format="HH:mm"
+                                                  :minute-step="15"
+                                                  placeholder="HH:mm"
+                                                  lang="en"
+                                      />
                                     <error at-path="end"/>
                                 </div>
                             </div>
@@ -502,8 +500,10 @@ import UserAvatar from '../../_common/UserAvatar';
 import ViewIcon from '../../_common/_icons/ViewIcon';
 import DataPicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/zh-cn';
 import '../../../css/vue-dat-time-picker-custom.css';
 import moment from 'moment';
+import {replaceBadInputs} from '../../../util/functions';
 
 export default {
     components: {
@@ -859,6 +859,31 @@ export default {
     },
     mounted() {
         this.addObjective();
+        $(document).ready(
+            function() {
+// Apply input rules as the user types or pastes input
+                $('.mx-input').keyup(function() {
+                    let val = this.value;
+                    let lastLength;
+                    do {
+                        // Loop over the input to apply rules repeately to pasted inputs
+                        lastLength = val.length;
+                        val = replaceBadInputs(val);
+                    } while(val.length > 0 && lastLength !== val.length);
+                    this.value = val;
+                    if(this.value.length == 2) {
+                        this.value += ':';
+                    };
+                });
+
+// Check the final result when the input has lost focus
+                $('.mx-input').blur(function() {
+                    let val = this.value;
+                    val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
+                    this.value = val;
+                });
+            }
+        );
     },
 
     beforeDestroy() {
