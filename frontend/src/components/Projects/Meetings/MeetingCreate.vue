@@ -922,7 +922,6 @@ export default {
             isSaving: false,
             isUploading: false,
             isDecisionUploading: false,
-            mask: '^(2[0-3]|[01]?[0-9]):([1-5]{1}[0-9])$',
             // openTodos: [],
             // openInfos: [],
             // openDecisions: [],
