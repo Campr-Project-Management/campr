@@ -21,7 +21,7 @@
   "dependencies": {
     "accounting": "0.4.1",
     "bazinga-translator": "2.6.4",
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "chart.js": "2.7.2",
     "d3": "4.10.0",
     "d3-context-menu": "1.0.2",
