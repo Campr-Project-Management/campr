@@ -338,7 +338,7 @@ export default {
                 approvedAt: this.approvedAt,
             };
 
-            localStorage.removeItem('contractDescription');
+            localStorage.removeItem('contract');
 
             if (this.contract.id) {
                 data.id = this.contract.id;
@@ -455,6 +455,19 @@ export default {
         isModuleActive(module) {
             return this.modules.indexOf(module) >= 0;
         },
+        getLocalStorageContract: function() {
+            let contract = localStorage.getItem('contract');
+            if(!contract) {
+                contract = {};
+            } else {
+                contract = JSON.parse(localStorage.getItem('contract'));
+            }
+
+            return contract;
+        },
+        setLocalStorageContract: function(contractObj) {
+            localStorage.setItem('contract', JSON.stringify(contractObj));
+        },
     },
     created() {
         this.getProjectById(this.$route.params.id);
@@ -512,17 +525,32 @@ export default {
         });
     },
     mounted() {
+        let vm = this;
+
         document.getElementById('description').onkeyup = function() {
-            localStorage.setItem(
-                'contractDescription',
-                document.getElementById('description').children[0].innerHTML
-            );
+            let contract = vm.getLocalStorageContract();
+            contract.description = document.getElementById('description').children[0].innerHTML;
+            vm.setLocalStorageContract(contract);
         };
 
-        if (localStorage.getItem('contractDescription')) {
+        document.getElementById('projectStartEvent').onkeyup = function() {
+            let contract = vm.getLocalStorageContract();
+            contract.startEvent = document.getElementById('projectStartEvent').children[0].innerHTML;
+            vm.setLocalStorageContract(contract);
+        };
+
+        let contract = vm.getLocalStorageContract();
+
+        if (contract.description) {
             setTimeout(function() {
-                document.getElementById('description').children[0].innerHTML = localStorage.getItem('contractDescription');
+                document.getElementById('description').children[0].innerHTML = contract.description;
             }, 1000);
+        }
+
+        if (contract.startEvent) {
+            setTimeout(function() {
+                document.getElementById('projectStartEvent').children[0].innerHTML = contract.startEvent;
+            }, 2000);
         }
     },
     beforeDestroy() {
@@ -602,7 +630,26 @@ export default {
             proposedEndDate: moment(new Date()).format('DD-MM-YYYY'),
         };
     },
+    beforeRouteLeave(to, from, next) {
+        if (localStorage.getItem('contract')) {
+            if (!window.confirm('Changes you made may not be saved.')) {
+                return;
+            }
+        }
+        localStorage.removeItem('contract');
+        next();
+    },
 };
+
+window.onbeforeunload = function(event) {
+    if (localStorage.getItem('contract')) {
+        if (!confirm('Changes you made may not be saved.')) {
+            localStorage.removeItem('contract');
+            return false;
+        }
+    }
+};
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
