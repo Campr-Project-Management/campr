@@ -70,7 +70,8 @@ class SecurityController extends Controller
 
         // check issuer
         $issParts = explode('://', $iss);
-        if (2 !== count($issParts) || $issParts[1] !== $this->getParameter('domain')) {
+        $domain = isset($issParts[1]) ? explode(':', $issParts[1])[0] : $issParts[0]; // ignore ports
+        if (2 !== count($issParts) || $domain !== $this->getParameter('domain')) {
             throw $this->createNotFoundException(
                 $this
                     ->get('translator')
