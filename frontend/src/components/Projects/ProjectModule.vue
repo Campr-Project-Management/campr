@@ -264,7 +264,7 @@
             </div>
             <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
                 <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue"
-                       v-if="disabled === true" disabled class="bg-lightcolor" />
+                       v-if="this.isInArray(id, [modules.MODULE_CONTRACT, modules.MODULE_ORGANIZATION, modules.MODULE_TASK_MANAGEMENT, modules.MODULE_STATUS_REPORT, modules.MODULE_CLOSE_DOWN_PROJECT])" disabled class="bg-lightcolor" />
                 <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue" v-else/>
                 <label :for="id"></label>
             </div>
@@ -303,10 +303,6 @@ export default {
             type: String,
             required: true,
         },
-        disabled: {
-            type: Boolean,
-            default: false,
-        },
     },
     methods: {
         toggleContent() {
@@ -314,6 +310,9 @@ export default {
         },
         onUpdateValue: function(e) {
             this.$emit('input', e.target.checked);
+        },
+        isInArray: function(needle, array) {
+            return array.indexOf(needle) !== -1;
         },
     },
     data: function() {

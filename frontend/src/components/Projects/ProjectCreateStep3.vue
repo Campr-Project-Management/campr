@@ -15,7 +15,6 @@
                     :id="module"
                     :key="`recommended_module_${module}`"
                     :value="isModuleSelected(module)"
-                    :disabled="true"
                     @input="onModuleSelectionChanged(module, $event)"/>
 
             <template v-if="optionalModules.length > 0">
