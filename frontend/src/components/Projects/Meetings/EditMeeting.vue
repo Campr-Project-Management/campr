@@ -517,7 +517,6 @@ import 'vue2-datepicker/index.css';
 import '../../../css/vue-dat-time-picker-custom.css';
 import Vue from 'vue';
 import {timepicerMask} from '../../../util/functions';
-
 export default {
     components: {
         Attachments,

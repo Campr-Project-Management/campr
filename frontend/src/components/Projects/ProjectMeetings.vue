@@ -20,7 +20,6 @@
                 <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.start_time') }}</label>
-<!--                        <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>-->
                         <DataPicker v-model="startTime"  format="HH:mm"
                                     type="time"
                                     placeholder="HH:mm"
@@ -31,7 +30,6 @@
                 <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.finish_time') }}</label>
-<!--                        <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>-->
                         <DataPicker v-model="endTime"  format="HH:mm"
                                     type="time"
                                     placeholder="HH:mm"
