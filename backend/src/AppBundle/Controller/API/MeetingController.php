@@ -46,11 +46,11 @@ class MeetingController extends ApiController
      *
      * @return JsonResponse
      */
-    public function getAction(Meeting $meeting)
+    public function getAction(Request $request, Meeting $meeting)
     {
         $this->denyAccessUnlessGranted(MeetingVoter::VIEW, $meeting);
 
-        $meeting->setJitsiLink();
+        $meeting->setJitsiLink($request->getHost());
 
         return $this->createApiResponse($meeting);
     }

@@ -61,7 +61,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $mailer = $this->getMailer();
 
         $io->note('Creating meeting ICS...');
-        $icsAttachment = $this->createMailIcsAttachement($meeting, $user);
+        $icsAttachment = $this->createMailIcsAttachement($meeting, $user, $host);
         $io->success('Meeting ICS successfully created');
 
         $io->note(
@@ -79,7 +79,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
             )
         );
 
-        $meeting->setJitsiLink();
+        $meeting->setJitsiLink($host);
 
         $trans = $this->getContainer()->get('translator');
         $currentLocale = $trans->getLocale();
@@ -172,15 +172,14 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
     /**
      * @param Meeting $meeting
-     * @param User    $user
-     *
+     * @param User $user
+     * @param $host
      * @return \Swift_Attachment
-     *
      * @throws \Jsvrcek\ICS\Exception\CalendarEventException
      */
-    private function createMailIcsAttachement(Meeting $meeting, User $user): \Swift_Attachment
+    private function createMailIcsAttachement(Meeting $meeting, User $user, $host): \Swift_Attachment
     {
-        $ics = $this->getICSContent($meeting, $user);
+        $ics = $this->getICSContent($meeting, $user, $host);
 
         return new \Swift_Attachment(
             $ics,
@@ -191,17 +190,16 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
     /**
      * @param Meeting $meeting
-     * @param User    $user
-     *
+     * @param User $user
+     * @param $host
      * @return string
-     *
      * @throws \Jsvrcek\ICS\Exception\CalendarEventException
      */
-    private function getICSContent(Meeting $meeting, User $user): string
+    private function getICSContent(Meeting $meeting, User $user, $host): string
     {
         $calendar = new Calendar();
         $calendar->setProdId('default');
-        $calendar->addEvent($this->createIcalEvent($meeting, $user));
+        $calendar->addEvent($this->createIcalEvent($meeting, $user, $host));
 
         $calendarExport = new CalendarExport(new CalendarStream(), new Formatter());
         $calendarExport->addCalendar($calendar);
@@ -211,13 +209,12 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
 
     /**
      * @param Meeting $meeting
-     * @param User    $user
-     *
+     * @param User $user
+     * @param $host
      * @return CalendarEvent
-     *
      * @throws \Jsvrcek\ICS\Exception\CalendarEventException
      */
-    private function createIcalEvent(Meeting $meeting, User $user)
+    private function createIcalEvent(Meeting $meeting, User $user, $host)
     {
         $meetingDate = $meeting->getDate();
         $meetingStart = new \DateTime($meetingDate->format('Y-m-d').' '.$meeting->getStart()->format('H:i:s'));
@@ -237,7 +234,7 @@ class SendMeetingNotificationCommand extends ContainerAwareCommand
         $event->setEnd($meetingEnd);
         $event->addLocation($location);
 
-        $meeting->setJitsiLink();
+        $meeting->setJitsiLink($host);
         $event->setDescription("Jitsi link: " . $meeting->jitsiLink);
 
         $recipients = $this

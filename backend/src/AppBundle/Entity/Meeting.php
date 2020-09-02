@@ -839,17 +839,20 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
         return $this->meetingReports;
     }
 
+
     /**
      * Set link to Jitsi-meeting
      *
-     * @return string
+     * @param string $host
      */
-    public function setJitsiLink()
+    public function setJitsiLink(string $host = '')
     {
+        $workspaceName = !empty($host) ? explode('.', $host)[0] : '';
+        $workspaceName = str_replace('-', 0, $workspaceName);
         $workspaceId = $this->getProject()->getProjectUsers()->current()->getUser()->getTeams()->current()->getId();
         $projectId = $this->getPojectId();
         $distributionListId = $this->getDistributionLists()->current()->getId();
 
-        $this->jitsiLink = "https://jitsi.campr.biz/{$workspaceId}{$projectId}{$distributionListId}";
+        $this->jitsiLink = "https://jitsi.campr.biz/{$workspaceName}{$workspaceId}{$projectId}{$this->id}{$distributionListId}";
     }
 }
