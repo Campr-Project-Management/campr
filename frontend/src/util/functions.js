@@ -17,3 +17,33 @@ export function replaceBadInputs(val) {
     val = val.replace(/^(\d{2}:\d[0-9])./, '$1');
     return val;
 }
+
+/**
+ * Time picker mask
+ * @return {void} alert
+ */
+export function timepicerMask() {
+    $(document).ready(function() {
+        $('.mx-input').keyup(function() {
+            let val = this.value;
+            let lastLength;
+            do {
+                // Loop over the input to apply rules repeately to pasted inputs
+                lastLength = val.length;
+                val = replaceBadInputs(val);
+            } while(val.length > 0 && lastLength !== val.length);
+            this.value = val;
+            if(this.value.length == 2) {
+                this.value += ':';
+            };
+        });
+
+        // Check the final result when the input has lost focus
+        $('.mx-input').blur(function() {
+            let val = this.value;
+            val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
+            this.value = val;
+        });
+        console.log('hello from functions');
+    });
+}

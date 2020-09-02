@@ -502,7 +502,7 @@ import DataPicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import '../../../css/vue-dat-time-picker-custom.css';
 import moment from 'moment';
-import {replaceBadInputs} from '../../../util/functions';
+import {timepicerMask} from '../../../util/functions';
 
 export default {
     components: {
@@ -858,31 +858,7 @@ export default {
     },
     mounted() {
         this.addObjective();
-        $(document).ready(
-            function() {
-                 // Apply input rules as the user types or pastes input
-                $('.mx-input').keyup(function() {
-                    let val = this.value;
-                    let lastLength;
-                    do {
-                        // Loop over the input to apply rules repeately to pasted inputs
-                        lastLength = val.length;
-                        val = replaceBadInputs(val);
-                    } while(val.length > 0 && lastLength !== val.length);
-                    this.value = val;
-                    if(this.value.length == 2) {
-                        this.value += ':';
-                    };
-                });
-
-                // Check the final result when the input has lost focus
-                $('.mx-input').blur(function() {
-                    let val = this.value;
-                    val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
-                    this.value = val;
-                });
-            }
-        );
+        timepicerMask();
     },
 
     beforeDestroy() {

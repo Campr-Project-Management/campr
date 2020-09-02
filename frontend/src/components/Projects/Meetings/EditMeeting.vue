@@ -86,14 +86,26 @@
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.start_time') }}</label>
-                                    <vue-timepicker v-model="schedule.startTime" hide-clear-button></vue-timepicker>
+                                    <DataPicker v-model="schedule.startTime"
+                                                format="HH:mm"
+                                                type="time"
+                                                placeholder="HH:mm"
+                                                :minute-step="15"
+                                                lang="en"
+                                    />
                                 </div>
                                 <error at-path="start"/>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.finish_time') }}</label>
-                                    <vue-timepicker v-model="schedule.endTime" hide-clear-button></vue-timepicker>
+                                    <DataPicker v-model="schedule.endTime"
+                                                type="time"
+                                                format="HH:mm"
+                                                :minute-step="15"
+                                                placeholder="HH:mm"
+                                                lang="en"
+                                    />
                                 </div>
                                 <error at-path="end"/>
                             </div>
@@ -484,7 +496,6 @@ import MemberSearch from '../../_common/MemberSearch';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import {mapGetters, mapActions} from 'vuex';
-import VueTimepicker from '../../_common/_form-components/Timepicker';
 import moment from 'moment';
 import {createFormData} from '../../../helpers/meeting';
 import MultiSelectField from '../../_common/_form-components/MultiSelectField';
@@ -501,7 +512,11 @@ import MeetingDecisionForm from './Form/DecisionForm';
 import DateField from '../../_common/_form-components/DateField';
 import Attachments from '../../_common/Attachments';
 import {createFormDataDecision} from '../../../helpers/decision';
+import DataPicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import '../../../css/vue-dat-time-picker-custom.css';
 import Vue from 'vue';
+import {timepicerMask} from '../../../util/functions';
 
 export default {
     components: {
@@ -515,7 +530,6 @@ export default {
         MemberSearch,
         EditIcon,
         DeleteIcon,
-        VueTimepicker,
         ViewIcon,
         moment,
         MultiSelectField,
@@ -524,6 +538,7 @@ export default {
         Error,
         Modal,
         EditDistributionListModal,
+        DataPicker,
     },
     methods: {
         ...mapActions([
@@ -793,8 +808,14 @@ export default {
                     : null,
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
-                start: this.schedule.startTime,
-                end: this.schedule.endTime,
+                start: {
+                    HH: moment(this.schedule.startTime).format('HH'),
+                    mm: moment(this.schedule.startTime).format('mm'),
+                },
+                end: {
+                    HH: moment(this.schedule.endTime).format('HH'),
+                    mm: moment(this.schedule.endTime).format('mm'),
+                },
                 location: this.location,
                 medias: this.medias,
                 meetingParticipants: this.selectedParticipants.map(participant => {
@@ -1049,6 +1070,9 @@ export default {
                 });
             }
         },
+    },
+    mounted() {
+        timepicerMask();
     },
 };
 </script>
