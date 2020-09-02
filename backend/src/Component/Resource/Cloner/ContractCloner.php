@@ -30,9 +30,22 @@ class ContractCloner implements ResourceClonerInterface
      */
     public function clone(ResourceInterface $object, CloneScopeInterface $scope = null): ResourceInterface
     {
+        $newStartAt = $projectNewStartDate = new \DateTime($_SESSION['projectDates']['startDate']);
+
         /** @var Contract $clone */
         $clone = $this->resourceCloner->clone($object);
+
+        $oldStartAt = $object->getProposedStartDate();
+        $oldFinishAt = $object->getProposedEndDate();
+
         if ($clone !== $object) {
+            // get new endDate
+            $newFinishAt = new \DateTime($newStartAt->format("Y-m-d"));
+            $daysPeriod = $oldFinishAt->diff($oldStartAt)->format('%a');
+            $newFinishAt = $newFinishAt->add(new \DateInterval("P{$daysPeriod}D"));
+
+            $clone->setProposedStartDate($projectNewStartDate);
+            $clone->setProposedEndDate($newFinishAt);
             $clone->setName(sprintf('%s %s', $clone->getName(), uniqid()));
         }
 
