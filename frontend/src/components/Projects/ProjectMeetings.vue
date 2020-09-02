@@ -315,7 +315,6 @@ export default {
             );
         },
         rescheduleMeeting() {
-            console.log('start time in set ', this.startTime);
             let data = {
                 id: this.meetingId,
                 date: moment(this.date).format('DD-MM-YYYY'),
@@ -393,9 +392,6 @@ export default {
                 page: this.activePage,
             },
         });
-    },
-    mounted() {
-
     },
     computed: {
         ...mapGetters({

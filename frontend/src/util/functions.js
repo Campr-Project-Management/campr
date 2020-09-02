@@ -44,6 +44,5 @@ export function timepicerMask() {
             val = (/^(([01][0-9]|2[0-3])h)|(([01][0-9]|2[0-3]):[0-5][0-9])$/.test(val) ? val : '');
             this.value = val;
         });
-        console.log('hello from functions');
     });
 }
