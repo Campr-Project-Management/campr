@@ -130,7 +130,7 @@ class SecurityController extends Controller
             }
         }
 
-        // $this->ensureTeamEnabled($user);
+        $this->ensureTeamEnabled($user);
 
         $upt = new UsernamePasswordToken(
             $user,
