@@ -849,7 +849,8 @@ class Meeting implements MediasAwareInterface, ResourceInterface, CloneableInter
     {
         $workspaceName = !empty($host) ? explode('.', $host)[0] : '';
         $workspaceName = str_replace('-', 0, $workspaceName);
-        $workspaceId = $this->getProject()->getProjectUsers()->current()->getUser()->getTeams()->current()->getId();
+        $currTeam = $this->getProject()->getProjectUsers()->current()->getUser()->getTeams()->current();
+        $workspaceId = $currTeam ? $currTeam->getId() : '';
         $projectId = $this->getPojectId();
         $distributionListId = $this->getDistributionLists()->current()->getId();
 

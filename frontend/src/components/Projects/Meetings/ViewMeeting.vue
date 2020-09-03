@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- /// Meeting Link /// -->
-                <h3>Jitsi Meet</h3>
+                <h3>Jitsi Meet 111111111111</h3>
                 <p><a :href="meeting.jitsiLink" target="_blank">{{ meeting.jitsiLink }}</a></p>
                 <!-- /// End Meeting Location /// -->
 
@@ -348,6 +348,10 @@
 </template>
 
 <script>
+if (document.cookie.indexOf('redirectAfterLogin=') >= 0) {
+    document.cookie = 'redirectAfterLogin=; Max-Age=-99999999;';
+}
+
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import Switches from '../../3rdparty/vue-switches';
