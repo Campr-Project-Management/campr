@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- /// Meeting Link /// -->
-                <h3>Jitsi Meet 111111111111</h3>
+                <h3>Jitsi Meet</h3>
                 <p><a :href="meeting.jitsiLink" target="_blank">{{ meeting.jitsiLink }}</a></p>
                 <!-- /// End Meeting Location /// -->
 
