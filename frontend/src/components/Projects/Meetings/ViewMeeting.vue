@@ -348,6 +348,10 @@
 </template>
 
 <script>
+if (document.cookie.indexOf('redirectAfterLogin=') >= 0) {
+    document.cookie = 'redirectAfterLogin=; Max-Age=-99999999;';
+}
+
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import Switches from '../../3rdparty/vue-switches';
