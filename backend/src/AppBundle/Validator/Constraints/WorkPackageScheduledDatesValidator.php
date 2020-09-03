@@ -34,7 +34,9 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
                     $constraint->greaterStartedAtWitPhaseMessage,
                     [
                         '%date%' => $wp->getScheduledStartAt()->format('d.m.Y'),
-                        '%phase%' => $phase->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_name%' => $phase->getName(),
+                        '%phase_start%' => $phase->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_end%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
                     ]
                 )
                 ->atPath('scheduledStartAt')
@@ -47,7 +49,9 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
                     $constraint->greaterFinishedAtWitPhaseMessage,
                     [
                         '%date%' => $wp->getScheduledFinishAt()->format('d.m.Y'),
-                        '%phase%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
+                        '%phase_name%' => $phase->getName(),
+                        '%phase_start%' => $phase->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_end%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
                     ]
                 )
                 ->atPath('scheduledFinishAt')
@@ -62,7 +66,8 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
                     $constraint->greaterFinishedAtWitMilestoneMessage,
                     [
                         '%date%' => $wp->getScheduledFinishAt()->format('d.m.Y'),
-                        '%phase%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
+                        '%milestone_name%' => $milestone->getName(),
+                        '%milestone_end%' => $milestone->getScheduledFinishAt()->format('d.m.Y'),
                     ]
                 )
                 ->atPath('scheduledFinishAt')
