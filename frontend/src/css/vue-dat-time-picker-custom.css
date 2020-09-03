@@ -1,3 +1,6 @@
 .mx-datepicker{
     width: 100px !important;
 }
+.mx-datepicker-popup{
+    z-index: 1000000;
+}
