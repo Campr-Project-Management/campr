@@ -51,7 +51,7 @@
     "vue-client-only": "^2.0.0",
     "vue-loader": "^15.9.1",
     "vue-meta": "^2.2.2",
-    "vue-moment": "^2.0.2",
+    "vue-moment": "^4.1.0",
     "vue-no-ssr": "^1.1.1",
     "vue-resize-directive": "^1.0.0",
     "vue-router": "^3.0.7",
