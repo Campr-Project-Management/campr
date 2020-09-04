@@ -1727,6 +1727,7 @@ class ProjectController extends ApiController
     private function mailerRasci($template, $rasci, $workspace, $project, $user = null, $currentResponsibleEmail = null, $workPackage = null, $oldResponsibility = null)
     {
         $mailerService = $this->get('app.service.mailer');
+
         if (is_null($user)) {
             $userName = $workPackage;
             $email = $currentResponsibleEmail;
@@ -1734,6 +1735,7 @@ class ProjectController extends ApiController
             $userName = $user->getUsername();
             $email =  $user->getEmail();
         }
+
         $mailerService->sendEmail(
                 $template,
                 'notification',
@@ -1764,7 +1766,6 @@ class ProjectController extends ApiController
      *
      * @return JsonResponse
      */
-
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
         $currentResponsibleEmail = $workPackage->getResponsibilityEmail();
@@ -1824,7 +1825,7 @@ class ProjectController extends ApiController
                     if(is_null($oldRasci)) {
                         $this->mailerRasci('MainBundle:Email:set_responsibility.html.twig', $rasci, $workspace, $project,$user);
                     }else {
-                        $this->mailerRasci( 'MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,
+                        $this->mailerRasci('MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,
                             $user,null, null, $oldRasci);
                     }
                     if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
@@ -1838,7 +1839,7 @@ class ProjectController extends ApiController
 
                 }
 
-                return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+                return $this->createApiResponse($rasci,$isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
             }
 
         }
