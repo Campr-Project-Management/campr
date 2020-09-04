@@ -97,9 +97,12 @@ class WorkPackageController extends BaseController
      */
     public function createAction(Request $request)
     {
+        $newWp = new WorkPackage();
+        $newWp->setUser($this->getUser());
+
         $form = $this->createForm(
             CreateType::class,
-            new WorkPackage(),
+            $newWp,
             [
                 'validation_groups' => ['Default', 'create'],
             ]
