@@ -1740,6 +1740,8 @@ class ProjectController extends ApiController
      */
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
+        $currentResibelEmail = $workPackage->getResponsibilityEmail();
+        $currentAcauntableEmail = $workPackage->getAccountabilityEmail();
         if ($workPackage->getProject() !== $project) {
             $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
         }
@@ -1760,6 +1762,10 @@ class ProjectController extends ApiController
             $rasci->setWorkPackage($workPackage);
             $rasci->setUser($user);
         }
+
+        $url_str = $request->getHost();
+        $url_arr = explode('.', $url_str);
+        $worcspace = $url_arr[0];
 
         $oldRasci = $rasci->getData();
         $form = $this->createForm(
@@ -1787,17 +1793,67 @@ class ProjectController extends ApiController
 
                 if ($request->request->get('data') != $oldRasci) {
                     $mailerService = $this->get('app.service.mailer');
-                    $mailerService->sendEmail(
-                        'MainBundle:Email:change_responsibility.html.twig',
-                        'notification',
-                        $user->getEmail(),
-                        [
-                            'username' => $user->getUsername(),
-                            'email' => $user->getEmail(),
-                            'responsibility' => $rasci->getData(),
-                            'task' => $rasci->getWorkPackageName()
-                        ]
-                    );
+                    if($oldRasci === null ) {
+                        $mailerService->sendEmail(
+                            'MainBundle:Email:set_responsibility.html.twig',
+                            'notification',
+                            $user->getEmail(),
+                            [
+                                'username' => $user->getUsername(),
+                                'email' => $user->getEmail(),
+                                'old_responsibility' => $oldRasci,
+                                'task' => $rasci->getWorkPackageName(),
+                                'responsibility' => $rasci->getData(),
+                                'workspace' => $worcspace,
+                                'project' => $project->getName(),
+                            ]
+                        );
+                    }else {
+                        $mailerService->sendEmail(
+                            'MainBundle:Email:change_responsibility.html.twig',
+                            'notification',
+                            $user->getEmail(),
+                            [
+                                'username' => $user->getUsername(),
+                                'email' => $user->getEmail(),
+                                'old_responsibility' => $oldRasci,
+                                'task' => $rasci->getWorkPackageName(),
+                                'responsibility' => $rasci->getData(),
+                                'workspace' => $worcspace,
+                                'project' => $project->getName(),
+                            ]
+                        );
+                    }
+                    if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail()!==$currentResibelEmail){
+                           $mailerService->sendEmail(
+                               'MainBundle:Email:remove_resposibility.html.twig',
+                               'notification',
+                                $currentResibelEmail,
+                               [
+                                   'username' =>  $workPackage->getResponsibilityFullName(),
+                                   'email' => $currentResibelEmail,
+                                   'task' => $rasci->getWorkPackageName(),
+                                   'workspace' => $worcspace,
+                                   'project' => $project->getName(),
+                               ]
+                           );
+                    }
+
+                    if($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail()!==$currentAcauntableEmail && $currentAcauntableEmail !== null ){
+                        $mailerService->sendEmail(
+                            'MainBundle:Email:remove_resposibility.html.twig',
+                            'notification',
+                            $currentResibelEmail,
+                            [
+                                'username' =>  $workPackage->getResponsibilityFullName(),
+                                'email' => $currentAcauntableEmail,
+                                'task' => $rasci->getWorkPackageName(),
+                                'workspace' => $worcspace,
+                                'project' => $project->getName(),
+                            ]
+                        );
+                    }
+
                 }
 
                 return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
@@ -1848,6 +1904,24 @@ class ProjectController extends ApiController
 
             if ($rasci->getData() != Rasci::DATA_RESPONSIBLE) {
                 $rasciRepo->remove($rasci);
+                $mailerService = $this->get('app.service.mailer');
+                $url_str = $request->getHost();
+                $url_arr = explode('.', $url_str);
+                $worcspace = $url_arr[0];
+
+                $mailerService->sendEmail(
+                    'MainBundle:Email:remove_resposibility.html.twig',
+                    'notification',
+                    $user->getEmail(),
+                    [
+                        'username' =>  $user->getUsername(),
+                        'email' => $user->getEmail(),
+                        'task' => $rasci->getWorkPackageName(),
+                        'workspace' => $worcspace,
+                        'project' => $project->getName(),
+                    ]
+                );
+
             }
 
             $this->dispatchEvent($postEventName, $event);
