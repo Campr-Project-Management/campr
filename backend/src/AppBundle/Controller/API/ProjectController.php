@@ -1726,17 +1726,14 @@ class ProjectController extends ApiController
 
     private function mailerRasci($template, $rasci, $workspace, $project, $user = null, $currentResponsibleEmail = null, $workPackage = null, $oldResponsibility = null)
     {
-
         $mailerService = $this->get('app.service.mailer');
         if (is_null($user)) {
             $userName = $workPackage;
             $email = $currentResponsibleEmail;
         } else {
-
             $userName = $user->getUsername();
             $email =  $user->getEmail();
         }
-
         $mailerService->sendEmail(
                 $template,
                 'notification',
