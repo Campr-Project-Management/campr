@@ -1822,25 +1822,24 @@ class ProjectController extends ApiController
                 $this->dispatchEvent($postEventName, $event);
 
                 if ($request->request->get('data') != $oldRasci) {
-                    if(is_null($oldRasci)) {
+                    if (is_null($oldRasci)) {
                         $this->mailerRasci('MainBundle:Email:set_responsibility.html.twig', $rasci, $workspace, $project,$user);
-                    }else {
+                    } else {
                         $this->mailerRasci('MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,
                             $user,null, null, $oldRasci);
                     }
-                    if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
+                    if ($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
                         $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig' , $rasci, $workspace, $project,
                             null, $currentResponsibleEmail, $currentResponsibleName);
                     }
-                    if($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail() !== $currentAccountableEmail && $currentAccountableEmail !== null ){
-                        $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project,
+                    if ($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail() !== $currentAccountableEmail && $currentAccountableEmail !== null ){
+                        $this->mailerRasci('MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project,
                             null, $currentAccountableEmail, $currentAccountableName);
                     }
                 }
 
                 return $this->createApiResponse($rasci,$isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
             }
-
         }
 
         return $this->createApiResponse(
@@ -1889,7 +1888,7 @@ class ProjectController extends ApiController
                 $urlStr = $request->getHost();
                 $urlArr = explode('.', $urlStr);
                 $workspace = $urlArr[0];
-                $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project, $user);
+                $this->mailerRasci('MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project, $user);
 
             }
             $this->dispatchEvent($postEventName, $event);
