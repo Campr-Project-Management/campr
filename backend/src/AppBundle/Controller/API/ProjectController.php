@@ -1836,7 +1836,6 @@ class ProjectController extends ApiController
                         $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project,
                             null, $currentAccountableEmail, $currentAccountableName);
                     }
-
                 }
 
                 return $this->createApiResponse($rasci,$isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
