@@ -1824,7 +1824,8 @@ class ProjectController extends ApiController
                     if(is_null($oldRasci)) {
                         $this->mailerRasci('MainBundle:Email:set_responsibility.html.twig', $rasci, $workspace, $project,$user);
                     }else {
-                        $this->mailerRasci( 'MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,$user,null, null, $oldRasci);
+                        $this->mailerRasci( 'MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,
+                            $user,null, null, $oldRasci);
                     }
                     if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
                         $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig' , $rasci, $workspace, $project,
