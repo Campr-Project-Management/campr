@@ -1767,10 +1767,10 @@ class ProjectController extends ApiController
 
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
-        $currentResposibelEmail = $workPackage->getResponsibilityEmail();
-        $currentAcauntableEmail = $workPackage->getAccountabilityEmail();
-        $currentResposibelName = $workPackage->getResponsibilityFullName();
-        $currentAcauntableName = $workPackage->getAccountabilityFullName();
+        $currentResponsibleEmail = $workPackage->getResponsibilityEmail();
+        $currentAccountableEmail = $workPackage->getAccountabilityEmail();
+        $currentResponsibleName = $workPackage->getResponsibilityFullName();
+        $currentAccountableName = $workPackage->getAccountabilityFullName();
         if ($workPackage->getProject() !== $project) {
             $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
         }
@@ -1826,13 +1826,13 @@ class ProjectController extends ApiController
                     }else {
                         $this->mailerRasci( 'MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,$user,null, null, $oldRasci);
                     }
-                    if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResposibelEmail) {
+                    if($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
                         $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig' , $rasci, $workspace, $project,
-                            null, $currentResposibelEmail, $currentResposibelName);
+                            null, $currentResponsibleEmail, $currentResponsibleName);
                     }
-                    if($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail() !== $currentAcauntableEmail && $currentAcauntableEmail !== null ){
+                    if($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail() !== $currentAccountableEmail && $currentAccountableEmail !== null ){
                         $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project,
-                            null, $currentAcauntableEmail, $currentAcauntableName);
+                            null, $currentAccountableEmail, $currentAccountableName);
                     }
 
                 }
