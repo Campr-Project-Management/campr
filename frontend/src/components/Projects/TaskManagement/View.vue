@@ -540,17 +540,11 @@
 
 <script>
 
-deleteCookie('redirectAfterLogin');
-
-let setCookie = function(name, value, days) {
+if (document.cookie.indexOf('redirectAfterLogin=') >= 0) {
     let d = new Date;
-    d.setTime(d.getTime() + 24*60*60*1000*days);
-    document.cookie = name + '=' + value + ';path=/;expires=' + d.toGMTString();
-};
-
-let deleteCookie = function(name) {
-    setCookie(name, '', -1);
-};
+    d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
+    document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
+}
 
 import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
