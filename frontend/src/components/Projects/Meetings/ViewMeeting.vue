@@ -348,9 +348,18 @@
 </template>
 
 <script>
-if (document.cookie.indexOf('redirectAfterLogin=') >= 0) {
-    document.cookie = 'redirectAfterLogin=; Max-Age=-99999999;';
-}
+
+deleteCookie('redirectAfterLogin');
+
+let setCookie = function(name, value, days) {
+    let d = new Date;
+    d.setTime(d.getTime() + 24*60*60*1000*days);
+    document.cookie = name + '=' + value + ';path=/;expires=' + d.toGMTString();
+};
+
+let deleteCookie = function(name) {
+    setCookie(name, '', -1);
+};
 
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';

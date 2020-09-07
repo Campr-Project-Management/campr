@@ -127,6 +127,8 @@
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/homepage-script.js') }}"></script>
     <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
+
+
     <script type="text/javascript">
         // Adding current url to cookie. Needs for redirects after login1 and login2
         $currentLink = window.location.href.split('//')[1];
@@ -136,9 +138,37 @@
             document.cookie = "redirectAfterLogin=" + $currentLink + ";domain=" + $domain;
         }
 
+        // Get login link by subdomain
+        $currentTeam = getSubdomainLink();
+
         // Click on workspace button
-        if (document.cookie.indexOf('redirectAfterLogin=') !== false) {
-            $('.team-list-wrapper ul li:first a:first')[0].click();
+        if ($currentTeam.length > 0 && document.cookie.indexOf('redirectAfterLogin=') >= 0) {
+            $currentTeam.click();
+        }
+
+        function getSubdomainLink() {
+            $domainBeforeRedirect = getCookie('domainBeforeRedirect');
+            $subDomain = $domainBeforeRedirect.split('.')[0];
+
+            $search = $subDomain.replaceAll('-', " ");
+            $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+
+            if ($currentTeam.length <= 0) {
+                $search = $subDomain.replaceAll('-', "_");
+                $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+            }
+
+            return $currentTeam;
+        }
+
+        /**
+         * Get cookie
+         * @param name
+         * @returns {string|null}
+         */
+        function getCookie(name) {
+            let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+            return v ? v[2] : null;
         }
     </script>
 {% endblock %}
