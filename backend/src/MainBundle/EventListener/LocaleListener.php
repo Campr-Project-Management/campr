@@ -31,8 +31,9 @@ class LocaleListener implements EventSubscriberInterface
 
     /**
      * LocaleListener constructor.
-     * @param TranslatorInterface $translator
-     * @param LocaleContextInterface $localeContext
+     *
+     * @param TranslatorInterface     $translator
+     * @param LocaleContextInterface  $localeContext
      * @param LocaleProviderInterface $localeProvider
      */
     public function __construct(
