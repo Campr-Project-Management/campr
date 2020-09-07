@@ -4,7 +4,6 @@ namespace MainBundle\EventListener;
 
 use Component\Locale\Context\LocaleContextInterface;
 use Component\Locale\Provider\LocaleProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -35,22 +34,15 @@ class LocaleListener implements EventSubscriberInterface
      * @param TranslatorInterface $translator
      * @param LocaleContextInterface $localeContext
      * @param LocaleProviderInterface $localeProvider
-     * @param ContainerInterface $container
      */
     public function __construct(
         TranslatorInterface $translator,
         LocaleContextInterface $localeContext,
-        LocaleProviderInterface $localeProvider,
-        ContainerInterface $container
+        LocaleProviderInterface $localeProvider
     ) {
         $this->translator = $translator;
         $this->localeContext = $localeContext;
         $this->localeProvider = $localeProvider;
-
-        $mainDomain = $container->getParameter('domain');
-        if ($_SERVER['HTTP_HOST'] != $mainDomain) {
-            setcookie("domainBeforeRedirect", $_SERVER['HTTP_HOST'], time()+3600, '/', ".{$mainDomain}");
-        }
     }
 
     /**
