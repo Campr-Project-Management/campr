@@ -599,8 +599,10 @@ export default {
         TaskHistory,
     },
     created() {
-        console.log('delete cookie');
-        this.$cookie.delete('redirectAfterLogin');
+        let parsedUrl = this.parseUrl(window.location.href);
+        let mainDomain = parsedUrl.host.split('.').slice(1).join('.');
+
+        this.$cookie.delete('redirectAfterLogin', {domain: mainDomain});
 
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
@@ -1125,6 +1127,28 @@ export default {
                 this.loadTaskHistory();
                 return response;
             });
+        },
+        parseUrl(url) {
+            let parser = document.createElement('a');
+            let searchObject = {};
+            // Let the browser do the work
+            parser.href = url;
+            // Convert query string to object
+            let queries = parser.search.replace(/^\?/, '').split('&');
+            for (let i = 0; i < queries.length; i++) {
+                let split = queries[i].split('=');
+                searchObject[split[0]] = split[1];
+            }
+            return {
+                protocol: parser.protocol,
+                host: parser.host,
+                hostname: parser.hostname,
+                port: parser.port,
+                pathname: parser.pathname,
+                search: parser.search,
+                searchObject: searchObject,
+                hash: parser.hash,
+            };
         },
     },
     data() {
