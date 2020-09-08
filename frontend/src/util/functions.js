@@ -43,3 +43,31 @@ export function timepicerMask() {
         this.value = val;
     });
 }
+
+/**
+ * Parse url
+ * @param {string} url
+ * @return {{searchObject: {}, protocol: string, hostname: string, search: string, port: string, host: string, hash: string, pathname: string}}
+ */
+export function parseUrl(url) {
+    let parser = document.createElement('a');
+    let searchObject = {};
+    // Let the browser do the work
+    parser.href = url;
+    // Convert query string to object
+    let queries = parser.search.replace(/^\?/, '').split('&');
+    for (let i = 0; i < queries.length; i++) {
+        let split = queries[i].split('=');
+        searchObject[split[0]] = split[1];
+    }
+    return {
+        protocol: parser.protocol,
+        host: parser.host,
+        hostname: parser.hostname,
+        port: parser.port,
+        pathname: parser.pathname,
+        search: parser.search,
+        searchObject: searchObject,
+        hash: parser.hash,
+    };
+}

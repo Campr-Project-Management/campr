@@ -349,9 +349,6 @@
 
 <script>
 
-document.cookie = 'redirectAfterLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-document.cookie = 'domainBeforeRedirect=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
 import Switches from '../../3rdparty/vue-switches';
@@ -371,6 +368,7 @@ import UserAvatar from '../../_common/UserAvatar';
 import Vue from 'vue';
 import InputField from '../../_common/_form-components/InputField';
 import Error from '../../_common/_messages/Error.vue';
+import {parseUrl} from '../../../util/functions';
 
 export default {
     components: {
@@ -586,6 +584,9 @@ export default {
         downloadMedia: function(media) {
             return Routing.generate('app_media_download', {id: media.id});
         },
+        parseUrl: function(url) {
+            return parseUrl(url);
+        },
     },
     computed: {
         ...mapGetters(['meeting', 'meetingAgendas', 'distributionLists', 'validationMessages', 'lastMeetingReport']),
@@ -603,12 +604,11 @@ export default {
         },
     },
     created() {
-        console.log('delete cookie');
-        this.$cookie.delete('redirectAfterLogin');
-        this.$cookie.delete('redirectAfterLogin', {domain: 'qa.campr.cloud'});
+        let parsedUrl = this.parseUrl(window.location.href);
+        let mainDomain = parsedUrl.host.split('.').slice(1).join('.');
+        console.log(mainDomain);
 
-        this.$cookie.delete('domainBeforeRedirect', {domain: 'qa.campr.cloud'});
-        this.$cookie.delete('domainBeforeRedirect');
+        this.$cookie.delete('redirectAfterLogin', {domain: mainDomain});
 
         this.getDistributionLists({projectId: this.$route.params.id});
         this.getProjectMeeting(this.$route.params.meetingId);
