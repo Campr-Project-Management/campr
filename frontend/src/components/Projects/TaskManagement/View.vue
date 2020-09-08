@@ -599,6 +599,9 @@ export default {
         TaskHistory,
     },
     created() {
+        console.log('delete cookie');
+        this.$cookie.delete('redirectAfterLogin');
+
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
         }

@@ -350,6 +350,7 @@
 <script>
 
 document.cookie = 'redirectAfterLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+document.cookie = 'domainBeforeRedirect=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
@@ -602,9 +603,12 @@ export default {
         },
     },
     created() {
-        let d = new Date;
-        d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
-        document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
+        console.log('delete cookie');
+        this.$cookie.delete('redirectAfterLogin');
+        this.$cookie.delete('redirectAfterLogin', {domain: 'campr.local'});
+
+        this.$cookie.delete('domainBeforeRedirect', {domain: 'campr.local'});
+        this.$cookie.delete('domainBeforeRedirect');
 
         this.getDistributionLists({projectId: this.$route.params.id});
         this.getProjectMeeting(this.$route.params.meetingId);
