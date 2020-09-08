@@ -605,9 +605,9 @@ export default {
     created() {
         console.log('delete cookie');
         this.$cookie.delete('redirectAfterLogin');
-        this.$cookie.delete('redirectAfterLogin', {domain: 'campr.local'});
+        this.$cookie.delete('redirectAfterLogin', {domain: 'qa.campr.cloud'});
 
-        this.$cookie.delete('domainBeforeRedirect', {domain: 'campr.local'});
+        this.$cookie.delete('domainBeforeRedirect', {domain: 'qa.campr.cloud'});
         this.$cookie.delete('domainBeforeRedirect');
 
         this.getDistributionLists({projectId: this.$route.params.id});
