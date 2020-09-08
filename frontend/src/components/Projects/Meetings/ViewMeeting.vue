@@ -368,6 +368,7 @@ import UserAvatar from '../../_common/UserAvatar';
 import Vue from 'vue';
 import InputField from '../../_common/_form-components/InputField';
 import Error from '../../_common/_messages/Error.vue';
+import {parseUrl} from '../../../util/functions';
 
 export default {
     components: {
@@ -583,27 +584,8 @@ export default {
         downloadMedia: function(media) {
             return Routing.generate('app_media_download', {id: media.id});
         },
-        parseUrl(url) {
-            let parser = document.createElement('a');
-            let searchObject = {};
-            // Let the browser do the work
-            parser.href = url;
-            // Convert query string to object
-            let queries = parser.search.replace(/^\?/, '').split('&');
-            for (let i = 0; i < queries.length; i++) {
-                let split = queries[i].split('=');
-                searchObject[split[0]] = split[1];
-            }
-            return {
-                protocol: parser.protocol,
-                host: parser.host,
-                hostname: parser.hostname,
-                port: parser.port,
-                pathname: parser.pathname,
-                search: parser.search,
-                searchObject: searchObject,
-                hash: parser.hash,
-            };
+        parseUrl: function(url) {
+            return parseUrl(url);
         },
     },
     computed: {
@@ -624,6 +606,7 @@ export default {
     created() {
         let parsedUrl = this.parseUrl(window.location.href);
         let mainDomain = parsedUrl.host.split('.').slice(1).join('.');
+        console.log(mainDomain);
 
         this.$cookie.delete('redirectAfterLogin', {domain: mainDomain});
 

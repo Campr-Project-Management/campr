@@ -567,6 +567,7 @@ import EditStatusModal from './View/EditStatusModal';
 import UserAvatar from '../../_common/UserAvatar';
 import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
 import TrafficLight from '../../_common/TrafficLight';
+import {parseUrl} from '../../../util/functions';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -1129,26 +1130,7 @@ export default {
             });
         },
         parseUrl(url) {
-            let parser = document.createElement('a');
-            let searchObject = {};
-            // Let the browser do the work
-            parser.href = url;
-            // Convert query string to object
-            let queries = parser.search.replace(/^\?/, '').split('&');
-            for (let i = 0; i < queries.length; i++) {
-                let split = queries[i].split('=');
-                searchObject[split[0]] = split[1];
-            }
-            return {
-                protocol: parser.protocol,
-                host: parser.host,
-                hostname: parser.hostname,
-                port: parser.port,
-                pathname: parser.pathname,
-                search: parser.search,
-                searchObject: searchObject,
-                hash: parser.hash,
-            };
+            return parseUrl(url);
         },
     },
     data() {
