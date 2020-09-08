@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- /// Meeting Link /// -->
-                <h3>Jitsi Meet : </h3>
+                <h3>Jitsi Meet</h3>
                 <p><a :href="meeting.jitsiLink" target="_blank">{{ meeting.jitsiLink }}</a></p>
                 <!-- /// End Meeting Location /// -->
 
@@ -348,6 +348,8 @@
 </template>
 
 <script>
+
+document.cookie = 'redirectAfterLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
@@ -600,6 +602,10 @@ export default {
         },
     },
     created() {
+        let d = new Date;
+        d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
+        document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
+
         this.getDistributionLists({projectId: this.$route.params.id});
         this.getProjectMeeting(this.$route.params.meetingId);
         this.getMeetingAgendas({
@@ -700,12 +706,6 @@ export default {
             },
             deep: true,
         },
-    },
-    mount() {
-        console.log('remove redirectAfterLogin');
-        let d = new Date;
-        d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
-        document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
     },
 };
 </script>
