@@ -28,6 +28,7 @@ services:
             - '@translator'
             - '@app.locale.context'
             - '@app.locale.provider'
+            - '@service_container'
         tags:
             - { name: kernel.event_subscriber }
 
