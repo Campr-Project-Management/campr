@@ -540,10 +540,6 @@
 
 <script>
 
-let d = new Date;
-d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
-document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
-
 import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
@@ -1178,6 +1174,12 @@ export default {
             historyNbPages: 1,
             loadingHistory: false,
         };
+    },
+    mount() {
+        console.log('clear redirectAfterLogin');
+        let d = new Date;
+        d.setTime(d.getTime() - 24 * 60 * 60 * 1000);
+        document.cookie = 'redirectAfterLogin=;path=/;expires=' + d.toGMTString();
     },
 };
 </script>
