@@ -58,7 +58,7 @@
     "vue-cookie": "1.1.4",
     "vue-flash-message": "0.7.2",
     "vue-masonry": "0.10.1",
-    "vue-moment": "2.0.2",
+    "vue-moment": "4.1.0",
     "vue-perfect-scrollbar": "0.1.0",
     "vue-resize-directive": "1.0.0",
     "vue-resource": "1.3.1",
