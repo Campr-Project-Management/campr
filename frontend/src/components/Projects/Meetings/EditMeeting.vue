@@ -808,12 +808,12 @@ export default {
                 meetingCategory: this.details.category,
                 date: this.schedule.meetingDate,
                 start: {
-                    HH: moment(this.schedule.startTime).format('HH'),
-                    mm: moment(this.schedule.startTime).format('mm'),
+                    HH: this.schedule.startTime.HH ? this.schedule.startTime.HH : moment(this.schedule.startTime).format('HH'),
+                    mm: this.schedule.startTime.mm ? this.schedule.startTime.mm : moment(this.schedule.startTime).format('mm'),
                 },
                 end: {
-                    HH: moment(this.schedule.endTime).format('HH'),
-                    mm: moment(this.schedule.endTime).format('mm'),
+                    HH: this.schedule.endTime.HH ? this.schedule.endTime.HH : moment(this.schedule.endTime).format('HH'),
+                    mm: this.schedule.endTime.mm ? this.schedule.endTime.mm : moment(this.schedule.endTime).format('mm'),
                 },
                 location: this.location,
                 medias: this.medias,
@@ -1072,6 +1072,15 @@ export default {
     },
     mounted() {
         timepicerMask();
+        setTimeout(() => {
+            $(document).ready(
+                    () => {
+                        let mxInputs = $('.mx-input');
+                        $(mxInputs[0]).val(this.schedule.startTime.HH + ':' + this.schedule.startTime.mm);
+                        $(mxInputs[1]).val(this.schedule.endTime.HH + ':' + this.schedule.endTime.mm);
+                    }
+                );
+        }, 1000);
     },
 };
 </script>
