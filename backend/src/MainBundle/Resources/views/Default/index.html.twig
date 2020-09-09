@@ -158,21 +158,21 @@
 
             $subDomain = $domainBeforeRedirect.split('.')[0];
 
-            $search = $subDomain.replaceAll('-', " ").toLowerCase();
+            $search = $subDomain.split("-").join(" ").toLowerCase();
             $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
 
             if ($currentTeam.length <= 0) {
-                $search = $subDomain.replaceAll('-', "_").toLowerCase();
+                $search = $subDomain.split("-").join("_").toLowerCase();
                 $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
             }
 
             if ($currentTeam.length <= 0) {
-                $search = $subDomain.replaceAll('-', " ").toUpperCase();
+                $search = $subDomain.split("-").join(" ").toUpperCase();
                 $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
             }
 
             if ($currentTeam.length <= 0) {
-                $search = $subDomain.replaceAll('-', "_").toUpperCase();
+                $search = $subDomain.split("-").join("_").toUpperCase();
                 $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
             }
 
