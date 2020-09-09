@@ -220,6 +220,7 @@ export default function (Translator) {
     Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
     Translator.add("not_blank.meeting_category", "Please select a category", "validators", "en");
     Translator.add("work_package.assignment.rasci_user", "%name% is not a RASCI user", "validators", "en");
+    Translator.add("before.now", "The selected date is in the past.", "validators", "en");
     Translator.add("project.valid_contract", "Please fill in the Project Contract, approve the project and freeze the base!", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
