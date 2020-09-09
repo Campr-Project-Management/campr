@@ -220,6 +220,7 @@ export default function (Translator) {
     Translator.add("not_blank.industry_branch", "Bitte gib deine Branche an.", "validators", "de");
     Translator.add("not_blank.meeting_category", "Bitte w\u00e4hle eine Kategorie", "validators", "de");
     Translator.add("work_package.assignment.rasci_user", "%name% ist kein RASCI-Benutzer", "validators", "de");
+    Translator.add("before.now", "Das ausgewählte Datum liegt in der Vergangenheit.", "validators", "de");
     Translator.add("project.valid_contract", "Bitte f\u00fcllt den Projektvertrag aus, genehmigt das Projekt und friert den Vertrag ein!", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
