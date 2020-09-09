@@ -129,6 +129,12 @@
     <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
 
     <script type="text/javascript">
+        $.extend($.expr[":"], {
+            "containsIN": function (elem, i, match, array) {
+                return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }
+        });
+
         $urlObj = parseUrl(window.location.href);
         $currentLink = $urlObj.hostname + $urlObj.pathname + $urlObj.hash;
         $domain = '{{ domain }}';
@@ -159,21 +165,21 @@
             $subDomain = $domainBeforeRedirect.split('.')[0];
 
             $search = $subDomain.split("-").join(" ").toLowerCase();
-            $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+            $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
 
             if ($currentTeam.length <= 0) {
                 $search = $subDomain.split("-").join("_").toLowerCase();
-                $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
             }
 
             if ($currentTeam.length <= 0) {
                 $search = $subDomain.split("-").join(" ").toUpperCase();
-                $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
             }
 
             if ($currentTeam.length <= 0) {
                 $search = $subDomain.split("-").join("_").toUpperCase();
-                $currentTeam = $(".team-list-wrapper ul li .team-name:contains('" + $search + "')").parents('li').find('a:first');
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
             }
 
             return $currentTeam;
