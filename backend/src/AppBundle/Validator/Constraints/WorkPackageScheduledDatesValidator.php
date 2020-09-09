@@ -28,7 +28,7 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
 
         $phase = $wp->getPhase();
 
-        if ($phase->getScheduledStartAt() > $wp->getScheduledStartAt()) {
+        if ($phase && $phase->getScheduledStartAt() > $wp->getScheduledStartAt()) {
             $this->context
                 ->buildViolation(
                     $constraint->greaterStartedAtWitPhaseMessage,
@@ -43,7 +43,7 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if ($phase->getScheduledFinishAt() < $wp->getScheduledFinishAt()) {
+        if ($phase && $phase->getScheduledFinishAt() < $wp->getScheduledFinishAt()) {
             $this->context
                 ->buildViolation(
                     $constraint->greaterFinishedAtWitPhaseMessage,
