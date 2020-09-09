@@ -491,16 +491,6 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     private $trafficLight;
 
     /**
-     * @var User|null
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="workPackages")
-     * @ORM\JoinColumn(name="user_id")
-     */
-    private $user;
-
-    /**
      * @var bool
      */
     private $isStatusGenerated = false;
@@ -2616,21 +2606,5 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     public function setStatusGenerated(bool $statusGenerated)
     {
         $this->isStatusGenerated = $statusGenerated;
-    }
-
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User|null $user
-     */
-    public function setUser(?User $user): void
-    {
-        $this->user = $user;
     }
 }
