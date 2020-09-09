@@ -118,7 +118,6 @@ class WorkPackageController extends ApiController
         $wp = $form->getData();
         $wp->setProject($project);
         $wp->setCreatedBy($this->getUser());
-        $wp->setUser($this->getUser());
 
         foreach ($wp->getMedias() as $media) {
             $media->makeAsPermanent();

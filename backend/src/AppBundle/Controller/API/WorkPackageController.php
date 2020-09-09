@@ -52,7 +52,7 @@ class WorkPackageController extends ApiController
             $filters['pageSize'] = isset($filters['pageSize']) ? $filters['pageSize'] : $this->getParameter(
                 'front.per_page'
             );
-            $result = $projects = $wpRepo->findUserFiltered($user, $filters)->getQuery()->getArrayResult();
+            $result = $projects = $wpRepo->findUserFiltered($user, $filters)->getQuery()->getResult();
             $responseArray['totalItems'] = $wpRepo->countTotalByUserAndFilters($user, $filters);
             $responseArray['pageSize'] = $filters['pageSize'];
             $responseArray['items'] = $result;
@@ -63,7 +63,7 @@ class WorkPackageController extends ApiController
         return $this->createApiResponse(
             [
                 'totalItems' => $wpRepo->countTotalByUserAndFilters($user),
-                'items' => $wpRepo->findUserFiltered($user)->getQuery()->getArrayResult(),
+                'items' => $wpRepo->findUserFiltered($user)->getQuery()->getResult(),
             ]
         );
     }
