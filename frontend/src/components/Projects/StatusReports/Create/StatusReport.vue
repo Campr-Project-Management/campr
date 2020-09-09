@@ -366,8 +366,10 @@
                 }
 
                 let colors = [themes.light.lightRed, themes.light.lightYellow, themes.light.lightGreen];
-                this.trendChartData[3] = value;
-                this.trendChartPointColor[3] = colors[value];
+                let currentDataChartLenght = this.trendChartLabels.length - 1;
+                let prevReportStatus = this.trendChartData[currentDataChartLenght-1];
+                this.trendChartData[currentDataChartLenght] = value + prevReportStatus - 1;
+                this.trendChartPointColor[currentDataChartLenght] = colors[value];
                 EventBus.$emit('updateChart');
                 this.$emit('input', Object.assign({}, this.value, {projectTrafficLight: value}));
             },
