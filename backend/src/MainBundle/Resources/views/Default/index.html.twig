@@ -162,7 +162,7 @@
                 return null;
             }
 
-            $subDomain = $domainBeforeRedirect.split('.')[0];
+            $subDomain = $domainBeforeRedirect.replace('.' + $domain, '');
 
             $search = $subDomain.split("-").join(" ").toLowerCase();
             $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
