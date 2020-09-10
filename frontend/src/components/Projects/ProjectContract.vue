@@ -183,7 +183,8 @@
 
                             <switches
                                     :disabled="frozen"
-                                    v-model="isApproved"/>
+                                    v-model="isApproved"
+                            v-on:updateProjectContract="approveContract"/>
 
                             <div v-if="isApproved" class="toggle-approved">{{ translate('label.approved_and_started') }}</div>
                             <div v-else class="toggle-approved">{{ translate('label.approve_and_start') }}</div>
@@ -276,6 +277,7 @@ export default {
             'editObjective', 'editLimitation', 'editDeliverable', 'reorderObjectives',
             'reorderLimitations', 'reorderDeliverables', 'getProjectExternalCostsGraphData',
             'getProjectUsers', 'getProjectInternalCostsGraphData', 'emptyValidationMessages',
+            'editProject',
         ]),
         toggleSponsorsManagers: function() {
             this.showSponsorsManagers = !this.showSponsorsManagers;
@@ -300,16 +302,43 @@ export default {
                 ;
             }
         },
+        approveContract() {
+            let setApprovedAt = null;
+            let projectStatusId = 1; // set project as "not started"
+            if ($('label.vue-switcher input').is(':checked')) {
+                setApprovedAt = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+                projectStatusId = 2; // set project as "in progress"
+            }
+
+            let data = {
+                approvedAt: setApprovedAt,
+            };
+
+            if (this.contract.id) {
+                data.id = this.contract.id;
+                this.updateContract(data);
+            } else {
+                this.createContract(data);
+            }
+
+            // update project status
+            this.editProject({
+                projectId: this.$route.params.id,
+                status: projectStatusId,
+            });
+        },
         updateProjectContract() {
             let data = {
                 projectId: this.$route.params.id,
-                name: this.project.name + '-contract',
+                name: this.project.name + ' - contract',
                 description: this.description,
                 projectStartEvent: this.projectStartEvent,
                 proposedStartDate: moment(this.proposedStartDate).format('DD-MM-YYYY'),
                 proposedEndDate: moment(this.proposedEndDate).format('DD-MM-YYYY'),
                 approvedAt: this.approvedAt,
             };
+
+            localStorage.removeItem('contract');
 
             if (this.contract.id) {
                 data.id = this.contract.id;
@@ -426,6 +455,19 @@ export default {
         isModuleActive(module) {
             return this.modules.indexOf(module) >= 0;
         },
+        getLocalStorageContract: function() {
+            let contract = localStorage.getItem('contract');
+            if(!contract) {
+                contract = {};
+            } else {
+                contract = JSON.parse(localStorage.getItem('contract'));
+            }
+
+            return contract;
+        },
+        setLocalStorageContract: function(contractObj) {
+            localStorage.setItem('contract', JSON.stringify(contractObj));
+        },
     },
     created() {
         this.getProjectById(this.$route.params.id);
@@ -481,6 +523,35 @@ export default {
             }
             vm.getProjectById(vm.$route.params.id);
         });
+    },
+    mounted() {
+        let vm = this;
+
+        document.getElementById('description').onkeyup = function() {
+            let contract = vm.getLocalStorageContract();
+            contract.description = document.getElementById('description').children[0].innerHTML;
+            vm.setLocalStorageContract(contract);
+        };
+
+        document.getElementById('projectStartEvent').onkeyup = function() {
+            let contract = vm.getLocalStorageContract();
+            contract.startEvent = document.getElementById('projectStartEvent').children[0].innerHTML;
+            vm.setLocalStorageContract(contract);
+        };
+
+        let contract = vm.getLocalStorageContract();
+
+        if (contract.description) {
+            setTimeout(function() {
+                document.getElementById('description').children[0].innerHTML = contract.description;
+            }, 1000);
+        }
+
+        if (contract.startEvent) {
+            setTimeout(function() {
+                document.getElementById('projectStartEvent').children[0].innerHTML = contract.startEvent;
+            }, 2000);
+        }
     },
     beforeDestroy() {
         this.emptyValidationMessages();
@@ -559,7 +630,26 @@ export default {
             proposedEndDate: moment(new Date()).format('DD-MM-YYYY'),
         };
     },
+    beforeRouteLeave(to, from, next) {
+        if (localStorage.getItem('contract')) {
+            if (!window.confirm('Changes you made may not be saved.')) {
+                return;
+            }
+        }
+        localStorage.removeItem('contract');
+        next();
+    },
 };
+
+window.onbeforeunload = function(event) {
+    if (localStorage.getItem('contract')) {
+        if (!confirm('Changes you made may not be saved.')) {
+            localStorage.removeItem('contract');
+            return false;
+        }
+    }
+};
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

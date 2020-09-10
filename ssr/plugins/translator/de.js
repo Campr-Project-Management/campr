@@ -220,6 +220,7 @@ export default function (Translator) {
     Translator.add("not_blank.industry_branch", "Bitte gib deine Branche an.", "validators", "de");
     Translator.add("not_blank.meeting_category", "Bitte w\u00e4hle eine Kategorie", "validators", "de");
     Translator.add("work_package.assignment.rasci_user", "%name% ist kein RASCI-Benutzer", "validators", "de");
+    Translator.add("before.now", "Das ausgewählte Datum liegt in der Vergangenheit.", "validators", "de");
     Translator.add("project.valid_contract", "Bitte f\u00fcllt den Projektvertrag aus, genehmigt das Projekt und friert den Vertrag ein!", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
@@ -427,6 +428,7 @@ export default function (Translator) {
     Translator.add("button.view_info", "Info anzeigen", "messages", "de");
     Translator.add("button.view_remaining_action", "Verbleibende Ma\u00dfnahmen ansehen", "messages", "de");
     Translator.add("button.view_tasks_board", "Task Board anzeigen", "messages", "de");
+    Translator.add("button.view_tasks_grid", "Task Board gitter", "messages", "de");
     Translator.add("checkbox.checked", "Ja", "messages", "de");
     Translator.add("checkbox.unchecked", "Nein", "messages", "de");
     Translator.add("choices.days", "Tage", "messages", "de");
@@ -894,6 +896,7 @@ export default function (Translator) {
     Translator.add("message.back_to", "Zur\u00fcck zu", "messages", "de");
     Translator.add("message.back_to_decisions", "Zur\u00fcck zu Entscheidungen", "messages", "de");
     Translator.add("message.back_to_infos", "Zur\u00fcck zu Infos", "messages", "de");
+    Translator.add("message.before_now", "Diese Daten sollten nicht vorher sein ", "messages", "de");
     Translator.add("message.back_to_meetings", "Zur\u00fcck zu Meetings", "messages", "de");
     Translator.add("message.back_to_organization", "Zur\u00fcck zur Projektorganisation", "messages", "de");
     Translator.add("message.back_to_phases_and_milestones", "Zur\u00fcck zu Phasen & Meilensteine", "messages", "de");

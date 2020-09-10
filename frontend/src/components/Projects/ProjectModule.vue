@@ -197,7 +197,7 @@
                     <polyline id="XMLID_263_" class="st0" points="17.1,5 20.2,5 20.2,8.1 		"/>
                   </g>
                 </g>
-                </svg>               
+                </svg>
 
                 <svg v-show="id == modules.MODULE_CLOSE_DOWN_PROJECT" v-bind:class="{'inactive': inactive}" width="23px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                    viewBox="0 0 26.2 27.3" style="enable-background:new 0 0 26.2 27.3;" xml:space="preserve">
@@ -263,13 +263,10 @@
                 </svg>
             </div>
             <div class="checkbox-input clearfix" v-bind:class="{'inactive': inactive}">
-              <input
-                      :id="id"
-                      type="checkbox"
-                      :value="true"
-                      :checked="value"
-                      @click="onUpdateValue"/>
-              <label :for="id"></label>
+                <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue"
+                       v-if="this.isInArray(id, [modules.MODULE_CONTRACT, modules.MODULE_ORGANIZATION, modules.MODULE_TASK_MANAGEMENT, modules.MODULE_STATUS_REPORT, modules.MODULE_CLOSE_DOWN_PROJECT])" disabled class="bg-lightcolor" />
+                <input :id="id" type="checkbox" :value="true" :checked="value" @click="onUpdateValue" v-else/>
+                <label :for="id"></label>
             </div>
         </div>
         <div class="content" v-show="contentVisible" v-bind:class="{'inactive': inactive}">
@@ -313,6 +310,9 @@ export default {
         },
         onUpdateValue: function(e) {
             this.$emit('input', e.target.checked);
+        },
+        isInArray: function(needle, array) {
+            return array.indexOf(needle) !== -1;
         },
     },
     data: function() {
@@ -386,5 +386,11 @@ export default {
     .toggle-content {
         cursor: pointer;
         margin-left: 13px;
+    }
+
+    .checkbox-input {
+        input.bg-lightcolor[type=checkbox]:checked + label:before {
+            background: $lightColor;
+        }
     }
 </style>

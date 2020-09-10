@@ -220,6 +220,7 @@ export default function (Translator) {
     Translator.add("not_blank.industry_branch", "Industry branch is required.", "validators", "en");
     Translator.add("not_blank.meeting_category", "Please select a category", "validators", "en");
     Translator.add("work_package.assignment.rasci_user", "%name% is not a RASCI user", "validators", "en");
+    Translator.add("before.now", "The selected date is in the past.", "validators", "en");
     Translator.add("project.valid_contract", "Please fill in the Project Contract, approve the project and freeze the base!", "validators", "en");
     Translator.add("An authentication exception occurred.", "An authentication exception occurred.", "security", "en");
     Translator.add("Authentication credentials could not be found.", "Authentication credentials could not be found.", "security", "en");
@@ -427,6 +428,7 @@ export default function (Translator) {
     Translator.add("button.view_info", "View Info", "messages", "en");
     Translator.add("button.view_remaining_action", "View Remaining Action", "messages", "en");
     Translator.add("button.view_tasks_board", "View tasks board", "messages", "en");
+    Translator.add("button.view_tasks_grid", "View tasks grid", "messages", "en");
     Translator.add("checkbox.checked", "Yes", "messages", "en");
     Translator.add("checkbox.unchecked", "No", "messages", "en");
     Translator.add("choices.days", "Days", "messages", "en");
@@ -894,7 +896,8 @@ export default function (Translator) {
     Translator.add("message.back_to", "Back To", "messages", "en");
     Translator.add("message.back_to_decisions", "Back to Decisions", "messages", "en");
     Translator.add("message.back_to_infos", "Back to Infos", "messages", "en");
-    Translator.add("message.back_to_meetings", "Back to Meetings", "messages", "en");
+    Translator.add("message.before_now", "This data is should not be before ", "messages", "en");
+    Translator.add("message.back_to_meetings", "Back to Meetings", "messages",  "en");
     Translator.add("message.back_to_organization", "Back to Project Organization", "messages", "en");
     Translator.add("message.back_to_phases_and_milestones", "Back to Phases & Milestones", "messages", "en");
     Translator.add("message.back_to_risks_and_opportunities", "Back to Risks & Opportunities", "messages", "en");
@@ -2648,6 +2651,9 @@ export default function (Translator) {
     Translator.add("email.subject.two_factor.remove", "CAMPR - Two Factor authentication removal", "messages", "en");
     Translator.add("email.two_factor.body.remove", "Click <a href=\"%url%\">here<\/a> to remove two factor authentication from your account.", "messages", "en");
     Translator.add("email.message.task.new", "Hello %task_responsible%, %task_creator% created a new task \"%task_name%\" with due date %base_finished_date% for you.", "messages", "en");
+    Translator.add("email.message.task.new.workspace", 'Workspace: %workspace_name%', "messages", "en");
+    Translator.add("email.message.task.new.project", 'Project: %project_name%', "messages", "en");
+    Translator.add("email.message.task.new.taskcreator", 'Creator of the task: %task_creator%', "messages", "en");
     Translator.add("email.button.task.profile", "Task Profile", "messages", "en");
     Translator.add("email.subject.task.new", "Your new task: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");
     Translator.add("email.subject.task.edit", "Your task responsibility has changed \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");

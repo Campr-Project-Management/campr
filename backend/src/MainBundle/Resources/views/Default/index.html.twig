@@ -127,4 +127,117 @@
     <script src="{{ asset('assets/admin/vendors/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/homepage-script.js') }}"></script>
     <script src="{{ asset('assets/admin/js/team-availability.js') }}"></script>
+
+    <script type="text/javascript">
+        $.extend($.expr[":"], {
+            "containsIN": function (elem, i, match, array) {
+                return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+            }
+        });
+
+        $urlObj = parseUrl(window.location.href);
+        $currentLink = $urlObj.hostname + $urlObj.pathname + $urlObj.hash;
+        $domain = '{{ domain }}';
+
+        $defUrlDomain = $domain + '/';
+
+        // Adding current url to cookie. Needs for redirects after login1 and login2
+        if (document.cookie.indexOf('redirectAfterLogin=') <= 0 && $currentLink != $defUrlDomain) {
+            document.cookie = "redirectAfterLogin=" + $currentLink + ";domain=" + $domain;
+        }
+
+        // Get login link by subdomain
+        $currentTeam = getSubdomainLink();
+
+        // Click on workspace button
+        if ($currentTeam != null && $currentTeam.length > 0 && document.cookie.indexOf('redirectAfterLogin=') >= 0) {
+            location.href = 'http://' + $domain + $currentTeam.attr('href');
+        }
+
+        function getSubdomainLink() {
+            $domainBeforeRedirect = getCookie('domainBeforeRedirect');
+
+            console.log($domainBeforeRedirect);
+            if ($domainBeforeRedirect == null) {
+                return null;
+            }
+
+            $subDomain = $domainBeforeRedirect.split('.')[0];
+
+            $search = $subDomain.split("-").join(" ").toLowerCase();
+            $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
+
+            if ($currentTeam.length <= 0) {
+                $search = $subDomain.split("-").join("_").toLowerCase();
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
+            }
+
+            if ($currentTeam.length <= 0) {
+                $search = $subDomain.split("-").join(" ").toUpperCase();
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
+            }
+
+            if ($currentTeam.length <= 0) {
+                $search = $subDomain.split("-").join("_").toUpperCase();
+                $currentTeam = $(".team-list-wrapper ul li .team-name:containsIN('" + $search + "')").parents('li').find('a:first');
+            }
+
+            return $currentTeam;
+        }
+
+        function parseUrl(url) {
+            var parser = document.createElement('a'),
+                searchObject = {},
+                queries, split, i;
+            // Let the browser do the work
+            parser.href = url;
+            // Convert query string to object
+            queries = parser.search.replace(/^\?/, '').split('&');
+            for (i = 0; i < queries.length; i++) {
+                split = queries[i].split('=');
+                searchObject[split[0]] = split[1];
+            }
+            return {
+                protocol: parser.protocol,
+                host: parser.host,
+                hostname: parser.hostname,
+                port: parser.port,
+                pathname: parser.pathname,
+                search: parser.search,
+                searchObject: searchObject,
+                hash: parser.hash
+            };
+        }
+
+        /**
+         * Get cookie
+         * @param name
+         * @returns {string|null}
+         */
+        function getCookie(name) {
+            let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+            return v ? v[2] : null;
+        }
+
+        /**
+         * Set cookie
+         * @param name
+         * @param value
+         * @param days
+         */
+        function setCookie(name, value, days) {
+            let d = new Date;
+            d.setTime(d.getTime() + 24 * 60 * 60 * 1000 * days);
+            document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+        }
+
+        /**
+         * Delete cookie
+         * @param name
+         */
+        function deleteCookie(name) {
+            setCookie(name, '', -1);
+        }
+    </script>
+
 {% endblock %}

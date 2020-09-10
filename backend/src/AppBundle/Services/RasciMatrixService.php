@@ -125,6 +125,12 @@ class RasciMatrixService
 
         $workPackages = [];
 
+        uasort($phases, function ($a, $b){
+            if($a['scheduledStartAt'] > $b['scheduledStartAt']) {
+                return $a;
+            }
+        });
+
         foreach ($phases as $phase) {
             $phaseWorkPackages = array_filter(
                 $out,

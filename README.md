@@ -23,6 +23,14 @@ Modules available:
 * Infos
 * Close Out Report
 
+# Want to contribute?
+If you want to contribute through code or documentation, please check out our [Contributing guide](https://github.com/CamprGmbH/campr/blob/develop/CONTRIBUTING.md).
+
+# Contributors
+<a href="https://github.com/CamprGmbH/campr/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=CamprGmbH/campr" />
+</a>
+
 # Getting started
 * For the cloudversion just register here: https://campr.biz
 
@@ -46,10 +54,6 @@ In addition, we use a Telegram channel for discussion and exchange.https://t.me/
 
 Within the tool you can give us feedback via the feedback button.
 
-# Want to contribute?
-If you want to contribute through code or documentation, please check out our [Contributing guide](https://github.com/CamprGmbH/campr/blob/develop/CONTRIBUTING.md).
-
-
 # License
 CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html) Affero General Public License v3.0
 
@@ -57,3 +61,48 @@ CAMPR is licensed under the [GNU](https://www.gnu.org/licenses/agpl-3.0.de.html)
 Thanks to [Christoph Pohl](https://github.com/orgs/CamprGmbH/people/cristobalcampr) and [Manuel Weiler](https://github.com/orgs/CamprGmbH/people/CAMPR-Manuel) for creating and sharing this project with the open source community.
 
 Thanks to all the people that ever contributed through code or other means such as bug reports, feature suggestions, discussions and so on.
+
+
+
+# Install on dev enironment
+
+1 Install Docker
+
+2 Install docker-compose
+
+3 Create .env file copy from config/docker/env.dist
+
+4 Add to /etc/hosts:
+ ```
+127.0.0.1   campr.local
+127.0.0.1   workspace1.campr.local
+```  
+
+5 In directory backend/app/config create file parametes.yml from backend/app/config/parameters.yml.onpremise
+
+6 Add to docker-compose.yml in extra_hosts:
+```
+- "campr.local:127.0.0.1"
+- "workspace1.campr.local:127.0.0.1"
+```
+ (Workspace means Team-name subdomain which you have to write in /etc/hosts)
+
+7 Run containers:
+```
+docker-compose up -d
+```
+
+8 Go to container campr_app and create new user:
+```
+docker exec -it campr_app bash
+bin/console tss:app:user-create yourname@youremail.xxx admin admin --role=ROLE_ADMIN
+```
+
+9 Mail client application: http://campr.local:1080/
+
+After add new sub-domain workspace rebuild app in fronted folder by command:
+``` 
+cd /app/frontend && npm install && npm run build
+```
+
+

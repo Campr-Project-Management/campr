@@ -135,4 +135,13 @@ class ProjectStatus implements RemovalForbiddenInterface, ResourceInterface, Clo
     {
         return $this->name;
     }
+
+    /**
+     * Get code.
+     * @return string
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
 }

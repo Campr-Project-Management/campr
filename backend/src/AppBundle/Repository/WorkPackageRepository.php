@@ -1051,6 +1051,26 @@ class WorkPackageRepository extends BaseRepository
      *
      * @return string|null
      */
+    public function getProjectStartAt(Project $project)
+    {
+        $qb = $this->createQueryBuilder('o');
+        $expr = $qb->expr();
+
+        return $qb
+            ->select('MIN(o.scheduledStartAt)')
+            ->andWhere('o.project = :project')
+            ->andWhere($expr->isNotNull('o.scheduledStartAt'))
+            ->andWhere($expr->isNull('o.parent'))
+            ->setParameter('project', $project)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return string|null
+     */
     public function getProjectScheduledFinishAt(Project $project)
     {
         $createQueryBuilder = function () use ($project) {

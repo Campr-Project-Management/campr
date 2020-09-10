@@ -187,4 +187,65 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        // Adding current url to cookie. Needs for redirects after login1 and login2 ()
+        $urlObj = parseUrl(window.location.href);
+        $currentLink = $urlObj.hostname + $urlObj.pathname + $urlObj.hash;
+
+        $domain = '{{ domain }}';
+        $defUrlDomain = $domain + '/login';
+
+        console.log('currentLink: ' + $currentLink + '; defUrlDomain: ' + $defUrlDomain);
+        if ($currentLink != $defUrlDomain) {
+            $currentLink = $currentLink.replace($defUrlDomain, $domain + '/');
+            document.cookie = "redirectAfterLogin=" + $currentLink + ";domain=" + $domain;
+        } else {
+            deleteCookie('redirectAfterLogin');
+        }
+
+        function parseUrl(url) {
+            var parser = document.createElement('a'),
+                searchObject = {},
+                queries, split, i;
+            // Let the browser do the work
+            parser.href = url;
+            // Convert query string to object
+            queries = parser.search.replace(/^\?/, '').split('&');
+            for (i = 0; i < queries.length; i++) {
+                split = queries[i].split('=');
+                searchObject[split[0]] = split[1];
+            }
+            return {
+                protocol: parser.protocol,
+                host: parser.host,
+                hostname: parser.hostname,
+                port: parser.port,
+                pathname: parser.pathname,
+                search: parser.search,
+                searchObject: searchObject,
+                hash: parser.hash
+            };
+        }
+
+        /**
+         * Set cookie
+         * @param name
+         * @param value
+         * @param days
+         */
+        function setCookie(name, value, days) {
+            let d = new Date;
+            d.setTime(d.getTime() + 24*60*60*1000*days);
+            document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+        }
+
+        /**
+         * Delete cookie
+         * @param name
+         */
+        function deleteCookie(name) {
+            setCookie(name, '', -1);
+        }
+    </script>
 {% endblock %}

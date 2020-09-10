@@ -154,6 +154,12 @@ class ProjectController extends ApiController
             $this->persistAndFlush($project);
             $this->get('event_dispatcher')->dispatch(ProjectEvents::POST_CREATE, new GenericEvent($project));
 
+            // Create contract by project with startDate and endDate by project duration
+            $secondStepData = json_decode($request->request->get('secondStepData'));
+            if ($project->hasProjectModule('contract')) {
+                $em->getRepository(Contract::class)->createByProject($project, $secondStepData->projectDuration);
+            }
+
             return $this->createApiResponse($project, Response::HTTP_CREATED);
         }
 
@@ -201,6 +207,17 @@ class ProjectController extends ApiController
         $this->processForm($request, $form, $request->isMethod(Request::METHOD_PUT));
 
         if ($form->isValid()) {
+            if (!empty($project->getStatus())) {
+                $project->setStatusUpdatedAt(new \DateTime());
+                $approvedAt = null;
+
+                if ($project->getStatus()->getCode() == ProjectStatus::CODE_IN_PROGRESS) {
+                    $approvedAt = new \DateTime();
+                }
+
+                $project->setApprovedAt($approvedAt);
+            }
+
             $this->persistAndFlush($project);
 
             return $this->createApiResponse($project, Response::HTTP_ACCEPTED);
@@ -1707,6 +1724,34 @@ class ProjectController extends ApiController
         return $this->createApiResponse($rasciData);
     }
 
+    private function mailerRasci($template, $rasci, $workspace, $project, $user = null, $currentResponsibleEmail = null, $workPackage = null, $oldResponsibility = null)
+    {
+        $mailerService = $this->get('app.service.mailer');
+
+        if (is_null($user)) {
+            $userName = $workPackage;
+            $email = $currentResponsibleEmail;
+        } else {
+            $userName = $user->getUsername();
+            $email =  $user->getEmail();
+        }
+
+        $mailerService->sendEmail(
+                $template,
+                'notification',
+                $email,
+                [
+                    'username' => $userName,
+                    'email' =>  $email,
+                    'old_responsibility' => $oldResponsibility,
+                    'task' => $rasci->getWorkPackageName(),
+                    'responsibility' => $rasci->getData(),
+                    'workspace' => $workspace,
+                    'project' => $project->getName(),
+                ]
+            );
+    }
+
     /**
      * @Route("/{id}/rasci/{workPackage}/user/{user}", name="app_api_project_rasci_put", options={"expose"=true})
      * @ParamConverter("id", class="AppBundle\Entity\Project")
@@ -1723,6 +1768,10 @@ class ProjectController extends ApiController
      */
     public function putRasciAction(Request $request, Project $project, WorkPackage $workPackage, User $user)
     {
+        $currentResponsibleEmail = $workPackage->getResponsibilityEmail();
+        $currentAccountableEmail = $workPackage->getAccountabilityEmail();
+        $currentResponsibleName = $workPackage->getResponsibilityFullName();
+        $currentAccountableName = $workPackage->getAccountabilityFullName();
         if ($workPackage->getProject() !== $project) {
             $this->createdTranslatedAccessDeniedException('exception.workpackage_must_belong_to_project');
         }
@@ -1736,6 +1785,7 @@ class ProjectController extends ApiController
         $rasciRepo = $this->get('app.repository.rasci');
         $rasci = $rasciRepo->findOneBy(['workPackage' => $workPackage, 'user' => $user]);
         $isNew = false;
+
         if (!$rasci) {
             $isNew = true;
             $rasci = new Rasci();
@@ -1743,6 +1793,11 @@ class ProjectController extends ApiController
             $rasci->setUser($user);
         }
 
+        $urlStr = $request->getHost();
+        $urlArr = explode('.', $urlStr);
+        $workspace = $urlArr[0];
+
+        $oldRasci = $rasci->getData();
         $form = $this->createForm(
             RasciDataType::class,
             $rasci,
@@ -1761,10 +1816,30 @@ class ProjectController extends ApiController
             }
 
             $this->dispatchEvent($preEventName, $event);
-            $rasciRepo->add($rasci);
-            $this->dispatchEvent($postEventName, $event);
 
-            return $this->createApiResponse($rasci, $isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+            if ($oldRasci != Rasci::DATA_RESPONSIBLE) {
+                $rasciRepo->add($rasci);
+                $this->dispatchEvent($postEventName, $event);
+
+                if ($request->request->get('data') != $oldRasci) {
+                    if (is_null($oldRasci)) {
+                        $this->mailerRasci('MainBundle:Email:set_responsibility.html.twig', $rasci, $workspace, $project,$user);
+                    } else {
+                        $this->mailerRasci('MainBundle:Email:change_responsibility.html.twig', $rasci, $workspace, $project,
+                            $user,null, null, $oldRasci);
+                    }
+                    if ($rasci->getData() == Rasci::DATA_RESPONSIBLE && $user->getEmail() !== $currentResponsibleEmail) {
+                        $this->mailerRasci( 'MainBundle:Email:remove_responsibility.html.twig' , $rasci, $workspace, $project,
+                            null, $currentResponsibleEmail, $currentResponsibleName);
+                    }
+                    if ($rasci->getData() == Rasci::DATA_ACCOUNTABLE && $user->getEmail() !== $currentAccountableEmail && $currentAccountableEmail !== null ){
+                        $this->mailerRasci('MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project,
+                            null, $currentAccountableEmail, $currentAccountableName);
+                    }
+                }
+
+                return $this->createApiResponse($rasci,$isNew ? Response::HTTP_CREATED : Response::HTTP_ACCEPTED);
+            }
         }
 
         return $this->createApiResponse(
@@ -1807,7 +1882,15 @@ class ProjectController extends ApiController
             $em = $this->getDoctrine()->getManager();
             $postEventName = RasciEvents::POST_REMOVE;
             $event = new RasciEvent($rasci);
-            $rasciRepo->remove($rasci);
+
+            if ($rasci->getData() != Rasci::DATA_RESPONSIBLE) {
+                $rasciRepo->remove($rasci);
+                $urlStr = $request->getHost();
+                $urlArr = explode('.', $urlStr);
+                $workspace = $urlArr[0];
+                $this->mailerRasci('MainBundle:Email:remove_responsibility.html.twig', $rasci, $workspace, $project, $user);
+
+            }
             $this->dispatchEvent($postEventName, $event);
             $em->flush();
         }
@@ -1991,6 +2074,7 @@ class ProjectController extends ApiController
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
         $name = $request->request->get('name');
+        $startDate = $request->request->get('startDate');
 
         if (null === $name) {
             $errors = [
@@ -2004,7 +2088,7 @@ class ProjectController extends ApiController
 
         $this->get('event_dispatcher')->dispatch(
             ProjectEvents::ON_CLONE,
-            new ProjectEvent($project, $this->getUser(), $name)
+            new ProjectEvent($project, $this->getUser(), $name, $startDate)
         );
 
         return $this->createApiResponse($project, Response::HTTP_CREATED);

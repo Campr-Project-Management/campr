@@ -539,6 +539,9 @@
 </template>
 
 <script>
+
+document.cookie = 'redirectAfterLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
 import {mapGetters, mapActions} from 'vuex';
 import EditIcon from '../../_common/_icons/EditIcon';
 import DeleteIcon from '../../_common/_icons/DeleteIcon';
@@ -564,6 +567,7 @@ import EditStatusModal from './View/EditStatusModal';
 import UserAvatar from '../../_common/UserAvatar';
 import ScheduleDatesTable from '../../_common/ScheduleDatesTable';
 import TrafficLight from '../../_common/TrafficLight';
+import {parseUrl} from '../../../util/functions';
 
 const TASK_STATUS_OPEN = 1;
 const TASK_STATUS_ONGOING = 3;
@@ -596,6 +600,11 @@ export default {
         TaskHistory,
     },
     created() {
+        let parsedUrl = this.parseUrl(window.location.href);
+        let mainDomain = parsedUrl.host.split('.').slice(1).join('.');
+
+        this.$cookie.delete('redirectAfterLogin', {domain: mainDomain});
+
         if (this.$route.params.taskId) {
             this.getTaskById(this.$route.params.taskId);
         }
@@ -1119,6 +1128,9 @@ export default {
                 this.loadTaskHistory();
                 return response;
             });
+        },
+        parseUrl(url) {
+            return parseUrl(url);
         },
     },
     data() {

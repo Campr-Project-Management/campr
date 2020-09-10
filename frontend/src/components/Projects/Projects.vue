@@ -10,7 +10,7 @@
             <div class="grid-view">
                 <project-box v-for="project in projects" v-bind:project="project"></project-box>
                 <div class="new-box">
-                    <router-link :to="{name: 'projects-create-1'}">
+                    <router-link :to="{name: 'projects-create-1'}" v-if="localUserIsAdmin">
                         <span>{{ translate('message.new_project') }} +</span>
                     </router-link>
                 </div>

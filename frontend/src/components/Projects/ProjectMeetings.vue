@@ -20,13 +20,21 @@
                 <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.start_time') }}</label>
-                        <vue-timepicker v-model="startTime" hide-clear-button></vue-timepicker>
+                        <DataPicker v-model="startTime"  format="HH:mm"
+                                    type="time"
+                                    placeholder="HH:mm"
+                                    :minute-step="15"
+                                    lang="en"/>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-holder">
                         <label class="active">{{ translate('label.finish_time') }}</label>
-                        <vue-timepicker v-model="endTime" hide-clear-button></vue-timepicker>
+                        <DataPicker v-model="endTime"  format="HH:mm"
+                                    type="time"
+                                    placeholder="HH:mm"
+                                    :minute-step="15"
+                                    lang="en"/>
                     </div>
                 </div>
             </div>
@@ -196,10 +204,13 @@ import RescheduleIcon from '../_common/_icons/RescheduleIcon';
 import DeleteIcon from '../_common/_icons/DeleteIcon';
 import moment from 'moment';
 import Modal from '../_common/Modal';
-import VueTimepicker from '../_common/_form-components/Timepicker';
 import DateField from '../_common/_form-components/DateField';
 import UserAvatar from '../_common/UserAvatar';
 import Editor from '../_common/Editor';
+import DataPicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import '../../css/vue-dat-time-picker-custom.css';
+import {timepicerMask} from '../../util/functions';
 
 export default {
     components: {
@@ -215,7 +226,7 @@ export default {
         moment,
         Modal,
         Editor,
-        VueTimepicker,
+        DataPicker,
     },
     methods: {
         ...mapActions([
@@ -291,13 +302,24 @@ export default {
                 HH: moment(meeting.end, 'HH:mm').format('HH'),
                 mm: moment(meeting.end, 'HH:mm').format('mm'),
             };
+            let startTime = this.startTime;
+            let endTime = this.endTime;
+            $(document).ready(
+                function() {
+                    // Apply input rules as the user types or pastes input
+                    let mxInputs = $('.mx-input');
+                    $(mxInputs[0]).val(startTime.HH + ':' + startTime.mm);
+                    $(mxInputs[1]).val(endTime.HH + ':' + endTime.mm);
+                    timepicerMask();
+                }
+            );
         },
         rescheduleMeeting() {
             let data = {
                 id: this.meetingId,
                 date: moment(this.date).format('DD-MM-YYYY'),
-                start: this.startTime.HH + ':' + this.startTime.mm,
-                end: this.endTime.HH + ':' + this.endTime.mm,
+                start: moment(this.startTime).format('HH') + ':' + moment(this.startTime).format('mm'),
+                end: moment(this.endTime).format('HH') + ':' + moment(this.endTime).format('mm'),
             };
             this.patchProjectMeeting({
                 id: this.meetingId,

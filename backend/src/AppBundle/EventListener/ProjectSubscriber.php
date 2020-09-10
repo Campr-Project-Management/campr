@@ -118,6 +118,7 @@ class ProjectSubscriber implements EventSubscriberInterface
                 'project' => $event->getProject()->getId(),
                 'user' => $event->getUser()->getId(),
                 'name' => $event->getName(),
+                'startDate' => $event->getStartDate(),
                 'env' => $this->env,
             ]
         );
@@ -126,11 +127,12 @@ class ProjectSubscriber implements EventSubscriberInterface
             RedisQueueManagerCommand::DEFAULT,
             [
                 sprintf(
-                    '--env=%s app:clone-project %s %s \'%s\'',
+                    '--env=%s app:clone-project %s %s \'%s\' \'%s\'',
                     $this->env,
                     $event->getProject()->getId(),
                     $event->getUser()->getId(),
-                    $event->getName()
+                    $event->getName(),
+                    $event->getStartDate()
                 ),
             ]
         );
@@ -141,6 +143,7 @@ class ProjectSubscriber implements EventSubscriberInterface
                 'project' => $event->getProject()->getId(),
                 'user' => $event->getUser()->getId(),
                 'name' => $event->getName(),
+                'startDate' => $event->getStartDate(),
                 'env' => $this->env,
             ]
         );

@@ -1,0 +1,10 @@
+{% extends 'MainBundle:Email:base.html.twig' %}
+{% trans_default_domain 'messages' %}
+
+{% block message %}
+    SUBJECT: Change of task role.
+    <p>Hello.</p>
+    <p> Your role for {{ task }} is  {{ responsibility }}</p>
+    <p> Workspace: {{ workspace }}</p>
+    <p> Project: {{ project }}</p>
+{% endblock %}

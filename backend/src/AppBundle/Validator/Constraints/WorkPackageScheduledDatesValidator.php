@@ -26,6 +26,54 @@ class WorkPackageScheduledDatesValidator extends ConstraintValidator
             ;
         }
 
+        $phase = $wp->getPhase();
+
+        if ($phase && $phase->getScheduledStartAt() > $wp->getScheduledStartAt()) {
+            $this->context
+                ->buildViolation(
+                    $constraint->greaterStartedAtWitPhaseMessage,
+                    [
+                        '%date%' => $wp->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_name%' => $phase->getName(),
+                        '%phase_start%' => $phase->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_end%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
+                    ]
+                )
+                ->atPath('scheduledStartAt')
+                ->addViolation();
+        }
+
+        if ($phase && $phase->getScheduledFinishAt() < $wp->getScheduledFinishAt()) {
+            $this->context
+                ->buildViolation(
+                    $constraint->greaterFinishedAtWitPhaseMessage,
+                    [
+                        '%date%' => $wp->getScheduledFinishAt()->format('d.m.Y'),
+                        '%phase_name%' => $phase->getName(),
+                        '%phase_start%' => $phase->getScheduledStartAt()->format('d.m.Y'),
+                        '%phase_end%' => $phase->getScheduledFinishAt()->format('d.m.Y'),
+                    ]
+                )
+                ->atPath('scheduledFinishAt')
+                ->addViolation();
+        }
+
+        $milestone = $wp->getMilestone();
+
+        if (isset($milestone) && ($milestone->getScheduledFinishAt() < $wp->getScheduledFinishAt())) {
+            $this->context
+                ->buildViolation(
+                    $constraint->greaterFinishedAtWitMilestoneMessage,
+                    [
+                        '%date%' => $wp->getScheduledFinishAt()->format('d.m.Y'),
+                        '%milestone_name%' => $milestone->getName(),
+                        '%milestone_end%' => $milestone->getScheduledFinishAt()->format('d.m.Y'),
+                    ]
+                )
+                ->atPath('scheduledFinishAt')
+                ->addViolation();
+        }
+
         $parent = $wp->getParent();
         if (!$parent) {
             return;

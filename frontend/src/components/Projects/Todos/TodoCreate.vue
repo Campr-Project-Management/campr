@@ -68,9 +68,9 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <date-field v-model="dueDate"/>
+                                    <date-field v-model="dueDate" v-on:input="checkData"/>
                                 </div>
-                                <error at-path="dueDate"/>
+                                <error at-path="dueDate" v-bind:message="calendarCorrect"/>
                             </div>
                         </div>
                     </div>
@@ -111,6 +111,7 @@ import moment from 'moment';
 import Error from '../../_common/_messages/Error.vue';
 import Editor from '../../_common/Editor';
 import DateField from '../../_common/_form-components/DateField';
+import {calendarNotPast} from '../../../util/validator_helper';
 
 export default {
     components: {
@@ -132,6 +133,10 @@ export default {
             'getDistributionLists',
             'emptyValidationMessages',
         ]),
+        checkData: function(value) {
+            const message = this.translate('before.now');
+            this.calendarCorrect = calendarNotPast(message, value);
+        },
         saveTodo: function() {
             if (!this.isSaving) {
                 let data = {
@@ -251,6 +256,7 @@ export default {
             todoCategory: null,
             isSaving: false,
             distributionList: null,
+            calendarCorrect: null,
         };
     },
 };

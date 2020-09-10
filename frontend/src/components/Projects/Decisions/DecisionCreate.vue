@@ -68,9 +68,9 @@
                             <div class="col-md-6">
                                 <div class="input-holder right">
                                     <label class="active">{{ translate('label.due_date') }}</label>
-                                    <date-field v-model="dueDate"/>
+                                    <date-field v-model="dueDate" v-on:input="checkData"/>
                                 </div>
-                                <error at-path="dueDate"/>
+                                <error at-path="dueDate" v-bind:message="calendarCorrect"/>
                             </div>
                         </div>
                     </div>
@@ -128,6 +128,7 @@
     import Attachments from '../../_common/Attachments';
     import DateField from '../../_common/_form-components/DateField';
     import {createFormData} from '../../../helpers/decision';
+    import {calendarNotPast} from '../../../util/validator_helper';
 
     export default {
         components: {
@@ -149,6 +150,10 @@
                 'editDecision',
                 'emptyValidationMessages',
             ]),
+            checkData: function(value) {
+                const message = this.translate('before.now');
+                this.calendarCorrect = calendarNotPast(message, value);
+            },
             onUploading(uploading) {
                 this.isUploading = uploading;
             },
@@ -282,6 +287,7 @@
                 isEdit: this.$route.params.decisionId,
                 showSaved: false,
                 isUploading: false,
+                calendarCorrect: null,
             };
         },
     };
