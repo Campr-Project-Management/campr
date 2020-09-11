@@ -93,7 +93,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ProjectDepartment", inversedBy="projectUsers", cascade={"persist"})
      * @ORM\JoinTable(
-     *     name="project_user_project_department",
+     *     name="project_department_member",
      *     joinColumns={
      *         @ORM\JoinColumn(name="project_user_id", onDelete="CASCADE")
      *     },
