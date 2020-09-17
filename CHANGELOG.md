@@ -1,4 +1,9 @@
 # CAMPR CHANGELOG
+***
+## **September 15, 2020**
+## FIXED
+### Issue  [135](https://github.com/CamprGmbH/campr/issues/135) *Assigning project user to department*
+### Issue  [136](https://github.com/CamprGmbH/campr/issues/136) *Cost chart by Phase not displayed*
 ---
 ## **1.2 CAMPR RELEASE** September 10, 2020
 ## NEW
