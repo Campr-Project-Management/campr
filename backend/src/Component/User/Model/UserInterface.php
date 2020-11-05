@@ -2,7 +2,6 @@
 
 namespace Component\User\Model;
 
-use AppBundle\Entity\Company;
 use Component\Avatar\Model\AvatarAwareInterface;
 use Component\Avatar\Model\GravatarAwareInterface;
 use Component\Resource\Model\EmailAwareInterface;
@@ -217,7 +216,7 @@ interface UserInterface extends AdvancedUserInterface, ResourceInterface, \Seria
     /**
      * Get company.
      *
-     * @return Company
+     * @return string
      */
     public function getCompany();
 

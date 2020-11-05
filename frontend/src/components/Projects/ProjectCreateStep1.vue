@@ -19,13 +19,11 @@
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*"
                    @change="updateProjectLogo">
 
-            <select-field
-                    :title="translate('message.select_customer')"
-                    :options="customersForSelect"
-                    v-model="selectedCompany" name="selected_company"/>
+            <input-field type="text" :label="translate('message.select_customer')" v-model="company"
+                         :content="company" name="company"/>
             <error
-                    v-if="errorsStep1 && errorsStep1.selected_company && errorsStep1.selected_company.length"
-                    :message="errorsStep1.selected_company" atPath="selected_company" />
+                    v-if="errorsStep1 && errorsStep1.company && errorsStep1.company.length"
+                    :message="errorsStep1.company" atPath="company" />
 
             <select-field
                     :title="translate('message.currency')"
@@ -134,7 +132,6 @@
                 'getPortfolios',
                 'createProgramme',
                 'getProgrammes',
-                'getCustomers',
                 'getCurrencies',
                 'setProjectCreateWizardStep1',
             ]),
@@ -170,7 +167,7 @@
                     'visibleAddProgrammeField': this.visibleAddProgrammeField,
                     'selectedPortfolio': this.selectedPortfolio,
                     'selectedProgramme': this.selectedProgramme,
-                    'selectedCompany': this.selectedCompany,
+                    'company': this.company,
                     'selectedCurrency': this.selectedCurrency,
                 };
                 this.setProjectCreateWizardStep1(data);
@@ -217,7 +214,7 @@
                 this.programmeName = stepData ? stepData.programmeName : '';
                 this.selectedPortfolio = stepData ? stepData.selectedPortfolio : {};
                 this.selectedProgramme = stepData ? stepData.selectedProgramme : {};
-                this.selectedCompany = stepData && typeof stepData.selectedCompany !== 'undefined' ? stepData.selectedCompany : {};
+                this.company = stepData && typeof stepData.company !== 'undefined' ? stepData.company : '';
                 this.selectedCurrency = stepData && typeof stepData.selectedCurrency !== 'undefined' ? stepData.selectedCurrency : {};
             },
             validateStep1() {
@@ -225,7 +222,7 @@
                 if (this.projectName.length
                     && this.projectNumber.length
                     && typeof this.selectedCurrency.key !== 'undefined'
-                    && typeof this.selectedCompany.key !== 'undefined'
+                    && this.company.length
                 ) {
                     return true;
                 }
@@ -238,8 +235,8 @@
                 if (typeof this.selectedCurrency.key == 'undefined') {
                     this.errorsStep1['selected_currency'] = 'This value should not be blank.';
                 }
-                if (typeof this.selectedCompany.key == 'undefined') {
-                    this.errorsStep1['selected_company'] = 'This value should not be blank.';
+                if (!this.company.length) {
+                    this.errorsStep1['company'] = 'This value should not be blank.';
                 }
                 return false;
             },
@@ -251,7 +248,6 @@
                 'currencies',
                 'programmeLoading',
                 'projectCreateWizardStep1',
-                'customersForSelect',
                 'portfolioLoading',
                 'programmesForSelect',
                 'portfoliosForSelect',
@@ -262,7 +258,6 @@
             this.init();
             this.getPortfolios();
             this.getProgrammes();
-            this.getCustomers();
 
             if (this.currencies.length === 0) {
                 this.getCurrencies();
@@ -305,7 +300,7 @@
                 programmeName: '',
                 selectedPortfolio: {},
                 selectedProgramme: {},
-                selectedCompany: {},
+                company: '',
                 selectedCurrency: {},
                 errorsStep1: [],
             };

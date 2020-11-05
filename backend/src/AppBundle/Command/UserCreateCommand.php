@@ -22,7 +22,7 @@ class UserCreateCommand extends ContainerAwareCommand
             ->setName('tss:app:user-create')
             ->addArgument('email', InputArgument::REQUIRED, 'The email of the new user')
             ->addArgument('password', InputArgument::REQUIRED, 'The password of the new user')
-            ->addArgument('username', InputArgument::REQUIRED, 'The username of the new user')
+            ->addArgument('username', InputArgument::OPTIONAL, 'The username of the new user')
             ->addOption('first_name', null, InputArgument::OPTIONAL, 'The first name of the new user', 'John')
             ->addOption('last_name', null, InputArgument::OPTIONAL, 'The last name of the new user', 'Doe')
             ->addOption('role', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Roles to set to the user')
@@ -33,7 +33,7 @@ class UserCreateCommand extends ContainerAwareCommand
     {
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
-        $username = $input->getArgument('username');
+        $username = $input->getArgument('username') ?? $email;
         $firstName = $input->getOption('first_name');
         $lastName = $input->getOption('last_name');
         $roles = $input->getOption('role');

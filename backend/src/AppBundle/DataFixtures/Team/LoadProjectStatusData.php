@@ -26,7 +26,15 @@ class LoadProjectStatusData extends AbstractFixture implements OrderedFixtureInt
         ];
 
         foreach ($data as $row) {
-            $ps = new ProjectStatus();
+            $ps = $manager
+                ->getRepository(ProjectStatus::class)
+                ->findOneBy([
+                    'name' => $row[0],
+                ])
+            ;
+            if (!$ps) {
+                $ps = new ProjectStatus();
+            }
             $ps->setName($row[0]);
             $ps->setCode($row[0]);
             $ps->setSequence($row[1]);

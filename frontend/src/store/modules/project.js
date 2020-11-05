@@ -404,11 +404,13 @@ const actions = {
             ;
     },
 
+    // eslint-disable-next-line valid-jsdoc
     /**
      * Creates a new project
      * @param {function} commit
+     * @param {function} dispatch
      * @param {array} data
-     * @return {object}
+     * @returns {Promise<*>}
      */
     async createProject({commit, dispatch}, data) {
         try {

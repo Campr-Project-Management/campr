@@ -412,14 +412,8 @@ class User implements UserInterface
     private $locale = 'en';
 
     /**
-     * @var Company
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company")
-     * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="company_id", onDelete="SET NULL")
-     * })
+     * @var string
+     * @ORM\Column(name="company", type="string", length=255, nullable=false)
      */
     private $company;
 
@@ -1645,9 +1639,9 @@ class User implements UserInterface
     /**
      * Set company.
      *
-     * @param Company $company
+     * @param string|null $company
      */
-    public function setCompany(Company $company = null)
+    public function setCompany(string $company = null)
     {
         $this->company = $company;
     }
@@ -1655,21 +1649,11 @@ class User implements UserInterface
     /**
      * Get company.
      *
-     * @return Company
+     * @return string
      */
     public function getCompany()
     {
         return $this->company;
-    }
-
-    /**
-     * Returns company name.
-     *
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->company ? $this->company->getName() : null;
     }
 
     /**

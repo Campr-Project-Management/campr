@@ -69,7 +69,7 @@ RUN apt-get install -y --fix-missing \
 && apt-get autoclean
 
 RUN curl https://getcomposer.org/installer > composer-setup.php \
-    && php composer-setup.php \
+    && php composer-setup.php --version=1.10.17 \
     && mv composer.phar /usr/local/bin/composer \
     && rm composer-setup.php
 

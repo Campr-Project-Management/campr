@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form\Project\Admin;
 
-use AppBundle\Entity\Company;
 use AppBundle\Entity\Portfolio;
 use AppBundle\Entity\Programme;
 use AppBundle\Entity\Project;
@@ -105,7 +104,7 @@ class ProjectType extends AbstractType
             )
             ->add(
                 'company',
-                EntityType::class,
+                TextType::class,
                 [
                     'required' => true,
                     'constraints' => [
@@ -115,9 +114,6 @@ class ProjectType extends AbstractType
                             ]
                         ),
                     ],
-                    'class' => Company::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'placeholder.company_choose',
                     'translation_domain' => 'messages',
                 ]
             )
