@@ -2,9 +2,8 @@
 
 namespace AppBundle\Form\Project;
 
-use AppBundle\Entity\Company;
 use AppBundle\Entity\Project;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -45,7 +44,7 @@ class ApiType extends CreateType
             ->add('configuration')
             ->add(
                 'company',
-                EntityType::class,
+                TextType::class,
                 [
                     'required' => true,
                     'constraints' => [
@@ -55,9 +54,9 @@ class ApiType extends CreateType
                             ]
                         ),
                     ],
-                    'class' => Company::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'placeholder.company_choose',
+                    'attr' => [
+                        'placeholder' => 'placeholder.company_choose',
+                    ],
                     'translation_domain' => 'messages',
                 ]
             )

@@ -469,7 +469,7 @@ class ProjectUser implements UserAwareInterface, TimestampableInterface, Resourc
      */
     public function getUserCompanyName()
     {
-        return $this->user ? $this->user->getCompanyName() : null;
+        return $this->user ? $this->user->getCompany() : null;
     }
 
     /**

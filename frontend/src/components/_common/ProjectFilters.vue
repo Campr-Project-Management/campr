@@ -2,7 +2,6 @@
     <div class="filters">
         <span class="title">{{ translateText('message.filter_by') }}</span>
         <div class="dropdowns">
-            <dropdown ref="customers" v-bind:title="translateText('message.customer')" v-bind:options="customers" :selectedValue="selectCustomer"></dropdown>
             <dropdown ref="programmes" v-bind:title="translateText('message.programme')" v-bind:options="programmes" :selectedValue="selectProgramme"></dropdown>
             <dropdown ref="statuses" v-bind:title="translateText('message.status')" v-bind:options="statuses" :selectedValue="selectStatus"></dropdown>
             <a @click="clearFilters()" class="btn-rounded btn-auto second-bg">{{ translateText('button.clear_filters') }}</a>
@@ -20,7 +19,7 @@ export default {
         Dropdown,
     },
     methods: {
-        ...mapActions(['getProjectStatuses', 'getCustomers', 'getProgrammes']),
+        ...mapActions(['getProjectStatuses', 'getProgrammes']),
         translateText: function(text) {
             return this.translate(text);
         },
@@ -42,7 +41,6 @@ export default {
     },
     watch: {
         user: function() {
-            this.getCustomers();
             this.getProjectStatuses();
             this.getProgrammes();
         },
@@ -50,7 +48,6 @@ export default {
     computed: {
         ...mapGetters({
             statuses: 'projectStatusesForFilter',
-            customers: 'customersForFilter',
             programmes: 'programmesForFilter',
             user: 'user',
         }),

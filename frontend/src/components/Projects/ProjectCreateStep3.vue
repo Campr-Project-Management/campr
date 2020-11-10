@@ -162,8 +162,8 @@
                     formData.append('number', firstStepData.projectNumber);
                 }
 
-                if (firstStepData.selectedCompany) {
-                    formData.append('company', firstStepData.selectedCompany.key);
+                if (firstStepData.company) {
+                    formData.append('company', firstStepData.company);
                 }
 
                 if (firstStepData.projectLogo) {
