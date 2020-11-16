@@ -19,7 +19,7 @@
             <input id="projectLogo" type="file" name="projectLogo" style="display: none;" accept="image/*"
                    @change="updateProjectLogo">
 
-            <input-field type="text" :label="translate('message.select_customer')" v-model="company"
+            <input-field type="text" :label="translate('message.customer')" v-model="company"
                          :content="company" name="company"/>
             <error
                     v-if="errorsStep1 && errorsStep1.company && errorsStep1.company.length"
