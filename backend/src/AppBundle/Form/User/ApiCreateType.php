@@ -66,7 +66,6 @@ class ApiCreateType extends AbstractType
             ])
             ->add('company', TextType::class, [
                 'required' => false,
-                'mapped' => false,
             ])
             ->add('phone', TextType::class, [
                 'required' => false,

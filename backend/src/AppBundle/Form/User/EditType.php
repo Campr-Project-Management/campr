@@ -54,7 +54,6 @@ class EditType extends AbstractType
                 TextType::class,
                 [
                     'required' => false,
-                    'placeholder' => 'placeholder.company_choose',
                     'translation_domain' => 'messages',
                 ]
             )

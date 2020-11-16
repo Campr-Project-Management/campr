@@ -37,14 +37,6 @@
                 type: String,
                 required: false,
             },
-            calendarCorrect: {
-                type: String,
-                default: '',
-            },
-
-        },
-        created: {
-            displayMessages: 'error',
         },
         computed: {
             ...mapGetters([

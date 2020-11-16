@@ -220,7 +220,6 @@ export default function (Translator) {
     Translator.add("not_blank.industry_branch", "Bitte gib deine Branche an.", "validators", "de");
     Translator.add("not_blank.meeting_category", "Bitte w\u00e4hle eine Kategorie", "validators", "de");
     Translator.add("work_package.assignment.rasci_user", "%name% ist kein RASCI-Benutzer", "validators", "de");
-    Translator.add("before.now", "Das ausgewählte Datum liegt in der Vergangenheit.", "validators", "de");
     Translator.add("project.valid_contract", "Bitte f\u00fcllt den Projektvertrag aus, genehmigt das Projekt und friert den Vertrag ein!", "validators", "de");
     Translator.add("An authentication exception occurred.", "Es ist ein Fehler bei der Authentifikation aufgetreten.", "security", "de");
     Translator.add("Authentication credentials could not be found.", "Es konnten keine Zugangsdaten gefunden werden.", "security", "de");
@@ -428,7 +427,6 @@ export default function (Translator) {
     Translator.add("button.view_info", "Info anzeigen", "messages", "de");
     Translator.add("button.view_remaining_action", "Verbleibende Ma\u00dfnahmen ansehen", "messages", "de");
     Translator.add("button.view_tasks_board", "Task Board anzeigen", "messages", "de");
-    Translator.add("button.view_tasks_grid", "Task Board gitter", "messages", "de");
     Translator.add("checkbox.checked", "Ja", "messages", "de");
     Translator.add("checkbox.unchecked", "Nein", "messages", "de");
     Translator.add("choices.days", "Tage", "messages", "de");
@@ -646,7 +644,7 @@ export default function (Translator) {
     Translator.add("label.instagram", "Instagram", "messages", "de");
     Translator.add("label.internal_cost_subtotal", "Zwischensumme", "messages", "de");
     Translator.add("label.internal_costs_total", "Basissumme", "messages", "de");
-    Translator.add("label.invite_workspace_member", "Mitglied in Arbeitsumfeld einladen", "messages", "de");
+    Translator.add("label.invite_workspace_member", "Mitglied in Workspace einladen", "messages", "de");
     Translator.add("label.is_budget", "Budget", "messages", "de");
     Translator.add("label.is_cost_resource", "Kostenressource", "messages", "de");
     Translator.add("label.is_default", "Ist voreingestellt", "messages", "de");
@@ -896,7 +894,6 @@ export default function (Translator) {
     Translator.add("message.back_to", "Zur\u00fcck zu", "messages", "de");
     Translator.add("message.back_to_decisions", "Zur\u00fcck zu Entscheidungen", "messages", "de");
     Translator.add("message.back_to_infos", "Zur\u00fcck zu Infos", "messages", "de");
-    Translator.add("message.before_now", "Diese Daten sollten nicht vorher sein ", "messages", "de");
     Translator.add("message.back_to_meetings", "Zur\u00fcck zu Meetings", "messages", "de");
     Translator.add("message.back_to_organization", "Zur\u00fcck zur Projektorganisation", "messages", "de");
     Translator.add("message.back_to_phases_and_milestones", "Zur\u00fcck zu Phasen & Meilensteine", "messages", "de");
@@ -2300,9 +2297,9 @@ export default function (Translator) {
     Translator.add("title.workpackage_status.create", "Arbeitspaketstatus erstellen", "messages", "de");
     Translator.add("title.workpackage_status.edit", "Arbeitspaketstatus bearbeiten", "messages", "de");
     Translator.add("title.workpackage_status.list", "Arbeitspaketstatus", "messages", "de");
-    Translator.add("title.workspace.create", "Neues Arbeitsumfeld erstellen", "messages", "de");
-    Translator.add("title.workspace.edit", "Arbeitsumfeld bearbeiten", "messages", "de");
-    Translator.add("title.workspace.list", "Liste Arbeitsumfelder", "messages", "de");
+    Translator.add("title.workspace.create", "Neuen Workspace erstellen", "messages", "de");
+    Translator.add("title.workspace.edit", "Workspace bearbeiten", "messages", "de");
+    Translator.add("title.workspace.list", "Liste Workspaces", "messages", "de");
     Translator.add("title.workspace_member.create", "Neues Mitglied erstellen", "messages", "de");
     Translator.add("title.workspace_member.edit", "Bearbeiten", "messages", "de");
     Translator.add("title.workspace_member.for", "Mitglieder von", "messages", "de");
@@ -2630,6 +2627,11 @@ export default function (Translator) {
     Translator.add("two_factor.remove.email_success", "Ein Link zur Entfernung der Zwei-Faktor-Authentifizierung wurde dir per E-Mail gesendet.", "messages", "de");
     Translator.add("email.subject.two_factor.remove", "CAMPR - Zwei-Faktor-Authentifizierung enfernen", "messages", "de");
     Translator.add("email.two_factor.body.remove", "Klick <a href=\"%url%\">hier<\/a>, um die Zwei-Faktor-Authentifizierung deines Accounts zu entfernen.", "messages", "de");
+    Translator.add("email.message.task.new", "Hallo %task_responsible%, %task_creator% hat einen neue Aufgabe \"%task_name%\" mit Abschlussdatum %base_finished_date% f\u00fcr dich angelegt.", "messages", "de");
+    Translator.add("email.button.task.profile", "Aufgabenprofil", "messages", "de");
+    Translator.add("email.subject.task.new", "Deine neue Aufgabe: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "de");
+    Translator.add("email.subject.task.edit", "Deine Aufgabenverantwortlichkeit wurde ge\u00e4ndert: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "de");
+    Translator.add("email.message.task.edit", "Hallo %task_responsible%, deine Aufgabenverantwortlichkeit wurde von %former_task_responsibility% ge\u00e4ndert.", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Das Aktivierungs-Token wurde nicht gefunden oder der Benutzer ist bereits aktiv.", "flashes", "de");

@@ -180,7 +180,6 @@ button.view_all_tasks: 'Alle Aufgaben anzeigen'
 button.view_info: 'Info anzeigen'
 button.view_remaining_action: 'Verbleibende Maßnahmen ansehen'
 button.view_tasks_board: 'Task Board anzeigen'
-button.view_tasks_grid: 'Task Board gitter'
 checkbox.checked: Ja
 checkbox.unchecked: Nein
 choices.days: Tage
@@ -398,7 +397,7 @@ label.initiated: Eingeleitet
 label.instagram: Instagram
 label.internal_cost_subtotal: Zwischensumme
 label.internal_costs_total: Basissumme
-label.invite_workspace_member: 'Mitglied in Arbeitsumfeld einladen'
+label.invite_workspace_member: 'Mitglied in Workspace einladen'
 label.is_budget: Budget
 label.is_cost_resource: Kostenressource
 label.is_default: 'Ist voreingestellt'
@@ -2051,9 +2050,9 @@ title.workpackage_category.list: Arbeitspaketkategorie
 title.workpackage_status.create: 'Arbeitspaketstatus erstellen'
 title.workpackage_status.edit: 'Arbeitspaketstatus bearbeiten'
 title.workpackage_status.list: Arbeitspaketstatus
-title.workspace.create: 'Neues Arbeitsumfeld erstellen'
-title.workspace.edit: 'Arbeitsumfeld bearbeiten'
-title.workspace.list: 'Liste Arbeitsumfelder'
+title.workspace.create: 'Neuen Workspace erstellen'
+title.workspace.edit: 'Workspace bearbeiten'
+title.workspace.list: 'Liste Workspaces'
 title.workspace_member.create: 'Neues Mitglied erstellen'
 title.workspace_member.edit: Bearbeiten
 title.workspace_member.for: 'Mitglieder von'
@@ -2381,3 +2380,8 @@ email.two_factor.body.code: 'CAMPR Zwei-Faktor-Code: %code%'
 two_factor.remove.email_success: 'Ein Link zur Entfernung der Zwei-Faktor-Authentifizierung wurde dir per E-Mail gesendet.'
 email.subject.two_factor.remove: 'CAMPR - Zwei-Faktor-Authentifizierung enfernen'
 email.two_factor.body.remove: 'Klick <a href="%url%">hier</a>, um die Zwei-Faktor-Authentifizierung deines Accounts zu entfernen.'
+email.message.task.new: 'Hallo %task_responsible%, %task_creator% hat einen neue Aufgabe "%task_name%" mit Abschlussdatum %base_finished_date% für dich angelegt.'
+email.button.task.profile: Aufgabenprofil
+email.subject.task.new: 'Deine neue Aufgabe: "%workspace_name%" - "%project_name%" - "%task_name%"'
+email.subject.task.edit: 'Deine Aufgabenverantwortlichkeit wurde geändert: "%workspace_name%" - "%project_name%" - "%task_name%"'
+email.message.task.edit: 'Hallo %task_responsible%, deine Aufgabenverantwortlichkeit wurde von %former_task_responsibility% geändert.'
