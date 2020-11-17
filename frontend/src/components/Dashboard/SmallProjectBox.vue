@@ -19,7 +19,7 @@
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.customer') }}:</span>
-                        <span class="data">{{ project.companyName }}</span>
+                        <span class="data">{{ project.company }}</span>
                     </p>
                     <p>
                         <span class="title">{{ translateText('message.project_manager') }}</span>

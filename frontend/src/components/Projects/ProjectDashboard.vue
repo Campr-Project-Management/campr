@@ -47,7 +47,7 @@
                             </li>
                             <li>
                                 <span>{{ translate('message.customer') }}:</span>
-                                <b v-if="project.company">{{ project.companyName }}</b>
+                                <b v-if="project.company">{{ project.company }}</b>
                                 <b v-else>-</b>
                             </li>
                             <li>

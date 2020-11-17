@@ -3,7 +3,6 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Assignment;
-use AppBundle\Entity\Company;
 use AppBundle\Entity\CustomField;
 use AppBundle\Entity\CustomFieldValue;
 use AppBundle\Entity\Timephase;
@@ -78,9 +77,6 @@ class ImportService
                     if ($this->checkIsDate((string) $element)) {
                         $date = str_replace('T', ' ', (string) $element);
                         $project->$action(new \DateTime($date));
-                    } elseif (ImportConstants::PROJECT_COMPANY_TAG === $tag) {
-                        $company = $this->importCompany((string) $element);
-                        $project->$action($company);
                     } else {
                         $project->$action((string) $element);
                     }
@@ -584,24 +580,6 @@ class ImportService
             $this->em->flush();
             $this->saveQueueItems($timephaseSaveQueue);
         }
-    }
-
-    private function importCompany($companyName)
-    {
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->findOneBy([
-                'name' => $companyName,
-            ])
-        ;
-        if ($company) {
-            return $company;
-        }
-
-        return (new Company())
-            ->setName($companyName)
-        ;
     }
 
     private function addCustomField($fieldName, $value, $object, $className, $saveQueue)

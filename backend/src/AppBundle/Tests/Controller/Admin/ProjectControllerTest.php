@@ -6,7 +6,6 @@ use AppBundle\Entity\Currency;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectUser;
-use AppBundle\Entity\Company;
 use Component\Currency\Model\CurrencyInterface;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
@@ -139,16 +138,10 @@ class ProjectControllerTest extends BaseController
     {
         $this->login();
 
-        /** @var Company $company */
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->find(1);
-
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
-            ->setCompany($company);
+            ->setCompany('ACME');
         $this->em->persist($project);
         $this->em->flush();
 

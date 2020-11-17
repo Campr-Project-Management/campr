@@ -72,14 +72,10 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     private $shortNote;
 
     /**
-     * @var Company
-     *
-     * @Serializer\Exclude()
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Company", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *     @ORM\JoinColumn(name="company_id", nullable=false, onDelete="CASCADE")
-     * })
+     * @var string
+     * @ORM\Column(name="company", type="string", length=255, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
     private $company;
 
@@ -661,11 +657,11 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     /**
      * Set company.
      *
-     * @param Company $company
+     * @param string $company
      *
      * @return Project
      */
-    public function setCompany(Company $company = null)
+    public function setCompany(string $company = null)
     {
         $this->company = $company;
 
@@ -675,37 +671,11 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     /**
      * Get company.
      *
-     * @return Company
+     * @return string
      */
     public function getCompany()
     {
         return $this->company;
-    }
-
-    /**
-     * Returns company id.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("company")
-     *
-     * @return string
-     */
-    public function getCompanyId()
-    {
-        return $this->company ? $this->company->getId() : null;
-    }
-
-    /**
-     * Returns company name.
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("companyName")
-     *
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->company ? $this->company->getName() : null;
     }
 
     /**

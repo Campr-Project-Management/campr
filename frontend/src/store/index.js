@@ -6,7 +6,6 @@ import * as mutations from './mutations';
 import closeDownAction from './modules/close-down-action';
 import trafficLight from './modules/traffic-light';
 import cost from './modules/cost';
-import customer from './modules/customer';
 import dashboard from './modules/dashboard';
 import decisionCategory from './modules/decision-category';
 import decision from './modules/decision';
@@ -91,7 +90,6 @@ export default new Vuex.Store({
         trafficLight,
         closeDownAction,
         cost,
-        customer,
         dashboard,
         decision,
         decisionCategory,

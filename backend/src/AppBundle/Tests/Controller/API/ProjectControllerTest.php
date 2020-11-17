@@ -10,7 +10,6 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\ProjectRole;
 use AppBundle\Entity\ProjectTeam;
 use AppBundle\Entity\ProjectUser;
-use AppBundle\Entity\Company;
 use AppBundle\Entity\User;
 use AppBundle\Entity\WorkPackage;
 use Component\TrafficLight\TrafficLight;
@@ -101,7 +100,6 @@ class ProjectControllerTest extends BaseController
                 [
                     'trafficLight' => TrafficLight::GREEN,
                     'company' => null,
-                    'companyName' => null,
                     'projectComplexity' => null,
                     'projectComplexityName' => null,
                     'projectCategory' => null,

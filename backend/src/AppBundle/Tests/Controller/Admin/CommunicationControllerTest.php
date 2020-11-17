@@ -5,7 +5,6 @@ namespace AppBundle\Tests\Controller\Admin;
 use AppBundle\Entity\Communication;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Schedule;
-use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,16 +90,10 @@ class CommunicationControllerTest extends BaseController
     {
         $this->login();
 
-        $company = $this
-            ->em
-            ->getRepository(Company::class)
-            ->find(1)
-        ;
-
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
-            ->setCompany($company)
+            ->setCompany('ACME')
         ;
 
         $this->em->persist($project);

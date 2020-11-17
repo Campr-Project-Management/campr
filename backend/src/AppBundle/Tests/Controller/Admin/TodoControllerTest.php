@@ -4,7 +4,6 @@ namespace AppBundle\Tests\Controller\Admin;
 
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Todo;
-use AppBundle\Entity\Company;
 use MainBundle\Tests\Controller\BaseController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,14 +88,10 @@ class TodoControllerTest extends BaseController
     {
         $this->login();
 
-        $company = (new Company())
-            ->setName('company4');
-        $this->em->persist($company);
-
         $project = (new Project())
             ->setName('project4')
             ->setNumber('project-number-4')
-            ->setCompany($company);
+            ->setCompany('ACME');
         $this->em->persist($project);
 
         $todo = (new Todo())

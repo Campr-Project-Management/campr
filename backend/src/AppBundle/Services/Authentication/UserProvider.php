@@ -18,6 +18,10 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByApiToken($apiToken)
     {
+        if (empty($apiToken)) {
+            return null;
+        }
+
         return $this
             ->em
             ->getRepository(User::class)

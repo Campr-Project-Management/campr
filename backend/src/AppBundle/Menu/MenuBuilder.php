@@ -142,14 +142,6 @@ class MenuBuilder
         ;
 
         $menu
-            ->addChild($this->translator->trans('title.company.list', [], 'messages'), [
-                'route' => 'app_admin_company_list',
-            ])
-            ->setAttribute('class', 'main-category')
-            ->setLinkAttribute('icon', 'zmdi zmdi-case')
-        ;
-
-        $menu
             ->addChild($this->translator->trans('title.programme.list', [], 'messages'), [
                 'route' => 'app_admin_programme_list',
             ])

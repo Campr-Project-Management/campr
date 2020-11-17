@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form\User;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -11,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AppBundle\Entity\Company;
 use AppBundle\Entity\User;
 
 class EditType extends AbstractType
@@ -53,12 +51,9 @@ class EditType extends AbstractType
             )
             ->add(
                 'company',
-                EntityType::class,
+                TextType::class,
                 [
                     'required' => false,
-                    'class' => Company::class,
-                    'choice_label' => 'name',
-                    'placeholder' => 'placeholder.company_choose',
                     'translation_domain' => 'messages',
                 ]
             )
