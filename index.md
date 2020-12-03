@@ -15,8 +15,9 @@ Welcome to the CAMPR support page. Here you will find all necessary information 
 CAMPR is organized in workspaces. Within those workspaces, you can set up projects. You can have an infinite number of both workspaces and projects.
 After creating and activating your account, you should set up your first workspace. Go to “workspace” in the top right corner to open the list of workspaces you are the owner of and to set up new ones. 
 
-We also prepared a video for you to guide you through the first steps.
-[![CAMPR Guide - First steps](https://img.youtube.com/vi/KJ0zsRWBuwA/0.jpg)](https://www.youtube.com/KJ0zsRWBuwA)
+We also prepared a video for you to guide you through the first steps:
+
+[![CAMPR Guide - First steps](https://img.youtube.com/vi/KJ0zsRWBuwA/3.jpg)](https://www.youtube.com/KJ0zsRWBuwA)
 
 ### The project creation wizard
 
