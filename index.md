@@ -1,6 +1,7 @@
 # Welcome to CAMPR 
 
-Welcome to the CAMPR support page. Here you will find all necessary information about the architecture and functionalities of CAMPR. If you still have open questions, want to report a bug or have any suggestions for improvements, you can either send us an email or use our community platforms.
+Welcome to the CAMPR support page. Here you will find all necessary information about the architecture and functionalities of CAMPR. Generally the single sections start with a general introduction to the module, followed by a detailed rundown of functions and terms. At the end of each segment we will link the matching video tutorial.
+If you still have open questions, want to report a bug or have any suggestions for improvements, you can either send us an email or use our community platforms.
 
 [GitHub](https://github.com/CamprGmbH)
 [Discourse](https://campr.discourse.group/)
@@ -41,6 +42,7 @@ As you have probably already heard, CAMPR offers 16 modules covering all areas o
 ### Project Contract
 
 The project contract is a framework agreement between the project sponsor and the project manager and includes all known information about the project such as deliverables, objectives and limitations, but also resources and a general description.
+
 ![The Project Contract](https://user-images.githubusercontent.com/63300071/101017496-73c49280-356a-11eb-9319-843a077bd4ac.PNG)
 
 - **Project Scope**: The Project Scope is generally defined as the work performed to deliver a product, service or result within the specified features and functions.
@@ -59,7 +61,8 @@ The project contract is a framework agreement between the project sponsor and th
 - **External Costs**: External Costs are expenses for outside services, investments in machinery or tools and others.
 - **Download PDF**: You can export the Project Contract as PDF to print and sign.
 
-Here you can find the Video-Tutorial for the Project Contract
+Here you can find the Video-Tutorial for the Project Contract:
+
 [![Here you can find the Video-Tutorial for the Project Contract](https://img.youtube.com/vi/Zp9fB7qOsK0/1.jpg)](https://www.youtube.com/Zp9fB7qOsK0)
 
 ### Organization
