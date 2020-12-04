@@ -1,6 +1,4 @@
----
-youtubeId: cg4pTb-VR80
----
+
 # Welcome to CAMPR 
 
 Welcome to the CAMPR support page. Here you will find all necessary information about the architecture and functionalities of CAMPR. Generally the single sections start with a general introduction to the module, followed by a detailed rundown of functions and terms. At the end of each segment we will link the matching video tutorial.
@@ -23,7 +21,7 @@ We also prepared a video for you to guide you through the first steps:
 <!---
 Example:     youtubeId: KJ0zsRWBuwA
 -->
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId cg4pTb-VR80}
 [![CAMPR Guide - First steps](https://img.youtube.com/vi/KJ0zsRWBuwA/3.jpg)](https://www.youtube.com/KJ0zsRWBuwA)
 
 ### The project creation wizard
