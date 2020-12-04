@@ -1,3 +1,6 @@
+---
+youtubeId: cg4pTb-VR80
+---
 # Welcome to CAMPR 
 
 Welcome to the CAMPR support page. Here you will find all necessary information about the architecture and functionalities of CAMPR. Generally the single sections start with a general introduction to the module, followed by a detailed rundown of functions and terms. At the end of each segment we will link the matching video tutorial.
