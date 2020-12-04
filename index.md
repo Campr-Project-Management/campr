@@ -22,7 +22,7 @@ We also prepared a video for you to guide you through the first steps:
 Example:     youtubeId: KJ0zsRWBuwA
 -->
 {% include youtubePlayer.html id=page.youtubeId cg4pTb-VR80}
-[![CAMPR Guide - First steps](https://img.youtube.com/vi/KJ0zsRWBuwA/3.jpg)](https://www.youtube.com/KJ0zsRWBuwA)
+
 
 ### The project creation wizard
 
