@@ -64,7 +64,7 @@ The project contract is a framework agreement between the project sponsor and th
 
 Here you can find the Video-Tutorial for the Project Contract:
 
-{% include youtubePlayer.html id=page.youtubeId Zp9fB7qOsK0}
+{% include youtubePlayer.html id=page.youtubeId Zp9fB7qOsK0 %}
 
 ### Organization
 
@@ -94,7 +94,7 @@ You can set up a hierarchy through this menu.
 
 The Organization-Tutorial:
 
-{% include youtubePlayer.html id=page.youtubeId ZNKLBpC1sWY}
+{% include youtubePlayer.html id=page.youtubeId ZNKLBpC1sWY %}
 
 ### Phases & Milestones
 
@@ -114,7 +114,7 @@ Start scheduling your project here. Set up phases first to determine the separat
 
 The P&M-Tutorial:
 
-{% include youtubePlayer.html id=page.youtubeId wztXAohf3vk}
+{% include youtubePlayer.html id=page.youtubeId wztXAohf3vk %}
 
 
 ### Task Management
@@ -134,7 +134,7 @@ The Task Management provides an overview of all work packages assigned to the pr
   
 The Task Management-Tutorial:
  
-{% include youtubePlayer.html id=page.youtubeId bvQQVLxbVZw}
+{% include youtubePlayer.html id=page.youtubeId bvQQVLxbVZw %}
 
   ### Risk & Opportunity
   
@@ -158,7 +158,7 @@ New Opportunity:
 
 We explain all functionalities again in this video: 
 
-{% include youtubePlayer.html id=page.youtubeId PzQ9Hhzn38I}
+{% include youtubePlayer.html id=page.youtubeId PzQ9Hhzn38I %}
 
 ### Gantt Chart
 
@@ -172,7 +172,7 @@ The Gantt chart is the go-to PM tool for scheduling. It allows you to get a good
 
 The Gantt Chart Tutorial:
 
-{% include youtubePlayer.html id=page.youtubeId ZNoVD2slFeE}
+{% include youtubePlayer.html id=page.youtubeId ZNoVD2slFeE %}
 
 
 ### RASCI Matrix
@@ -183,7 +183,7 @@ The RASCI Matrix is a very simple yet efficient tool to delegate responsibilitie
 
 RASCI Matrix Tutorial:
 
-{% include youtubePlayer.html id=page.youtubeId ehJ-NsrQKrE}
+{% include youtubePlayer.html id=page.youtubeId ehJ-NsrQKrE %}
 
 ### Work-Breakdown-Structure (WBS)
 
@@ -230,7 +230,7 @@ Decision templates are a practical tool to not get lost and make the decision-ma
 
 And here you can find the Videotutorial:
 
-{% include youtubePlayer.html id=page.youtubeId E5QW3_n4ygY}
+{% include youtubePlayer.html id=page.youtubeId E5QW3_n4ygY %}
 
 ### Status Report
 
@@ -256,4 +256,4 @@ The input fields are fairly straight forward:
 
 The Tutorial for the reporting modules:
 
-{% include youtubePlayer.html id=page.youtubeId IJXEJHuqQ5E}
+{% include youtubePlayer.html id=page.youtubeId IJXEJHuqQ5E %}
