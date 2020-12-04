@@ -17,7 +17,10 @@ CAMPR is organized in workspaces. Within those workspaces, you can set up projec
 After creating and activating your account, you should set up your first workspace. Go to “workspace” in the top right corner to open the list of workspaces you are the owner of and to set up new ones. 
 
 We also prepared a video for you to guide you through the first steps:
-
+<!---
+Example:     youtubeId: KJ0zsRWBuwA
+-->
+{% include youtubePlayer.html id=page.youtubeId %}
 [![CAMPR Guide - First steps](https://img.youtube.com/vi/KJ0zsRWBuwA/3.jpg)](https://www.youtube.com/KJ0zsRWBuwA)
 
 ### The project creation wizard
