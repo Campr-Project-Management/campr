@@ -4,7 +4,7 @@
 Welcome to the CAMPR support page. Here you will find all necessary information about the architecture and functionalities of CAMPR. Generally the single sections start with a general introduction to the module, followed by a detailed rundown of functions and terms. At the end of each segment we will link the matching video tutorial.
 If you still have open questions, want to report a bug or have any suggestions for improvements, you can either send us an email or use our community platforms.
 
-[![Visit us on GitHub](https://campr.biz/wp-content/uploads/2020/04/Octocat-150x150.jpg)](https://github.com/CamprGmbH)  [![Visit our Discourse Channel](https://campr.biz/wp-content/uploads/2020/11/discourse-logo.png)](https://campr.discourse.group/)
+[![Visit us on GitHub](https://campr.biz/wp-content/uploads/2020/04/Octocat-150x150.jpg)](https://github.com/CamprGmbH)  [![Visit our Discourse Channel](https://campr.biz/wp-content/uploads/2020/11/discourse-logo-e1607328386386.png)](https://campr.discourse.group/)
 
 # Table of content
 - [First steps in CAMPR](#first-steps-in-campr)
