@@ -13,3 +13,5 @@ collections:
     title: Uploads
     output: true
 theme: jekyll-theme-modernist
+  meta:
+      description: Liquid, Sass, Jekyll, syncing, local dev
