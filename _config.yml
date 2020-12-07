@@ -15,3 +15,5 @@ collections:
 theme: jekyll-theme-modernist
   meta:
       description: Liquid, Sass, Jekyll, syncing, local dev
+url: https://campr.siteleaf.net
+github_url: https://camprgmbh.github.io/campr
