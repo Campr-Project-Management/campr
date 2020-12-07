@@ -74,7 +74,9 @@ The project contract is a framework agreement between the project sponsor and th
 - **External Costs**: External Costs are expenses for outside services, investments in machinery or tools and others.
 - **Download PDF**: You can export the Project Contract as PDF to print and sign.
 
+We also prepared a video for you to guide you through the first steps:
 
+{% include youtubePlayer.html id=page.youtubeId cg4pTb-VR80}
 
 ### Organization
 
