@@ -46,6 +46,9 @@ There are X modules every project needs which and which cannot be deselected. Th
 
 After you have completed the three steps of the project wizard, you have successfully set up a project. Now you can fill the project with life and invite your team. Set up your team in the module “organization” by clicking on “Invite Member to Workspace” and entering the email address of your team members (one at a time).
 
+We also prepared a video for you to guide you through the first steps:
+
+[![01_Erste Schritte](https://user-images.githubusercontent.com/63300071/101335612-babbcc00-3879-11eb-913e-1eb72a107dc9.PNG)](https://www.youtube.com/watch?v=4dzHEpxkoPQ)
 
 ## The Modules
 
@@ -73,6 +76,9 @@ The project contract is a framework agreement between the project sponsor and th
 - **External Costs**: External Costs are expenses for outside services, investments in machinery or tools and others.
 - **Download PDF**: You can export the Project Contract as PDF to print and sign.
 
+We also prepared a video for you to guide you through the first steps:
+
+[![02_contract](https://user-images.githubusercontent.com/63300071/101335614-bb546280-3879-11eb-9559-227d5f4d31ed.PNG)](https://www.youtube.com/watch?v=4dzHEpxkoPQ)
 
 ### Organization
 
@@ -100,6 +106,8 @@ You can set up a hierarchy through this menu.
 - **RASCI**: You choose if a member is activated for the RASCI module.
 - **Status Report Distribution**: Members activated for the Status Report Distribution List will receive an email with the PDF of the status report every time you decide to create a new status report.
 
+The Organization-Tutorial:
+[![02_orga](https://user-images.githubusercontent.com/63300071/101335600-b8f20880-3879-11eb-8c5b-f0de28924f7d.PNG)](https://www.youtube.com/watch?v=ZNKLBpC1sWY)
 
 ### Phases & Milestones
 
@@ -117,6 +125,9 @@ Start scheduling your project here. Set up phases first to determine the separat
 
 - **Create new phase**: here you can set up phases. Add a title and description, set the base date and select a person responsible for the completion of the phase. In more complex projects it might make sense to set up subphases for a clearer structure.
 
+The P&M-Tutorial:
+
+[![02_PM](https://user-images.githubusercontent.com/63300071/101335602-b98a9f00-3879-11eb-9044-38b75b1759ee.PNG)](https://www.youtube.com/watch?v=wztXAohf3vk)
 
 ### Task Management
 
@@ -132,9 +143,12 @@ The Task Management provides an overview of all work packages assigned to the pr
   - **Costs**: you can set up each separate position of internal and external costs in detail
   - **Assignments**: select which functions your members have in the task
   - **Other**: you can set up subtasks that will be shown as a to-do list in the task, set the status and label and attach documents.
-  
 
-  ### Risk & Opportunity
+The Task Management-Tutorial:
+
+[![02_TM](https://user-images.githubusercontent.com/63300071/101335610-babbcc00-3879-11eb-9598-b09dcd9e2e1b.PNG)](https://www.youtube.com/watch?v=bvQQVLxbVZw)
+
+### Risk & Opportunity
   
 Risk Management might be the most underestimated successfactor in project management. The module is designed to help you monitor and estimate risk impacts and allow you to decide quicker and be proactive. Beside monetary impact of risks, you can also monitor project time impacts. A risk is by definition neutral and can therefore have a positive or negative impact. Positive impacts (potential savings) are labeled “Opportunities” while negative impacts (additional costs) are labeled “Risks”.
 
@@ -154,6 +168,9 @@ New Opportunity:
 - **Strategy and Status**: You can choose between different strategies. For Opportunities you can choose between: share, enhance and ignore. For Risks, you can choose between: Avoid, Transfer, Mitigate. You create more Strategies and	Status in the admin section.
 - **Measures**: You can add measures to deal with the risk. Name and describe the	 measure and add the execution costs. You will be able to see the combined costs of all measures and opportunities (or risks) in the general Risk & Opportunity tab.
 
+We explain all functionalities again in this video: 
+
+[![02_RM](https://user-images.githubusercontent.com/63300071/101335608-babbcc00-3879-11eb-96e9-db0888a184f9.PNG)](https://www.youtube.com/watch?v=PzQ9Hhzn38I)
 
 ### Gantt Chart
 
@@ -165,6 +182,9 @@ The Gantt chart is the go-to PM tool for scheduling. It allows you to get a good
 - **Forecast-Tab**: The forecast tab allows you to adjust the forecasted times of the tasks.
 - **Actual-Tab**: here you can see the actual time needed to finish the tasks.
 
+The Gantt Chart Tutorial:
+
+[![02_gantt](https://user-images.githubusercontent.com/63300071/101335616-bb546280-3879-11eb-8034-6a4da59e9749.PNG)](https://www.youtube.com/watch?v=ZNoVD2slFeE)
 
 ### RASCI Matrix
 
@@ -172,6 +192,9 @@ The Gantt chart is the go-to PM tool for scheduling. It allows you to get a good
 
 The RASCI Matrix is a very simple yet efficient tool to delegate responsibilities of single tasks to your project members. The header shows the profile pictures of the members, the first column the name of the task and you can simply choose the role of each member for each task. As mentioned earlier there must be one member marked as responsible and accountable. All other roles can be assigned to multiple members and are optional.
 
+RASCI Matrix Tutorial:
+
+[![02_rasci](https://user-images.githubusercontent.com/63300071/101335604-b98a9f00-3879-11eb-8aed-48dd797e4b01.PNG)](https://www.youtube.com/watch?v=ehJ-NsrQKrE)
 
 ### Work-Breakdown-Structure (WBS)
 
@@ -191,6 +214,7 @@ Lets take a closer look at the boxes.
 - **Progress**: 75%
 
 This task condition is marked with a “warning” represented by the yellow frame. A task marked “critical” is marked with a red frame.
+
 
 ### Meetings
 
@@ -216,6 +240,9 @@ You have the option to set up a detailed agenda for the whole meeting, including
 
 Decision templates are a practical tool to not get lost and make the decision-making process more efficient. The from is very lean and only includes description, responsibility, due date and status. Similar templates are available for Infos and To-Do’s and can either be created separately in those modules or when setting up a new meeting.
 
+And here you can find the tutorial:
+
+[![02_meetings](https://user-images.githubusercontent.com/63300071/101335619-bbecf900-3879-11eb-83cf-e1bb2ff719cf.PNG)](https://www.youtube.com/watch?v=E5QW3_n4ygY)
 
 ### Status Report
 
@@ -239,3 +266,5 @@ The input fields are fairly straight forward:
 - **Lessons Learned**: What has to be done differently to ensure future projects to	succeed or perform better/smoother than this one? 
 - **Reflection**: Final thoughts and a critical reflection of the schedule, the organization and the management of the project.
 
+The Tutorial for the reporting modules:
+[![02_reporting](https://user-images.githubusercontent.com/63300071/101335605-ba233580-3879-11eb-8691-a0596fa95264.PNG)](https://www.youtube.com/watch?v=IJXEJHuqQ5E)
