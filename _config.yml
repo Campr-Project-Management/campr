@@ -2,13 +2,14 @@
 title: Campr
 timezone: UTC
 collections:
+  meta:
+    title: Meta
+    output: false
+    description: CAMPR support page
   posts:
     title: Posts
     output: true
   uploads:
     title: Uploads
     output: true
-  meta:
-    description: CAMPR support page
 theme: jekyll-theme-modernist
-
