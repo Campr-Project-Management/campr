@@ -8,9 +8,20 @@ If you still have open questions, want to report a bug or have any suggestions f
 [Discourse](https://campr.discourse.group/)
 
 # Table of content
-[test link only raute](#first-steps-in-campr)
-[GitHub](https://github.com/CamprGmbH/campr/blob/gh-pages/index.md#first-steps-in-campr)
-[Discourse](https://camprgmbh.github.io/campr/#first-steps-in-campr)
+- [First steps in CAMPR](#first-steps-in-campr)
+- [The Modules](#the-modules)
+- [Project Contract](#project-contract)
+- [Organization](#organization)
+- [Phases & Milestones](#phases--milestones)
+- [Task Management](#Task-management)
+- [Risk & Opportunity](#risk--opportunity)
+- [Gantt Chart](#gantt-chart)
+- [RASCI Matrix](#rasci-matrix)
+- [Work-Breakdown-Structure (WBS)](#Work-Breakdown-Structure-wbs)
+- [Meetings](#meetings)
+- [Decisions, To-do's, Infos](#decisions-todos-infos)
+- [Status Report](#status-report)
+- [Project Close Out](#project-close-out)
 
 ## First steps in CAMPR
 - Create a Workspace
