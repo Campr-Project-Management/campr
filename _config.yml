@@ -5,7 +5,6 @@ collections:
   meta:
     title: Meta
     output: false
-    
   posts:
     title: Posts
     output: true
