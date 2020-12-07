@@ -42,7 +42,7 @@ In the **first step**, you add some basic information about the project such as 
 The **second step** requires some information on the nature of your project. Add information about the duration, size of the project team, budget and strategic meaning of the project. Based on the inputs of step two, the Project Creation Wizard will suggest the modules you need for the successful management of your project in **step three**.
 There are X modules every project needs which and which cannot be deselected. The modules are **Project Contract, Organization, Taskmanagement, Status and Close Out Report**. All other modules not mandatory and can be activated and deactivated even when the project has already started.
 
-[![](http://img.youtube.com/vi/KJ0zsRWBuwA/0.jpg)](http://www.youtube.com/watch?v=KJ0zsRWBuwA "")
+[![new workspace & project](http://img.youtube.com/vi/KJ0zsRWBuwA/0.jpg)](http://www.youtube.com/watch?v=KJ0zsRWBuwA "new workspace & project")
 
 ### Invite your team
 
