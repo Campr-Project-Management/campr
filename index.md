@@ -46,9 +46,6 @@ There are X modules every project needs which and which cannot be deselected. Th
 
 After you have completed the three steps of the project wizard, you have successfully set up a project. Now you can fill the project with life and invite your team. Set up your team in the module “organization” by clicking on “Invite Member to Workspace” and entering the email address of your team members (one at a time).
 
-We also prepared a video for you to guide you through the first steps:
-
-{% include youtubePlayer.html id=page.youtubeId cg4pTb-VR80 %}
 
 ## The Modules
 
