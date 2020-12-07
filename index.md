@@ -24,9 +24,8 @@ After creating and activating your account, you should set up your first workspa
 
 We also prepared a video for you to guide you through the first steps:
 
-<!--
 {% include youtubePlayer.html id=page.youtubeId cg4pTb-VR80}
--->
+
 
 ### The project creation wizard
 
