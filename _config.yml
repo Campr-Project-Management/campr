@@ -15,4 +15,4 @@ collections:
 theme: jekyll-theme-modernist
 description: Documentation and learning CAMPR, a Project Management platform designed
   for a better collaboration.
-repository: https://github.com/CamprGmbH/campr/tree/gh-pages
+repository: https://github.com/CamprGmbH/campr.git
