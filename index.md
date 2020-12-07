@@ -7,6 +7,11 @@ If you still have open questions, want to report a bug or have any suggestions f
 [GitHub](https://github.com/CamprGmbH)
 [Discourse](https://campr.discourse.group/)
 
+# Table of content
+[test link only raute](#first-steps-in-campr)
+[GitHub](https://github.com/CamprGmbH/campr/blob/gh-pages/index.md#first-steps-in-campr)
+[Discourse](https://camprgmbh.github.io/campr/#first-steps-in-campr)
+
 ## First steps in CAMPR
 - Create a Workspace
 - Create a Project with the Project Creation Wizard
