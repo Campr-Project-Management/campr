@@ -8,4 +8,7 @@ collections:
   uploads:
     title: Uploads
     output: true
+  meta:
+    description: CAMPR support page
 theme: jekyll-theme-modernist
+
