@@ -1,16 +1,18 @@
----
-title: Campr
-timezone: UTC
-collections:
-  meta:
-    title: Meta
+--- 
+collections: 
+  meta: 
+    description: "CAMPR support page"
     output: false
-  posts:
+    title: Meta
+  posts: 
+    output: true
     title: Posts
+  uploads: 
     output: true
-  uploads:
     title: Uploads
-    output: true
-github_url: https://camprgmbh.github.io/campr
+github_url: "https://camprgmbh.github.io/campr"
 theme: jekyll-theme-modernist
-url: https://campr.siteleaf.net
+timezone: UTC
+title: Campr
+url: "https://campr.siteleaf.net"
+description: Documentation and learning CAMPR, a Project Management platform designed for a better collaboration.
