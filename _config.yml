@@ -5,7 +5,7 @@ collections:
   meta:
     title: Meta
     output: false
-    description: CAMPR support page
+    
   posts:
     title: Posts
     output: true
