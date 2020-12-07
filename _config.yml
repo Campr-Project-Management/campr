@@ -12,7 +12,6 @@ collections:
   uploads:
     title: Uploads
     output: true
-github_url: https://camprgmbh.github.io/campr
 theme: jekyll-theme-modernist
 url: https://campr.siteleaf.net
 description: Documentation and learning CAMPR, a Project Management platform designed
