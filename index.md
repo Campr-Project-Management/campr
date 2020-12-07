@@ -67,9 +67,7 @@ The project contract is a framework agreement between the project sponsor and th
 - **External Costs**: External Costs are expenses for outside services, investments in machinery or tools and others.
 - **Download PDF**: You can export the Project Contract as PDF to print and sign.
 
-Here you can find the Video-Tutorial for the Project Contract:
 
-{% include youtubePlayer.html id=page.youtubeId Zp9fB7qOsK0 %}
 
 ### Organization
 
@@ -97,9 +95,6 @@ You can set up a hierarchy through this menu.
 - **RASCI**: You choose if a member is activated for the RASCI module.
 - **Status Report Distribution**: Members activated for the Status Report Distribution List will receive an email with the PDF of the status report every time you decide to create a new status report.
 
-The Organization-Tutorial:
-
-{% include youtubePlayer.html id=page.youtubeId ZNKLBpC1sWY %}
 
 ### Phases & Milestones
 
@@ -117,10 +112,6 @@ Start scheduling your project here. Set up phases first to determine the separat
 
 - **Create new phase**: here you can set up phases. Add a title and description, set the base date and select a person responsible for the completion of the phase. In more complex projects it might make sense to set up subphases for a clearer structure.
 
-The P&M-Tutorial:
-
-{% include youtubePlayer.html id=page.youtubeId wztXAohf3vk %}
-
 
 ### Task Management
 
@@ -137,9 +128,6 @@ The Task Management provides an overview of all work packages assigned to the pr
   - **Assignments**: select which functions your members have in the task
   - **Other**: you can set up subtasks that will be shown as a to-do list in the task, set the status and label and attach documents.
   
-The Task Management-Tutorial:
- 
-{% include youtubePlayer.html id=page.youtubeId bvQQVLxbVZw %}
 
   ### Risk & Opportunity
   
@@ -161,9 +149,6 @@ New Opportunity:
 - **Strategy and Status**: You can choose between different strategies. For Opportunities you can choose between: share, enhance and ignore. For Risks, you can choose between: Avoid, Transfer, Mitigate. You create more Strategies and	Status in the admin section.
 - **Measures**: You can add measures to deal with the risk. Name and describe the	 measure and add the execution costs. You will be able to see the combined costs of all measures and opportunities (or risks) in the general Risk & Opportunity tab.
 
-We explain all functionalities again in this video: 
-
-{% include youtubePlayer.html id=page.youtubeId PzQ9Hhzn38I %}
 
 ### Gantt Chart
 
@@ -175,10 +160,6 @@ The Gantt chart is the go-to PM tool for scheduling. It allows you to get a good
 - **Forecast-Tab**: The forecast tab allows you to adjust the forecasted times of the tasks.
 - **Actual-Tab**: here you can see the actual time needed to finish the tasks.
 
-The Gantt Chart Tutorial:
-
-{% include youtubePlayer.html id=page.youtubeId ZNoVD2slFeE %}
-
 
 ### RASCI Matrix
 
@@ -186,9 +167,6 @@ The Gantt Chart Tutorial:
 
 The RASCI Matrix is a very simple yet efficient tool to delegate responsibilities of single tasks to your project members. The header shows the profile pictures of the members, the first column the name of the task and you can simply choose the role of each member for each task. As mentioned earlier there must be one member marked as responsible and accountable. All other roles can be assigned to multiple members and are optional.
 
-RASCI Matrix Tutorial:
-
-{% include youtubePlayer.html id=page.youtubeId ehJ-NsrQKrE %}
 
 ### Work-Breakdown-Structure (WBS)
 
@@ -233,9 +211,6 @@ You have the option to set up a detailed agenda for the whole meeting, including
 
 Decision templates are a practical tool to not get lost and make the decision-making process more efficient. The from is very lean and only includes description, responsibility, due date and status. Similar templates are available for Infos and To-Do’s and can either be created separately in those modules or when setting up a new meeting.
 
-And here you can find the Videotutorial:
-
-{% include youtubePlayer.html id=page.youtubeId E5QW3_n4ygY %}
 
 ### Status Report
 
@@ -259,6 +234,3 @@ The input fields are fairly straight forward:
 - **Lessons Learned**: What has to be done differently to ensure future projects to	succeed or perform better/smoother than this one? 
 - **Reflection**: Final thoughts and a critical reflection of the schedule, the organization and the management of the project.
 
-The Tutorial for the reporting modules:
-
-{% include youtubePlayer.html id=page.youtubeId IJXEJHuqQ5E %}
