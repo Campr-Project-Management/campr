@@ -22,6 +22,8 @@ If you still have open questions, want to report a bug or have any suggestions f
 - [Status Report](#status-report)
 - [Project Close Out](#project-close-out)
 
+A basic guide on the admin section will follow soon!
+
 ## First steps in CAMPR
 - Create a Workspace
 - Create a Project with the Project Creation Wizard
@@ -270,3 +272,11 @@ The input fields are fairly straight forward:
 
 The Tutorial for the reporting modules:
 [![02_reporting](https://user-images.githubusercontent.com/63300071/101335605-ba233580-3879-11eb-8691-a0596fa95264.PNG)](https://www.youtube.com/watch?v=IJXEJHuqQ5E)
+
+
+### More about CAMPR
+
+We will keep this page up to date with the new functions and UI changes. We are currently working on a guide for the admin section - a powerful tool that helps you to customize your project and manage changes, labels and other inputs. A video on the topic is already available on or YouTube channel.
+
+If you think we are missing anything, need a better explanation or want to participate in the development process of CAMPR in any way or form, feel free to email us (info@campr.biz), contact us through twitter (@campr_pm) or the contact form on our website!
+
