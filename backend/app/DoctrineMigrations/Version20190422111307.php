@@ -22,7 +22,7 @@ class Version20190422111307 extends AbstractMigration
         );
 
         $this->addSql(
-            'CREATE TABLE project_department_member (id INT AUTO_INCREMENT NOT NULL, project_department_id INT DEFAULT NULL, project_user_id INT DEFAULT NULL, lead TINYINT(1) NOT NULL DEFAULT 0, INDEX IDX_502D59B77A1162D9 (project_department_id), INDEX IDX_502D59B73170DFF0 (project_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
+            'CREATE TABLE project_department_member (id INT AUTO_INCREMENT NOT NULL, project_department_id INT DEFAULT NULL, project_user_id INT DEFAULT NULL, `lead` TINYINT(1) NOT NULL DEFAULT 0, INDEX IDX_502D59B77A1162D9 (project_department_id), INDEX IDX_502D59B73170DFF0 (project_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB'
         );
         $this->addSql(
             'ALTER TABLE project_department_member ADD CONSTRAINT FK_502D59B77A1162D9 FOREIGN KEY (project_department_id) REFERENCES project_department (id) ON DELETE CASCADE'

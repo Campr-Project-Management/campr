@@ -53,7 +53,7 @@ class ProjectDepartmentMember implements ResourceInterface, TimestampableInterfa
     /**
      * @var bool
      *
-     * @ORM\Column(name="lead", type="boolean", options={"default": false})
+     * @ORM\Column(name="`lead`", type="boolean", options={"default": false})
      */
     private $lead = false;
 
