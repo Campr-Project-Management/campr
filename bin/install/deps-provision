@@ -180,3 +180,5 @@ if [ ! -e "`which jslint`" ];
 then
     sudo npm install -g jslint
 fi
+
+npm install -g yarn nuxt@2.10.0 which-pm-runs-cli @babel/preset-env@7.12.17 @babel/core@7.12.17
