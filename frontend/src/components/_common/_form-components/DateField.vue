@@ -1,17 +1,17 @@
 <template>
     <div>
-<!--        <date-picker-->
-<!--            ref="datePicker"-->
-<!--            :inline="inline"-->
-<!--            :monday-first="mondayFirst"-->
-<!--            :format="format"-->
-<!--            :value="value"-->
-<!--            :disabled="disabled"-->
-<!--            :clear-button="clearButton"-->
-<!--            :placeholder="placeholder"-->
-<!--            @input="onUpdate"-->
-<!--            @cleared="onCleared"-->
-<!--            @opened="onOpened"/>-->
+        <date-picker
+            ref="datePicker"
+            :inline="inline"
+            :monday-first="mondayFirst"
+            :format="format"
+            :value="value"
+            :disabled="disabled"
+            :clear-button="clearButton"
+            :placeholder="placeholder"
+            @input="onUpdate"
+            @cleared="onCleared"
+            @opened="onOpened"/>
 
         <div @click="openPicker">
             <calendar-icon fill="middle-fill" v-if="!inline"/>
@@ -61,17 +61,17 @@
         },
         methods: {
             onUpdate(value) {
-                // this.$emit('input', value);
+                this.$emit('input', value);
             },
             onCleared(value) {
-                // this.$emit('cleared', value);
+                this.$emit('cleared', value);
             },
             onOpened() {
-                // let el = this.$el.getElementsByClassName('vdp-datepicker__calendar')[0];
-                // arrangeHorizontally(el);
-                // arrangeVertically(el);
-                //
-                // this.$emit('opened');
+                let el = this.$el.getElementsByClassName('vdp-datepicker__calendar')[0];
+                arrangeHorizontally(el);
+                arrangeVertically(el);
+
+                this.$emit('opened');
             },
             openPicker(e) {
                 this.datePickerOpened = true;
@@ -96,41 +96,41 @@
     /**
      * @param {HTMLElement} el
      */
-    // function arrangeHorizontally(el) {
-    //     el.style.visibility = 'hidden';
-    //     el.style.display = 'block';
-    //
-    //     let screenRect = document.body.getBoundingClientRect();
-    //     let elRect = el.getBoundingClientRect();
-    //
-    //     if ((elRect.x + elRect.width) > screenRect.width) {
-    //         el.style.right = '0px';
-    //     }
-    //
-    //     el.style.visibility = 'visible';
-    //     el.style.display = 'none';
-    // }
+    function arrangeHorizontally(el) {
+        el.style.visibility = 'hidden';
+        el.style.display = 'block';
+
+        let screenRect = document.body.getBoundingClientRect();
+        let elRect = el.getBoundingClientRect();
+
+        if ((elRect.x + elRect.width) > screenRect.width) {
+            el.style.right = '0px';
+        }
+
+        el.style.visibility = 'visible';
+        el.style.display = 'none';
+    }
 
     /**
      * @param {HTMLElement} el
      */
-    // function arrangeVertically(el) {
-    //     el.style.visibility = 'hidden';
-    //     el.style.display = 'block';
-    //     el.style.top = '';
-    //
-    //     let screenH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    //     let elRect = el.getBoundingClientRect();
-    //
-    //     let distanceToBottom = screenH - elRect.y;
-    //     let distanceToTop = elRect.y;
-    //     if (distanceToBottom < distanceToTop) {
-    //         el.style.top = `${-1 * elRect.height}px`;
-    //     }
-    //
-    //     el.style.visibility = 'visible';
-    //     el.style.display = 'none';
-    // }
+    function arrangeVertically(el) {
+        el.style.visibility = 'hidden';
+        el.style.display = 'block';
+        el.style.top = '';
+
+        let screenH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        let elRect = el.getBoundingClientRect();
+
+        let distanceToBottom = screenH - elRect.y;
+        let distanceToTop = elRect.y;
+        if (distanceToBottom < distanceToTop) {
+            el.style.top = `${-1 * elRect.height}px`;
+        }
+
+        el.style.visibility = 'visible';
+        el.style.display = 'none';
+    }
 </script>
 
 <style lang="scss">

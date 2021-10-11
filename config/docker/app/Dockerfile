@@ -50,6 +50,7 @@ RUN apt-get install -y --fix-missing \
     php7.1-odbc \
     php7.1-opcache \
     php7.1-readline \
+    php7.1-redis \
     php7.1-soap \
     php7.1-sqlite3 \
     php7.1-xml \
@@ -80,7 +81,7 @@ RUN GOREPLACE_VERSION=1.1.2 \
     && wget -O /usr/local/bin/go-replace https://github.com/webdevops/go-replace/releases/download/$GOREPLACE_VERSION/gr-64-linux \
     && chmod +x /usr/local/bin/go-replace
 
-RUN npm install -g yarn nuxt@2.10.0
+RUN npm install -g yarn nuxt@2.10.0 which-pm-runs-cli @babel/preset-env@7.12.17 @babel/core@7.12.17
 
 # Server Side Rendering
 RUN curl -o /tmp/google-chrome-stable_current_amd64.deb \
