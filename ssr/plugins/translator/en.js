@@ -2623,7 +2623,7 @@ export default function (Translator) {
     Translator.add("portal.page.register.content2", "scroll table to see the rest", "messages", "en");
     Translator.add("success.contact.message.not_sent", "Message not sent", "messages", "en");
     Translator.add("portal.page.try_beta.form.label.industry_branch", "Industry Branch", "messages", "en");
-    Translator.add("portal.page.try_beta.form.label.marketing_consent", "I agree to receive Marketing Notifications", "messages", "en");
+    Translator.add("portal.page.try_beta.form.label.marketing_consent", "I WOULD LIKE TO RECEIVE NEWS ABOUT CAMPR. CAMPR DOES NOT SEND OR USE ANY MARKETING INFORMATION!", "messages", "en");
     Translator.add("portal.page.try_beta.form.label.i_agree_to", "I agree to the", "messages", "en");
     Translator.add("portal.page.try_beta.form.label.terms_and_conditions", "Terms &amp; Conditions", "messages", "en");
     Translator.add("portal.page.try_beta.form.button.send", "Send", "messages", "en");
@@ -2651,6 +2651,9 @@ export default function (Translator) {
     Translator.add("email.subject.task.new", "Your new task: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");
     Translator.add("email.subject.task.edit", "Your task responsibility has changed: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "en");
     Translator.add("email.message.task.edit", "Hello %task_responsible%, your task responsibility has changed from %former_task_responsibility%.", "messages", "en");
+    Translator.add("email.message.task.new.workspace", "Workspace: %workspace_name%", "messages", "en");
+    Translator.add("email.message.task.new.project", "Project: %project_name%", "messages", "en");
+    Translator.add("email.message.task.new.taskcreator", "Created by: %task_creator%", "messages", "en");
     Translator.add("error.maxsize", "This file is too large.", "OneupUploaderBundle", "en");
     Translator.add("error.whitelist", "This file type is not allowed.", "OneupUploaderBundle", "en");
     Translator.add("error.blacklist", "This file type is not allowed.", "OneupUploaderBundle", "en");
