@@ -2606,7 +2606,7 @@ export default function (Translator) {
     Translator.add("portal.page.register.content2", "durch die Tabelle scrollen, um den Rest zu sehen", "messages", "de");
     Translator.add("success.contact.message.not_sent", "Nachricht nicht gesendet", "messages", "de");
     Translator.add("portal.page.try_beta.form.label.industry_branch", "Branche", "messages", "de");
-    Translator.add("portal.page.try_beta.form.label.marketing_consent", "Ich stimme zu Marketingbenachrichtigungen zu erhalten.", "messages", "de");
+    Translator.add("portal.page.try_beta.form.label.marketing_consent", "ICH M\u00d6CHTE \u00dcBER NEUIGKEITEN UM CAMPR INFORMIERT WERDEN. CAMPR VERSENDET UND VERWENDET KEINERLEI MARKETINGINFORMATIONEN!", "messages", "de");
     Translator.add("portal.page.try_beta.form.label.i_agree_to", "Ich akzeptiere die", "messages", "de");
     Translator.add("portal.page.try_beta.form.label.terms_and_conditions", "AGB", "messages", "de");
     Translator.add("portal.page.try_beta.form.button.send", "Senden", "messages", "de");
@@ -2631,7 +2631,10 @@ export default function (Translator) {
     Translator.add("email.button.task.profile", "Aufgabenprofil", "messages", "de");
     Translator.add("email.subject.task.new", "Deine neue Aufgabe: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "de");
     Translator.add("email.subject.task.edit", "Deine Aufgabenverantwortlichkeit wurde ge\u00e4ndert: \"%workspace_name%\" - \"%project_name%\" - \"%task_name%\"", "messages", "de");
-    Translator.add("email.message.task.edit", "Hallo %task_responsible%, deine Aufgabenverantwortlichkeit wurde von %former_task_responsibility% ge\u00e4ndert.", "messages", "de");
+    Translator.add("email.message.task.edit", "Hallo, die Aufgabenverantwortlichkeit wurde auf dich \u00fcbertragen.", "messages", "de");
+    Translator.add("email.message.task.new.workspace", "Workspace: %workspace_name%", "messages", "de");
+    Translator.add("email.message.task.new.project", "Projekt: %project_name%", "messages", "de");
+    Translator.add("email.message.task.new.taskcreator", "Erstellt von: %task_creator%", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Das Aktivierungs-Token wurde nicht gefunden oder der Benutzer ist bereits aktiv.", "flashes", "de");
