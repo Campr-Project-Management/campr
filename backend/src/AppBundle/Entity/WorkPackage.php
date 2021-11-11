@@ -498,8 +498,9 @@ class WorkPackage implements ResourceInterface, BaseScheduleDatesAwareInterface,
     /**
      * WorkPackage constructor.
      */
-    public function __construct()
+    public function __construct(int $id = null)
     {
+        $this->id = $id;
         $this->createdAt = new \DateTime();
         $this->assignments = new ArrayCollection();
         $this->labels = new ArrayCollection();
