@@ -28,8 +28,11 @@
             <div class="header flex flex-space-between">
                 <h1>{{ translate('message.project_organization') }}</h1>
                 <div class="flex flex-v-center">
-                    <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">{{ translate('message.edit_project_organization') }}
+                    <router-link :to="{name: 'project-organization-edit'}" class="btn-rounded btn-auto second-bg">
+                        {{ translate('message.edit_project_organization') }}
                     </router-link>
+                    &nbsp;&nbsp;&nbsp;
+                    <VideoLink module="organization" />
                 </div>
             </div>
         </can>
@@ -159,6 +162,7 @@ import WorkspaceMemberInviteModal from './Organization/WorkspaceMemberInviteModa
 import ProjectOrganizationTree from './ProjectOrganizationTree';
 import UserAvatar from '../_common/UserAvatar';
 import Pagination from '../_common/Pagination';
+import VideoLink from '../_common/VideoLink';
 
 export default {
     components: {
@@ -176,6 +180,7 @@ export default {
         Error,
         WorkspaceMemberInviteModal,
         ProjectOrganizationTree,
+        VideoLink,
     },
     methods: {
         ...mapActions([

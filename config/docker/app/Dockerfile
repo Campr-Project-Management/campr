@@ -22,6 +22,9 @@ RUN apt-get clean && apt-get -y update && apt-get install -y \
     git \
     nginx \
     nmap \
+    gcc \
+    g++ \
+    make \
   && locale-gen en_US.UTF-8
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
@@ -61,10 +64,9 @@ RUN apt-get install -y --fix-missing \
     libicu-dev \
     libldb-dev \
     libpng-dev \
-    php-imagick \
-    php-redis \
-    php-apcu \
-    php-pear \
+    php7.1-imagick \
+    php7.1-apcu \
+    php7.1-apcu-bc \
     nodejs \
     supervisor \
 && apt-get autoclean
@@ -74,8 +76,7 @@ RUN curl https://getcomposer.org/installer > composer-setup.php \
     && mv composer.phar /usr/local/bin/composer \
     && rm composer-setup.php
 
-RUN composer global require "hirak/prestissimo:^0.3" \
-    && pecl install apcu_bc-beta
+RUN composer global require "hirak/prestissimo:^0.3"
 
 RUN GOREPLACE_VERSION=1.1.2 \
     && wget -O /usr/local/bin/go-replace https://github.com/webdevops/go-replace/releases/download/$GOREPLACE_VERSION/gr-64-linux \

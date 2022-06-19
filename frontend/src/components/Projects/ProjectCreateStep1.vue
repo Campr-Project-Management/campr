@@ -4,6 +4,8 @@
             <h1>{{ translate('message.project_create_wizard') }}</h1>
             <h2>{{ translate('message.project_create_step1') }}</h2>
 
+            <VideoLink module="setup" style="margin-left: auto; margin-right: auto; display: block; margin-bottom: 20px; width: 200px;" />
+
             <input-field type="text" :label="translate('message.project_name')" v-model="projectName"
                          :content="projectName" name="project_name"/>
             <error
@@ -117,9 +119,11 @@
     import Error from '../_common/_messages/Error.vue';
     import {mapActions, mapGetters} from 'vuex';
     import UserAvatar from '../_common/UserAvatar';
+    import VideoLink from '../_common/VideoLink';
 
     export default {
         components: {
+            VideoLink,
             UserAvatar,
             InputField,
             SelectField,

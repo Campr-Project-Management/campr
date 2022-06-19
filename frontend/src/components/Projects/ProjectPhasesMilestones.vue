@@ -35,9 +35,14 @@
                 <h1>{{ translateText('message.project_phases') }}</h1>
             </div>
             <div class="flex flex-v-center">
-                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">{{ translateText('button.add_new_phase') }}</router-link>
+                <router-link :to="{name: 'project-phases-create-phase'}" class="btn-rounded btn-auto second-bg">
+                    {{ translateText('button.add_new_phase') }}
+                </router-link>
+                &nbsp;&nbsp;&nbsp;
+                <VideoLink module="phases_and_milestones" />
             </div>
         </div>
+
         <div class="full-filters flex flex-direction-reverse">
             <phase-filters
                     :clearAllFilters="clearPhaseFilters"
@@ -287,9 +292,11 @@
     import Modal from '../_common/Modal';
     import AlertModal from '../_common/AlertModal.vue';
     import UserAvatar from '../_common/UserAvatar';
+    import VideoLink from '../_common/VideoLink';
 
     export default {
         components: {
+            VideoLink,
             UserAvatar,
             VisTimeline,
             PhaseFilters,

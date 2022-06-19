@@ -77,6 +77,8 @@
             <h1>{{ translate('message.project_meetings') }}</h1>
             <div class="flex flex-v-center">
                 <router-link :to="{name: 'project-meetings-create-meeting'}" class="btn-rounded btn-auto second-bg">{{ translate('message.create_new_meeting') }}</router-link>
+                &nbsp;&nbsp;&nbsp;
+                <VideoLink module="meetings" />
             </div>
         </div>
 
@@ -207,6 +209,7 @@ import Modal from '../_common/Modal';
 import DateField from '../_common/_form-components/DateField';
 import UserAvatar from '../_common/UserAvatar';
 import Editor from '../_common/Editor';
+import VideoLink from '../_common/VideoLink';
 import DataPicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import '../../css/vue-dat-time-picker-custom.css';
@@ -214,6 +217,7 @@ import {timepicerMask} from '../../util/functions';
 
 export default {
     components: {
+        VideoLink,
         UserAvatar,
         DateField,
         MeetingsFilters,
