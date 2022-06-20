@@ -1,5 +1,11 @@
 @import '~theme/variables';
 
+.absolute-top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 .page-section {
   padding-bottom: 20px;
 

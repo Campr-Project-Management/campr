@@ -4,6 +4,8 @@
             <h1>{{ translate('message.gantt_chart') }}</h1>
         </div>
 
+        <VideoLink module="gantt" />
+
         <div class="right-sided">
             <button
                 id="toggle_minimap"
@@ -33,6 +35,7 @@
 import 'dhtmlx-gantt';
 import AlertModal from '../_common/AlertModal';
 import UploadIcon from '../_common/_icons/UploadIcon';
+import VideoLink from '../_common/VideoLink';
 import {mapActions, mapGetters} from 'vuex';
 import router from '../../router';
 import * as d3 from 'd3';
@@ -49,6 +52,7 @@ const TASK_STATUS_COMPLETED = 4;
 
 export default {
     components: {
+        VideoLink,
         AlertModal,
         UploadIcon,
     },

@@ -4,6 +4,8 @@
             <h1>{{ translate('message.project_create_wizard') }}</h1>
             <h2>{{ translate('message.project_create_step2') }}</h2>
 
+            <VideoLink module="setup" style="margin-left: auto; margin-right: auto; display: block; margin-bottom: 20px;" />
+
             <project-duration-slider v-model="projectDuration"/>
             <project-budget-slider
                     v-model="projectBudget"
@@ -31,6 +33,7 @@
                    :title="translate('button.previous_step')">
                     < {{ translate('button.previous_step') }}
                 </a>
+
                 <a href="#" @click="nextStep" class="btn-rounded second-bg"
                    :title="translate('button.analyze')">
                     {{ translate('button.analyze') }} >
@@ -43,6 +46,7 @@
 <script>
     import SelectField from '../_common/_form-components/SelectField';
     import RangeSlider from '../_common/_form-components/RangeSlider';
+    import VideoLink from '../_common/VideoLink';
     import {mapActions, mapGetters} from 'vuex';
     import ProjectDurationSlider from './ProjectCreate/ProjectDurationSlider';
     import ProjectBudgetSlider from './ProjectCreate/ProjectBudgetSlider';
@@ -53,6 +57,7 @@
 
     export default {
         components: {
+            VideoLink,
             ProjectMembersSlider,
             ProjectTechnologyComplexitySlider,
             ProjectInnovationDegreeSlider,

@@ -504,8 +504,9 @@ class Project implements ProjectInterface, TimestampableInterface, CloneableInte
     /**
      * Project constructor.
      */
-    public function __construct()
+    public function __construct(int $id = null)
     {
+        $this->id = $id;
         $this->calendars = new ArrayCollection();
         $this->workPackages = new ArrayCollection();
         $this->fileSystems = new ArrayCollection();
