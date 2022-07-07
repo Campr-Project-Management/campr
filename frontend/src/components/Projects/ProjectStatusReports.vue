@@ -8,7 +8,11 @@
                         :to="{name: 'project-status-reports-create-status-report'}"
                         class="btn-rounded btn-auto second-bg">{{ translate('message.create_new_status_report') }}</router-link>
                 <span v-else>{{ translate(statusReportAvailability) }}</span>
+                &nbsp;&nbsp;&nbsp;
+                <VideoLink module="status_report" />
             </div>
+
+            <VideoLink module="status_report" v-if="!canCreateNewStatusReport" />
         </div>
 
         <modal v-if="showEmailModal" @close="showEmailModal = false">
@@ -48,7 +52,7 @@
                                         <a @click="initEmailModal(report)" class="btn-icon" v-tooltip.top-center="translate('label.email_status_report')"><notification-icon fill="second-fill"></notification-icon></a>
                                         <a :href="downloadPdf(report)" class="btn-icon" v-tooltip.top-center="translate('label.download_status_report')"><download-icon fill="second-fill"></download-icon></a>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -80,9 +84,11 @@ import DownloadIcon from '../_common/_icons/DownloadIcon';
 import Modal from '../_common/Modal';
 import AlertModal from '../_common/AlertModal.vue';
 import UserAvatar from '../_common/UserAvatar';
+import VideoLink from '../_common/VideoLink';
 
 export default {
     components: {
+        VideoLink,
         UserAvatar,
         StatusFilters,
         ViewIcon,
@@ -188,7 +194,7 @@ export default {
         height: 30px;
         @include border-radius(50%);
         background-size: cover;
-    }  
+    }
 
     .btn-icon {
         cursor: pointer;

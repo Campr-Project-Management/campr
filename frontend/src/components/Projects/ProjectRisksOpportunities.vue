@@ -9,6 +9,8 @@
                     </div>
                     <div class="flex flex-v-center">
                         <router-link :to="{name: 'project-opportunities-create-opportunity'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_opportunity') }}</router-link>
+                        &nbsp;&nbsp;&nbsp;
+                        <VideoLink module="risk_and_opportunities" />
                     </div>
                 </div>
                 <!-- /// End Project Opportunities Header /// -->
@@ -44,6 +46,8 @@
                     </div>
                     <div class="flex flex-v-center">
                         <router-link :to="{name: 'project-risks-create-risk'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_risk') }}</router-link>
+                        &nbsp;&nbsp;&nbsp;
+                        <VideoLink module="risk_and_opportunities" />
                     </div>
                 </div>
                 <!-- /// End Project Risks Header /// -->
@@ -82,10 +86,12 @@
     import OpportunitySummary from './Opportunities/OpportunitySummary';
     import OpportunityMatrix from './RiskManagement/OpportunityMatrix';
     import RiskMatrix from './RiskManagement/RiskMatrix';
+    import VideoLink from '../_common/VideoLink';
     import _ from 'lodash';
 
     export default {
         components: {
+            VideoLink,
             OpportunityMatrix,
             RiskMatrix,
             RiskList,

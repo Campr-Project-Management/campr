@@ -4,7 +4,10 @@
             <h1>{{ translate('message.project_create_wizard') }}</h1>
             <h2>{{ translate('message.project_create_step3') }}</h2>
             <div class="hr"></div>
+
             <h3>{{ translate('message.project_size') }}: <span>{{ translate('message.medium') }}</span></h3>
+
+            <VideoLink module="setup" style="margin-left: auto; margin-right: auto; display: block; margin-bottom: 20px;" />
 
             <p>{{ translate('message.recommended_modules') }}</p>
 
@@ -64,6 +67,7 @@
 <script>
     import ProjectModule from './ProjectModule';
     import Modal from '../_common/Modal';
+    import VideoLink from '../_common/VideoLink';
     import {mapActions, mapGetters} from 'vuex';
     import _ from 'lodash';
     import {convertImageToBlog} from '../../helpers/project';
@@ -71,6 +75,7 @@
 
     export default {
         components: {
+            VideoLink,
             ProjectModule,
             Modal,
         },

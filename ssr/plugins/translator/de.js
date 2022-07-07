@@ -2635,6 +2635,18 @@ export default function (Translator) {
     Translator.add("email.message.task.new.workspace", "Workspace: %workspace_name%", "messages", "de");
     Translator.add("email.message.task.new.project", "Projekt: %project_name%", "messages", "de");
     Translator.add("email.message.task.new.taskcreator", "Erstellt von: %task_creator%", "messages", "de");
+    Translator.add("video.contract.link", "https:\/\/vimeo.com\/700011064", "messages", "de");
+    Translator.add("video.open.label", "Hilfevideo \u00f6ffnen", "messages", "de");
+    Translator.add("video.organization.link", "https:\/\/vimeo.com\/700011085", "messages", "de");
+    Translator.add("video.task_management.link", "https:\/\/vimeo.com\/700011121", "messages", "de");
+    Translator.add("video.external_costs.link", "https:\/\/vimeo.com\/700011232", "messages", "de");
+    Translator.add("video.internal_costs.link", "https:\/\/vimeo.com\/700011232", "messages", "de");
+    Translator.add("video.gantt.link", "https:\/\/vimeo.com\/700011144", "messages", "de");
+    Translator.add("video.rasci.link", "https:\/\/vimeo.com\/700011168", "messages", "de");
+    Translator.add("video.status_report.link", "https:\/\/vimeo.com\/700011219", "messages", "de");
+    Translator.add("video.admin.link", "https:\/\/vimeo.com\/700010555", "messages", "de");
+    Translator.add("video.setup.link", "https:\/\/vimeo.com\/700011285", "messages", "de");
+    Translator.add("video.account.link", "https:\/\/vimeo.com\/700011266", "messages", "de");
     Translator.add("activation.activated", "Dein Account wurde aktiviert!", "flashes", "de");
     Translator.add("activation.expired", "Der Aktivierungs-Token ist abgelaufen!", "flashes", "de");
     Translator.add("activation.not_found", "Das Aktivierungs-Token wurde nicht gefunden oder der Benutzer ist bereits aktiv.", "flashes", "de");
