@@ -109,12 +109,6 @@
                     <li class="admin-link">
                         <a href="https://github.com/CamprGmbH/campr/issues" target="_blank">Feedback</a>
                     </li>
-                    <li class="admin-link">
-                        <a href="https://www.youtube.com/channel/UCgP6VLB0CJdRznCFBiRh5BQ/playlists?view_as=subscriber"
-                           target="_blank">
-                            Tutorial
-                        </a>
-                    </li>
                 </ul>
             </nav>
         </scrollbar>

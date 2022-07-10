@@ -7,6 +7,9 @@
                     <div class="header flex-v-center">
                         <div>
                             <h1>{{ translate('message.rasci_matrix') }}</h1>
+
+                            <VideoLink module="rasci" :absolute-top-right="true" />
+
                             <div class="rasci-legend flex">
                                 <div class="rasci-legend-item">
                                     <responsibility-select value="responsible" :disabled="true"/>
@@ -50,7 +53,7 @@
                         </thead>
                     </table>
                 </div>
-        
+
                 <!-- /// RASCI /// -->
                 <table class="table table-striped table-responsive rasci-table rasci-table__top" v-bind:class="{'fixed': fixed}">
                     <thead>
@@ -67,7 +70,7 @@
                                         :tooltip="`${user.firstName} ${user.lastName}`"/>
                             </th>
                         </tr>
-                    </thead>                  
+                    </thead>
                     <tbody>
                         <tr v-for="(workPackage, rasciIndex) in workPackages"
                             :key="workPackage.id"
@@ -123,9 +126,11 @@
 import ResponsibilitySelect from '../_common/_rasci-components/ResponsibilitySelect.vue';
 import {mapActions, mapGetters} from 'vuex';
 import UserAvatar from '../_common/UserAvatar';
+import VideoLink from '../_common/VideoLink';
 
 export default {
     components: {
+        VideoLink,
         UserAvatar,
         ResponsibilitySelect,
     },
@@ -300,7 +305,7 @@ export default {
                 }
             }
 
-            &:hover {               
+            &:hover {
                 .rasci-select {
                     z-index: 2;
                 }

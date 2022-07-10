@@ -4,6 +4,8 @@
             <div class="flex">
                 <h1>{{ translate('message.external_costs') }}</h1>
             </div>
+
+            <VideoLink module="external_costs" />
         </div>
         <chart
             title="message.by_phase"
@@ -20,11 +22,13 @@
     import Chart from './Charts/CostsChart.vue';
     import filters from './Charts/mixins/filters';
     import {mapGetters, mapActions} from 'vuex';
+    import VideoLink from '../_common/VideoLink';
 
     export default {
         name: 'project-external-costs',
         mixins: [filters],
         components: {
+            VideoLink,
             Chart,
         },
         methods: {

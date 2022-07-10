@@ -8,6 +8,8 @@
                         <div class="text-center">
                             <h1>{{ contract.projectName }}</h1>
                         </div>
+
+                        <VideoLink module="contract" :absolute-top-right="true" />
                     </div>
 
                     <div class="hero-text">
@@ -229,9 +231,11 @@ import {
     MODULE_INTERNAL_COSTS,
     MODULE_EXTERNAL_COSTS,
 } from '../../helpers/project-module';
+import VideoLink from '../_common/VideoLink';
 
 export default {
     components: {
+        VideoLink,
         DateField,
         DragBox,
         InputField,

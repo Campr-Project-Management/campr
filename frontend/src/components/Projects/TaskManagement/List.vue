@@ -26,6 +26,8 @@
                         :to="{name: 'project-task-management-edit-labels'}"
                         class="btn-rounded btn-auto">{{ translate('message.edit_labels') }}</router-link>
                 <router-link :to="{name: 'project-task-management-create'}" class="btn-rounded btn-auto second-bg">{{ translate('message.new_task') }}</router-link>
+
+                <VideoLink module="task_management" />
             </div>
         </div>
         <!-- /// End Tasks List Header /// -->
@@ -79,10 +81,12 @@ import InputField from '../../_common/_form-components/InputField';
 import Dropdown from '../../_common/Dropdown';
 import {mapActions, mapGetters} from 'vuex';
 import BoardTasksColumn from './BoardTasksColumn';
+import VideoLink from '../../_common/VideoLink';
 
 export default {
     name: 'board-view',
     components: {
+        VideoLink,
         InputField,
         Dropdown,
         BoardTasksColumn,
